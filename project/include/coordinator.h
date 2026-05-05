@@ -71,6 +71,18 @@ namespace ECProject
         grpc::ServerContext *context,
         const coordinator_proto::XueUpdateRequest *request,
         coordinator_proto::ReplyProxyIPsPorts *proxyIPPort) override;
+    grpc::Status uploadCordUpdate(
+        grpc::ServerContext *context,
+        const coordinator_proto::CordUpdateRequest *request,
+        coordinator_proto::ReplyProxyIPsPorts *proxyIPPort) override;
+    grpc::Status uploadCordLocalParityApply(
+        grpc::ServerContext *context,
+        const coordinator_proto::CordUpdateRequest *request,
+        coordinator_proto::RepIfSuccess *reply) override;
+    grpc::Status uploadCordLocalParityViaGlobalHub(
+        grpc::ServerContext *context,
+        const coordinator_proto::CordUpdateRequest *request,
+        coordinator_proto::RepIfSuccess *reply) override;
     // get
     grpc::Status getValue(
         grpc::ServerContext *context,
@@ -163,6 +175,10 @@ namespace ECProject
     void update_stripe_info_in_node(int t_node_id, int stripe_id, int index);
     int getClusterAppendSize(Stripe *stripe, const std::map<int, std::pair<int, int>> &block_to_slice_sizes, int curr_group_id, int parity_slice_size);
     void notify_proxies_ready(const proxy_proto::AppendStripeDataPlacement &plan);
+    void notify_proxies_cord_ready(const proxy_proto::CordDataUpdatePlacement &plan);
+    void notify_proxy_cord_local_parity_bundle(int target_cluster_id,
+                                                const proxy_proto::CordLocalParityBundle &bundle);
+
     std::vector<int> get_recovery_group_ids(std::string code_type, int k, int r, int z, int failed_block_id);
     void init_recovery_group_lookup_table();
     void print_stripe_data_placement(Stripe &stripe);

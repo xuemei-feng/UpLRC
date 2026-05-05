@@ -48,6 +48,31 @@ namespace ECProject
         grpc::ServerContext *context,
         const proxy_proto::AppendStripeDataPlacement *append_stripe_data_placement,
         proxy_proto::SetReply *response) override;
+    grpc::Status scheduleCordDataUpdate(
+        grpc::ServerContext *context,
+        const proxy_proto::CordDataUpdatePlacement *placement,
+        proxy_proto::SetReply *response) override;
+    grpc::Status scheduleCordLocalParityApply(
+        grpc::ServerContext *context,
+        const proxy_proto::CordLocalParityBundle *bundle,
+        proxy_proto::SetReply *response) override;
+    grpc::Status cordLpHubSessionBegin(
+        grpc::ServerContext *context,
+        const proxy_proto::CordLpHubSessionBegin *request,
+        proxy_proto::SetReply *response) override;
+    grpc::Status cordLpHubPartialPush(
+        grpc::ServerContext *context,
+        const proxy_proto::CordLpHubPartialPush *request,
+        proxy_proto::SetReply *response) override;
+    grpc::Status cordLpComputePartialAndPush(
+        grpc::ServerContext *context,
+        const proxy_proto::CordLpComputePartialAndPush *request,
+        proxy_proto::SetReply *response) override;
+    grpc::Status cordLpApplyParityDelta(
+        grpc::ServerContext *context,
+        const proxy_proto::CordLpParityApplyDelta *request,
+        proxy_proto::SetReply *response) override;
+
     // decode and get
     grpc::Status decodeAndGetObject(
         grpc::ServerContext *context,
@@ -117,6 +142,9 @@ namespace ECProject
     bool GetFromDatanode(const std::string &key, char *value, const size_t value_length, const char *ip, const int port);
     bool GetFromDatanode(const std::string &key, char *value, const size_t value_length, const char *ip, const int port, 
       double *disk_io_start_time, double *disk_io_end_time, double *network_start_time, double *network_end_time, double *grpc_notify_time, double *grpc_start_time);
+    bool CordRangeReadFromDatanode(const std::string &block_key, int block_id, int range_offset, char *out, size_t length, const char *ip, int port);
+    bool CordRangeWriteToDatanode(const std::string &block_key, int block_id, int range_offset, const char *data, size_t length, const char *ip, int port);
+    bool CordDeltaBlobToDatanode(const std::string &blob_key, const char *data, size_t length, const char *ip, int port);
     bool RecoveryToDatanode(const char *block_key, int block_id, const char *buf, const char *ip, int port);
     bool RecoveryToDatanodeBreakdown(const char *block_key, int block_id, const char *buf, const char *ip, int port, double *network_time, double *disk_io_time);
     void get_from_node(const std::string &block_key, char *block_value, const size_t block_size, const char *datanode_ip, const int datanode_port, bool *status, int index);

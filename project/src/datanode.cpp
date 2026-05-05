@@ -2,6 +2,7 @@
 #include "toolbox.h"
 #include <fstream>
 #include <unistd.h>
+#include <fcntl.h>
 #include <sys/stat.h>
 #include <chrono>
 namespace ECProject
@@ -762,6 +763,146 @@ namespace ECProject
         }
         return grpc::Status::OK;
     }
+
+
+
+  grpc::Status DatanodeImpl::handleCordRangeRead(
+      grpc::ServerContext *context,
+      const datanode_proto::CordRangeRWInfo *info,
+      datanode_proto::RequestResult *response)
+  {
+    (void)context;
+    std::string block_key = info->block_key();
+    int range_offset = info->range_offset();
+    int range_length = info->range_length();
+    std::string proxy_ip = info->proxy_ip();
+    int proxy_port = info->proxy_port();
+    std::string targetdir = "./storage/" + std::to_string(m_port) + "/";
+    std::string readpath = targetdir + block_key;
+    auto *buf = new char[range_length]();
+    if (access(readpath.c_str(), 0) != -1)
+    {
+      std::ifstream ifs(readpath, std::ios::binary);
+      if (ifs)
+      {
+        ifs.seekg(range_offset);
+        ifs.read(buf, range_length);
+      }
+    }
+    auto handler = [this](std::string /*bk*/, int blen, std::string pip, int pport, char *b) mutable
+    {
+      asio::error_code error;
+      asio::ip::tcp::socket socket(io_context);
+      acceptor.accept(socket);
+      asio::write(socket, asio::buffer(b, blen), error);
+      asio::error_code ignore_ec;
+      socket.shutdown(asio::ip::tcp::socket::shutdown_both, ignore_ec);
+      socket.close(ignore_ec);
+      delete[] b;
+    };
+    try
+    {
+      std::thread my_thread(handler, block_key, range_length, proxy_ip, proxy_port, buf);
+      my_thread.detach();
+      response->set_message(true);
+    }
+    catch (std::exception &e)
+    {
+      delete[] buf;
+      std::cout << "handleCordRangeRead exception" << std::endl;
+      std::cout << e.what() << std::endl;
+    }
+    return grpc::Status::OK;
+  }
+
+  grpc::Status DatanodeImpl::handleCordRangeWrite(
+      grpc::ServerContext *context,
+      const datanode_proto::CordRangeRWInfo *info,
+      datanode_proto::RequestResult *response)
+  {
+    (void)context;
+    std::string block_key = info->block_key();
+    int range_offset = info->range_offset();
+    int range_length = info->range_length();
+    std::string targetdir = "./storage/" + std::to_string(m_port) + "/";
+    std::string writepath = targetdir + block_key;
+    if (access(targetdir.c_str(), 0) == -1)
+      createDirectories(targetdir);
+
+    auto handler = [this, writepath, range_offset, range_length]() mutable
+    {
+      std::vector<char> payload(static_cast<size_t>(range_length));
+      asio::error_code ec;
+      asio::ip::tcp::socket socket(io_context);
+      acceptor.accept(socket);
+      asio::read(socket, asio::buffer(payload.data(), static_cast<size_t>(range_length)), ec);
+      asio::error_code ignore_ec;
+      socket.shutdown(asio::ip::tcp::socket::shutdown_both, ignore_ec);
+      socket.close(ignore_ec);
+      int fd = ::open(writepath.c_str(), O_CREAT | O_RDWR, 0644);
+      if (fd >= 0)
+      {
+        ssize_t w = ::pwrite(fd, payload.data(), range_length, range_offset);
+        ::fsync(fd);
+        ::close(fd);
+        (void)w;
+      }
+    };
+    try
+    {
+      std::thread my_thread(handler);
+      my_thread.detach();
+      response->set_message(true);
+    }
+    catch (std::exception &e)
+    {
+      std::cout << "handleCordRangeWrite exception" << std::endl;
+      std::cout << e.what() << std::endl;
+    }
+    return grpc::Status::OK;
+  }
+
+  grpc::Status DatanodeImpl::handleCordDeltaBlob(
+      grpc::ServerContext *context,
+      const datanode_proto::CordDeltaBlobInfo *info,
+      datanode_proto::RequestResult *response)
+  {
+    (void)context;
+    std::string blob_key = info->blob_key();
+    int byte_length = info->byte_length();
+    std::string targetdir = "./storage/" + std::to_string(m_port) + "/";
+    std::string writepath = targetdir + blob_key;
+    if (access(targetdir.c_str(), 0) == -1)
+      createDirectories(targetdir);
+
+    auto handler = [writepath, byte_length, this]() mutable
+    {
+      std::vector<char> payload(static_cast<size_t>(byte_length));
+      asio::error_code ec;
+      asio::ip::tcp::socket socket(io_context);
+      acceptor.accept(socket);
+      asio::read(socket, asio::buffer(payload.data(), static_cast<size_t>(byte_length)), ec);
+      asio::error_code ignore_ec;
+      socket.shutdown(asio::ip::tcp::socket::shutdown_both, ignore_ec);
+      socket.close(ignore_ec);
+      std::ofstream ofs(writepath, std::ios::binary | std::ios::out | std::ios::trunc);
+      ofs.write(payload.data(), byte_length);
+      ofs.flush();
+      ofs.close();
+    };
+    try
+    {
+      std::thread my_thread(handler);
+      my_thread.detach();
+      response->set_message(true);
+    }
+    catch (std::exception &e)
+    {
+      std::cout << "handleCordDeltaBlob exception" << std::endl;
+      std::cout << e.what() << std::endl;
+    }
+    return grpc::Status::OK;
+  }
 
     grpc::Status DatanodeImpl::handleDelete(
         grpc::ServerContext *context,

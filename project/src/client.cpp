@@ -329,6 +329,38 @@ namespace ECProject
     return true;
   }*/
 
+
+  void Client::async_cord_update_to_proxies(char *cluster_slice_data, std::string cord_key, int cluster_slice_size, std::string proxy_ip, int proxy_port, int index, bool *if_commit_arr)
+  {
+    asio::io_context io_context;
+    asio::error_code error;
+    asio::ip::tcp::resolver resolver(io_context);
+    asio::ip::tcp::resolver::results_type endpoints =
+        resolver.resolve(proxy_ip, std::to_string(proxy_port));
+    asio::ip::tcp::socket sock_data(io_context);
+    asio::connect(sock_data, endpoints);
+
+    asio::write(sock_data, asio::buffer(cluster_slice_data, cluster_slice_size), error);
+    asio::error_code ignore_ec;
+    sock_data.shutdown(asio::ip::tcp::socket::shutdown_send, ignore_ec);
+    sock_data.close(ignore_ec);
+
+    grpc::ClientContext check_commit;
+    coordinator_proto::AskIfSuccess request;
+    request.set_key(cord_key);
+    request.set_opp(CORD_UPDATE);
+    coordinator_proto::RepIfSuccess reply;
+    grpc::Status status = m_coordinator_ptr->checkCommitAbort(&check_commit, request, &reply);
+    if (status.ok() && reply.ifcommit())
+    {
+      if_commit_arr[index] = true;
+    }
+    else
+    {
+      std::cout << "[CoRD] commit check failed key=" << cord_key << " proxy=" << proxy_ip << ":" << proxy_port << std::endl;
+    }
+  }
+
   void Client::async_append_to_proxies(char *cluster_slice_data, std::string append_key, int cluster_slice_size, std::string proxy_ip, int proxy_port, int index, bool *if_commit_arr)
   {
     // std::cout << "[Append174] Appending size " << cluster_slice_size << " to proxy_address:" << proxy_ip << ":" << proxy_port << std::endl;
@@ -838,6 +870,93 @@ namespace ECProject
       std::cout << "[XUE_UPDATE] commit check failed for at least one cluster slice." << std::endl;
     }
     return all_true;
+  }
+
+  bool Client::cord_update(int stripe_id, const std::vector<std::pair<int, int>> &logical_ranges,
+                           const char *update_payload, size_t update_payload_bytes, int interval_count,
+                           bool cord_lp_via_global_hub)
+  {
+    if (logical_ranges.empty())
+    {
+      std::cout << "[CoRD] Empty update intervals." << std::endl;
+      return false;
+    }
+    if (update_payload == nullptr)
+    {
+      std::cout << "[CoRD] update_payload is null." << std::endl;
+      return false;
+    }
+    grpc::ClientContext ctx;
+    coordinator_proto::CordUpdateRequest request;
+    coordinator_proto::ReplyProxyIPsPorts reply;
+    request.set_client_id(m_clientID);
+    request.set_stripe_id(stripe_id);
+    if (interval_count > 0)
+    {
+      request.set_interval_count(interval_count);
+    }
+    for (const auto &r : logical_ranges)
+    {
+      if (r.second <= r.first)
+      {
+        std::cout << "[CoRD] Invalid half-open interval: [" << r.first << ", " << r.second << ")" << std::endl;
+        return false;
+      }
+      auto *range = request.add_update_intervals();
+      range->set_logical_offset_start(r.first);
+      range->set_logical_offset_end(r.second);
+    }
+
+    grpc::Status status = m_coordinator_ptr->uploadCordUpdate(&ctx, request, &reply);
+    if (!status.ok())
+    {
+      std::cout << "[CoRD] uploadCordUpdate failed: " << status.error_message() << std::endl;
+      return false;
+    }
+    if (reply.sum_append_size() == 0)
+    {
+      return true;
+    }
+    if (update_payload_bytes != static_cast<size_t>(reply.sum_append_size()))
+    {
+      std::cout << "[CoRD] payload size mismatch: got " << update_payload_bytes << " expected " << reply.sum_append_size() << std::endl;
+      return false;
+    }
+    std::vector<char *> cluster_slices = m_toolbox->splitCharPointer(update_payload, &reply);
+    std::vector<std::thread> threads;
+    std::unique_ptr<bool[]> if_commit_arr(new bool[reply.append_keys_size()]);
+    std::fill_n(if_commit_arr.get(), reply.append_keys_size(), false);
+    for (int i = 0; i < reply.append_keys_size(); i++)
+    {
+      threads.push_back(std::thread(&Client::async_cord_update_to_proxies, this, cluster_slices[i],
+                                    reply.append_keys(i), static_cast<int>(reply.cluster_slice_sizes(i)),
+                                    reply.proxyips(i), reply.proxyports(i), i, if_commit_arr.get()));
+    }
+    for (auto &thread : threads)
+      thread.join();
+    if (!std::all_of(if_commit_arr.get(), if_commit_arr.get() + reply.append_keys_size(),
+                     [](bool v) { return v; }))
+      return false;
+
+    request.set_cord_lp_use_global_hub(cord_lp_via_global_hub);
+    grpc::ClientContext ctx_lp;
+    coordinator_proto::RepIfSuccess lp_reply;
+    grpc::Status lpst;
+    if (cord_lp_via_global_hub)
+      lpst = m_coordinator_ptr->uploadCordLocalParityViaGlobalHub(&ctx_lp, request, &lp_reply);
+    else
+      lpst = m_coordinator_ptr->uploadCordLocalParityApply(&ctx_lp, request, &lp_reply);
+    if (!lpst.ok())
+    {
+      std::cout << "[CoRD-LP] uploadCordLocalParity failed: " << lpst.error_message() << std::endl;
+      return false;
+    }
+    if (!lp_reply.ifcommit())
+    {
+      std::cout << "[CoRD-LP] local parity apply not committed." << std::endl;
+      return false;
+    }
+    return true;
   }
 
   std::shared_ptr<char[]> Client::get_degraded_read_block_breakdown(int stripe_id, int failed_block_id, double &total_time,double &disk_io_time, double &network_time, double &decode_time)

@@ -1,4 +1,6 @@
 #include "coordinator.h"
+#include "cord_algorithm2.h"
+#include "cord_algorithm3.h"
 #include "tinyxml2.h"
 #include <random>
 #include <unistd.h>
@@ -6,10 +8,13 @@
 #include <sys/time.h>
 #include <chrono>
 #include <limits>
+#include <iostream>
 #include <set>
 #include <cmath>
 #include <stdexcept>
 #include <numeric>
+#include <algorithm>
+#include <tuple>
 
 template <typename T>
 inline T ceil(T const &A, T const &B)
@@ -44,6 +49,364 @@ namespace ECProject  //定义一个名为 ECProject 的命名空间，防止命�
     {
       return code_type == "AzureLRC" || code_type == "RandomLRC";
     }
+
+    // CoRD：半开区间 [a0,a1) 与 [b0,b1) 是否有非空交集
+    bool cord_half_open_overlap(int a0, int a1, int b0, int b1)
+    {
+      return std::max(a0, b0) < std::min(a1, b1);
+    }
+
+    // 将条带逻辑地址 [logical_start, logical_end_exclusive) 映射为各数据块内半开区间并追加到 out
+    void cord_add_logical_range_to_data_blocks(
+        int block_size,
+        int k,
+        int logical_start,
+        int logical_end_exclusive,
+        std::map<int, std::vector<std::pair<int, int>>> *out_block_intervals)
+    {
+      int pos = logical_start;
+      const int logical_last = logical_end_exclusive - 1;
+      while (pos <= logical_last)
+      {
+        const int block_id = pos / block_size;
+        if (block_id >= k)
+          break;
+        const int block_offset = pos % block_size;
+        const int block_tail = block_size - block_offset;
+        const int len = std::min(block_tail, logical_last - pos + 1);
+        (*out_block_intervals)[block_id].push_back(std::make_pair(block_offset, block_offset + len));
+        pos += len;
+      }
+    }
+
+    bool cord_two_blocks_intersect(
+        const std::map<int, std::vector<std::pair<int, int>>> &block_intervals,
+        int bid_a,
+        int bid_b)
+    {
+      const auto &ia = block_intervals.at(bid_a);
+      const auto &ib = block_intervals.at(bid_b);
+      for (const auto &pa : ia)
+        for (const auto &pb : ib)
+          if (cord_half_open_overlap(pa.first, pa.second, pb.first, pb.second))
+            return true;
+      return false;
+    }
+
+    // CoRD 算法一：按「块内更新区间是否与其它块相交」做传递闭包分组
+    std::vector<std::vector<int>> cord_partition_groups_algorithm1(
+        const std::map<int, std::vector<std::pair<int, int>>> &block_intervals)
+    {
+      std::vector<int> D;
+      D.reserve(block_intervals.size());
+      for (const auto &kv : block_intervals)
+        D.push_back(kv.first);
+
+      std::vector<std::vector<int>> U;
+      while (!D.empty())
+      {
+        const int d_i = D.back();
+        D.pop_back();
+        std::vector<int> N;
+        N.push_back(d_i);
+        while (true)
+        {
+          int flag = 0;
+          for (size_t j = 0; j < D.size(); ++j)
+          {
+            const int d_j = D[j];
+            bool intersects_n = false;
+            for (int bi : N)
+            {
+              if (cord_two_blocks_intersect(block_intervals, bi, d_j))
+              {
+                intersects_n = true;
+                break;
+              }
+            }
+            if (intersects_n)
+            {
+              N.push_back(d_j);
+              D.erase(D.begin() + static_cast<std::ptrdiff_t>(j));
+              flag = 1;
+              break;
+            }
+          }
+          if (!flag)
+            break;
+        }
+        std::sort(N.begin(), N.end());
+        U.push_back(std::move(N));
+      }
+      return U;
+    }
+
+    struct CordSliceRec
+    {
+      int block_id;
+      int block_offset;
+      int len;
+    };
+
+    int64_t cord_lp_delta_bytes(const std::map<int, std::vector<std::pair<int, int>>> &block_intervals, int block_id)
+    {
+      auto it = block_intervals.find(block_id);
+      if (it == block_intervals.end())
+        return 0;
+      int64_t sum = 0;
+      for (const auto &seg : it->second)
+        sum += static_cast<int64_t>(seg.second - seg.first);
+      return sum;
+    }
+
+    double cord_lp_transfer_sec(int src_c, int dst_c, int64_t bytes, const cord_alg2::TransferParams &tp)
+    {
+      if (bytes <= 0)
+        return 0.0;
+      double lat = (src_c == dst_c) ? tp.same_cluster_latency_sec : tp.cross_cluster_latency_sec;
+      return lat + static_cast<double>(bytes) * tp.inv_bw_sec_per_byte;
+    }
+
+    int cord_lp_pick_hub_global(const Stripe &stripe,
+                                const std::map<int, std::vector<std::pair<int, int>>> &block_intervals,
+                                const std::vector<int> &data_blocks_in_group,
+                                const cord_alg2::TransferParams &tp)
+    {
+      const int k = stripe.k;
+      const int r = stripe.r;
+      if (r <= 0)
+        return k;
+      int best_c = k;
+      double best_cost = std::numeric_limits<double>::infinity();
+      for (int cand = k; cand < k + r; ++cand)
+      {
+        int cc = stripe.blocks[cand]->map2cluster;
+        double sum = 0.0;
+        for (int d : data_blocks_in_group)
+        {
+          int64_t b = cord_lp_delta_bytes(block_intervals, d);
+          if (b <= 0)
+            continue;
+          int dc = stripe.blocks[d]->map2cluster;
+          sum += cord_lp_transfer_sec(dc, cc, b, tp);
+        }
+        if (sum < best_cost)
+        {
+          best_cost = sum;
+          best_c = cand;
+        }
+      }
+      return best_c;
+    }
+
+    int cord_lp_find_local_parity_block(const Stripe &stripe, int gnum)
+    {
+      for (int i = stripe.k + stripe.r; i < stripe.n; ++i)
+      {
+        if (stripe.blocks[i]->map2group == gnum && stripe.blocks[i]->block_type == 'L')
+          return i;
+      }
+      return -1;
+    }
+
+    bool cord_lp_find_delta_blob_offset(const std::vector<CordSliceRec> &slices, int bid, int block_off, int seg_len,
+                                        uint64_t *out_off)
+    {
+      uint64_t running = 0;
+      for (const auto &sl : slices)
+      {
+        if (sl.block_id == bid && sl.block_offset == block_off && sl.len == seg_len)
+        {
+          *out_off = running;
+          return true;
+        }
+        running += static_cast<uint64_t>(sl.len);
+      }
+      return false;
+    }
+
+    struct LpFetchSpec
+    {
+      std::string blob_key;
+      std::string dn_ip;
+      int dn_port = 0;
+      uint64_t blob_off = 0;
+      uint64_t read_len = 0;
+      int acc_offset = 0;
+      int data_block_id = -1;
+      int source_cluster_id = -1;
+    };
+
+    struct LpWorkAgg
+    {
+      int local_block_id = -1;
+      std::string local_block_key;
+      std::string local_dn_ip;
+      int local_dn_port = 0;
+      int parity_slice_offset = 0;
+      int parity_slice_size = 0;
+      std::vector<LpFetchSpec> fetches;
+    };
+
+    bool run_cord_lp_global_hub_aggregation(
+        const std::map<int, Cluster> &cluster_table,
+        const std::map<std::string, std::unique_ptr<proxy_proto::proxyService::Stub>> &proxy_ptrs,
+        int stripe_id,
+        Stripe *stripe,
+        const std::map<int, std::vector<std::pair<int, int>>> &block_intervals,
+        std::map<std::tuple<int, int, int>, LpWorkAgg> &agg)
+    {
+      const int k = stripe->k;
+      cord_alg2::TransferParams tp;
+      for (auto &kv : agg)
+      {
+        LpWorkAgg &w = kv.second;
+        const int lg = stripe->blocks[w.local_block_id]->map2group;
+        std::map<int, std::vector<std::pair<int, int>>> data_only_bi;
+        for (const auto &bi : block_intervals)
+        {
+          if (bi.first >= 0 && bi.first < k)
+            data_only_bi[bi.first] = bi.second;
+        }
+        if (data_only_bi.empty())
+          continue;
+        const auto components = cord_partition_groups_algorithm1(data_only_bi);
+        size_t comp_idx = 0;
+        for (const auto &N : components)
+        {
+          std::vector<int> N_data;
+          for (int bid : N)
+          {
+            if (bid >= 0 && bid < k)
+              N_data.push_back(bid);
+          }
+          if (N_data.empty())
+            continue;
+          bool touches_lg = false;
+          for (int bid : N_data)
+          {
+            if (stripe->blocks[bid]->map2group == lg)
+            {
+              touches_lg = true;
+              break;
+            }
+          }
+          if (!touches_lg)
+            continue;
+          std::set<int> Nset(N.begin(), N.end());
+          std::vector<LpFetchSpec> comp_fetches;
+          for (const auto &f : w.fetches)
+          {
+            if (Nset.find(f.data_block_id) != Nset.end())
+              comp_fetches.push_back(f);
+          }
+          if (comp_fetches.empty())
+            continue;
+          std::set<int> src_clusters;
+          for (const auto &f : comp_fetches)
+            src_clusters.insert(f.source_cluster_id);
+          const int hub_blk = cord_lp_pick_hub_global(*stripe, block_intervals, N_data, tp);
+          const int hub_c = stripe->blocks[hub_blk]->map2cluster;
+          const int lp_c = stripe->blocks[w.local_block_id]->map2cluster;
+
+          std::string sess = w.local_block_key + "_gh_" + std::to_string(stripe_id) + "_" +
+                             std::to_string(w.parity_slice_offset) + "_" + std::to_string(w.parity_slice_size) +
+                             "_hb" + std::to_string(hub_blk) + "_ci" + std::to_string(static_cast<unsigned long>(comp_idx));
+
+          auto cit_hub = cluster_table.find(hub_c);
+          auto cit_lp = cluster_table.find(lp_c);
+          if (cit_hub == cluster_table.end() || cit_lp == cluster_table.end())
+          {
+            std::cout << "[CoRD-LP-GH] invalid cluster id hub=" << hub_c << " lp=" << lp_c << std::endl;
+            return false;
+          }
+          std::string hub_proxy_key = cit_hub->second.proxy_ip + ":" + std::to_string(cit_hub->second.proxy_port);
+          auto hub_stub_it = proxy_ptrs.find(hub_proxy_key);
+          if (hub_stub_it == proxy_ptrs.end() || !hub_stub_it->second)
+          {
+            std::cout << "[CoRD-LP-GH] no stub for hub proxy " << hub_proxy_key << std::endl;
+            return false;
+          }
+
+          grpc::ClientContext ctx_begin;
+          proxy_proto::CordLpHubSessionBegin begin;
+          begin.set_session_key(sess);
+          begin.set_expected_partials(static_cast<int>(src_clusters.size()));
+          begin.set_parity_slice_size(w.parity_slice_size);
+          begin.set_parity_slice_offset(w.parity_slice_offset);
+          begin.set_local_block_id(w.local_block_id);
+          begin.set_local_block_key(w.local_block_key);
+          begin.set_local_datanode_ip(w.local_dn_ip);
+          begin.set_local_datanode_port(w.local_dn_port);
+          begin.set_dest_lp_proxy_ip(cit_lp->second.proxy_ip);
+          begin.set_dest_lp_proxy_port(cit_lp->second.proxy_port);
+          begin.set_stripe_id(stripe_id);
+          begin.set_hub_global_block_id(hub_blk);
+          proxy_proto::SetReply rep_begin;
+          grpc::Status stb = hub_stub_it->second->cordLpHubSessionBegin(&ctx_begin, begin, &rep_begin);
+          if (!stb.ok() || !rep_begin.ifcommit())
+          {
+            std::cout << "[CoRD-LP-GH] session begin failed: " << stb.error_message() << std::endl;
+            return false;
+          }
+
+          for (int sc : src_clusters)
+          {
+            auto cit_sc = cluster_table.find(sc);
+            if (cit_sc == cluster_table.end())
+            {
+              std::cout << "[CoRD-LP-GH] invalid source cluster " << sc << std::endl;
+              return false;
+            }
+            std::string sc_key = cit_sc->second.proxy_ip + ":" + std::to_string(cit_sc->second.proxy_port);
+            auto sc_stub_it = proxy_ptrs.find(sc_key);
+            if (sc_stub_it == proxy_ptrs.end() || !sc_stub_it->second)
+            {
+              std::cout << "[CoRD-LP-GH] no stub for source proxy " << sc_key << std::endl;
+              return false;
+            }
+            proxy_proto::CordLpComputePartialAndPush cp;
+            cp.set_session_key(sess);
+            cp.set_hub_proxy_ip(cit_hub->second.proxy_ip);
+            cp.set_hub_proxy_port(cit_hub->second.proxy_port);
+            cp.set_parity_slice_size(w.parity_slice_size);
+            bool set_blob = false;
+            for (const auto &f : comp_fetches)
+            {
+              if (f.source_cluster_id != sc)
+                continue;
+              if (!set_blob)
+              {
+                cp.set_delta_blob_key(f.blob_key);
+                cp.set_delta_datanode_ip(f.dn_ip);
+                cp.set_delta_datanode_port(f.dn_port);
+                set_blob = true;
+              }
+              auto *df = cp.add_fetches();
+              df->set_blob_key(f.blob_key);
+              df->set_datanode_ip(f.dn_ip);
+              df->set_datanode_port(f.dn_port);
+              df->set_blob_offset(f.blob_off);
+              df->set_read_len(f.read_len);
+              df->set_acc_offset(f.acc_offset);
+            }
+            grpc::ClientContext ctx_cp;
+            proxy_proto::SetReply rep_cp;
+            grpc::Status stc = sc_stub_it->second->cordLpComputePartialAndPush(&ctx_cp, cp, &rep_cp);
+            if (!stc.ok() || !rep_cp.ifcommit())
+            {
+              std::cout << "[CoRD-LP-GH] compute/push from cluster " << sc << " failed: " << stc.error_message()
+                        << std::endl;
+              return false;
+            }
+          }
+          comp_idx++;
+        }
+      }
+      return true;
+    }
+
+
   } // namespace
 
   grpc::Status CoordinatorImpl::setParameter(
@@ -708,6 +1071,27 @@ namespace ECProject  //定义一个名为 ECProject 的命名空间，防止命�
     return append_plans;
   }
 
+  void CoordinatorImpl::notify_proxies_cord_ready(const proxy_proto::CordDataUpdatePlacement &plan)
+  {
+    grpc::ClientContext cont;
+    proxy_proto::SetReply set_reply;
+    const int cid = plan.cluster_id();
+    std::string chosen_proxy =
+        m_cluster_table[cid].proxy_ip + ":" + std::to_string(m_cluster_table[cid].proxy_port);
+    grpc::Status status = m_proxy_ptrs[chosen_proxy]->scheduleCordDataUpdate(&cont, plan, &set_reply);
+    if (status.ok())
+    {
+      m_mutex.lock();
+      m_object_updating_table[plan.key()] =
+          ObjectInfo(static_cast<int>(plan.update_payload_size()), plan.stripe_id());
+      m_mutex.unlock();
+    }
+    else
+    {
+      std::cout << "[CoRD] scheduleCordDataUpdate key=" << plan.key() << " failed" << std::endl;
+    }
+  }
+
   void CoordinatorImpl::notify_proxies_ready(const proxy_proto::AppendStripeDataPlacement &plan)
   {
     grpc::ClientContext cont;
@@ -841,6 +1225,654 @@ namespace ECProject  //定义一个名为 ECProject 的命名空间，防止命�
     (void)request;
     (void)proxyIPPort;
     return grpc::Status(grpc::StatusCode::INVALID_ARGUMENT, "XueLRC update strategy has been removed");
+  }
+
+  grpc::Status CoordinatorImpl::uploadCordUpdate(
+      grpc::ServerContext *context,
+      const coordinator_proto::CordUpdateRequest *request,
+      coordinator_proto::ReplyProxyIPsPorts *proxyIPPort)
+  {
+    (void)context;
+    proxyIPPort->Clear();
+
+    const int stripe_id = request->stripe_id();
+    if (m_stripe_table.find(stripe_id) == m_stripe_table.end())
+    {
+      return grpc::Status(grpc::StatusCode::NOT_FOUND, "stripe_id not found");
+    }
+    Stripe *stripe = &m_stripe_table[stripe_id];
+    const int block_size = static_cast<int>(m_sys_config->BlockSize);
+    const int k = stripe->k;
+    const int stripe_data_bytes = k * block_size;
+
+    if (request->interval_count() > 0 &&
+        request->interval_count() != request->update_intervals_size())
+    {
+      return grpc::Status(grpc::StatusCode::INVALID_ARGUMENT,
+                          "interval_count does not match update_intervals size");
+    }
+
+    if (request->update_intervals_size() == 0)
+    {
+      return grpc::Status(grpc::StatusCode::INVALID_ARGUMENT, "empty update_intervals");
+    }
+
+    std::map<int, std::vector<std::pair<int, int>>> block_intervals;
+
+    for (int ri = 0; ri < request->update_intervals_size(); ++ri)
+    {
+      const auto &r = request->update_intervals(ri);
+      const int s = r.logical_offset_start();
+      const int e = r.logical_offset_end();
+      if (e <= s)
+      {
+        return grpc::Status(grpc::StatusCode::INVALID_ARGUMENT,
+                            "invalid half-open interval [start,end)");
+      }
+      if (s < 0 || s > stripe_data_bytes || e > stripe_data_bytes)
+      {
+        return grpc::Status(grpc::StatusCode::INVALID_ARGUMENT,
+                            "logical interval out of stripe data range");
+      }
+      cord_add_logical_range_to_data_blocks(block_size, k, s, e, &block_intervals);
+    }
+
+    std::cout << "[CoRD] stripe_id=" << stripe_id
+              << " updated data blocks (block_id -> in-block intervals [off,end)):\n";
+    for (const auto &kv : block_intervals)
+    {
+      std::cout << "  block " << kv.first << ":";
+      for (const auto &seg : kv.second)
+      {
+        std::cout << " [" << seg.first << "," << seg.second << ")";
+      }
+      std::cout << "\n";
+    }
+
+    const auto groups = cord_partition_groups_algorithm1(block_intervals);
+
+    std::cout << "[CoRD] Algorithm 1 partition (intersection closure; singletons = pairwise disjoint from all other "
+                 "updated blocks):\n";
+    for (size_t gi = 0; gi < groups.size(); ++gi)
+    {
+      const auto &g = groups[gi];
+      const char *tag = (g.size() >= 2) ? "intersecting_group" : "disjoint_singleton";
+      std::cout << "  cluster " << gi << " [" << tag << "] blocks";
+      for (int bid : g)
+        std::cout << " " << bid;
+      std::cout << "\n";
+    }
+
+    {
+      cord_alg2::TransferParams tp;
+      const int slot_unit = static_cast<int>(std::max(1u, m_sys_config->BlockSize / 64u));
+      cord_alg2::Algorithm2Result alg2 =
+          cord_alg2::build_algorithm2(*stripe, block_intervals, groups, m_sys_config->ClusterNum, tp, slot_unit);
+      std::cout << "[CoRD] Algorithm 2 train_route (|U|=" << groups.size() << ", links=" << alg2.train_route.size()
+                << "):\n";
+      for (size_t i = 0; i < alg2.train_route.size(); ++i)
+      {
+        const auto &L = alg2.train_route[i];
+        std::cout << "  [" << i << "] " << cord_alg2::train_link_kind_name(L.kind) << " blk " << L.src_block_id
+                  << "->" << L.dst_block_id << " c " << L.src_cluster << "->" << L.dst_cluster
+                  << " bytes=" << L.payload_bytes << " est_s=" << L.est_transfer_sec << " grp=" << L.group_index
+                  << "\n";
+      }
+      std::cout << "[CoRD] Algorithm 2 timeslots=" << alg2.timeslot_schedule.size()
+                << " slot_unit_bytes=" << alg2.slot_unit_bytes;
+      if (alg2.center_global_block_id >= 0)
+        std::cout << " last_star_center_G=" << alg2.center_global_block_id;
+      std::cout << "\n";
+      for (const auto &ts : alg2.timeslot_schedule)
+      {
+        std::cout << "  slot " << ts.timeslot << ":";
+        for (int id : ts.link_indices)
+          std::cout << " " << id;
+        std::cout << "\n";
+      }
+
+      for (size_t uidx = 0; uidx < groups.size(); ++uidx)
+      {
+        const auto &N_alg3 = groups[uidx];
+        if (N_alg3.size() < 3)
+          continue;
+        cord_alg3::Algorithm3Result alg3 = cord_alg3::build_algorithm3(
+            *stripe, block_intervals, N_alg3, m_sys_config->ClusterNum, tp);
+        std::cout << "[CoRD] Algorithm 3 PDP+DCP on U[" << uidx << "] |N|=" << N_alg3.size()
+                  << " applied=" << alg3.applied << " " << alg3.note << "\n";
+        if (!alg3.applied)
+          continue;
+        std::cout << "  A3 g=" << alg3.g << " minmax_span=";
+        if (!alg3.G.empty())
+        {
+          int64_t mxsp = 0;
+          for (const auto &pg : alg3.G)
+            mxsp = std::max(mxsp, pg.span_bytes);
+          std::cout << mxsp;
+        }
+        std::cout << " sorted_N:";
+        for (int b : alg3.sorted_block_ids)
+          std::cout << " " << b;
+        std::cout << "\n";
+        for (size_t gi = 0; gi < alg3.G.size(); ++gi)
+        {
+          std::cout << "  G[" << gi << "] span=" << alg3.G[gi].span_bytes
+                    << " sum_delta=" << alg3.G[gi].sum_delta_bytes << " blocks:";
+          for (int b : alg3.G[gi].block_ids)
+            std::cout << " " << b;
+          std::cout << "\n";
+        }
+        std::cout << "  DCP T_limit_sec=" << alg3.dcp.T_limit_sec << " group->collector_idx:";
+        for (size_t j = 0; j < alg3.dcp.group_to_collector.size(); ++j)
+          std::cout << " " << alg3.dcp.group_to_collector[j];
+        std::cout << "\n";
+      }
+    }
+
+    std::map<int, std::vector<CordSliceRec>> cluster_slices;
+    for (const auto &kv : block_intervals)
+    {
+      const int bid = kv.first;
+      if (bid < 0 || bid >= k)
+        continue;
+      Block *bp = stripe->blocks[bid];
+      for (const auto &seg : kv.second)
+      {
+        CordSliceRec r;
+        r.block_id = bid;
+        r.block_offset = seg.first;
+        r.len = seg.second - seg.first;
+        if (r.len <= 0)
+          continue;
+        cluster_slices[bp->map2cluster].push_back(r);
+      }
+    }
+    for (auto &cs : cluster_slices)
+    {
+      std::sort(cs.second.begin(), cs.second.end(),
+                [](const CordSliceRec &a, const CordSliceRec &b)
+                {
+                  if (a.block_id != b.block_id)
+                    return a.block_id < b.block_id;
+                  return a.block_offset < b.block_offset;
+                });
+    }
+
+    uint64_t sum_update_bytes = 0;
+    for (const auto &cs : cluster_slices)
+      for (const auto &s : cs.second)
+        sum_update_bytes += static_cast<uint64_t>(s.len);
+
+    if (cluster_slices.empty() || sum_update_bytes == 0)
+    {
+      proxyIPPort->set_sum_append_size(0);
+      return grpc::Status::OK;
+    }
+
+    std::vector<std::pair<int, std::vector<CordSliceRec>>> sorted_clusters(cluster_slices.begin(),
+                                                                             cluster_slices.end());
+    std::sort(sorted_clusters.begin(), sorted_clusters.end(),
+              [](const std::pair<int, std::vector<CordSliceRec>> &a,
+                 const std::pair<int, std::vector<CordSliceRec>> &b)
+              { return a.first < b.first; });
+
+    for (const auto &plan_entry : sorted_clusters)
+    {
+      const int cid = plan_entry.first;
+      const auto &slices = plan_entry.second;
+      if (m_cluster_table.find(cid) == m_cluster_table.end() ||
+          m_cluster_table[cid].nodes.empty())
+      {
+        return grpc::Status(grpc::StatusCode::INTERNAL, "cluster has no datanode for CoRD delta store");
+      }
+      proxy_proto::CordDataUpdatePlacement plan;
+      plan.set_key(m_toolbox->gen_cord_key(stripe_id, cid));
+      plan.set_cluster_id(cid);
+      plan.set_stripe_id(stripe_id);
+      uint64_t cluster_payload = 0;
+      for (const auto &s : slices)
+        cluster_payload += static_cast<uint64_t>(s.len);
+      plan.set_update_payload_size(cluster_payload);
+      const int delta_node_id = m_cluster_table[cid].nodes.front();
+      const Node &delta_node = m_node_table[delta_node_id];
+      plan.set_delta_blob_key(plan.key() + "_delta");
+      plan.set_delta_datanode_ip(delta_node.node_ip);
+      plan.set_delta_datanode_port(delta_node.node_port);
+      for (const auto &s : slices)
+      {
+        Block *b = stripe->blocks[s.block_id];
+        const Node &n = m_node_table[b->map2node];
+        plan.add_datanodeip(n.node_ip);
+        plan.add_datanodeport(n.node_port);
+        plan.add_blockkeys(b->block_key);
+        plan.add_blockids(b->block_id);
+        plan.add_offsets(static_cast<uint64_t>(s.block_offset));
+        plan.add_sizes(static_cast<uint64_t>(s.len));
+      }
+
+      m_mutex.lock();
+      m_object_commit_table.erase(plan.key());
+      m_mutex.unlock();
+
+      std::thread t(&CoordinatorImpl::notify_proxies_cord_ready, this, plan);
+      t.join();
+
+      proxyIPPort->add_append_keys(plan.key());
+      proxyIPPort->add_proxyips(m_cluster_table[cid].proxy_ip);
+      proxyIPPort->add_proxyports(m_cluster_table[cid].proxy_port + ECProject::PROXY_PORT_SHIFT);
+      proxyIPPort->add_cluster_slice_sizes(cluster_payload);
+      proxyIPPort->add_group_ids(cid);
+    }
+    proxyIPPort->set_sum_append_size(sum_update_bytes);
+    return grpc::Status::OK;
+  }
+
+  void CoordinatorImpl::notify_proxy_cord_local_parity_bundle(int target_cluster_id,
+                                                              const proxy_proto::CordLocalParityBundle &bundle)
+  {
+    grpc::ClientContext cont;
+    proxy_proto::SetReply set_reply;
+    if (m_cluster_table.find(target_cluster_id) == m_cluster_table.end())
+    {
+      std::cout << "[CoRD-LP] invalid target cluster " << target_cluster_id << std::endl;
+      return;
+    }
+    std::string chosen_proxy =
+        m_cluster_table[target_cluster_id].proxy_ip + ":" +
+        std::to_string(m_cluster_table[target_cluster_id].proxy_port);
+    auto pit = m_proxy_ptrs.find(chosen_proxy);
+    if (pit == m_proxy_ptrs.end())
+    {
+      std::cout << "[CoRD-LP] no proxy stub for " << chosen_proxy << std::endl;
+      return;
+    }
+    grpc::Status status = pit->second->scheduleCordLocalParityApply(&cont, bundle, &set_reply);
+    if (!status.ok())
+      std::cout << "[CoRD-LP] scheduleCordLocalParityApply key=" << bundle.key()
+                << " failed: " << status.error_message() << std::endl;
+  }
+
+  grpc::Status CoordinatorImpl::uploadCordLocalParityApply(
+      grpc::ServerContext *context,
+      const coordinator_proto::CordUpdateRequest *request,
+      coordinator_proto::RepIfSuccess *reply)
+  {
+    (void)context;
+    reply->set_ifcommit(false);
+    const int stripe_id = request->stripe_id();
+    if (m_stripe_table.find(stripe_id) == m_stripe_table.end())
+      return grpc::Status(grpc::StatusCode::NOT_FOUND, "stripe_id not found");
+    Stripe *stripe = &m_stripe_table[stripe_id];
+    const int block_size = static_cast<int>(m_sys_config->BlockSize);
+    const int k = stripe->k;
+
+    if (request->interval_count() > 0 &&
+        request->interval_count() != request->update_intervals_size())
+      return grpc::Status(grpc::StatusCode::INVALID_ARGUMENT,
+                          "interval_count does not match update_intervals size");
+    if (request->update_intervals_size() == 0)
+      return grpc::Status(grpc::StatusCode::INVALID_ARGUMENT, "empty update_intervals");
+
+    std::map<int, std::vector<std::pair<int, int>>> block_intervals;
+    for (int ri = 0; ri < request->update_intervals_size(); ++ri)
+    {
+      const auto &r = request->update_intervals(ri);
+      const int s = r.logical_offset_start();
+      const int e = r.logical_offset_end();
+      if (e <= s)
+        return grpc::Status(grpc::StatusCode::INVALID_ARGUMENT, "invalid half-open interval [start,end)");
+      const int stripe_data_bytes = k * block_size;
+      if (s < 0 || s > stripe_data_bytes || e > stripe_data_bytes)
+        return grpc::Status(grpc::StatusCode::INVALID_ARGUMENT, "logical interval out of stripe data range");
+      cord_add_logical_range_to_data_blocks(block_size, k, s, e, &block_intervals);
+    }
+
+    std::map<int, std::vector<CordSliceRec>> cluster_slices;
+    for (const auto &kv : block_intervals)
+    {
+      const int bid = kv.first;
+      if (bid < 0 || bid >= k)
+        continue;
+      Block *bp = stripe->blocks[bid];
+      for (const auto &seg : kv.second)
+      {
+        CordSliceRec rec;
+        rec.block_id = bid;
+        rec.block_offset = seg.first;
+        rec.len = seg.second - seg.first;
+        if (rec.len <= 0)
+          continue;
+        cluster_slices[bp->map2cluster].push_back(rec);
+      }
+    }
+    for (auto &cs : cluster_slices)
+    {
+      std::sort(cs.second.begin(), cs.second.end(),
+                [](const CordSliceRec &a, const CordSliceRec &b)
+                {
+                  if (a.block_id != b.block_id)
+                    return a.block_id < b.block_id;
+                  return a.block_offset < b.block_offset;
+                });
+    }
+
+    if (cluster_slices.empty())
+    {
+      reply->set_ifcommit(true);
+      return grpc::Status::OK;
+    }
+
+    std::map<std::tuple<int, int, int>, LpWorkAgg> agg;
+    cord_alg2::TransferParams tp;
+
+    for (const auto &kv : block_intervals)
+    {
+      const int bid = kv.first;
+      if (bid < 0 || bid >= k)
+        continue;
+      const int gnum = stripe->blocks[bid]->map2group;
+      const int lb = cord_lp_find_local_parity_block(*stripe, gnum);
+      if (lb < 0)
+        continue;
+
+      std::vector<int> dblocks;
+      for (const auto &kv2 : block_intervals)
+      {
+        if (kv2.first >= 0 && kv2.first < k && stripe->blocks[kv2.first]->map2group == gnum)
+          dblocks.push_back(kv2.first);
+      }
+      std::sort(dblocks.begin(), dblocks.end());
+      dblocks.erase(std::unique(dblocks.begin(), dblocks.end()), dblocks.end());
+      const int hub_blk = cord_lp_pick_hub_global(*stripe, block_intervals, dblocks, tp);
+      const int hub_c = stripe->blocks[hub_blk]->map2cluster;
+      (void)hub_c;
+
+      for (const auto &seg : kv.second)
+      {
+        const int a = seg.first;
+        const int b = seg.second;
+        const int seg_len = b - a;
+        if (seg_len <= 0)
+          continue;
+        const int lo = bid * block_size + a;
+        std::map<int, std::pair<int, int>> b2s;
+        int ps = 0, po = 0;
+        bool merge = false;
+        std::string err;
+        if (!build_slice_plan_for_logical_range(stripe, lo, seg_len, &b2s, &ps, &po, &merge, &err))
+        {
+          std::cout << "[CoRD-LP] build_slice failed: " << err << std::endl;
+          continue;
+        }
+        const auto pit = b2s.find(lb);
+        if (pit == b2s.end())
+          continue;
+        const int psz = pit->second.first;
+        const int poff = pit->second.second;
+
+        const int cid = stripe->blocks[bid]->map2cluster;
+        const auto csit = cluster_slices.find(cid);
+        if (csit == cluster_slices.end())
+          continue;
+        uint64_t blob_off = 0;
+        if (!cord_lp_find_delta_blob_offset(csit->second, bid, a, seg_len, &blob_off))
+        {
+          std::cout << "[CoRD-LP] missing delta layout for stripe=" << stripe_id << " cluster=" << cid
+                    << " block=" << bid << std::endl;
+          continue;
+        }
+        const int delta_node_id = m_cluster_table[cid].nodes.front();
+        const Node &delta_node = m_node_table[delta_node_id];
+        const std::string cord_key = m_toolbox->gen_cord_key(stripe_id, cid);
+        const std::string blob_key = cord_key + "_delta";
+
+        const auto lk = std::make_tuple(lb, poff, psz);
+        LpWorkAgg &w = agg[lk];
+        if (w.local_block_id < 0)
+        {
+          w.local_block_id = lb;
+          w.local_block_key = stripe->blocks[lb]->block_key;
+          const Node &ln = m_node_table[stripe->blocks[lb]->map2node];
+          w.local_dn_ip = ln.node_ip;
+          w.local_dn_port = ln.node_port;
+          w.parity_slice_offset = poff;
+          w.parity_slice_size = psz;
+        }
+        LpFetchSpec fs;
+        fs.blob_key = blob_key;
+        fs.dn_ip = delta_node.node_ip;
+        fs.dn_port = delta_node.node_port;
+        fs.blob_off = blob_off;
+        fs.read_len = static_cast<uint64_t>(seg_len);
+        fs.acc_offset = 0;
+        fs.data_block_id = bid;
+        fs.source_cluster_id = cid;
+        w.fetches.push_back(std::move(fs));
+
+        std::cout << "[CoRD-LP] map2group=" << gnum << " hub_global_blk=" << hub_blk
+                  << " data_blk=" << bid << " seg=[" << a << "," << b << ") -> LP blk " << lb
+                  << " parity_off=" << poff << " len=" << psz << " fetch " << blob_key << "@" << blob_off
+                  << " len=" << seg_len << std::endl;
+      }
+    }
+
+    if (agg.empty())
+    {
+      reply->set_ifcommit(true);
+      return grpc::Status::OK;
+    }
+
+    std::map<int, proxy_proto::CordLocalParityBundle> by_cluster;
+    for (auto &kv : agg)
+    {
+      LpWorkAgg &w = kv.second;
+      const int target_c = stripe->blocks[w.local_block_id]->map2cluster;
+      proxy_proto::CordLocalParityBundle &bd = by_cluster[target_c];
+      if (bd.key().empty())
+        bd.set_key(m_toolbox->gen_cord_key(stripe_id, target_c) + "_lp");
+      bd.set_stripe_id(stripe_id);
+      auto *itm = bd.add_items();
+      itm->set_local_block_id(w.local_block_id);
+      itm->set_local_block_key(w.local_block_key);
+      itm->set_local_datanode_ip(w.local_dn_ip);
+      itm->set_local_datanode_port(w.local_dn_port);
+      itm->set_parity_slice_offset(w.parity_slice_offset);
+      itm->set_parity_slice_size(w.parity_slice_size);
+      for (const auto &fs : w.fetches)
+      {
+        auto *f = itm->add_fetches();
+        f->set_blob_key(fs.blob_key);
+        f->set_datanode_ip(fs.dn_ip);
+        f->set_datanode_port(fs.dn_port);
+        f->set_blob_offset(fs.blob_off);
+        f->set_read_len(fs.read_len);
+        f->set_acc_offset(fs.acc_offset);
+      }
+    }
+
+    for (auto &bc : by_cluster)
+    {
+      std::thread th(&CoordinatorImpl::notify_proxy_cord_local_parity_bundle, this, bc.first, bc.second);
+      th.join();
+    }
+
+    reply->set_ifcommit(true);
+    return grpc::Status::OK;
+  }
+
+
+  grpc::Status CoordinatorImpl::uploadCordLocalParityViaGlobalHub(
+      grpc::ServerContext *context,
+      const coordinator_proto::CordUpdateRequest *request,
+      coordinator_proto::RepIfSuccess *reply)
+  {
+    (void)context;
+    reply->set_ifcommit(false);
+    const int stripe_id = request->stripe_id();
+    if (m_stripe_table.find(stripe_id) == m_stripe_table.end())
+      return grpc::Status(grpc::StatusCode::NOT_FOUND, "stripe_id not found");
+    Stripe *stripe = &m_stripe_table[stripe_id];
+    const int block_size = static_cast<int>(m_sys_config->BlockSize);
+    const int k = stripe->k;
+
+    if (request->interval_count() > 0 &&
+        request->interval_count() != request->update_intervals_size())
+      return grpc::Status(grpc::StatusCode::INVALID_ARGUMENT,
+                          "interval_count does not match update_intervals size");
+    if (request->update_intervals_size() == 0)
+      return grpc::Status(grpc::StatusCode::INVALID_ARGUMENT, "empty update_intervals");
+
+    std::map<int, std::vector<std::pair<int, int>>> block_intervals;
+    for (int ri = 0; ri < request->update_intervals_size(); ++ri)
+    {
+      const auto &r = request->update_intervals(ri);
+      const int s = r.logical_offset_start();
+      const int e = r.logical_offset_end();
+      if (e <= s)
+        return grpc::Status(grpc::StatusCode::INVALID_ARGUMENT, "invalid half-open interval [start,end)");
+      const int stripe_data_bytes = k * block_size;
+      if (s < 0 || s > stripe_data_bytes || e > stripe_data_bytes)
+        return grpc::Status(grpc::StatusCode::INVALID_ARGUMENT, "logical interval out of stripe data range");
+      cord_add_logical_range_to_data_blocks(block_size, k, s, e, &block_intervals);
+    }
+
+    std::map<int, std::vector<CordSliceRec>> cluster_slices;
+    for (const auto &kv : block_intervals)
+    {
+      const int bid = kv.first;
+      if (bid < 0 || bid >= k)
+        continue;
+      Block *bp = stripe->blocks[bid];
+      for (const auto &seg : kv.second)
+      {
+        CordSliceRec rec;
+        rec.block_id = bid;
+        rec.block_offset = seg.first;
+        rec.len = seg.second - seg.first;
+        if (rec.len <= 0)
+          continue;
+        cluster_slices[bp->map2cluster].push_back(rec);
+      }
+    }
+    for (auto &cs : cluster_slices)
+    {
+      std::sort(cs.second.begin(), cs.second.end(),
+                [](const CordSliceRec &a, const CordSliceRec &b)
+                {
+                  if (a.block_id != b.block_id)
+                    return a.block_id < b.block_id;
+                  return a.block_offset < b.block_offset;
+                });
+    }
+
+    if (cluster_slices.empty())
+    {
+      reply->set_ifcommit(true);
+      return grpc::Status::OK;
+    }
+
+    std::map<std::tuple<int, int, int>, LpWorkAgg> agg;
+    cord_alg2::TransferParams tp;
+
+    for (const auto &kv : block_intervals)
+    {
+      const int bid = kv.first;
+      if (bid < 0 || bid >= k)
+        continue;
+      const int gnum = stripe->blocks[bid]->map2group;
+      const int lb = cord_lp_find_local_parity_block(*stripe, gnum);
+      if (lb < 0)
+        continue;
+
+      std::vector<int> dblocks;
+      for (const auto &kv2 : block_intervals)
+      {
+        if (kv2.first >= 0 && kv2.first < k && stripe->blocks[kv2.first]->map2group == gnum)
+          dblocks.push_back(kv2.first);
+      }
+      std::sort(dblocks.begin(), dblocks.end());
+      dblocks.erase(std::unique(dblocks.begin(), dblocks.end()), dblocks.end());
+      const int hub_blk = cord_lp_pick_hub_global(*stripe, block_intervals, dblocks, tp);
+      const int hub_c = stripe->blocks[hub_blk]->map2cluster;
+      (void)hub_c;
+
+      for (const auto &seg : kv.second)
+      {
+        const int a = seg.first;
+        const int b = seg.second;
+        const int seg_len = b - a;
+        if (seg_len <= 0)
+          continue;
+        const int lo = bid * block_size + a;
+        std::map<int, std::pair<int, int>> b2s;
+        int ps = 0, po = 0;
+        bool merge = false;
+        std::string err;
+        if (!build_slice_plan_for_logical_range(stripe, lo, seg_len, &b2s, &ps, &po, &merge, &err))
+        {
+          std::cout << "[CoRD-LP-GH] build_slice failed: " << err << std::endl;
+          continue;
+        }
+        const auto pit = b2s.find(lb);
+        if (pit == b2s.end())
+          continue;
+        const int psz = pit->second.first;
+        const int poff = pit->second.second;
+
+        const int cid = stripe->blocks[bid]->map2cluster;
+        const auto csit = cluster_slices.find(cid);
+        if (csit == cluster_slices.end())
+          continue;
+        uint64_t blob_off = 0;
+        if (!cord_lp_find_delta_blob_offset(csit->second, bid, a, seg_len, &blob_off))
+        {
+          std::cout << "[CoRD-LP-GH] missing delta layout for stripe=" << stripe_id << " cluster=" << cid
+                    << " block=" << bid << std::endl;
+          continue;
+        }
+        const int delta_node_id = m_cluster_table[cid].nodes.front();
+        const Node &delta_node = m_node_table[delta_node_id];
+        const std::string cord_key = m_toolbox->gen_cord_key(stripe_id, cid);
+        const std::string blob_key = cord_key + "_delta";
+
+        const auto lk = std::make_tuple(lb, poff, psz);
+        LpWorkAgg &w = agg[lk];
+        if (w.local_block_id < 0)
+        {
+          w.local_block_id = lb;
+          w.local_block_key = stripe->blocks[lb]->block_key;
+          const Node &ln = m_node_table[stripe->blocks[lb]->map2node];
+          w.local_dn_ip = ln.node_ip;
+          w.local_dn_port = ln.node_port;
+          w.parity_slice_offset = poff;
+          w.parity_slice_size = psz;
+        }
+        LpFetchSpec fs;
+        fs.blob_key = blob_key;
+        fs.dn_ip = delta_node.node_ip;
+        fs.dn_port = delta_node.node_port;
+        fs.blob_off = blob_off;
+        fs.read_len = static_cast<uint64_t>(seg_len);
+        fs.acc_offset = 0;
+        fs.data_block_id = bid;
+        fs.source_cluster_id = cid;
+        w.fetches.push_back(std::move(fs));
+      }
+    }
+
+    if (agg.empty())
+    {
+      reply->set_ifcommit(true);
+      return grpc::Status::OK;
+    }
+
+    if (!run_cord_lp_global_hub_aggregation(m_cluster_table, m_proxy_ptrs, stripe_id, stripe, block_intervals, agg))
+    {
+      reply->set_ifcommit(false);
+      return grpc::Status(grpc::StatusCode::INTERNAL, "CoRD-LP global hub aggregation failed");
+    }
+    reply->set_ifcommit(true);
+    return grpc::Status::OK;
   }
 
   std::vector<proxy_proto::AppendStripeDataPlacement> CoordinatorImpl::generate_add_plans(Stripe *stripe)
@@ -2901,7 +3933,7 @@ namespace ECProject  //定义一个名为 ECProject 的命名空间，防止命�
     {
       if (commit_abortkey->ifcommitmetadata())
       {
-        if (opp == SET || opp == APPEND)
+        if (opp == SET || opp == APPEND || opp == CORD_UPDATE)
         {
           m_object_commit_table[key] = m_object_updating_table[key];
           cv.notify_all();
@@ -3051,7 +4083,7 @@ namespace ECProject  //定义一个名为 ECProject 的命名空间，防止命�
     std::string key = key_opp->key();
     ECProject::OpperateType opp = (ECProject::OpperateType)key_opp->opp();
     int stripe_id = key_opp->stripe_id();
-    if (opp == SET || opp == APPEND)
+    if (opp == SET || opp == APPEND || opp == CORD_UPDATE)
     {
       while (m_object_commit_table.find(key) == m_object_commit_table.end())
       {

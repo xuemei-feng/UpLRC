@@ -10,7 +10,8 @@ namespace ECProject
     DEL,
     REPAIR,
     MERGE,
-    APPEND
+    APPEND,
+    CORD_UPDATE
   };
   enum EncodeType
   {

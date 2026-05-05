@@ -40,6 +40,13 @@ service proxyService {
   rpc deleteBlock(NodeAndBlock) returns (DelReply);
   // append
   rpc scheduleAppend2Datanode(AppendStripeDataPlacement) returns (SetReply);
+  // CoRD：客户端下发新数据；proxy 读旧、异或得 Δ、写新数据，Δ 暂存于本 cluster 的 datanode
+  rpc scheduleCordDataUpdate(CordDataUpdatePlacement) returns (SetReply);
+  rpc scheduleCordLocalParityApply(CordLocalParityBundle) returns (SetReply);
+  rpc cordLpHubSessionBegin(CordLpHubSessionBegin) returns (SetReply);
+  rpc cordLpHubPartialPush(CordLpHubPartialPush) returns (SetReply);
+  rpc cordLpComputePartialAndPush(CordLpComputePartialAndPush) returns (SetReply);
+  rpc cordLpApplyParityDelta(CordLpParityApplyDelta) returns (SetReply);
   // get stripe
   rpc getBlocks(StripeAndBlockIDs) returns (GetReply);
 }
@@ -250,6 +257,89 @@ message AppendStripeDataPlacement{
   bool is_merge_parity = 11;
   string append_mode = 12;
   bool is_serialized = 13;
+}
+
+message CordDataUpdatePlacement {
+  string key = 1;
+  int32 cluster_id = 2;
+  int32 stripe_id = 3;
+  uint64 update_payload_size = 4;
+  repeated string datanodeip = 5;
+  repeated int32 datanodeport = 6;
+  repeated string blockkeys = 7;
+  repeated int32 blockids = 8;
+  repeated uint64 offsets = 9;
+  repeated uint64 sizes = 10;
+  string delta_blob_key = 11;
+  string delta_datanode_ip = 12;
+  int32 delta_datanode_port = 13;
+}
+
+message CordLpDeltaFetch {
+  string blob_key = 1;
+  string datanode_ip = 2;
+  int32 datanode_port = 3;
+  uint64 blob_offset = 4;
+  uint64 read_len = 5;
+  int32 acc_offset = 6;
+}
+
+message CordLpWorkItem {
+  int32 local_block_id = 1;
+  string local_block_key = 2;
+  string local_datanode_ip = 3;
+  int32 local_datanode_port = 4;
+  int32 parity_slice_offset = 5;
+  int32 parity_slice_size = 6;
+  repeated CordLpDeltaFetch fetches = 7;
+}
+
+message CordLocalParityBundle {
+  string key = 1;
+  int32 stripe_id = 2;
+  repeated CordLpWorkItem items = 3;
+}
+
+message CordLpHubSessionBegin {
+  string session_key = 1;
+  int32 expected_partials = 2;
+  int32 parity_slice_size = 3;
+  int32 parity_slice_offset = 4;
+  int32 local_block_id = 5;
+  string local_block_key = 6;
+  string local_datanode_ip = 7;
+  int32 local_datanode_port = 8;
+  string dest_lp_proxy_ip = 9;
+  int32 dest_lp_proxy_port = 10;
+  int32 stripe_id = 11;
+  int32 hub_global_block_id = 12;
+}
+
+message CordLpHubPartialPush {
+  string session_key = 1;
+  bytes partial_payload = 2;
+}
+
+message CordLpComputePartialAndPush {
+  string session_key = 1;
+  string hub_proxy_ip = 2;
+  int32 hub_proxy_port = 3;
+  string delta_blob_key = 4;
+  string delta_datanode_ip = 5;
+  int32 delta_datanode_port = 6;
+  int32 parity_slice_size = 7;
+  repeated CordLpDeltaFetch fetches = 8;
+}
+
+message CordLpParityApplyDelta {
+  int32 stripe_id = 1;
+  int32 local_block_id = 2;
+  string local_block_key = 3;
+  string local_datanode_ip = 4;
+  int32 local_datanode_port = 5;
+  int32 parity_slice_offset = 6;
+  int32 parity_slice_size = 7;
+  bytes delta_payload = 8;
 }
 
 message SetReply {

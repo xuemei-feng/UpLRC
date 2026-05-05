@@ -51,6 +51,12 @@ extern AppendInfoDefaultTypeInternal _AppendInfo_default_instance_;
 class CheckaliveCMD;
 struct CheckaliveCMDDefaultTypeInternal;
 extern CheckaliveCMDDefaultTypeInternal _CheckaliveCMD_default_instance_;
+class CordDeltaBlobInfo;
+struct CordDeltaBlobInfoDefaultTypeInternal;
+extern CordDeltaBlobInfoDefaultTypeInternal _CordDeltaBlobInfo_default_instance_;
+class CordRangeRWInfo;
+struct CordRangeRWInfoDefaultTypeInternal;
+extern CordRangeRWInfoDefaultTypeInternal _CordRangeRWInfo_default_instance_;
 class DelInfo;
 struct DelInfoDefaultTypeInternal;
 extern DelInfoDefaultTypeInternal _DelInfo_default_instance_;
@@ -70,6 +76,8 @@ extern SetInfoDefaultTypeInternal _SetInfo_default_instance_;
 PROTOBUF_NAMESPACE_OPEN
 template<> ::datanode_proto::AppendInfo* Arena::CreateMaybeMessage<::datanode_proto::AppendInfo>(Arena*);
 template<> ::datanode_proto::CheckaliveCMD* Arena::CreateMaybeMessage<::datanode_proto::CheckaliveCMD>(Arena*);
+template<> ::datanode_proto::CordDeltaBlobInfo* Arena::CreateMaybeMessage<::datanode_proto::CordDeltaBlobInfo>(Arena*);
+template<> ::datanode_proto::CordRangeRWInfo* Arena::CreateMaybeMessage<::datanode_proto::CordRangeRWInfo>(Arena*);
 template<> ::datanode_proto::DelInfo* Arena::CreateMaybeMessage<::datanode_proto::DelInfo>(Arena*);
 template<> ::datanode_proto::GetInfo* Arena::CreateMaybeMessage<::datanode_proto::GetInfo>(Arena*);
 template<> ::datanode_proto::MergeParityInfo* Arena::CreateMaybeMessage<::datanode_proto::MergeParityInfo>(Arena*);
@@ -1201,6 +1209,410 @@ class GetInfo final :
 };
 // -------------------------------------------------------------------
 
+class CordRangeRWInfo final :
+    public ::PROTOBUF_NAMESPACE_ID::Message /* @@protoc_insertion_point(class_definition:datanode_proto.CordRangeRWInfo) */ {
+ public:
+  inline CordRangeRWInfo() : CordRangeRWInfo(nullptr) {}
+  ~CordRangeRWInfo() override;
+  explicit PROTOBUF_CONSTEXPR CordRangeRWInfo(::PROTOBUF_NAMESPACE_ID::internal::ConstantInitialized);
+
+  CordRangeRWInfo(const CordRangeRWInfo& from);
+  CordRangeRWInfo(CordRangeRWInfo&& from) noexcept
+    : CordRangeRWInfo() {
+    *this = ::std::move(from);
+  }
+
+  inline CordRangeRWInfo& operator=(const CordRangeRWInfo& from) {
+    CopyFrom(from);
+    return *this;
+  }
+  inline CordRangeRWInfo& operator=(CordRangeRWInfo&& from) noexcept {
+    if (this == &from) return *this;
+    if (GetOwningArena() == from.GetOwningArena()
+  #ifdef PROTOBUF_FORCE_COPY_IN_MOVE
+        && GetOwningArena() != nullptr
+  #endif  // !PROTOBUF_FORCE_COPY_IN_MOVE
+    ) {
+      InternalSwap(&from);
+    } else {
+      CopyFrom(from);
+    }
+    return *this;
+  }
+
+  static const ::PROTOBUF_NAMESPACE_ID::Descriptor* descriptor() {
+    return GetDescriptor();
+  }
+  static const ::PROTOBUF_NAMESPACE_ID::Descriptor* GetDescriptor() {
+    return default_instance().GetMetadata().descriptor;
+  }
+  static const ::PROTOBUF_NAMESPACE_ID::Reflection* GetReflection() {
+    return default_instance().GetMetadata().reflection;
+  }
+  static const CordRangeRWInfo& default_instance() {
+    return *internal_default_instance();
+  }
+  static inline const CordRangeRWInfo* internal_default_instance() {
+    return reinterpret_cast<const CordRangeRWInfo*>(
+               &_CordRangeRWInfo_default_instance_);
+  }
+  static constexpr int kIndexInFileMessages =
+    6;
+
+  friend void swap(CordRangeRWInfo& a, CordRangeRWInfo& b) {
+    a.Swap(&b);
+  }
+  inline void Swap(CordRangeRWInfo* other) {
+    if (other == this) return;
+  #ifdef PROTOBUF_FORCE_COPY_IN_SWAP
+    if (GetOwningArena() != nullptr &&
+        GetOwningArena() == other->GetOwningArena()) {
+   #else  // PROTOBUF_FORCE_COPY_IN_SWAP
+    if (GetOwningArena() == other->GetOwningArena()) {
+  #endif  // !PROTOBUF_FORCE_COPY_IN_SWAP
+      InternalSwap(other);
+    } else {
+      ::PROTOBUF_NAMESPACE_ID::internal::GenericSwap(this, other);
+    }
+  }
+  void UnsafeArenaSwap(CordRangeRWInfo* other) {
+    if (other == this) return;
+    GOOGLE_DCHECK(GetOwningArena() == other->GetOwningArena());
+    InternalSwap(other);
+  }
+
+  // implements Message ----------------------------------------------
+
+  CordRangeRWInfo* New(::PROTOBUF_NAMESPACE_ID::Arena* arena = nullptr) const final {
+    return CreateMaybeMessage<CordRangeRWInfo>(arena);
+  }
+  using ::PROTOBUF_NAMESPACE_ID::Message::CopyFrom;
+  void CopyFrom(const CordRangeRWInfo& from);
+  using ::PROTOBUF_NAMESPACE_ID::Message::MergeFrom;
+  void MergeFrom( const CordRangeRWInfo& from) {
+    CordRangeRWInfo::MergeImpl(*this, from);
+  }
+  private:
+  static void MergeImpl(::PROTOBUF_NAMESPACE_ID::Message& to_msg, const ::PROTOBUF_NAMESPACE_ID::Message& from_msg);
+  public:
+  PROTOBUF_ATTRIBUTE_REINITIALIZES void Clear() final;
+  bool IsInitialized() const final;
+
+  size_t ByteSizeLong() const final;
+  const char* _InternalParse(const char* ptr, ::PROTOBUF_NAMESPACE_ID::internal::ParseContext* ctx) final;
+  uint8_t* _InternalSerialize(
+      uint8_t* target, ::PROTOBUF_NAMESPACE_ID::io::EpsCopyOutputStream* stream) const final;
+  int GetCachedSize() const final { return _impl_._cached_size_.Get(); }
+
+  private:
+  void SharedCtor(::PROTOBUF_NAMESPACE_ID::Arena* arena, bool is_message_owned);
+  void SharedDtor();
+  void SetCachedSize(int size) const final;
+  void InternalSwap(CordRangeRWInfo* other);
+
+  private:
+  friend class ::PROTOBUF_NAMESPACE_ID::internal::AnyMetadata;
+  static ::PROTOBUF_NAMESPACE_ID::StringPiece FullMessageName() {
+    return "datanode_proto.CordRangeRWInfo";
+  }
+  protected:
+  explicit CordRangeRWInfo(::PROTOBUF_NAMESPACE_ID::Arena* arena,
+                       bool is_message_owned = false);
+  public:
+
+  static const ClassData _class_data_;
+  const ::PROTOBUF_NAMESPACE_ID::Message::ClassData*GetClassData() const final;
+
+  ::PROTOBUF_NAMESPACE_ID::Metadata GetMetadata() const final;
+
+  // nested types ----------------------------------------------------
+
+  // accessors -------------------------------------------------------
+
+  enum : int {
+    kBlockKeyFieldNumber = 1,
+    kProxyIpFieldNumber = 5,
+    kBlockIdFieldNumber = 2,
+    kRangeOffsetFieldNumber = 3,
+    kRangeLengthFieldNumber = 4,
+    kProxyPortFieldNumber = 6,
+  };
+  // string block_key = 1;
+  void clear_block_key();
+  const std::string& block_key() const;
+  template <typename ArgT0 = const std::string&, typename... ArgT>
+  void set_block_key(ArgT0&& arg0, ArgT... args);
+  std::string* mutable_block_key();
+  PROTOBUF_NODISCARD std::string* release_block_key();
+  void set_allocated_block_key(std::string* block_key);
+  private:
+  const std::string& _internal_block_key() const;
+  inline PROTOBUF_ALWAYS_INLINE void _internal_set_block_key(const std::string& value);
+  std::string* _internal_mutable_block_key();
+  public:
+
+  // string proxy_ip = 5;
+  void clear_proxy_ip();
+  const std::string& proxy_ip() const;
+  template <typename ArgT0 = const std::string&, typename... ArgT>
+  void set_proxy_ip(ArgT0&& arg0, ArgT... args);
+  std::string* mutable_proxy_ip();
+  PROTOBUF_NODISCARD std::string* release_proxy_ip();
+  void set_allocated_proxy_ip(std::string* proxy_ip);
+  private:
+  const std::string& _internal_proxy_ip() const;
+  inline PROTOBUF_ALWAYS_INLINE void _internal_set_proxy_ip(const std::string& value);
+  std::string* _internal_mutable_proxy_ip();
+  public:
+
+  // int32 block_id = 2;
+  void clear_block_id();
+  int32_t block_id() const;
+  void set_block_id(int32_t value);
+  private:
+  int32_t _internal_block_id() const;
+  void _internal_set_block_id(int32_t value);
+  public:
+
+  // int32 range_offset = 3;
+  void clear_range_offset();
+  int32_t range_offset() const;
+  void set_range_offset(int32_t value);
+  private:
+  int32_t _internal_range_offset() const;
+  void _internal_set_range_offset(int32_t value);
+  public:
+
+  // int32 range_length = 4;
+  void clear_range_length();
+  int32_t range_length() const;
+  void set_range_length(int32_t value);
+  private:
+  int32_t _internal_range_length() const;
+  void _internal_set_range_length(int32_t value);
+  public:
+
+  // int32 proxy_port = 6;
+  void clear_proxy_port();
+  int32_t proxy_port() const;
+  void set_proxy_port(int32_t value);
+  private:
+  int32_t _internal_proxy_port() const;
+  void _internal_set_proxy_port(int32_t value);
+  public:
+
+  // @@protoc_insertion_point(class_scope:datanode_proto.CordRangeRWInfo)
+ private:
+  class _Internal;
+
+  template <typename T> friend class ::PROTOBUF_NAMESPACE_ID::Arena::InternalHelper;
+  typedef void InternalArenaConstructable_;
+  typedef void DestructorSkippable_;
+  struct Impl_ {
+    ::PROTOBUF_NAMESPACE_ID::internal::ArenaStringPtr block_key_;
+    ::PROTOBUF_NAMESPACE_ID::internal::ArenaStringPtr proxy_ip_;
+    int32_t block_id_;
+    int32_t range_offset_;
+    int32_t range_length_;
+    int32_t proxy_port_;
+    mutable ::PROTOBUF_NAMESPACE_ID::internal::CachedSize _cached_size_;
+  };
+  union { Impl_ _impl_; };
+  friend struct ::TableStruct_datanode_2eproto;
+};
+// -------------------------------------------------------------------
+
+class CordDeltaBlobInfo final :
+    public ::PROTOBUF_NAMESPACE_ID::Message /* @@protoc_insertion_point(class_definition:datanode_proto.CordDeltaBlobInfo) */ {
+ public:
+  inline CordDeltaBlobInfo() : CordDeltaBlobInfo(nullptr) {}
+  ~CordDeltaBlobInfo() override;
+  explicit PROTOBUF_CONSTEXPR CordDeltaBlobInfo(::PROTOBUF_NAMESPACE_ID::internal::ConstantInitialized);
+
+  CordDeltaBlobInfo(const CordDeltaBlobInfo& from);
+  CordDeltaBlobInfo(CordDeltaBlobInfo&& from) noexcept
+    : CordDeltaBlobInfo() {
+    *this = ::std::move(from);
+  }
+
+  inline CordDeltaBlobInfo& operator=(const CordDeltaBlobInfo& from) {
+    CopyFrom(from);
+    return *this;
+  }
+  inline CordDeltaBlobInfo& operator=(CordDeltaBlobInfo&& from) noexcept {
+    if (this == &from) return *this;
+    if (GetOwningArena() == from.GetOwningArena()
+  #ifdef PROTOBUF_FORCE_COPY_IN_MOVE
+        && GetOwningArena() != nullptr
+  #endif  // !PROTOBUF_FORCE_COPY_IN_MOVE
+    ) {
+      InternalSwap(&from);
+    } else {
+      CopyFrom(from);
+    }
+    return *this;
+  }
+
+  static const ::PROTOBUF_NAMESPACE_ID::Descriptor* descriptor() {
+    return GetDescriptor();
+  }
+  static const ::PROTOBUF_NAMESPACE_ID::Descriptor* GetDescriptor() {
+    return default_instance().GetMetadata().descriptor;
+  }
+  static const ::PROTOBUF_NAMESPACE_ID::Reflection* GetReflection() {
+    return default_instance().GetMetadata().reflection;
+  }
+  static const CordDeltaBlobInfo& default_instance() {
+    return *internal_default_instance();
+  }
+  static inline const CordDeltaBlobInfo* internal_default_instance() {
+    return reinterpret_cast<const CordDeltaBlobInfo*>(
+               &_CordDeltaBlobInfo_default_instance_);
+  }
+  static constexpr int kIndexInFileMessages =
+    7;
+
+  friend void swap(CordDeltaBlobInfo& a, CordDeltaBlobInfo& b) {
+    a.Swap(&b);
+  }
+  inline void Swap(CordDeltaBlobInfo* other) {
+    if (other == this) return;
+  #ifdef PROTOBUF_FORCE_COPY_IN_SWAP
+    if (GetOwningArena() != nullptr &&
+        GetOwningArena() == other->GetOwningArena()) {
+   #else  // PROTOBUF_FORCE_COPY_IN_SWAP
+    if (GetOwningArena() == other->GetOwningArena()) {
+  #endif  // !PROTOBUF_FORCE_COPY_IN_SWAP
+      InternalSwap(other);
+    } else {
+      ::PROTOBUF_NAMESPACE_ID::internal::GenericSwap(this, other);
+    }
+  }
+  void UnsafeArenaSwap(CordDeltaBlobInfo* other) {
+    if (other == this) return;
+    GOOGLE_DCHECK(GetOwningArena() == other->GetOwningArena());
+    InternalSwap(other);
+  }
+
+  // implements Message ----------------------------------------------
+
+  CordDeltaBlobInfo* New(::PROTOBUF_NAMESPACE_ID::Arena* arena = nullptr) const final {
+    return CreateMaybeMessage<CordDeltaBlobInfo>(arena);
+  }
+  using ::PROTOBUF_NAMESPACE_ID::Message::CopyFrom;
+  void CopyFrom(const CordDeltaBlobInfo& from);
+  using ::PROTOBUF_NAMESPACE_ID::Message::MergeFrom;
+  void MergeFrom( const CordDeltaBlobInfo& from) {
+    CordDeltaBlobInfo::MergeImpl(*this, from);
+  }
+  private:
+  static void MergeImpl(::PROTOBUF_NAMESPACE_ID::Message& to_msg, const ::PROTOBUF_NAMESPACE_ID::Message& from_msg);
+  public:
+  PROTOBUF_ATTRIBUTE_REINITIALIZES void Clear() final;
+  bool IsInitialized() const final;
+
+  size_t ByteSizeLong() const final;
+  const char* _InternalParse(const char* ptr, ::PROTOBUF_NAMESPACE_ID::internal::ParseContext* ctx) final;
+  uint8_t* _InternalSerialize(
+      uint8_t* target, ::PROTOBUF_NAMESPACE_ID::io::EpsCopyOutputStream* stream) const final;
+  int GetCachedSize() const final { return _impl_._cached_size_.Get(); }
+
+  private:
+  void SharedCtor(::PROTOBUF_NAMESPACE_ID::Arena* arena, bool is_message_owned);
+  void SharedDtor();
+  void SetCachedSize(int size) const final;
+  void InternalSwap(CordDeltaBlobInfo* other);
+
+  private:
+  friend class ::PROTOBUF_NAMESPACE_ID::internal::AnyMetadata;
+  static ::PROTOBUF_NAMESPACE_ID::StringPiece FullMessageName() {
+    return "datanode_proto.CordDeltaBlobInfo";
+  }
+  protected:
+  explicit CordDeltaBlobInfo(::PROTOBUF_NAMESPACE_ID::Arena* arena,
+                       bool is_message_owned = false);
+  public:
+
+  static const ClassData _class_data_;
+  const ::PROTOBUF_NAMESPACE_ID::Message::ClassData*GetClassData() const final;
+
+  ::PROTOBUF_NAMESPACE_ID::Metadata GetMetadata() const final;
+
+  // nested types ----------------------------------------------------
+
+  // accessors -------------------------------------------------------
+
+  enum : int {
+    kBlobKeyFieldNumber = 1,
+    kProxyIpFieldNumber = 3,
+    kByteLengthFieldNumber = 2,
+    kProxyPortFieldNumber = 4,
+  };
+  // string blob_key = 1;
+  void clear_blob_key();
+  const std::string& blob_key() const;
+  template <typename ArgT0 = const std::string&, typename... ArgT>
+  void set_blob_key(ArgT0&& arg0, ArgT... args);
+  std::string* mutable_blob_key();
+  PROTOBUF_NODISCARD std::string* release_blob_key();
+  void set_allocated_blob_key(std::string* blob_key);
+  private:
+  const std::string& _internal_blob_key() const;
+  inline PROTOBUF_ALWAYS_INLINE void _internal_set_blob_key(const std::string& value);
+  std::string* _internal_mutable_blob_key();
+  public:
+
+  // string proxy_ip = 3;
+  void clear_proxy_ip();
+  const std::string& proxy_ip() const;
+  template <typename ArgT0 = const std::string&, typename... ArgT>
+  void set_proxy_ip(ArgT0&& arg0, ArgT... args);
+  std::string* mutable_proxy_ip();
+  PROTOBUF_NODISCARD std::string* release_proxy_ip();
+  void set_allocated_proxy_ip(std::string* proxy_ip);
+  private:
+  const std::string& _internal_proxy_ip() const;
+  inline PROTOBUF_ALWAYS_INLINE void _internal_set_proxy_ip(const std::string& value);
+  std::string* _internal_mutable_proxy_ip();
+  public:
+
+  // int32 byte_length = 2;
+  void clear_byte_length();
+  int32_t byte_length() const;
+  void set_byte_length(int32_t value);
+  private:
+  int32_t _internal_byte_length() const;
+  void _internal_set_byte_length(int32_t value);
+  public:
+
+  // int32 proxy_port = 4;
+  void clear_proxy_port();
+  int32_t proxy_port() const;
+  void set_proxy_port(int32_t value);
+  private:
+  int32_t _internal_proxy_port() const;
+  void _internal_set_proxy_port(int32_t value);
+  public:
+
+  // @@protoc_insertion_point(class_scope:datanode_proto.CordDeltaBlobInfo)
+ private:
+  class _Internal;
+
+  template <typename T> friend class ::PROTOBUF_NAMESPACE_ID::Arena::InternalHelper;
+  typedef void InternalArenaConstructable_;
+  typedef void DestructorSkippable_;
+  struct Impl_ {
+    ::PROTOBUF_NAMESPACE_ID::internal::ArenaStringPtr blob_key_;
+    ::PROTOBUF_NAMESPACE_ID::internal::ArenaStringPtr proxy_ip_;
+    int32_t byte_length_;
+    int32_t proxy_port_;
+    mutable ::PROTOBUF_NAMESPACE_ID::internal::CachedSize _cached_size_;
+  };
+  union { Impl_ _impl_; };
+  friend struct ::TableStruct_datanode_2eproto;
+};
+// -------------------------------------------------------------------
+
 class DelInfo final :
     public ::PROTOBUF_NAMESPACE_ID::Message /* @@protoc_insertion_point(class_definition:datanode_proto.DelInfo) */ {
  public:
@@ -1249,7 +1661,7 @@ class DelInfo final :
                &_DelInfo_default_instance_);
   }
   static constexpr int kIndexInFileMessages =
-    6;
+    8;
 
   friend void swap(DelInfo& a, DelInfo& b) {
     a.Swap(&b);
@@ -2075,6 +2487,334 @@ inline void GetInfo::set_proxy_port(int32_t value) {
 
 // -------------------------------------------------------------------
 
+// CordRangeRWInfo
+
+// string block_key = 1;
+inline void CordRangeRWInfo::clear_block_key() {
+  _impl_.block_key_.ClearToEmpty();
+}
+inline const std::string& CordRangeRWInfo::block_key() const {
+  // @@protoc_insertion_point(field_get:datanode_proto.CordRangeRWInfo.block_key)
+  return _internal_block_key();
+}
+template <typename ArgT0, typename... ArgT>
+inline PROTOBUF_ALWAYS_INLINE
+void CordRangeRWInfo::set_block_key(ArgT0&& arg0, ArgT... args) {
+ 
+ _impl_.block_key_.Set(static_cast<ArgT0 &&>(arg0), args..., GetArenaForAllocation());
+  // @@protoc_insertion_point(field_set:datanode_proto.CordRangeRWInfo.block_key)
+}
+inline std::string* CordRangeRWInfo::mutable_block_key() {
+  std::string* _s = _internal_mutable_block_key();
+  // @@protoc_insertion_point(field_mutable:datanode_proto.CordRangeRWInfo.block_key)
+  return _s;
+}
+inline const std::string& CordRangeRWInfo::_internal_block_key() const {
+  return _impl_.block_key_.Get();
+}
+inline void CordRangeRWInfo::_internal_set_block_key(const std::string& value) {
+  
+  _impl_.block_key_.Set(value, GetArenaForAllocation());
+}
+inline std::string* CordRangeRWInfo::_internal_mutable_block_key() {
+  
+  return _impl_.block_key_.Mutable(GetArenaForAllocation());
+}
+inline std::string* CordRangeRWInfo::release_block_key() {
+  // @@protoc_insertion_point(field_release:datanode_proto.CordRangeRWInfo.block_key)
+  return _impl_.block_key_.Release();
+}
+inline void CordRangeRWInfo::set_allocated_block_key(std::string* block_key) {
+  if (block_key != nullptr) {
+    
+  } else {
+    
+  }
+  _impl_.block_key_.SetAllocated(block_key, GetArenaForAllocation());
+#ifdef PROTOBUF_FORCE_COPY_DEFAULT_STRING
+  if (_impl_.block_key_.IsDefault()) {
+    _impl_.block_key_.Set("", GetArenaForAllocation());
+  }
+#endif // PROTOBUF_FORCE_COPY_DEFAULT_STRING
+  // @@protoc_insertion_point(field_set_allocated:datanode_proto.CordRangeRWInfo.block_key)
+}
+
+// int32 block_id = 2;
+inline void CordRangeRWInfo::clear_block_id() {
+  _impl_.block_id_ = 0;
+}
+inline int32_t CordRangeRWInfo::_internal_block_id() const {
+  return _impl_.block_id_;
+}
+inline int32_t CordRangeRWInfo::block_id() const {
+  // @@protoc_insertion_point(field_get:datanode_proto.CordRangeRWInfo.block_id)
+  return _internal_block_id();
+}
+inline void CordRangeRWInfo::_internal_set_block_id(int32_t value) {
+  
+  _impl_.block_id_ = value;
+}
+inline void CordRangeRWInfo::set_block_id(int32_t value) {
+  _internal_set_block_id(value);
+  // @@protoc_insertion_point(field_set:datanode_proto.CordRangeRWInfo.block_id)
+}
+
+// int32 range_offset = 3;
+inline void CordRangeRWInfo::clear_range_offset() {
+  _impl_.range_offset_ = 0;
+}
+inline int32_t CordRangeRWInfo::_internal_range_offset() const {
+  return _impl_.range_offset_;
+}
+inline int32_t CordRangeRWInfo::range_offset() const {
+  // @@protoc_insertion_point(field_get:datanode_proto.CordRangeRWInfo.range_offset)
+  return _internal_range_offset();
+}
+inline void CordRangeRWInfo::_internal_set_range_offset(int32_t value) {
+  
+  _impl_.range_offset_ = value;
+}
+inline void CordRangeRWInfo::set_range_offset(int32_t value) {
+  _internal_set_range_offset(value);
+  // @@protoc_insertion_point(field_set:datanode_proto.CordRangeRWInfo.range_offset)
+}
+
+// int32 range_length = 4;
+inline void CordRangeRWInfo::clear_range_length() {
+  _impl_.range_length_ = 0;
+}
+inline int32_t CordRangeRWInfo::_internal_range_length() const {
+  return _impl_.range_length_;
+}
+inline int32_t CordRangeRWInfo::range_length() const {
+  // @@protoc_insertion_point(field_get:datanode_proto.CordRangeRWInfo.range_length)
+  return _internal_range_length();
+}
+inline void CordRangeRWInfo::_internal_set_range_length(int32_t value) {
+  
+  _impl_.range_length_ = value;
+}
+inline void CordRangeRWInfo::set_range_length(int32_t value) {
+  _internal_set_range_length(value);
+  // @@protoc_insertion_point(field_set:datanode_proto.CordRangeRWInfo.range_length)
+}
+
+// string proxy_ip = 5;
+inline void CordRangeRWInfo::clear_proxy_ip() {
+  _impl_.proxy_ip_.ClearToEmpty();
+}
+inline const std::string& CordRangeRWInfo::proxy_ip() const {
+  // @@protoc_insertion_point(field_get:datanode_proto.CordRangeRWInfo.proxy_ip)
+  return _internal_proxy_ip();
+}
+template <typename ArgT0, typename... ArgT>
+inline PROTOBUF_ALWAYS_INLINE
+void CordRangeRWInfo::set_proxy_ip(ArgT0&& arg0, ArgT... args) {
+ 
+ _impl_.proxy_ip_.Set(static_cast<ArgT0 &&>(arg0), args..., GetArenaForAllocation());
+  // @@protoc_insertion_point(field_set:datanode_proto.CordRangeRWInfo.proxy_ip)
+}
+inline std::string* CordRangeRWInfo::mutable_proxy_ip() {
+  std::string* _s = _internal_mutable_proxy_ip();
+  // @@protoc_insertion_point(field_mutable:datanode_proto.CordRangeRWInfo.proxy_ip)
+  return _s;
+}
+inline const std::string& CordRangeRWInfo::_internal_proxy_ip() const {
+  return _impl_.proxy_ip_.Get();
+}
+inline void CordRangeRWInfo::_internal_set_proxy_ip(const std::string& value) {
+  
+  _impl_.proxy_ip_.Set(value, GetArenaForAllocation());
+}
+inline std::string* CordRangeRWInfo::_internal_mutable_proxy_ip() {
+  
+  return _impl_.proxy_ip_.Mutable(GetArenaForAllocation());
+}
+inline std::string* CordRangeRWInfo::release_proxy_ip() {
+  // @@protoc_insertion_point(field_release:datanode_proto.CordRangeRWInfo.proxy_ip)
+  return _impl_.proxy_ip_.Release();
+}
+inline void CordRangeRWInfo::set_allocated_proxy_ip(std::string* proxy_ip) {
+  if (proxy_ip != nullptr) {
+    
+  } else {
+    
+  }
+  _impl_.proxy_ip_.SetAllocated(proxy_ip, GetArenaForAllocation());
+#ifdef PROTOBUF_FORCE_COPY_DEFAULT_STRING
+  if (_impl_.proxy_ip_.IsDefault()) {
+    _impl_.proxy_ip_.Set("", GetArenaForAllocation());
+  }
+#endif // PROTOBUF_FORCE_COPY_DEFAULT_STRING
+  // @@protoc_insertion_point(field_set_allocated:datanode_proto.CordRangeRWInfo.proxy_ip)
+}
+
+// int32 proxy_port = 6;
+inline void CordRangeRWInfo::clear_proxy_port() {
+  _impl_.proxy_port_ = 0;
+}
+inline int32_t CordRangeRWInfo::_internal_proxy_port() const {
+  return _impl_.proxy_port_;
+}
+inline int32_t CordRangeRWInfo::proxy_port() const {
+  // @@protoc_insertion_point(field_get:datanode_proto.CordRangeRWInfo.proxy_port)
+  return _internal_proxy_port();
+}
+inline void CordRangeRWInfo::_internal_set_proxy_port(int32_t value) {
+  
+  _impl_.proxy_port_ = value;
+}
+inline void CordRangeRWInfo::set_proxy_port(int32_t value) {
+  _internal_set_proxy_port(value);
+  // @@protoc_insertion_point(field_set:datanode_proto.CordRangeRWInfo.proxy_port)
+}
+
+// -------------------------------------------------------------------
+
+// CordDeltaBlobInfo
+
+// string blob_key = 1;
+inline void CordDeltaBlobInfo::clear_blob_key() {
+  _impl_.blob_key_.ClearToEmpty();
+}
+inline const std::string& CordDeltaBlobInfo::blob_key() const {
+  // @@protoc_insertion_point(field_get:datanode_proto.CordDeltaBlobInfo.blob_key)
+  return _internal_blob_key();
+}
+template <typename ArgT0, typename... ArgT>
+inline PROTOBUF_ALWAYS_INLINE
+void CordDeltaBlobInfo::set_blob_key(ArgT0&& arg0, ArgT... args) {
+ 
+ _impl_.blob_key_.Set(static_cast<ArgT0 &&>(arg0), args..., GetArenaForAllocation());
+  // @@protoc_insertion_point(field_set:datanode_proto.CordDeltaBlobInfo.blob_key)
+}
+inline std::string* CordDeltaBlobInfo::mutable_blob_key() {
+  std::string* _s = _internal_mutable_blob_key();
+  // @@protoc_insertion_point(field_mutable:datanode_proto.CordDeltaBlobInfo.blob_key)
+  return _s;
+}
+inline const std::string& CordDeltaBlobInfo::_internal_blob_key() const {
+  return _impl_.blob_key_.Get();
+}
+inline void CordDeltaBlobInfo::_internal_set_blob_key(const std::string& value) {
+  
+  _impl_.blob_key_.Set(value, GetArenaForAllocation());
+}
+inline std::string* CordDeltaBlobInfo::_internal_mutable_blob_key() {
+  
+  return _impl_.blob_key_.Mutable(GetArenaForAllocation());
+}
+inline std::string* CordDeltaBlobInfo::release_blob_key() {
+  // @@protoc_insertion_point(field_release:datanode_proto.CordDeltaBlobInfo.blob_key)
+  return _impl_.blob_key_.Release();
+}
+inline void CordDeltaBlobInfo::set_allocated_blob_key(std::string* blob_key) {
+  if (blob_key != nullptr) {
+    
+  } else {
+    
+  }
+  _impl_.blob_key_.SetAllocated(blob_key, GetArenaForAllocation());
+#ifdef PROTOBUF_FORCE_COPY_DEFAULT_STRING
+  if (_impl_.blob_key_.IsDefault()) {
+    _impl_.blob_key_.Set("", GetArenaForAllocation());
+  }
+#endif // PROTOBUF_FORCE_COPY_DEFAULT_STRING
+  // @@protoc_insertion_point(field_set_allocated:datanode_proto.CordDeltaBlobInfo.blob_key)
+}
+
+// int32 byte_length = 2;
+inline void CordDeltaBlobInfo::clear_byte_length() {
+  _impl_.byte_length_ = 0;
+}
+inline int32_t CordDeltaBlobInfo::_internal_byte_length() const {
+  return _impl_.byte_length_;
+}
+inline int32_t CordDeltaBlobInfo::byte_length() const {
+  // @@protoc_insertion_point(field_get:datanode_proto.CordDeltaBlobInfo.byte_length)
+  return _internal_byte_length();
+}
+inline void CordDeltaBlobInfo::_internal_set_byte_length(int32_t value) {
+  
+  _impl_.byte_length_ = value;
+}
+inline void CordDeltaBlobInfo::set_byte_length(int32_t value) {
+  _internal_set_byte_length(value);
+  // @@protoc_insertion_point(field_set:datanode_proto.CordDeltaBlobInfo.byte_length)
+}
+
+// string proxy_ip = 3;
+inline void CordDeltaBlobInfo::clear_proxy_ip() {
+  _impl_.proxy_ip_.ClearToEmpty();
+}
+inline const std::string& CordDeltaBlobInfo::proxy_ip() const {
+  // @@protoc_insertion_point(field_get:datanode_proto.CordDeltaBlobInfo.proxy_ip)
+  return _internal_proxy_ip();
+}
+template <typename ArgT0, typename... ArgT>
+inline PROTOBUF_ALWAYS_INLINE
+void CordDeltaBlobInfo::set_proxy_ip(ArgT0&& arg0, ArgT... args) {
+ 
+ _impl_.proxy_ip_.Set(static_cast<ArgT0 &&>(arg0), args..., GetArenaForAllocation());
+  // @@protoc_insertion_point(field_set:datanode_proto.CordDeltaBlobInfo.proxy_ip)
+}
+inline std::string* CordDeltaBlobInfo::mutable_proxy_ip() {
+  std::string* _s = _internal_mutable_proxy_ip();
+  // @@protoc_insertion_point(field_mutable:datanode_proto.CordDeltaBlobInfo.proxy_ip)
+  return _s;
+}
+inline const std::string& CordDeltaBlobInfo::_internal_proxy_ip() const {
+  return _impl_.proxy_ip_.Get();
+}
+inline void CordDeltaBlobInfo::_internal_set_proxy_ip(const std::string& value) {
+  
+  _impl_.proxy_ip_.Set(value, GetArenaForAllocation());
+}
+inline std::string* CordDeltaBlobInfo::_internal_mutable_proxy_ip() {
+  
+  return _impl_.proxy_ip_.Mutable(GetArenaForAllocation());
+}
+inline std::string* CordDeltaBlobInfo::release_proxy_ip() {
+  // @@protoc_insertion_point(field_release:datanode_proto.CordDeltaBlobInfo.proxy_ip)
+  return _impl_.proxy_ip_.Release();
+}
+inline void CordDeltaBlobInfo::set_allocated_proxy_ip(std::string* proxy_ip) {
+  if (proxy_ip != nullptr) {
+    
+  } else {
+    
+  }
+  _impl_.proxy_ip_.SetAllocated(proxy_ip, GetArenaForAllocation());
+#ifdef PROTOBUF_FORCE_COPY_DEFAULT_STRING
+  if (_impl_.proxy_ip_.IsDefault()) {
+    _impl_.proxy_ip_.Set("", GetArenaForAllocation());
+  }
+#endif // PROTOBUF_FORCE_COPY_DEFAULT_STRING
+  // @@protoc_insertion_point(field_set_allocated:datanode_proto.CordDeltaBlobInfo.proxy_ip)
+}
+
+// int32 proxy_port = 4;
+inline void CordDeltaBlobInfo::clear_proxy_port() {
+  _impl_.proxy_port_ = 0;
+}
+inline int32_t CordDeltaBlobInfo::_internal_proxy_port() const {
+  return _impl_.proxy_port_;
+}
+inline int32_t CordDeltaBlobInfo::proxy_port() const {
+  // @@protoc_insertion_point(field_get:datanode_proto.CordDeltaBlobInfo.proxy_port)
+  return _internal_proxy_port();
+}
+inline void CordDeltaBlobInfo::_internal_set_proxy_port(int32_t value) {
+  
+  _impl_.proxy_port_ = value;
+}
+inline void CordDeltaBlobInfo::set_proxy_port(int32_t value) {
+  _internal_set_proxy_port(value);
+  // @@protoc_insertion_point(field_set:datanode_proto.CordDeltaBlobInfo.proxy_port)
+}
+
+// -------------------------------------------------------------------
+
 // DelInfo
 
 // string block_key = 1;
@@ -2130,6 +2870,10 @@ inline void DelInfo::set_allocated_block_key(std::string* block_key) {
 #ifdef __GNUC__
   #pragma GCC diagnostic pop
 #endif  // __GNUC__
+// -------------------------------------------------------------------
+
+// -------------------------------------------------------------------
+
 // -------------------------------------------------------------------
 
 // -------------------------------------------------------------------

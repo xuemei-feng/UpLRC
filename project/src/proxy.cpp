@@ -11,6 +11,8 @@
 #include <sys/mman.h>
 #include "unilrc_encoder.h"
 #include <chrono>
+#include <unordered_map>
+#include <memory>
 template <typename T>
 inline T ceil(T const &A, T const &B)
 {
@@ -554,6 +556,459 @@ namespace ECProject
       std::cout << "  Size: " << append_stripe_data_placement->sizes(i) << std::endl;
     }
     std::cout << "===================================" << std::endl;
+  }
+
+
+  bool ProxyImpl::CordRangeReadFromDatanode(const std::string &block_key, int block_id, int range_offset, char *out,
+                                            size_t length, const char *ip, int port)
+  {
+    try
+    {
+      grpc::ClientContext context;
+      datanode_proto::CordRangeRWInfo info;
+      datanode_proto::RequestResult result;
+      info.set_block_key(block_key);
+      info.set_block_id(block_id);
+      info.set_range_offset(range_offset);
+      info.set_range_length(static_cast<int>(length));
+      info.set_proxy_ip(m_ip);
+      info.set_proxy_port(m_port);
+      std::string node_ip_port = std::string(ip) + ":" + std::to_string(port);
+      grpc::Status stat = m_datanode_ptrs[node_ip_port]->handleCordRangeRead(&context, info, &result);
+      if (!stat.ok())
+        return false;
+      asio::io_context io_context;
+      asio::ip::tcp::resolver resolver(io_context);
+      asio::ip::tcp::socket socket(io_context);
+      asio::connect(socket, resolver.resolve({std::string(ip), std::to_string(port + ECProject::DATANODE_PORT_SHIFT)}));
+      asio::error_code ec;
+      asio::read(socket, asio::buffer(out, length), ec);
+      asio::error_code ignore_ec;
+      socket.shutdown(asio::ip::tcp::socket::shutdown_both, ignore_ec);
+      socket.close(ignore_ec);
+      return !ec;
+    }
+    catch (const std::exception &e)
+    {
+      std::cerr << e.what() << '\n';
+      return false;
+    }
+  }
+
+  bool ProxyImpl::CordRangeWriteToDatanode(const std::string &block_key, int block_id, int range_offset, const char *data,
+                                           size_t length, const char *ip, int port)
+  {
+    try
+    {
+      grpc::ClientContext context;
+      datanode_proto::CordRangeRWInfo info;
+      datanode_proto::RequestResult result;
+      info.set_block_key(block_key);
+      info.set_block_id(block_id);
+      info.set_range_offset(range_offset);
+      info.set_range_length(static_cast<int>(length));
+      info.set_proxy_ip(m_ip);
+      info.set_proxy_port(m_port);
+      std::string node_ip_port = std::string(ip) + ":" + std::to_string(port);
+      grpc::Status stat = m_datanode_ptrs[node_ip_port]->handleCordRangeWrite(&context, info, &result);
+      if (!stat.ok())
+        return false;
+      asio::io_context io_context;
+      asio::ip::tcp::resolver resolver(io_context);
+      asio::ip::tcp::socket socket(io_context);
+      asio::connect(socket, resolver.resolve({std::string(ip), std::to_string(port + ECProject::DATANODE_PORT_SHIFT)}));
+      asio::error_code error;
+      asio::write(socket, asio::buffer(data, length), error);
+      asio::error_code ignore_ec;
+      socket.shutdown(asio::ip::tcp::socket::shutdown_both, ignore_ec);
+      socket.close(ignore_ec);
+      return !error;
+    }
+    catch (const std::exception &e)
+    {
+      std::cerr << e.what() << '\n';
+      return false;
+    }
+  }
+
+  bool ProxyImpl::CordDeltaBlobToDatanode(const std::string &blob_key, const char *data, size_t length, const char *ip,
+                                          int port)
+  {
+    try
+    {
+      grpc::ClientContext context;
+      datanode_proto::CordDeltaBlobInfo info;
+      datanode_proto::RequestResult result;
+      info.set_blob_key(blob_key);
+      info.set_byte_length(static_cast<int>(length));
+      info.set_proxy_ip(m_ip);
+      info.set_proxy_port(m_port);
+      std::string node_ip_port = std::string(ip) + ":" + std::to_string(port);
+      grpc::Status stat = m_datanode_ptrs[node_ip_port]->handleCordDeltaBlob(&context, info, &result);
+      if (!stat.ok())
+        return false;
+      asio::io_context io_context;
+      asio::ip::tcp::resolver resolver(io_context);
+      asio::ip::tcp::socket socket(io_context);
+      asio::connect(socket, resolver.resolve({std::string(ip), std::to_string(port + ECProject::DATANODE_PORT_SHIFT)}));
+      asio::error_code error;
+      asio::write(socket, asio::buffer(data, length), error);
+      asio::error_code ignore_ec;
+      socket.shutdown(asio::ip::tcp::socket::shutdown_both, ignore_ec);
+      socket.close(ignore_ec);
+      return !error;
+    }
+    catch (const std::exception &e)
+    {
+      std::cerr << e.what() << '\n';
+      return false;
+    }
+  }
+
+  grpc::Status ProxyImpl::scheduleCordDataUpdate(
+      grpc::ServerContext *context,
+      const proxy_proto::CordDataUpdatePlacement *placement,
+      proxy_proto::SetReply *response)
+  {
+    (void)context;
+    (void)response;
+    const int stripe_id = placement->stripe_id();
+    const uint64_t payload_size = placement->update_payload_size();
+    const int slice_num = placement->blockkeys_size();
+    auto placement_copy = std::make_shared<proxy_proto::CordDataUpdatePlacement>(*placement);
+
+    auto cord_job = [this, stripe_id, payload_size, slice_num, placement_copy]() mutable
+    {
+      try
+      {
+        asio::ip::tcp::socket socket_data(io_context);
+        acceptor.accept(socket_data);
+        asio::error_code error;
+        std::vector<char> buf(static_cast<size_t>(payload_size));
+        asio::read(socket_data, asio::buffer(buf.data(), static_cast<size_t>(payload_size)), error);
+        asio::error_code ignore_ec;
+        socket_data.shutdown(asio::ip::tcp::socket::shutdown_receive, ignore_ec);
+        socket_data.close(ignore_ec);
+
+        std::vector<size_t> sizes;
+        for (int i = 0; i < slice_num; ++i)
+          sizes.push_back(static_cast<size_t>(placement_copy->sizes(i)));
+        std::vector<char *> slices =
+            m_toolbox->splitCharPointer(buf.data(), static_cast<size_t>(payload_size), sizes);
+
+        std::vector<char> delta_concat;
+        delta_concat.reserve(static_cast<size_t>(payload_size));
+        for (int j = 0; j < slice_num; ++j)
+        {
+          const size_t slen = sizes[static_cast<size_t>(j)];
+          std::vector<char> oldbuf(slen);
+          if (!CordRangeReadFromDatanode(placement_copy->blockkeys(j), placement_copy->blockids(j),
+                                        static_cast<int>(placement_copy->offsets(j)), oldbuf.data(), slen,
+                                        placement_copy->datanodeip(j).c_str(), placement_copy->datanodeport(j)))
+          {
+            std::cout << "[CoRD][Proxy] range read failed slice " << j << std::endl;
+            return;
+          }
+          for (size_t u = 0; u < slen; ++u)
+            delta_concat.push_back(static_cast<char>(oldbuf[u] ^ slices[static_cast<size_t>(j)][u]));
+          if (!CordRangeWriteToDatanode(placement_copy->blockkeys(j), placement_copy->blockids(j),
+                                        static_cast<int>(placement_copy->offsets(j)), slices[static_cast<size_t>(j)],
+                                        slen, placement_copy->datanodeip(j).c_str(), placement_copy->datanodeport(j)))
+          {
+            std::cout << "[CoRD][Proxy] range write failed slice " << j << std::endl;
+            return;
+          }
+        }
+        if (!CordDeltaBlobToDatanode(placement_copy->delta_blob_key(), delta_concat.data(), delta_concat.size(),
+                                     placement_copy->delta_datanode_ip().c_str(),
+                                     placement_copy->delta_datanode_port()))
+        {
+          std::cout << "[CoRD][Proxy] delta blob store failed" << std::endl;
+          return;
+        }
+
+        coordinator_proto::CommitAbortKey commit_abort_key;
+        coordinator_proto::ReplyFromCoordinator result;
+        grpc::ClientContext ctx;
+        commit_abort_key.set_opp(ECProject::CORD_UPDATE);
+        commit_abort_key.set_key(placement_copy->key());
+        commit_abort_key.set_stripe_id(stripe_id);
+        commit_abort_key.set_ifcommitmetadata(true);
+        grpc::Status st = m_coordinator_ptr->reportCommitAbort(&ctx, commit_abort_key, &result);
+        if (!st.ok() && IF_DEBUG)
+          std::cout << "[CoRD][Proxy] reportCommitAbort failed" << std::endl;
+      }
+      catch (std::exception &e)
+      {
+        std::cout << "[CoRD][Proxy] exception: " << e.what() << std::endl;
+      }
+    };
+    std::thread th(cord_job);
+    th.detach();
+    return grpc::Status::OK;
+  }
+
+  grpc::Status ProxyImpl::scheduleCordLocalParityApply(
+      grpc::ServerContext *context,
+      const proxy_proto::CordLocalParityBundle *bundle,
+      proxy_proto::SetReply *response)
+  {
+    (void)context;
+    (void)response;
+    auto bundle_copy = std::make_shared<proxy_proto::CordLocalParityBundle>(*bundle);
+    auto lp_job = [this, bundle_copy]() mutable
+    {
+      try
+      {
+        for (int ii = 0; ii < bundle_copy->items_size(); ++ii)
+        {
+          const auto &it = bundle_copy->items(ii);
+          const int psz = it.parity_slice_size();
+          if (psz <= 0)
+            continue;
+          std::vector<char> acc(static_cast<size_t>(psz));
+          if (!CordRangeReadFromDatanode(it.local_block_key(), it.local_block_id(), it.parity_slice_offset(),
+                                        acc.data(), static_cast<size_t>(psz), it.local_datanode_ip().c_str(),
+                                        it.local_datanode_port()))
+          {
+            std::cout << "[CoRD-LP][Proxy] read LP blk " << it.local_block_id() << " failed" << std::endl;
+            continue;
+          }
+          for (int fi = 0; fi < it.fetches_size(); ++fi)
+          {
+            const auto &f = it.fetches(fi);
+            const size_t rlen = static_cast<size_t>(f.read_len());
+            if (rlen == 0)
+              continue;
+            std::vector<char> chunk(rlen);
+            if (!CordRangeReadFromDatanode(f.blob_key(), 0, static_cast<int>(f.blob_offset()), chunk.data(), rlen,
+                                          f.datanode_ip().c_str(), f.datanode_port()))
+            {
+              std::cout << "[CoRD-LP][Proxy] read delta blob " << f.blob_key() << " failed" << std::endl;
+              continue;
+            }
+            const int acc_off = f.acc_offset();
+            if (acc_off < 0 || static_cast<size_t>(acc_off) + rlen > acc.size())
+            {
+              std::cout << "[CoRD-LP][Proxy] acc_offset/len out of range" << std::endl;
+              continue;
+            }
+            for (size_t u = 0; u < rlen; ++u)
+              acc[static_cast<size_t>(acc_off) + u] =
+                  static_cast<char>(static_cast<unsigned char>(acc[static_cast<size_t>(acc_off) + u]) ^
+                                    static_cast<unsigned char>(chunk[u]));
+          }
+          if (!CordRangeWriteToDatanode(it.local_block_key(), it.local_block_id(), it.parity_slice_offset(),
+                                        acc.data(), static_cast<size_t>(psz), it.local_datanode_ip().c_str(),
+                                        it.local_datanode_port()))
+          {
+            std::cout << "[CoRD-LP][Proxy] write LP blk " << it.local_block_id() << " failed" << std::endl;
+            continue;
+          }
+          if (IF_DEBUG)
+            std::cout << "[CoRD-LP][Proxy] LP blk " << it.local_block_id() << " off=" << it.parity_slice_offset()
+                      << " len=" << psz << " fetches=" << it.fetches_size() << std::endl;
+        }
+      }
+      catch (const std::exception &e)
+      {
+        std::cout << "[CoRD-LP][Proxy] exception: " << e.what() << std::endl;
+      }
+    };
+    std::thread th(lp_job);
+    th.detach();
+    return grpc::Status::OK;
+  }
+
+
+
+  namespace
+  {
+    struct CordLpHubSessionState
+    {
+      int expected_partials = 0;
+      int received_partials = 0;
+      std::vector<uint8_t> acc;
+      proxy_proto::CordLpHubSessionBegin meta;
+      std::mutex mu;
+      bool finished = false;
+    };
+    std::mutex g_cord_lp_hub_mu;
+    std::unordered_map<std::string, std::shared_ptr<CordLpHubSessionState>> g_cord_lp_hub;
+
+    static void cord_lp_hub_forward_to_lp_proxy(const proxy_proto::CordLpHubSessionBegin &meta,
+                                                const std::vector<uint8_t> &delta)
+    {
+      std::string dst = meta.dest_lp_proxy_ip() + ":" + std::to_string(meta.dest_lp_proxy_port());
+      auto ch = grpc::CreateChannel(dst, grpc::InsecureChannelCredentials());
+      std::unique_ptr<proxy_proto::proxyService::Stub> stub = proxy_proto::proxyService::NewStub(ch);
+      proxy_proto::CordLpParityApplyDelta req;
+      req.set_stripe_id(meta.stripe_id());
+      req.set_local_block_id(meta.local_block_id());
+      req.set_local_block_key(meta.local_block_key());
+      req.set_local_datanode_ip(meta.local_datanode_ip());
+      req.set_local_datanode_port(meta.local_datanode_port());
+      req.set_parity_slice_offset(meta.parity_slice_offset());
+      req.set_parity_slice_size(meta.parity_slice_size());
+      req.set_delta_payload(delta.data(), delta.size());
+      grpc::ClientContext ctx;
+      proxy_proto::SetReply rep;
+      grpc::Status st = stub->cordLpApplyParityDelta(&ctx, req, &rep);
+      if (!st.ok())
+        std::cout << "[CoRD-LP-GH] forward to LP proxy " << dst << " failed: " << st.error_message() << std::endl;
+      else if (IF_DEBUG)
+        std::cout << "[CoRD-LP-GH] hub G" << meta.hub_global_block_id() << " -> LP blk " << meta.local_block_id()
+                  << " len=" << delta.size() << std::endl;
+    }
+  } // namespace
+
+  grpc::Status ProxyImpl::cordLpHubSessionBegin(
+      grpc::ServerContext *context,
+      const proxy_proto::CordLpHubSessionBegin *request,
+      proxy_proto::SetReply *response)
+  {
+    (void)context;
+    response->set_ifcommit(false);
+    if (request->session_key().empty() || request->expected_partials() <= 0 ||
+        request->parity_slice_size() <= 0)
+      return grpc::Status(grpc::StatusCode::INVALID_ARGUMENT, "invalid CordLpHubSessionBegin");
+    std::lock_guard<std::mutex> lk(g_cord_lp_hub_mu);
+    if (g_cord_lp_hub.find(request->session_key()) != g_cord_lp_hub.end())
+      return grpc::Status(grpc::StatusCode::ALREADY_EXISTS, "duplicate session_key");
+    auto st = std::make_shared<CordLpHubSessionState>();
+    st->expected_partials = request->expected_partials();
+    st->acc.assign(static_cast<size_t>(request->parity_slice_size()), 0);
+    st->meta.CopyFrom(*request);
+    g_cord_lp_hub[request->session_key()] = st;
+    response->set_ifcommit(true);
+    return grpc::Status::OK;
+  }
+
+  grpc::Status ProxyImpl::cordLpHubPartialPush(
+      grpc::ServerContext *context,
+      const proxy_proto::CordLpHubPartialPush *request,
+      proxy_proto::SetReply *response)
+  {
+    (void)context;
+    response->set_ifcommit(false);
+    const std::string &sk = request->session_key();
+    std::shared_ptr<CordLpHubSessionState> st;
+    {
+      std::lock_guard<std::mutex> lk(g_cord_lp_hub_mu);
+      auto it = g_cord_lp_hub.find(sk);
+      if (it == g_cord_lp_hub.end())
+        return grpc::Status(grpc::StatusCode::NOT_FOUND, "unknown session_key");
+      st = it->second;
+    }
+    proxy_proto::CordLpHubSessionBegin meta_copy;
+    std::vector<uint8_t> forward_delta;
+    bool do_erase = false;
+    {
+      std::lock_guard<std::mutex> lk(st->mu);
+      if (st->finished)
+        return grpc::Status(grpc::StatusCode::FAILED_PRECONDITION, "session already finished");
+      if (static_cast<int>(request->partial_payload().size()) != st->meta.parity_slice_size())
+        return grpc::Status(grpc::StatusCode::INVALID_ARGUMENT, "partial size mismatch");
+      if (st->received_partials >= st->expected_partials)
+        return grpc::Status(grpc::StatusCode::OUT_OF_RANGE, "too many partials");
+      for (size_t u = 0; u < st->acc.size(); ++u)
+        st->acc[u] = static_cast<uint8_t>(st->acc[u] ^ static_cast<uint8_t>(request->partial_payload()[u]));
+      st->received_partials++;
+      if (st->received_partials == st->expected_partials)
+      {
+        st->finished = true;
+        meta_copy.CopyFrom(st->meta);
+        forward_delta = st->acc;
+        do_erase = true;
+      }
+    }
+    if (do_erase)
+    {
+      cord_lp_hub_forward_to_lp_proxy(meta_copy, forward_delta);
+      std::lock_guard<std::mutex> lk(g_cord_lp_hub_mu);
+      g_cord_lp_hub.erase(sk);
+    }
+    response->set_ifcommit(true);
+    return grpc::Status::OK;
+  }
+
+  grpc::Status ProxyImpl::cordLpComputePartialAndPush(
+      grpc::ServerContext *context,
+      const proxy_proto::CordLpComputePartialAndPush *request,
+      proxy_proto::SetReply *response)
+  {
+    (void)context;
+    response->set_ifcommit(false);
+    const int psz = request->parity_slice_size();
+    if (psz <= 0 || request->session_key().empty())
+      return grpc::Status(grpc::StatusCode::INVALID_ARGUMENT, "bad request");
+    std::vector<char> acc(static_cast<size_t>(psz), 0);
+    for (int fi = 0; fi < request->fetches_size(); ++fi)
+    {
+      const auto &f = request->fetches(fi);
+      const size_t rlen = static_cast<size_t>(f.read_len());
+      if (rlen == 0)
+        continue;
+      std::vector<char> chunk(rlen);
+      const std::string &bk = f.blob_key().empty() ? request->delta_blob_key() : f.blob_key();
+      const std::string &dip = f.datanode_ip().empty() ? request->delta_datanode_ip() : f.datanode_ip();
+      const int dport = f.datanode_port() != 0 ? f.datanode_port() : request->delta_datanode_port();
+      if (!CordRangeReadFromDatanode(bk, 0, static_cast<int>(f.blob_offset()), chunk.data(), rlen,
+                                     dip.c_str(), dport))
+      {
+        std::cout << "[CoRD-LP-GH] read delta blob " << bk << " failed" << std::endl;
+        return grpc::Status(grpc::StatusCode::INTERNAL, "delta blob read failed");
+      }
+      const int acc_off = f.acc_offset();
+      if (acc_off < 0 || static_cast<size_t>(acc_off) + rlen > acc.size())
+        return grpc::Status(grpc::StatusCode::INVALID_ARGUMENT, "acc_offset/len out of range");
+      for (size_t u = 0; u < rlen; ++u)
+        acc[static_cast<size_t>(acc_off) + u] =
+            static_cast<char>(static_cast<unsigned char>(acc[static_cast<size_t>(acc_off) + u]) ^
+                              static_cast<unsigned char>(chunk[u]));
+    }
+    std::string hub_addr = request->hub_proxy_ip() + ":" + std::to_string(request->hub_proxy_port());
+    auto ch = grpc::CreateChannel(hub_addr, grpc::InsecureChannelCredentials());
+    std::unique_ptr<proxy_proto::proxyService::Stub> hub_stub = proxy_proto::proxyService::NewStub(ch);
+    proxy_proto::CordLpHubPartialPush push;
+    push.set_session_key(request->session_key());
+    push.set_partial_payload(acc.data(), acc.size());
+    grpc::ClientContext ctx;
+    proxy_proto::SetReply rep;
+    grpc::Status st = hub_stub->cordLpHubPartialPush(&ctx, push, &rep);
+    if (!st.ok())
+      return st;
+    response->set_ifcommit(true);
+    return grpc::Status::OK;
+  }
+
+  grpc::Status ProxyImpl::cordLpApplyParityDelta(
+      grpc::ServerContext *context,
+      const proxy_proto::CordLpParityApplyDelta *request,
+      proxy_proto::SetReply *response)
+  {
+    (void)context;
+    response->set_ifcommit(false);
+    const int psz = request->parity_slice_size();
+    if (psz <= 0)
+      return grpc::Status(grpc::StatusCode::INVALID_ARGUMENT, "bad parity slice");
+    std::vector<char> cur(static_cast<size_t>(psz));
+    if (!CordRangeReadFromDatanode(request->local_block_key(), request->local_block_id(),
+                                   request->parity_slice_offset(), cur.data(), static_cast<size_t>(psz),
+                                   request->local_datanode_ip().c_str(), request->local_datanode_port()))
+      return grpc::Status(grpc::StatusCode::INTERNAL, "read local parity failed");
+    if (static_cast<int>(request->delta_payload().size()) != psz)
+      return grpc::Status(grpc::StatusCode::INVALID_ARGUMENT, "delta size mismatch");
+    for (int u = 0; u < psz; ++u)
+      cur[static_cast<size_t>(u)] =
+          static_cast<char>(static_cast<unsigned char>(cur[static_cast<size_t>(u)]) ^
+                            static_cast<unsigned char>(request->delta_payload()[u]));
+    if (!CordRangeWriteToDatanode(request->local_block_key(), request->local_block_id(),
+                                  request->parity_slice_offset(), cur.data(), static_cast<size_t>(psz),
+                                  request->local_datanode_ip().c_str(), request->local_datanode_port()))
+      return grpc::Status(grpc::StatusCode::INTERNAL, "write local parity failed");
+    response->set_ifcommit(true);
+    return grpc::Status::OK;
   }
 
   grpc::Status ProxyImpl::scheduleAppend2Datanode(

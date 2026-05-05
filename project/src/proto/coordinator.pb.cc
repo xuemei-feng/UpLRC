@@ -250,6 +250,23 @@ struct XueUpdateRequestDefaultTypeInternal {
   };
 };
 PROTOBUF_ATTRIBUTE_NO_DESTROY PROTOBUF_CONSTINIT PROTOBUF_ATTRIBUTE_INIT_PRIORITY1 XueUpdateRequestDefaultTypeInternal _XueUpdateRequest_default_instance_;
+PROTOBUF_CONSTEXPR CordUpdateRequest::CordUpdateRequest(
+    ::_pbi::ConstantInitialized): _impl_{
+    /*decltype(_impl_.update_intervals_)*/{}
+  , /*decltype(_impl_.client_id_)*/{&::_pbi::fixed_address_empty_string, ::_pbi::ConstantInitialized{}}
+  , /*decltype(_impl_.stripe_id_)*/0
+  , /*decltype(_impl_.interval_count_)*/0
+  , /*decltype(_impl_.cord_lp_use_global_hub_)*/false
+  , /*decltype(_impl_._cached_size_)*/{}} {}
+struct CordUpdateRequestDefaultTypeInternal {
+  PROTOBUF_CONSTEXPR CordUpdateRequestDefaultTypeInternal()
+      : _instance(::_pbi::ConstantInitialized{}) {}
+  ~CordUpdateRequestDefaultTypeInternal() {}
+  union {
+    CordUpdateRequest _instance;
+  };
+};
+PROTOBUF_ATTRIBUTE_NO_DESTROY PROTOBUF_CONSTINIT PROTOBUF_ATTRIBUTE_INIT_PRIORITY1 CordUpdateRequestDefaultTypeInternal _CordUpdateRequest_default_instance_;
 PROTOBUF_CONSTEXPR KeyFromClient::KeyFromClient(
     ::_pbi::ConstantInitialized): _impl_{
     /*decltype(_impl_.key_)*/{&::_pbi::fixed_address_empty_string, ::_pbi::ConstantInitialized{}}
@@ -378,7 +395,7 @@ struct RecoveryReplyDefaultTypeInternal {
 };
 PROTOBUF_ATTRIBUTE_NO_DESTROY PROTOBUF_CONSTINIT PROTOBUF_ATTRIBUTE_INIT_PRIORITY1 RecoveryReplyDefaultTypeInternal _RecoveryReply_default_instance_;
 }  // namespace coordinator_proto
-static ::_pb::Metadata file_level_metadata_coordinator_2eproto[24];
+static ::_pb::Metadata file_level_metadata_coordinator_2eproto[25];
 static constexpr ::_pb::EnumDescriptor const** file_level_enum_descriptors_coordinator_2eproto = nullptr;
 static constexpr ::_pb::ServiceDescriptor const** file_level_service_descriptors_coordinator_2eproto = nullptr;
 
@@ -520,6 +537,17 @@ const uint32_t TableStruct_coordinator_2eproto::offsets[] PROTOBUF_SECTION_VARIA
   PROTOBUF_FIELD_OFFSET(::coordinator_proto::XueUpdateRequest, _impl_.stripe_id_),
   PROTOBUF_FIELD_OFFSET(::coordinator_proto::XueUpdateRequest, _impl_.ranges_),
   ~0u,  // no _has_bits_
+  PROTOBUF_FIELD_OFFSET(::coordinator_proto::CordUpdateRequest, _internal_metadata_),
+  ~0u,  // no _extensions_
+  ~0u,  // no _oneof_case_
+  ~0u,  // no _weak_field_map_
+  ~0u,  // no _inlined_string_donated_
+  PROTOBUF_FIELD_OFFSET(::coordinator_proto::CordUpdateRequest, _impl_.client_id_),
+  PROTOBUF_FIELD_OFFSET(::coordinator_proto::CordUpdateRequest, _impl_.stripe_id_),
+  PROTOBUF_FIELD_OFFSET(::coordinator_proto::CordUpdateRequest, _impl_.update_intervals_),
+  PROTOBUF_FIELD_OFFSET(::coordinator_proto::CordUpdateRequest, _impl_.interval_count_),
+  PROTOBUF_FIELD_OFFSET(::coordinator_proto::CordUpdateRequest, _impl_.cord_lp_use_global_hub_),
+  ~0u,  // no _has_bits_
   PROTOBUF_FIELD_OFFSET(::coordinator_proto::KeyFromClient, _internal_metadata_),
   ~0u,  // no _extensions_
   ~0u,  // no _oneof_case_
@@ -607,15 +635,16 @@ static const ::_pbi::MigrationSchema schemas[] PROTOBUF_SECTION_VARIABLE(protode
   { 108, -1, -1, sizeof(::coordinator_proto::BlockIDsAndClientIP)},
   { 119, -1, -1, sizeof(::coordinator_proto::LogicalRange)},
   { 127, -1, -1, sizeof(::coordinator_proto::XueUpdateRequest)},
-  { 136, -1, -1, sizeof(::coordinator_proto::KeyFromClient)},
-  { 143, -1, -1, sizeof(::coordinator_proto::StripeIdFromClient)},
-  { 150, -1, -1, sizeof(::coordinator_proto::StripeIdAndBlockIDsFromClient)},
-  { 158, -1, -1, sizeof(::coordinator_proto::NodeIdFromClient)},
-  { 165, -1, -1, sizeof(::coordinator_proto::RepIfDeling)},
-  { 172, -1, -1, sizeof(::coordinator_proto::RepStripeIds)},
-  { 179, -1, -1, sizeof(::coordinator_proto::RepBlockNum)},
-  { 186, -1, -1, sizeof(::coordinator_proto::DegradedReadReply)},
-  { 196, -1, -1, sizeof(::coordinator_proto::RecoveryReply)},
+  { 136, -1, -1, sizeof(::coordinator_proto::CordUpdateRequest)},
+  { 147, -1, -1, sizeof(::coordinator_proto::KeyFromClient)},
+  { 154, -1, -1, sizeof(::coordinator_proto::StripeIdFromClient)},
+  { 161, -1, -1, sizeof(::coordinator_proto::StripeIdAndBlockIDsFromClient)},
+  { 169, -1, -1, sizeof(::coordinator_proto::NodeIdFromClient)},
+  { 176, -1, -1, sizeof(::coordinator_proto::RepIfDeling)},
+  { 183, -1, -1, sizeof(::coordinator_proto::RepStripeIds)},
+  { 190, -1, -1, sizeof(::coordinator_proto::RepBlockNum)},
+  { 197, -1, -1, sizeof(::coordinator_proto::DegradedReadReply)},
+  { 207, -1, -1, sizeof(::coordinator_proto::RecoveryReply)},
 };
 
 static const ::_pb::Message* const file_default_instances[] = {
@@ -634,6 +663,7 @@ static const ::_pb::Message* const file_default_instances[] = {
   &::coordinator_proto::_BlockIDsAndClientIP_default_instance_._instance,
   &::coordinator_proto::_LogicalRange_default_instance_._instance,
   &::coordinator_proto::_XueUpdateRequest_default_instance_._instance,
+  &::coordinator_proto::_CordUpdateRequest_default_instance_._instance,
   &::coordinator_proto::_KeyFromClient_default_instance_._instance,
   &::coordinator_proto::_StripeIdFromClient_default_instance_._instance,
   &::coordinator_proto::_StripeIdAndBlockIDsFromClient_default_instance_._instance,
@@ -679,84 +709,97 @@ const char descriptor_table_protodef_coordinator_2eproto[] PROTOBUF_SECTION_VARI
   "start\030\001 \001(\005\022\032\n\022logical_offset_end\030\002 \001(\005\""
   "i\n\020XueUpdateRequest\022\021\n\tclient_id\030\001 \001(\t\022\021"
   "\n\tstripe_id\030\002 \001(\005\022/\n\006ranges\030\003 \003(\0132\037.coor"
-  "dinator_proto.LogicalRange\"\034\n\rKeyFromCli"
-  "ent\022\013\n\003key\030\001 \001(\t\"\'\n\022StripeIdFromClient\022\021"
-  "\n\tstripe_id\030\001 \001(\005\"E\n\035StripeIdAndBlockIDs"
-  "FromClient\022\021\n\tstripe_id\030\001 \001(\005\022\021\n\tblock_i"
-  "ds\030\002 \003(\005\"#\n\020NodeIdFromClient\022\017\n\007node_id\030"
-  "\001 \001(\005\"\037\n\013RepIfDeling\022\020\n\010ifdeling\030\001 \001(\010\"\""
-  "\n\014RepStripeIds\022\022\n\nstripe_ids\030\001 \003(\005\" \n\013Re"
-  "pBlockNum\022\021\n\tblock_num\030\001 \001(\005\"m\n\021Degraded"
-  "ReadReply\022\024\n\014disk_io_time\030\001 \001(\001\022\024\n\014netwo"
-  "rk_time\030\002 \001(\001\022\023\n\013decode_time\030\003 \001(\001\022\027\n\017gr"
-  "pc_start_time\030\004 \001(\001\"\204\001\n\rRecoveryReply\022\026\n"
-  "\016disk_read_time\030\001 \001(\001\022\024\n\014network_time\030\002 "
-  "\001(\001\022\023\n\013decode_time\030\003 \001(\001\022\027\n\017disk_write_t"
-  "ime\030\004 \001(\001\022\027\n\017grpc_start_time\030\005 \001(\0012\206\022\n\022c"
-  "oordinatorService\022k\n\025sayHelloToCoordinat"
-  "or\022\'.coordinator_proto.RequestToCoordina"
-  "tor\032\'.coordinator_proto.ReplyFromCoordin"
-  "ator\"\000\022`\n\ncheckalive\022\'.coordinator_proto"
-  ".RequestToCoordinator\032\'.coordinator_prot"
-  "o.ReplyFromCoordinator\"\000\022V\n\014setParameter"
-  "\022\034.coordinator_proto.Parameter\032&.coordin"
-  "ator_proto.RepIfSetParaSuccess\"\000\022d\n\024uplo"
-  "adOriginKeyValue\022%.coordinator_proto.Req"
-  "uestProxyIPPort\032#.coordinator_proto.Repl"
-  "yProxyIPPort\"\000\022a\n\021reportCommitAbort\022!.co"
-  "ordinator_proto.CommitAbortKey\032\'.coordin"
-  "ator_proto.ReplyFromCoordinator\"\000\022V\n\020che"
-  "ckCommitAbort\022\037.coordinator_proto.AskIfS"
-  "uccess\032\037.coordinator_proto.RepIfSuccess\""
-  "\000\022`\n\016uploadSetValue\022%.coordinator_proto."
-  "RequestProxyIPPort\032%.coordinator_proto.R"
-  "eplyProxyIPsPorts\"\000\022c\n\021uploadSubsetValue"
-  "\022%.coordinator_proto.RequestProxyIPPort\032"
-  "%.coordinator_proto.ReplyProxyIPsPorts\"\000"
-  "\022c\n\021uploadAppendValue\022%.coordinator_prot"
-  "o.RequestProxyIPPort\032%.coordinator_proto"
-  ".ReplyProxyIPsPorts\"\000\022_\n\017uploadXueUpdate"
-  "\022#.coordinator_proto.XueUpdateRequest\032%."
-  "coordinator_proto.ReplyProxyIPsPorts\"\000\022S"
-  "\n\010getValue\022!.coordinator_proto.KeyAndCli"
-  "entIP\032\".coordinator_proto.RepIfGetSucces"
-  "s\"\000\022W\n\tgetStripe\022!.coordinator_proto.Key"
-  "AndClientIP\032%.coordinator_proto.ReplyPro"
-  "xyIPsPorts\"\000\022\\\n\tgetBlocks\022&.coordinator_"
-  "proto.BlockIDsAndClientIP\032%.coordinator_"
-  "proto.ReplyProxyIPsPorts\"\000\022h\n\025getDegrade"
-  "dReadBlocks\022&.coordinator_proto.BlockIDs"
-  "AndClientIP\032%.coordinator_proto.ReplyPro"
-  "xyIPsPorts\"\000\022a\n\024getDegradedReadBlock\022!.c"
-  "oordinator_proto.KeyAndClientIP\032$.coordi"
-  "nator_proto.DegradedReadReply\"\000\022j\n\035getDe"
-  "gradedReadBlockBreakdown\022!.coordinator_p"
-  "roto.KeyAndClientIP\032$.coordinator_proto."
-  "DegradedReadReply\"\000\022T\n\013getRecovery\022!.coo"
-  "rdinator_proto.KeyAndClientIP\032 .coordina"
-  "tor_proto.RecoveryReply\"\000\022]\n\024getRecovery"
-  "Breakdown\022!.coordinator_proto.KeyAndClie"
-  "ntIP\032 .coordinator_proto.RecoveryReply\"\000"
-  "\022Y\n\020fullNodeRecovery\022#.coordinator_proto"
-  ".NodeIdFromClient\032\036.coordinator_proto.Re"
-  "pBlockNum\"\000\022j\n\022multiBlockRecovery\0220.coor"
-  "dinator_proto.StripeIdAndBlockIDsFromCli"
-  "ent\032 .coordinator_proto.RecoveryReply\"\000\022"
-  "N\n\010delByKey\022 .coordinator_proto.KeyFromC"
-  "lient\032\036.coordinator_proto.RepIfDeling\"\000\022"
-  "V\n\013delByStripe\022%.coordinator_proto.Strip"
-  "eIdFromClient\032\036.coordinator_proto.RepIfD"
-  "eling\"\000\022Y\n\013listStripes\022\'.coordinator_pro"
-  "to.RequestToCoordinator\032\037.coordinator_pr"
-  "oto.RepStripeIds\"\000\022W\n\ndecodeTest\022!.coord"
-  "inator_proto.KeyAndClientIP\032$.coordinato"
-  "r_proto.DegradedReadReply\"\000b\006proto3"
+  "dinator_proto.LogicalRange\"\254\001\n\021CordUpdat"
+  "eRequest\022\021\n\tclient_id\030\001 \001(\t\022\021\n\tstripe_id"
+  "\030\002 \001(\005\0229\n\020update_intervals\030\003 \003(\0132\037.coord"
+  "inator_proto.LogicalRange\022\026\n\016interval_co"
+  "unt\030\004 \001(\005\022\036\n\026cord_lp_use_global_hub\030\005 \001("
+  "\010\"\034\n\rKeyFromClient\022\013\n\003key\030\001 \001(\t\"\'\n\022Strip"
+  "eIdFromClient\022\021\n\tstripe_id\030\001 \001(\005\"E\n\035Stri"
+  "peIdAndBlockIDsFromClient\022\021\n\tstripe_id\030\001"
+  " \001(\005\022\021\n\tblock_ids\030\002 \003(\005\"#\n\020NodeIdFromCli"
+  "ent\022\017\n\007node_id\030\001 \001(\005\"\037\n\013RepIfDeling\022\020\n\010i"
+  "fdeling\030\001 \001(\010\"\"\n\014RepStripeIds\022\022\n\nstripe_"
+  "ids\030\001 \003(\005\" \n\013RepBlockNum\022\021\n\tblock_num\030\001 "
+  "\001(\005\"m\n\021DegradedReadReply\022\024\n\014disk_io_time"
+  "\030\001 \001(\001\022\024\n\014network_time\030\002 \001(\001\022\023\n\013decode_t"
+  "ime\030\003 \001(\001\022\027\n\017grpc_start_time\030\004 \001(\001\"\204\001\n\rR"
+  "ecoveryReply\022\026\n\016disk_read_time\030\001 \001(\001\022\024\n\014"
+  "network_time\030\002 \001(\001\022\023\n\013decode_time\030\003 \001(\001\022"
+  "\027\n\017disk_write_time\030\004 \001(\001\022\027\n\017grpc_start_t"
+  "ime\030\005 \001(\0012\276\024\n\022coordinatorService\022k\n\025sayH"
+  "elloToCoordinator\022\'.coordinator_proto.Re"
+  "questToCoordinator\032\'.coordinator_proto.R"
+  "eplyFromCoordinator\"\000\022`\n\ncheckalive\022\'.co"
+  "ordinator_proto.RequestToCoordinator\032\'.c"
+  "oordinator_proto.ReplyFromCoordinator\"\000\022"
+  "V\n\014setParameter\022\034.coordinator_proto.Para"
+  "meter\032&.coordinator_proto.RepIfSetParaSu"
+  "ccess\"\000\022d\n\024uploadOriginKeyValue\022%.coordi"
+  "nator_proto.RequestProxyIPPort\032#.coordin"
+  "ator_proto.ReplyProxyIPPort\"\000\022a\n\021reportC"
+  "ommitAbort\022!.coordinator_proto.CommitAbo"
+  "rtKey\032\'.coordinator_proto.ReplyFromCoord"
+  "inator\"\000\022V\n\020checkCommitAbort\022\037.coordinat"
+  "or_proto.AskIfSuccess\032\037.coordinator_prot"
+  "o.RepIfSuccess\"\000\022`\n\016uploadSetValue\022%.coo"
+  "rdinator_proto.RequestProxyIPPort\032%.coor"
+  "dinator_proto.ReplyProxyIPsPorts\"\000\022c\n\021up"
+  "loadSubsetValue\022%.coordinator_proto.Requ"
+  "estProxyIPPort\032%.coordinator_proto.Reply"
+  "ProxyIPsPorts\"\000\022c\n\021uploadAppendValue\022%.c"
+  "oordinator_proto.RequestProxyIPPort\032%.co"
+  "ordinator_proto.ReplyProxyIPsPorts\"\000\022_\n\017"
+  "uploadXueUpdate\022#.coordinator_proto.XueU"
+  "pdateRequest\032%.coordinator_proto.ReplyPr"
+  "oxyIPsPorts\"\000\022a\n\020uploadCordUpdate\022$.coor"
+  "dinator_proto.CordUpdateRequest\032%.coordi"
+  "nator_proto.ReplyProxyIPsPorts\"\000\022e\n\032uplo"
+  "adCordLocalParityApply\022$.coordinator_pro"
+  "to.CordUpdateRequest\032\037.coordinator_proto"
+  ".RepIfSuccess\"\000\022l\n!uploadCordLocalParity"
+  "ViaGlobalHub\022$.coordinator_proto.CordUpd"
+  "ateRequest\032\037.coordinator_proto.RepIfSucc"
+  "ess\"\000\022S\n\010getValue\022!.coordinator_proto.Ke"
+  "yAndClientIP\032\".coordinator_proto.RepIfGe"
+  "tSuccess\"\000\022W\n\tgetStripe\022!.coordinator_pr"
+  "oto.KeyAndClientIP\032%.coordinator_proto.R"
+  "eplyProxyIPsPorts\"\000\022\\\n\tgetBlocks\022&.coord"
+  "inator_proto.BlockIDsAndClientIP\032%.coord"
+  "inator_proto.ReplyProxyIPsPorts\"\000\022h\n\025get"
+  "DegradedReadBlocks\022&.coordinator_proto.B"
+  "lockIDsAndClientIP\032%.coordinator_proto.R"
+  "eplyProxyIPsPorts\"\000\022a\n\024getDegradedReadBl"
+  "ock\022!.coordinator_proto.KeyAndClientIP\032$"
+  ".coordinator_proto.DegradedReadReply\"\000\022j"
+  "\n\035getDegradedReadBlockBreakdown\022!.coordi"
+  "nator_proto.KeyAndClientIP\032$.coordinator"
+  "_proto.DegradedReadReply\"\000\022T\n\013getRecover"
+  "y\022!.coordinator_proto.KeyAndClientIP\032 .c"
+  "oordinator_proto.RecoveryReply\"\000\022]\n\024getR"
+  "ecoveryBreakdown\022!.coordinator_proto.Key"
+  "AndClientIP\032 .coordinator_proto.Recovery"
+  "Reply\"\000\022Y\n\020fullNodeRecovery\022#.coordinato"
+  "r_proto.NodeIdFromClient\032\036.coordinator_p"
+  "roto.RepBlockNum\"\000\022j\n\022multiBlockRecovery"
+  "\0220.coordinator_proto.StripeIdAndBlockIDs"
+  "FromClient\032 .coordinator_proto.RecoveryR"
+  "eply\"\000\022N\n\010delByKey\022 .coordinator_proto.K"
+  "eyFromClient\032\036.coordinator_proto.RepIfDe"
+  "ling\"\000\022V\n\013delByStripe\022%.coordinator_prot"
+  "o.StripeIdFromClient\032\036.coordinator_proto"
+  ".RepIfDeling\"\000\022Y\n\013listStripes\022\'.coordina"
+  "tor_proto.RequestToCoordinator\032\037.coordin"
+  "ator_proto.RepStripeIds\"\000\022W\n\ndecodeTest\022"
+  "!.coordinator_proto.KeyAndClientIP\032$.coo"
+  "rdinator_proto.DegradedReadReply\"\000b\006prot"
+  "o3"
   ;
 static ::_pbi::once_flag descriptor_table_coordinator_2eproto_once;
 const ::_pbi::DescriptorTable descriptor_table_coordinator_2eproto = {
-    false, false, 4195, descriptor_table_protodef_coordinator_2eproto,
+    false, false, 4682, descriptor_table_protodef_coordinator_2eproto,
     "coordinator.proto",
-    &descriptor_table_coordinator_2eproto_once, nullptr, 0, 24,
+    &descriptor_table_coordinator_2eproto_once, nullptr, 0, 25,
     schemas, file_default_instances, TableStruct_coordinator_2eproto::offsets,
     file_level_metadata_coordinator_2eproto, file_level_enum_descriptors_coordinator_2eproto,
     file_level_service_descriptors_coordinator_2eproto,
@@ -4631,6 +4674,327 @@ void XueUpdateRequest::InternalSwap(XueUpdateRequest* other) {
 
 // ===================================================================
 
+class CordUpdateRequest::_Internal {
+ public:
+};
+
+CordUpdateRequest::CordUpdateRequest(::PROTOBUF_NAMESPACE_ID::Arena* arena,
+                         bool is_message_owned)
+  : ::PROTOBUF_NAMESPACE_ID::Message(arena, is_message_owned) {
+  SharedCtor(arena, is_message_owned);
+  // @@protoc_insertion_point(arena_constructor:coordinator_proto.CordUpdateRequest)
+}
+CordUpdateRequest::CordUpdateRequest(const CordUpdateRequest& from)
+  : ::PROTOBUF_NAMESPACE_ID::Message() {
+  CordUpdateRequest* const _this = this; (void)_this;
+  new (&_impl_) Impl_{
+      decltype(_impl_.update_intervals_){from._impl_.update_intervals_}
+    , decltype(_impl_.client_id_){}
+    , decltype(_impl_.stripe_id_){}
+    , decltype(_impl_.interval_count_){}
+    , decltype(_impl_.cord_lp_use_global_hub_){}
+    , /*decltype(_impl_._cached_size_)*/{}};
+
+  _internal_metadata_.MergeFrom<::PROTOBUF_NAMESPACE_ID::UnknownFieldSet>(from._internal_metadata_);
+  _impl_.client_id_.InitDefault();
+  #ifdef PROTOBUF_FORCE_COPY_DEFAULT_STRING
+    _impl_.client_id_.Set("", GetArenaForAllocation());
+  #endif // PROTOBUF_FORCE_COPY_DEFAULT_STRING
+  if (!from._internal_client_id().empty()) {
+    _this->_impl_.client_id_.Set(from._internal_client_id(), 
+      _this->GetArenaForAllocation());
+  }
+  ::memcpy(&_impl_.stripe_id_, &from._impl_.stripe_id_,
+    static_cast<size_t>(reinterpret_cast<char*>(&_impl_.cord_lp_use_global_hub_) -
+    reinterpret_cast<char*>(&_impl_.stripe_id_)) + sizeof(_impl_.cord_lp_use_global_hub_));
+  // @@protoc_insertion_point(copy_constructor:coordinator_proto.CordUpdateRequest)
+}
+
+inline void CordUpdateRequest::SharedCtor(
+    ::_pb::Arena* arena, bool is_message_owned) {
+  (void)arena;
+  (void)is_message_owned;
+  new (&_impl_) Impl_{
+      decltype(_impl_.update_intervals_){arena}
+    , decltype(_impl_.client_id_){}
+    , decltype(_impl_.stripe_id_){0}
+    , decltype(_impl_.interval_count_){0}
+    , decltype(_impl_.cord_lp_use_global_hub_){false}
+    , /*decltype(_impl_._cached_size_)*/{}
+  };
+  _impl_.client_id_.InitDefault();
+  #ifdef PROTOBUF_FORCE_COPY_DEFAULT_STRING
+    _impl_.client_id_.Set("", GetArenaForAllocation());
+  #endif // PROTOBUF_FORCE_COPY_DEFAULT_STRING
+}
+
+CordUpdateRequest::~CordUpdateRequest() {
+  // @@protoc_insertion_point(destructor:coordinator_proto.CordUpdateRequest)
+  if (auto *arena = _internal_metadata_.DeleteReturnArena<::PROTOBUF_NAMESPACE_ID::UnknownFieldSet>()) {
+  (void)arena;
+    return;
+  }
+  SharedDtor();
+}
+
+inline void CordUpdateRequest::SharedDtor() {
+  GOOGLE_DCHECK(GetArenaForAllocation() == nullptr);
+  _impl_.update_intervals_.~RepeatedPtrField();
+  _impl_.client_id_.Destroy();
+}
+
+void CordUpdateRequest::SetCachedSize(int size) const {
+  _impl_._cached_size_.Set(size);
+}
+
+void CordUpdateRequest::Clear() {
+// @@protoc_insertion_point(message_clear_start:coordinator_proto.CordUpdateRequest)
+  uint32_t cached_has_bits = 0;
+  // Prevent compiler warnings about cached_has_bits being unused
+  (void) cached_has_bits;
+
+  _impl_.update_intervals_.Clear();
+  _impl_.client_id_.ClearToEmpty();
+  ::memset(&_impl_.stripe_id_, 0, static_cast<size_t>(
+      reinterpret_cast<char*>(&_impl_.cord_lp_use_global_hub_) -
+      reinterpret_cast<char*>(&_impl_.stripe_id_)) + sizeof(_impl_.cord_lp_use_global_hub_));
+  _internal_metadata_.Clear<::PROTOBUF_NAMESPACE_ID::UnknownFieldSet>();
+}
+
+const char* CordUpdateRequest::_InternalParse(const char* ptr, ::_pbi::ParseContext* ctx) {
+#define CHK_(x) if (PROTOBUF_PREDICT_FALSE(!(x))) goto failure
+  while (!ctx->Done(&ptr)) {
+    uint32_t tag;
+    ptr = ::_pbi::ReadTag(ptr, &tag);
+    switch (tag >> 3) {
+      // string client_id = 1;
+      case 1:
+        if (PROTOBUF_PREDICT_TRUE(static_cast<uint8_t>(tag) == 10)) {
+          auto str = _internal_mutable_client_id();
+          ptr = ::_pbi::InlineGreedyStringParser(str, ptr, ctx);
+          CHK_(ptr);
+          CHK_(::_pbi::VerifyUTF8(str, "coordinator_proto.CordUpdateRequest.client_id"));
+        } else
+          goto handle_unusual;
+        continue;
+      // int32 stripe_id = 2;
+      case 2:
+        if (PROTOBUF_PREDICT_TRUE(static_cast<uint8_t>(tag) == 16)) {
+          _impl_.stripe_id_ = ::PROTOBUF_NAMESPACE_ID::internal::ReadVarint32(&ptr);
+          CHK_(ptr);
+        } else
+          goto handle_unusual;
+        continue;
+      // repeated .coordinator_proto.LogicalRange update_intervals = 3;
+      case 3:
+        if (PROTOBUF_PREDICT_TRUE(static_cast<uint8_t>(tag) == 26)) {
+          ptr -= 1;
+          do {
+            ptr += 1;
+            ptr = ctx->ParseMessage(_internal_add_update_intervals(), ptr);
+            CHK_(ptr);
+            if (!ctx->DataAvailable(ptr)) break;
+          } while (::PROTOBUF_NAMESPACE_ID::internal::ExpectTag<26>(ptr));
+        } else
+          goto handle_unusual;
+        continue;
+      // int32 interval_count = 4;
+      case 4:
+        if (PROTOBUF_PREDICT_TRUE(static_cast<uint8_t>(tag) == 32)) {
+          _impl_.interval_count_ = ::PROTOBUF_NAMESPACE_ID::internal::ReadVarint32(&ptr);
+          CHK_(ptr);
+        } else
+          goto handle_unusual;
+        continue;
+      // bool cord_lp_use_global_hub = 5;
+      case 5:
+        if (PROTOBUF_PREDICT_TRUE(static_cast<uint8_t>(tag) == 40)) {
+          _impl_.cord_lp_use_global_hub_ = ::PROTOBUF_NAMESPACE_ID::internal::ReadVarint64(&ptr);
+          CHK_(ptr);
+        } else
+          goto handle_unusual;
+        continue;
+      default:
+        goto handle_unusual;
+    }  // switch
+  handle_unusual:
+    if ((tag == 0) || ((tag & 7) == 4)) {
+      CHK_(ptr);
+      ctx->SetLastTag(tag);
+      goto message_done;
+    }
+    ptr = UnknownFieldParse(
+        tag,
+        _internal_metadata_.mutable_unknown_fields<::PROTOBUF_NAMESPACE_ID::UnknownFieldSet>(),
+        ptr, ctx);
+    CHK_(ptr != nullptr);
+  }  // while
+message_done:
+  return ptr;
+failure:
+  ptr = nullptr;
+  goto message_done;
+#undef CHK_
+}
+
+uint8_t* CordUpdateRequest::_InternalSerialize(
+    uint8_t* target, ::PROTOBUF_NAMESPACE_ID::io::EpsCopyOutputStream* stream) const {
+  // @@protoc_insertion_point(serialize_to_array_start:coordinator_proto.CordUpdateRequest)
+  uint32_t cached_has_bits = 0;
+  (void) cached_has_bits;
+
+  // string client_id = 1;
+  if (!this->_internal_client_id().empty()) {
+    ::PROTOBUF_NAMESPACE_ID::internal::WireFormatLite::VerifyUtf8String(
+      this->_internal_client_id().data(), static_cast<int>(this->_internal_client_id().length()),
+      ::PROTOBUF_NAMESPACE_ID::internal::WireFormatLite::SERIALIZE,
+      "coordinator_proto.CordUpdateRequest.client_id");
+    target = stream->WriteStringMaybeAliased(
+        1, this->_internal_client_id(), target);
+  }
+
+  // int32 stripe_id = 2;
+  if (this->_internal_stripe_id() != 0) {
+    target = stream->EnsureSpace(target);
+    target = ::_pbi::WireFormatLite::WriteInt32ToArray(2, this->_internal_stripe_id(), target);
+  }
+
+  // repeated .coordinator_proto.LogicalRange update_intervals = 3;
+  for (unsigned i = 0,
+      n = static_cast<unsigned>(this->_internal_update_intervals_size()); i < n; i++) {
+    const auto& repfield = this->_internal_update_intervals(i);
+    target = ::PROTOBUF_NAMESPACE_ID::internal::WireFormatLite::
+        InternalWriteMessage(3, repfield, repfield.GetCachedSize(), target, stream);
+  }
+
+  // int32 interval_count = 4;
+  if (this->_internal_interval_count() != 0) {
+    target = stream->EnsureSpace(target);
+    target = ::_pbi::WireFormatLite::WriteInt32ToArray(4, this->_internal_interval_count(), target);
+  }
+
+  // bool cord_lp_use_global_hub = 5;
+  if (this->_internal_cord_lp_use_global_hub() != 0) {
+    target = stream->EnsureSpace(target);
+    target = ::_pbi::WireFormatLite::WriteBoolToArray(5, this->_internal_cord_lp_use_global_hub(), target);
+  }
+
+  if (PROTOBUF_PREDICT_FALSE(_internal_metadata_.have_unknown_fields())) {
+    target = ::_pbi::WireFormat::InternalSerializeUnknownFieldsToArray(
+        _internal_metadata_.unknown_fields<::PROTOBUF_NAMESPACE_ID::UnknownFieldSet>(::PROTOBUF_NAMESPACE_ID::UnknownFieldSet::default_instance), target, stream);
+  }
+  // @@protoc_insertion_point(serialize_to_array_end:coordinator_proto.CordUpdateRequest)
+  return target;
+}
+
+size_t CordUpdateRequest::ByteSizeLong() const {
+// @@protoc_insertion_point(message_byte_size_start:coordinator_proto.CordUpdateRequest)
+  size_t total_size = 0;
+
+  uint32_t cached_has_bits = 0;
+  // Prevent compiler warnings about cached_has_bits being unused
+  (void) cached_has_bits;
+
+  // repeated .coordinator_proto.LogicalRange update_intervals = 3;
+  total_size += 1UL * this->_internal_update_intervals_size();
+  for (const auto& msg : this->_impl_.update_intervals_) {
+    total_size +=
+      ::PROTOBUF_NAMESPACE_ID::internal::WireFormatLite::MessageSize(msg);
+  }
+
+  // string client_id = 1;
+  if (!this->_internal_client_id().empty()) {
+    total_size += 1 +
+      ::PROTOBUF_NAMESPACE_ID::internal::WireFormatLite::StringSize(
+        this->_internal_client_id());
+  }
+
+  // int32 stripe_id = 2;
+  if (this->_internal_stripe_id() != 0) {
+    total_size += ::_pbi::WireFormatLite::Int32SizePlusOne(this->_internal_stripe_id());
+  }
+
+  // int32 interval_count = 4;
+  if (this->_internal_interval_count() != 0) {
+    total_size += ::_pbi::WireFormatLite::Int32SizePlusOne(this->_internal_interval_count());
+  }
+
+  // bool cord_lp_use_global_hub = 5;
+  if (this->_internal_cord_lp_use_global_hub() != 0) {
+    total_size += 1 + 1;
+  }
+
+  return MaybeComputeUnknownFieldsSize(total_size, &_impl_._cached_size_);
+}
+
+const ::PROTOBUF_NAMESPACE_ID::Message::ClassData CordUpdateRequest::_class_data_ = {
+    ::PROTOBUF_NAMESPACE_ID::Message::CopyWithSourceCheck,
+    CordUpdateRequest::MergeImpl
+};
+const ::PROTOBUF_NAMESPACE_ID::Message::ClassData*CordUpdateRequest::GetClassData() const { return &_class_data_; }
+
+
+void CordUpdateRequest::MergeImpl(::PROTOBUF_NAMESPACE_ID::Message& to_msg, const ::PROTOBUF_NAMESPACE_ID::Message& from_msg) {
+  auto* const _this = static_cast<CordUpdateRequest*>(&to_msg);
+  auto& from = static_cast<const CordUpdateRequest&>(from_msg);
+  // @@protoc_insertion_point(class_specific_merge_from_start:coordinator_proto.CordUpdateRequest)
+  GOOGLE_DCHECK_NE(&from, _this);
+  uint32_t cached_has_bits = 0;
+  (void) cached_has_bits;
+
+  _this->_impl_.update_intervals_.MergeFrom(from._impl_.update_intervals_);
+  if (!from._internal_client_id().empty()) {
+    _this->_internal_set_client_id(from._internal_client_id());
+  }
+  if (from._internal_stripe_id() != 0) {
+    _this->_internal_set_stripe_id(from._internal_stripe_id());
+  }
+  if (from._internal_interval_count() != 0) {
+    _this->_internal_set_interval_count(from._internal_interval_count());
+  }
+  if (from._internal_cord_lp_use_global_hub() != 0) {
+    _this->_internal_set_cord_lp_use_global_hub(from._internal_cord_lp_use_global_hub());
+  }
+  _this->_internal_metadata_.MergeFrom<::PROTOBUF_NAMESPACE_ID::UnknownFieldSet>(from._internal_metadata_);
+}
+
+void CordUpdateRequest::CopyFrom(const CordUpdateRequest& from) {
+// @@protoc_insertion_point(class_specific_copy_from_start:coordinator_proto.CordUpdateRequest)
+  if (&from == this) return;
+  Clear();
+  MergeFrom(from);
+}
+
+bool CordUpdateRequest::IsInitialized() const {
+  return true;
+}
+
+void CordUpdateRequest::InternalSwap(CordUpdateRequest* other) {
+  using std::swap;
+  auto* lhs_arena = GetArenaForAllocation();
+  auto* rhs_arena = other->GetArenaForAllocation();
+  _internal_metadata_.InternalSwap(&other->_internal_metadata_);
+  _impl_.update_intervals_.InternalSwap(&other->_impl_.update_intervals_);
+  ::PROTOBUF_NAMESPACE_ID::internal::ArenaStringPtr::InternalSwap(
+      &_impl_.client_id_, lhs_arena,
+      &other->_impl_.client_id_, rhs_arena
+  );
+  ::PROTOBUF_NAMESPACE_ID::internal::memswap<
+      PROTOBUF_FIELD_OFFSET(CordUpdateRequest, _impl_.cord_lp_use_global_hub_)
+      + sizeof(CordUpdateRequest::_impl_.cord_lp_use_global_hub_)
+      - PROTOBUF_FIELD_OFFSET(CordUpdateRequest, _impl_.stripe_id_)>(
+          reinterpret_cast<char*>(&_impl_.stripe_id_),
+          reinterpret_cast<char*>(&other->_impl_.stripe_id_));
+}
+
+::PROTOBUF_NAMESPACE_ID::Metadata CordUpdateRequest::GetMetadata() const {
+  return ::_pbi::AssignDescriptors(
+      &descriptor_table_coordinator_2eproto_getter, &descriptor_table_coordinator_2eproto_once,
+      file_level_metadata_coordinator_2eproto[15]);
+}
+
+// ===================================================================
+
 class KeyFromClient::_Internal {
  public:
 };
@@ -4829,7 +5193,7 @@ void KeyFromClient::InternalSwap(KeyFromClient* other) {
 ::PROTOBUF_NAMESPACE_ID::Metadata KeyFromClient::GetMetadata() const {
   return ::_pbi::AssignDescriptors(
       &descriptor_table_coordinator_2eproto_getter, &descriptor_table_coordinator_2eproto_once,
-      file_level_metadata_coordinator_2eproto[15]);
+      file_level_metadata_coordinator_2eproto[16]);
 }
 
 // ===================================================================
@@ -5007,7 +5371,7 @@ void StripeIdFromClient::InternalSwap(StripeIdFromClient* other) {
 ::PROTOBUF_NAMESPACE_ID::Metadata StripeIdFromClient::GetMetadata() const {
   return ::_pbi::AssignDescriptors(
       &descriptor_table_coordinator_2eproto_getter, &descriptor_table_coordinator_2eproto_once,
-      file_level_metadata_coordinator_2eproto[16]);
+      file_level_metadata_coordinator_2eproto[17]);
 }
 
 // ===================================================================
@@ -5227,7 +5591,7 @@ void StripeIdAndBlockIDsFromClient::InternalSwap(StripeIdAndBlockIDsFromClient* 
 ::PROTOBUF_NAMESPACE_ID::Metadata StripeIdAndBlockIDsFromClient::GetMetadata() const {
   return ::_pbi::AssignDescriptors(
       &descriptor_table_coordinator_2eproto_getter, &descriptor_table_coordinator_2eproto_once,
-      file_level_metadata_coordinator_2eproto[17]);
+      file_level_metadata_coordinator_2eproto[18]);
 }
 
 // ===================================================================
@@ -5405,7 +5769,7 @@ void NodeIdFromClient::InternalSwap(NodeIdFromClient* other) {
 ::PROTOBUF_NAMESPACE_ID::Metadata NodeIdFromClient::GetMetadata() const {
   return ::_pbi::AssignDescriptors(
       &descriptor_table_coordinator_2eproto_getter, &descriptor_table_coordinator_2eproto_once,
-      file_level_metadata_coordinator_2eproto[18]);
+      file_level_metadata_coordinator_2eproto[19]);
 }
 
 // ===================================================================
@@ -5583,7 +5947,7 @@ void RepIfDeling::InternalSwap(RepIfDeling* other) {
 ::PROTOBUF_NAMESPACE_ID::Metadata RepIfDeling::GetMetadata() const {
   return ::_pbi::AssignDescriptors(
       &descriptor_table_coordinator_2eproto_getter, &descriptor_table_coordinator_2eproto_once,
-      file_level_metadata_coordinator_2eproto[19]);
+      file_level_metadata_coordinator_2eproto[20]);
 }
 
 // ===================================================================
@@ -5776,7 +6140,7 @@ void RepStripeIds::InternalSwap(RepStripeIds* other) {
 ::PROTOBUF_NAMESPACE_ID::Metadata RepStripeIds::GetMetadata() const {
   return ::_pbi::AssignDescriptors(
       &descriptor_table_coordinator_2eproto_getter, &descriptor_table_coordinator_2eproto_once,
-      file_level_metadata_coordinator_2eproto[20]);
+      file_level_metadata_coordinator_2eproto[21]);
 }
 
 // ===================================================================
@@ -5954,7 +6318,7 @@ void RepBlockNum::InternalSwap(RepBlockNum* other) {
 ::PROTOBUF_NAMESPACE_ID::Metadata RepBlockNum::GetMetadata() const {
   return ::_pbi::AssignDescriptors(
       &descriptor_table_coordinator_2eproto_getter, &descriptor_table_coordinator_2eproto_once,
-      file_level_metadata_coordinator_2eproto[21]);
+      file_level_metadata_coordinator_2eproto[22]);
 }
 
 // ===================================================================
@@ -6261,7 +6625,7 @@ void DegradedReadReply::InternalSwap(DegradedReadReply* other) {
 ::PROTOBUF_NAMESPACE_ID::Metadata DegradedReadReply::GetMetadata() const {
   return ::_pbi::AssignDescriptors(
       &descriptor_table_coordinator_2eproto_getter, &descriptor_table_coordinator_2eproto_once,
-      file_level_metadata_coordinator_2eproto[22]);
+      file_level_metadata_coordinator_2eproto[23]);
 }
 
 // ===================================================================
@@ -6604,7 +6968,7 @@ void RecoveryReply::InternalSwap(RecoveryReply* other) {
 ::PROTOBUF_NAMESPACE_ID::Metadata RecoveryReply::GetMetadata() const {
   return ::_pbi::AssignDescriptors(
       &descriptor_table_coordinator_2eproto_getter, &descriptor_table_coordinator_2eproto_once,
-      file_level_metadata_coordinator_2eproto[23]);
+      file_level_metadata_coordinator_2eproto[24]);
 }
 
 // @@protoc_insertion_point(namespace_scope)
@@ -6669,6 +7033,10 @@ Arena::CreateMaybeMessage< ::coordinator_proto::LogicalRange >(Arena* arena) {
 template<> PROTOBUF_NOINLINE ::coordinator_proto::XueUpdateRequest*
 Arena::CreateMaybeMessage< ::coordinator_proto::XueUpdateRequest >(Arena* arena) {
   return Arena::CreateMessageInternal< ::coordinator_proto::XueUpdateRequest >(arena);
+}
+template<> PROTOBUF_NOINLINE ::coordinator_proto::CordUpdateRequest*
+Arena::CreateMaybeMessage< ::coordinator_proto::CordUpdateRequest >(Arena* arena) {
+  return Arena::CreateMessageInternal< ::coordinator_proto::CordUpdateRequest >(arena);
 }
 template<> PROTOBUF_NOINLINE ::coordinator_proto::KeyFromClient*
 Arena::CreateMaybeMessage< ::coordinator_proto::KeyFromClient >(Arena* arena) {

@@ -35,6 +35,10 @@ service coordinatorService {
   rpc uploadAppendValue (RequestProxyIPPort) returns (ReplyProxyIPsPorts) {};
   // xue update
   rpc uploadXueUpdate (XueUpdateRequest) returns (ReplyProxyIPsPorts) {};
+  // CoRD：按块内更新区间相交性分组（算法一）
+  rpc uploadCordUpdate (CordUpdateRequest) returns (ReplyProxyIPsPorts) {};
+  rpc uploadCordLocalParityApply (CordUpdateRequest) returns (RepIfSuccess) {};
+  rpc uploadCordLocalParityViaGlobalHub (CordUpdateRequest) returns (RepIfSuccess) {};
   // get
   rpc getValue(KeyAndClientIP) returns (RepIfGetSuccess) {};
 
@@ -155,6 +159,18 @@ message XueUpdateRequest {
   int32 stripe_id = 2;
   // 多个不连续逻辑区间，均在同一条带内
   repeated LogicalRange ranges = 3;
+}
+
+// CoRD 策略：条带号 + 更新区间数（可选校验）+ 条带内逻辑地址空间上的更新半开区间
+message CordUpdateRequest {
+  string client_id = 1;
+  int32 stripe_id = 2;
+  // 与 append 相同语义：条带数据区 [0, k*BlockSize) 内的 [logical_offset_start, logical_offset_end)
+  repeated LogicalRange update_intervals = 3;
+  // 若 >0 则必须等于 update_intervals 个数；0 表示不校验
+  int32 interval_count = 4;
+  // 为 true 时第二阶段走「经全局校验 hub 聚合」的本地校验更新
+  bool cord_lp_use_global_hub = 5;
 }
 
 // delete

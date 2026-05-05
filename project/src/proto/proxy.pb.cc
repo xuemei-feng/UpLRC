@@ -420,6 +420,165 @@ struct AppendStripeDataPlacementDefaultTypeInternal {
   };
 };
 PROTOBUF_ATTRIBUTE_NO_DESTROY PROTOBUF_CONSTINIT PROTOBUF_ATTRIBUTE_INIT_PRIORITY1 AppendStripeDataPlacementDefaultTypeInternal _AppendStripeDataPlacement_default_instance_;
+PROTOBUF_CONSTEXPR CordDataUpdatePlacement::CordDataUpdatePlacement(
+    ::_pbi::ConstantInitialized): _impl_{
+    /*decltype(_impl_.datanodeip_)*/{}
+  , /*decltype(_impl_.datanodeport_)*/{}
+  , /*decltype(_impl_._datanodeport_cached_byte_size_)*/{0}
+  , /*decltype(_impl_.blockkeys_)*/{}
+  , /*decltype(_impl_.blockids_)*/{}
+  , /*decltype(_impl_._blockids_cached_byte_size_)*/{0}
+  , /*decltype(_impl_.offsets_)*/{}
+  , /*decltype(_impl_._offsets_cached_byte_size_)*/{0}
+  , /*decltype(_impl_.sizes_)*/{}
+  , /*decltype(_impl_._sizes_cached_byte_size_)*/{0}
+  , /*decltype(_impl_.key_)*/{&::_pbi::fixed_address_empty_string, ::_pbi::ConstantInitialized{}}
+  , /*decltype(_impl_.delta_blob_key_)*/{&::_pbi::fixed_address_empty_string, ::_pbi::ConstantInitialized{}}
+  , /*decltype(_impl_.delta_datanode_ip_)*/{&::_pbi::fixed_address_empty_string, ::_pbi::ConstantInitialized{}}
+  , /*decltype(_impl_.cluster_id_)*/0
+  , /*decltype(_impl_.stripe_id_)*/0
+  , /*decltype(_impl_.update_payload_size_)*/uint64_t{0u}
+  , /*decltype(_impl_.delta_datanode_port_)*/0
+  , /*decltype(_impl_._cached_size_)*/{}} {}
+struct CordDataUpdatePlacementDefaultTypeInternal {
+  PROTOBUF_CONSTEXPR CordDataUpdatePlacementDefaultTypeInternal()
+      : _instance(::_pbi::ConstantInitialized{}) {}
+  ~CordDataUpdatePlacementDefaultTypeInternal() {}
+  union {
+    CordDataUpdatePlacement _instance;
+  };
+};
+PROTOBUF_ATTRIBUTE_NO_DESTROY PROTOBUF_CONSTINIT PROTOBUF_ATTRIBUTE_INIT_PRIORITY1 CordDataUpdatePlacementDefaultTypeInternal _CordDataUpdatePlacement_default_instance_;
+PROTOBUF_CONSTEXPR CordLpDeltaFetch::CordLpDeltaFetch(
+    ::_pbi::ConstantInitialized): _impl_{
+    /*decltype(_impl_.blob_key_)*/{&::_pbi::fixed_address_empty_string, ::_pbi::ConstantInitialized{}}
+  , /*decltype(_impl_.datanode_ip_)*/{&::_pbi::fixed_address_empty_string, ::_pbi::ConstantInitialized{}}
+  , /*decltype(_impl_.blob_offset_)*/uint64_t{0u}
+  , /*decltype(_impl_.datanode_port_)*/0
+  , /*decltype(_impl_.acc_offset_)*/0
+  , /*decltype(_impl_.read_len_)*/uint64_t{0u}
+  , /*decltype(_impl_._cached_size_)*/{}} {}
+struct CordLpDeltaFetchDefaultTypeInternal {
+  PROTOBUF_CONSTEXPR CordLpDeltaFetchDefaultTypeInternal()
+      : _instance(::_pbi::ConstantInitialized{}) {}
+  ~CordLpDeltaFetchDefaultTypeInternal() {}
+  union {
+    CordLpDeltaFetch _instance;
+  };
+};
+PROTOBUF_ATTRIBUTE_NO_DESTROY PROTOBUF_CONSTINIT PROTOBUF_ATTRIBUTE_INIT_PRIORITY1 CordLpDeltaFetchDefaultTypeInternal _CordLpDeltaFetch_default_instance_;
+PROTOBUF_CONSTEXPR CordLpWorkItem::CordLpWorkItem(
+    ::_pbi::ConstantInitialized): _impl_{
+    /*decltype(_impl_.fetches_)*/{}
+  , /*decltype(_impl_.local_block_key_)*/{&::_pbi::fixed_address_empty_string, ::_pbi::ConstantInitialized{}}
+  , /*decltype(_impl_.local_datanode_ip_)*/{&::_pbi::fixed_address_empty_string, ::_pbi::ConstantInitialized{}}
+  , /*decltype(_impl_.local_block_id_)*/0
+  , /*decltype(_impl_.local_datanode_port_)*/0
+  , /*decltype(_impl_.parity_slice_offset_)*/0
+  , /*decltype(_impl_.parity_slice_size_)*/0
+  , /*decltype(_impl_._cached_size_)*/{}} {}
+struct CordLpWorkItemDefaultTypeInternal {
+  PROTOBUF_CONSTEXPR CordLpWorkItemDefaultTypeInternal()
+      : _instance(::_pbi::ConstantInitialized{}) {}
+  ~CordLpWorkItemDefaultTypeInternal() {}
+  union {
+    CordLpWorkItem _instance;
+  };
+};
+PROTOBUF_ATTRIBUTE_NO_DESTROY PROTOBUF_CONSTINIT PROTOBUF_ATTRIBUTE_INIT_PRIORITY1 CordLpWorkItemDefaultTypeInternal _CordLpWorkItem_default_instance_;
+PROTOBUF_CONSTEXPR CordLocalParityBundle::CordLocalParityBundle(
+    ::_pbi::ConstantInitialized): _impl_{
+    /*decltype(_impl_.items_)*/{}
+  , /*decltype(_impl_.key_)*/{&::_pbi::fixed_address_empty_string, ::_pbi::ConstantInitialized{}}
+  , /*decltype(_impl_.stripe_id_)*/0
+  , /*decltype(_impl_._cached_size_)*/{}} {}
+struct CordLocalParityBundleDefaultTypeInternal {
+  PROTOBUF_CONSTEXPR CordLocalParityBundleDefaultTypeInternal()
+      : _instance(::_pbi::ConstantInitialized{}) {}
+  ~CordLocalParityBundleDefaultTypeInternal() {}
+  union {
+    CordLocalParityBundle _instance;
+  };
+};
+PROTOBUF_ATTRIBUTE_NO_DESTROY PROTOBUF_CONSTINIT PROTOBUF_ATTRIBUTE_INIT_PRIORITY1 CordLocalParityBundleDefaultTypeInternal _CordLocalParityBundle_default_instance_;
+PROTOBUF_CONSTEXPR CordLpHubSessionBegin::CordLpHubSessionBegin(
+    ::_pbi::ConstantInitialized): _impl_{
+    /*decltype(_impl_.session_key_)*/{&::_pbi::fixed_address_empty_string, ::_pbi::ConstantInitialized{}}
+  , /*decltype(_impl_.local_block_key_)*/{&::_pbi::fixed_address_empty_string, ::_pbi::ConstantInitialized{}}
+  , /*decltype(_impl_.local_datanode_ip_)*/{&::_pbi::fixed_address_empty_string, ::_pbi::ConstantInitialized{}}
+  , /*decltype(_impl_.dest_lp_proxy_ip_)*/{&::_pbi::fixed_address_empty_string, ::_pbi::ConstantInitialized{}}
+  , /*decltype(_impl_.expected_partials_)*/0
+  , /*decltype(_impl_.parity_slice_size_)*/0
+  , /*decltype(_impl_.parity_slice_offset_)*/0
+  , /*decltype(_impl_.local_block_id_)*/0
+  , /*decltype(_impl_.local_datanode_port_)*/0
+  , /*decltype(_impl_.dest_lp_proxy_port_)*/0
+  , /*decltype(_impl_.stripe_id_)*/0
+  , /*decltype(_impl_.hub_global_block_id_)*/0
+  , /*decltype(_impl_._cached_size_)*/{}} {}
+struct CordLpHubSessionBeginDefaultTypeInternal {
+  PROTOBUF_CONSTEXPR CordLpHubSessionBeginDefaultTypeInternal()
+      : _instance(::_pbi::ConstantInitialized{}) {}
+  ~CordLpHubSessionBeginDefaultTypeInternal() {}
+  union {
+    CordLpHubSessionBegin _instance;
+  };
+};
+PROTOBUF_ATTRIBUTE_NO_DESTROY PROTOBUF_CONSTINIT PROTOBUF_ATTRIBUTE_INIT_PRIORITY1 CordLpHubSessionBeginDefaultTypeInternal _CordLpHubSessionBegin_default_instance_;
+PROTOBUF_CONSTEXPR CordLpHubPartialPush::CordLpHubPartialPush(
+    ::_pbi::ConstantInitialized): _impl_{
+    /*decltype(_impl_.session_key_)*/{&::_pbi::fixed_address_empty_string, ::_pbi::ConstantInitialized{}}
+  , /*decltype(_impl_.partial_payload_)*/{&::_pbi::fixed_address_empty_string, ::_pbi::ConstantInitialized{}}
+  , /*decltype(_impl_._cached_size_)*/{}} {}
+struct CordLpHubPartialPushDefaultTypeInternal {
+  PROTOBUF_CONSTEXPR CordLpHubPartialPushDefaultTypeInternal()
+      : _instance(::_pbi::ConstantInitialized{}) {}
+  ~CordLpHubPartialPushDefaultTypeInternal() {}
+  union {
+    CordLpHubPartialPush _instance;
+  };
+};
+PROTOBUF_ATTRIBUTE_NO_DESTROY PROTOBUF_CONSTINIT PROTOBUF_ATTRIBUTE_INIT_PRIORITY1 CordLpHubPartialPushDefaultTypeInternal _CordLpHubPartialPush_default_instance_;
+PROTOBUF_CONSTEXPR CordLpComputePartialAndPush::CordLpComputePartialAndPush(
+    ::_pbi::ConstantInitialized): _impl_{
+    /*decltype(_impl_.fetches_)*/{}
+  , /*decltype(_impl_.session_key_)*/{&::_pbi::fixed_address_empty_string, ::_pbi::ConstantInitialized{}}
+  , /*decltype(_impl_.hub_proxy_ip_)*/{&::_pbi::fixed_address_empty_string, ::_pbi::ConstantInitialized{}}
+  , /*decltype(_impl_.delta_blob_key_)*/{&::_pbi::fixed_address_empty_string, ::_pbi::ConstantInitialized{}}
+  , /*decltype(_impl_.delta_datanode_ip_)*/{&::_pbi::fixed_address_empty_string, ::_pbi::ConstantInitialized{}}
+  , /*decltype(_impl_.hub_proxy_port_)*/0
+  , /*decltype(_impl_.delta_datanode_port_)*/0
+  , /*decltype(_impl_.parity_slice_size_)*/0
+  , /*decltype(_impl_._cached_size_)*/{}} {}
+struct CordLpComputePartialAndPushDefaultTypeInternal {
+  PROTOBUF_CONSTEXPR CordLpComputePartialAndPushDefaultTypeInternal()
+      : _instance(::_pbi::ConstantInitialized{}) {}
+  ~CordLpComputePartialAndPushDefaultTypeInternal() {}
+  union {
+    CordLpComputePartialAndPush _instance;
+  };
+};
+PROTOBUF_ATTRIBUTE_NO_DESTROY PROTOBUF_CONSTINIT PROTOBUF_ATTRIBUTE_INIT_PRIORITY1 CordLpComputePartialAndPushDefaultTypeInternal _CordLpComputePartialAndPush_default_instance_;
+PROTOBUF_CONSTEXPR CordLpParityApplyDelta::CordLpParityApplyDelta(
+    ::_pbi::ConstantInitialized): _impl_{
+    /*decltype(_impl_.local_block_key_)*/{&::_pbi::fixed_address_empty_string, ::_pbi::ConstantInitialized{}}
+  , /*decltype(_impl_.local_datanode_ip_)*/{&::_pbi::fixed_address_empty_string, ::_pbi::ConstantInitialized{}}
+  , /*decltype(_impl_.delta_payload_)*/{&::_pbi::fixed_address_empty_string, ::_pbi::ConstantInitialized{}}
+  , /*decltype(_impl_.stripe_id_)*/0
+  , /*decltype(_impl_.local_block_id_)*/0
+  , /*decltype(_impl_.local_datanode_port_)*/0
+  , /*decltype(_impl_.parity_slice_offset_)*/0
+  , /*decltype(_impl_.parity_slice_size_)*/0
+  , /*decltype(_impl_._cached_size_)*/{}} {}
+struct CordLpParityApplyDeltaDefaultTypeInternal {
+  PROTOBUF_CONSTEXPR CordLpParityApplyDeltaDefaultTypeInternal()
+      : _instance(::_pbi::ConstantInitialized{}) {}
+  ~CordLpParityApplyDeltaDefaultTypeInternal() {}
+  union {
+    CordLpParityApplyDelta _instance;
+  };
+};
+PROTOBUF_ATTRIBUTE_NO_DESTROY PROTOBUF_CONSTINIT PROTOBUF_ATTRIBUTE_INIT_PRIORITY1 CordLpParityApplyDeltaDefaultTypeInternal _CordLpParityApplyDelta_default_instance_;
 PROTOBUF_CONSTEXPR SetReply::SetReply(
     ::_pbi::ConstantInitialized): _impl_{
     /*decltype(_impl_.ifcommit_)*/false
@@ -469,7 +628,7 @@ struct StripeAndBlockIDsDefaultTypeInternal {
 };
 PROTOBUF_ATTRIBUTE_NO_DESTROY PROTOBUF_CONSTINIT PROTOBUF_ATTRIBUTE_INIT_PRIORITY1 StripeAndBlockIDsDefaultTypeInternal _StripeAndBlockIDs_default_instance_;
 }  // namespace proxy_proto
-static ::_pb::Metadata file_level_metadata_proxy_2eproto[23];
+static ::_pb::Metadata file_level_metadata_proxy_2eproto[31];
 static constexpr ::_pb::EnumDescriptor const** file_level_enum_descriptors_proxy_2eproto = nullptr;
 static constexpr ::_pb::ServiceDescriptor const** file_level_service_descriptors_proxy_2eproto = nullptr;
 
@@ -731,6 +890,113 @@ const uint32_t TableStruct_proxy_2eproto::offsets[] PROTOBUF_SECTION_VARIABLE(pr
   PROTOBUF_FIELD_OFFSET(::proxy_proto::AppendStripeDataPlacement, _impl_.append_mode_),
   PROTOBUF_FIELD_OFFSET(::proxy_proto::AppendStripeDataPlacement, _impl_.is_serialized_),
   ~0u,  // no _has_bits_
+  PROTOBUF_FIELD_OFFSET(::proxy_proto::CordDataUpdatePlacement, _internal_metadata_),
+  ~0u,  // no _extensions_
+  ~0u,  // no _oneof_case_
+  ~0u,  // no _weak_field_map_
+  ~0u,  // no _inlined_string_donated_
+  PROTOBUF_FIELD_OFFSET(::proxy_proto::CordDataUpdatePlacement, _impl_.key_),
+  PROTOBUF_FIELD_OFFSET(::proxy_proto::CordDataUpdatePlacement, _impl_.cluster_id_),
+  PROTOBUF_FIELD_OFFSET(::proxy_proto::CordDataUpdatePlacement, _impl_.stripe_id_),
+  PROTOBUF_FIELD_OFFSET(::proxy_proto::CordDataUpdatePlacement, _impl_.update_payload_size_),
+  PROTOBUF_FIELD_OFFSET(::proxy_proto::CordDataUpdatePlacement, _impl_.datanodeip_),
+  PROTOBUF_FIELD_OFFSET(::proxy_proto::CordDataUpdatePlacement, _impl_.datanodeport_),
+  PROTOBUF_FIELD_OFFSET(::proxy_proto::CordDataUpdatePlacement, _impl_.blockkeys_),
+  PROTOBUF_FIELD_OFFSET(::proxy_proto::CordDataUpdatePlacement, _impl_.blockids_),
+  PROTOBUF_FIELD_OFFSET(::proxy_proto::CordDataUpdatePlacement, _impl_.offsets_),
+  PROTOBUF_FIELD_OFFSET(::proxy_proto::CordDataUpdatePlacement, _impl_.sizes_),
+  PROTOBUF_FIELD_OFFSET(::proxy_proto::CordDataUpdatePlacement, _impl_.delta_blob_key_),
+  PROTOBUF_FIELD_OFFSET(::proxy_proto::CordDataUpdatePlacement, _impl_.delta_datanode_ip_),
+  PROTOBUF_FIELD_OFFSET(::proxy_proto::CordDataUpdatePlacement, _impl_.delta_datanode_port_),
+  ~0u,  // no _has_bits_
+  PROTOBUF_FIELD_OFFSET(::proxy_proto::CordLpDeltaFetch, _internal_metadata_),
+  ~0u,  // no _extensions_
+  ~0u,  // no _oneof_case_
+  ~0u,  // no _weak_field_map_
+  ~0u,  // no _inlined_string_donated_
+  PROTOBUF_FIELD_OFFSET(::proxy_proto::CordLpDeltaFetch, _impl_.blob_key_),
+  PROTOBUF_FIELD_OFFSET(::proxy_proto::CordLpDeltaFetch, _impl_.datanode_ip_),
+  PROTOBUF_FIELD_OFFSET(::proxy_proto::CordLpDeltaFetch, _impl_.datanode_port_),
+  PROTOBUF_FIELD_OFFSET(::proxy_proto::CordLpDeltaFetch, _impl_.blob_offset_),
+  PROTOBUF_FIELD_OFFSET(::proxy_proto::CordLpDeltaFetch, _impl_.read_len_),
+  PROTOBUF_FIELD_OFFSET(::proxy_proto::CordLpDeltaFetch, _impl_.acc_offset_),
+  ~0u,  // no _has_bits_
+  PROTOBUF_FIELD_OFFSET(::proxy_proto::CordLpWorkItem, _internal_metadata_),
+  ~0u,  // no _extensions_
+  ~0u,  // no _oneof_case_
+  ~0u,  // no _weak_field_map_
+  ~0u,  // no _inlined_string_donated_
+  PROTOBUF_FIELD_OFFSET(::proxy_proto::CordLpWorkItem, _impl_.local_block_id_),
+  PROTOBUF_FIELD_OFFSET(::proxy_proto::CordLpWorkItem, _impl_.local_block_key_),
+  PROTOBUF_FIELD_OFFSET(::proxy_proto::CordLpWorkItem, _impl_.local_datanode_ip_),
+  PROTOBUF_FIELD_OFFSET(::proxy_proto::CordLpWorkItem, _impl_.local_datanode_port_),
+  PROTOBUF_FIELD_OFFSET(::proxy_proto::CordLpWorkItem, _impl_.parity_slice_offset_),
+  PROTOBUF_FIELD_OFFSET(::proxy_proto::CordLpWorkItem, _impl_.parity_slice_size_),
+  PROTOBUF_FIELD_OFFSET(::proxy_proto::CordLpWorkItem, _impl_.fetches_),
+  ~0u,  // no _has_bits_
+  PROTOBUF_FIELD_OFFSET(::proxy_proto::CordLocalParityBundle, _internal_metadata_),
+  ~0u,  // no _extensions_
+  ~0u,  // no _oneof_case_
+  ~0u,  // no _weak_field_map_
+  ~0u,  // no _inlined_string_donated_
+  PROTOBUF_FIELD_OFFSET(::proxy_proto::CordLocalParityBundle, _impl_.key_),
+  PROTOBUF_FIELD_OFFSET(::proxy_proto::CordLocalParityBundle, _impl_.stripe_id_),
+  PROTOBUF_FIELD_OFFSET(::proxy_proto::CordLocalParityBundle, _impl_.items_),
+  ~0u,  // no _has_bits_
+  PROTOBUF_FIELD_OFFSET(::proxy_proto::CordLpHubSessionBegin, _internal_metadata_),
+  ~0u,  // no _extensions_
+  ~0u,  // no _oneof_case_
+  ~0u,  // no _weak_field_map_
+  ~0u,  // no _inlined_string_donated_
+  PROTOBUF_FIELD_OFFSET(::proxy_proto::CordLpHubSessionBegin, _impl_.session_key_),
+  PROTOBUF_FIELD_OFFSET(::proxy_proto::CordLpHubSessionBegin, _impl_.expected_partials_),
+  PROTOBUF_FIELD_OFFSET(::proxy_proto::CordLpHubSessionBegin, _impl_.parity_slice_size_),
+  PROTOBUF_FIELD_OFFSET(::proxy_proto::CordLpHubSessionBegin, _impl_.parity_slice_offset_),
+  PROTOBUF_FIELD_OFFSET(::proxy_proto::CordLpHubSessionBegin, _impl_.local_block_id_),
+  PROTOBUF_FIELD_OFFSET(::proxy_proto::CordLpHubSessionBegin, _impl_.local_block_key_),
+  PROTOBUF_FIELD_OFFSET(::proxy_proto::CordLpHubSessionBegin, _impl_.local_datanode_ip_),
+  PROTOBUF_FIELD_OFFSET(::proxy_proto::CordLpHubSessionBegin, _impl_.local_datanode_port_),
+  PROTOBUF_FIELD_OFFSET(::proxy_proto::CordLpHubSessionBegin, _impl_.dest_lp_proxy_ip_),
+  PROTOBUF_FIELD_OFFSET(::proxy_proto::CordLpHubSessionBegin, _impl_.dest_lp_proxy_port_),
+  PROTOBUF_FIELD_OFFSET(::proxy_proto::CordLpHubSessionBegin, _impl_.stripe_id_),
+  PROTOBUF_FIELD_OFFSET(::proxy_proto::CordLpHubSessionBegin, _impl_.hub_global_block_id_),
+  ~0u,  // no _has_bits_
+  PROTOBUF_FIELD_OFFSET(::proxy_proto::CordLpHubPartialPush, _internal_metadata_),
+  ~0u,  // no _extensions_
+  ~0u,  // no _oneof_case_
+  ~0u,  // no _weak_field_map_
+  ~0u,  // no _inlined_string_donated_
+  PROTOBUF_FIELD_OFFSET(::proxy_proto::CordLpHubPartialPush, _impl_.session_key_),
+  PROTOBUF_FIELD_OFFSET(::proxy_proto::CordLpHubPartialPush, _impl_.partial_payload_),
+  ~0u,  // no _has_bits_
+  PROTOBUF_FIELD_OFFSET(::proxy_proto::CordLpComputePartialAndPush, _internal_metadata_),
+  ~0u,  // no _extensions_
+  ~0u,  // no _oneof_case_
+  ~0u,  // no _weak_field_map_
+  ~0u,  // no _inlined_string_donated_
+  PROTOBUF_FIELD_OFFSET(::proxy_proto::CordLpComputePartialAndPush, _impl_.session_key_),
+  PROTOBUF_FIELD_OFFSET(::proxy_proto::CordLpComputePartialAndPush, _impl_.hub_proxy_ip_),
+  PROTOBUF_FIELD_OFFSET(::proxy_proto::CordLpComputePartialAndPush, _impl_.hub_proxy_port_),
+  PROTOBUF_FIELD_OFFSET(::proxy_proto::CordLpComputePartialAndPush, _impl_.delta_blob_key_),
+  PROTOBUF_FIELD_OFFSET(::proxy_proto::CordLpComputePartialAndPush, _impl_.delta_datanode_ip_),
+  PROTOBUF_FIELD_OFFSET(::proxy_proto::CordLpComputePartialAndPush, _impl_.delta_datanode_port_),
+  PROTOBUF_FIELD_OFFSET(::proxy_proto::CordLpComputePartialAndPush, _impl_.parity_slice_size_),
+  PROTOBUF_FIELD_OFFSET(::proxy_proto::CordLpComputePartialAndPush, _impl_.fetches_),
+  ~0u,  // no _has_bits_
+  PROTOBUF_FIELD_OFFSET(::proxy_proto::CordLpParityApplyDelta, _internal_metadata_),
+  ~0u,  // no _extensions_
+  ~0u,  // no _oneof_case_
+  ~0u,  // no _weak_field_map_
+  ~0u,  // no _inlined_string_donated_
+  PROTOBUF_FIELD_OFFSET(::proxy_proto::CordLpParityApplyDelta, _impl_.stripe_id_),
+  PROTOBUF_FIELD_OFFSET(::proxy_proto::CordLpParityApplyDelta, _impl_.local_block_id_),
+  PROTOBUF_FIELD_OFFSET(::proxy_proto::CordLpParityApplyDelta, _impl_.local_block_key_),
+  PROTOBUF_FIELD_OFFSET(::proxy_proto::CordLpParityApplyDelta, _impl_.local_datanode_ip_),
+  PROTOBUF_FIELD_OFFSET(::proxy_proto::CordLpParityApplyDelta, _impl_.local_datanode_port_),
+  PROTOBUF_FIELD_OFFSET(::proxy_proto::CordLpParityApplyDelta, _impl_.parity_slice_offset_),
+  PROTOBUF_FIELD_OFFSET(::proxy_proto::CordLpParityApplyDelta, _impl_.parity_slice_size_),
+  PROTOBUF_FIELD_OFFSET(::proxy_proto::CordLpParityApplyDelta, _impl_.delta_payload_),
+  ~0u,  // no _has_bits_
   PROTOBUF_FIELD_OFFSET(::proxy_proto::SetReply, _internal_metadata_),
   ~0u,  // no _extensions_
   ~0u,  // no _oneof_case_
@@ -780,9 +1046,17 @@ static const ::_pbi::MigrationSchema schemas[] PROTOBUF_SECTION_VARIABLE(protode
   { 207, -1, -1, sizeof(::proxy_proto::MultipleRecoveryRequest)},
   { 218, -1, -1, sizeof(::proxy_proto::RecoveryReply)},
   { 237, -1, -1, sizeof(::proxy_proto::AppendStripeDataPlacement)},
-  { 256, -1, -1, sizeof(::proxy_proto::SetReply)},
-  { 263, -1, -1, sizeof(::proxy_proto::GetReply)},
-  { 270, -1, -1, sizeof(::proxy_proto::StripeAndBlockIDs)},
+  { 256, -1, -1, sizeof(::proxy_proto::CordDataUpdatePlacement)},
+  { 275, -1, -1, sizeof(::proxy_proto::CordLpDeltaFetch)},
+  { 287, -1, -1, sizeof(::proxy_proto::CordLpWorkItem)},
+  { 300, -1, -1, sizeof(::proxy_proto::CordLocalParityBundle)},
+  { 309, -1, -1, sizeof(::proxy_proto::CordLpHubSessionBegin)},
+  { 327, -1, -1, sizeof(::proxy_proto::CordLpHubPartialPush)},
+  { 335, -1, -1, sizeof(::proxy_proto::CordLpComputePartialAndPush)},
+  { 349, -1, -1, sizeof(::proxy_proto::CordLpParityApplyDelta)},
+  { 363, -1, -1, sizeof(::proxy_proto::SetReply)},
+  { 370, -1, -1, sizeof(::proxy_proto::GetReply)},
+  { 377, -1, -1, sizeof(::proxy_proto::StripeAndBlockIDs)},
 };
 
 static const ::_pb::Message* const file_default_instances[] = {
@@ -806,6 +1080,14 @@ static const ::_pb::Message* const file_default_instances[] = {
   &::proxy_proto::_MultipleRecoveryRequest_default_instance_._instance,
   &::proxy_proto::_RecoveryReply_default_instance_._instance,
   &::proxy_proto::_AppendStripeDataPlacement_default_instance_._instance,
+  &::proxy_proto::_CordDataUpdatePlacement_default_instance_._instance,
+  &::proxy_proto::_CordLpDeltaFetch_default_instance_._instance,
+  &::proxy_proto::_CordLpWorkItem_default_instance_._instance,
+  &::proxy_proto::_CordLocalParityBundle_default_instance_._instance,
+  &::proxy_proto::_CordLpHubSessionBegin_default_instance_._instance,
+  &::proxy_proto::_CordLpHubPartialPush_default_instance_._instance,
+  &::proxy_proto::_CordLpComputePartialAndPush_default_instance_._instance,
+  &::proxy_proto::_CordLpParityApplyDelta_default_instance_._instance,
   &::proxy_proto::_SetReply_default_instance_._instance,
   &::proxy_proto::_GetReply_default_instance_._instance,
   &::proxy_proto::_StripeAndBlockIDs_default_instance_._instance,
@@ -897,50 +1179,105 @@ const char descriptor_table_protodef_proxy_2eproto[] PROTOBUF_SECTION_VARIABLE(p
   " \003(\005\022\021\n\tblockkeys\030\007 \003(\t\022\020\n\010blockids\030\010 \003("
   "\005\022\017\n\007offsets\030\t \003(\004\022\r\n\005sizes\030\n \003(\004\022\027\n\017is_"
   "merge_parity\030\013 \001(\010\022\023\n\013append_mode\030\014 \001(\t\022"
-  "\025\n\ris_serialized\030\r \001(\010\"\034\n\010SetReply\022\020\n\010if"
-  "commit\030\001 \001(\010\"\036\n\010GetReply\022\022\n\ngetsuccess\030\001"
-  " \001(\010\"\261\001\n\021StripeAndBlockIDs\022\021\n\tstripe_id\030"
-  "\001 \001(\005\022\020\n\010group_id\030\002 \001(\005\022\020\n\010clientip\030\003 \001("
-  "\t\022\022\n\nclientport\030\004 \001(\005\022\021\n\tblock_ids\030\005 \003(\005"
-  "\022\022\n\nblock_keys\030\006 \003(\t\022\023\n\013datanodeips\030\007 \003("
-  "\t\022\025\n\rdatanodeports\030\010 \003(\0052\307\t\n\014proxyServic"
-  "e\022D\n\ncheckalive\022\032.proxy_proto.Checkalive"
-  "CMD\032\032.proxy_proto.RequestResult\022L\n\022encod"
-  "eAndSetObject\022\037.proxy_proto.ObjectAndPla"
-  "cement\032\025.proxy_proto.SetReply\022L\n\022decodeA"
-  "ndGetObject\022\037.proxy_proto.ObjectAndPlace"
-  "ment\032\025.proxy_proto.GetReply\022P\n\014degradedR"
-  "ead\022 .proxy_proto.DegradedReadRequest\032\036."
-  "proxy_proto.DegradedReadReply\022S\n\023degrade"
-  "dRead2Client\022\034.proxy_proto.RecoveryReque"
-  "st\032\036.proxy_proto.DegradedReadReply\022Y\n\025de"
-  "gradedReadBreakdown\022 .proxy_proto.Degrad"
-  "edReadRequest\032\036.proxy_proto.DegradedRead"
-  "Reply\022\\\n\034degradedRead2ClientBreakdown\022\034."
-  "proxy_proto.RecoveryRequest\032\036.proxy_prot"
-  "o.DegradedReadReply\022X\n\035degradedReadWithB"
-  "lockStripeID\022 .proxy_proto.DegradedReadR"
-  "equest\032\025.proxy_proto.GetReply\022V\n\017partial"
-  "Decoding\022#.proxy_proto.PartialDecodingRe"
-  "quest\032\036.proxy_proto.DegradedReadReply\022D\n"
-  "\010recovery\022\034.proxy_proto.RecoveryRequest\032"
-  "\032.proxy_proto.RecoveryReply\022M\n\021recoveryB"
-  "reakdown\022\034.proxy_proto.RecoveryRequest\032\032"
-  ".proxy_proto.RecoveryReply\022O\n\020multipleRe"
-  "covery\022$.proxy_proto.MultipleRecoveryReq"
-  "uest\032\025.proxy_proto.GetReply\022\?\n\013deleteBlo"
-  "ck\022\031.proxy_proto.NodeAndBlock\032\025.proxy_pr"
-  "oto.DelReply\022X\n\027scheduleAppend2Datanode\022"
-  "&.proxy_proto.AppendStripeDataPlacement\032"
-  "\025.proxy_proto.SetReply\022B\n\tgetBlocks\022\036.pr"
-  "oxy_proto.StripeAndBlockIDs\032\025.proxy_prot"
-  "o.GetReplyb\006proto3"
+  "\025\n\ris_serialized\030\r \001(\010\"\251\002\n\027CordDataUpdat"
+  "ePlacement\022\013\n\003key\030\001 \001(\t\022\022\n\ncluster_id\030\002 "
+  "\001(\005\022\021\n\tstripe_id\030\003 \001(\005\022\033\n\023update_payload"
+  "_size\030\004 \001(\004\022\022\n\ndatanodeip\030\005 \003(\t\022\024\n\014datan"
+  "odeport\030\006 \003(\005\022\021\n\tblockkeys\030\007 \003(\t\022\020\n\010bloc"
+  "kids\030\010 \003(\005\022\017\n\007offsets\030\t \003(\004\022\r\n\005sizes\030\n \003"
+  "(\004\022\026\n\016delta_blob_key\030\013 \001(\t\022\031\n\021delta_data"
+  "node_ip\030\014 \001(\t\022\033\n\023delta_datanode_port\030\r \001"
+  "(\005\"\213\001\n\020CordLpDeltaFetch\022\020\n\010blob_key\030\001 \001("
+  "\t\022\023\n\013datanode_ip\030\002 \001(\t\022\025\n\rdatanode_port\030"
+  "\003 \001(\005\022\023\n\013blob_offset\030\004 \001(\004\022\020\n\010read_len\030\005"
+  " \001(\004\022\022\n\nacc_offset\030\006 \001(\005\"\341\001\n\016CordLpWorkI"
+  "tem\022\026\n\016local_block_id\030\001 \001(\005\022\027\n\017local_blo"
+  "ck_key\030\002 \001(\t\022\031\n\021local_datanode_ip\030\003 \001(\t\022"
+  "\033\n\023local_datanode_port\030\004 \001(\005\022\033\n\023parity_s"
+  "lice_offset\030\005 \001(\005\022\031\n\021parity_slice_size\030\006"
+  " \001(\005\022.\n\007fetches\030\007 \003(\0132\035.proxy_proto.Cord"
+  "LpDeltaFetch\"c\n\025CordLocalParityBundle\022\013\n"
+  "\003key\030\001 \001(\t\022\021\n\tstripe_id\030\002 \001(\005\022*\n\005items\030\003"
+  " \003(\0132\033.proxy_proto.CordLpWorkItem\"\316\002\n\025Co"
+  "rdLpHubSessionBegin\022\023\n\013session_key\030\001 \001(\t"
+  "\022\031\n\021expected_partials\030\002 \001(\005\022\031\n\021parity_sl"
+  "ice_size\030\003 \001(\005\022\033\n\023parity_slice_offset\030\004 "
+  "\001(\005\022\026\n\016local_block_id\030\005 \001(\005\022\027\n\017local_blo"
+  "ck_key\030\006 \001(\t\022\031\n\021local_datanode_ip\030\007 \001(\t\022"
+  "\033\n\023local_datanode_port\030\010 \001(\005\022\030\n\020dest_lp_"
+  "proxy_ip\030\t \001(\t\022\032\n\022dest_lp_proxy_port\030\n \001"
+  "(\005\022\021\n\tstripe_id\030\013 \001(\005\022\033\n\023hub_global_bloc"
+  "k_id\030\014 \001(\005\"D\n\024CordLpHubPartialPush\022\023\n\013se"
+  "ssion_key\030\001 \001(\t\022\027\n\017partial_payload\030\002 \001(\014"
+  "\"\373\001\n\033CordLpComputePartialAndPush\022\023\n\013sess"
+  "ion_key\030\001 \001(\t\022\024\n\014hub_proxy_ip\030\002 \001(\t\022\026\n\016h"
+  "ub_proxy_port\030\003 \001(\005\022\026\n\016delta_blob_key\030\004 "
+  "\001(\t\022\031\n\021delta_datanode_ip\030\005 \001(\t\022\033\n\023delta_"
+  "datanode_port\030\006 \001(\005\022\031\n\021parity_slice_size"
+  "\030\007 \001(\005\022.\n\007fetches\030\010 \003(\0132\035.proxy_proto.Co"
+  "rdLpDeltaFetch\"\343\001\n\026CordLpParityApplyDelt"
+  "a\022\021\n\tstripe_id\030\001 \001(\005\022\026\n\016local_block_id\030\002"
+  " \001(\005\022\027\n\017local_block_key\030\003 \001(\t\022\031\n\021local_d"
+  "atanode_ip\030\004 \001(\t\022\033\n\023local_datanode_port\030"
+  "\005 \001(\005\022\033\n\023parity_slice_offset\030\006 \001(\005\022\031\n\021pa"
+  "rity_slice_size\030\007 \001(\005\022\025\n\rdelta_payload\030\010"
+  " \001(\014\"\034\n\010SetReply\022\020\n\010ifcommit\030\001 \001(\010\"\036\n\010Ge"
+  "tReply\022\022\n\ngetsuccess\030\001 \001(\010\"\261\001\n\021StripeAnd"
+  "BlockIDs\022\021\n\tstripe_id\030\001 \001(\005\022\020\n\010group_id\030"
+  "\002 \001(\005\022\020\n\010clientip\030\003 \001(\t\022\022\n\nclientport\030\004 "
+  "\001(\005\022\021\n\tblock_ids\030\005 \003(\005\022\022\n\nblock_keys\030\006 \003"
+  "(\t\022\023\n\013datanodeips\030\007 \003(\t\022\025\n\rdatanodeports"
+  "\030\010 \003(\0052\325\r\n\014proxyService\022D\n\ncheckalive\022\032."
+  "proxy_proto.CheckaliveCMD\032\032.proxy_proto."
+  "RequestResult\022L\n\022encodeAndSetObject\022\037.pr"
+  "oxy_proto.ObjectAndPlacement\032\025.proxy_pro"
+  "to.SetReply\022L\n\022decodeAndGetObject\022\037.prox"
+  "y_proto.ObjectAndPlacement\032\025.proxy_proto"
+  ".GetReply\022P\n\014degradedRead\022 .proxy_proto."
+  "DegradedReadRequest\032\036.proxy_proto.Degrad"
+  "edReadReply\022S\n\023degradedRead2Client\022\034.pro"
+  "xy_proto.RecoveryRequest\032\036.proxy_proto.D"
+  "egradedReadReply\022Y\n\025degradedReadBreakdow"
+  "n\022 .proxy_proto.DegradedReadRequest\032\036.pr"
+  "oxy_proto.DegradedReadReply\022\\\n\034degradedR"
+  "ead2ClientBreakdown\022\034.proxy_proto.Recove"
+  "ryRequest\032\036.proxy_proto.DegradedReadRepl"
+  "y\022X\n\035degradedReadWithBlockStripeID\022 .pro"
+  "xy_proto.DegradedReadRequest\032\025.proxy_pro"
+  "to.GetReply\022V\n\017partialDecoding\022#.proxy_p"
+  "roto.PartialDecodingRequest\032\036.proxy_prot"
+  "o.DegradedReadReply\022D\n\010recovery\022\034.proxy_"
+  "proto.RecoveryRequest\032\032.proxy_proto.Reco"
+  "veryReply\022M\n\021recoveryBreakdown\022\034.proxy_p"
+  "roto.RecoveryRequest\032\032.proxy_proto.Recov"
+  "eryReply\022O\n\020multipleRecovery\022$.proxy_pro"
+  "to.MultipleRecoveryRequest\032\025.proxy_proto"
+  ".GetReply\022\?\n\013deleteBlock\022\031.proxy_proto.N"
+  "odeAndBlock\032\025.proxy_proto.DelReply\022X\n\027sc"
+  "heduleAppend2Datanode\022&.proxy_proto.Appe"
+  "ndStripeDataPlacement\032\025.proxy_proto.SetR"
+  "eply\022U\n\026scheduleCordDataUpdate\022$.proxy_p"
+  "roto.CordDataUpdatePlacement\032\025.proxy_pro"
+  "to.SetReply\022Y\n\034scheduleCordLocalParityAp"
+  "ply\022\".proxy_proto.CordLocalParityBundle\032"
+  "\025.proxy_proto.SetReply\022R\n\025cordLpHubSessi"
+  "onBegin\022\".proxy_proto.CordLpHubSessionBe"
+  "gin\032\025.proxy_proto.SetReply\022P\n\024cordLpHubP"
+  "artialPush\022!.proxy_proto.CordLpHubPartia"
+  "lPush\032\025.proxy_proto.SetReply\022^\n\033cordLpCo"
+  "mputePartialAndPush\022(.proxy_proto.CordLp"
+  "ComputePartialAndPush\032\025.proxy_proto.SetR"
+  "eply\022T\n\026cordLpApplyParityDelta\022#.proxy_p"
+  "roto.CordLpParityApplyDelta\032\025.proxy_prot"
+  "o.SetReply\022B\n\tgetBlocks\022\036.proxy_proto.St"
+  "ripeAndBlockIDs\032\025.proxy_proto.GetReplyb\006"
+  "proto3"
   ;
 static ::_pbi::once_flag descriptor_table_proxy_2eproto_once;
 const ::_pbi::DescriptorTable descriptor_table_proxy_2eproto = {
-    false, false, 4898, descriptor_table_protodef_proxy_2eproto,
+    false, false, 7086, descriptor_table_protodef_proxy_2eproto,
     "proxy.proto",
-    &descriptor_table_proxy_2eproto_once, nullptr, 0, 23,
+    &descriptor_table_proxy_2eproto_once, nullptr, 0, 31,
     schemas, file_default_instances, TableStruct_proxy_2eproto::offsets,
     file_level_metadata_proxy_2eproto, file_level_enum_descriptors_proxy_2eproto,
     file_level_service_descriptors_proxy_2eproto,
@@ -8886,6 +9223,3389 @@ void AppendStripeDataPlacement::InternalSwap(AppendStripeDataPlacement* other) {
 
 // ===================================================================
 
+class CordDataUpdatePlacement::_Internal {
+ public:
+};
+
+CordDataUpdatePlacement::CordDataUpdatePlacement(::PROTOBUF_NAMESPACE_ID::Arena* arena,
+                         bool is_message_owned)
+  : ::PROTOBUF_NAMESPACE_ID::Message(arena, is_message_owned) {
+  SharedCtor(arena, is_message_owned);
+  // @@protoc_insertion_point(arena_constructor:proxy_proto.CordDataUpdatePlacement)
+}
+CordDataUpdatePlacement::CordDataUpdatePlacement(const CordDataUpdatePlacement& from)
+  : ::PROTOBUF_NAMESPACE_ID::Message() {
+  CordDataUpdatePlacement* const _this = this; (void)_this;
+  new (&_impl_) Impl_{
+      decltype(_impl_.datanodeip_){from._impl_.datanodeip_}
+    , decltype(_impl_.datanodeport_){from._impl_.datanodeport_}
+    , /*decltype(_impl_._datanodeport_cached_byte_size_)*/{0}
+    , decltype(_impl_.blockkeys_){from._impl_.blockkeys_}
+    , decltype(_impl_.blockids_){from._impl_.blockids_}
+    , /*decltype(_impl_._blockids_cached_byte_size_)*/{0}
+    , decltype(_impl_.offsets_){from._impl_.offsets_}
+    , /*decltype(_impl_._offsets_cached_byte_size_)*/{0}
+    , decltype(_impl_.sizes_){from._impl_.sizes_}
+    , /*decltype(_impl_._sizes_cached_byte_size_)*/{0}
+    , decltype(_impl_.key_){}
+    , decltype(_impl_.delta_blob_key_){}
+    , decltype(_impl_.delta_datanode_ip_){}
+    , decltype(_impl_.cluster_id_){}
+    , decltype(_impl_.stripe_id_){}
+    , decltype(_impl_.update_payload_size_){}
+    , decltype(_impl_.delta_datanode_port_){}
+    , /*decltype(_impl_._cached_size_)*/{}};
+
+  _internal_metadata_.MergeFrom<::PROTOBUF_NAMESPACE_ID::UnknownFieldSet>(from._internal_metadata_);
+  _impl_.key_.InitDefault();
+  #ifdef PROTOBUF_FORCE_COPY_DEFAULT_STRING
+    _impl_.key_.Set("", GetArenaForAllocation());
+  #endif // PROTOBUF_FORCE_COPY_DEFAULT_STRING
+  if (!from._internal_key().empty()) {
+    _this->_impl_.key_.Set(from._internal_key(), 
+      _this->GetArenaForAllocation());
+  }
+  _impl_.delta_blob_key_.InitDefault();
+  #ifdef PROTOBUF_FORCE_COPY_DEFAULT_STRING
+    _impl_.delta_blob_key_.Set("", GetArenaForAllocation());
+  #endif // PROTOBUF_FORCE_COPY_DEFAULT_STRING
+  if (!from._internal_delta_blob_key().empty()) {
+    _this->_impl_.delta_blob_key_.Set(from._internal_delta_blob_key(), 
+      _this->GetArenaForAllocation());
+  }
+  _impl_.delta_datanode_ip_.InitDefault();
+  #ifdef PROTOBUF_FORCE_COPY_DEFAULT_STRING
+    _impl_.delta_datanode_ip_.Set("", GetArenaForAllocation());
+  #endif // PROTOBUF_FORCE_COPY_DEFAULT_STRING
+  if (!from._internal_delta_datanode_ip().empty()) {
+    _this->_impl_.delta_datanode_ip_.Set(from._internal_delta_datanode_ip(), 
+      _this->GetArenaForAllocation());
+  }
+  ::memcpy(&_impl_.cluster_id_, &from._impl_.cluster_id_,
+    static_cast<size_t>(reinterpret_cast<char*>(&_impl_.delta_datanode_port_) -
+    reinterpret_cast<char*>(&_impl_.cluster_id_)) + sizeof(_impl_.delta_datanode_port_));
+  // @@protoc_insertion_point(copy_constructor:proxy_proto.CordDataUpdatePlacement)
+}
+
+inline void CordDataUpdatePlacement::SharedCtor(
+    ::_pb::Arena* arena, bool is_message_owned) {
+  (void)arena;
+  (void)is_message_owned;
+  new (&_impl_) Impl_{
+      decltype(_impl_.datanodeip_){arena}
+    , decltype(_impl_.datanodeport_){arena}
+    , /*decltype(_impl_._datanodeport_cached_byte_size_)*/{0}
+    , decltype(_impl_.blockkeys_){arena}
+    , decltype(_impl_.blockids_){arena}
+    , /*decltype(_impl_._blockids_cached_byte_size_)*/{0}
+    , decltype(_impl_.offsets_){arena}
+    , /*decltype(_impl_._offsets_cached_byte_size_)*/{0}
+    , decltype(_impl_.sizes_){arena}
+    , /*decltype(_impl_._sizes_cached_byte_size_)*/{0}
+    , decltype(_impl_.key_){}
+    , decltype(_impl_.delta_blob_key_){}
+    , decltype(_impl_.delta_datanode_ip_){}
+    , decltype(_impl_.cluster_id_){0}
+    , decltype(_impl_.stripe_id_){0}
+    , decltype(_impl_.update_payload_size_){uint64_t{0u}}
+    , decltype(_impl_.delta_datanode_port_){0}
+    , /*decltype(_impl_._cached_size_)*/{}
+  };
+  _impl_.key_.InitDefault();
+  #ifdef PROTOBUF_FORCE_COPY_DEFAULT_STRING
+    _impl_.key_.Set("", GetArenaForAllocation());
+  #endif // PROTOBUF_FORCE_COPY_DEFAULT_STRING
+  _impl_.delta_blob_key_.InitDefault();
+  #ifdef PROTOBUF_FORCE_COPY_DEFAULT_STRING
+    _impl_.delta_blob_key_.Set("", GetArenaForAllocation());
+  #endif // PROTOBUF_FORCE_COPY_DEFAULT_STRING
+  _impl_.delta_datanode_ip_.InitDefault();
+  #ifdef PROTOBUF_FORCE_COPY_DEFAULT_STRING
+    _impl_.delta_datanode_ip_.Set("", GetArenaForAllocation());
+  #endif // PROTOBUF_FORCE_COPY_DEFAULT_STRING
+}
+
+CordDataUpdatePlacement::~CordDataUpdatePlacement() {
+  // @@protoc_insertion_point(destructor:proxy_proto.CordDataUpdatePlacement)
+  if (auto *arena = _internal_metadata_.DeleteReturnArena<::PROTOBUF_NAMESPACE_ID::UnknownFieldSet>()) {
+  (void)arena;
+    return;
+  }
+  SharedDtor();
+}
+
+inline void CordDataUpdatePlacement::SharedDtor() {
+  GOOGLE_DCHECK(GetArenaForAllocation() == nullptr);
+  _impl_.datanodeip_.~RepeatedPtrField();
+  _impl_.datanodeport_.~RepeatedField();
+  _impl_.blockkeys_.~RepeatedPtrField();
+  _impl_.blockids_.~RepeatedField();
+  _impl_.offsets_.~RepeatedField();
+  _impl_.sizes_.~RepeatedField();
+  _impl_.key_.Destroy();
+  _impl_.delta_blob_key_.Destroy();
+  _impl_.delta_datanode_ip_.Destroy();
+}
+
+void CordDataUpdatePlacement::SetCachedSize(int size) const {
+  _impl_._cached_size_.Set(size);
+}
+
+void CordDataUpdatePlacement::Clear() {
+// @@protoc_insertion_point(message_clear_start:proxy_proto.CordDataUpdatePlacement)
+  uint32_t cached_has_bits = 0;
+  // Prevent compiler warnings about cached_has_bits being unused
+  (void) cached_has_bits;
+
+  _impl_.datanodeip_.Clear();
+  _impl_.datanodeport_.Clear();
+  _impl_.blockkeys_.Clear();
+  _impl_.blockids_.Clear();
+  _impl_.offsets_.Clear();
+  _impl_.sizes_.Clear();
+  _impl_.key_.ClearToEmpty();
+  _impl_.delta_blob_key_.ClearToEmpty();
+  _impl_.delta_datanode_ip_.ClearToEmpty();
+  ::memset(&_impl_.cluster_id_, 0, static_cast<size_t>(
+      reinterpret_cast<char*>(&_impl_.delta_datanode_port_) -
+      reinterpret_cast<char*>(&_impl_.cluster_id_)) + sizeof(_impl_.delta_datanode_port_));
+  _internal_metadata_.Clear<::PROTOBUF_NAMESPACE_ID::UnknownFieldSet>();
+}
+
+const char* CordDataUpdatePlacement::_InternalParse(const char* ptr, ::_pbi::ParseContext* ctx) {
+#define CHK_(x) if (PROTOBUF_PREDICT_FALSE(!(x))) goto failure
+  while (!ctx->Done(&ptr)) {
+    uint32_t tag;
+    ptr = ::_pbi::ReadTag(ptr, &tag);
+    switch (tag >> 3) {
+      // string key = 1;
+      case 1:
+        if (PROTOBUF_PREDICT_TRUE(static_cast<uint8_t>(tag) == 10)) {
+          auto str = _internal_mutable_key();
+          ptr = ::_pbi::InlineGreedyStringParser(str, ptr, ctx);
+          CHK_(ptr);
+          CHK_(::_pbi::VerifyUTF8(str, "proxy_proto.CordDataUpdatePlacement.key"));
+        } else
+          goto handle_unusual;
+        continue;
+      // int32 cluster_id = 2;
+      case 2:
+        if (PROTOBUF_PREDICT_TRUE(static_cast<uint8_t>(tag) == 16)) {
+          _impl_.cluster_id_ = ::PROTOBUF_NAMESPACE_ID::internal::ReadVarint32(&ptr);
+          CHK_(ptr);
+        } else
+          goto handle_unusual;
+        continue;
+      // int32 stripe_id = 3;
+      case 3:
+        if (PROTOBUF_PREDICT_TRUE(static_cast<uint8_t>(tag) == 24)) {
+          _impl_.stripe_id_ = ::PROTOBUF_NAMESPACE_ID::internal::ReadVarint32(&ptr);
+          CHK_(ptr);
+        } else
+          goto handle_unusual;
+        continue;
+      // uint64 update_payload_size = 4;
+      case 4:
+        if (PROTOBUF_PREDICT_TRUE(static_cast<uint8_t>(tag) == 32)) {
+          _impl_.update_payload_size_ = ::PROTOBUF_NAMESPACE_ID::internal::ReadVarint64(&ptr);
+          CHK_(ptr);
+        } else
+          goto handle_unusual;
+        continue;
+      // repeated string datanodeip = 5;
+      case 5:
+        if (PROTOBUF_PREDICT_TRUE(static_cast<uint8_t>(tag) == 42)) {
+          ptr -= 1;
+          do {
+            ptr += 1;
+            auto str = _internal_add_datanodeip();
+            ptr = ::_pbi::InlineGreedyStringParser(str, ptr, ctx);
+            CHK_(ptr);
+            CHK_(::_pbi::VerifyUTF8(str, "proxy_proto.CordDataUpdatePlacement.datanodeip"));
+            if (!ctx->DataAvailable(ptr)) break;
+          } while (::PROTOBUF_NAMESPACE_ID::internal::ExpectTag<42>(ptr));
+        } else
+          goto handle_unusual;
+        continue;
+      // repeated int32 datanodeport = 6;
+      case 6:
+        if (PROTOBUF_PREDICT_TRUE(static_cast<uint8_t>(tag) == 50)) {
+          ptr = ::PROTOBUF_NAMESPACE_ID::internal::PackedInt32Parser(_internal_mutable_datanodeport(), ptr, ctx);
+          CHK_(ptr);
+        } else if (static_cast<uint8_t>(tag) == 48) {
+          _internal_add_datanodeport(::PROTOBUF_NAMESPACE_ID::internal::ReadVarint32(&ptr));
+          CHK_(ptr);
+        } else
+          goto handle_unusual;
+        continue;
+      // repeated string blockkeys = 7;
+      case 7:
+        if (PROTOBUF_PREDICT_TRUE(static_cast<uint8_t>(tag) == 58)) {
+          ptr -= 1;
+          do {
+            ptr += 1;
+            auto str = _internal_add_blockkeys();
+            ptr = ::_pbi::InlineGreedyStringParser(str, ptr, ctx);
+            CHK_(ptr);
+            CHK_(::_pbi::VerifyUTF8(str, "proxy_proto.CordDataUpdatePlacement.blockkeys"));
+            if (!ctx->DataAvailable(ptr)) break;
+          } while (::PROTOBUF_NAMESPACE_ID::internal::ExpectTag<58>(ptr));
+        } else
+          goto handle_unusual;
+        continue;
+      // repeated int32 blockids = 8;
+      case 8:
+        if (PROTOBUF_PREDICT_TRUE(static_cast<uint8_t>(tag) == 66)) {
+          ptr = ::PROTOBUF_NAMESPACE_ID::internal::PackedInt32Parser(_internal_mutable_blockids(), ptr, ctx);
+          CHK_(ptr);
+        } else if (static_cast<uint8_t>(tag) == 64) {
+          _internal_add_blockids(::PROTOBUF_NAMESPACE_ID::internal::ReadVarint32(&ptr));
+          CHK_(ptr);
+        } else
+          goto handle_unusual;
+        continue;
+      // repeated uint64 offsets = 9;
+      case 9:
+        if (PROTOBUF_PREDICT_TRUE(static_cast<uint8_t>(tag) == 74)) {
+          ptr = ::PROTOBUF_NAMESPACE_ID::internal::PackedUInt64Parser(_internal_mutable_offsets(), ptr, ctx);
+          CHK_(ptr);
+        } else if (static_cast<uint8_t>(tag) == 72) {
+          _internal_add_offsets(::PROTOBUF_NAMESPACE_ID::internal::ReadVarint64(&ptr));
+          CHK_(ptr);
+        } else
+          goto handle_unusual;
+        continue;
+      // repeated uint64 sizes = 10;
+      case 10:
+        if (PROTOBUF_PREDICT_TRUE(static_cast<uint8_t>(tag) == 82)) {
+          ptr = ::PROTOBUF_NAMESPACE_ID::internal::PackedUInt64Parser(_internal_mutable_sizes(), ptr, ctx);
+          CHK_(ptr);
+        } else if (static_cast<uint8_t>(tag) == 80) {
+          _internal_add_sizes(::PROTOBUF_NAMESPACE_ID::internal::ReadVarint64(&ptr));
+          CHK_(ptr);
+        } else
+          goto handle_unusual;
+        continue;
+      // string delta_blob_key = 11;
+      case 11:
+        if (PROTOBUF_PREDICT_TRUE(static_cast<uint8_t>(tag) == 90)) {
+          auto str = _internal_mutable_delta_blob_key();
+          ptr = ::_pbi::InlineGreedyStringParser(str, ptr, ctx);
+          CHK_(ptr);
+          CHK_(::_pbi::VerifyUTF8(str, "proxy_proto.CordDataUpdatePlacement.delta_blob_key"));
+        } else
+          goto handle_unusual;
+        continue;
+      // string delta_datanode_ip = 12;
+      case 12:
+        if (PROTOBUF_PREDICT_TRUE(static_cast<uint8_t>(tag) == 98)) {
+          auto str = _internal_mutable_delta_datanode_ip();
+          ptr = ::_pbi::InlineGreedyStringParser(str, ptr, ctx);
+          CHK_(ptr);
+          CHK_(::_pbi::VerifyUTF8(str, "proxy_proto.CordDataUpdatePlacement.delta_datanode_ip"));
+        } else
+          goto handle_unusual;
+        continue;
+      // int32 delta_datanode_port = 13;
+      case 13:
+        if (PROTOBUF_PREDICT_TRUE(static_cast<uint8_t>(tag) == 104)) {
+          _impl_.delta_datanode_port_ = ::PROTOBUF_NAMESPACE_ID::internal::ReadVarint32(&ptr);
+          CHK_(ptr);
+        } else
+          goto handle_unusual;
+        continue;
+      default:
+        goto handle_unusual;
+    }  // switch
+  handle_unusual:
+    if ((tag == 0) || ((tag & 7) == 4)) {
+      CHK_(ptr);
+      ctx->SetLastTag(tag);
+      goto message_done;
+    }
+    ptr = UnknownFieldParse(
+        tag,
+        _internal_metadata_.mutable_unknown_fields<::PROTOBUF_NAMESPACE_ID::UnknownFieldSet>(),
+        ptr, ctx);
+    CHK_(ptr != nullptr);
+  }  // while
+message_done:
+  return ptr;
+failure:
+  ptr = nullptr;
+  goto message_done;
+#undef CHK_
+}
+
+uint8_t* CordDataUpdatePlacement::_InternalSerialize(
+    uint8_t* target, ::PROTOBUF_NAMESPACE_ID::io::EpsCopyOutputStream* stream) const {
+  // @@protoc_insertion_point(serialize_to_array_start:proxy_proto.CordDataUpdatePlacement)
+  uint32_t cached_has_bits = 0;
+  (void) cached_has_bits;
+
+  // string key = 1;
+  if (!this->_internal_key().empty()) {
+    ::PROTOBUF_NAMESPACE_ID::internal::WireFormatLite::VerifyUtf8String(
+      this->_internal_key().data(), static_cast<int>(this->_internal_key().length()),
+      ::PROTOBUF_NAMESPACE_ID::internal::WireFormatLite::SERIALIZE,
+      "proxy_proto.CordDataUpdatePlacement.key");
+    target = stream->WriteStringMaybeAliased(
+        1, this->_internal_key(), target);
+  }
+
+  // int32 cluster_id = 2;
+  if (this->_internal_cluster_id() != 0) {
+    target = stream->EnsureSpace(target);
+    target = ::_pbi::WireFormatLite::WriteInt32ToArray(2, this->_internal_cluster_id(), target);
+  }
+
+  // int32 stripe_id = 3;
+  if (this->_internal_stripe_id() != 0) {
+    target = stream->EnsureSpace(target);
+    target = ::_pbi::WireFormatLite::WriteInt32ToArray(3, this->_internal_stripe_id(), target);
+  }
+
+  // uint64 update_payload_size = 4;
+  if (this->_internal_update_payload_size() != 0) {
+    target = stream->EnsureSpace(target);
+    target = ::_pbi::WireFormatLite::WriteUInt64ToArray(4, this->_internal_update_payload_size(), target);
+  }
+
+  // repeated string datanodeip = 5;
+  for (int i = 0, n = this->_internal_datanodeip_size(); i < n; i++) {
+    const auto& s = this->_internal_datanodeip(i);
+    ::PROTOBUF_NAMESPACE_ID::internal::WireFormatLite::VerifyUtf8String(
+      s.data(), static_cast<int>(s.length()),
+      ::PROTOBUF_NAMESPACE_ID::internal::WireFormatLite::SERIALIZE,
+      "proxy_proto.CordDataUpdatePlacement.datanodeip");
+    target = stream->WriteString(5, s, target);
+  }
+
+  // repeated int32 datanodeport = 6;
+  {
+    int byte_size = _impl_._datanodeport_cached_byte_size_.load(std::memory_order_relaxed);
+    if (byte_size > 0) {
+      target = stream->WriteInt32Packed(
+          6, _internal_datanodeport(), byte_size, target);
+    }
+  }
+
+  // repeated string blockkeys = 7;
+  for (int i = 0, n = this->_internal_blockkeys_size(); i < n; i++) {
+    const auto& s = this->_internal_blockkeys(i);
+    ::PROTOBUF_NAMESPACE_ID::internal::WireFormatLite::VerifyUtf8String(
+      s.data(), static_cast<int>(s.length()),
+      ::PROTOBUF_NAMESPACE_ID::internal::WireFormatLite::SERIALIZE,
+      "proxy_proto.CordDataUpdatePlacement.blockkeys");
+    target = stream->WriteString(7, s, target);
+  }
+
+  // repeated int32 blockids = 8;
+  {
+    int byte_size = _impl_._blockids_cached_byte_size_.load(std::memory_order_relaxed);
+    if (byte_size > 0) {
+      target = stream->WriteInt32Packed(
+          8, _internal_blockids(), byte_size, target);
+    }
+  }
+
+  // repeated uint64 offsets = 9;
+  {
+    int byte_size = _impl_._offsets_cached_byte_size_.load(std::memory_order_relaxed);
+    if (byte_size > 0) {
+      target = stream->WriteUInt64Packed(
+          9, _internal_offsets(), byte_size, target);
+    }
+  }
+
+  // repeated uint64 sizes = 10;
+  {
+    int byte_size = _impl_._sizes_cached_byte_size_.load(std::memory_order_relaxed);
+    if (byte_size > 0) {
+      target = stream->WriteUInt64Packed(
+          10, _internal_sizes(), byte_size, target);
+    }
+  }
+
+  // string delta_blob_key = 11;
+  if (!this->_internal_delta_blob_key().empty()) {
+    ::PROTOBUF_NAMESPACE_ID::internal::WireFormatLite::VerifyUtf8String(
+      this->_internal_delta_blob_key().data(), static_cast<int>(this->_internal_delta_blob_key().length()),
+      ::PROTOBUF_NAMESPACE_ID::internal::WireFormatLite::SERIALIZE,
+      "proxy_proto.CordDataUpdatePlacement.delta_blob_key");
+    target = stream->WriteStringMaybeAliased(
+        11, this->_internal_delta_blob_key(), target);
+  }
+
+  // string delta_datanode_ip = 12;
+  if (!this->_internal_delta_datanode_ip().empty()) {
+    ::PROTOBUF_NAMESPACE_ID::internal::WireFormatLite::VerifyUtf8String(
+      this->_internal_delta_datanode_ip().data(), static_cast<int>(this->_internal_delta_datanode_ip().length()),
+      ::PROTOBUF_NAMESPACE_ID::internal::WireFormatLite::SERIALIZE,
+      "proxy_proto.CordDataUpdatePlacement.delta_datanode_ip");
+    target = stream->WriteStringMaybeAliased(
+        12, this->_internal_delta_datanode_ip(), target);
+  }
+
+  // int32 delta_datanode_port = 13;
+  if (this->_internal_delta_datanode_port() != 0) {
+    target = stream->EnsureSpace(target);
+    target = ::_pbi::WireFormatLite::WriteInt32ToArray(13, this->_internal_delta_datanode_port(), target);
+  }
+
+  if (PROTOBUF_PREDICT_FALSE(_internal_metadata_.have_unknown_fields())) {
+    target = ::_pbi::WireFormat::InternalSerializeUnknownFieldsToArray(
+        _internal_metadata_.unknown_fields<::PROTOBUF_NAMESPACE_ID::UnknownFieldSet>(::PROTOBUF_NAMESPACE_ID::UnknownFieldSet::default_instance), target, stream);
+  }
+  // @@protoc_insertion_point(serialize_to_array_end:proxy_proto.CordDataUpdatePlacement)
+  return target;
+}
+
+size_t CordDataUpdatePlacement::ByteSizeLong() const {
+// @@protoc_insertion_point(message_byte_size_start:proxy_proto.CordDataUpdatePlacement)
+  size_t total_size = 0;
+
+  uint32_t cached_has_bits = 0;
+  // Prevent compiler warnings about cached_has_bits being unused
+  (void) cached_has_bits;
+
+  // repeated string datanodeip = 5;
+  total_size += 1 *
+      ::PROTOBUF_NAMESPACE_ID::internal::FromIntSize(_impl_.datanodeip_.size());
+  for (int i = 0, n = _impl_.datanodeip_.size(); i < n; i++) {
+    total_size += ::PROTOBUF_NAMESPACE_ID::internal::WireFormatLite::StringSize(
+      _impl_.datanodeip_.Get(i));
+  }
+
+  // repeated int32 datanodeport = 6;
+  {
+    size_t data_size = ::_pbi::WireFormatLite::
+      Int32Size(this->_impl_.datanodeport_);
+    if (data_size > 0) {
+      total_size += 1 +
+        ::_pbi::WireFormatLite::Int32Size(static_cast<int32_t>(data_size));
+    }
+    int cached_size = ::_pbi::ToCachedSize(data_size);
+    _impl_._datanodeport_cached_byte_size_.store(cached_size,
+                                    std::memory_order_relaxed);
+    total_size += data_size;
+  }
+
+  // repeated string blockkeys = 7;
+  total_size += 1 *
+      ::PROTOBUF_NAMESPACE_ID::internal::FromIntSize(_impl_.blockkeys_.size());
+  for (int i = 0, n = _impl_.blockkeys_.size(); i < n; i++) {
+    total_size += ::PROTOBUF_NAMESPACE_ID::internal::WireFormatLite::StringSize(
+      _impl_.blockkeys_.Get(i));
+  }
+
+  // repeated int32 blockids = 8;
+  {
+    size_t data_size = ::_pbi::WireFormatLite::
+      Int32Size(this->_impl_.blockids_);
+    if (data_size > 0) {
+      total_size += 1 +
+        ::_pbi::WireFormatLite::Int32Size(static_cast<int32_t>(data_size));
+    }
+    int cached_size = ::_pbi::ToCachedSize(data_size);
+    _impl_._blockids_cached_byte_size_.store(cached_size,
+                                    std::memory_order_relaxed);
+    total_size += data_size;
+  }
+
+  // repeated uint64 offsets = 9;
+  {
+    size_t data_size = ::_pbi::WireFormatLite::
+      UInt64Size(this->_impl_.offsets_);
+    if (data_size > 0) {
+      total_size += 1 +
+        ::_pbi::WireFormatLite::Int32Size(static_cast<int32_t>(data_size));
+    }
+    int cached_size = ::_pbi::ToCachedSize(data_size);
+    _impl_._offsets_cached_byte_size_.store(cached_size,
+                                    std::memory_order_relaxed);
+    total_size += data_size;
+  }
+
+  // repeated uint64 sizes = 10;
+  {
+    size_t data_size = ::_pbi::WireFormatLite::
+      UInt64Size(this->_impl_.sizes_);
+    if (data_size > 0) {
+      total_size += 1 +
+        ::_pbi::WireFormatLite::Int32Size(static_cast<int32_t>(data_size));
+    }
+    int cached_size = ::_pbi::ToCachedSize(data_size);
+    _impl_._sizes_cached_byte_size_.store(cached_size,
+                                    std::memory_order_relaxed);
+    total_size += data_size;
+  }
+
+  // string key = 1;
+  if (!this->_internal_key().empty()) {
+    total_size += 1 +
+      ::PROTOBUF_NAMESPACE_ID::internal::WireFormatLite::StringSize(
+        this->_internal_key());
+  }
+
+  // string delta_blob_key = 11;
+  if (!this->_internal_delta_blob_key().empty()) {
+    total_size += 1 +
+      ::PROTOBUF_NAMESPACE_ID::internal::WireFormatLite::StringSize(
+        this->_internal_delta_blob_key());
+  }
+
+  // string delta_datanode_ip = 12;
+  if (!this->_internal_delta_datanode_ip().empty()) {
+    total_size += 1 +
+      ::PROTOBUF_NAMESPACE_ID::internal::WireFormatLite::StringSize(
+        this->_internal_delta_datanode_ip());
+  }
+
+  // int32 cluster_id = 2;
+  if (this->_internal_cluster_id() != 0) {
+    total_size += ::_pbi::WireFormatLite::Int32SizePlusOne(this->_internal_cluster_id());
+  }
+
+  // int32 stripe_id = 3;
+  if (this->_internal_stripe_id() != 0) {
+    total_size += ::_pbi::WireFormatLite::Int32SizePlusOne(this->_internal_stripe_id());
+  }
+
+  // uint64 update_payload_size = 4;
+  if (this->_internal_update_payload_size() != 0) {
+    total_size += ::_pbi::WireFormatLite::UInt64SizePlusOne(this->_internal_update_payload_size());
+  }
+
+  // int32 delta_datanode_port = 13;
+  if (this->_internal_delta_datanode_port() != 0) {
+    total_size += ::_pbi::WireFormatLite::Int32SizePlusOne(this->_internal_delta_datanode_port());
+  }
+
+  return MaybeComputeUnknownFieldsSize(total_size, &_impl_._cached_size_);
+}
+
+const ::PROTOBUF_NAMESPACE_ID::Message::ClassData CordDataUpdatePlacement::_class_data_ = {
+    ::PROTOBUF_NAMESPACE_ID::Message::CopyWithSourceCheck,
+    CordDataUpdatePlacement::MergeImpl
+};
+const ::PROTOBUF_NAMESPACE_ID::Message::ClassData*CordDataUpdatePlacement::GetClassData() const { return &_class_data_; }
+
+
+void CordDataUpdatePlacement::MergeImpl(::PROTOBUF_NAMESPACE_ID::Message& to_msg, const ::PROTOBUF_NAMESPACE_ID::Message& from_msg) {
+  auto* const _this = static_cast<CordDataUpdatePlacement*>(&to_msg);
+  auto& from = static_cast<const CordDataUpdatePlacement&>(from_msg);
+  // @@protoc_insertion_point(class_specific_merge_from_start:proxy_proto.CordDataUpdatePlacement)
+  GOOGLE_DCHECK_NE(&from, _this);
+  uint32_t cached_has_bits = 0;
+  (void) cached_has_bits;
+
+  _this->_impl_.datanodeip_.MergeFrom(from._impl_.datanodeip_);
+  _this->_impl_.datanodeport_.MergeFrom(from._impl_.datanodeport_);
+  _this->_impl_.blockkeys_.MergeFrom(from._impl_.blockkeys_);
+  _this->_impl_.blockids_.MergeFrom(from._impl_.blockids_);
+  _this->_impl_.offsets_.MergeFrom(from._impl_.offsets_);
+  _this->_impl_.sizes_.MergeFrom(from._impl_.sizes_);
+  if (!from._internal_key().empty()) {
+    _this->_internal_set_key(from._internal_key());
+  }
+  if (!from._internal_delta_blob_key().empty()) {
+    _this->_internal_set_delta_blob_key(from._internal_delta_blob_key());
+  }
+  if (!from._internal_delta_datanode_ip().empty()) {
+    _this->_internal_set_delta_datanode_ip(from._internal_delta_datanode_ip());
+  }
+  if (from._internal_cluster_id() != 0) {
+    _this->_internal_set_cluster_id(from._internal_cluster_id());
+  }
+  if (from._internal_stripe_id() != 0) {
+    _this->_internal_set_stripe_id(from._internal_stripe_id());
+  }
+  if (from._internal_update_payload_size() != 0) {
+    _this->_internal_set_update_payload_size(from._internal_update_payload_size());
+  }
+  if (from._internal_delta_datanode_port() != 0) {
+    _this->_internal_set_delta_datanode_port(from._internal_delta_datanode_port());
+  }
+  _this->_internal_metadata_.MergeFrom<::PROTOBUF_NAMESPACE_ID::UnknownFieldSet>(from._internal_metadata_);
+}
+
+void CordDataUpdatePlacement::CopyFrom(const CordDataUpdatePlacement& from) {
+// @@protoc_insertion_point(class_specific_copy_from_start:proxy_proto.CordDataUpdatePlacement)
+  if (&from == this) return;
+  Clear();
+  MergeFrom(from);
+}
+
+bool CordDataUpdatePlacement::IsInitialized() const {
+  return true;
+}
+
+void CordDataUpdatePlacement::InternalSwap(CordDataUpdatePlacement* other) {
+  using std::swap;
+  auto* lhs_arena = GetArenaForAllocation();
+  auto* rhs_arena = other->GetArenaForAllocation();
+  _internal_metadata_.InternalSwap(&other->_internal_metadata_);
+  _impl_.datanodeip_.InternalSwap(&other->_impl_.datanodeip_);
+  _impl_.datanodeport_.InternalSwap(&other->_impl_.datanodeport_);
+  _impl_.blockkeys_.InternalSwap(&other->_impl_.blockkeys_);
+  _impl_.blockids_.InternalSwap(&other->_impl_.blockids_);
+  _impl_.offsets_.InternalSwap(&other->_impl_.offsets_);
+  _impl_.sizes_.InternalSwap(&other->_impl_.sizes_);
+  ::PROTOBUF_NAMESPACE_ID::internal::ArenaStringPtr::InternalSwap(
+      &_impl_.key_, lhs_arena,
+      &other->_impl_.key_, rhs_arena
+  );
+  ::PROTOBUF_NAMESPACE_ID::internal::ArenaStringPtr::InternalSwap(
+      &_impl_.delta_blob_key_, lhs_arena,
+      &other->_impl_.delta_blob_key_, rhs_arena
+  );
+  ::PROTOBUF_NAMESPACE_ID::internal::ArenaStringPtr::InternalSwap(
+      &_impl_.delta_datanode_ip_, lhs_arena,
+      &other->_impl_.delta_datanode_ip_, rhs_arena
+  );
+  ::PROTOBUF_NAMESPACE_ID::internal::memswap<
+      PROTOBUF_FIELD_OFFSET(CordDataUpdatePlacement, _impl_.delta_datanode_port_)
+      + sizeof(CordDataUpdatePlacement::_impl_.delta_datanode_port_)
+      - PROTOBUF_FIELD_OFFSET(CordDataUpdatePlacement, _impl_.cluster_id_)>(
+          reinterpret_cast<char*>(&_impl_.cluster_id_),
+          reinterpret_cast<char*>(&other->_impl_.cluster_id_));
+}
+
+::PROTOBUF_NAMESPACE_ID::Metadata CordDataUpdatePlacement::GetMetadata() const {
+  return ::_pbi::AssignDescriptors(
+      &descriptor_table_proxy_2eproto_getter, &descriptor_table_proxy_2eproto_once,
+      file_level_metadata_proxy_2eproto[20]);
+}
+
+// ===================================================================
+
+class CordLpDeltaFetch::_Internal {
+ public:
+};
+
+CordLpDeltaFetch::CordLpDeltaFetch(::PROTOBUF_NAMESPACE_ID::Arena* arena,
+                         bool is_message_owned)
+  : ::PROTOBUF_NAMESPACE_ID::Message(arena, is_message_owned) {
+  SharedCtor(arena, is_message_owned);
+  // @@protoc_insertion_point(arena_constructor:proxy_proto.CordLpDeltaFetch)
+}
+CordLpDeltaFetch::CordLpDeltaFetch(const CordLpDeltaFetch& from)
+  : ::PROTOBUF_NAMESPACE_ID::Message() {
+  CordLpDeltaFetch* const _this = this; (void)_this;
+  new (&_impl_) Impl_{
+      decltype(_impl_.blob_key_){}
+    , decltype(_impl_.datanode_ip_){}
+    , decltype(_impl_.blob_offset_){}
+    , decltype(_impl_.datanode_port_){}
+    , decltype(_impl_.acc_offset_){}
+    , decltype(_impl_.read_len_){}
+    , /*decltype(_impl_._cached_size_)*/{}};
+
+  _internal_metadata_.MergeFrom<::PROTOBUF_NAMESPACE_ID::UnknownFieldSet>(from._internal_metadata_);
+  _impl_.blob_key_.InitDefault();
+  #ifdef PROTOBUF_FORCE_COPY_DEFAULT_STRING
+    _impl_.blob_key_.Set("", GetArenaForAllocation());
+  #endif // PROTOBUF_FORCE_COPY_DEFAULT_STRING
+  if (!from._internal_blob_key().empty()) {
+    _this->_impl_.blob_key_.Set(from._internal_blob_key(), 
+      _this->GetArenaForAllocation());
+  }
+  _impl_.datanode_ip_.InitDefault();
+  #ifdef PROTOBUF_FORCE_COPY_DEFAULT_STRING
+    _impl_.datanode_ip_.Set("", GetArenaForAllocation());
+  #endif // PROTOBUF_FORCE_COPY_DEFAULT_STRING
+  if (!from._internal_datanode_ip().empty()) {
+    _this->_impl_.datanode_ip_.Set(from._internal_datanode_ip(), 
+      _this->GetArenaForAllocation());
+  }
+  ::memcpy(&_impl_.blob_offset_, &from._impl_.blob_offset_,
+    static_cast<size_t>(reinterpret_cast<char*>(&_impl_.read_len_) -
+    reinterpret_cast<char*>(&_impl_.blob_offset_)) + sizeof(_impl_.read_len_));
+  // @@protoc_insertion_point(copy_constructor:proxy_proto.CordLpDeltaFetch)
+}
+
+inline void CordLpDeltaFetch::SharedCtor(
+    ::_pb::Arena* arena, bool is_message_owned) {
+  (void)arena;
+  (void)is_message_owned;
+  new (&_impl_) Impl_{
+      decltype(_impl_.blob_key_){}
+    , decltype(_impl_.datanode_ip_){}
+    , decltype(_impl_.blob_offset_){uint64_t{0u}}
+    , decltype(_impl_.datanode_port_){0}
+    , decltype(_impl_.acc_offset_){0}
+    , decltype(_impl_.read_len_){uint64_t{0u}}
+    , /*decltype(_impl_._cached_size_)*/{}
+  };
+  _impl_.blob_key_.InitDefault();
+  #ifdef PROTOBUF_FORCE_COPY_DEFAULT_STRING
+    _impl_.blob_key_.Set("", GetArenaForAllocation());
+  #endif // PROTOBUF_FORCE_COPY_DEFAULT_STRING
+  _impl_.datanode_ip_.InitDefault();
+  #ifdef PROTOBUF_FORCE_COPY_DEFAULT_STRING
+    _impl_.datanode_ip_.Set("", GetArenaForAllocation());
+  #endif // PROTOBUF_FORCE_COPY_DEFAULT_STRING
+}
+
+CordLpDeltaFetch::~CordLpDeltaFetch() {
+  // @@protoc_insertion_point(destructor:proxy_proto.CordLpDeltaFetch)
+  if (auto *arena = _internal_metadata_.DeleteReturnArena<::PROTOBUF_NAMESPACE_ID::UnknownFieldSet>()) {
+  (void)arena;
+    return;
+  }
+  SharedDtor();
+}
+
+inline void CordLpDeltaFetch::SharedDtor() {
+  GOOGLE_DCHECK(GetArenaForAllocation() == nullptr);
+  _impl_.blob_key_.Destroy();
+  _impl_.datanode_ip_.Destroy();
+}
+
+void CordLpDeltaFetch::SetCachedSize(int size) const {
+  _impl_._cached_size_.Set(size);
+}
+
+void CordLpDeltaFetch::Clear() {
+// @@protoc_insertion_point(message_clear_start:proxy_proto.CordLpDeltaFetch)
+  uint32_t cached_has_bits = 0;
+  // Prevent compiler warnings about cached_has_bits being unused
+  (void) cached_has_bits;
+
+  _impl_.blob_key_.ClearToEmpty();
+  _impl_.datanode_ip_.ClearToEmpty();
+  ::memset(&_impl_.blob_offset_, 0, static_cast<size_t>(
+      reinterpret_cast<char*>(&_impl_.read_len_) -
+      reinterpret_cast<char*>(&_impl_.blob_offset_)) + sizeof(_impl_.read_len_));
+  _internal_metadata_.Clear<::PROTOBUF_NAMESPACE_ID::UnknownFieldSet>();
+}
+
+const char* CordLpDeltaFetch::_InternalParse(const char* ptr, ::_pbi::ParseContext* ctx) {
+#define CHK_(x) if (PROTOBUF_PREDICT_FALSE(!(x))) goto failure
+  while (!ctx->Done(&ptr)) {
+    uint32_t tag;
+    ptr = ::_pbi::ReadTag(ptr, &tag);
+    switch (tag >> 3) {
+      // string blob_key = 1;
+      case 1:
+        if (PROTOBUF_PREDICT_TRUE(static_cast<uint8_t>(tag) == 10)) {
+          auto str = _internal_mutable_blob_key();
+          ptr = ::_pbi::InlineGreedyStringParser(str, ptr, ctx);
+          CHK_(ptr);
+          CHK_(::_pbi::VerifyUTF8(str, "proxy_proto.CordLpDeltaFetch.blob_key"));
+        } else
+          goto handle_unusual;
+        continue;
+      // string datanode_ip = 2;
+      case 2:
+        if (PROTOBUF_PREDICT_TRUE(static_cast<uint8_t>(tag) == 18)) {
+          auto str = _internal_mutable_datanode_ip();
+          ptr = ::_pbi::InlineGreedyStringParser(str, ptr, ctx);
+          CHK_(ptr);
+          CHK_(::_pbi::VerifyUTF8(str, "proxy_proto.CordLpDeltaFetch.datanode_ip"));
+        } else
+          goto handle_unusual;
+        continue;
+      // int32 datanode_port = 3;
+      case 3:
+        if (PROTOBUF_PREDICT_TRUE(static_cast<uint8_t>(tag) == 24)) {
+          _impl_.datanode_port_ = ::PROTOBUF_NAMESPACE_ID::internal::ReadVarint32(&ptr);
+          CHK_(ptr);
+        } else
+          goto handle_unusual;
+        continue;
+      // uint64 blob_offset = 4;
+      case 4:
+        if (PROTOBUF_PREDICT_TRUE(static_cast<uint8_t>(tag) == 32)) {
+          _impl_.blob_offset_ = ::PROTOBUF_NAMESPACE_ID::internal::ReadVarint64(&ptr);
+          CHK_(ptr);
+        } else
+          goto handle_unusual;
+        continue;
+      // uint64 read_len = 5;
+      case 5:
+        if (PROTOBUF_PREDICT_TRUE(static_cast<uint8_t>(tag) == 40)) {
+          _impl_.read_len_ = ::PROTOBUF_NAMESPACE_ID::internal::ReadVarint64(&ptr);
+          CHK_(ptr);
+        } else
+          goto handle_unusual;
+        continue;
+      // int32 acc_offset = 6;
+      case 6:
+        if (PROTOBUF_PREDICT_TRUE(static_cast<uint8_t>(tag) == 48)) {
+          _impl_.acc_offset_ = ::PROTOBUF_NAMESPACE_ID::internal::ReadVarint32(&ptr);
+          CHK_(ptr);
+        } else
+          goto handle_unusual;
+        continue;
+      default:
+        goto handle_unusual;
+    }  // switch
+  handle_unusual:
+    if ((tag == 0) || ((tag & 7) == 4)) {
+      CHK_(ptr);
+      ctx->SetLastTag(tag);
+      goto message_done;
+    }
+    ptr = UnknownFieldParse(
+        tag,
+        _internal_metadata_.mutable_unknown_fields<::PROTOBUF_NAMESPACE_ID::UnknownFieldSet>(),
+        ptr, ctx);
+    CHK_(ptr != nullptr);
+  }  // while
+message_done:
+  return ptr;
+failure:
+  ptr = nullptr;
+  goto message_done;
+#undef CHK_
+}
+
+uint8_t* CordLpDeltaFetch::_InternalSerialize(
+    uint8_t* target, ::PROTOBUF_NAMESPACE_ID::io::EpsCopyOutputStream* stream) const {
+  // @@protoc_insertion_point(serialize_to_array_start:proxy_proto.CordLpDeltaFetch)
+  uint32_t cached_has_bits = 0;
+  (void) cached_has_bits;
+
+  // string blob_key = 1;
+  if (!this->_internal_blob_key().empty()) {
+    ::PROTOBUF_NAMESPACE_ID::internal::WireFormatLite::VerifyUtf8String(
+      this->_internal_blob_key().data(), static_cast<int>(this->_internal_blob_key().length()),
+      ::PROTOBUF_NAMESPACE_ID::internal::WireFormatLite::SERIALIZE,
+      "proxy_proto.CordLpDeltaFetch.blob_key");
+    target = stream->WriteStringMaybeAliased(
+        1, this->_internal_blob_key(), target);
+  }
+
+  // string datanode_ip = 2;
+  if (!this->_internal_datanode_ip().empty()) {
+    ::PROTOBUF_NAMESPACE_ID::internal::WireFormatLite::VerifyUtf8String(
+      this->_internal_datanode_ip().data(), static_cast<int>(this->_internal_datanode_ip().length()),
+      ::PROTOBUF_NAMESPACE_ID::internal::WireFormatLite::SERIALIZE,
+      "proxy_proto.CordLpDeltaFetch.datanode_ip");
+    target = stream->WriteStringMaybeAliased(
+        2, this->_internal_datanode_ip(), target);
+  }
+
+  // int32 datanode_port = 3;
+  if (this->_internal_datanode_port() != 0) {
+    target = stream->EnsureSpace(target);
+    target = ::_pbi::WireFormatLite::WriteInt32ToArray(3, this->_internal_datanode_port(), target);
+  }
+
+  // uint64 blob_offset = 4;
+  if (this->_internal_blob_offset() != 0) {
+    target = stream->EnsureSpace(target);
+    target = ::_pbi::WireFormatLite::WriteUInt64ToArray(4, this->_internal_blob_offset(), target);
+  }
+
+  // uint64 read_len = 5;
+  if (this->_internal_read_len() != 0) {
+    target = stream->EnsureSpace(target);
+    target = ::_pbi::WireFormatLite::WriteUInt64ToArray(5, this->_internal_read_len(), target);
+  }
+
+  // int32 acc_offset = 6;
+  if (this->_internal_acc_offset() != 0) {
+    target = stream->EnsureSpace(target);
+    target = ::_pbi::WireFormatLite::WriteInt32ToArray(6, this->_internal_acc_offset(), target);
+  }
+
+  if (PROTOBUF_PREDICT_FALSE(_internal_metadata_.have_unknown_fields())) {
+    target = ::_pbi::WireFormat::InternalSerializeUnknownFieldsToArray(
+        _internal_metadata_.unknown_fields<::PROTOBUF_NAMESPACE_ID::UnknownFieldSet>(::PROTOBUF_NAMESPACE_ID::UnknownFieldSet::default_instance), target, stream);
+  }
+  // @@protoc_insertion_point(serialize_to_array_end:proxy_proto.CordLpDeltaFetch)
+  return target;
+}
+
+size_t CordLpDeltaFetch::ByteSizeLong() const {
+// @@protoc_insertion_point(message_byte_size_start:proxy_proto.CordLpDeltaFetch)
+  size_t total_size = 0;
+
+  uint32_t cached_has_bits = 0;
+  // Prevent compiler warnings about cached_has_bits being unused
+  (void) cached_has_bits;
+
+  // string blob_key = 1;
+  if (!this->_internal_blob_key().empty()) {
+    total_size += 1 +
+      ::PROTOBUF_NAMESPACE_ID::internal::WireFormatLite::StringSize(
+        this->_internal_blob_key());
+  }
+
+  // string datanode_ip = 2;
+  if (!this->_internal_datanode_ip().empty()) {
+    total_size += 1 +
+      ::PROTOBUF_NAMESPACE_ID::internal::WireFormatLite::StringSize(
+        this->_internal_datanode_ip());
+  }
+
+  // uint64 blob_offset = 4;
+  if (this->_internal_blob_offset() != 0) {
+    total_size += ::_pbi::WireFormatLite::UInt64SizePlusOne(this->_internal_blob_offset());
+  }
+
+  // int32 datanode_port = 3;
+  if (this->_internal_datanode_port() != 0) {
+    total_size += ::_pbi::WireFormatLite::Int32SizePlusOne(this->_internal_datanode_port());
+  }
+
+  // int32 acc_offset = 6;
+  if (this->_internal_acc_offset() != 0) {
+    total_size += ::_pbi::WireFormatLite::Int32SizePlusOne(this->_internal_acc_offset());
+  }
+
+  // uint64 read_len = 5;
+  if (this->_internal_read_len() != 0) {
+    total_size += ::_pbi::WireFormatLite::UInt64SizePlusOne(this->_internal_read_len());
+  }
+
+  return MaybeComputeUnknownFieldsSize(total_size, &_impl_._cached_size_);
+}
+
+const ::PROTOBUF_NAMESPACE_ID::Message::ClassData CordLpDeltaFetch::_class_data_ = {
+    ::PROTOBUF_NAMESPACE_ID::Message::CopyWithSourceCheck,
+    CordLpDeltaFetch::MergeImpl
+};
+const ::PROTOBUF_NAMESPACE_ID::Message::ClassData*CordLpDeltaFetch::GetClassData() const { return &_class_data_; }
+
+
+void CordLpDeltaFetch::MergeImpl(::PROTOBUF_NAMESPACE_ID::Message& to_msg, const ::PROTOBUF_NAMESPACE_ID::Message& from_msg) {
+  auto* const _this = static_cast<CordLpDeltaFetch*>(&to_msg);
+  auto& from = static_cast<const CordLpDeltaFetch&>(from_msg);
+  // @@protoc_insertion_point(class_specific_merge_from_start:proxy_proto.CordLpDeltaFetch)
+  GOOGLE_DCHECK_NE(&from, _this);
+  uint32_t cached_has_bits = 0;
+  (void) cached_has_bits;
+
+  if (!from._internal_blob_key().empty()) {
+    _this->_internal_set_blob_key(from._internal_blob_key());
+  }
+  if (!from._internal_datanode_ip().empty()) {
+    _this->_internal_set_datanode_ip(from._internal_datanode_ip());
+  }
+  if (from._internal_blob_offset() != 0) {
+    _this->_internal_set_blob_offset(from._internal_blob_offset());
+  }
+  if (from._internal_datanode_port() != 0) {
+    _this->_internal_set_datanode_port(from._internal_datanode_port());
+  }
+  if (from._internal_acc_offset() != 0) {
+    _this->_internal_set_acc_offset(from._internal_acc_offset());
+  }
+  if (from._internal_read_len() != 0) {
+    _this->_internal_set_read_len(from._internal_read_len());
+  }
+  _this->_internal_metadata_.MergeFrom<::PROTOBUF_NAMESPACE_ID::UnknownFieldSet>(from._internal_metadata_);
+}
+
+void CordLpDeltaFetch::CopyFrom(const CordLpDeltaFetch& from) {
+// @@protoc_insertion_point(class_specific_copy_from_start:proxy_proto.CordLpDeltaFetch)
+  if (&from == this) return;
+  Clear();
+  MergeFrom(from);
+}
+
+bool CordLpDeltaFetch::IsInitialized() const {
+  return true;
+}
+
+void CordLpDeltaFetch::InternalSwap(CordLpDeltaFetch* other) {
+  using std::swap;
+  auto* lhs_arena = GetArenaForAllocation();
+  auto* rhs_arena = other->GetArenaForAllocation();
+  _internal_metadata_.InternalSwap(&other->_internal_metadata_);
+  ::PROTOBUF_NAMESPACE_ID::internal::ArenaStringPtr::InternalSwap(
+      &_impl_.blob_key_, lhs_arena,
+      &other->_impl_.blob_key_, rhs_arena
+  );
+  ::PROTOBUF_NAMESPACE_ID::internal::ArenaStringPtr::InternalSwap(
+      &_impl_.datanode_ip_, lhs_arena,
+      &other->_impl_.datanode_ip_, rhs_arena
+  );
+  ::PROTOBUF_NAMESPACE_ID::internal::memswap<
+      PROTOBUF_FIELD_OFFSET(CordLpDeltaFetch, _impl_.read_len_)
+      + sizeof(CordLpDeltaFetch::_impl_.read_len_)
+      - PROTOBUF_FIELD_OFFSET(CordLpDeltaFetch, _impl_.blob_offset_)>(
+          reinterpret_cast<char*>(&_impl_.blob_offset_),
+          reinterpret_cast<char*>(&other->_impl_.blob_offset_));
+}
+
+::PROTOBUF_NAMESPACE_ID::Metadata CordLpDeltaFetch::GetMetadata() const {
+  return ::_pbi::AssignDescriptors(
+      &descriptor_table_proxy_2eproto_getter, &descriptor_table_proxy_2eproto_once,
+      file_level_metadata_proxy_2eproto[21]);
+}
+
+// ===================================================================
+
+class CordLpWorkItem::_Internal {
+ public:
+};
+
+CordLpWorkItem::CordLpWorkItem(::PROTOBUF_NAMESPACE_ID::Arena* arena,
+                         bool is_message_owned)
+  : ::PROTOBUF_NAMESPACE_ID::Message(arena, is_message_owned) {
+  SharedCtor(arena, is_message_owned);
+  // @@protoc_insertion_point(arena_constructor:proxy_proto.CordLpWorkItem)
+}
+CordLpWorkItem::CordLpWorkItem(const CordLpWorkItem& from)
+  : ::PROTOBUF_NAMESPACE_ID::Message() {
+  CordLpWorkItem* const _this = this; (void)_this;
+  new (&_impl_) Impl_{
+      decltype(_impl_.fetches_){from._impl_.fetches_}
+    , decltype(_impl_.local_block_key_){}
+    , decltype(_impl_.local_datanode_ip_){}
+    , decltype(_impl_.local_block_id_){}
+    , decltype(_impl_.local_datanode_port_){}
+    , decltype(_impl_.parity_slice_offset_){}
+    , decltype(_impl_.parity_slice_size_){}
+    , /*decltype(_impl_._cached_size_)*/{}};
+
+  _internal_metadata_.MergeFrom<::PROTOBUF_NAMESPACE_ID::UnknownFieldSet>(from._internal_metadata_);
+  _impl_.local_block_key_.InitDefault();
+  #ifdef PROTOBUF_FORCE_COPY_DEFAULT_STRING
+    _impl_.local_block_key_.Set("", GetArenaForAllocation());
+  #endif // PROTOBUF_FORCE_COPY_DEFAULT_STRING
+  if (!from._internal_local_block_key().empty()) {
+    _this->_impl_.local_block_key_.Set(from._internal_local_block_key(), 
+      _this->GetArenaForAllocation());
+  }
+  _impl_.local_datanode_ip_.InitDefault();
+  #ifdef PROTOBUF_FORCE_COPY_DEFAULT_STRING
+    _impl_.local_datanode_ip_.Set("", GetArenaForAllocation());
+  #endif // PROTOBUF_FORCE_COPY_DEFAULT_STRING
+  if (!from._internal_local_datanode_ip().empty()) {
+    _this->_impl_.local_datanode_ip_.Set(from._internal_local_datanode_ip(), 
+      _this->GetArenaForAllocation());
+  }
+  ::memcpy(&_impl_.local_block_id_, &from._impl_.local_block_id_,
+    static_cast<size_t>(reinterpret_cast<char*>(&_impl_.parity_slice_size_) -
+    reinterpret_cast<char*>(&_impl_.local_block_id_)) + sizeof(_impl_.parity_slice_size_));
+  // @@protoc_insertion_point(copy_constructor:proxy_proto.CordLpWorkItem)
+}
+
+inline void CordLpWorkItem::SharedCtor(
+    ::_pb::Arena* arena, bool is_message_owned) {
+  (void)arena;
+  (void)is_message_owned;
+  new (&_impl_) Impl_{
+      decltype(_impl_.fetches_){arena}
+    , decltype(_impl_.local_block_key_){}
+    , decltype(_impl_.local_datanode_ip_){}
+    , decltype(_impl_.local_block_id_){0}
+    , decltype(_impl_.local_datanode_port_){0}
+    , decltype(_impl_.parity_slice_offset_){0}
+    , decltype(_impl_.parity_slice_size_){0}
+    , /*decltype(_impl_._cached_size_)*/{}
+  };
+  _impl_.local_block_key_.InitDefault();
+  #ifdef PROTOBUF_FORCE_COPY_DEFAULT_STRING
+    _impl_.local_block_key_.Set("", GetArenaForAllocation());
+  #endif // PROTOBUF_FORCE_COPY_DEFAULT_STRING
+  _impl_.local_datanode_ip_.InitDefault();
+  #ifdef PROTOBUF_FORCE_COPY_DEFAULT_STRING
+    _impl_.local_datanode_ip_.Set("", GetArenaForAllocation());
+  #endif // PROTOBUF_FORCE_COPY_DEFAULT_STRING
+}
+
+CordLpWorkItem::~CordLpWorkItem() {
+  // @@protoc_insertion_point(destructor:proxy_proto.CordLpWorkItem)
+  if (auto *arena = _internal_metadata_.DeleteReturnArena<::PROTOBUF_NAMESPACE_ID::UnknownFieldSet>()) {
+  (void)arena;
+    return;
+  }
+  SharedDtor();
+}
+
+inline void CordLpWorkItem::SharedDtor() {
+  GOOGLE_DCHECK(GetArenaForAllocation() == nullptr);
+  _impl_.fetches_.~RepeatedPtrField();
+  _impl_.local_block_key_.Destroy();
+  _impl_.local_datanode_ip_.Destroy();
+}
+
+void CordLpWorkItem::SetCachedSize(int size) const {
+  _impl_._cached_size_.Set(size);
+}
+
+void CordLpWorkItem::Clear() {
+// @@protoc_insertion_point(message_clear_start:proxy_proto.CordLpWorkItem)
+  uint32_t cached_has_bits = 0;
+  // Prevent compiler warnings about cached_has_bits being unused
+  (void) cached_has_bits;
+
+  _impl_.fetches_.Clear();
+  _impl_.local_block_key_.ClearToEmpty();
+  _impl_.local_datanode_ip_.ClearToEmpty();
+  ::memset(&_impl_.local_block_id_, 0, static_cast<size_t>(
+      reinterpret_cast<char*>(&_impl_.parity_slice_size_) -
+      reinterpret_cast<char*>(&_impl_.local_block_id_)) + sizeof(_impl_.parity_slice_size_));
+  _internal_metadata_.Clear<::PROTOBUF_NAMESPACE_ID::UnknownFieldSet>();
+}
+
+const char* CordLpWorkItem::_InternalParse(const char* ptr, ::_pbi::ParseContext* ctx) {
+#define CHK_(x) if (PROTOBUF_PREDICT_FALSE(!(x))) goto failure
+  while (!ctx->Done(&ptr)) {
+    uint32_t tag;
+    ptr = ::_pbi::ReadTag(ptr, &tag);
+    switch (tag >> 3) {
+      // int32 local_block_id = 1;
+      case 1:
+        if (PROTOBUF_PREDICT_TRUE(static_cast<uint8_t>(tag) == 8)) {
+          _impl_.local_block_id_ = ::PROTOBUF_NAMESPACE_ID::internal::ReadVarint32(&ptr);
+          CHK_(ptr);
+        } else
+          goto handle_unusual;
+        continue;
+      // string local_block_key = 2;
+      case 2:
+        if (PROTOBUF_PREDICT_TRUE(static_cast<uint8_t>(tag) == 18)) {
+          auto str = _internal_mutable_local_block_key();
+          ptr = ::_pbi::InlineGreedyStringParser(str, ptr, ctx);
+          CHK_(ptr);
+          CHK_(::_pbi::VerifyUTF8(str, "proxy_proto.CordLpWorkItem.local_block_key"));
+        } else
+          goto handle_unusual;
+        continue;
+      // string local_datanode_ip = 3;
+      case 3:
+        if (PROTOBUF_PREDICT_TRUE(static_cast<uint8_t>(tag) == 26)) {
+          auto str = _internal_mutable_local_datanode_ip();
+          ptr = ::_pbi::InlineGreedyStringParser(str, ptr, ctx);
+          CHK_(ptr);
+          CHK_(::_pbi::VerifyUTF8(str, "proxy_proto.CordLpWorkItem.local_datanode_ip"));
+        } else
+          goto handle_unusual;
+        continue;
+      // int32 local_datanode_port = 4;
+      case 4:
+        if (PROTOBUF_PREDICT_TRUE(static_cast<uint8_t>(tag) == 32)) {
+          _impl_.local_datanode_port_ = ::PROTOBUF_NAMESPACE_ID::internal::ReadVarint32(&ptr);
+          CHK_(ptr);
+        } else
+          goto handle_unusual;
+        continue;
+      // int32 parity_slice_offset = 5;
+      case 5:
+        if (PROTOBUF_PREDICT_TRUE(static_cast<uint8_t>(tag) == 40)) {
+          _impl_.parity_slice_offset_ = ::PROTOBUF_NAMESPACE_ID::internal::ReadVarint32(&ptr);
+          CHK_(ptr);
+        } else
+          goto handle_unusual;
+        continue;
+      // int32 parity_slice_size = 6;
+      case 6:
+        if (PROTOBUF_PREDICT_TRUE(static_cast<uint8_t>(tag) == 48)) {
+          _impl_.parity_slice_size_ = ::PROTOBUF_NAMESPACE_ID::internal::ReadVarint32(&ptr);
+          CHK_(ptr);
+        } else
+          goto handle_unusual;
+        continue;
+      // repeated .proxy_proto.CordLpDeltaFetch fetches = 7;
+      case 7:
+        if (PROTOBUF_PREDICT_TRUE(static_cast<uint8_t>(tag) == 58)) {
+          ptr -= 1;
+          do {
+            ptr += 1;
+            ptr = ctx->ParseMessage(_internal_add_fetches(), ptr);
+            CHK_(ptr);
+            if (!ctx->DataAvailable(ptr)) break;
+          } while (::PROTOBUF_NAMESPACE_ID::internal::ExpectTag<58>(ptr));
+        } else
+          goto handle_unusual;
+        continue;
+      default:
+        goto handle_unusual;
+    }  // switch
+  handle_unusual:
+    if ((tag == 0) || ((tag & 7) == 4)) {
+      CHK_(ptr);
+      ctx->SetLastTag(tag);
+      goto message_done;
+    }
+    ptr = UnknownFieldParse(
+        tag,
+        _internal_metadata_.mutable_unknown_fields<::PROTOBUF_NAMESPACE_ID::UnknownFieldSet>(),
+        ptr, ctx);
+    CHK_(ptr != nullptr);
+  }  // while
+message_done:
+  return ptr;
+failure:
+  ptr = nullptr;
+  goto message_done;
+#undef CHK_
+}
+
+uint8_t* CordLpWorkItem::_InternalSerialize(
+    uint8_t* target, ::PROTOBUF_NAMESPACE_ID::io::EpsCopyOutputStream* stream) const {
+  // @@protoc_insertion_point(serialize_to_array_start:proxy_proto.CordLpWorkItem)
+  uint32_t cached_has_bits = 0;
+  (void) cached_has_bits;
+
+  // int32 local_block_id = 1;
+  if (this->_internal_local_block_id() != 0) {
+    target = stream->EnsureSpace(target);
+    target = ::_pbi::WireFormatLite::WriteInt32ToArray(1, this->_internal_local_block_id(), target);
+  }
+
+  // string local_block_key = 2;
+  if (!this->_internal_local_block_key().empty()) {
+    ::PROTOBUF_NAMESPACE_ID::internal::WireFormatLite::VerifyUtf8String(
+      this->_internal_local_block_key().data(), static_cast<int>(this->_internal_local_block_key().length()),
+      ::PROTOBUF_NAMESPACE_ID::internal::WireFormatLite::SERIALIZE,
+      "proxy_proto.CordLpWorkItem.local_block_key");
+    target = stream->WriteStringMaybeAliased(
+        2, this->_internal_local_block_key(), target);
+  }
+
+  // string local_datanode_ip = 3;
+  if (!this->_internal_local_datanode_ip().empty()) {
+    ::PROTOBUF_NAMESPACE_ID::internal::WireFormatLite::VerifyUtf8String(
+      this->_internal_local_datanode_ip().data(), static_cast<int>(this->_internal_local_datanode_ip().length()),
+      ::PROTOBUF_NAMESPACE_ID::internal::WireFormatLite::SERIALIZE,
+      "proxy_proto.CordLpWorkItem.local_datanode_ip");
+    target = stream->WriteStringMaybeAliased(
+        3, this->_internal_local_datanode_ip(), target);
+  }
+
+  // int32 local_datanode_port = 4;
+  if (this->_internal_local_datanode_port() != 0) {
+    target = stream->EnsureSpace(target);
+    target = ::_pbi::WireFormatLite::WriteInt32ToArray(4, this->_internal_local_datanode_port(), target);
+  }
+
+  // int32 parity_slice_offset = 5;
+  if (this->_internal_parity_slice_offset() != 0) {
+    target = stream->EnsureSpace(target);
+    target = ::_pbi::WireFormatLite::WriteInt32ToArray(5, this->_internal_parity_slice_offset(), target);
+  }
+
+  // int32 parity_slice_size = 6;
+  if (this->_internal_parity_slice_size() != 0) {
+    target = stream->EnsureSpace(target);
+    target = ::_pbi::WireFormatLite::WriteInt32ToArray(6, this->_internal_parity_slice_size(), target);
+  }
+
+  // repeated .proxy_proto.CordLpDeltaFetch fetches = 7;
+  for (unsigned i = 0,
+      n = static_cast<unsigned>(this->_internal_fetches_size()); i < n; i++) {
+    const auto& repfield = this->_internal_fetches(i);
+    target = ::PROTOBUF_NAMESPACE_ID::internal::WireFormatLite::
+        InternalWriteMessage(7, repfield, repfield.GetCachedSize(), target, stream);
+  }
+
+  if (PROTOBUF_PREDICT_FALSE(_internal_metadata_.have_unknown_fields())) {
+    target = ::_pbi::WireFormat::InternalSerializeUnknownFieldsToArray(
+        _internal_metadata_.unknown_fields<::PROTOBUF_NAMESPACE_ID::UnknownFieldSet>(::PROTOBUF_NAMESPACE_ID::UnknownFieldSet::default_instance), target, stream);
+  }
+  // @@protoc_insertion_point(serialize_to_array_end:proxy_proto.CordLpWorkItem)
+  return target;
+}
+
+size_t CordLpWorkItem::ByteSizeLong() const {
+// @@protoc_insertion_point(message_byte_size_start:proxy_proto.CordLpWorkItem)
+  size_t total_size = 0;
+
+  uint32_t cached_has_bits = 0;
+  // Prevent compiler warnings about cached_has_bits being unused
+  (void) cached_has_bits;
+
+  // repeated .proxy_proto.CordLpDeltaFetch fetches = 7;
+  total_size += 1UL * this->_internal_fetches_size();
+  for (const auto& msg : this->_impl_.fetches_) {
+    total_size +=
+      ::PROTOBUF_NAMESPACE_ID::internal::WireFormatLite::MessageSize(msg);
+  }
+
+  // string local_block_key = 2;
+  if (!this->_internal_local_block_key().empty()) {
+    total_size += 1 +
+      ::PROTOBUF_NAMESPACE_ID::internal::WireFormatLite::StringSize(
+        this->_internal_local_block_key());
+  }
+
+  // string local_datanode_ip = 3;
+  if (!this->_internal_local_datanode_ip().empty()) {
+    total_size += 1 +
+      ::PROTOBUF_NAMESPACE_ID::internal::WireFormatLite::StringSize(
+        this->_internal_local_datanode_ip());
+  }
+
+  // int32 local_block_id = 1;
+  if (this->_internal_local_block_id() != 0) {
+    total_size += ::_pbi::WireFormatLite::Int32SizePlusOne(this->_internal_local_block_id());
+  }
+
+  // int32 local_datanode_port = 4;
+  if (this->_internal_local_datanode_port() != 0) {
+    total_size += ::_pbi::WireFormatLite::Int32SizePlusOne(this->_internal_local_datanode_port());
+  }
+
+  // int32 parity_slice_offset = 5;
+  if (this->_internal_parity_slice_offset() != 0) {
+    total_size += ::_pbi::WireFormatLite::Int32SizePlusOne(this->_internal_parity_slice_offset());
+  }
+
+  // int32 parity_slice_size = 6;
+  if (this->_internal_parity_slice_size() != 0) {
+    total_size += ::_pbi::WireFormatLite::Int32SizePlusOne(this->_internal_parity_slice_size());
+  }
+
+  return MaybeComputeUnknownFieldsSize(total_size, &_impl_._cached_size_);
+}
+
+const ::PROTOBUF_NAMESPACE_ID::Message::ClassData CordLpWorkItem::_class_data_ = {
+    ::PROTOBUF_NAMESPACE_ID::Message::CopyWithSourceCheck,
+    CordLpWorkItem::MergeImpl
+};
+const ::PROTOBUF_NAMESPACE_ID::Message::ClassData*CordLpWorkItem::GetClassData() const { return &_class_data_; }
+
+
+void CordLpWorkItem::MergeImpl(::PROTOBUF_NAMESPACE_ID::Message& to_msg, const ::PROTOBUF_NAMESPACE_ID::Message& from_msg) {
+  auto* const _this = static_cast<CordLpWorkItem*>(&to_msg);
+  auto& from = static_cast<const CordLpWorkItem&>(from_msg);
+  // @@protoc_insertion_point(class_specific_merge_from_start:proxy_proto.CordLpWorkItem)
+  GOOGLE_DCHECK_NE(&from, _this);
+  uint32_t cached_has_bits = 0;
+  (void) cached_has_bits;
+
+  _this->_impl_.fetches_.MergeFrom(from._impl_.fetches_);
+  if (!from._internal_local_block_key().empty()) {
+    _this->_internal_set_local_block_key(from._internal_local_block_key());
+  }
+  if (!from._internal_local_datanode_ip().empty()) {
+    _this->_internal_set_local_datanode_ip(from._internal_local_datanode_ip());
+  }
+  if (from._internal_local_block_id() != 0) {
+    _this->_internal_set_local_block_id(from._internal_local_block_id());
+  }
+  if (from._internal_local_datanode_port() != 0) {
+    _this->_internal_set_local_datanode_port(from._internal_local_datanode_port());
+  }
+  if (from._internal_parity_slice_offset() != 0) {
+    _this->_internal_set_parity_slice_offset(from._internal_parity_slice_offset());
+  }
+  if (from._internal_parity_slice_size() != 0) {
+    _this->_internal_set_parity_slice_size(from._internal_parity_slice_size());
+  }
+  _this->_internal_metadata_.MergeFrom<::PROTOBUF_NAMESPACE_ID::UnknownFieldSet>(from._internal_metadata_);
+}
+
+void CordLpWorkItem::CopyFrom(const CordLpWorkItem& from) {
+// @@protoc_insertion_point(class_specific_copy_from_start:proxy_proto.CordLpWorkItem)
+  if (&from == this) return;
+  Clear();
+  MergeFrom(from);
+}
+
+bool CordLpWorkItem::IsInitialized() const {
+  return true;
+}
+
+void CordLpWorkItem::InternalSwap(CordLpWorkItem* other) {
+  using std::swap;
+  auto* lhs_arena = GetArenaForAllocation();
+  auto* rhs_arena = other->GetArenaForAllocation();
+  _internal_metadata_.InternalSwap(&other->_internal_metadata_);
+  _impl_.fetches_.InternalSwap(&other->_impl_.fetches_);
+  ::PROTOBUF_NAMESPACE_ID::internal::ArenaStringPtr::InternalSwap(
+      &_impl_.local_block_key_, lhs_arena,
+      &other->_impl_.local_block_key_, rhs_arena
+  );
+  ::PROTOBUF_NAMESPACE_ID::internal::ArenaStringPtr::InternalSwap(
+      &_impl_.local_datanode_ip_, lhs_arena,
+      &other->_impl_.local_datanode_ip_, rhs_arena
+  );
+  ::PROTOBUF_NAMESPACE_ID::internal::memswap<
+      PROTOBUF_FIELD_OFFSET(CordLpWorkItem, _impl_.parity_slice_size_)
+      + sizeof(CordLpWorkItem::_impl_.parity_slice_size_)
+      - PROTOBUF_FIELD_OFFSET(CordLpWorkItem, _impl_.local_block_id_)>(
+          reinterpret_cast<char*>(&_impl_.local_block_id_),
+          reinterpret_cast<char*>(&other->_impl_.local_block_id_));
+}
+
+::PROTOBUF_NAMESPACE_ID::Metadata CordLpWorkItem::GetMetadata() const {
+  return ::_pbi::AssignDescriptors(
+      &descriptor_table_proxy_2eproto_getter, &descriptor_table_proxy_2eproto_once,
+      file_level_metadata_proxy_2eproto[22]);
+}
+
+// ===================================================================
+
+class CordLocalParityBundle::_Internal {
+ public:
+};
+
+CordLocalParityBundle::CordLocalParityBundle(::PROTOBUF_NAMESPACE_ID::Arena* arena,
+                         bool is_message_owned)
+  : ::PROTOBUF_NAMESPACE_ID::Message(arena, is_message_owned) {
+  SharedCtor(arena, is_message_owned);
+  // @@protoc_insertion_point(arena_constructor:proxy_proto.CordLocalParityBundle)
+}
+CordLocalParityBundle::CordLocalParityBundle(const CordLocalParityBundle& from)
+  : ::PROTOBUF_NAMESPACE_ID::Message() {
+  CordLocalParityBundle* const _this = this; (void)_this;
+  new (&_impl_) Impl_{
+      decltype(_impl_.items_){from._impl_.items_}
+    , decltype(_impl_.key_){}
+    , decltype(_impl_.stripe_id_){}
+    , /*decltype(_impl_._cached_size_)*/{}};
+
+  _internal_metadata_.MergeFrom<::PROTOBUF_NAMESPACE_ID::UnknownFieldSet>(from._internal_metadata_);
+  _impl_.key_.InitDefault();
+  #ifdef PROTOBUF_FORCE_COPY_DEFAULT_STRING
+    _impl_.key_.Set("", GetArenaForAllocation());
+  #endif // PROTOBUF_FORCE_COPY_DEFAULT_STRING
+  if (!from._internal_key().empty()) {
+    _this->_impl_.key_.Set(from._internal_key(), 
+      _this->GetArenaForAllocation());
+  }
+  _this->_impl_.stripe_id_ = from._impl_.stripe_id_;
+  // @@protoc_insertion_point(copy_constructor:proxy_proto.CordLocalParityBundle)
+}
+
+inline void CordLocalParityBundle::SharedCtor(
+    ::_pb::Arena* arena, bool is_message_owned) {
+  (void)arena;
+  (void)is_message_owned;
+  new (&_impl_) Impl_{
+      decltype(_impl_.items_){arena}
+    , decltype(_impl_.key_){}
+    , decltype(_impl_.stripe_id_){0}
+    , /*decltype(_impl_._cached_size_)*/{}
+  };
+  _impl_.key_.InitDefault();
+  #ifdef PROTOBUF_FORCE_COPY_DEFAULT_STRING
+    _impl_.key_.Set("", GetArenaForAllocation());
+  #endif // PROTOBUF_FORCE_COPY_DEFAULT_STRING
+}
+
+CordLocalParityBundle::~CordLocalParityBundle() {
+  // @@protoc_insertion_point(destructor:proxy_proto.CordLocalParityBundle)
+  if (auto *arena = _internal_metadata_.DeleteReturnArena<::PROTOBUF_NAMESPACE_ID::UnknownFieldSet>()) {
+  (void)arena;
+    return;
+  }
+  SharedDtor();
+}
+
+inline void CordLocalParityBundle::SharedDtor() {
+  GOOGLE_DCHECK(GetArenaForAllocation() == nullptr);
+  _impl_.items_.~RepeatedPtrField();
+  _impl_.key_.Destroy();
+}
+
+void CordLocalParityBundle::SetCachedSize(int size) const {
+  _impl_._cached_size_.Set(size);
+}
+
+void CordLocalParityBundle::Clear() {
+// @@protoc_insertion_point(message_clear_start:proxy_proto.CordLocalParityBundle)
+  uint32_t cached_has_bits = 0;
+  // Prevent compiler warnings about cached_has_bits being unused
+  (void) cached_has_bits;
+
+  _impl_.items_.Clear();
+  _impl_.key_.ClearToEmpty();
+  _impl_.stripe_id_ = 0;
+  _internal_metadata_.Clear<::PROTOBUF_NAMESPACE_ID::UnknownFieldSet>();
+}
+
+const char* CordLocalParityBundle::_InternalParse(const char* ptr, ::_pbi::ParseContext* ctx) {
+#define CHK_(x) if (PROTOBUF_PREDICT_FALSE(!(x))) goto failure
+  while (!ctx->Done(&ptr)) {
+    uint32_t tag;
+    ptr = ::_pbi::ReadTag(ptr, &tag);
+    switch (tag >> 3) {
+      // string key = 1;
+      case 1:
+        if (PROTOBUF_PREDICT_TRUE(static_cast<uint8_t>(tag) == 10)) {
+          auto str = _internal_mutable_key();
+          ptr = ::_pbi::InlineGreedyStringParser(str, ptr, ctx);
+          CHK_(ptr);
+          CHK_(::_pbi::VerifyUTF8(str, "proxy_proto.CordLocalParityBundle.key"));
+        } else
+          goto handle_unusual;
+        continue;
+      // int32 stripe_id = 2;
+      case 2:
+        if (PROTOBUF_PREDICT_TRUE(static_cast<uint8_t>(tag) == 16)) {
+          _impl_.stripe_id_ = ::PROTOBUF_NAMESPACE_ID::internal::ReadVarint32(&ptr);
+          CHK_(ptr);
+        } else
+          goto handle_unusual;
+        continue;
+      // repeated .proxy_proto.CordLpWorkItem items = 3;
+      case 3:
+        if (PROTOBUF_PREDICT_TRUE(static_cast<uint8_t>(tag) == 26)) {
+          ptr -= 1;
+          do {
+            ptr += 1;
+            ptr = ctx->ParseMessage(_internal_add_items(), ptr);
+            CHK_(ptr);
+            if (!ctx->DataAvailable(ptr)) break;
+          } while (::PROTOBUF_NAMESPACE_ID::internal::ExpectTag<26>(ptr));
+        } else
+          goto handle_unusual;
+        continue;
+      default:
+        goto handle_unusual;
+    }  // switch
+  handle_unusual:
+    if ((tag == 0) || ((tag & 7) == 4)) {
+      CHK_(ptr);
+      ctx->SetLastTag(tag);
+      goto message_done;
+    }
+    ptr = UnknownFieldParse(
+        tag,
+        _internal_metadata_.mutable_unknown_fields<::PROTOBUF_NAMESPACE_ID::UnknownFieldSet>(),
+        ptr, ctx);
+    CHK_(ptr != nullptr);
+  }  // while
+message_done:
+  return ptr;
+failure:
+  ptr = nullptr;
+  goto message_done;
+#undef CHK_
+}
+
+uint8_t* CordLocalParityBundle::_InternalSerialize(
+    uint8_t* target, ::PROTOBUF_NAMESPACE_ID::io::EpsCopyOutputStream* stream) const {
+  // @@protoc_insertion_point(serialize_to_array_start:proxy_proto.CordLocalParityBundle)
+  uint32_t cached_has_bits = 0;
+  (void) cached_has_bits;
+
+  // string key = 1;
+  if (!this->_internal_key().empty()) {
+    ::PROTOBUF_NAMESPACE_ID::internal::WireFormatLite::VerifyUtf8String(
+      this->_internal_key().data(), static_cast<int>(this->_internal_key().length()),
+      ::PROTOBUF_NAMESPACE_ID::internal::WireFormatLite::SERIALIZE,
+      "proxy_proto.CordLocalParityBundle.key");
+    target = stream->WriteStringMaybeAliased(
+        1, this->_internal_key(), target);
+  }
+
+  // int32 stripe_id = 2;
+  if (this->_internal_stripe_id() != 0) {
+    target = stream->EnsureSpace(target);
+    target = ::_pbi::WireFormatLite::WriteInt32ToArray(2, this->_internal_stripe_id(), target);
+  }
+
+  // repeated .proxy_proto.CordLpWorkItem items = 3;
+  for (unsigned i = 0,
+      n = static_cast<unsigned>(this->_internal_items_size()); i < n; i++) {
+    const auto& repfield = this->_internal_items(i);
+    target = ::PROTOBUF_NAMESPACE_ID::internal::WireFormatLite::
+        InternalWriteMessage(3, repfield, repfield.GetCachedSize(), target, stream);
+  }
+
+  if (PROTOBUF_PREDICT_FALSE(_internal_metadata_.have_unknown_fields())) {
+    target = ::_pbi::WireFormat::InternalSerializeUnknownFieldsToArray(
+        _internal_metadata_.unknown_fields<::PROTOBUF_NAMESPACE_ID::UnknownFieldSet>(::PROTOBUF_NAMESPACE_ID::UnknownFieldSet::default_instance), target, stream);
+  }
+  // @@protoc_insertion_point(serialize_to_array_end:proxy_proto.CordLocalParityBundle)
+  return target;
+}
+
+size_t CordLocalParityBundle::ByteSizeLong() const {
+// @@protoc_insertion_point(message_byte_size_start:proxy_proto.CordLocalParityBundle)
+  size_t total_size = 0;
+
+  uint32_t cached_has_bits = 0;
+  // Prevent compiler warnings about cached_has_bits being unused
+  (void) cached_has_bits;
+
+  // repeated .proxy_proto.CordLpWorkItem items = 3;
+  total_size += 1UL * this->_internal_items_size();
+  for (const auto& msg : this->_impl_.items_) {
+    total_size +=
+      ::PROTOBUF_NAMESPACE_ID::internal::WireFormatLite::MessageSize(msg);
+  }
+
+  // string key = 1;
+  if (!this->_internal_key().empty()) {
+    total_size += 1 +
+      ::PROTOBUF_NAMESPACE_ID::internal::WireFormatLite::StringSize(
+        this->_internal_key());
+  }
+
+  // int32 stripe_id = 2;
+  if (this->_internal_stripe_id() != 0) {
+    total_size += ::_pbi::WireFormatLite::Int32SizePlusOne(this->_internal_stripe_id());
+  }
+
+  return MaybeComputeUnknownFieldsSize(total_size, &_impl_._cached_size_);
+}
+
+const ::PROTOBUF_NAMESPACE_ID::Message::ClassData CordLocalParityBundle::_class_data_ = {
+    ::PROTOBUF_NAMESPACE_ID::Message::CopyWithSourceCheck,
+    CordLocalParityBundle::MergeImpl
+};
+const ::PROTOBUF_NAMESPACE_ID::Message::ClassData*CordLocalParityBundle::GetClassData() const { return &_class_data_; }
+
+
+void CordLocalParityBundle::MergeImpl(::PROTOBUF_NAMESPACE_ID::Message& to_msg, const ::PROTOBUF_NAMESPACE_ID::Message& from_msg) {
+  auto* const _this = static_cast<CordLocalParityBundle*>(&to_msg);
+  auto& from = static_cast<const CordLocalParityBundle&>(from_msg);
+  // @@protoc_insertion_point(class_specific_merge_from_start:proxy_proto.CordLocalParityBundle)
+  GOOGLE_DCHECK_NE(&from, _this);
+  uint32_t cached_has_bits = 0;
+  (void) cached_has_bits;
+
+  _this->_impl_.items_.MergeFrom(from._impl_.items_);
+  if (!from._internal_key().empty()) {
+    _this->_internal_set_key(from._internal_key());
+  }
+  if (from._internal_stripe_id() != 0) {
+    _this->_internal_set_stripe_id(from._internal_stripe_id());
+  }
+  _this->_internal_metadata_.MergeFrom<::PROTOBUF_NAMESPACE_ID::UnknownFieldSet>(from._internal_metadata_);
+}
+
+void CordLocalParityBundle::CopyFrom(const CordLocalParityBundle& from) {
+// @@protoc_insertion_point(class_specific_copy_from_start:proxy_proto.CordLocalParityBundle)
+  if (&from == this) return;
+  Clear();
+  MergeFrom(from);
+}
+
+bool CordLocalParityBundle::IsInitialized() const {
+  return true;
+}
+
+void CordLocalParityBundle::InternalSwap(CordLocalParityBundle* other) {
+  using std::swap;
+  auto* lhs_arena = GetArenaForAllocation();
+  auto* rhs_arena = other->GetArenaForAllocation();
+  _internal_metadata_.InternalSwap(&other->_internal_metadata_);
+  _impl_.items_.InternalSwap(&other->_impl_.items_);
+  ::PROTOBUF_NAMESPACE_ID::internal::ArenaStringPtr::InternalSwap(
+      &_impl_.key_, lhs_arena,
+      &other->_impl_.key_, rhs_arena
+  );
+  swap(_impl_.stripe_id_, other->_impl_.stripe_id_);
+}
+
+::PROTOBUF_NAMESPACE_ID::Metadata CordLocalParityBundle::GetMetadata() const {
+  return ::_pbi::AssignDescriptors(
+      &descriptor_table_proxy_2eproto_getter, &descriptor_table_proxy_2eproto_once,
+      file_level_metadata_proxy_2eproto[23]);
+}
+
+// ===================================================================
+
+class CordLpHubSessionBegin::_Internal {
+ public:
+};
+
+CordLpHubSessionBegin::CordLpHubSessionBegin(::PROTOBUF_NAMESPACE_ID::Arena* arena,
+                         bool is_message_owned)
+  : ::PROTOBUF_NAMESPACE_ID::Message(arena, is_message_owned) {
+  SharedCtor(arena, is_message_owned);
+  // @@protoc_insertion_point(arena_constructor:proxy_proto.CordLpHubSessionBegin)
+}
+CordLpHubSessionBegin::CordLpHubSessionBegin(const CordLpHubSessionBegin& from)
+  : ::PROTOBUF_NAMESPACE_ID::Message() {
+  CordLpHubSessionBegin* const _this = this; (void)_this;
+  new (&_impl_) Impl_{
+      decltype(_impl_.session_key_){}
+    , decltype(_impl_.local_block_key_){}
+    , decltype(_impl_.local_datanode_ip_){}
+    , decltype(_impl_.dest_lp_proxy_ip_){}
+    , decltype(_impl_.expected_partials_){}
+    , decltype(_impl_.parity_slice_size_){}
+    , decltype(_impl_.parity_slice_offset_){}
+    , decltype(_impl_.local_block_id_){}
+    , decltype(_impl_.local_datanode_port_){}
+    , decltype(_impl_.dest_lp_proxy_port_){}
+    , decltype(_impl_.stripe_id_){}
+    , decltype(_impl_.hub_global_block_id_){}
+    , /*decltype(_impl_._cached_size_)*/{}};
+
+  _internal_metadata_.MergeFrom<::PROTOBUF_NAMESPACE_ID::UnknownFieldSet>(from._internal_metadata_);
+  _impl_.session_key_.InitDefault();
+  #ifdef PROTOBUF_FORCE_COPY_DEFAULT_STRING
+    _impl_.session_key_.Set("", GetArenaForAllocation());
+  #endif // PROTOBUF_FORCE_COPY_DEFAULT_STRING
+  if (!from._internal_session_key().empty()) {
+    _this->_impl_.session_key_.Set(from._internal_session_key(), 
+      _this->GetArenaForAllocation());
+  }
+  _impl_.local_block_key_.InitDefault();
+  #ifdef PROTOBUF_FORCE_COPY_DEFAULT_STRING
+    _impl_.local_block_key_.Set("", GetArenaForAllocation());
+  #endif // PROTOBUF_FORCE_COPY_DEFAULT_STRING
+  if (!from._internal_local_block_key().empty()) {
+    _this->_impl_.local_block_key_.Set(from._internal_local_block_key(), 
+      _this->GetArenaForAllocation());
+  }
+  _impl_.local_datanode_ip_.InitDefault();
+  #ifdef PROTOBUF_FORCE_COPY_DEFAULT_STRING
+    _impl_.local_datanode_ip_.Set("", GetArenaForAllocation());
+  #endif // PROTOBUF_FORCE_COPY_DEFAULT_STRING
+  if (!from._internal_local_datanode_ip().empty()) {
+    _this->_impl_.local_datanode_ip_.Set(from._internal_local_datanode_ip(), 
+      _this->GetArenaForAllocation());
+  }
+  _impl_.dest_lp_proxy_ip_.InitDefault();
+  #ifdef PROTOBUF_FORCE_COPY_DEFAULT_STRING
+    _impl_.dest_lp_proxy_ip_.Set("", GetArenaForAllocation());
+  #endif // PROTOBUF_FORCE_COPY_DEFAULT_STRING
+  if (!from._internal_dest_lp_proxy_ip().empty()) {
+    _this->_impl_.dest_lp_proxy_ip_.Set(from._internal_dest_lp_proxy_ip(), 
+      _this->GetArenaForAllocation());
+  }
+  ::memcpy(&_impl_.expected_partials_, &from._impl_.expected_partials_,
+    static_cast<size_t>(reinterpret_cast<char*>(&_impl_.hub_global_block_id_) -
+    reinterpret_cast<char*>(&_impl_.expected_partials_)) + sizeof(_impl_.hub_global_block_id_));
+  // @@protoc_insertion_point(copy_constructor:proxy_proto.CordLpHubSessionBegin)
+}
+
+inline void CordLpHubSessionBegin::SharedCtor(
+    ::_pb::Arena* arena, bool is_message_owned) {
+  (void)arena;
+  (void)is_message_owned;
+  new (&_impl_) Impl_{
+      decltype(_impl_.session_key_){}
+    , decltype(_impl_.local_block_key_){}
+    , decltype(_impl_.local_datanode_ip_){}
+    , decltype(_impl_.dest_lp_proxy_ip_){}
+    , decltype(_impl_.expected_partials_){0}
+    , decltype(_impl_.parity_slice_size_){0}
+    , decltype(_impl_.parity_slice_offset_){0}
+    , decltype(_impl_.local_block_id_){0}
+    , decltype(_impl_.local_datanode_port_){0}
+    , decltype(_impl_.dest_lp_proxy_port_){0}
+    , decltype(_impl_.stripe_id_){0}
+    , decltype(_impl_.hub_global_block_id_){0}
+    , /*decltype(_impl_._cached_size_)*/{}
+  };
+  _impl_.session_key_.InitDefault();
+  #ifdef PROTOBUF_FORCE_COPY_DEFAULT_STRING
+    _impl_.session_key_.Set("", GetArenaForAllocation());
+  #endif // PROTOBUF_FORCE_COPY_DEFAULT_STRING
+  _impl_.local_block_key_.InitDefault();
+  #ifdef PROTOBUF_FORCE_COPY_DEFAULT_STRING
+    _impl_.local_block_key_.Set("", GetArenaForAllocation());
+  #endif // PROTOBUF_FORCE_COPY_DEFAULT_STRING
+  _impl_.local_datanode_ip_.InitDefault();
+  #ifdef PROTOBUF_FORCE_COPY_DEFAULT_STRING
+    _impl_.local_datanode_ip_.Set("", GetArenaForAllocation());
+  #endif // PROTOBUF_FORCE_COPY_DEFAULT_STRING
+  _impl_.dest_lp_proxy_ip_.InitDefault();
+  #ifdef PROTOBUF_FORCE_COPY_DEFAULT_STRING
+    _impl_.dest_lp_proxy_ip_.Set("", GetArenaForAllocation());
+  #endif // PROTOBUF_FORCE_COPY_DEFAULT_STRING
+}
+
+CordLpHubSessionBegin::~CordLpHubSessionBegin() {
+  // @@protoc_insertion_point(destructor:proxy_proto.CordLpHubSessionBegin)
+  if (auto *arena = _internal_metadata_.DeleteReturnArena<::PROTOBUF_NAMESPACE_ID::UnknownFieldSet>()) {
+  (void)arena;
+    return;
+  }
+  SharedDtor();
+}
+
+inline void CordLpHubSessionBegin::SharedDtor() {
+  GOOGLE_DCHECK(GetArenaForAllocation() == nullptr);
+  _impl_.session_key_.Destroy();
+  _impl_.local_block_key_.Destroy();
+  _impl_.local_datanode_ip_.Destroy();
+  _impl_.dest_lp_proxy_ip_.Destroy();
+}
+
+void CordLpHubSessionBegin::SetCachedSize(int size) const {
+  _impl_._cached_size_.Set(size);
+}
+
+void CordLpHubSessionBegin::Clear() {
+// @@protoc_insertion_point(message_clear_start:proxy_proto.CordLpHubSessionBegin)
+  uint32_t cached_has_bits = 0;
+  // Prevent compiler warnings about cached_has_bits being unused
+  (void) cached_has_bits;
+
+  _impl_.session_key_.ClearToEmpty();
+  _impl_.local_block_key_.ClearToEmpty();
+  _impl_.local_datanode_ip_.ClearToEmpty();
+  _impl_.dest_lp_proxy_ip_.ClearToEmpty();
+  ::memset(&_impl_.expected_partials_, 0, static_cast<size_t>(
+      reinterpret_cast<char*>(&_impl_.hub_global_block_id_) -
+      reinterpret_cast<char*>(&_impl_.expected_partials_)) + sizeof(_impl_.hub_global_block_id_));
+  _internal_metadata_.Clear<::PROTOBUF_NAMESPACE_ID::UnknownFieldSet>();
+}
+
+const char* CordLpHubSessionBegin::_InternalParse(const char* ptr, ::_pbi::ParseContext* ctx) {
+#define CHK_(x) if (PROTOBUF_PREDICT_FALSE(!(x))) goto failure
+  while (!ctx->Done(&ptr)) {
+    uint32_t tag;
+    ptr = ::_pbi::ReadTag(ptr, &tag);
+    switch (tag >> 3) {
+      // string session_key = 1;
+      case 1:
+        if (PROTOBUF_PREDICT_TRUE(static_cast<uint8_t>(tag) == 10)) {
+          auto str = _internal_mutable_session_key();
+          ptr = ::_pbi::InlineGreedyStringParser(str, ptr, ctx);
+          CHK_(ptr);
+          CHK_(::_pbi::VerifyUTF8(str, "proxy_proto.CordLpHubSessionBegin.session_key"));
+        } else
+          goto handle_unusual;
+        continue;
+      // int32 expected_partials = 2;
+      case 2:
+        if (PROTOBUF_PREDICT_TRUE(static_cast<uint8_t>(tag) == 16)) {
+          _impl_.expected_partials_ = ::PROTOBUF_NAMESPACE_ID::internal::ReadVarint32(&ptr);
+          CHK_(ptr);
+        } else
+          goto handle_unusual;
+        continue;
+      // int32 parity_slice_size = 3;
+      case 3:
+        if (PROTOBUF_PREDICT_TRUE(static_cast<uint8_t>(tag) == 24)) {
+          _impl_.parity_slice_size_ = ::PROTOBUF_NAMESPACE_ID::internal::ReadVarint32(&ptr);
+          CHK_(ptr);
+        } else
+          goto handle_unusual;
+        continue;
+      // int32 parity_slice_offset = 4;
+      case 4:
+        if (PROTOBUF_PREDICT_TRUE(static_cast<uint8_t>(tag) == 32)) {
+          _impl_.parity_slice_offset_ = ::PROTOBUF_NAMESPACE_ID::internal::ReadVarint32(&ptr);
+          CHK_(ptr);
+        } else
+          goto handle_unusual;
+        continue;
+      // int32 local_block_id = 5;
+      case 5:
+        if (PROTOBUF_PREDICT_TRUE(static_cast<uint8_t>(tag) == 40)) {
+          _impl_.local_block_id_ = ::PROTOBUF_NAMESPACE_ID::internal::ReadVarint32(&ptr);
+          CHK_(ptr);
+        } else
+          goto handle_unusual;
+        continue;
+      // string local_block_key = 6;
+      case 6:
+        if (PROTOBUF_PREDICT_TRUE(static_cast<uint8_t>(tag) == 50)) {
+          auto str = _internal_mutable_local_block_key();
+          ptr = ::_pbi::InlineGreedyStringParser(str, ptr, ctx);
+          CHK_(ptr);
+          CHK_(::_pbi::VerifyUTF8(str, "proxy_proto.CordLpHubSessionBegin.local_block_key"));
+        } else
+          goto handle_unusual;
+        continue;
+      // string local_datanode_ip = 7;
+      case 7:
+        if (PROTOBUF_PREDICT_TRUE(static_cast<uint8_t>(tag) == 58)) {
+          auto str = _internal_mutable_local_datanode_ip();
+          ptr = ::_pbi::InlineGreedyStringParser(str, ptr, ctx);
+          CHK_(ptr);
+          CHK_(::_pbi::VerifyUTF8(str, "proxy_proto.CordLpHubSessionBegin.local_datanode_ip"));
+        } else
+          goto handle_unusual;
+        continue;
+      // int32 local_datanode_port = 8;
+      case 8:
+        if (PROTOBUF_PREDICT_TRUE(static_cast<uint8_t>(tag) == 64)) {
+          _impl_.local_datanode_port_ = ::PROTOBUF_NAMESPACE_ID::internal::ReadVarint32(&ptr);
+          CHK_(ptr);
+        } else
+          goto handle_unusual;
+        continue;
+      // string dest_lp_proxy_ip = 9;
+      case 9:
+        if (PROTOBUF_PREDICT_TRUE(static_cast<uint8_t>(tag) == 74)) {
+          auto str = _internal_mutable_dest_lp_proxy_ip();
+          ptr = ::_pbi::InlineGreedyStringParser(str, ptr, ctx);
+          CHK_(ptr);
+          CHK_(::_pbi::VerifyUTF8(str, "proxy_proto.CordLpHubSessionBegin.dest_lp_proxy_ip"));
+        } else
+          goto handle_unusual;
+        continue;
+      // int32 dest_lp_proxy_port = 10;
+      case 10:
+        if (PROTOBUF_PREDICT_TRUE(static_cast<uint8_t>(tag) == 80)) {
+          _impl_.dest_lp_proxy_port_ = ::PROTOBUF_NAMESPACE_ID::internal::ReadVarint32(&ptr);
+          CHK_(ptr);
+        } else
+          goto handle_unusual;
+        continue;
+      // int32 stripe_id = 11;
+      case 11:
+        if (PROTOBUF_PREDICT_TRUE(static_cast<uint8_t>(tag) == 88)) {
+          _impl_.stripe_id_ = ::PROTOBUF_NAMESPACE_ID::internal::ReadVarint32(&ptr);
+          CHK_(ptr);
+        } else
+          goto handle_unusual;
+        continue;
+      // int32 hub_global_block_id = 12;
+      case 12:
+        if (PROTOBUF_PREDICT_TRUE(static_cast<uint8_t>(tag) == 96)) {
+          _impl_.hub_global_block_id_ = ::PROTOBUF_NAMESPACE_ID::internal::ReadVarint32(&ptr);
+          CHK_(ptr);
+        } else
+          goto handle_unusual;
+        continue;
+      default:
+        goto handle_unusual;
+    }  // switch
+  handle_unusual:
+    if ((tag == 0) || ((tag & 7) == 4)) {
+      CHK_(ptr);
+      ctx->SetLastTag(tag);
+      goto message_done;
+    }
+    ptr = UnknownFieldParse(
+        tag,
+        _internal_metadata_.mutable_unknown_fields<::PROTOBUF_NAMESPACE_ID::UnknownFieldSet>(),
+        ptr, ctx);
+    CHK_(ptr != nullptr);
+  }  // while
+message_done:
+  return ptr;
+failure:
+  ptr = nullptr;
+  goto message_done;
+#undef CHK_
+}
+
+uint8_t* CordLpHubSessionBegin::_InternalSerialize(
+    uint8_t* target, ::PROTOBUF_NAMESPACE_ID::io::EpsCopyOutputStream* stream) const {
+  // @@protoc_insertion_point(serialize_to_array_start:proxy_proto.CordLpHubSessionBegin)
+  uint32_t cached_has_bits = 0;
+  (void) cached_has_bits;
+
+  // string session_key = 1;
+  if (!this->_internal_session_key().empty()) {
+    ::PROTOBUF_NAMESPACE_ID::internal::WireFormatLite::VerifyUtf8String(
+      this->_internal_session_key().data(), static_cast<int>(this->_internal_session_key().length()),
+      ::PROTOBUF_NAMESPACE_ID::internal::WireFormatLite::SERIALIZE,
+      "proxy_proto.CordLpHubSessionBegin.session_key");
+    target = stream->WriteStringMaybeAliased(
+        1, this->_internal_session_key(), target);
+  }
+
+  // int32 expected_partials = 2;
+  if (this->_internal_expected_partials() != 0) {
+    target = stream->EnsureSpace(target);
+    target = ::_pbi::WireFormatLite::WriteInt32ToArray(2, this->_internal_expected_partials(), target);
+  }
+
+  // int32 parity_slice_size = 3;
+  if (this->_internal_parity_slice_size() != 0) {
+    target = stream->EnsureSpace(target);
+    target = ::_pbi::WireFormatLite::WriteInt32ToArray(3, this->_internal_parity_slice_size(), target);
+  }
+
+  // int32 parity_slice_offset = 4;
+  if (this->_internal_parity_slice_offset() != 0) {
+    target = stream->EnsureSpace(target);
+    target = ::_pbi::WireFormatLite::WriteInt32ToArray(4, this->_internal_parity_slice_offset(), target);
+  }
+
+  // int32 local_block_id = 5;
+  if (this->_internal_local_block_id() != 0) {
+    target = stream->EnsureSpace(target);
+    target = ::_pbi::WireFormatLite::WriteInt32ToArray(5, this->_internal_local_block_id(), target);
+  }
+
+  // string local_block_key = 6;
+  if (!this->_internal_local_block_key().empty()) {
+    ::PROTOBUF_NAMESPACE_ID::internal::WireFormatLite::VerifyUtf8String(
+      this->_internal_local_block_key().data(), static_cast<int>(this->_internal_local_block_key().length()),
+      ::PROTOBUF_NAMESPACE_ID::internal::WireFormatLite::SERIALIZE,
+      "proxy_proto.CordLpHubSessionBegin.local_block_key");
+    target = stream->WriteStringMaybeAliased(
+        6, this->_internal_local_block_key(), target);
+  }
+
+  // string local_datanode_ip = 7;
+  if (!this->_internal_local_datanode_ip().empty()) {
+    ::PROTOBUF_NAMESPACE_ID::internal::WireFormatLite::VerifyUtf8String(
+      this->_internal_local_datanode_ip().data(), static_cast<int>(this->_internal_local_datanode_ip().length()),
+      ::PROTOBUF_NAMESPACE_ID::internal::WireFormatLite::SERIALIZE,
+      "proxy_proto.CordLpHubSessionBegin.local_datanode_ip");
+    target = stream->WriteStringMaybeAliased(
+        7, this->_internal_local_datanode_ip(), target);
+  }
+
+  // int32 local_datanode_port = 8;
+  if (this->_internal_local_datanode_port() != 0) {
+    target = stream->EnsureSpace(target);
+    target = ::_pbi::WireFormatLite::WriteInt32ToArray(8, this->_internal_local_datanode_port(), target);
+  }
+
+  // string dest_lp_proxy_ip = 9;
+  if (!this->_internal_dest_lp_proxy_ip().empty()) {
+    ::PROTOBUF_NAMESPACE_ID::internal::WireFormatLite::VerifyUtf8String(
+      this->_internal_dest_lp_proxy_ip().data(), static_cast<int>(this->_internal_dest_lp_proxy_ip().length()),
+      ::PROTOBUF_NAMESPACE_ID::internal::WireFormatLite::SERIALIZE,
+      "proxy_proto.CordLpHubSessionBegin.dest_lp_proxy_ip");
+    target = stream->WriteStringMaybeAliased(
+        9, this->_internal_dest_lp_proxy_ip(), target);
+  }
+
+  // int32 dest_lp_proxy_port = 10;
+  if (this->_internal_dest_lp_proxy_port() != 0) {
+    target = stream->EnsureSpace(target);
+    target = ::_pbi::WireFormatLite::WriteInt32ToArray(10, this->_internal_dest_lp_proxy_port(), target);
+  }
+
+  // int32 stripe_id = 11;
+  if (this->_internal_stripe_id() != 0) {
+    target = stream->EnsureSpace(target);
+    target = ::_pbi::WireFormatLite::WriteInt32ToArray(11, this->_internal_stripe_id(), target);
+  }
+
+  // int32 hub_global_block_id = 12;
+  if (this->_internal_hub_global_block_id() != 0) {
+    target = stream->EnsureSpace(target);
+    target = ::_pbi::WireFormatLite::WriteInt32ToArray(12, this->_internal_hub_global_block_id(), target);
+  }
+
+  if (PROTOBUF_PREDICT_FALSE(_internal_metadata_.have_unknown_fields())) {
+    target = ::_pbi::WireFormat::InternalSerializeUnknownFieldsToArray(
+        _internal_metadata_.unknown_fields<::PROTOBUF_NAMESPACE_ID::UnknownFieldSet>(::PROTOBUF_NAMESPACE_ID::UnknownFieldSet::default_instance), target, stream);
+  }
+  // @@protoc_insertion_point(serialize_to_array_end:proxy_proto.CordLpHubSessionBegin)
+  return target;
+}
+
+size_t CordLpHubSessionBegin::ByteSizeLong() const {
+// @@protoc_insertion_point(message_byte_size_start:proxy_proto.CordLpHubSessionBegin)
+  size_t total_size = 0;
+
+  uint32_t cached_has_bits = 0;
+  // Prevent compiler warnings about cached_has_bits being unused
+  (void) cached_has_bits;
+
+  // string session_key = 1;
+  if (!this->_internal_session_key().empty()) {
+    total_size += 1 +
+      ::PROTOBUF_NAMESPACE_ID::internal::WireFormatLite::StringSize(
+        this->_internal_session_key());
+  }
+
+  // string local_block_key = 6;
+  if (!this->_internal_local_block_key().empty()) {
+    total_size += 1 +
+      ::PROTOBUF_NAMESPACE_ID::internal::WireFormatLite::StringSize(
+        this->_internal_local_block_key());
+  }
+
+  // string local_datanode_ip = 7;
+  if (!this->_internal_local_datanode_ip().empty()) {
+    total_size += 1 +
+      ::PROTOBUF_NAMESPACE_ID::internal::WireFormatLite::StringSize(
+        this->_internal_local_datanode_ip());
+  }
+
+  // string dest_lp_proxy_ip = 9;
+  if (!this->_internal_dest_lp_proxy_ip().empty()) {
+    total_size += 1 +
+      ::PROTOBUF_NAMESPACE_ID::internal::WireFormatLite::StringSize(
+        this->_internal_dest_lp_proxy_ip());
+  }
+
+  // int32 expected_partials = 2;
+  if (this->_internal_expected_partials() != 0) {
+    total_size += ::_pbi::WireFormatLite::Int32SizePlusOne(this->_internal_expected_partials());
+  }
+
+  // int32 parity_slice_size = 3;
+  if (this->_internal_parity_slice_size() != 0) {
+    total_size += ::_pbi::WireFormatLite::Int32SizePlusOne(this->_internal_parity_slice_size());
+  }
+
+  // int32 parity_slice_offset = 4;
+  if (this->_internal_parity_slice_offset() != 0) {
+    total_size += ::_pbi::WireFormatLite::Int32SizePlusOne(this->_internal_parity_slice_offset());
+  }
+
+  // int32 local_block_id = 5;
+  if (this->_internal_local_block_id() != 0) {
+    total_size += ::_pbi::WireFormatLite::Int32SizePlusOne(this->_internal_local_block_id());
+  }
+
+  // int32 local_datanode_port = 8;
+  if (this->_internal_local_datanode_port() != 0) {
+    total_size += ::_pbi::WireFormatLite::Int32SizePlusOne(this->_internal_local_datanode_port());
+  }
+
+  // int32 dest_lp_proxy_port = 10;
+  if (this->_internal_dest_lp_proxy_port() != 0) {
+    total_size += ::_pbi::WireFormatLite::Int32SizePlusOne(this->_internal_dest_lp_proxy_port());
+  }
+
+  // int32 stripe_id = 11;
+  if (this->_internal_stripe_id() != 0) {
+    total_size += ::_pbi::WireFormatLite::Int32SizePlusOne(this->_internal_stripe_id());
+  }
+
+  // int32 hub_global_block_id = 12;
+  if (this->_internal_hub_global_block_id() != 0) {
+    total_size += ::_pbi::WireFormatLite::Int32SizePlusOne(this->_internal_hub_global_block_id());
+  }
+
+  return MaybeComputeUnknownFieldsSize(total_size, &_impl_._cached_size_);
+}
+
+const ::PROTOBUF_NAMESPACE_ID::Message::ClassData CordLpHubSessionBegin::_class_data_ = {
+    ::PROTOBUF_NAMESPACE_ID::Message::CopyWithSourceCheck,
+    CordLpHubSessionBegin::MergeImpl
+};
+const ::PROTOBUF_NAMESPACE_ID::Message::ClassData*CordLpHubSessionBegin::GetClassData() const { return &_class_data_; }
+
+
+void CordLpHubSessionBegin::MergeImpl(::PROTOBUF_NAMESPACE_ID::Message& to_msg, const ::PROTOBUF_NAMESPACE_ID::Message& from_msg) {
+  auto* const _this = static_cast<CordLpHubSessionBegin*>(&to_msg);
+  auto& from = static_cast<const CordLpHubSessionBegin&>(from_msg);
+  // @@protoc_insertion_point(class_specific_merge_from_start:proxy_proto.CordLpHubSessionBegin)
+  GOOGLE_DCHECK_NE(&from, _this);
+  uint32_t cached_has_bits = 0;
+  (void) cached_has_bits;
+
+  if (!from._internal_session_key().empty()) {
+    _this->_internal_set_session_key(from._internal_session_key());
+  }
+  if (!from._internal_local_block_key().empty()) {
+    _this->_internal_set_local_block_key(from._internal_local_block_key());
+  }
+  if (!from._internal_local_datanode_ip().empty()) {
+    _this->_internal_set_local_datanode_ip(from._internal_local_datanode_ip());
+  }
+  if (!from._internal_dest_lp_proxy_ip().empty()) {
+    _this->_internal_set_dest_lp_proxy_ip(from._internal_dest_lp_proxy_ip());
+  }
+  if (from._internal_expected_partials() != 0) {
+    _this->_internal_set_expected_partials(from._internal_expected_partials());
+  }
+  if (from._internal_parity_slice_size() != 0) {
+    _this->_internal_set_parity_slice_size(from._internal_parity_slice_size());
+  }
+  if (from._internal_parity_slice_offset() != 0) {
+    _this->_internal_set_parity_slice_offset(from._internal_parity_slice_offset());
+  }
+  if (from._internal_local_block_id() != 0) {
+    _this->_internal_set_local_block_id(from._internal_local_block_id());
+  }
+  if (from._internal_local_datanode_port() != 0) {
+    _this->_internal_set_local_datanode_port(from._internal_local_datanode_port());
+  }
+  if (from._internal_dest_lp_proxy_port() != 0) {
+    _this->_internal_set_dest_lp_proxy_port(from._internal_dest_lp_proxy_port());
+  }
+  if (from._internal_stripe_id() != 0) {
+    _this->_internal_set_stripe_id(from._internal_stripe_id());
+  }
+  if (from._internal_hub_global_block_id() != 0) {
+    _this->_internal_set_hub_global_block_id(from._internal_hub_global_block_id());
+  }
+  _this->_internal_metadata_.MergeFrom<::PROTOBUF_NAMESPACE_ID::UnknownFieldSet>(from._internal_metadata_);
+}
+
+void CordLpHubSessionBegin::CopyFrom(const CordLpHubSessionBegin& from) {
+// @@protoc_insertion_point(class_specific_copy_from_start:proxy_proto.CordLpHubSessionBegin)
+  if (&from == this) return;
+  Clear();
+  MergeFrom(from);
+}
+
+bool CordLpHubSessionBegin::IsInitialized() const {
+  return true;
+}
+
+void CordLpHubSessionBegin::InternalSwap(CordLpHubSessionBegin* other) {
+  using std::swap;
+  auto* lhs_arena = GetArenaForAllocation();
+  auto* rhs_arena = other->GetArenaForAllocation();
+  _internal_metadata_.InternalSwap(&other->_internal_metadata_);
+  ::PROTOBUF_NAMESPACE_ID::internal::ArenaStringPtr::InternalSwap(
+      &_impl_.session_key_, lhs_arena,
+      &other->_impl_.session_key_, rhs_arena
+  );
+  ::PROTOBUF_NAMESPACE_ID::internal::ArenaStringPtr::InternalSwap(
+      &_impl_.local_block_key_, lhs_arena,
+      &other->_impl_.local_block_key_, rhs_arena
+  );
+  ::PROTOBUF_NAMESPACE_ID::internal::ArenaStringPtr::InternalSwap(
+      &_impl_.local_datanode_ip_, lhs_arena,
+      &other->_impl_.local_datanode_ip_, rhs_arena
+  );
+  ::PROTOBUF_NAMESPACE_ID::internal::ArenaStringPtr::InternalSwap(
+      &_impl_.dest_lp_proxy_ip_, lhs_arena,
+      &other->_impl_.dest_lp_proxy_ip_, rhs_arena
+  );
+  ::PROTOBUF_NAMESPACE_ID::internal::memswap<
+      PROTOBUF_FIELD_OFFSET(CordLpHubSessionBegin, _impl_.hub_global_block_id_)
+      + sizeof(CordLpHubSessionBegin::_impl_.hub_global_block_id_)
+      - PROTOBUF_FIELD_OFFSET(CordLpHubSessionBegin, _impl_.expected_partials_)>(
+          reinterpret_cast<char*>(&_impl_.expected_partials_),
+          reinterpret_cast<char*>(&other->_impl_.expected_partials_));
+}
+
+::PROTOBUF_NAMESPACE_ID::Metadata CordLpHubSessionBegin::GetMetadata() const {
+  return ::_pbi::AssignDescriptors(
+      &descriptor_table_proxy_2eproto_getter, &descriptor_table_proxy_2eproto_once,
+      file_level_metadata_proxy_2eproto[24]);
+}
+
+// ===================================================================
+
+class CordLpHubPartialPush::_Internal {
+ public:
+};
+
+CordLpHubPartialPush::CordLpHubPartialPush(::PROTOBUF_NAMESPACE_ID::Arena* arena,
+                         bool is_message_owned)
+  : ::PROTOBUF_NAMESPACE_ID::Message(arena, is_message_owned) {
+  SharedCtor(arena, is_message_owned);
+  // @@protoc_insertion_point(arena_constructor:proxy_proto.CordLpHubPartialPush)
+}
+CordLpHubPartialPush::CordLpHubPartialPush(const CordLpHubPartialPush& from)
+  : ::PROTOBUF_NAMESPACE_ID::Message() {
+  CordLpHubPartialPush* const _this = this; (void)_this;
+  new (&_impl_) Impl_{
+      decltype(_impl_.session_key_){}
+    , decltype(_impl_.partial_payload_){}
+    , /*decltype(_impl_._cached_size_)*/{}};
+
+  _internal_metadata_.MergeFrom<::PROTOBUF_NAMESPACE_ID::UnknownFieldSet>(from._internal_metadata_);
+  _impl_.session_key_.InitDefault();
+  #ifdef PROTOBUF_FORCE_COPY_DEFAULT_STRING
+    _impl_.session_key_.Set("", GetArenaForAllocation());
+  #endif // PROTOBUF_FORCE_COPY_DEFAULT_STRING
+  if (!from._internal_session_key().empty()) {
+    _this->_impl_.session_key_.Set(from._internal_session_key(), 
+      _this->GetArenaForAllocation());
+  }
+  _impl_.partial_payload_.InitDefault();
+  #ifdef PROTOBUF_FORCE_COPY_DEFAULT_STRING
+    _impl_.partial_payload_.Set("", GetArenaForAllocation());
+  #endif // PROTOBUF_FORCE_COPY_DEFAULT_STRING
+  if (!from._internal_partial_payload().empty()) {
+    _this->_impl_.partial_payload_.Set(from._internal_partial_payload(), 
+      _this->GetArenaForAllocation());
+  }
+  // @@protoc_insertion_point(copy_constructor:proxy_proto.CordLpHubPartialPush)
+}
+
+inline void CordLpHubPartialPush::SharedCtor(
+    ::_pb::Arena* arena, bool is_message_owned) {
+  (void)arena;
+  (void)is_message_owned;
+  new (&_impl_) Impl_{
+      decltype(_impl_.session_key_){}
+    , decltype(_impl_.partial_payload_){}
+    , /*decltype(_impl_._cached_size_)*/{}
+  };
+  _impl_.session_key_.InitDefault();
+  #ifdef PROTOBUF_FORCE_COPY_DEFAULT_STRING
+    _impl_.session_key_.Set("", GetArenaForAllocation());
+  #endif // PROTOBUF_FORCE_COPY_DEFAULT_STRING
+  _impl_.partial_payload_.InitDefault();
+  #ifdef PROTOBUF_FORCE_COPY_DEFAULT_STRING
+    _impl_.partial_payload_.Set("", GetArenaForAllocation());
+  #endif // PROTOBUF_FORCE_COPY_DEFAULT_STRING
+}
+
+CordLpHubPartialPush::~CordLpHubPartialPush() {
+  // @@protoc_insertion_point(destructor:proxy_proto.CordLpHubPartialPush)
+  if (auto *arena = _internal_metadata_.DeleteReturnArena<::PROTOBUF_NAMESPACE_ID::UnknownFieldSet>()) {
+  (void)arena;
+    return;
+  }
+  SharedDtor();
+}
+
+inline void CordLpHubPartialPush::SharedDtor() {
+  GOOGLE_DCHECK(GetArenaForAllocation() == nullptr);
+  _impl_.session_key_.Destroy();
+  _impl_.partial_payload_.Destroy();
+}
+
+void CordLpHubPartialPush::SetCachedSize(int size) const {
+  _impl_._cached_size_.Set(size);
+}
+
+void CordLpHubPartialPush::Clear() {
+// @@protoc_insertion_point(message_clear_start:proxy_proto.CordLpHubPartialPush)
+  uint32_t cached_has_bits = 0;
+  // Prevent compiler warnings about cached_has_bits being unused
+  (void) cached_has_bits;
+
+  _impl_.session_key_.ClearToEmpty();
+  _impl_.partial_payload_.ClearToEmpty();
+  _internal_metadata_.Clear<::PROTOBUF_NAMESPACE_ID::UnknownFieldSet>();
+}
+
+const char* CordLpHubPartialPush::_InternalParse(const char* ptr, ::_pbi::ParseContext* ctx) {
+#define CHK_(x) if (PROTOBUF_PREDICT_FALSE(!(x))) goto failure
+  while (!ctx->Done(&ptr)) {
+    uint32_t tag;
+    ptr = ::_pbi::ReadTag(ptr, &tag);
+    switch (tag >> 3) {
+      // string session_key = 1;
+      case 1:
+        if (PROTOBUF_PREDICT_TRUE(static_cast<uint8_t>(tag) == 10)) {
+          auto str = _internal_mutable_session_key();
+          ptr = ::_pbi::InlineGreedyStringParser(str, ptr, ctx);
+          CHK_(ptr);
+          CHK_(::_pbi::VerifyUTF8(str, "proxy_proto.CordLpHubPartialPush.session_key"));
+        } else
+          goto handle_unusual;
+        continue;
+      // bytes partial_payload = 2;
+      case 2:
+        if (PROTOBUF_PREDICT_TRUE(static_cast<uint8_t>(tag) == 18)) {
+          auto str = _internal_mutable_partial_payload();
+          ptr = ::_pbi::InlineGreedyStringParser(str, ptr, ctx);
+          CHK_(ptr);
+        } else
+          goto handle_unusual;
+        continue;
+      default:
+        goto handle_unusual;
+    }  // switch
+  handle_unusual:
+    if ((tag == 0) || ((tag & 7) == 4)) {
+      CHK_(ptr);
+      ctx->SetLastTag(tag);
+      goto message_done;
+    }
+    ptr = UnknownFieldParse(
+        tag,
+        _internal_metadata_.mutable_unknown_fields<::PROTOBUF_NAMESPACE_ID::UnknownFieldSet>(),
+        ptr, ctx);
+    CHK_(ptr != nullptr);
+  }  // while
+message_done:
+  return ptr;
+failure:
+  ptr = nullptr;
+  goto message_done;
+#undef CHK_
+}
+
+uint8_t* CordLpHubPartialPush::_InternalSerialize(
+    uint8_t* target, ::PROTOBUF_NAMESPACE_ID::io::EpsCopyOutputStream* stream) const {
+  // @@protoc_insertion_point(serialize_to_array_start:proxy_proto.CordLpHubPartialPush)
+  uint32_t cached_has_bits = 0;
+  (void) cached_has_bits;
+
+  // string session_key = 1;
+  if (!this->_internal_session_key().empty()) {
+    ::PROTOBUF_NAMESPACE_ID::internal::WireFormatLite::VerifyUtf8String(
+      this->_internal_session_key().data(), static_cast<int>(this->_internal_session_key().length()),
+      ::PROTOBUF_NAMESPACE_ID::internal::WireFormatLite::SERIALIZE,
+      "proxy_proto.CordLpHubPartialPush.session_key");
+    target = stream->WriteStringMaybeAliased(
+        1, this->_internal_session_key(), target);
+  }
+
+  // bytes partial_payload = 2;
+  if (!this->_internal_partial_payload().empty()) {
+    target = stream->WriteBytesMaybeAliased(
+        2, this->_internal_partial_payload(), target);
+  }
+
+  if (PROTOBUF_PREDICT_FALSE(_internal_metadata_.have_unknown_fields())) {
+    target = ::_pbi::WireFormat::InternalSerializeUnknownFieldsToArray(
+        _internal_metadata_.unknown_fields<::PROTOBUF_NAMESPACE_ID::UnknownFieldSet>(::PROTOBUF_NAMESPACE_ID::UnknownFieldSet::default_instance), target, stream);
+  }
+  // @@protoc_insertion_point(serialize_to_array_end:proxy_proto.CordLpHubPartialPush)
+  return target;
+}
+
+size_t CordLpHubPartialPush::ByteSizeLong() const {
+// @@protoc_insertion_point(message_byte_size_start:proxy_proto.CordLpHubPartialPush)
+  size_t total_size = 0;
+
+  uint32_t cached_has_bits = 0;
+  // Prevent compiler warnings about cached_has_bits being unused
+  (void) cached_has_bits;
+
+  // string session_key = 1;
+  if (!this->_internal_session_key().empty()) {
+    total_size += 1 +
+      ::PROTOBUF_NAMESPACE_ID::internal::WireFormatLite::StringSize(
+        this->_internal_session_key());
+  }
+
+  // bytes partial_payload = 2;
+  if (!this->_internal_partial_payload().empty()) {
+    total_size += 1 +
+      ::PROTOBUF_NAMESPACE_ID::internal::WireFormatLite::BytesSize(
+        this->_internal_partial_payload());
+  }
+
+  return MaybeComputeUnknownFieldsSize(total_size, &_impl_._cached_size_);
+}
+
+const ::PROTOBUF_NAMESPACE_ID::Message::ClassData CordLpHubPartialPush::_class_data_ = {
+    ::PROTOBUF_NAMESPACE_ID::Message::CopyWithSourceCheck,
+    CordLpHubPartialPush::MergeImpl
+};
+const ::PROTOBUF_NAMESPACE_ID::Message::ClassData*CordLpHubPartialPush::GetClassData() const { return &_class_data_; }
+
+
+void CordLpHubPartialPush::MergeImpl(::PROTOBUF_NAMESPACE_ID::Message& to_msg, const ::PROTOBUF_NAMESPACE_ID::Message& from_msg) {
+  auto* const _this = static_cast<CordLpHubPartialPush*>(&to_msg);
+  auto& from = static_cast<const CordLpHubPartialPush&>(from_msg);
+  // @@protoc_insertion_point(class_specific_merge_from_start:proxy_proto.CordLpHubPartialPush)
+  GOOGLE_DCHECK_NE(&from, _this);
+  uint32_t cached_has_bits = 0;
+  (void) cached_has_bits;
+
+  if (!from._internal_session_key().empty()) {
+    _this->_internal_set_session_key(from._internal_session_key());
+  }
+  if (!from._internal_partial_payload().empty()) {
+    _this->_internal_set_partial_payload(from._internal_partial_payload());
+  }
+  _this->_internal_metadata_.MergeFrom<::PROTOBUF_NAMESPACE_ID::UnknownFieldSet>(from._internal_metadata_);
+}
+
+void CordLpHubPartialPush::CopyFrom(const CordLpHubPartialPush& from) {
+// @@protoc_insertion_point(class_specific_copy_from_start:proxy_proto.CordLpHubPartialPush)
+  if (&from == this) return;
+  Clear();
+  MergeFrom(from);
+}
+
+bool CordLpHubPartialPush::IsInitialized() const {
+  return true;
+}
+
+void CordLpHubPartialPush::InternalSwap(CordLpHubPartialPush* other) {
+  using std::swap;
+  auto* lhs_arena = GetArenaForAllocation();
+  auto* rhs_arena = other->GetArenaForAllocation();
+  _internal_metadata_.InternalSwap(&other->_internal_metadata_);
+  ::PROTOBUF_NAMESPACE_ID::internal::ArenaStringPtr::InternalSwap(
+      &_impl_.session_key_, lhs_arena,
+      &other->_impl_.session_key_, rhs_arena
+  );
+  ::PROTOBUF_NAMESPACE_ID::internal::ArenaStringPtr::InternalSwap(
+      &_impl_.partial_payload_, lhs_arena,
+      &other->_impl_.partial_payload_, rhs_arena
+  );
+}
+
+::PROTOBUF_NAMESPACE_ID::Metadata CordLpHubPartialPush::GetMetadata() const {
+  return ::_pbi::AssignDescriptors(
+      &descriptor_table_proxy_2eproto_getter, &descriptor_table_proxy_2eproto_once,
+      file_level_metadata_proxy_2eproto[25]);
+}
+
+// ===================================================================
+
+class CordLpComputePartialAndPush::_Internal {
+ public:
+};
+
+CordLpComputePartialAndPush::CordLpComputePartialAndPush(::PROTOBUF_NAMESPACE_ID::Arena* arena,
+                         bool is_message_owned)
+  : ::PROTOBUF_NAMESPACE_ID::Message(arena, is_message_owned) {
+  SharedCtor(arena, is_message_owned);
+  // @@protoc_insertion_point(arena_constructor:proxy_proto.CordLpComputePartialAndPush)
+}
+CordLpComputePartialAndPush::CordLpComputePartialAndPush(const CordLpComputePartialAndPush& from)
+  : ::PROTOBUF_NAMESPACE_ID::Message() {
+  CordLpComputePartialAndPush* const _this = this; (void)_this;
+  new (&_impl_) Impl_{
+      decltype(_impl_.fetches_){from._impl_.fetches_}
+    , decltype(_impl_.session_key_){}
+    , decltype(_impl_.hub_proxy_ip_){}
+    , decltype(_impl_.delta_blob_key_){}
+    , decltype(_impl_.delta_datanode_ip_){}
+    , decltype(_impl_.hub_proxy_port_){}
+    , decltype(_impl_.delta_datanode_port_){}
+    , decltype(_impl_.parity_slice_size_){}
+    , /*decltype(_impl_._cached_size_)*/{}};
+
+  _internal_metadata_.MergeFrom<::PROTOBUF_NAMESPACE_ID::UnknownFieldSet>(from._internal_metadata_);
+  _impl_.session_key_.InitDefault();
+  #ifdef PROTOBUF_FORCE_COPY_DEFAULT_STRING
+    _impl_.session_key_.Set("", GetArenaForAllocation());
+  #endif // PROTOBUF_FORCE_COPY_DEFAULT_STRING
+  if (!from._internal_session_key().empty()) {
+    _this->_impl_.session_key_.Set(from._internal_session_key(), 
+      _this->GetArenaForAllocation());
+  }
+  _impl_.hub_proxy_ip_.InitDefault();
+  #ifdef PROTOBUF_FORCE_COPY_DEFAULT_STRING
+    _impl_.hub_proxy_ip_.Set("", GetArenaForAllocation());
+  #endif // PROTOBUF_FORCE_COPY_DEFAULT_STRING
+  if (!from._internal_hub_proxy_ip().empty()) {
+    _this->_impl_.hub_proxy_ip_.Set(from._internal_hub_proxy_ip(), 
+      _this->GetArenaForAllocation());
+  }
+  _impl_.delta_blob_key_.InitDefault();
+  #ifdef PROTOBUF_FORCE_COPY_DEFAULT_STRING
+    _impl_.delta_blob_key_.Set("", GetArenaForAllocation());
+  #endif // PROTOBUF_FORCE_COPY_DEFAULT_STRING
+  if (!from._internal_delta_blob_key().empty()) {
+    _this->_impl_.delta_blob_key_.Set(from._internal_delta_blob_key(), 
+      _this->GetArenaForAllocation());
+  }
+  _impl_.delta_datanode_ip_.InitDefault();
+  #ifdef PROTOBUF_FORCE_COPY_DEFAULT_STRING
+    _impl_.delta_datanode_ip_.Set("", GetArenaForAllocation());
+  #endif // PROTOBUF_FORCE_COPY_DEFAULT_STRING
+  if (!from._internal_delta_datanode_ip().empty()) {
+    _this->_impl_.delta_datanode_ip_.Set(from._internal_delta_datanode_ip(), 
+      _this->GetArenaForAllocation());
+  }
+  ::memcpy(&_impl_.hub_proxy_port_, &from._impl_.hub_proxy_port_,
+    static_cast<size_t>(reinterpret_cast<char*>(&_impl_.parity_slice_size_) -
+    reinterpret_cast<char*>(&_impl_.hub_proxy_port_)) + sizeof(_impl_.parity_slice_size_));
+  // @@protoc_insertion_point(copy_constructor:proxy_proto.CordLpComputePartialAndPush)
+}
+
+inline void CordLpComputePartialAndPush::SharedCtor(
+    ::_pb::Arena* arena, bool is_message_owned) {
+  (void)arena;
+  (void)is_message_owned;
+  new (&_impl_) Impl_{
+      decltype(_impl_.fetches_){arena}
+    , decltype(_impl_.session_key_){}
+    , decltype(_impl_.hub_proxy_ip_){}
+    , decltype(_impl_.delta_blob_key_){}
+    , decltype(_impl_.delta_datanode_ip_){}
+    , decltype(_impl_.hub_proxy_port_){0}
+    , decltype(_impl_.delta_datanode_port_){0}
+    , decltype(_impl_.parity_slice_size_){0}
+    , /*decltype(_impl_._cached_size_)*/{}
+  };
+  _impl_.session_key_.InitDefault();
+  #ifdef PROTOBUF_FORCE_COPY_DEFAULT_STRING
+    _impl_.session_key_.Set("", GetArenaForAllocation());
+  #endif // PROTOBUF_FORCE_COPY_DEFAULT_STRING
+  _impl_.hub_proxy_ip_.InitDefault();
+  #ifdef PROTOBUF_FORCE_COPY_DEFAULT_STRING
+    _impl_.hub_proxy_ip_.Set("", GetArenaForAllocation());
+  #endif // PROTOBUF_FORCE_COPY_DEFAULT_STRING
+  _impl_.delta_blob_key_.InitDefault();
+  #ifdef PROTOBUF_FORCE_COPY_DEFAULT_STRING
+    _impl_.delta_blob_key_.Set("", GetArenaForAllocation());
+  #endif // PROTOBUF_FORCE_COPY_DEFAULT_STRING
+  _impl_.delta_datanode_ip_.InitDefault();
+  #ifdef PROTOBUF_FORCE_COPY_DEFAULT_STRING
+    _impl_.delta_datanode_ip_.Set("", GetArenaForAllocation());
+  #endif // PROTOBUF_FORCE_COPY_DEFAULT_STRING
+}
+
+CordLpComputePartialAndPush::~CordLpComputePartialAndPush() {
+  // @@protoc_insertion_point(destructor:proxy_proto.CordLpComputePartialAndPush)
+  if (auto *arena = _internal_metadata_.DeleteReturnArena<::PROTOBUF_NAMESPACE_ID::UnknownFieldSet>()) {
+  (void)arena;
+    return;
+  }
+  SharedDtor();
+}
+
+inline void CordLpComputePartialAndPush::SharedDtor() {
+  GOOGLE_DCHECK(GetArenaForAllocation() == nullptr);
+  _impl_.fetches_.~RepeatedPtrField();
+  _impl_.session_key_.Destroy();
+  _impl_.hub_proxy_ip_.Destroy();
+  _impl_.delta_blob_key_.Destroy();
+  _impl_.delta_datanode_ip_.Destroy();
+}
+
+void CordLpComputePartialAndPush::SetCachedSize(int size) const {
+  _impl_._cached_size_.Set(size);
+}
+
+void CordLpComputePartialAndPush::Clear() {
+// @@protoc_insertion_point(message_clear_start:proxy_proto.CordLpComputePartialAndPush)
+  uint32_t cached_has_bits = 0;
+  // Prevent compiler warnings about cached_has_bits being unused
+  (void) cached_has_bits;
+
+  _impl_.fetches_.Clear();
+  _impl_.session_key_.ClearToEmpty();
+  _impl_.hub_proxy_ip_.ClearToEmpty();
+  _impl_.delta_blob_key_.ClearToEmpty();
+  _impl_.delta_datanode_ip_.ClearToEmpty();
+  ::memset(&_impl_.hub_proxy_port_, 0, static_cast<size_t>(
+      reinterpret_cast<char*>(&_impl_.parity_slice_size_) -
+      reinterpret_cast<char*>(&_impl_.hub_proxy_port_)) + sizeof(_impl_.parity_slice_size_));
+  _internal_metadata_.Clear<::PROTOBUF_NAMESPACE_ID::UnknownFieldSet>();
+}
+
+const char* CordLpComputePartialAndPush::_InternalParse(const char* ptr, ::_pbi::ParseContext* ctx) {
+#define CHK_(x) if (PROTOBUF_PREDICT_FALSE(!(x))) goto failure
+  while (!ctx->Done(&ptr)) {
+    uint32_t tag;
+    ptr = ::_pbi::ReadTag(ptr, &tag);
+    switch (tag >> 3) {
+      // string session_key = 1;
+      case 1:
+        if (PROTOBUF_PREDICT_TRUE(static_cast<uint8_t>(tag) == 10)) {
+          auto str = _internal_mutable_session_key();
+          ptr = ::_pbi::InlineGreedyStringParser(str, ptr, ctx);
+          CHK_(ptr);
+          CHK_(::_pbi::VerifyUTF8(str, "proxy_proto.CordLpComputePartialAndPush.session_key"));
+        } else
+          goto handle_unusual;
+        continue;
+      // string hub_proxy_ip = 2;
+      case 2:
+        if (PROTOBUF_PREDICT_TRUE(static_cast<uint8_t>(tag) == 18)) {
+          auto str = _internal_mutable_hub_proxy_ip();
+          ptr = ::_pbi::InlineGreedyStringParser(str, ptr, ctx);
+          CHK_(ptr);
+          CHK_(::_pbi::VerifyUTF8(str, "proxy_proto.CordLpComputePartialAndPush.hub_proxy_ip"));
+        } else
+          goto handle_unusual;
+        continue;
+      // int32 hub_proxy_port = 3;
+      case 3:
+        if (PROTOBUF_PREDICT_TRUE(static_cast<uint8_t>(tag) == 24)) {
+          _impl_.hub_proxy_port_ = ::PROTOBUF_NAMESPACE_ID::internal::ReadVarint32(&ptr);
+          CHK_(ptr);
+        } else
+          goto handle_unusual;
+        continue;
+      // string delta_blob_key = 4;
+      case 4:
+        if (PROTOBUF_PREDICT_TRUE(static_cast<uint8_t>(tag) == 34)) {
+          auto str = _internal_mutable_delta_blob_key();
+          ptr = ::_pbi::InlineGreedyStringParser(str, ptr, ctx);
+          CHK_(ptr);
+          CHK_(::_pbi::VerifyUTF8(str, "proxy_proto.CordLpComputePartialAndPush.delta_blob_key"));
+        } else
+          goto handle_unusual;
+        continue;
+      // string delta_datanode_ip = 5;
+      case 5:
+        if (PROTOBUF_PREDICT_TRUE(static_cast<uint8_t>(tag) == 42)) {
+          auto str = _internal_mutable_delta_datanode_ip();
+          ptr = ::_pbi::InlineGreedyStringParser(str, ptr, ctx);
+          CHK_(ptr);
+          CHK_(::_pbi::VerifyUTF8(str, "proxy_proto.CordLpComputePartialAndPush.delta_datanode_ip"));
+        } else
+          goto handle_unusual;
+        continue;
+      // int32 delta_datanode_port = 6;
+      case 6:
+        if (PROTOBUF_PREDICT_TRUE(static_cast<uint8_t>(tag) == 48)) {
+          _impl_.delta_datanode_port_ = ::PROTOBUF_NAMESPACE_ID::internal::ReadVarint32(&ptr);
+          CHK_(ptr);
+        } else
+          goto handle_unusual;
+        continue;
+      // int32 parity_slice_size = 7;
+      case 7:
+        if (PROTOBUF_PREDICT_TRUE(static_cast<uint8_t>(tag) == 56)) {
+          _impl_.parity_slice_size_ = ::PROTOBUF_NAMESPACE_ID::internal::ReadVarint32(&ptr);
+          CHK_(ptr);
+        } else
+          goto handle_unusual;
+        continue;
+      // repeated .proxy_proto.CordLpDeltaFetch fetches = 8;
+      case 8:
+        if (PROTOBUF_PREDICT_TRUE(static_cast<uint8_t>(tag) == 66)) {
+          ptr -= 1;
+          do {
+            ptr += 1;
+            ptr = ctx->ParseMessage(_internal_add_fetches(), ptr);
+            CHK_(ptr);
+            if (!ctx->DataAvailable(ptr)) break;
+          } while (::PROTOBUF_NAMESPACE_ID::internal::ExpectTag<66>(ptr));
+        } else
+          goto handle_unusual;
+        continue;
+      default:
+        goto handle_unusual;
+    }  // switch
+  handle_unusual:
+    if ((tag == 0) || ((tag & 7) == 4)) {
+      CHK_(ptr);
+      ctx->SetLastTag(tag);
+      goto message_done;
+    }
+    ptr = UnknownFieldParse(
+        tag,
+        _internal_metadata_.mutable_unknown_fields<::PROTOBUF_NAMESPACE_ID::UnknownFieldSet>(),
+        ptr, ctx);
+    CHK_(ptr != nullptr);
+  }  // while
+message_done:
+  return ptr;
+failure:
+  ptr = nullptr;
+  goto message_done;
+#undef CHK_
+}
+
+uint8_t* CordLpComputePartialAndPush::_InternalSerialize(
+    uint8_t* target, ::PROTOBUF_NAMESPACE_ID::io::EpsCopyOutputStream* stream) const {
+  // @@protoc_insertion_point(serialize_to_array_start:proxy_proto.CordLpComputePartialAndPush)
+  uint32_t cached_has_bits = 0;
+  (void) cached_has_bits;
+
+  // string session_key = 1;
+  if (!this->_internal_session_key().empty()) {
+    ::PROTOBUF_NAMESPACE_ID::internal::WireFormatLite::VerifyUtf8String(
+      this->_internal_session_key().data(), static_cast<int>(this->_internal_session_key().length()),
+      ::PROTOBUF_NAMESPACE_ID::internal::WireFormatLite::SERIALIZE,
+      "proxy_proto.CordLpComputePartialAndPush.session_key");
+    target = stream->WriteStringMaybeAliased(
+        1, this->_internal_session_key(), target);
+  }
+
+  // string hub_proxy_ip = 2;
+  if (!this->_internal_hub_proxy_ip().empty()) {
+    ::PROTOBUF_NAMESPACE_ID::internal::WireFormatLite::VerifyUtf8String(
+      this->_internal_hub_proxy_ip().data(), static_cast<int>(this->_internal_hub_proxy_ip().length()),
+      ::PROTOBUF_NAMESPACE_ID::internal::WireFormatLite::SERIALIZE,
+      "proxy_proto.CordLpComputePartialAndPush.hub_proxy_ip");
+    target = stream->WriteStringMaybeAliased(
+        2, this->_internal_hub_proxy_ip(), target);
+  }
+
+  // int32 hub_proxy_port = 3;
+  if (this->_internal_hub_proxy_port() != 0) {
+    target = stream->EnsureSpace(target);
+    target = ::_pbi::WireFormatLite::WriteInt32ToArray(3, this->_internal_hub_proxy_port(), target);
+  }
+
+  // string delta_blob_key = 4;
+  if (!this->_internal_delta_blob_key().empty()) {
+    ::PROTOBUF_NAMESPACE_ID::internal::WireFormatLite::VerifyUtf8String(
+      this->_internal_delta_blob_key().data(), static_cast<int>(this->_internal_delta_blob_key().length()),
+      ::PROTOBUF_NAMESPACE_ID::internal::WireFormatLite::SERIALIZE,
+      "proxy_proto.CordLpComputePartialAndPush.delta_blob_key");
+    target = stream->WriteStringMaybeAliased(
+        4, this->_internal_delta_blob_key(), target);
+  }
+
+  // string delta_datanode_ip = 5;
+  if (!this->_internal_delta_datanode_ip().empty()) {
+    ::PROTOBUF_NAMESPACE_ID::internal::WireFormatLite::VerifyUtf8String(
+      this->_internal_delta_datanode_ip().data(), static_cast<int>(this->_internal_delta_datanode_ip().length()),
+      ::PROTOBUF_NAMESPACE_ID::internal::WireFormatLite::SERIALIZE,
+      "proxy_proto.CordLpComputePartialAndPush.delta_datanode_ip");
+    target = stream->WriteStringMaybeAliased(
+        5, this->_internal_delta_datanode_ip(), target);
+  }
+
+  // int32 delta_datanode_port = 6;
+  if (this->_internal_delta_datanode_port() != 0) {
+    target = stream->EnsureSpace(target);
+    target = ::_pbi::WireFormatLite::WriteInt32ToArray(6, this->_internal_delta_datanode_port(), target);
+  }
+
+  // int32 parity_slice_size = 7;
+  if (this->_internal_parity_slice_size() != 0) {
+    target = stream->EnsureSpace(target);
+    target = ::_pbi::WireFormatLite::WriteInt32ToArray(7, this->_internal_parity_slice_size(), target);
+  }
+
+  // repeated .proxy_proto.CordLpDeltaFetch fetches = 8;
+  for (unsigned i = 0,
+      n = static_cast<unsigned>(this->_internal_fetches_size()); i < n; i++) {
+    const auto& repfield = this->_internal_fetches(i);
+    target = ::PROTOBUF_NAMESPACE_ID::internal::WireFormatLite::
+        InternalWriteMessage(8, repfield, repfield.GetCachedSize(), target, stream);
+  }
+
+  if (PROTOBUF_PREDICT_FALSE(_internal_metadata_.have_unknown_fields())) {
+    target = ::_pbi::WireFormat::InternalSerializeUnknownFieldsToArray(
+        _internal_metadata_.unknown_fields<::PROTOBUF_NAMESPACE_ID::UnknownFieldSet>(::PROTOBUF_NAMESPACE_ID::UnknownFieldSet::default_instance), target, stream);
+  }
+  // @@protoc_insertion_point(serialize_to_array_end:proxy_proto.CordLpComputePartialAndPush)
+  return target;
+}
+
+size_t CordLpComputePartialAndPush::ByteSizeLong() const {
+// @@protoc_insertion_point(message_byte_size_start:proxy_proto.CordLpComputePartialAndPush)
+  size_t total_size = 0;
+
+  uint32_t cached_has_bits = 0;
+  // Prevent compiler warnings about cached_has_bits being unused
+  (void) cached_has_bits;
+
+  // repeated .proxy_proto.CordLpDeltaFetch fetches = 8;
+  total_size += 1UL * this->_internal_fetches_size();
+  for (const auto& msg : this->_impl_.fetches_) {
+    total_size +=
+      ::PROTOBUF_NAMESPACE_ID::internal::WireFormatLite::MessageSize(msg);
+  }
+
+  // string session_key = 1;
+  if (!this->_internal_session_key().empty()) {
+    total_size += 1 +
+      ::PROTOBUF_NAMESPACE_ID::internal::WireFormatLite::StringSize(
+        this->_internal_session_key());
+  }
+
+  // string hub_proxy_ip = 2;
+  if (!this->_internal_hub_proxy_ip().empty()) {
+    total_size += 1 +
+      ::PROTOBUF_NAMESPACE_ID::internal::WireFormatLite::StringSize(
+        this->_internal_hub_proxy_ip());
+  }
+
+  // string delta_blob_key = 4;
+  if (!this->_internal_delta_blob_key().empty()) {
+    total_size += 1 +
+      ::PROTOBUF_NAMESPACE_ID::internal::WireFormatLite::StringSize(
+        this->_internal_delta_blob_key());
+  }
+
+  // string delta_datanode_ip = 5;
+  if (!this->_internal_delta_datanode_ip().empty()) {
+    total_size += 1 +
+      ::PROTOBUF_NAMESPACE_ID::internal::WireFormatLite::StringSize(
+        this->_internal_delta_datanode_ip());
+  }
+
+  // int32 hub_proxy_port = 3;
+  if (this->_internal_hub_proxy_port() != 0) {
+    total_size += ::_pbi::WireFormatLite::Int32SizePlusOne(this->_internal_hub_proxy_port());
+  }
+
+  // int32 delta_datanode_port = 6;
+  if (this->_internal_delta_datanode_port() != 0) {
+    total_size += ::_pbi::WireFormatLite::Int32SizePlusOne(this->_internal_delta_datanode_port());
+  }
+
+  // int32 parity_slice_size = 7;
+  if (this->_internal_parity_slice_size() != 0) {
+    total_size += ::_pbi::WireFormatLite::Int32SizePlusOne(this->_internal_parity_slice_size());
+  }
+
+  return MaybeComputeUnknownFieldsSize(total_size, &_impl_._cached_size_);
+}
+
+const ::PROTOBUF_NAMESPACE_ID::Message::ClassData CordLpComputePartialAndPush::_class_data_ = {
+    ::PROTOBUF_NAMESPACE_ID::Message::CopyWithSourceCheck,
+    CordLpComputePartialAndPush::MergeImpl
+};
+const ::PROTOBUF_NAMESPACE_ID::Message::ClassData*CordLpComputePartialAndPush::GetClassData() const { return &_class_data_; }
+
+
+void CordLpComputePartialAndPush::MergeImpl(::PROTOBUF_NAMESPACE_ID::Message& to_msg, const ::PROTOBUF_NAMESPACE_ID::Message& from_msg) {
+  auto* const _this = static_cast<CordLpComputePartialAndPush*>(&to_msg);
+  auto& from = static_cast<const CordLpComputePartialAndPush&>(from_msg);
+  // @@protoc_insertion_point(class_specific_merge_from_start:proxy_proto.CordLpComputePartialAndPush)
+  GOOGLE_DCHECK_NE(&from, _this);
+  uint32_t cached_has_bits = 0;
+  (void) cached_has_bits;
+
+  _this->_impl_.fetches_.MergeFrom(from._impl_.fetches_);
+  if (!from._internal_session_key().empty()) {
+    _this->_internal_set_session_key(from._internal_session_key());
+  }
+  if (!from._internal_hub_proxy_ip().empty()) {
+    _this->_internal_set_hub_proxy_ip(from._internal_hub_proxy_ip());
+  }
+  if (!from._internal_delta_blob_key().empty()) {
+    _this->_internal_set_delta_blob_key(from._internal_delta_blob_key());
+  }
+  if (!from._internal_delta_datanode_ip().empty()) {
+    _this->_internal_set_delta_datanode_ip(from._internal_delta_datanode_ip());
+  }
+  if (from._internal_hub_proxy_port() != 0) {
+    _this->_internal_set_hub_proxy_port(from._internal_hub_proxy_port());
+  }
+  if (from._internal_delta_datanode_port() != 0) {
+    _this->_internal_set_delta_datanode_port(from._internal_delta_datanode_port());
+  }
+  if (from._internal_parity_slice_size() != 0) {
+    _this->_internal_set_parity_slice_size(from._internal_parity_slice_size());
+  }
+  _this->_internal_metadata_.MergeFrom<::PROTOBUF_NAMESPACE_ID::UnknownFieldSet>(from._internal_metadata_);
+}
+
+void CordLpComputePartialAndPush::CopyFrom(const CordLpComputePartialAndPush& from) {
+// @@protoc_insertion_point(class_specific_copy_from_start:proxy_proto.CordLpComputePartialAndPush)
+  if (&from == this) return;
+  Clear();
+  MergeFrom(from);
+}
+
+bool CordLpComputePartialAndPush::IsInitialized() const {
+  return true;
+}
+
+void CordLpComputePartialAndPush::InternalSwap(CordLpComputePartialAndPush* other) {
+  using std::swap;
+  auto* lhs_arena = GetArenaForAllocation();
+  auto* rhs_arena = other->GetArenaForAllocation();
+  _internal_metadata_.InternalSwap(&other->_internal_metadata_);
+  _impl_.fetches_.InternalSwap(&other->_impl_.fetches_);
+  ::PROTOBUF_NAMESPACE_ID::internal::ArenaStringPtr::InternalSwap(
+      &_impl_.session_key_, lhs_arena,
+      &other->_impl_.session_key_, rhs_arena
+  );
+  ::PROTOBUF_NAMESPACE_ID::internal::ArenaStringPtr::InternalSwap(
+      &_impl_.hub_proxy_ip_, lhs_arena,
+      &other->_impl_.hub_proxy_ip_, rhs_arena
+  );
+  ::PROTOBUF_NAMESPACE_ID::internal::ArenaStringPtr::InternalSwap(
+      &_impl_.delta_blob_key_, lhs_arena,
+      &other->_impl_.delta_blob_key_, rhs_arena
+  );
+  ::PROTOBUF_NAMESPACE_ID::internal::ArenaStringPtr::InternalSwap(
+      &_impl_.delta_datanode_ip_, lhs_arena,
+      &other->_impl_.delta_datanode_ip_, rhs_arena
+  );
+  ::PROTOBUF_NAMESPACE_ID::internal::memswap<
+      PROTOBUF_FIELD_OFFSET(CordLpComputePartialAndPush, _impl_.parity_slice_size_)
+      + sizeof(CordLpComputePartialAndPush::_impl_.parity_slice_size_)
+      - PROTOBUF_FIELD_OFFSET(CordLpComputePartialAndPush, _impl_.hub_proxy_port_)>(
+          reinterpret_cast<char*>(&_impl_.hub_proxy_port_),
+          reinterpret_cast<char*>(&other->_impl_.hub_proxy_port_));
+}
+
+::PROTOBUF_NAMESPACE_ID::Metadata CordLpComputePartialAndPush::GetMetadata() const {
+  return ::_pbi::AssignDescriptors(
+      &descriptor_table_proxy_2eproto_getter, &descriptor_table_proxy_2eproto_once,
+      file_level_metadata_proxy_2eproto[26]);
+}
+
+// ===================================================================
+
+class CordLpParityApplyDelta::_Internal {
+ public:
+};
+
+CordLpParityApplyDelta::CordLpParityApplyDelta(::PROTOBUF_NAMESPACE_ID::Arena* arena,
+                         bool is_message_owned)
+  : ::PROTOBUF_NAMESPACE_ID::Message(arena, is_message_owned) {
+  SharedCtor(arena, is_message_owned);
+  // @@protoc_insertion_point(arena_constructor:proxy_proto.CordLpParityApplyDelta)
+}
+CordLpParityApplyDelta::CordLpParityApplyDelta(const CordLpParityApplyDelta& from)
+  : ::PROTOBUF_NAMESPACE_ID::Message() {
+  CordLpParityApplyDelta* const _this = this; (void)_this;
+  new (&_impl_) Impl_{
+      decltype(_impl_.local_block_key_){}
+    , decltype(_impl_.local_datanode_ip_){}
+    , decltype(_impl_.delta_payload_){}
+    , decltype(_impl_.stripe_id_){}
+    , decltype(_impl_.local_block_id_){}
+    , decltype(_impl_.local_datanode_port_){}
+    , decltype(_impl_.parity_slice_offset_){}
+    , decltype(_impl_.parity_slice_size_){}
+    , /*decltype(_impl_._cached_size_)*/{}};
+
+  _internal_metadata_.MergeFrom<::PROTOBUF_NAMESPACE_ID::UnknownFieldSet>(from._internal_metadata_);
+  _impl_.local_block_key_.InitDefault();
+  #ifdef PROTOBUF_FORCE_COPY_DEFAULT_STRING
+    _impl_.local_block_key_.Set("", GetArenaForAllocation());
+  #endif // PROTOBUF_FORCE_COPY_DEFAULT_STRING
+  if (!from._internal_local_block_key().empty()) {
+    _this->_impl_.local_block_key_.Set(from._internal_local_block_key(), 
+      _this->GetArenaForAllocation());
+  }
+  _impl_.local_datanode_ip_.InitDefault();
+  #ifdef PROTOBUF_FORCE_COPY_DEFAULT_STRING
+    _impl_.local_datanode_ip_.Set("", GetArenaForAllocation());
+  #endif // PROTOBUF_FORCE_COPY_DEFAULT_STRING
+  if (!from._internal_local_datanode_ip().empty()) {
+    _this->_impl_.local_datanode_ip_.Set(from._internal_local_datanode_ip(), 
+      _this->GetArenaForAllocation());
+  }
+  _impl_.delta_payload_.InitDefault();
+  #ifdef PROTOBUF_FORCE_COPY_DEFAULT_STRING
+    _impl_.delta_payload_.Set("", GetArenaForAllocation());
+  #endif // PROTOBUF_FORCE_COPY_DEFAULT_STRING
+  if (!from._internal_delta_payload().empty()) {
+    _this->_impl_.delta_payload_.Set(from._internal_delta_payload(), 
+      _this->GetArenaForAllocation());
+  }
+  ::memcpy(&_impl_.stripe_id_, &from._impl_.stripe_id_,
+    static_cast<size_t>(reinterpret_cast<char*>(&_impl_.parity_slice_size_) -
+    reinterpret_cast<char*>(&_impl_.stripe_id_)) + sizeof(_impl_.parity_slice_size_));
+  // @@protoc_insertion_point(copy_constructor:proxy_proto.CordLpParityApplyDelta)
+}
+
+inline void CordLpParityApplyDelta::SharedCtor(
+    ::_pb::Arena* arena, bool is_message_owned) {
+  (void)arena;
+  (void)is_message_owned;
+  new (&_impl_) Impl_{
+      decltype(_impl_.local_block_key_){}
+    , decltype(_impl_.local_datanode_ip_){}
+    , decltype(_impl_.delta_payload_){}
+    , decltype(_impl_.stripe_id_){0}
+    , decltype(_impl_.local_block_id_){0}
+    , decltype(_impl_.local_datanode_port_){0}
+    , decltype(_impl_.parity_slice_offset_){0}
+    , decltype(_impl_.parity_slice_size_){0}
+    , /*decltype(_impl_._cached_size_)*/{}
+  };
+  _impl_.local_block_key_.InitDefault();
+  #ifdef PROTOBUF_FORCE_COPY_DEFAULT_STRING
+    _impl_.local_block_key_.Set("", GetArenaForAllocation());
+  #endif // PROTOBUF_FORCE_COPY_DEFAULT_STRING
+  _impl_.local_datanode_ip_.InitDefault();
+  #ifdef PROTOBUF_FORCE_COPY_DEFAULT_STRING
+    _impl_.local_datanode_ip_.Set("", GetArenaForAllocation());
+  #endif // PROTOBUF_FORCE_COPY_DEFAULT_STRING
+  _impl_.delta_payload_.InitDefault();
+  #ifdef PROTOBUF_FORCE_COPY_DEFAULT_STRING
+    _impl_.delta_payload_.Set("", GetArenaForAllocation());
+  #endif // PROTOBUF_FORCE_COPY_DEFAULT_STRING
+}
+
+CordLpParityApplyDelta::~CordLpParityApplyDelta() {
+  // @@protoc_insertion_point(destructor:proxy_proto.CordLpParityApplyDelta)
+  if (auto *arena = _internal_metadata_.DeleteReturnArena<::PROTOBUF_NAMESPACE_ID::UnknownFieldSet>()) {
+  (void)arena;
+    return;
+  }
+  SharedDtor();
+}
+
+inline void CordLpParityApplyDelta::SharedDtor() {
+  GOOGLE_DCHECK(GetArenaForAllocation() == nullptr);
+  _impl_.local_block_key_.Destroy();
+  _impl_.local_datanode_ip_.Destroy();
+  _impl_.delta_payload_.Destroy();
+}
+
+void CordLpParityApplyDelta::SetCachedSize(int size) const {
+  _impl_._cached_size_.Set(size);
+}
+
+void CordLpParityApplyDelta::Clear() {
+// @@protoc_insertion_point(message_clear_start:proxy_proto.CordLpParityApplyDelta)
+  uint32_t cached_has_bits = 0;
+  // Prevent compiler warnings about cached_has_bits being unused
+  (void) cached_has_bits;
+
+  _impl_.local_block_key_.ClearToEmpty();
+  _impl_.local_datanode_ip_.ClearToEmpty();
+  _impl_.delta_payload_.ClearToEmpty();
+  ::memset(&_impl_.stripe_id_, 0, static_cast<size_t>(
+      reinterpret_cast<char*>(&_impl_.parity_slice_size_) -
+      reinterpret_cast<char*>(&_impl_.stripe_id_)) + sizeof(_impl_.parity_slice_size_));
+  _internal_metadata_.Clear<::PROTOBUF_NAMESPACE_ID::UnknownFieldSet>();
+}
+
+const char* CordLpParityApplyDelta::_InternalParse(const char* ptr, ::_pbi::ParseContext* ctx) {
+#define CHK_(x) if (PROTOBUF_PREDICT_FALSE(!(x))) goto failure
+  while (!ctx->Done(&ptr)) {
+    uint32_t tag;
+    ptr = ::_pbi::ReadTag(ptr, &tag);
+    switch (tag >> 3) {
+      // int32 stripe_id = 1;
+      case 1:
+        if (PROTOBUF_PREDICT_TRUE(static_cast<uint8_t>(tag) == 8)) {
+          _impl_.stripe_id_ = ::PROTOBUF_NAMESPACE_ID::internal::ReadVarint32(&ptr);
+          CHK_(ptr);
+        } else
+          goto handle_unusual;
+        continue;
+      // int32 local_block_id = 2;
+      case 2:
+        if (PROTOBUF_PREDICT_TRUE(static_cast<uint8_t>(tag) == 16)) {
+          _impl_.local_block_id_ = ::PROTOBUF_NAMESPACE_ID::internal::ReadVarint32(&ptr);
+          CHK_(ptr);
+        } else
+          goto handle_unusual;
+        continue;
+      // string local_block_key = 3;
+      case 3:
+        if (PROTOBUF_PREDICT_TRUE(static_cast<uint8_t>(tag) == 26)) {
+          auto str = _internal_mutable_local_block_key();
+          ptr = ::_pbi::InlineGreedyStringParser(str, ptr, ctx);
+          CHK_(ptr);
+          CHK_(::_pbi::VerifyUTF8(str, "proxy_proto.CordLpParityApplyDelta.local_block_key"));
+        } else
+          goto handle_unusual;
+        continue;
+      // string local_datanode_ip = 4;
+      case 4:
+        if (PROTOBUF_PREDICT_TRUE(static_cast<uint8_t>(tag) == 34)) {
+          auto str = _internal_mutable_local_datanode_ip();
+          ptr = ::_pbi::InlineGreedyStringParser(str, ptr, ctx);
+          CHK_(ptr);
+          CHK_(::_pbi::VerifyUTF8(str, "proxy_proto.CordLpParityApplyDelta.local_datanode_ip"));
+        } else
+          goto handle_unusual;
+        continue;
+      // int32 local_datanode_port = 5;
+      case 5:
+        if (PROTOBUF_PREDICT_TRUE(static_cast<uint8_t>(tag) == 40)) {
+          _impl_.local_datanode_port_ = ::PROTOBUF_NAMESPACE_ID::internal::ReadVarint32(&ptr);
+          CHK_(ptr);
+        } else
+          goto handle_unusual;
+        continue;
+      // int32 parity_slice_offset = 6;
+      case 6:
+        if (PROTOBUF_PREDICT_TRUE(static_cast<uint8_t>(tag) == 48)) {
+          _impl_.parity_slice_offset_ = ::PROTOBUF_NAMESPACE_ID::internal::ReadVarint32(&ptr);
+          CHK_(ptr);
+        } else
+          goto handle_unusual;
+        continue;
+      // int32 parity_slice_size = 7;
+      case 7:
+        if (PROTOBUF_PREDICT_TRUE(static_cast<uint8_t>(tag) == 56)) {
+          _impl_.parity_slice_size_ = ::PROTOBUF_NAMESPACE_ID::internal::ReadVarint32(&ptr);
+          CHK_(ptr);
+        } else
+          goto handle_unusual;
+        continue;
+      // bytes delta_payload = 8;
+      case 8:
+        if (PROTOBUF_PREDICT_TRUE(static_cast<uint8_t>(tag) == 66)) {
+          auto str = _internal_mutable_delta_payload();
+          ptr = ::_pbi::InlineGreedyStringParser(str, ptr, ctx);
+          CHK_(ptr);
+        } else
+          goto handle_unusual;
+        continue;
+      default:
+        goto handle_unusual;
+    }  // switch
+  handle_unusual:
+    if ((tag == 0) || ((tag & 7) == 4)) {
+      CHK_(ptr);
+      ctx->SetLastTag(tag);
+      goto message_done;
+    }
+    ptr = UnknownFieldParse(
+        tag,
+        _internal_metadata_.mutable_unknown_fields<::PROTOBUF_NAMESPACE_ID::UnknownFieldSet>(),
+        ptr, ctx);
+    CHK_(ptr != nullptr);
+  }  // while
+message_done:
+  return ptr;
+failure:
+  ptr = nullptr;
+  goto message_done;
+#undef CHK_
+}
+
+uint8_t* CordLpParityApplyDelta::_InternalSerialize(
+    uint8_t* target, ::PROTOBUF_NAMESPACE_ID::io::EpsCopyOutputStream* stream) const {
+  // @@protoc_insertion_point(serialize_to_array_start:proxy_proto.CordLpParityApplyDelta)
+  uint32_t cached_has_bits = 0;
+  (void) cached_has_bits;
+
+  // int32 stripe_id = 1;
+  if (this->_internal_stripe_id() != 0) {
+    target = stream->EnsureSpace(target);
+    target = ::_pbi::WireFormatLite::WriteInt32ToArray(1, this->_internal_stripe_id(), target);
+  }
+
+  // int32 local_block_id = 2;
+  if (this->_internal_local_block_id() != 0) {
+    target = stream->EnsureSpace(target);
+    target = ::_pbi::WireFormatLite::WriteInt32ToArray(2, this->_internal_local_block_id(), target);
+  }
+
+  // string local_block_key = 3;
+  if (!this->_internal_local_block_key().empty()) {
+    ::PROTOBUF_NAMESPACE_ID::internal::WireFormatLite::VerifyUtf8String(
+      this->_internal_local_block_key().data(), static_cast<int>(this->_internal_local_block_key().length()),
+      ::PROTOBUF_NAMESPACE_ID::internal::WireFormatLite::SERIALIZE,
+      "proxy_proto.CordLpParityApplyDelta.local_block_key");
+    target = stream->WriteStringMaybeAliased(
+        3, this->_internal_local_block_key(), target);
+  }
+
+  // string local_datanode_ip = 4;
+  if (!this->_internal_local_datanode_ip().empty()) {
+    ::PROTOBUF_NAMESPACE_ID::internal::WireFormatLite::VerifyUtf8String(
+      this->_internal_local_datanode_ip().data(), static_cast<int>(this->_internal_local_datanode_ip().length()),
+      ::PROTOBUF_NAMESPACE_ID::internal::WireFormatLite::SERIALIZE,
+      "proxy_proto.CordLpParityApplyDelta.local_datanode_ip");
+    target = stream->WriteStringMaybeAliased(
+        4, this->_internal_local_datanode_ip(), target);
+  }
+
+  // int32 local_datanode_port = 5;
+  if (this->_internal_local_datanode_port() != 0) {
+    target = stream->EnsureSpace(target);
+    target = ::_pbi::WireFormatLite::WriteInt32ToArray(5, this->_internal_local_datanode_port(), target);
+  }
+
+  // int32 parity_slice_offset = 6;
+  if (this->_internal_parity_slice_offset() != 0) {
+    target = stream->EnsureSpace(target);
+    target = ::_pbi::WireFormatLite::WriteInt32ToArray(6, this->_internal_parity_slice_offset(), target);
+  }
+
+  // int32 parity_slice_size = 7;
+  if (this->_internal_parity_slice_size() != 0) {
+    target = stream->EnsureSpace(target);
+    target = ::_pbi::WireFormatLite::WriteInt32ToArray(7, this->_internal_parity_slice_size(), target);
+  }
+
+  // bytes delta_payload = 8;
+  if (!this->_internal_delta_payload().empty()) {
+    target = stream->WriteBytesMaybeAliased(
+        8, this->_internal_delta_payload(), target);
+  }
+
+  if (PROTOBUF_PREDICT_FALSE(_internal_metadata_.have_unknown_fields())) {
+    target = ::_pbi::WireFormat::InternalSerializeUnknownFieldsToArray(
+        _internal_metadata_.unknown_fields<::PROTOBUF_NAMESPACE_ID::UnknownFieldSet>(::PROTOBUF_NAMESPACE_ID::UnknownFieldSet::default_instance), target, stream);
+  }
+  // @@protoc_insertion_point(serialize_to_array_end:proxy_proto.CordLpParityApplyDelta)
+  return target;
+}
+
+size_t CordLpParityApplyDelta::ByteSizeLong() const {
+// @@protoc_insertion_point(message_byte_size_start:proxy_proto.CordLpParityApplyDelta)
+  size_t total_size = 0;
+
+  uint32_t cached_has_bits = 0;
+  // Prevent compiler warnings about cached_has_bits being unused
+  (void) cached_has_bits;
+
+  // string local_block_key = 3;
+  if (!this->_internal_local_block_key().empty()) {
+    total_size += 1 +
+      ::PROTOBUF_NAMESPACE_ID::internal::WireFormatLite::StringSize(
+        this->_internal_local_block_key());
+  }
+
+  // string local_datanode_ip = 4;
+  if (!this->_internal_local_datanode_ip().empty()) {
+    total_size += 1 +
+      ::PROTOBUF_NAMESPACE_ID::internal::WireFormatLite::StringSize(
+        this->_internal_local_datanode_ip());
+  }
+
+  // bytes delta_payload = 8;
+  if (!this->_internal_delta_payload().empty()) {
+    total_size += 1 +
+      ::PROTOBUF_NAMESPACE_ID::internal::WireFormatLite::BytesSize(
+        this->_internal_delta_payload());
+  }
+
+  // int32 stripe_id = 1;
+  if (this->_internal_stripe_id() != 0) {
+    total_size += ::_pbi::WireFormatLite::Int32SizePlusOne(this->_internal_stripe_id());
+  }
+
+  // int32 local_block_id = 2;
+  if (this->_internal_local_block_id() != 0) {
+    total_size += ::_pbi::WireFormatLite::Int32SizePlusOne(this->_internal_local_block_id());
+  }
+
+  // int32 local_datanode_port = 5;
+  if (this->_internal_local_datanode_port() != 0) {
+    total_size += ::_pbi::WireFormatLite::Int32SizePlusOne(this->_internal_local_datanode_port());
+  }
+
+  // int32 parity_slice_offset = 6;
+  if (this->_internal_parity_slice_offset() != 0) {
+    total_size += ::_pbi::WireFormatLite::Int32SizePlusOne(this->_internal_parity_slice_offset());
+  }
+
+  // int32 parity_slice_size = 7;
+  if (this->_internal_parity_slice_size() != 0) {
+    total_size += ::_pbi::WireFormatLite::Int32SizePlusOne(this->_internal_parity_slice_size());
+  }
+
+  return MaybeComputeUnknownFieldsSize(total_size, &_impl_._cached_size_);
+}
+
+const ::PROTOBUF_NAMESPACE_ID::Message::ClassData CordLpParityApplyDelta::_class_data_ = {
+    ::PROTOBUF_NAMESPACE_ID::Message::CopyWithSourceCheck,
+    CordLpParityApplyDelta::MergeImpl
+};
+const ::PROTOBUF_NAMESPACE_ID::Message::ClassData*CordLpParityApplyDelta::GetClassData() const { return &_class_data_; }
+
+
+void CordLpParityApplyDelta::MergeImpl(::PROTOBUF_NAMESPACE_ID::Message& to_msg, const ::PROTOBUF_NAMESPACE_ID::Message& from_msg) {
+  auto* const _this = static_cast<CordLpParityApplyDelta*>(&to_msg);
+  auto& from = static_cast<const CordLpParityApplyDelta&>(from_msg);
+  // @@protoc_insertion_point(class_specific_merge_from_start:proxy_proto.CordLpParityApplyDelta)
+  GOOGLE_DCHECK_NE(&from, _this);
+  uint32_t cached_has_bits = 0;
+  (void) cached_has_bits;
+
+  if (!from._internal_local_block_key().empty()) {
+    _this->_internal_set_local_block_key(from._internal_local_block_key());
+  }
+  if (!from._internal_local_datanode_ip().empty()) {
+    _this->_internal_set_local_datanode_ip(from._internal_local_datanode_ip());
+  }
+  if (!from._internal_delta_payload().empty()) {
+    _this->_internal_set_delta_payload(from._internal_delta_payload());
+  }
+  if (from._internal_stripe_id() != 0) {
+    _this->_internal_set_stripe_id(from._internal_stripe_id());
+  }
+  if (from._internal_local_block_id() != 0) {
+    _this->_internal_set_local_block_id(from._internal_local_block_id());
+  }
+  if (from._internal_local_datanode_port() != 0) {
+    _this->_internal_set_local_datanode_port(from._internal_local_datanode_port());
+  }
+  if (from._internal_parity_slice_offset() != 0) {
+    _this->_internal_set_parity_slice_offset(from._internal_parity_slice_offset());
+  }
+  if (from._internal_parity_slice_size() != 0) {
+    _this->_internal_set_parity_slice_size(from._internal_parity_slice_size());
+  }
+  _this->_internal_metadata_.MergeFrom<::PROTOBUF_NAMESPACE_ID::UnknownFieldSet>(from._internal_metadata_);
+}
+
+void CordLpParityApplyDelta::CopyFrom(const CordLpParityApplyDelta& from) {
+// @@protoc_insertion_point(class_specific_copy_from_start:proxy_proto.CordLpParityApplyDelta)
+  if (&from == this) return;
+  Clear();
+  MergeFrom(from);
+}
+
+bool CordLpParityApplyDelta::IsInitialized() const {
+  return true;
+}
+
+void CordLpParityApplyDelta::InternalSwap(CordLpParityApplyDelta* other) {
+  using std::swap;
+  auto* lhs_arena = GetArenaForAllocation();
+  auto* rhs_arena = other->GetArenaForAllocation();
+  _internal_metadata_.InternalSwap(&other->_internal_metadata_);
+  ::PROTOBUF_NAMESPACE_ID::internal::ArenaStringPtr::InternalSwap(
+      &_impl_.local_block_key_, lhs_arena,
+      &other->_impl_.local_block_key_, rhs_arena
+  );
+  ::PROTOBUF_NAMESPACE_ID::internal::ArenaStringPtr::InternalSwap(
+      &_impl_.local_datanode_ip_, lhs_arena,
+      &other->_impl_.local_datanode_ip_, rhs_arena
+  );
+  ::PROTOBUF_NAMESPACE_ID::internal::ArenaStringPtr::InternalSwap(
+      &_impl_.delta_payload_, lhs_arena,
+      &other->_impl_.delta_payload_, rhs_arena
+  );
+  ::PROTOBUF_NAMESPACE_ID::internal::memswap<
+      PROTOBUF_FIELD_OFFSET(CordLpParityApplyDelta, _impl_.parity_slice_size_)
+      + sizeof(CordLpParityApplyDelta::_impl_.parity_slice_size_)
+      - PROTOBUF_FIELD_OFFSET(CordLpParityApplyDelta, _impl_.stripe_id_)>(
+          reinterpret_cast<char*>(&_impl_.stripe_id_),
+          reinterpret_cast<char*>(&other->_impl_.stripe_id_));
+}
+
+::PROTOBUF_NAMESPACE_ID::Metadata CordLpParityApplyDelta::GetMetadata() const {
+  return ::_pbi::AssignDescriptors(
+      &descriptor_table_proxy_2eproto_getter, &descriptor_table_proxy_2eproto_once,
+      file_level_metadata_proxy_2eproto[27]);
+}
+
+// ===================================================================
+
 class SetReply::_Internal {
  public:
 };
@@ -9059,7 +12779,7 @@ void SetReply::InternalSwap(SetReply* other) {
 ::PROTOBUF_NAMESPACE_ID::Metadata SetReply::GetMetadata() const {
   return ::_pbi::AssignDescriptors(
       &descriptor_table_proxy_2eproto_getter, &descriptor_table_proxy_2eproto_once,
-      file_level_metadata_proxy_2eproto[20]);
+      file_level_metadata_proxy_2eproto[28]);
 }
 
 // ===================================================================
@@ -9237,7 +12957,7 @@ void GetReply::InternalSwap(GetReply* other) {
 ::PROTOBUF_NAMESPACE_ID::Metadata GetReply::GetMetadata() const {
   return ::_pbi::AssignDescriptors(
       &descriptor_table_proxy_2eproto_getter, &descriptor_table_proxy_2eproto_once,
-      file_level_metadata_proxy_2eproto[21]);
+      file_level_metadata_proxy_2eproto[29]);
 }
 
 // ===================================================================
@@ -9686,7 +13406,7 @@ void StripeAndBlockIDs::InternalSwap(StripeAndBlockIDs* other) {
 ::PROTOBUF_NAMESPACE_ID::Metadata StripeAndBlockIDs::GetMetadata() const {
   return ::_pbi::AssignDescriptors(
       &descriptor_table_proxy_2eproto_getter, &descriptor_table_proxy_2eproto_once,
-      file_level_metadata_proxy_2eproto[22]);
+      file_level_metadata_proxy_2eproto[30]);
 }
 
 // @@protoc_insertion_point(namespace_scope)
@@ -9771,6 +13491,38 @@ Arena::CreateMaybeMessage< ::proxy_proto::RecoveryReply >(Arena* arena) {
 template<> PROTOBUF_NOINLINE ::proxy_proto::AppendStripeDataPlacement*
 Arena::CreateMaybeMessage< ::proxy_proto::AppendStripeDataPlacement >(Arena* arena) {
   return Arena::CreateMessageInternal< ::proxy_proto::AppendStripeDataPlacement >(arena);
+}
+template<> PROTOBUF_NOINLINE ::proxy_proto::CordDataUpdatePlacement*
+Arena::CreateMaybeMessage< ::proxy_proto::CordDataUpdatePlacement >(Arena* arena) {
+  return Arena::CreateMessageInternal< ::proxy_proto::CordDataUpdatePlacement >(arena);
+}
+template<> PROTOBUF_NOINLINE ::proxy_proto::CordLpDeltaFetch*
+Arena::CreateMaybeMessage< ::proxy_proto::CordLpDeltaFetch >(Arena* arena) {
+  return Arena::CreateMessageInternal< ::proxy_proto::CordLpDeltaFetch >(arena);
+}
+template<> PROTOBUF_NOINLINE ::proxy_proto::CordLpWorkItem*
+Arena::CreateMaybeMessage< ::proxy_proto::CordLpWorkItem >(Arena* arena) {
+  return Arena::CreateMessageInternal< ::proxy_proto::CordLpWorkItem >(arena);
+}
+template<> PROTOBUF_NOINLINE ::proxy_proto::CordLocalParityBundle*
+Arena::CreateMaybeMessage< ::proxy_proto::CordLocalParityBundle >(Arena* arena) {
+  return Arena::CreateMessageInternal< ::proxy_proto::CordLocalParityBundle >(arena);
+}
+template<> PROTOBUF_NOINLINE ::proxy_proto::CordLpHubSessionBegin*
+Arena::CreateMaybeMessage< ::proxy_proto::CordLpHubSessionBegin >(Arena* arena) {
+  return Arena::CreateMessageInternal< ::proxy_proto::CordLpHubSessionBegin >(arena);
+}
+template<> PROTOBUF_NOINLINE ::proxy_proto::CordLpHubPartialPush*
+Arena::CreateMaybeMessage< ::proxy_proto::CordLpHubPartialPush >(Arena* arena) {
+  return Arena::CreateMessageInternal< ::proxy_proto::CordLpHubPartialPush >(arena);
+}
+template<> PROTOBUF_NOINLINE ::proxy_proto::CordLpComputePartialAndPush*
+Arena::CreateMaybeMessage< ::proxy_proto::CordLpComputePartialAndPush >(Arena* arena) {
+  return Arena::CreateMessageInternal< ::proxy_proto::CordLpComputePartialAndPush >(arena);
+}
+template<> PROTOBUF_NOINLINE ::proxy_proto::CordLpParityApplyDelta*
+Arena::CreateMaybeMessage< ::proxy_proto::CordLpParityApplyDelta >(Arena* arena) {
+  return Arena::CreateMessageInternal< ::proxy_proto::CordLpParityApplyDelta >(arena);
 }
 template<> PROTOBUF_NOINLINE ::proxy_proto::SetReply*
 Arena::CreateMaybeMessage< ::proxy_proto::SetReply >(Arena* arena) {
