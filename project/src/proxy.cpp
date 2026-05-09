@@ -4,6 +4,7 @@
 #include "tinyxml2.h"
 #include "toolbox.h"
 #include "lrc.h"
+#include <algorithm>
 #include <thread>
 #include <cassert>
 #include <string>
@@ -12,7 +13,14 @@
 #include "unilrc_encoder.h"
 #include <chrono>
 #include <unordered_map>
+#include <map>
 #include <memory>
+#include <mutex>
+#include <cstring>
+#include <ctime>
+#include <limits>
+#include <iomanip>
+#include <sstream>
 template <typename T>
 inline T ceil(T const &A, T const &B)
 {
@@ -20,12 +28,921 @@ inline T ceil(T const &A, T const &B)
 };
 namespace ECProject
 {
+  static std::string cord_dbg_hex_preview(const void *data, size_t len, size_t max_show = 48)
+  {
+    if (!data || len == 0)
+      return "";
+    const auto *p = static_cast<const unsigned char *>(data);
+    const size_t n = std::min(len, max_show);
+    std::ostringstream oss;
+    oss << std::hex << std::setfill('0');
+    for (size_t i = 0; i < n; ++i)
+      oss << std::setw(2) << static_cast<unsigned>(p[i]);
+    if (len > max_show)
+      oss << "...+" << (len - max_show) << "b";
+    return oss.str();
+  }
+
+  /** 校验增量缓冲区中非零字节的最紧外包 [poff, poff+plen)；全零则 plen=0（可跳过传输/磁盘 XOR）。 */
+  static std::pair<size_t, size_t> cord_parity_delta_nonzero_span(const char *buf, size_t n)
+  {
+    if (buf == nullptr || n == 0)
+      return {0, 0};
+    size_t lo = 0;
+    while (lo < n && static_cast<unsigned char>(buf[lo]) == 0)
+      ++lo;
+    if (lo == n)
+      return {0, 0};
+    size_t hi = n;
+    while (hi > lo && static_cast<unsigned char>(buf[hi - 1]) == 0)
+      --hi;
+    return {lo, hi - lo};
+  }
+
+  static std::mutex g_cord_xfer_mu;
+  static std::map<std::string, std::vector<uint8_t>> g_cord_collector_xor_acc;
+  static std::map<std::string, std::vector<uint8_t>> g_cord_mst_stream;
+  static std::map<std::string, std::vector<uint8_t>> g_cord_collector_block_delta;
+  static std::map<std::string, std::vector<std::vector<uint8_t>>> g_cord_collector_parity_coded;
+  static std::mutex g_cord_plan_reg_mu;
+  static std::map<std::string, std::shared_ptr<const proxy_proto::CordTransferPlan>> g_cord_plans_by_key;
+  static std::mutex g_cord_plan_exec_mu;
+  static std::unordered_map<std::string, std::thread> g_cord_plan_exec_threads;
+
+  static std::string cord_collector_acc_key(const std::string &plan_key, int group_index, int collector_block_id)
+  {
+    return plan_key + ":" + std::to_string(group_index) + ":" + std::to_string(collector_block_id);
+  }
+
+  static std::string cord_collector_block_buf_key(const std::string &plan_key, int group_index, int collector_block_id,
+                                                   int src_data_block_id)
+  {
+    return plan_key + ":" + std::to_string(group_index) + ":" + std::to_string(collector_block_id) + ":db:" +
+           std::to_string(src_data_block_id);
+  }
+
+  static std::string cord_collector_parity_cache_key(const std::string &plan_key, int group_index,
+                                                     int collector_block_id, int parity_ingest_stripe_group)
+  {
+    return plan_key + ":" + std::to_string(group_index) + ":" + std::to_string(collector_block_id) + ":pig:" +
+           std::to_string(parity_ingest_stripe_group);
+  }
+
+  static int cord_plan_data_block_stripe_group(const proxy_proto::CordTransferPlan &plan, int data_block_id)
+  {
+    for (int i = 0; i < plan.cord_block_stripe_groups_size(); ++i)
+    {
+      if (plan.cord_block_stripe_groups(i).block_id() == data_block_id)
+        return plan.cord_block_stripe_groups(i).stripe_group();
+    }
+    return -999999;
+  }
+
+  static std::vector<std::pair<int, int>> cord_plan_sorted_segs_for_block(const proxy_proto::CordTransferPlan &plan,
+                                                                          int bid)
+  {
+    std::vector<std::pair<int, int>> out;
+    for (int i = 0; i < plan.cord_block_delta_segs_size(); ++i)
+    {
+      const auto &s = plan.cord_block_delta_segs(i);
+      if (s.block_id() != bid)
+        continue;
+      if (s.hi_excl() <= s.lo())
+        continue;
+      out.emplace_back(s.lo(), s.hi_excl());
+    }
+    std::sort(out.begin(), out.end());
+    return out;
+  }
+
+  /** strip 轴上的逻辑字节是否在块更新区间内；若在则返回 ingest 缓冲区内 packed 下标，否则 -1。 */
+  static int cord_logical_strip_to_packed_delta_idx(const std::vector<std::pair<int, int>> &segs_sorted,
+                                                    int strip_logical)
+  {
+    int packed = 0;
+    for (const auto &seg : segs_sorted)
+    {
+      if (strip_logical < seg.first)
+        return -1;
+      if (strip_logical < seg.second)
+        return packed + (strip_logical - seg.first);
+      packed += seg.second - seg.first;
+    }
+    return -1;
+  }
+
+  static int cord_plan_parity_group_hull_lo(const proxy_proto::CordTransferPlan &plan,
+                                            int parity_ingest_stripe_group)
+  {
+    int lo = std::numeric_limits<int>::max();
+    for (int i = 0; i < plan.cord_block_delta_segs_size(); ++i)
+    {
+      const auto &s = plan.cord_block_delta_segs(i);
+      if (cord_plan_data_block_stripe_group(plan, s.block_id()) != parity_ingest_stripe_group)
+        continue;
+      lo = std::min(lo, s.lo());
+    }
+    return lo == std::numeric_limits<int>::max() ? 0 : lo;
+  }
+
+  /** 仅针对 parity_merge_data_block_ids 子集取 hull_lo（与 coordinator 合并校验跨度一致）。 */
+  static int cord_plan_merge_subset_hull_lo(const proxy_proto::CordTransferPlan &plan,
+                                            const proxy_proto::CordTransferStep &parity_st)
+  {
+    int lo = std::numeric_limits<int>::max();
+    for (int i = 0; i < parity_st.parity_merge_data_block_ids_size(); ++i)
+    {
+      const int bid = parity_st.parity_merge_data_block_ids(i);
+      const std::vector<std::pair<int, int>> segs = cord_plan_sorted_segs_for_block(plan, bid);
+      for (const auto &pr : segs)
+        lo = std::min(lo, pr.first);
+    }
+    return lo == std::numeric_limits<int>::max() ? 0 : lo;
+  }
+
+  /** 收集器 ingress expect 中源块在 cord_block_delta_segs 上的最小 lo（与 STAR_DATA XOR 下标一致）。 */
+  static int cord_plan_collector_expect_src_hull_lo(const proxy_proto::CordTransferPlan &plan, int group_index,
+                                                     int collector_block_id)
+  {
+    const proxy_proto::CordCollectorIngressExpect *ex = nullptr;
+    for (int i = 0; i < plan.cord_collector_expects_size(); ++i)
+    {
+      if (plan.cord_collector_expects(i).group_index() == group_index &&
+          plan.cord_collector_expects(i).collector_block_id() == collector_block_id)
+      {
+        ex = &plan.cord_collector_expects(i);
+        break;
+      }
+    }
+    if (ex == nullptr)
+      return 0;
+    int lo = std::numeric_limits<int>::max();
+    for (int i = 0; i < ex->src_data_block_ids_size(); ++i)
+    {
+      const std::vector<std::pair<int, int>> segs = cord_plan_sorted_segs_for_block(plan, ex->src_data_block_ids(i));
+      for (const auto &pr : segs)
+        lo = std::min(lo, pr.first);
+    }
+    return lo == std::numeric_limits<int>::max() ? 0 : lo;
+  }
+
+  /**
+   * 本步 parity 链路 payload 中 offset=0 对应的块内逻辑条带起点（与 coordinator merged_delta_hull / XOR acc 对齐）。
+   * - 有 parity_ingest：与 cord_filtered_xor_parity_chunk 的 group_hull_lo 一致。
+   * - 无 parity_ingest（collector_xor_acc）：优先 merge 子集；否则用 collector expect 源块的 hull lo（避免 parity_merge 字段缺失时误用 0）。
+   */
+  static int cord_plan_parity_payload_abs_lo(const proxy_proto::CordTransferPlan &plan,
+                                              const proxy_proto::CordTransferStep &st)
+  {
+    const bool have_segs = plan.cord_block_delta_segs_size() > 0;
+    const bool use_merge = st.parity_merge_data_block_ids_size() > 0;
+    if (st.has_parity_ingest_stripe_group())
+    {
+      if (!have_segs)
+        return 0;
+      return use_merge ? cord_plan_merge_subset_hull_lo(plan, st)
+                       : cord_plan_parity_group_hull_lo(plan, st.parity_ingest_stripe_group());
+    }
+    if (use_merge && have_segs)
+      return cord_plan_merge_subset_hull_lo(plan, st);
+    return cord_plan_collector_expect_src_hull_lo(plan, st.group_index(), st.src_block_id());
+  }
+
+  static bool cord_filtered_xor_parity_chunk(const proxy_proto::CordTransferPlan &plan, int alg2_group,
+                                             int collector_block_id, int parity_ingest_stripe_group,
+                                             const proxy_proto::CordTransferStep &parity_st,
+                                             uint64_t chunk_off, size_t chunk_len, char *buf_out)
+  {
+    std::lock_guard<std::mutex> lk(g_cord_xfer_mu);
+    std::memset(buf_out, 0, chunk_len);
+    const int kblk = plan.k_datablock();
+    const bool have_segs = plan.cord_block_delta_segs_size() > 0;
+    const bool use_merge_subset = parity_st.parity_merge_data_block_ids_size() > 0;
+    const int group_hull_lo =
+        have_segs ? (use_merge_subset ? cord_plan_merge_subset_hull_lo(plan, parity_st)
+                                      : cord_plan_parity_group_hull_lo(plan, parity_ingest_stripe_group))
+                  : 0;
+
+    auto xor_one_block = [&](int bid) {
+      if (!use_merge_subset && cord_plan_data_block_stripe_group(plan, bid) != parity_ingest_stripe_group)
+        return;
+      const std::string bk =
+          cord_collector_block_buf_key(plan.plan_key(), alg2_group, collector_block_id, bid);
+      auto it = g_cord_collector_block_delta.find(bk);
+      if (it == g_cord_collector_block_delta.end())
+        return;
+      const std::vector<uint8_t> &delta = it->second;
+      const std::vector<std::pair<int, int>> segs = cord_plan_sorted_segs_for_block(plan, bid);
+      for (size_t u = 0; u < chunk_len; ++u)
+      {
+        if (!have_segs || segs.empty())
+        {
+          const size_t idx = static_cast<size_t>(chunk_off) + u;
+          if (delta.size() < idx + 1)
+            continue;
+          buf_out[u] = static_cast<char>(static_cast<unsigned char>(buf_out[u]) ^
+                                          static_cast<unsigned char>(delta[idx]));
+          continue;
+        }
+        const int strip_logical =
+            group_hull_lo + static_cast<int>(static_cast<int64_t>(chunk_off) + static_cast<int64_t>(u));
+        const int pidx = cord_logical_strip_to_packed_delta_idx(segs, strip_logical);
+        if (pidx < 0 || static_cast<size_t>(pidx) >= delta.size())
+          continue;
+        buf_out[u] = static_cast<char>(static_cast<unsigned char>(buf_out[u]) ^
+                                        static_cast<unsigned char>(delta[static_cast<size_t>(pidx)]));
+      }
+    };
+
+    if (use_merge_subset)
+    {
+      for (int i = 0; i < parity_st.parity_merge_data_block_ids_size(); ++i)
+        xor_one_block(parity_st.parity_merge_data_block_ids(i));
+    }
+    else
+    {
+      for (int bid = 0; bid < kblk; ++bid)
+        xor_one_block(bid);
+    }
+    return true;
+  }
+
+  static std::shared_ptr<const proxy_proto::CordTransferPlan> cord_lookup_registered_plan(const std::string &pk)
+  {
+    std::lock_guard<std::mutex> lk(g_cord_plan_reg_mu);
+    auto it = g_cord_plans_by_key.find(pk);
+    if (it == g_cord_plans_by_key.end())
+      return nullptr;
+    return it->second;
+  }
+
+  static bool cord_uses_matrix_encode(const proxy_proto::CordTransferPlan &plan)
+  {
+    if (!plan.has_cord_encode_meta() || plan.cord_encode_meta().parity_slice_size() <= 0)
+      return false;
+    const int et = plan.cord_encode_meta().encode_type();
+    return et == static_cast<int>(Azure_LRC) || et == static_cast<int>(Optimal_Cauchy_LRC);
+  }
+
+  /**
+   * plan 线程结束时清理 MST、收集器 XOR、矩阵路径缓冲。
+   * 注意：不得在此处 erase g_cord_plans_by_key。收集器上的本地步骤往往先跑完，若删掉注册表，
+   * 其它集群发来的 cordPlanCollectorIngestDataDelta 仍会到达并依赖 cord_lookup_registered_plan；
+   * 注册项保留至本进程内下一次 scheduleCordTransferPlan 覆盖同 plan_key（一般为新传输）。
+   */
+  static void cord_xfer_cleanup_xfer_plan(const std::string &plan_key)
+  {
+    {
+      std::lock_guard<std::mutex> lk(g_cord_xfer_mu);
+      g_cord_mst_stream.erase(plan_key);
+      for (auto it = g_cord_collector_xor_acc.begin(); it != g_cord_collector_xor_acc.end();)
+      {
+        if (it->first.size() >= plan_key.size() && it->first.compare(0, plan_key.size(), plan_key) == 0)
+          it = g_cord_collector_xor_acc.erase(it);
+        else
+          ++it;
+      }
+      for (auto it = g_cord_collector_block_delta.begin(); it != g_cord_collector_block_delta.end();)
+      {
+        if (it->first.size() >= plan_key.size() && it->first.compare(0, plan_key.size(), plan_key) == 0)
+          it = g_cord_collector_block_delta.erase(it);
+        else
+          ++it;
+      }
+      for (auto it = g_cord_collector_parity_coded.begin(); it != g_cord_collector_parity_coded.end();)
+      {
+        if (it->first.size() >= plan_key.size() && it->first.compare(0, plan_key.size(), plan_key) == 0)
+          it = g_cord_collector_parity_coded.erase(it);
+        else
+          ++it;
+      }
+    }
+  }
+
   namespace
   {
     inline bool is_azure_like_code(const std::string &code_type)
     {
       return code_type == "AzureLRC" || code_type == "RandomLRC";
     }
+  }
+
+  static std::string cord_plan_wall_ts_ms()
+  {
+    using clock = std::chrono::system_clock;
+    const auto now = clock::now();
+    const auto frac_ms =
+        std::chrono::duration_cast<std::chrono::milliseconds>(now.time_since_epoch()) % 1000;
+    std::time_t t = clock::to_time_t(now);
+    std::tm local_tm{};
+    localtime_r(&t, &local_tm);
+    char buf[40];
+    strftime(buf, sizeof(buf), "%Y-%m-%d %H:%M:%S", &local_tm);
+    std::ostringstream oss;
+    oss << buf << '.' << std::setfill('0') << std::setw(3) << frac_ms.count();
+    return oss.str();
+  }
+
+  static const char *cord_plan_delta_kind_name(proxy_proto::CordDeltaPayloadKind k)
+  {
+    switch (k)
+    {
+    case proxy_proto::CORD_DELTA_DATA:
+      return "DATA_DELTA";
+    case proxy_proto::CORD_DELTA_PARITY:
+      return "PARITY_DELTA";
+    default:
+      return "UNKNOWN_DELTA";
+    }
+  }
+
+  static const char *cord_transfer_link_kind_name(proxy_proto::CordTransferLinkKind k)
+  {
+    switch (k)
+    {
+    case proxy_proto::CORD_TRANSFER_STAR_DATA_TO_CENTER:
+      return "STAR_DATA_TO_CENTER";
+    case proxy_proto::CORD_TRANSFER_STAR_CENTER_TO_GLOBAL:
+      return "STAR_CENTER_TO_GLOBAL";
+    case proxy_proto::CORD_TRANSFER_STAR_CENTER_TO_LOCAL:
+      return "STAR_CENTER_TO_LOCAL";
+    case proxy_proto::CORD_TRANSFER_MST_FORWARD:
+      return "MST_FORWARD";
+    default:
+      return "UNKNOWN";
+    }
+  }
+
+  static bool cord_lookup_cluster_endpoint(const proxy_proto::CordTransferPlan &plan, int cluster_id,
+                                           std::string *out_ip, int *out_port)
+  {
+    for (int i = 0; i < plan.cluster_endpoints_size(); ++i)
+    {
+      if (plan.cluster_endpoints(i).cluster_id() == cluster_id)
+      {
+        *out_ip = plan.cluster_endpoints(i).proxy_ip();
+        *out_port = plan.cluster_endpoints(i).proxy_port();
+        return true;
+      }
+    }
+    return false;
+  }
+
+  static bool cord_lookup_block_placement(const proxy_proto::CordTransferPlan &plan, int block_id,
+                                          std::string *bk, std::string *dip, int *dport)
+  {
+    for (int i = 0; i < plan.block_placements_size(); ++i)
+    {
+      if (plan.block_placements(i).block_id() == block_id)
+      {
+        *bk = plan.block_placements(i).block_key();
+        *dip = plan.block_placements(i).datanode_ip();
+        *dport = plan.block_placements(i).datanode_port();
+        return true;
+      }
+    }
+    return false;
+  }
+
+  static bool cord_lookup_delta_blob(const proxy_proto::CordTransferPlan &plan, int cluster_id,
+                                     std::string *blob_key, std::string *dip, int *dport)
+  {
+    for (int i = 0; i < plan.delta_blob_refs_size(); ++i)
+    {
+      if (plan.delta_blob_refs(i).cluster_id() == cluster_id)
+      {
+        *blob_key = plan.delta_blob_refs(i).delta_blob_key();
+        *dip = plan.delta_blob_refs(i).delta_datanode_ip();
+        *dport = plan.delta_blob_refs(i).delta_datanode_port();
+        return true;
+      }
+    }
+    return false;
+  }
+
+  static bool cord_lookup_cluster_delta_layout(const proxy_proto::CordTransferPlan &plan, int cluster_id,
+                                                int data_block_id, uint64_t *base_off, uint64_t *block_delta_len)
+  {
+    for (int i = 0; i < plan.cluster_delta_layouts_size(); ++i)
+    {
+      const auto &lay = plan.cluster_delta_layouts(i);
+      if (lay.cluster_id() != cluster_id)
+        continue;
+      for (int j = 0; j < lay.data_block_ids_size(); ++j)
+      {
+        if (lay.data_block_ids(j) == data_block_id)
+        {
+          *base_off = lay.delta_base_offset(j);
+          *block_delta_len = lay.delta_total_length(j);
+          return true;
+        }
+      }
+    }
+    return false;
+  }
+
+  static uint64_t cord_xor_hint_for_group(const proxy_proto::CordTransferPlan &plan, int group_index)
+  {
+    for (int i = 0; i < plan.group_xor_hints_size(); ++i)
+    {
+      if (plan.group_xor_hints(i).group_index() == group_index)
+        return plan.group_xor_hints(i).xor_accum_byte_length();
+    }
+    return 0;
+  }
+
+  static bool cord_collector_ingress_ready_locked(const proxy_proto::CordTransferPlan &plan, int group,
+                                                  int collector_block_id, int parity_ingest_stripe_group)
+  {
+    const proxy_proto::CordCollectorIngressExpect *ex = nullptr;
+    for (int i = 0; i < plan.cord_collector_expects_size(); ++i)
+    {
+      if (plan.cord_collector_expects(i).group_index() == group &&
+          plan.cord_collector_expects(i).collector_block_id() == collector_block_id)
+      {
+        ex = &plan.cord_collector_expects(i);
+        break;
+      }
+    }
+    if (ex == nullptr)
+      return false;
+    bool any_required = false;
+    for (int i = 0; i < ex->src_data_block_ids_size(); ++i)
+    {
+      const int sid = ex->src_data_block_ids(i);
+      if (parity_ingest_stripe_group >= 0 &&
+          cord_plan_data_block_stripe_group(plan, sid) != parity_ingest_stripe_group)
+        continue;
+      any_required = true;
+      const std::string bk = cord_collector_block_buf_key(plan.plan_key(), group, collector_block_id, sid);
+      auto it = g_cord_collector_block_delta.find(bk);
+      if (it == g_cord_collector_block_delta.end() ||
+          it->second.size() < static_cast<size_t>(ex->src_delta_total_bytes(i)))
+        return false;
+    }
+    if (parity_ingest_stripe_group >= 0 && !any_required)
+      return false;
+    return true;
+  }
+
+  static bool cord_matrix_encode_strips(int k, int g_m, int l, ECProject::EncodeType et, int strip_size,
+                                        const std::vector<std::vector<char>> &data_strips,
+                                        std::vector<std::vector<uint8_t>> *coding_out)
+  {
+    if (static_cast<int>(data_strips.size()) != k)
+      return false;
+    std::vector<char *> dptrs(static_cast<size_t>(k));
+    std::vector<std::vector<char>> coding(static_cast<size_t>(g_m + l), std::vector<char>(strip_size));
+    std::vector<char *> cptrs(static_cast<size_t>(g_m + l));
+    for (int i = 0; i < k; ++i)
+      dptrs[static_cast<size_t>(i)] = const_cast<char *>(data_strips[static_cast<size_t>(i)].data());
+    for (int j = 0; j < g_m + l; ++j)
+      cptrs[static_cast<size_t>(j)] = coding[static_cast<size_t>(j)].data();
+    if (!encode(k, g_m, l, dptrs.data(), cptrs.data(), strip_size, et))
+      return false;
+    coding_out->resize(static_cast<size_t>(g_m + l));
+    for (int j = 0; j < g_m + l; ++j)
+      (*coding_out)[static_cast<size_t>(j)].assign(coding[static_cast<size_t>(j)].begin(),
+                                                    coding[static_cast<size_t>(j)].end());
+    return true;
+  }
+
+  /** 等待收集器上 plan 期望的数据增量（可按 parity_ingest_stripe_group 过滤）到齐。 */
+  static bool cord_spin_until_collector_ingress_ready(const proxy_proto::CordTransferPlan &plan, int group,
+                                                      int collector_block_id, int parity_ingest_stripe_group)
+  {
+    int spins = 0;
+    while (true)
+    {
+      {
+        std::lock_guard<std::mutex> lk(g_cord_xfer_mu);
+        if (cord_collector_ingress_ready_locked(plan, group, collector_block_id, parity_ingest_stripe_group))
+          return true;
+      }
+      std::this_thread::sleep_for(std::chrono::milliseconds(1));
+      if (++spins > 120000)
+      {
+        std::cout << "[CoRD-PLAN] collector ingress timeout group=" << group << " col=" << collector_block_id
+                  << std::endl;
+        return false;
+      }
+    }
+  }
+
+  static bool cord_ensure_collector_parity_coded(const proxy_proto::CordTransferPlan &plan, int group,
+                                               int collector_block_id, int parity_ingest_stripe_group)
+  {
+    const std::string ck =
+        cord_collector_parity_cache_key(plan.plan_key(), group, collector_block_id, parity_ingest_stripe_group);
+    {
+      std::lock_guard<std::mutex> lk(g_cord_xfer_mu);
+      if (g_cord_collector_parity_coded.count(ck))
+        return true;
+    }
+    if (!cord_spin_until_collector_ingress_ready(plan, group, collector_block_id, parity_ingest_stripe_group))
+      return false;
+    std::lock_guard<std::mutex> lk(g_cord_xfer_mu);
+    if (g_cord_collector_parity_coded.count(ck))
+      return true;
+    const auto &meta = plan.cord_encode_meta();
+    const int k = meta.k();
+    const int ps = meta.parity_slice_size();
+    const int po = meta.parity_slice_offset();
+    std::vector<std::vector<char>> strips(static_cast<size_t>(k), std::vector<char>(static_cast<size_t>(ps), 0));
+    for (int didx = 0; didx < plan.cord_data_strip_descs_size(); ++didx)
+    {
+      const auto &desc = plan.cord_data_strip_descs(didx);
+      const int bid = desc.block_id();
+      if (bid < 0 || bid >= k)
+        continue;
+      if (parity_ingest_stripe_group >= 0 &&
+          cord_plan_data_block_stripe_group(plan, bid) != parity_ingest_stripe_group)
+        continue;
+      const std::string bk = cord_collector_block_buf_key(plan.plan_key(), group, collector_block_id, bid);
+      auto it = g_cord_collector_block_delta.find(bk);
+      if (it == g_cord_collector_block_delta.end())
+        continue;
+      const std::vector<uint8_t> &delta = it->second;
+      const int so = desc.slice_offset();
+      const int slen = desc.slice_len();
+      const int lo = std::max(so, po);
+      const int hi = std::min(so + slen, po + ps);
+      for (int x = lo; x < hi; ++x)
+      {
+        const size_t di_off = static_cast<size_t>(x - so);
+        if (di_off >= delta.size())
+          continue;
+        strips[static_cast<size_t>(bid)][static_cast<size_t>(x - po)] = static_cast<char>(delta[di_off]);
+      }
+    }
+    std::vector<std::vector<uint8_t>> coded;
+    const ECProject::EncodeType et = static_cast<ECProject::EncodeType>(meta.encode_type());
+    if (!cord_matrix_encode_strips(k, meta.g_m(), meta.l(), et, ps, strips, &coded))
+    {
+      std::cout << "[CoRD-PLAN] matrix encode failed" << std::endl;
+      return false;
+    }
+    g_cord_collector_parity_coded[ck] = std::move(coded);
+    return true;
+  }
+
+  /**
+   * 按 plan step 顺序执行；coordinator 按算法二的 scheduled_slot 重排步骤，星型与 MST 可穿插。
+   * 收集器扇出须晚于同组 STAR 数据到达由算法二时隙依赖保证。
+   * N>1：STAR 数据增量 -> cordPlanCollectorIngestDataDelta；收集器再发 cordPlanApplyParityXorDelta。
+   * N=1 MST：全程数据增量 cordPlanMstDataDeltaChunk（校验侧矩阵编码或 XOR）。
+   */
+  static void cord_transfer_plan_execute_async(const proxy_proto::CordTransferPlan &plan, int self_cluster_id,
+                                               ProxyImpl *proxy, const std::string &proxy_tag)
+  {
+      const auto plan_log = [&](const std::string &msg) {
+        std::cout << "[CoRD-PLAN][" << cord_plan_wall_ts_ms() << "][" << proxy_tag << "] " << msg << std::endl;
+      };
+
+      plan_log(std::string("plan_start stripe_id=") + std::to_string(plan.stripe_id()) + " plan_key=" + plan.plan_key() +
+               " total_rounds=" + std::to_string(plan.total_rounds()) +
+               " steps=" + std::to_string(plan.steps_size()) + " self_cluster=" + std::to_string(self_cluster_id));
+      if (plan.steps_size() <= 0)
+      {
+        return;
+      }
+      const auto wall_t0 = std::chrono::steady_clock::now();
+
+      const int k = plan.k_datablock();
+      for (int si = 0; si < plan.steps_size(); ++si)
+      {
+        const proxy_proto::CordTransferStep &st = plan.steps(si);
+        if (st.src_proxy_cluster_id() != self_cluster_id)
+          continue;
+
+        std::string dst_ip;
+        int dst_port = 0;
+        if (!cord_lookup_cluster_endpoint(plan, st.dst_proxy_cluster_id(), &dst_ip, &dst_port))
+        {
+          plan_log("abort_step missing_cluster_endpoint dst_cluster_id=" +
+                   std::to_string(st.dst_proxy_cluster_id()) + " step_index=" + std::to_string(st.step_index()));
+          continue;
+        }
+        const std::string dst_channel = dst_ip + ":" + std::to_string(dst_port);
+        std::shared_ptr<grpc::Channel> channel = grpc::CreateChannel(dst_channel, grpc::InsecureChannelCredentials());
+        std::unique_ptr<proxy_proto::proxyService::Stub> stub = proxy_proto::proxyService::NewStub(channel);
+
+        const size_t chunk_len = static_cast<size_t>(st.chunk_byte_length());
+        if (chunk_len == 0u)
+        {
+          plan_log(std::string("skip_step zero_chunk_in_plan step_index=") + std::to_string(st.step_index()) +
+                   " scheduled_slot=" + std::to_string(st.scheduled_slot()) + " link=" +
+                   cord_transfer_link_kind_name(st.link_kind()) + " payload=" +
+                   cord_plan_delta_kind_name(st.delta_payload_kind()));
+          continue;
+        }
+
+        // ---------- N>1：数据增量 -> 收集器 ----------
+        if (st.link_kind() == proxy_proto::CORD_TRANSFER_STAR_DATA_TO_CENTER &&
+            st.delta_payload_kind() == proxy_proto::CORD_DELTA_DATA)
+        {
+          std::string blob_key, dn_ip;
+          int dn_port = 0;
+          if (!cord_lookup_delta_blob(plan, self_cluster_id, &blob_key, &dn_ip, &dn_port))
+          {
+            plan_log("abort_step STAR_DATA_TO_CENTER no_delta_blob_ref cluster=" + std::to_string(self_cluster_id) +
+                     " step_index=" + std::to_string(st.step_index()));
+            continue;
+          }
+          uint64_t base_off = 0, blk_tot = 0;
+          (void)blk_tot;
+          if (!cord_lookup_cluster_delta_layout(plan, self_cluster_id, st.src_block_id(), &base_off, &blk_tot))
+          {
+            plan_log("abort_step STAR_DATA_TO_CENTER no_cluster_delta_layout cluster=" +
+                     std::to_string(self_cluster_id) + " data_blk=" + std::to_string(st.src_block_id()) +
+                     " step_index=" + std::to_string(st.step_index()));
+            continue;
+          }
+          const uint64_t abs_off = base_off + st.chunk_byte_offset();
+          std::vector<char> buf(chunk_len);
+          if (!proxy->CordRangeReadFromDatanode(blob_key, 0, static_cast<int>(abs_off), buf.data(), chunk_len,
+                                                dn_ip.c_str(), dn_port))
+          {
+            plan_log("abort_step STAR_DATA_TO_CENTER CordRangeRead_delta_blob_failed step_index=" +
+                     std::to_string(st.step_index()) + " abs_off=" + std::to_string(abs_off) +
+                     " bytes=" + std::to_string(chunk_len));
+            continue;
+          }
+          proxy_proto::CordPlanCollectorIngestReq req;
+          req.set_plan_key(plan.plan_key());
+          req.set_group_index(st.group_index());
+          req.set_collector_block_id(st.dst_block_id());
+          req.set_chunk_byte_offset(st.chunk_byte_offset());
+          req.set_chunk_payload(buf.data(), chunk_len);
+          req.set_xor_accum_byte_length(cord_xor_hint_for_group(plan, st.group_index()));
+          req.set_src_data_block_id(st.src_block_id());
+          proxy_proto::SetReply rep;
+          grpc::ClientContext cctx;
+          grpc::Status s = stub->cordPlanCollectorIngestDataDelta(&cctx, req, &rep);
+          const bool ok = s.ok() && rep.ifcommit();
+          {
+            std::ostringstream ob;
+            ob << (ok ? "grpc_ok" : "grpc_FAIL") << " cordPlanCollectorIngestDataDelta step_index=" << st.step_index()
+               << " scheduled_slot=" << st.scheduled_slot() << " link=" << cord_transfer_link_kind_name(st.link_kind())
+               << " payload=" << cord_plan_delta_kind_name(st.delta_payload_kind()) << " group_index="
+               << st.group_index() << " data_blk=" << st.src_block_id()
+               << "->collector_blk=" << st.dst_block_id() << " clusters " << st.src_proxy_cluster_id() << "->"
+               << st.dst_proxy_cluster_id() << " chunk_byte_range=[" << st.chunk_byte_offset() << ","
+               << (st.chunk_byte_offset() + static_cast<int32_t>(chunk_len)) << ") wire_bytes=" << chunk_len
+               << " grpc_dst=" << dst_channel << " preview=" << cord_dbg_hex_preview(buf.data(), chunk_len, 16);
+            if (!ok)
+              ob << " grpc_err=" << s.error_message();
+            plan_log(ob.str());
+          }
+          continue;
+        }
+
+        // ---------- N>1：收集器扇出校验增量（矩阵编码 / 退化为 XOR 缓冲） ----------
+        if (st.delta_payload_kind() == proxy_proto::CORD_DELTA_PARITY &&
+            (st.link_kind() == proxy_proto::CORD_TRANSFER_STAR_CENTER_TO_GLOBAL ||
+             st.link_kind() == proxy_proto::CORD_TRANSFER_STAR_CENTER_TO_LOCAL))
+        {
+          std::vector<char> buf(chunk_len);
+          bool filled = false;
+          std::string parity_compute_src;
+          const int parity_payload_abs_lo = cord_plan_parity_payload_abs_lo(plan, st);
+          int32_t non_matrix_slice_base = static_cast<int32_t>(
+              static_cast<int64_t>(parity_payload_abs_lo) + static_cast<int64_t>(st.chunk_byte_offset()));
+          const int parity_ingest =
+              st.has_parity_ingest_stripe_group() ? st.parity_ingest_stripe_group() : -1;
+          if (cord_uses_matrix_encode(plan))
+          {
+            if (!cord_ensure_collector_parity_coded(plan, st.group_index(), st.src_block_id(), parity_ingest))
+            {
+              plan_log("abort_step parity cord_ensure_collector_parity_coded_failed step_index=" +
+                       std::to_string(st.step_index()) + " collector_blk=" + std::to_string(st.src_block_id()));
+              continue;
+            }
+            const int row = st.dst_block_id() - plan.k_datablock();
+            const auto &meta = plan.cord_encode_meta();
+            if (row < 0 || row >= meta.g_m() + meta.l())
+            {
+              plan_log("abort_step parity bad_row dst_blk=" + std::to_string(st.dst_block_id()) + " row=" +
+                       std::to_string(row) + " step_index=" + std::to_string(st.step_index()));
+              continue;
+            }
+            const std::string pck =
+                cord_collector_parity_cache_key(plan.plan_key(), st.group_index(), st.src_block_id(), parity_ingest);
+            std::lock_guard<std::mutex> lk(g_cord_xfer_mu);
+            auto pit = g_cord_collector_parity_coded.find(pck);
+            if (pit == g_cord_collector_parity_coded.end() ||
+                static_cast<int>(pit->second.size()) <= row ||
+                pit->second[static_cast<size_t>(row)].size() <
+                    static_cast<size_t>(st.chunk_byte_offset()) + chunk_len)
+            {
+              plan_log("abort_step parity coded_cache_short row=" + std::to_string(row) + " step_index=" +
+                       std::to_string(st.step_index()));
+              continue;
+            }
+            std::memcpy(buf.data(), pit->second[static_cast<size_t>(row)].data() + st.chunk_byte_offset(), chunk_len);
+            filled = true;
+            parity_compute_src = "matrix_encode_row";
+          }
+          if (!filled)
+          {
+            if (st.has_parity_ingest_stripe_group())
+            {
+              if (!cord_uses_matrix_encode(plan))
+              {
+                if (!cord_spin_until_collector_ingress_ready(plan, st.group_index(), st.src_block_id(),
+                                                             st.parity_ingest_stripe_group()))
+                {
+                  plan_log("abort_step parity filtered_xor ingress_timeout collector_blk=" +
+                           std::to_string(st.src_block_id()) + " step_index=" + std::to_string(st.step_index()));
+                  continue;
+                }
+              }
+              cord_filtered_xor_parity_chunk(plan, st.group_index(), st.src_block_id(),
+                                             st.parity_ingest_stripe_group(), st, st.chunk_byte_offset(), chunk_len,
+                                             buf.data());
+              filled = true;
+              parity_compute_src = "filtered_xor";
+            }
+            else
+            {
+              if (!cord_spin_until_collector_ingress_ready(plan, st.group_index(), st.src_block_id(), -1))
+              {
+                plan_log("abort_step parity collector_xor_acc ingress_timeout collector_blk=" +
+                         std::to_string(st.src_block_id()) + " step_index=" + std::to_string(st.step_index()));
+                continue;
+              }
+              const uint64_t acc_off =
+                  static_cast<uint64_t>(parity_payload_abs_lo) + static_cast<uint64_t>(st.chunk_byte_offset());
+              std::lock_guard<std::mutex> lk(g_cord_xfer_mu);
+              const std::string acc_key =
+                  cord_collector_acc_key(plan.plan_key(), st.group_index(), st.src_block_id());
+              auto it = g_cord_collector_xor_acc.find(acc_key);
+              if (it == g_cord_collector_xor_acc.end() || it->second.size() < static_cast<size_t>(acc_off) + chunk_len)
+              {
+                plan_log("abort_step parity collector_xor_acc_missing key=" + acc_key + " step_index=" +
+                         std::to_string(st.step_index()));
+                continue;
+              }
+              std::memcpy(buf.data(), it->second.data() + static_cast<size_t>(acc_off), chunk_len);
+              parity_compute_src = "collector_xor_acc";
+            }
+          }
+          std::string pbk, pip;
+          int pp = 0;
+          if (!cord_lookup_block_placement(plan, st.dst_block_id(), &pbk, &pip, &pp))
+          {
+            plan_log("abort_step parity block_placement_missing dst_blk=" + std::to_string(st.dst_block_id()) +
+                     " step_index=" + std::to_string(st.step_index()));
+            continue;
+          }
+          const int32_t slice_base =
+              cord_uses_matrix_encode(plan)
+                  ? static_cast<int32_t>(plan.cord_encode_meta().parity_slice_offset() + st.chunk_byte_offset())
+                  : non_matrix_slice_base;
+          const auto nz = cord_parity_delta_nonzero_span(buf.data(), chunk_len);
+          if (nz.second == 0)
+          {
+            std::ostringstream ob;
+            ob << "noop_skip_wire cordPlanApplyParityXorDelta_not_called (computed parity slice all-zero in plan chunk)"
+               << " step_index=" << st.step_index() << " scheduled_slot=" << st.scheduled_slot() << " link="
+               << cord_transfer_link_kind_name(st.link_kind()) << " payload="
+               << cord_plan_delta_kind_name(st.delta_payload_kind()) << " collector_blk=" << st.src_block_id()
+               << " dst_parity_blk=" << st.dst_block_id() << " group_index=" << st.group_index()
+               << " plan_chunk_byte_range=[" << st.chunk_byte_offset() << ","
+               << (st.chunk_byte_offset() + static_cast<int32_t>(chunk_len)) << ") parity_compute_src="
+               << parity_compute_src << " grpc_dst_would_be=" << dst_channel;
+            plan_log(ob.str());
+            continue;
+          }
+          const int32_t slice_off = slice_base + static_cast<int32_t>(nz.first);
+          const int32_t send_len = static_cast<int32_t>(nz.second);
+          proxy_proto::CordPlanApplyParityXorReq req;
+          req.set_plan_key(plan.plan_key());
+          req.set_dst_block_id(st.dst_block_id());
+          req.set_block_key(pbk);
+          req.set_datanode_ip(pip);
+          req.set_datanode_port(pp);
+          req.set_parity_slice_offset(slice_off);
+          req.set_parity_slice_length(send_len);
+          req.set_parity_delta_payload(buf.data() + nz.first, static_cast<size_t>(send_len));
+          proxy_proto::SetReply rep;
+          grpc::ClientContext cctx;
+          grpc::Status s = stub->cordPlanApplyParityXorDelta(&cctx, req, &rep);
+          const bool ok = s.ok() && rep.ifcommit();
+          {
+            std::ostringstream ob;
+            ob << (ok ? "grpc_ok" : "grpc_FAIL") << " cordPlanApplyParityXorDelta step_index=" << st.step_index()
+               << " scheduled_slot=" << st.scheduled_slot() << " link="
+               << cord_transfer_link_kind_name(st.link_kind()) << " payload="
+               << cord_plan_delta_kind_name(st.delta_payload_kind()) << " collector_blk=" << st.src_block_id()
+               << " dst_parity_blk=" << st.dst_block_id() << " group_index=" << st.group_index()
+               << " plan_chunk_byte_range=[" << st.chunk_byte_offset() << ","
+               << (st.chunk_byte_offset() + static_cast<int32_t>(chunk_len))
+               << ") sparse_trim: kept_plan_subrange=[" << nz.first << "," << (nz.first + nz.second)
+               << ") wire_parity_slice_abs=[" << slice_off << "," << (slice_off + send_len) << ") wire_bytes="
+               << send_len << " parity_compute_src=" << parity_compute_src << " grpc_dst=" << dst_channel
+               << " preview=" << cord_dbg_hex_preview(buf.data() + nz.first, static_cast<size_t>(send_len), 16);
+            if (!ok)
+              ob << " grpc_err=" << s.error_message();
+            plan_log(ob.str());
+          }
+          continue;
+        }
+
+        // ---------- N=1：MST 上全程传输数据增量 ----------
+        if (st.link_kind() == proxy_proto::CORD_TRANSFER_MST_FORWARD)
+        {
+          std::vector<char> buf(chunk_len);
+          std::string mst_buf_src;
+          if (st.src_block_id() < k)
+          {
+            std::string blob_key, dn_ip;
+            int dn_port = 0;
+            if (!cord_lookup_delta_blob(plan, self_cluster_id, &blob_key, &dn_ip, &dn_port))
+            {
+              plan_log("abort_step MST no_delta_blob_ref cluster=" + std::to_string(self_cluster_id) +
+                       " step_index=" + std::to_string(st.step_index()));
+              continue;
+            }
+            uint64_t base_off = 0, blk_tot = 0;
+            if (!cord_lookup_cluster_delta_layout(plan, self_cluster_id, st.src_block_id(), &base_off, &blk_tot))
+            {
+              plan_log("abort_step MST no_delta_layout step_index=" + std::to_string(st.step_index()));
+              continue;
+            }
+            const uint64_t abs_off = base_off + st.chunk_byte_offset();
+            if (!proxy->CordRangeReadFromDatanode(blob_key, 0, static_cast<int>(abs_off), buf.data(), chunk_len,
+                                                  dn_ip.c_str(), dn_port))
+            {
+              plan_log("abort_step MST CordRangeRead_failed step_index=" + std::to_string(st.step_index()));
+              continue;
+            }
+            mst_buf_src = "datanode_delta_blob";
+          }
+          else
+          {
+            std::lock_guard<std::mutex> lk(g_cord_xfer_mu);
+            auto it = g_cord_mst_stream.find(plan.plan_key());
+            if (it == g_cord_mst_stream.end() ||
+                it->second.size() < static_cast<size_t>(st.chunk_byte_offset()) + chunk_len)
+            {
+              plan_log("abort_step MST relay_buffer_missing step_index=" + std::to_string(st.step_index()));
+              continue;
+            }
+            std::memcpy(buf.data(), it->second.data() + static_cast<size_t>(st.chunk_byte_offset()), chunk_len);
+            mst_buf_src = "mst_relay_buffer";
+          }
+          std::string pbk, pip;
+          int pp = 0;
+          if (!cord_lookup_block_placement(plan, st.dst_block_id(), &pbk, &pip, &pp))
+          {
+            plan_log("abort_step MST block_placement_missing dst_blk=" + std::to_string(st.dst_block_id()));
+            continue;
+          }
+          proxy_proto::CordPlanMstDataDeltaReq req;
+          req.set_plan_key(plan.plan_key());
+          req.set_dst_proxy_cluster_id(st.dst_proxy_cluster_id());
+          req.set_dst_block_id(st.dst_block_id());
+          req.set_k_datablock(k);
+          req.set_chunk_byte_offset(st.chunk_byte_offset());
+          req.set_chunk_payload(buf.data(), chunk_len);
+          req.set_total_expected_bytes(st.payload_bytes());
+          req.set_src_data_block_id(st.has_mst_origin_data_block_id() ? st.mst_origin_data_block_id()
+                                                                      : st.src_block_id());
+          req.set_parity_block_key(pbk);
+          req.set_parity_datanode_ip(pip);
+          req.set_parity_datanode_port(pp);
+          proxy_proto::SetReply rep;
+          grpc::ClientContext cctx;
+          grpc::Status s = stub->cordPlanMstDataDeltaChunk(&cctx, req, &rep);
+          const bool ok = s.ok() && rep.ifcommit();
+          {
+            std::ostringstream ob;
+            ob << (ok ? "grpc_ok" : "grpc_FAIL") << " cordPlanMstDataDeltaChunk step_index=" << st.step_index()
+               << " scheduled_slot=" << st.scheduled_slot() << " link="
+               << cord_transfer_link_kind_name(st.link_kind()) << " payload="
+               << cord_plan_delta_kind_name(st.delta_payload_kind()) << " src_blk=" << st.src_block_id()
+               << " dst_blk=" << st.dst_block_id() << " clusters " << st.src_proxy_cluster_id() << "->"
+               << st.dst_proxy_cluster_id() << " chunk_byte_range=[" << st.chunk_byte_offset() << ","
+               << (st.chunk_byte_offset() + static_cast<int32_t>(chunk_len)) << ") wire_bytes=" << chunk_len
+               << " mst_buf_src=" << mst_buf_src << " grpc_dst=" << dst_channel
+               << " preview=" << cord_dbg_hex_preview(buf.data(), chunk_len, 16);
+            if (!ok)
+              ob << " grpc_err=" << s.error_message();
+            plan_log(ob.str());
+          }
+          continue;
+        }
+
+        plan_log(std::string("skip_unhandled_step step_index=") + std::to_string(st.step_index()) + " link=" +
+                 cord_transfer_link_kind_name(st.link_kind()) + " payload=" +
+                 cord_plan_delta_kind_name(st.delta_payload_kind()));
+      }
+
+      cord_xfer_cleanup_xfer_plan(plan.plan_key());
+      const auto wall_t1 = std::chrono::steady_clock::now();
+      const double wall_sec = std::chrono::duration<double>(wall_t1 - wall_t0).count();
+      plan_log(std::string("plan_done plan_key=") + plan.plan_key() + " wall_time_sec=" + std::to_string(wall_sec));
   }
 
   bool ProxyImpl::init_coordinator()
@@ -686,6 +1603,18 @@ namespace ECProject
         asio::error_code error;
         std::vector<char> buf(static_cast<size_t>(payload_size));
         asio::read(socket_data, asio::buffer(buf.data(), static_cast<size_t>(payload_size)), error);
+        std::string peer_ep = "unknown";
+        try
+        {
+          auto re = socket_data.remote_endpoint();
+          peer_ep = re.address().to_string() + ":" + std::to_string(re.port());
+        }
+        catch (...)
+        {
+        }
+        std::cout << "[CoRD-DATA][" << proxy_ip_port << "] recv TCP from client peer=" << peer_ep
+                  << " bytes=" << payload_size << " stripe_id=" << stripe_id << " cluster_id=" << placement_copy->cluster_id()
+                  << " key=" << placement_copy->key() << std::endl;
         asio::error_code ignore_ec;
         socket_data.shutdown(asio::ip::tcp::socket::shutdown_receive, ignore_ec);
         socket_data.close(ignore_ec);
@@ -709,6 +1638,10 @@ namespace ECProject
             std::cout << "[CoRD][Proxy] range read failed slice " << j << std::endl;
             return;
           }
+          std::cout << "[CoRD-DATA][" << proxy_ip_port << "] data_blk=" << placement_copy->blockids(j)
+                    << " key=" << placement_copy->blockkeys(j) << " off=" << placement_copy->offsets(j)
+                    << " len=" << slen << " BEFORE_disk_hex=" << cord_dbg_hex_preview(oldbuf.data(), slen)
+                    << " new_slice_hex=" << cord_dbg_hex_preview(slices[static_cast<size_t>(j)], slen) << std::endl;
           for (size_t u = 0; u < slen; ++u)
             delta_concat.push_back(static_cast<char>(oldbuf[u] ^ slices[static_cast<size_t>(j)][u]));
           if (!CordRangeWriteToDatanode(placement_copy->blockkeys(j), placement_copy->blockids(j),
@@ -717,6 +1650,15 @@ namespace ECProject
           {
             std::cout << "[CoRD][Proxy] range write failed slice " << j << std::endl;
             return;
+          }
+          std::vector<char> verify_new(slen);
+          if (CordRangeReadFromDatanode(placement_copy->blockkeys(j), placement_copy->blockids(j),
+                                        static_cast<int>(placement_copy->offsets(j)), verify_new.data(), slen,
+                                        placement_copy->datanodeip(j).c_str(), placement_copy->datanodeport(j)))
+          {
+            std::cout << "[CoRD-DATA][" << proxy_ip_port << "] data_blk=" << placement_copy->blockids(j)
+                      << " off=" << placement_copy->offsets(j) << " len=" << slen
+                      << " AFTER_disk_hex=" << cord_dbg_hex_preview(verify_new.data(), slen) << std::endl;
           }
         }
         if (!CordDeltaBlobToDatanode(placement_copy->delta_blob_key(), delta_concat.data(), delta_concat.size(),
@@ -748,13 +1690,329 @@ namespace ECProject
     return grpc::Status::OK;
   }
 
+  grpc::Status ProxyImpl::scheduleCordTransferPlan(grpc::ServerContext *context,
+                                                   const proxy_proto::CordTransferPlan *plan,
+                                                   proxy_proto::SetReply *response)
+  {
+    std::cout << "[CoRD-PLAN][" << proxy_ip_port << "] RECV grpc scheduleCordTransferPlan peer=" << context->peer()
+              << " plan_key=" << plan->plan_key() << " stripe_id=" << plan->stripe_id()
+              << " steps=" << plan->steps_size() << std::endl;
+    response->set_ifcommit(true);
+    auto plan_copy = std::make_shared<proxy_proto::CordTransferPlan>(*plan);
+    {
+      std::lock_guard<std::mutex> lk(g_cord_plan_reg_mu);
+      g_cord_plans_by_key[plan_copy->plan_key()] =
+          std::shared_ptr<const proxy_proto::CordTransferPlan>(plan_copy);
+    }
+    const int self_cid = m_self_cluster_id;
+    const std::string tag = proxy_ip_port;
+    const std::string pk = plan_copy->plan_key();
+    std::thread th([plan_copy, self_cid, tag, p = this]() {
+      cord_transfer_plan_execute_async(*plan_copy, self_cid, p, tag);
+    });
+    {
+      std::lock_guard<std::mutex> lk(g_cord_plan_exec_mu);
+      auto it = g_cord_plan_exec_threads.find(pk);
+      if (it != g_cord_plan_exec_threads.end() && it->second.joinable())
+        it->second.join();
+      g_cord_plan_exec_threads[pk] = std::move(th);
+    }
+    return grpc::Status::OK;
+  }
+
+  grpc::Status ProxyImpl::cordPlanJoinExecution(grpc::ServerContext *context,
+                                                const proxy_proto::CordPlanKeyMsg *request,
+                                                proxy_proto::SetReply *response)
+  {
+    (void)context;
+    response->set_ifcommit(false);
+    const std::string &pk = request->plan_key();
+    if (pk.empty())
+      return grpc::Status(grpc::StatusCode::INVALID_ARGUMENT, "empty plan_key");
+    std::thread worker;
+    {
+      std::lock_guard<std::mutex> lk(g_cord_plan_exec_mu);
+      auto it = g_cord_plan_exec_threads.find(pk);
+      if (it == g_cord_plan_exec_threads.end())
+      {
+        response->set_ifcommit(true);
+        return grpc::Status::OK;
+      }
+      worker = std::move(it->second);
+      g_cord_plan_exec_threads.erase(it);
+    }
+    if (worker.joinable())
+      worker.join();
+    response->set_ifcommit(true);
+    return grpc::Status::OK;
+  }
+
+  grpc::Status ProxyImpl::cordPlanCollectorIngestDataDelta(
+      grpc::ServerContext *context,
+      const proxy_proto::CordPlanCollectorIngestReq *request,
+      proxy_proto::SetReply *response)
+  {
+    response->set_ifcommit(false);
+    const auto &chunk = request->chunk_payload();
+    auto pl = cord_lookup_registered_plan(request->plan_key());
+    if (!pl)
+    {
+      std::cout << "[CoRD-PLAN][" << proxy_ip_port << "] REJECT cordPlanCollectorIngestDataDelta peer="
+                << context->peer() << " plan_key=" << request->plan_key() << " grp=" << request->group_index()
+                << " collector_blk=" << request->collector_block_id() << " src_data_blk=" << request->src_data_block_id()
+                << " chunk_off=" << request->chunk_byte_offset() << " chunk_len=" << chunk.size()
+                << " reason=plan_key_not_registered" << std::endl;
+      return grpc::Status(grpc::StatusCode::NOT_FOUND, "cord plan_key not registered");
+    }
+    std::cout << "[CoRD-PLAN][" << proxy_ip_port << "] RECV grpc cordPlanCollectorIngest peer=" << context->peer()
+              << " plan_key=" << request->plan_key() << " grp=" << request->group_index()
+              << " collector_blk=" << request->collector_block_id() << " src_data_blk=" << request->src_data_block_id()
+              << " chunk_off=" << request->chunk_byte_offset() << " chunk_len=" << chunk.size()
+              << " chunk_hex=" << cord_dbg_hex_preview(chunk.data(), chunk.size()) << std::endl;
+    if (cord_uses_matrix_encode(*pl) && request->src_data_block_id() < 0)
+      return grpc::Status(grpc::StatusCode::INVALID_ARGUMENT, "src_data_block_id required");
+    const uint64_t off = request->chunk_byte_offset();
+    const uint64_t need = off + static_cast<uint64_t>(chunk.size());
+    {
+      std::lock_guard<std::mutex> lk(g_cord_xfer_mu);
+      if (request->src_data_block_id() >= 0)
+      {
+        const std::string bkey =
+            cord_collector_block_buf_key(request->plan_key(), request->group_index(), request->collector_block_id(),
+                                         request->src_data_block_id());
+        auto &bd = g_cord_collector_block_delta[bkey];
+        if (bd.size() < static_cast<size_t>(need))
+          bd.resize(static_cast<size_t>(need), 0);
+        std::memcpy(bd.data() + static_cast<size_t>(off), chunk.data(), chunk.size());
+      }
+      if (!cord_uses_matrix_encode(*pl))
+      {
+        const std::string key =
+            cord_collector_acc_key(request->plan_key(), request->group_index(), request->collector_block_id());
+        auto &acc = g_cord_collector_xor_acc[key];
+        const uint64_t hint = request->xor_accum_byte_length();
+        if (hint > 0u && acc.size() < static_cast<size_t>(hint))
+          acc.resize(static_cast<size_t>(hint), 0);
+        if (acc.size() < static_cast<size_t>(need))
+          acc.resize(static_cast<size_t>(need), 0);
+        for (size_t i = 0; i < chunk.size(); ++i)
+          acc[static_cast<size_t>(off) + i] ^= static_cast<uint8_t>(chunk[static_cast<int>(i)]);
+      }
+    }
+    response->set_ifcommit(true);
+    return grpc::Status::OK;
+  }
+
+  grpc::Status ProxyImpl::cordPlanApplyParityXorDelta(
+      grpc::ServerContext *context,
+      const proxy_proto::CordPlanApplyParityXorReq *request,
+      proxy_proto::SetReply *response)
+  {
+    response->set_ifcommit(false);
+    const int psz = request->parity_slice_length();
+    if (psz <= 0)
+      return grpc::Status(grpc::StatusCode::INVALID_ARGUMENT, "bad parity slice");
+    std::vector<char> cur(static_cast<size_t>(psz));
+    if (!CordRangeReadFromDatanode(request->block_key(), request->dst_block_id(), request->parity_slice_offset(),
+                                   cur.data(), static_cast<size_t>(psz), request->datanode_ip().c_str(),
+                                   request->datanode_port()))
+      return grpc::Status(grpc::StatusCode::INTERNAL, "read parity failed");
+    std::cout << "[CoRD-PLAN][" << proxy_ip_port << "] RECV grpc cordPlanApplyParityXor peer=" << context->peer()
+              << " plan_key=" << request->plan_key() << " parity_blk=" << request->dst_block_id()
+              << " off=" << request->parity_slice_offset() << " len=" << psz
+              << " BEFORE_disk_hex=" << cord_dbg_hex_preview(cur.data(), cur.size())
+              << " delta_hex=" << cord_dbg_hex_preview(request->parity_delta_payload().data(),
+                                                       request->parity_delta_payload().size())
+              << std::endl;
+    if (static_cast<int>(request->parity_delta_payload().size()) != psz)
+      return grpc::Status(grpc::StatusCode::INVALID_ARGUMENT, "delta size mismatch");
+    for (int u = 0; u < psz; ++u)
+      cur[static_cast<size_t>(u)] = static_cast<char>(
+          static_cast<unsigned char>(cur[static_cast<size_t>(u)]) ^
+          static_cast<unsigned char>(request->parity_delta_payload()[static_cast<int>(u)]));
+    if (!CordRangeWriteToDatanode(request->block_key(), request->dst_block_id(), request->parity_slice_offset(),
+                                   cur.data(), static_cast<size_t>(psz), request->datanode_ip().c_str(),
+                                   request->datanode_port()))
+      return grpc::Status(grpc::StatusCode::INTERNAL, "write parity failed");
+    std::vector<char> verify(static_cast<size_t>(psz));
+    if (CordRangeReadFromDatanode(request->block_key(), request->dst_block_id(), request->parity_slice_offset(),
+                                  verify.data(), static_cast<size_t>(psz), request->datanode_ip().c_str(),
+                                  request->datanode_port()))
+    {
+      std::cout << "[CoRD-PLAN][" << proxy_ip_port << "] parity_blk=" << request->dst_block_id()
+                << " off=" << request->parity_slice_offset() << " AFTER_disk_hex="
+                << cord_dbg_hex_preview(verify.data(), verify.size()) << std::endl;
+    }
+    response->set_ifcommit(true);
+    return grpc::Status::OK;
+  }
+
+  grpc::Status ProxyImpl::cordPlanMstDataDeltaChunk(
+      grpc::ServerContext *context,
+      const proxy_proto::CordPlanMstDataDeltaReq *request,
+      proxy_proto::SetReply *response)
+  {
+    response->set_ifcommit(false);
+    const std::string &pk = request->plan_key();
+    const uint64_t off = request->chunk_byte_offset();
+    const std::string &chunk = request->chunk_payload();
+    if (chunk.empty())
+      return grpc::Status(grpc::StatusCode::INVALID_ARGUMENT, "empty chunk");
+
+    {
+      std::lock_guard<std::mutex> lk(g_cord_xfer_mu);
+      auto &stream = g_cord_mst_stream[pk];
+      const uint64_t need = off + static_cast<uint64_t>(chunk.size());
+      if (stream.size() < static_cast<size_t>(need))
+        stream.resize(static_cast<size_t>(need), 0);
+      for (size_t i = 0; i < chunk.size(); ++i)
+        stream[static_cast<size_t>(off) + i] = static_cast<uint8_t>(chunk[static_cast<int>(i)]);
+    }
+
+    if (request->dst_proxy_cluster_id() == m_self_cluster_id &&
+        request->dst_block_id() >= request->k_datablock())
+    {
+      std::cout << "[CoRD-PLAN][" << proxy_ip_port << "] RECV grpc cordPlanMstDataDeltaChunk peer=" << context->peer()
+                << " plan_key=" << pk << " dst_blk=" << request->dst_block_id() << " src_data_blk="
+                << request->src_data_block_id() << " chunk_off=" << off << " chunk_len=" << chunk.size()
+                << " chunk_hex=" << cord_dbg_hex_preview(chunk.data(), chunk.size()) << std::endl;
+      bool applied_matrix = false;
+      auto pl = cord_lookup_registered_plan(pk);
+      if (pl && cord_uses_matrix_encode(*pl) && request->src_data_block_id() >= 0)
+      {
+        const auto &meta = pl->cord_encode_meta();
+        const int kblk = meta.k();
+        const int ps = meta.parity_slice_size();
+        const int po = meta.parity_slice_offset();
+        const int src_bid = request->src_data_block_id();
+        const proxy_proto::CordDataStripDesc *sdesc = nullptr;
+        for (int di = 0; di < pl->cord_data_strip_descs_size(); ++di)
+        {
+          if (pl->cord_data_strip_descs(di).block_id() == src_bid)
+          {
+            sdesc = &pl->cord_data_strip_descs(di);
+            break;
+          }
+        }
+        if (sdesc != nullptr && src_bid >= 0 && src_bid < kblk && ps > 0)
+        {
+          const int so = sdesc->slice_offset();
+          std::vector<std::vector<char>> strips(static_cast<size_t>(kblk),
+                                                std::vector<char>(static_cast<size_t>(ps), 0));
+          for (size_t i = 0; i < chunk.size(); ++i)
+          {
+            const int x = so + static_cast<int>(off) + static_cast<int>(i);
+            if (x >= po && x < po + ps)
+              strips[static_cast<size_t>(src_bid)][static_cast<size_t>(x - po)] =
+                  chunk[static_cast<int>(i)];
+          }
+          std::vector<std::vector<uint8_t>> coded;
+          const ECProject::EncodeType et = static_cast<ECProject::EncodeType>(meta.encode_type());
+          if (!cord_matrix_encode_strips(kblk, meta.g_m(), meta.l(), et, ps, strips, &coded))
+            return grpc::Status(grpc::StatusCode::INTERNAL, "mst matrix encode failed");
+          const int row = request->dst_block_id() - kblk;
+          if (row < 0 || row >= static_cast<int>(coded.size()))
+            return grpc::Status(grpc::StatusCode::INVALID_ARGUMENT, "mst bad parity row");
+          const auto &pdelta = coded[static_cast<size_t>(row)];
+          const auto nz =
+              cord_parity_delta_nonzero_span(reinterpret_cast<const char *>(pdelta.data()), pdelta.size());
+          if (nz.second > 0)
+          {
+            const int poff = static_cast<int>(nz.first);
+            const int plen = static_cast<int>(nz.second);
+            std::vector<char> cur(static_cast<size_t>(plen));
+            if (!CordRangeReadFromDatanode(request->parity_block_key(), request->dst_block_id(), po + poff, cur.data(),
+                                           static_cast<size_t>(plen), request->parity_datanode_ip().c_str(),
+                                           request->parity_datanode_port()))
+              return grpc::Status(grpc::StatusCode::INTERNAL, "read parity failed (mst mat)");
+            std::cout << "[CoRD-PLAN][" << proxy_ip_port << "] MST_matrix parity_blk=" << request->dst_block_id()
+                      << " row=" << row << " strip_off=" << po << " strip_len=" << ps << " sparse_off=" << poff
+                      << " sparse_len=" << plen << " BEFORE_disk_hex=" << cord_dbg_hex_preview(cur.data(), cur.size())
+                      << " coded_delta_hex="
+                      << cord_dbg_hex_preview(pdelta.data() + static_cast<size_t>(poff), static_cast<size_t>(plen))
+                      << std::endl;
+            for (int u = 0; u < plen; ++u)
+              cur[static_cast<size_t>(u)] = static_cast<char>(
+                  static_cast<unsigned char>(cur[static_cast<size_t>(u)]) ^
+                  static_cast<unsigned char>(pdelta[static_cast<size_t>(poff + u)]));
+            if (!CordRangeWriteToDatanode(request->parity_block_key(), request->dst_block_id(), po + poff, cur.data(),
+                                          static_cast<size_t>(plen), request->parity_datanode_ip().c_str(),
+                                          request->parity_datanode_port()))
+              return grpc::Status(grpc::StatusCode::INTERNAL, "write parity failed (mst mat)");
+            {
+              std::vector<char> mst_pv(static_cast<size_t>(plen));
+              if (CordRangeReadFromDatanode(request->parity_block_key(), request->dst_block_id(), po + poff,
+                                            mst_pv.data(), static_cast<size_t>(plen), request->parity_datanode_ip().c_str(),
+                                            request->parity_datanode_port()))
+              {
+                std::cout << "[CoRD-PLAN][" << proxy_ip_port << "] MST_matrix AFTER parity_blk=" << request->dst_block_id()
+                          << " disk_hex=" << cord_dbg_hex_preview(mst_pv.data(), mst_pv.size()) << std::endl;
+              }
+            }
+          }
+          else
+          {
+            std::cout << "[CoRD-PLAN][" << proxy_ip_port << "] MST_matrix SKIP all-zero parity delta blk="
+                      << request->dst_block_id() << " row=" << row << std::endl;
+          }
+          applied_matrix = true;
+        }
+      }
+      if (!applied_matrix)
+      {
+        const auto nz = cord_parity_delta_nonzero_span(chunk.data(), chunk.size());
+        if (nz.second == 0)
+        {
+          std::cout << "[CoRD-PLAN][" << proxy_ip_port << "] MST_xor SKIP all-zero chunk parity_blk="
+                    << request->dst_block_id() << std::endl;
+        }
+        else
+        {
+          const int psz = static_cast<int>(nz.second);
+          const int slice_off = static_cast<int>(off) + static_cast<int>(nz.first);
+          std::vector<char> cur(static_cast<size_t>(psz));
+          if (!CordRangeReadFromDatanode(request->parity_block_key(), request->dst_block_id(), slice_off, cur.data(),
+                                         static_cast<size_t>(psz), request->parity_datanode_ip().c_str(),
+                                         request->parity_datanode_port()))
+            return grpc::Status(grpc::StatusCode::INTERNAL, "read parity failed (mst)");
+          std::cout << "[CoRD-PLAN][" << proxy_ip_port << "] MST_xor parity_blk=" << request->dst_block_id()
+                    << " off=" << slice_off << " len=" << psz
+                    << " BEFORE_disk_hex=" << cord_dbg_hex_preview(cur.data(), cur.size())
+                    << " chunk_hex=" << cord_dbg_hex_preview(chunk.data() + nz.first, static_cast<size_t>(psz))
+                    << std::endl;
+          for (int u = 0; u < psz; ++u)
+            cur[static_cast<size_t>(u)] = static_cast<char>(
+                static_cast<unsigned char>(cur[static_cast<size_t>(u)]) ^
+                static_cast<unsigned char>(chunk[static_cast<int>(nz.first + static_cast<size_t>(u))]));
+          if (!CordRangeWriteToDatanode(request->parity_block_key(), request->dst_block_id(), slice_off, cur.data(),
+                                        static_cast<size_t>(psz), request->parity_datanode_ip().c_str(),
+                                        request->parity_datanode_port()))
+            return grpc::Status(grpc::StatusCode::INTERNAL, "write parity failed (mst)");
+          {
+            std::vector<char> mst_lv(static_cast<size_t>(psz));
+            if (CordRangeReadFromDatanode(request->parity_block_key(), request->dst_block_id(), slice_off, mst_lv.data(),
+                                          static_cast<size_t>(psz), request->parity_datanode_ip().c_str(),
+                                          request->parity_datanode_port()))
+            {
+              std::cout << "[CoRD-PLAN][" << proxy_ip_port << "] MST_xor AFTER parity_blk=" << request->dst_block_id()
+                        << " disk_hex=" << cord_dbg_hex_preview(mst_lv.data(), mst_lv.size()) << std::endl;
+            }
+          }
+        }
+      }
+    }
+    response->set_ifcommit(true);
+    return grpc::Status::OK;
+  }
+
   grpc::Status ProxyImpl::scheduleCordLocalParityApply(
       grpc::ServerContext *context,
       const proxy_proto::CordLocalParityBundle *bundle,
       proxy_proto::SetReply *response)
   {
-    (void)context;
     (void)response;
+    std::cout << "[CoRD-LP][" << proxy_ip_port << "] RECV grpc scheduleCordLocalParityApply peer=" << context->peer()
+              << " bundle_key=" << bundle->key() << " items=" << bundle->items_size() << std::endl;
     auto bundle_copy = std::make_shared<proxy_proto::CordLocalParityBundle>(*bundle);
     auto lp_job = [this, bundle_copy]() mutable
     {
@@ -774,6 +2032,10 @@ namespace ECProject
             std::cout << "[CoRD-LP][Proxy] read LP blk " << it.local_block_id() << " failed" << std::endl;
             continue;
           }
+          std::cout << "[CoRD-LP][" << proxy_ip_port << "] BEFORE_local_parity_apply blk=" << it.local_block_id()
+                    << " off=" << it.parity_slice_offset() << " len=" << psz
+                    << " disk_hex=" << cord_dbg_hex_preview(acc.data(), acc.size()) << " bundle_key="
+                    << bundle_copy->key() << std::endl;
           for (int fi = 0; fi < it.fetches_size(); ++fi)
           {
             const auto &f = it.fetches(fi);
@@ -804,6 +2066,15 @@ namespace ECProject
           {
             std::cout << "[CoRD-LP][Proxy] write LP blk " << it.local_block_id() << " failed" << std::endl;
             continue;
+          }
+          std::vector<char> lp_verify(static_cast<size_t>(psz));
+          if (CordRangeReadFromDatanode(it.local_block_key(), it.local_block_id(), it.parity_slice_offset(),
+                                        lp_verify.data(), static_cast<size_t>(psz), it.local_datanode_ip().c_str(),
+                                        it.local_datanode_port()))
+          {
+            std::cout << "[CoRD-LP][" << proxy_ip_port << "] AFTER_local_parity_write blk=" << it.local_block_id()
+                      << " off=" << it.parity_slice_offset() << " len=" << psz
+                      << " disk_hex=" << cord_dbg_hex_preview(lp_verify.data(), lp_verify.size()) << std::endl;
           }
           if (IF_DEBUG)
             std::cout << "[CoRD-LP][Proxy] LP blk " << it.local_block_id() << " off=" << it.parity_slice_offset()
@@ -856,9 +2127,11 @@ namespace ECProject
       grpc::Status st = stub->cordLpApplyParityDelta(&ctx, req, &rep);
       if (!st.ok())
         std::cout << "[CoRD-LP-GH] forward to LP proxy " << dst << " failed: " << st.error_message() << std::endl;
-      else if (IF_DEBUG)
-        std::cout << "[CoRD-LP-GH] hub G" << meta.hub_global_block_id() << " -> LP blk " << meta.local_block_id()
-                  << " len=" << delta.size() << std::endl;
+      else
+        std::cout << "[CoRD-LP-GH] grpc SEND hub -> LP_proxy=" << dst << " stripe=" << meta.stripe_id()
+                  << " hub_G=" << meta.hub_global_block_id() << " lp_blk=" << meta.local_block_id()
+                  << " delta_bytes=" << delta.size() << " delta_preview=" << cord_dbg_hex_preview(delta.data(), delta.size())
+                  << std::endl;
     }
   } // namespace
 
@@ -987,7 +2260,6 @@ namespace ECProject
       const proxy_proto::CordLpParityApplyDelta *request,
       proxy_proto::SetReply *response)
   {
-    (void)context;
     response->set_ifcommit(false);
     const int psz = request->parity_slice_size();
     if (psz <= 0)
@@ -997,6 +2269,12 @@ namespace ECProject
                                    request->parity_slice_offset(), cur.data(), static_cast<size_t>(psz),
                                    request->local_datanode_ip().c_str(), request->local_datanode_port()))
       return grpc::Status(grpc::StatusCode::INTERNAL, "read local parity failed");
+    std::cout << "[CoRD-LP-GH][" << proxy_ip_port << "] RECV cordLpApplyParityDelta peer=" << context->peer()
+              << " stripe=" << request->stripe_id() << " blk=" << request->local_block_id()
+              << " off=" << request->parity_slice_offset() << " len=" << psz
+              << " BEFORE_hex=" << cord_dbg_hex_preview(cur.data(), cur.size())
+              << " delta_hex=" << cord_dbg_hex_preview(request->delta_payload().data(), request->delta_payload().size())
+              << std::endl;
     if (static_cast<int>(request->delta_payload().size()) != psz)
       return grpc::Status(grpc::StatusCode::INVALID_ARGUMENT, "delta size mismatch");
     for (int u = 0; u < psz; ++u)
@@ -1007,6 +2285,14 @@ namespace ECProject
                                   request->parity_slice_offset(), cur.data(), static_cast<size_t>(psz),
                                   request->local_datanode_ip().c_str(), request->local_datanode_port()))
       return grpc::Status(grpc::StatusCode::INTERNAL, "write local parity failed");
+    std::vector<char> ghv(static_cast<size_t>(psz));
+    if (CordRangeReadFromDatanode(request->local_block_key(), request->local_block_id(),
+                                  request->parity_slice_offset(), ghv.data(), static_cast<size_t>(psz),
+                                  request->local_datanode_ip().c_str(), request->local_datanode_port()))
+    {
+      std::cout << "[CoRD-LP-GH][" << proxy_ip_port << "] AFTER blk=" << request->local_block_id()
+                << " disk_hex=" << cord_dbg_hex_preview(ghv.data(), ghv.size()) << std::endl;
+    }
     response->set_ifcommit(true);
     return grpc::Status::OK;
   }

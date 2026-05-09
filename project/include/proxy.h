@@ -72,6 +72,26 @@ namespace ECProject
         grpc::ServerContext *context,
         const proxy_proto::CordLpParityApplyDelta *request,
         proxy_proto::SetReply *response) override;
+    grpc::Status scheduleCordTransferPlan(
+        grpc::ServerContext *context,
+        const proxy_proto::CordTransferPlan *plan,
+        proxy_proto::SetReply *response) override;
+    grpc::Status cordPlanJoinExecution(
+        grpc::ServerContext *context,
+        const proxy_proto::CordPlanKeyMsg *request,
+        proxy_proto::SetReply *response) override;
+    grpc::Status cordPlanCollectorIngestDataDelta(
+        grpc::ServerContext *context,
+        const proxy_proto::CordPlanCollectorIngestReq *request,
+        proxy_proto::SetReply *response) override;
+    grpc::Status cordPlanApplyParityXorDelta(
+        grpc::ServerContext *context,
+        const proxy_proto::CordPlanApplyParityXorReq *request,
+        proxy_proto::SetReply *response) override;
+    grpc::Status cordPlanMstDataDeltaChunk(
+        grpc::ServerContext *context,
+        const proxy_proto::CordPlanMstDataDeltaReq *request,
+        proxy_proto::SetReply *response) override;
 
     // decode and get
     grpc::Status decodeAndGetObject(

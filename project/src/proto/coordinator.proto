@@ -37,6 +37,10 @@ service coordinatorService {
   rpc uploadXueUpdate (XueUpdateRequest) returns (ReplyProxyIPsPorts) {};
   // CoRD：按块内更新区间相交性分组（算法一）
   rpc uploadCordUpdate (CordUpdateRequest) returns (ReplyProxyIPsPorts) {};
+  // 客户端在各 cluster 完成 TCP delta 后调用，再向各 proxy 下发 CordTransferPlan（保证 delta blob 先就绪）
+  rpc cordPlanBeginTransfer (CordPlanKeyOnly) returns (RepIfSuccess) {};
+  // 阻塞直至各相关 proxy 上本轮 plan 执行线程结束（真实墙钟语义）
+  rpc cordPlanWaitTransferComplete (CordPlanWaitRequest) returns (RepIfSuccess) {};
   rpc uploadCordLocalParityApply (CordUpdateRequest) returns (RepIfSuccess) {};
   rpc uploadCordLocalParityViaGlobalHub (CordUpdateRequest) returns (RepIfSuccess) {};
   // get
@@ -118,6 +122,15 @@ message ReplyProxyIPsPorts {
   repeated int32 proxyports = 4;
   repeated uint64 cluster_slice_sizes = 5;
   repeated int32 group_ids = 6;
+  string cord_transfer_plan_key = 7;
+}
+
+message CordPlanKeyOnly {
+  string plan_key = 1;
+}
+
+message CordPlanWaitRequest {
+  string plan_key = 1;
 }
 
 // set, del, merge

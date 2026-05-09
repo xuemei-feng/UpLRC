@@ -7,11 +7,13 @@
 #include <grpcpp/grpcpp.h>
 #include <grpcpp/health_check_service_interface.h>
 #include <meta_definition.h>
+#include "cord_algorithm2.h"
 #include <map>
 #include <mutex>
 #include <string>
 #include <thread>
 #include <condition_variable>
+#include <unordered_map>
 #include <config.h>
 #include <toolbox.h>
 #include "unilrc_encoder.h"
@@ -75,6 +77,14 @@ namespace ECProject
         grpc::ServerContext *context,
         const coordinator_proto::CordUpdateRequest *request,
         coordinator_proto::ReplyProxyIPsPorts *proxyIPPort) override;
+    grpc::Status cordPlanBeginTransfer(
+        grpc::ServerContext *context,
+        const coordinator_proto::CordPlanKeyOnly *request,
+        coordinator_proto::RepIfSuccess *reply) override;
+    grpc::Status cordPlanWaitTransferComplete(
+        grpc::ServerContext *context,
+        const coordinator_proto::CordPlanWaitRequest *request,
+        coordinator_proto::RepIfSuccess *reply) override;
     grpc::Status uploadCordLocalParityApply(
         grpc::ServerContext *context,
         const coordinator_proto::CordUpdateRequest *request,
@@ -176,6 +186,13 @@ namespace ECProject
     int getClusterAppendSize(Stripe *stripe, const std::map<int, std::pair<int, int>> &block_to_slice_sizes, int curr_group_id, int parity_slice_size);
     void notify_proxies_ready(const proxy_proto::AppendStripeDataPlacement &plan);
     void notify_proxies_cord_ready(const proxy_proto::CordDataUpdatePlacement &plan);
+    void notify_proxies_cord_transfer_plan(const proxy_proto::CordTransferPlan &plan);
+    /** CoRD 传输计划：写入矩阵编码元数据、收集器 ingress 期望与各数据块切片描述 */
+    void enrich_cord_transfer_plan_encoding(
+        Stripe *stripe,
+        const std::map<int, std::vector<std::pair<int, int>>> &block_intervals,
+        const cord_alg2::Algorithm2Result &alg2,
+        proxy_proto::CordTransferPlan *plan);
     void notify_proxy_cord_local_parity_bundle(int target_cluster_id,
                                                 const proxy_proto::CordLocalParityBundle &bundle);
 
@@ -212,6 +229,9 @@ namespace ECProject
 
   private:
     std::mutex m_mutex;
+    std::mutex m_cord_pending_mu;
+    std::unordered_map<std::string, proxy_proto::CordTransferPlan> m_cord_pending_plans;
+    std::unordered_map<std::string, std::vector<int>> m_cord_pending_plan_clusters;
     std::condition_variable cv;
     std::map<std::string, std::unique_ptr<proxy_proto::proxyService::Stub>>
         m_proxy_ptrs;

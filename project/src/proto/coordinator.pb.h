@@ -54,6 +54,12 @@ extern BlockIDsAndClientIPDefaultTypeInternal _BlockIDsAndClientIP_default_insta
 class CommitAbortKey;
 struct CommitAbortKeyDefaultTypeInternal;
 extern CommitAbortKeyDefaultTypeInternal _CommitAbortKey_default_instance_;
+class CordPlanKeyOnly;
+struct CordPlanKeyOnlyDefaultTypeInternal;
+extern CordPlanKeyOnlyDefaultTypeInternal _CordPlanKeyOnly_default_instance_;
+class CordPlanWaitRequest;
+struct CordPlanWaitRequestDefaultTypeInternal;
+extern CordPlanWaitRequestDefaultTypeInternal _CordPlanWaitRequest_default_instance_;
 class CordUpdateRequest;
 struct CordUpdateRequestDefaultTypeInternal;
 extern CordUpdateRequestDefaultTypeInternal _CordUpdateRequest_default_instance_;
@@ -125,6 +131,8 @@ PROTOBUF_NAMESPACE_OPEN
 template<> ::coordinator_proto::AskIfSuccess* Arena::CreateMaybeMessage<::coordinator_proto::AskIfSuccess>(Arena*);
 template<> ::coordinator_proto::BlockIDsAndClientIP* Arena::CreateMaybeMessage<::coordinator_proto::BlockIDsAndClientIP>(Arena*);
 template<> ::coordinator_proto::CommitAbortKey* Arena::CreateMaybeMessage<::coordinator_proto::CommitAbortKey>(Arena*);
+template<> ::coordinator_proto::CordPlanKeyOnly* Arena::CreateMaybeMessage<::coordinator_proto::CordPlanKeyOnly>(Arena*);
+template<> ::coordinator_proto::CordPlanWaitRequest* Arena::CreateMaybeMessage<::coordinator_proto::CordPlanWaitRequest>(Arena*);
 template<> ::coordinator_proto::CordUpdateRequest* Arena::CreateMaybeMessage<::coordinator_proto::CordUpdateRequest>(Arena*);
 template<> ::coordinator_proto::DegradedReadReply* Arena::CreateMaybeMessage<::coordinator_proto::DegradedReadReply>(Arena*);
 template<> ::coordinator_proto::KeyAndClientIP* Arena::CreateMaybeMessage<::coordinator_proto::KeyAndClientIP>(Arena*);
@@ -1498,6 +1506,7 @@ class ReplyProxyIPsPorts final :
     kProxyportsFieldNumber = 4,
     kClusterSliceSizesFieldNumber = 5,
     kGroupIdsFieldNumber = 6,
+    kCordTransferPlanKeyFieldNumber = 7,
     kSumAppendSizeFieldNumber = 1,
   };
   // repeated string append_keys = 2;
@@ -1614,6 +1623,20 @@ class ReplyProxyIPsPorts final :
   ::PROTOBUF_NAMESPACE_ID::RepeatedField< int32_t >*
       mutable_group_ids();
 
+  // string cord_transfer_plan_key = 7;
+  void clear_cord_transfer_plan_key();
+  const std::string& cord_transfer_plan_key() const;
+  template <typename ArgT0 = const std::string&, typename... ArgT>
+  void set_cord_transfer_plan_key(ArgT0&& arg0, ArgT... args);
+  std::string* mutable_cord_transfer_plan_key();
+  PROTOBUF_NODISCARD std::string* release_cord_transfer_plan_key();
+  void set_allocated_cord_transfer_plan_key(std::string* cord_transfer_plan_key);
+  private:
+  const std::string& _internal_cord_transfer_plan_key() const;
+  inline PROTOBUF_ALWAYS_INLINE void _internal_set_cord_transfer_plan_key(const std::string& value);
+  std::string* _internal_mutable_cord_transfer_plan_key();
+  public:
+
   // uint64 sum_append_size = 1;
   void clear_sum_append_size();
   uint64_t sum_append_size() const;
@@ -1639,7 +1662,314 @@ class ReplyProxyIPsPorts final :
     mutable std::atomic<int> _cluster_slice_sizes_cached_byte_size_;
     ::PROTOBUF_NAMESPACE_ID::RepeatedField< int32_t > group_ids_;
     mutable std::atomic<int> _group_ids_cached_byte_size_;
+    ::PROTOBUF_NAMESPACE_ID::internal::ArenaStringPtr cord_transfer_plan_key_;
     uint64_t sum_append_size_;
+    mutable ::PROTOBUF_NAMESPACE_ID::internal::CachedSize _cached_size_;
+  };
+  union { Impl_ _impl_; };
+  friend struct ::TableStruct_coordinator_2eproto;
+};
+// -------------------------------------------------------------------
+
+class CordPlanKeyOnly final :
+    public ::PROTOBUF_NAMESPACE_ID::Message /* @@protoc_insertion_point(class_definition:coordinator_proto.CordPlanKeyOnly) */ {
+ public:
+  inline CordPlanKeyOnly() : CordPlanKeyOnly(nullptr) {}
+  ~CordPlanKeyOnly() override;
+  explicit PROTOBUF_CONSTEXPR CordPlanKeyOnly(::PROTOBUF_NAMESPACE_ID::internal::ConstantInitialized);
+
+  CordPlanKeyOnly(const CordPlanKeyOnly& from);
+  CordPlanKeyOnly(CordPlanKeyOnly&& from) noexcept
+    : CordPlanKeyOnly() {
+    *this = ::std::move(from);
+  }
+
+  inline CordPlanKeyOnly& operator=(const CordPlanKeyOnly& from) {
+    CopyFrom(from);
+    return *this;
+  }
+  inline CordPlanKeyOnly& operator=(CordPlanKeyOnly&& from) noexcept {
+    if (this == &from) return *this;
+    if (GetOwningArena() == from.GetOwningArena()
+  #ifdef PROTOBUF_FORCE_COPY_IN_MOVE
+        && GetOwningArena() != nullptr
+  #endif  // !PROTOBUF_FORCE_COPY_IN_MOVE
+    ) {
+      InternalSwap(&from);
+    } else {
+      CopyFrom(from);
+    }
+    return *this;
+  }
+
+  static const ::PROTOBUF_NAMESPACE_ID::Descriptor* descriptor() {
+    return GetDescriptor();
+  }
+  static const ::PROTOBUF_NAMESPACE_ID::Descriptor* GetDescriptor() {
+    return default_instance().GetMetadata().descriptor;
+  }
+  static const ::PROTOBUF_NAMESPACE_ID::Reflection* GetReflection() {
+    return default_instance().GetMetadata().reflection;
+  }
+  static const CordPlanKeyOnly& default_instance() {
+    return *internal_default_instance();
+  }
+  static inline const CordPlanKeyOnly* internal_default_instance() {
+    return reinterpret_cast<const CordPlanKeyOnly*>(
+               &_CordPlanKeyOnly_default_instance_);
+  }
+  static constexpr int kIndexInFileMessages =
+    8;
+
+  friend void swap(CordPlanKeyOnly& a, CordPlanKeyOnly& b) {
+    a.Swap(&b);
+  }
+  inline void Swap(CordPlanKeyOnly* other) {
+    if (other == this) return;
+  #ifdef PROTOBUF_FORCE_COPY_IN_SWAP
+    if (GetOwningArena() != nullptr &&
+        GetOwningArena() == other->GetOwningArena()) {
+   #else  // PROTOBUF_FORCE_COPY_IN_SWAP
+    if (GetOwningArena() == other->GetOwningArena()) {
+  #endif  // !PROTOBUF_FORCE_COPY_IN_SWAP
+      InternalSwap(other);
+    } else {
+      ::PROTOBUF_NAMESPACE_ID::internal::GenericSwap(this, other);
+    }
+  }
+  void UnsafeArenaSwap(CordPlanKeyOnly* other) {
+    if (other == this) return;
+    GOOGLE_DCHECK(GetOwningArena() == other->GetOwningArena());
+    InternalSwap(other);
+  }
+
+  // implements Message ----------------------------------------------
+
+  CordPlanKeyOnly* New(::PROTOBUF_NAMESPACE_ID::Arena* arena = nullptr) const final {
+    return CreateMaybeMessage<CordPlanKeyOnly>(arena);
+  }
+  using ::PROTOBUF_NAMESPACE_ID::Message::CopyFrom;
+  void CopyFrom(const CordPlanKeyOnly& from);
+  using ::PROTOBUF_NAMESPACE_ID::Message::MergeFrom;
+  void MergeFrom( const CordPlanKeyOnly& from) {
+    CordPlanKeyOnly::MergeImpl(*this, from);
+  }
+  private:
+  static void MergeImpl(::PROTOBUF_NAMESPACE_ID::Message& to_msg, const ::PROTOBUF_NAMESPACE_ID::Message& from_msg);
+  public:
+  PROTOBUF_ATTRIBUTE_REINITIALIZES void Clear() final;
+  bool IsInitialized() const final;
+
+  size_t ByteSizeLong() const final;
+  const char* _InternalParse(const char* ptr, ::PROTOBUF_NAMESPACE_ID::internal::ParseContext* ctx) final;
+  uint8_t* _InternalSerialize(
+      uint8_t* target, ::PROTOBUF_NAMESPACE_ID::io::EpsCopyOutputStream* stream) const final;
+  int GetCachedSize() const final { return _impl_._cached_size_.Get(); }
+
+  private:
+  void SharedCtor(::PROTOBUF_NAMESPACE_ID::Arena* arena, bool is_message_owned);
+  void SharedDtor();
+  void SetCachedSize(int size) const final;
+  void InternalSwap(CordPlanKeyOnly* other);
+
+  private:
+  friend class ::PROTOBUF_NAMESPACE_ID::internal::AnyMetadata;
+  static ::PROTOBUF_NAMESPACE_ID::StringPiece FullMessageName() {
+    return "coordinator_proto.CordPlanKeyOnly";
+  }
+  protected:
+  explicit CordPlanKeyOnly(::PROTOBUF_NAMESPACE_ID::Arena* arena,
+                       bool is_message_owned = false);
+  public:
+
+  static const ClassData _class_data_;
+  const ::PROTOBUF_NAMESPACE_ID::Message::ClassData*GetClassData() const final;
+
+  ::PROTOBUF_NAMESPACE_ID::Metadata GetMetadata() const final;
+
+  // nested types ----------------------------------------------------
+
+  // accessors -------------------------------------------------------
+
+  enum : int {
+    kPlanKeyFieldNumber = 1,
+  };
+  // string plan_key = 1;
+  void clear_plan_key();
+  const std::string& plan_key() const;
+  template <typename ArgT0 = const std::string&, typename... ArgT>
+  void set_plan_key(ArgT0&& arg0, ArgT... args);
+  std::string* mutable_plan_key();
+  PROTOBUF_NODISCARD std::string* release_plan_key();
+  void set_allocated_plan_key(std::string* plan_key);
+  private:
+  const std::string& _internal_plan_key() const;
+  inline PROTOBUF_ALWAYS_INLINE void _internal_set_plan_key(const std::string& value);
+  std::string* _internal_mutable_plan_key();
+  public:
+
+  // @@protoc_insertion_point(class_scope:coordinator_proto.CordPlanKeyOnly)
+ private:
+  class _Internal;
+
+  template <typename T> friend class ::PROTOBUF_NAMESPACE_ID::Arena::InternalHelper;
+  typedef void InternalArenaConstructable_;
+  typedef void DestructorSkippable_;
+  struct Impl_ {
+    ::PROTOBUF_NAMESPACE_ID::internal::ArenaStringPtr plan_key_;
+    mutable ::PROTOBUF_NAMESPACE_ID::internal::CachedSize _cached_size_;
+  };
+  union { Impl_ _impl_; };
+  friend struct ::TableStruct_coordinator_2eproto;
+};
+// -------------------------------------------------------------------
+
+class CordPlanWaitRequest final :
+    public ::PROTOBUF_NAMESPACE_ID::Message /* @@protoc_insertion_point(class_definition:coordinator_proto.CordPlanWaitRequest) */ {
+ public:
+  inline CordPlanWaitRequest() : CordPlanWaitRequest(nullptr) {}
+  ~CordPlanWaitRequest() override;
+  explicit PROTOBUF_CONSTEXPR CordPlanWaitRequest(::PROTOBUF_NAMESPACE_ID::internal::ConstantInitialized);
+
+  CordPlanWaitRequest(const CordPlanWaitRequest& from);
+  CordPlanWaitRequest(CordPlanWaitRequest&& from) noexcept
+    : CordPlanWaitRequest() {
+    *this = ::std::move(from);
+  }
+
+  inline CordPlanWaitRequest& operator=(const CordPlanWaitRequest& from) {
+    CopyFrom(from);
+    return *this;
+  }
+  inline CordPlanWaitRequest& operator=(CordPlanWaitRequest&& from) noexcept {
+    if (this == &from) return *this;
+    if (GetOwningArena() == from.GetOwningArena()
+  #ifdef PROTOBUF_FORCE_COPY_IN_MOVE
+        && GetOwningArena() != nullptr
+  #endif  // !PROTOBUF_FORCE_COPY_IN_MOVE
+    ) {
+      InternalSwap(&from);
+    } else {
+      CopyFrom(from);
+    }
+    return *this;
+  }
+
+  static const ::PROTOBUF_NAMESPACE_ID::Descriptor* descriptor() {
+    return GetDescriptor();
+  }
+  static const ::PROTOBUF_NAMESPACE_ID::Descriptor* GetDescriptor() {
+    return default_instance().GetMetadata().descriptor;
+  }
+  static const ::PROTOBUF_NAMESPACE_ID::Reflection* GetReflection() {
+    return default_instance().GetMetadata().reflection;
+  }
+  static const CordPlanWaitRequest& default_instance() {
+    return *internal_default_instance();
+  }
+  static inline const CordPlanWaitRequest* internal_default_instance() {
+    return reinterpret_cast<const CordPlanWaitRequest*>(
+               &_CordPlanWaitRequest_default_instance_);
+  }
+  static constexpr int kIndexInFileMessages =
+    9;
+
+  friend void swap(CordPlanWaitRequest& a, CordPlanWaitRequest& b) {
+    a.Swap(&b);
+  }
+  inline void Swap(CordPlanWaitRequest* other) {
+    if (other == this) return;
+  #ifdef PROTOBUF_FORCE_COPY_IN_SWAP
+    if (GetOwningArena() != nullptr &&
+        GetOwningArena() == other->GetOwningArena()) {
+   #else  // PROTOBUF_FORCE_COPY_IN_SWAP
+    if (GetOwningArena() == other->GetOwningArena()) {
+  #endif  // !PROTOBUF_FORCE_COPY_IN_SWAP
+      InternalSwap(other);
+    } else {
+      ::PROTOBUF_NAMESPACE_ID::internal::GenericSwap(this, other);
+    }
+  }
+  void UnsafeArenaSwap(CordPlanWaitRequest* other) {
+    if (other == this) return;
+    GOOGLE_DCHECK(GetOwningArena() == other->GetOwningArena());
+    InternalSwap(other);
+  }
+
+  // implements Message ----------------------------------------------
+
+  CordPlanWaitRequest* New(::PROTOBUF_NAMESPACE_ID::Arena* arena = nullptr) const final {
+    return CreateMaybeMessage<CordPlanWaitRequest>(arena);
+  }
+  using ::PROTOBUF_NAMESPACE_ID::Message::CopyFrom;
+  void CopyFrom(const CordPlanWaitRequest& from);
+  using ::PROTOBUF_NAMESPACE_ID::Message::MergeFrom;
+  void MergeFrom( const CordPlanWaitRequest& from) {
+    CordPlanWaitRequest::MergeImpl(*this, from);
+  }
+  private:
+  static void MergeImpl(::PROTOBUF_NAMESPACE_ID::Message& to_msg, const ::PROTOBUF_NAMESPACE_ID::Message& from_msg);
+  public:
+  PROTOBUF_ATTRIBUTE_REINITIALIZES void Clear() final;
+  bool IsInitialized() const final;
+
+  size_t ByteSizeLong() const final;
+  const char* _InternalParse(const char* ptr, ::PROTOBUF_NAMESPACE_ID::internal::ParseContext* ctx) final;
+  uint8_t* _InternalSerialize(
+      uint8_t* target, ::PROTOBUF_NAMESPACE_ID::io::EpsCopyOutputStream* stream) const final;
+  int GetCachedSize() const final { return _impl_._cached_size_.Get(); }
+
+  private:
+  void SharedCtor(::PROTOBUF_NAMESPACE_ID::Arena* arena, bool is_message_owned);
+  void SharedDtor();
+  void SetCachedSize(int size) const final;
+  void InternalSwap(CordPlanWaitRequest* other);
+
+  private:
+  friend class ::PROTOBUF_NAMESPACE_ID::internal::AnyMetadata;
+  static ::PROTOBUF_NAMESPACE_ID::StringPiece FullMessageName() {
+    return "coordinator_proto.CordPlanWaitRequest";
+  }
+  protected:
+  explicit CordPlanWaitRequest(::PROTOBUF_NAMESPACE_ID::Arena* arena,
+                       bool is_message_owned = false);
+  public:
+
+  static const ClassData _class_data_;
+  const ::PROTOBUF_NAMESPACE_ID::Message::ClassData*GetClassData() const final;
+
+  ::PROTOBUF_NAMESPACE_ID::Metadata GetMetadata() const final;
+
+  // nested types ----------------------------------------------------
+
+  // accessors -------------------------------------------------------
+
+  enum : int {
+    kPlanKeyFieldNumber = 1,
+  };
+  // string plan_key = 1;
+  void clear_plan_key();
+  const std::string& plan_key() const;
+  template <typename ArgT0 = const std::string&, typename... ArgT>
+  void set_plan_key(ArgT0&& arg0, ArgT... args);
+  std::string* mutable_plan_key();
+  PROTOBUF_NODISCARD std::string* release_plan_key();
+  void set_allocated_plan_key(std::string* plan_key);
+  private:
+  const std::string& _internal_plan_key() const;
+  inline PROTOBUF_ALWAYS_INLINE void _internal_set_plan_key(const std::string& value);
+  std::string* _internal_mutable_plan_key();
+  public:
+
+  // @@protoc_insertion_point(class_scope:coordinator_proto.CordPlanWaitRequest)
+ private:
+  class _Internal;
+
+  template <typename T> friend class ::PROTOBUF_NAMESPACE_ID::Arena::InternalHelper;
+  typedef void InternalArenaConstructable_;
+  typedef void DestructorSkippable_;
+  struct Impl_ {
+    ::PROTOBUF_NAMESPACE_ID::internal::ArenaStringPtr plan_key_;
     mutable ::PROTOBUF_NAMESPACE_ID::internal::CachedSize _cached_size_;
   };
   union { Impl_ _impl_; };
@@ -1695,7 +2025,7 @@ class AskIfSuccess final :
                &_AskIfSuccess_default_instance_);
   }
   static constexpr int kIndexInFileMessages =
-    8;
+    10;
 
   friend void swap(AskIfSuccess& a, AskIfSuccess& b) {
     a.Swap(&b);
@@ -1870,7 +2200,7 @@ class RepIfSuccess final :
                &_RepIfSuccess_default_instance_);
   }
   static constexpr int kIndexInFileMessages =
-    9;
+    11;
 
   friend void swap(RepIfSuccess& a, RepIfSuccess& b) {
     a.Swap(&b);
@@ -2018,7 +2348,7 @@ class KeyAndClientIP final :
                &_KeyAndClientIP_default_instance_);
   }
   static constexpr int kIndexInFileMessages =
-    10;
+    12;
 
   friend void swap(KeyAndClientIP& a, KeyAndClientIP& b) {
     a.Swap(&b);
@@ -2198,7 +2528,7 @@ class RepIfGetSuccess final :
                &_RepIfGetSuccess_default_instance_);
   }
   static constexpr int kIndexInFileMessages =
-    11;
+    13;
 
   friend void swap(RepIfGetSuccess& a, RepIfGetSuccess& b) {
     a.Swap(&b);
@@ -2357,7 +2687,7 @@ class BlockIDsAndClientIP final :
                &_BlockIDsAndClientIP_default_instance_);
   }
   static constexpr int kIndexInFileMessages =
-    12;
+    14;
 
   friend void swap(BlockIDsAndClientIP& a, BlockIDsAndClientIP& b) {
     a.Swap(&b);
@@ -2554,7 +2884,7 @@ class LogicalRange final :
                &_LogicalRange_default_instance_);
   }
   static constexpr int kIndexInFileMessages =
-    13;
+    15;
 
   friend void swap(LogicalRange& a, LogicalRange& b) {
     a.Swap(&b);
@@ -2713,7 +3043,7 @@ class XueUpdateRequest final :
                &_XueUpdateRequest_default_instance_);
   }
   static constexpr int kIndexInFileMessages =
-    14;
+    16;
 
   friend void swap(XueUpdateRequest& a, XueUpdateRequest& b) {
     a.Swap(&b);
@@ -2897,7 +3227,7 @@ class CordUpdateRequest final :
                &_CordUpdateRequest_default_instance_);
   }
   static constexpr int kIndexInFileMessages =
-    15;
+    17;
 
   friend void swap(CordUpdateRequest& a, CordUpdateRequest& b) {
     a.Swap(&b);
@@ -3103,7 +3433,7 @@ class KeyFromClient final :
                &_KeyFromClient_default_instance_);
   }
   static constexpr int kIndexInFileMessages =
-    16;
+    18;
 
   friend void swap(KeyFromClient& a, KeyFromClient& b) {
     a.Swap(&b);
@@ -3256,7 +3586,7 @@ class StripeIdFromClient final :
                &_StripeIdFromClient_default_instance_);
   }
   static constexpr int kIndexInFileMessages =
-    17;
+    19;
 
   friend void swap(StripeIdFromClient& a, StripeIdFromClient& b) {
     a.Swap(&b);
@@ -3404,7 +3734,7 @@ class StripeIdAndBlockIDsFromClient final :
                &_StripeIdAndBlockIDsFromClient_default_instance_);
   }
   static constexpr int kIndexInFileMessages =
-    18;
+    20;
 
   friend void swap(StripeIdAndBlockIDsFromClient& a, StripeIdAndBlockIDsFromClient& b) {
     a.Swap(&b);
@@ -3577,7 +3907,7 @@ class NodeIdFromClient final :
                &_NodeIdFromClient_default_instance_);
   }
   static constexpr int kIndexInFileMessages =
-    19;
+    21;
 
   friend void swap(NodeIdFromClient& a, NodeIdFromClient& b) {
     a.Swap(&b);
@@ -3725,7 +4055,7 @@ class RepIfDeling final :
                &_RepIfDeling_default_instance_);
   }
   static constexpr int kIndexInFileMessages =
-    20;
+    22;
 
   friend void swap(RepIfDeling& a, RepIfDeling& b) {
     a.Swap(&b);
@@ -3873,7 +4203,7 @@ class RepStripeIds final :
                &_RepStripeIds_default_instance_);
   }
   static constexpr int kIndexInFileMessages =
-    21;
+    23;
 
   friend void swap(RepStripeIds& a, RepStripeIds& b) {
     a.Swap(&b);
@@ -4035,7 +4365,7 @@ class RepBlockNum final :
                &_RepBlockNum_default_instance_);
   }
   static constexpr int kIndexInFileMessages =
-    22;
+    24;
 
   friend void swap(RepBlockNum& a, RepBlockNum& b) {
     a.Swap(&b);
@@ -4183,7 +4513,7 @@ class DegradedReadReply final :
                &_DegradedReadReply_default_instance_);
   }
   static constexpr int kIndexInFileMessages =
-    23;
+    25;
 
   friend void swap(DegradedReadReply& a, DegradedReadReply& b) {
     a.Swap(&b);
@@ -4364,7 +4694,7 @@ class RecoveryReply final :
                &_RecoveryReply_default_instance_);
   }
   static constexpr int kIndexInFileMessages =
-    24;
+    26;
 
   friend void swap(RecoveryReply& a, RecoveryReply& b) {
     a.Swap(&b);
@@ -5454,6 +5784,164 @@ inline ::PROTOBUF_NAMESPACE_ID::RepeatedField< int32_t >*
 ReplyProxyIPsPorts::mutable_group_ids() {
   // @@protoc_insertion_point(field_mutable_list:coordinator_proto.ReplyProxyIPsPorts.group_ids)
   return _internal_mutable_group_ids();
+}
+
+// string cord_transfer_plan_key = 7;
+inline void ReplyProxyIPsPorts::clear_cord_transfer_plan_key() {
+  _impl_.cord_transfer_plan_key_.ClearToEmpty();
+}
+inline const std::string& ReplyProxyIPsPorts::cord_transfer_plan_key() const {
+  // @@protoc_insertion_point(field_get:coordinator_proto.ReplyProxyIPsPorts.cord_transfer_plan_key)
+  return _internal_cord_transfer_plan_key();
+}
+template <typename ArgT0, typename... ArgT>
+inline PROTOBUF_ALWAYS_INLINE
+void ReplyProxyIPsPorts::set_cord_transfer_plan_key(ArgT0&& arg0, ArgT... args) {
+ 
+ _impl_.cord_transfer_plan_key_.Set(static_cast<ArgT0 &&>(arg0), args..., GetArenaForAllocation());
+  // @@protoc_insertion_point(field_set:coordinator_proto.ReplyProxyIPsPorts.cord_transfer_plan_key)
+}
+inline std::string* ReplyProxyIPsPorts::mutable_cord_transfer_plan_key() {
+  std::string* _s = _internal_mutable_cord_transfer_plan_key();
+  // @@protoc_insertion_point(field_mutable:coordinator_proto.ReplyProxyIPsPorts.cord_transfer_plan_key)
+  return _s;
+}
+inline const std::string& ReplyProxyIPsPorts::_internal_cord_transfer_plan_key() const {
+  return _impl_.cord_transfer_plan_key_.Get();
+}
+inline void ReplyProxyIPsPorts::_internal_set_cord_transfer_plan_key(const std::string& value) {
+  
+  _impl_.cord_transfer_plan_key_.Set(value, GetArenaForAllocation());
+}
+inline std::string* ReplyProxyIPsPorts::_internal_mutable_cord_transfer_plan_key() {
+  
+  return _impl_.cord_transfer_plan_key_.Mutable(GetArenaForAllocation());
+}
+inline std::string* ReplyProxyIPsPorts::release_cord_transfer_plan_key() {
+  // @@protoc_insertion_point(field_release:coordinator_proto.ReplyProxyIPsPorts.cord_transfer_plan_key)
+  return _impl_.cord_transfer_plan_key_.Release();
+}
+inline void ReplyProxyIPsPorts::set_allocated_cord_transfer_plan_key(std::string* cord_transfer_plan_key) {
+  if (cord_transfer_plan_key != nullptr) {
+    
+  } else {
+    
+  }
+  _impl_.cord_transfer_plan_key_.SetAllocated(cord_transfer_plan_key, GetArenaForAllocation());
+#ifdef PROTOBUF_FORCE_COPY_DEFAULT_STRING
+  if (_impl_.cord_transfer_plan_key_.IsDefault()) {
+    _impl_.cord_transfer_plan_key_.Set("", GetArenaForAllocation());
+  }
+#endif // PROTOBUF_FORCE_COPY_DEFAULT_STRING
+  // @@protoc_insertion_point(field_set_allocated:coordinator_proto.ReplyProxyIPsPorts.cord_transfer_plan_key)
+}
+
+// -------------------------------------------------------------------
+
+// CordPlanKeyOnly
+
+// string plan_key = 1;
+inline void CordPlanKeyOnly::clear_plan_key() {
+  _impl_.plan_key_.ClearToEmpty();
+}
+inline const std::string& CordPlanKeyOnly::plan_key() const {
+  // @@protoc_insertion_point(field_get:coordinator_proto.CordPlanKeyOnly.plan_key)
+  return _internal_plan_key();
+}
+template <typename ArgT0, typename... ArgT>
+inline PROTOBUF_ALWAYS_INLINE
+void CordPlanKeyOnly::set_plan_key(ArgT0&& arg0, ArgT... args) {
+ 
+ _impl_.plan_key_.Set(static_cast<ArgT0 &&>(arg0), args..., GetArenaForAllocation());
+  // @@protoc_insertion_point(field_set:coordinator_proto.CordPlanKeyOnly.plan_key)
+}
+inline std::string* CordPlanKeyOnly::mutable_plan_key() {
+  std::string* _s = _internal_mutable_plan_key();
+  // @@protoc_insertion_point(field_mutable:coordinator_proto.CordPlanKeyOnly.plan_key)
+  return _s;
+}
+inline const std::string& CordPlanKeyOnly::_internal_plan_key() const {
+  return _impl_.plan_key_.Get();
+}
+inline void CordPlanKeyOnly::_internal_set_plan_key(const std::string& value) {
+  
+  _impl_.plan_key_.Set(value, GetArenaForAllocation());
+}
+inline std::string* CordPlanKeyOnly::_internal_mutable_plan_key() {
+  
+  return _impl_.plan_key_.Mutable(GetArenaForAllocation());
+}
+inline std::string* CordPlanKeyOnly::release_plan_key() {
+  // @@protoc_insertion_point(field_release:coordinator_proto.CordPlanKeyOnly.plan_key)
+  return _impl_.plan_key_.Release();
+}
+inline void CordPlanKeyOnly::set_allocated_plan_key(std::string* plan_key) {
+  if (plan_key != nullptr) {
+    
+  } else {
+    
+  }
+  _impl_.plan_key_.SetAllocated(plan_key, GetArenaForAllocation());
+#ifdef PROTOBUF_FORCE_COPY_DEFAULT_STRING
+  if (_impl_.plan_key_.IsDefault()) {
+    _impl_.plan_key_.Set("", GetArenaForAllocation());
+  }
+#endif // PROTOBUF_FORCE_COPY_DEFAULT_STRING
+  // @@protoc_insertion_point(field_set_allocated:coordinator_proto.CordPlanKeyOnly.plan_key)
+}
+
+// -------------------------------------------------------------------
+
+// CordPlanWaitRequest
+
+// string plan_key = 1;
+inline void CordPlanWaitRequest::clear_plan_key() {
+  _impl_.plan_key_.ClearToEmpty();
+}
+inline const std::string& CordPlanWaitRequest::plan_key() const {
+  // @@protoc_insertion_point(field_get:coordinator_proto.CordPlanWaitRequest.plan_key)
+  return _internal_plan_key();
+}
+template <typename ArgT0, typename... ArgT>
+inline PROTOBUF_ALWAYS_INLINE
+void CordPlanWaitRequest::set_plan_key(ArgT0&& arg0, ArgT... args) {
+ 
+ _impl_.plan_key_.Set(static_cast<ArgT0 &&>(arg0), args..., GetArenaForAllocation());
+  // @@protoc_insertion_point(field_set:coordinator_proto.CordPlanWaitRequest.plan_key)
+}
+inline std::string* CordPlanWaitRequest::mutable_plan_key() {
+  std::string* _s = _internal_mutable_plan_key();
+  // @@protoc_insertion_point(field_mutable:coordinator_proto.CordPlanWaitRequest.plan_key)
+  return _s;
+}
+inline const std::string& CordPlanWaitRequest::_internal_plan_key() const {
+  return _impl_.plan_key_.Get();
+}
+inline void CordPlanWaitRequest::_internal_set_plan_key(const std::string& value) {
+  
+  _impl_.plan_key_.Set(value, GetArenaForAllocation());
+}
+inline std::string* CordPlanWaitRequest::_internal_mutable_plan_key() {
+  
+  return _impl_.plan_key_.Mutable(GetArenaForAllocation());
+}
+inline std::string* CordPlanWaitRequest::release_plan_key() {
+  // @@protoc_insertion_point(field_release:coordinator_proto.CordPlanWaitRequest.plan_key)
+  return _impl_.plan_key_.Release();
+}
+inline void CordPlanWaitRequest::set_allocated_plan_key(std::string* plan_key) {
+  if (plan_key != nullptr) {
+    
+  } else {
+    
+  }
+  _impl_.plan_key_.SetAllocated(plan_key, GetArenaForAllocation());
+#ifdef PROTOBUF_FORCE_COPY_DEFAULT_STRING
+  if (_impl_.plan_key_.IsDefault()) {
+    _impl_.plan_key_.Set("", GetArenaForAllocation());
+  }
+#endif // PROTOBUF_FORCE_COPY_DEFAULT_STRING
+  // @@protoc_insertion_point(field_set_allocated:coordinator_proto.CordPlanWaitRequest.plan_key)
 }
 
 // -------------------------------------------------------------------
@@ -6651,6 +7139,10 @@ inline void RecoveryReply::set_grpc_start_time(double value) {
 #ifdef __GNUC__
   #pragma GCC diagnostic pop
 #endif  // __GNUC__
+// -------------------------------------------------------------------
+
+// -------------------------------------------------------------------
+
 // -------------------------------------------------------------------
 
 // -------------------------------------------------------------------

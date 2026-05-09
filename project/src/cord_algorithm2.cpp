@@ -1,14 +1,81 @@
 #include "cord_algorithm2.h"
+#include "cord_algorithm3.h"
 #include "meta_definition.h"
 #include <algorithm>
 #include <cmath>
+#include <iostream>
 #include <limits>
 #include <queue>
+#include <set>
 
 namespace ECProject
 {
   namespace cord_alg2
   {
+    int64_t merged_delta_union_bytes(
+        const std::map<int, std::vector<std::pair<int, int>>> &block_intervals,
+        const std::vector<int> &data_block_ids)
+    {
+      std::vector<std::pair<int, int>> segs;
+      segs.reserve(static_cast<size_t>(data_block_ids.size()) * 2);
+      for (int bid : data_block_ids)
+      {
+        auto it = block_intervals.find(bid);
+        if (it == block_intervals.end())
+          continue;
+        for (const auto &seg : it->second)
+        {
+          if (seg.second > seg.first)
+            segs.push_back(seg);
+        }
+      }
+      if (segs.empty())
+        return 0;
+      std::sort(segs.begin(), segs.end());
+      int64_t total = 0;
+      int cur_l = segs[0].first;
+      int cur_r = segs[0].second;
+      for (size_t i = 1; i < segs.size(); ++i)
+      {
+        int l = segs[i].first;
+        int r = segs[i].second;
+        if (l <= cur_r)
+          cur_r = std::max(cur_r, r);
+        else
+        {
+          total += static_cast<int64_t>(cur_r - cur_l);
+          cur_l = l;
+          cur_r = r;
+        }
+      }
+      total += static_cast<int64_t>(cur_r - cur_l);
+      return total;
+    }
+
+    int64_t merged_delta_hull_span_bytes(
+        const std::map<int, std::vector<std::pair<int, int>>> &block_intervals,
+        const std::vector<int> &data_block_ids)
+    {
+      int lo = std::numeric_limits<int>::max();
+      int hi_excl = std::numeric_limits<int>::min();
+      for (int bid : data_block_ids)
+      {
+        auto it = block_intervals.find(bid);
+        if (it == block_intervals.end())
+          continue;
+        for (const auto &seg : it->second)
+        {
+          if (seg.second <= seg.first)
+            continue;
+          lo = std::min(lo, seg.first);
+          hi_excl = std::max(hi_excl, seg.second);
+        }
+      }
+      if (lo >= hi_excl)
+        return 0;
+      return static_cast<int64_t>(hi_excl - lo);
+    }
+
     namespace
     {
       int64_t delta_bytes_for_block(
@@ -29,6 +96,19 @@ namespace ECProject
         if (bid < 0 || bid >= static_cast<int>(stripe.blocks.size()))
           return -1;
         return stripe.blocks[bid]->map2cluster;
+      }
+
+      int local_parity_block_for_data_block(const Stripe &stripe, int data_bid)
+      {
+        if (data_bid < 0 || data_bid >= stripe.k)
+          return -1;
+        const int gnum = stripe.blocks[data_bid]->map2group;
+        for (int i = stripe.k + stripe.r; i < stripe.n; ++i)
+        {
+          if (stripe.blocks[i]->map2group == gnum && stripe.blocks[i]->block_type == 'L')
+            return i;
+        }
+        return -1;
       }
 
       double transfer_sec(int src_c, int dst_c, int64_t bytes, const TransferParams &tp)
@@ -255,77 +335,13 @@ namespace ECProject
 
         if (static_cast<int>(N.size()) > 1)
         {
-          // ---------- 相交集：星型 + 传输时间最优全局校验中心 ----------
-          int best_c = k;
-          double best_cost = std::numeric_limits<double>::infinity();
-          for (int cand = k; cand < k + r; ++cand)
-          {
-            int cc = block_cluster(stripe, cand);
-            if (cc < 0)
-              continue;
-            double sum = 0.0;
-            for (int d : N)
-            {
-              int64_t b = delta_bytes_for_block(block_intervals, d);
-              if (b <= 0)
-                continue;
-              int dc = block_cluster(stripe, d);
-              if (dc < 0)
-                continue;
-              sum += transfer_sec(dc, cc, b, tp);
-            }
-            if (sum < best_cost)
-            {
-              best_cost = sum;
-              best_c = cand;
-            }
-          }
-          out.center_global_block_id = best_c;
-
-          int64_t max_b = 0;
-          for (int d : N)
-            max_b = std::max(max_b, delta_bytes_for_block(block_intervals, d));
-          if (max_b <= 0)
+          const int64_t parity_global_b = merged_delta_hull_span_bytes(block_intervals, N);
+          if (parity_global_b <= 0)
           {
             ++gi;
             continue;
           }
 
-          int cc = block_cluster(stripe, best_c);
-          for (int d : N)
-          {
-            int64_t b = delta_bytes_for_block(block_intervals, d);
-            if (b <= 0)
-              continue;
-            int dc = block_cluster(stripe, d);
-            TrainLink L;
-            L.src_block_id = d;
-            L.dst_block_id = best_c;
-            L.src_cluster = dc;
-            L.dst_cluster = cc;
-            L.payload_bytes = b;
-            L.est_transfer_sec = transfer_sec(dc, cc, b, tp);
-            L.group_index = gi;
-            L.kind = TrainLinkKind::STAR_DATA_TO_CENTER;
-            out.train_route.push_back(std::move(L));
-          }
-          for (int g = k; g < k + r; ++g)
-          {
-            if (g == best_c)
-              continue;
-            int gc = block_cluster(stripe, g);
-            TrainLink L;
-            L.src_block_id = best_c;
-            L.dst_block_id = g;
-            L.src_cluster = cc;
-            L.dst_cluster = gc;
-            L.payload_bytes = max_b;
-            L.est_transfer_sec = transfer_sec(cc, gc, max_b, tp);
-            L.group_index = gi;
-            L.kind = TrainLinkKind::STAR_CENTER_TO_GLOBAL;
-            out.train_route.push_back(std::move(L));
-          }
-          // 中心向各受影响数据组对应的局校验块转发（与论文「再写入局校验」一致）
           std::vector<int> groups_touched;
           for (int d : N)
           {
@@ -333,30 +349,247 @@ namespace ECProject
             if (std::find(groups_touched.begin(), groups_touched.end(), gnum) == groups_touched.end())
               groups_touched.push_back(gnum);
           }
-          for (int gnum : groups_touched)
-          {
-            int Lb = -1;
-            for (int i = k + r; i < stripe.n; ++i)
+
+          auto emit_star_from_center = [&](int best_c, int cc_center) {
+            for (int d : N)
             {
-              if (stripe.blocks[i]->map2group == gnum)
+              int64_t b = delta_bytes_for_block(block_intervals, d);
+              if (b <= 0)
+                continue;
+              int dc = block_cluster(stripe, d);
+              TrainLink L;
+              L.src_block_id = d;
+              L.dst_block_id = best_c;
+              L.src_cluster = dc;
+              L.dst_cluster = cc_center;
+              L.payload_bytes = b;
+              L.est_transfer_sec = transfer_sec(dc, cc_center, b, tp);
+              L.group_index = gi;
+              L.kind = TrainLinkKind::STAR_DATA_TO_CENTER;
+              L.delta_kind = CordDeltaPayloadKind::DATA_DELTA;
+              out.train_route.push_back(std::move(L));
+            }
+            for (int g = k; g < k + r; ++g)
+            {
+              if (g == best_c)
+                continue;
+              int gc = block_cluster(stripe, g);
+              TrainLink L;
+              L.src_block_id = best_c;
+              L.dst_block_id = g;
+              L.src_cluster = cc_center;
+              L.dst_cluster = gc;
+              L.payload_bytes = parity_global_b;
+              L.est_transfer_sec = transfer_sec(cc_center, gc, parity_global_b, tp);
+              L.group_index = gi;
+              L.kind = TrainLinkKind::STAR_CENTER_TO_GLOBAL;
+              L.delta_kind = CordDeltaPayloadKind::PARITY_DELTA;
+              L.parity_merge_data_block_ids.assign(N.begin(), N.end());
+              out.train_route.push_back(std::move(L));
+            }
+            for (int gnum : groups_touched)
+            {
+              int Lb = -1;
+              for (int i = k + r; i < stripe.n; ++i)
               {
-                Lb = i;
-                break;
+                if (stripe.blocks[i]->map2group == gnum)
+                {
+                  Lb = i;
+                  break;
+                }
+              }
+              if (Lb < 0)
+                continue;
+              std::vector<int> blocks_same_local_group;
+              for (int d : N)
+              {
+                if (stripe.blocks[d]->map2group == gnum)
+                  blocks_same_local_group.push_back(d);
+              }
+              const int64_t parity_local_b = merged_delta_hull_span_bytes(block_intervals, blocks_same_local_group);
+              if (parity_local_b <= 0)
+                continue;
+              int lc = block_cluster(stripe, Lb);
+              TrainLink L;
+              L.src_block_id = best_c;
+              L.dst_block_id = Lb;
+              L.src_cluster = cc_center;
+              L.dst_cluster = lc;
+              L.payload_bytes = parity_local_b;
+              L.est_transfer_sec = transfer_sec(cc_center, lc, parity_local_b, tp);
+              L.group_index = gi;
+              L.kind = TrainLinkKind::STAR_CENTER_TO_LOCAL;
+              L.delta_kind = CordDeltaPayloadKind::PARITY_DELTA;
+              L.parity_merge_data_block_ids = blocks_same_local_group;
+              out.train_route.push_back(std::move(L));
+            }
+          };
+
+          bool fused_alg3 = false;
+          if (static_cast<int>(N.size()) >= 3)
+          {
+            cord_alg3::Algorithm3Result alg3 =
+                cord_alg3::build_algorithm3(stripe, block_intervals, N, cluster_num, tp);
+            if (alg3.applied && alg3.G.size() == alg3.dcp.group_to_collector.size() && !alg3.G.empty())
+            {
+              std::set<int> used_collectors;
+              bool assign_ok = true;
+              for (size_t j = 0; j < alg3.G.size(); ++j)
+              {
+                int cidx = alg3.dcp.group_to_collector[j];
+                if (cidx < 0 || cidx >= r)
+                {
+                  assign_ok = false;
+                  break;
+                }
+                used_collectors.insert(k + cidx);
+              }
+              if (assign_ok && !used_collectors.empty())
+              {
+                fused_alg3 = true;
+                std::cout << "[CoRD] Algorithm 2+3 fused |N|=" << N.size() << " g=" << alg3.G.size()
+                          << " collectors:";
+                for (int col : used_collectors)
+                  std::cout << " " << col;
+                std::cout << "\n";
+
+                for (size_t j = 0; j < alg3.G.size(); ++j)
+                {
+                  const auto &grp = alg3.G[j];
+                  if (grp.block_ids.empty())
+                    continue;
+                  int cidx = alg3.dcp.group_to_collector[j];
+                  int col = k + cidx;
+                  int cc = block_cluster(stripe, col);
+                  for (int d : grp.block_ids)
+                  {
+                    int64_t b = delta_bytes_for_block(block_intervals, d);
+                    if (b <= 0)
+                      continue;
+                    int dc = block_cluster(stripe, d);
+                    TrainLink L;
+                    L.src_block_id = d;
+                    L.dst_block_id = col;
+                    L.src_cluster = dc;
+                    L.dst_cluster = cc;
+                    L.payload_bytes = b;
+                    L.est_transfer_sec = transfer_sec(dc, cc, b, tp);
+                    L.group_index = gi;
+                    L.kind = TrainLinkKind::STAR_DATA_TO_CENTER;
+                    L.delta_kind = CordDeltaPayloadKind::DATA_DELTA;
+                    out.train_route.push_back(std::move(L));
+                  }
+                }
+
+                for (int col : used_collectors)
+                {
+                  int cc = block_cluster(stripe, col);
+                  std::vector<int> blocks_to_col;
+                  for (size_t j = 0; j < alg3.G.size(); ++j)
+                  {
+                    if (k + alg3.dcp.group_to_collector[j] != col)
+                      continue;
+                    for (int bid : alg3.G[j].block_ids)
+                      blocks_to_col.push_back(bid);
+                  }
+                  const int64_t parity_at_col =
+                      merged_delta_hull_span_bytes(block_intervals, blocks_to_col);
+                  if (parity_at_col <= 0)
+                    continue;
+                  for (int gpar = k; gpar < k + r; ++gpar)
+                  {
+                    if (gpar == col)
+                      continue;
+                    int gc = block_cluster(stripe, gpar);
+                    TrainLink L;
+                    L.src_block_id = col;
+                    L.dst_block_id = gpar;
+                    L.src_cluster = cc;
+                    L.dst_cluster = gc;
+                    L.payload_bytes = parity_at_col;
+                    L.est_transfer_sec = transfer_sec(cc, gc, parity_at_col, tp);
+                    L.group_index = gi;
+                    L.kind = TrainLinkKind::STAR_CENTER_TO_GLOBAL;
+                    L.delta_kind = CordDeltaPayloadKind::PARITY_DELTA;
+                    L.parity_merge_data_block_ids = blocks_to_col;
+                    out.train_route.push_back(std::move(L));
+                  }
+                  for (int gnum : groups_touched)
+                  {
+                    int Lb = -1;
+                    for (int i = k + r; i < stripe.n; ++i)
+                    {
+                      if (stripe.blocks[i]->map2group == gnum)
+                      {
+                        Lb = i;
+                        break;
+                      }
+                    }
+                    if (Lb < 0)
+                      continue;
+                    std::vector<int> blocks_local;
+                    for (size_t j = 0; j < alg3.G.size(); ++j)
+                    {
+                      if (k + alg3.dcp.group_to_collector[j] != col)
+                        continue;
+                      for (int bid : alg3.G[j].block_ids)
+                      {
+                        if (stripe.blocks[bid]->map2group == gnum)
+                          blocks_local.push_back(bid);
+                      }
+                    }
+                    const int64_t parity_local_col =
+                        merged_delta_hull_span_bytes(block_intervals, blocks_local);
+                    if (parity_local_col <= 0)
+                      continue;
+                    int lc = block_cluster(stripe, Lb);
+                    TrainLink L;
+                    L.src_block_id = col;
+                    L.dst_block_id = Lb;
+                    L.src_cluster = cc;
+                    L.dst_cluster = lc;
+                    L.payload_bytes = parity_local_col;
+                    L.est_transfer_sec = transfer_sec(cc, lc, parity_local_col, tp);
+                    L.group_index = gi;
+                    L.kind = TrainLinkKind::STAR_CENTER_TO_LOCAL;
+                    L.delta_kind = CordDeltaPayloadKind::PARITY_DELTA;
+                    L.parity_merge_data_block_ids = blocks_local;
+                    out.train_route.push_back(std::move(L));
+                  }
+                }
+                out.center_global_block_id = *used_collectors.begin();
               }
             }
-            if (Lb < 0)
-              continue;
-            int lc = block_cluster(stripe, Lb);
-            TrainLink L;
-            L.src_block_id = best_c;
-            L.dst_block_id = Lb;
-            L.src_cluster = cc;
-            L.dst_cluster = lc;
-            L.payload_bytes = max_b;
-            L.est_transfer_sec = transfer_sec(cc, lc, max_b, tp);
-            L.group_index = gi;
-            L.kind = TrainLinkKind::STAR_CENTER_TO_LOCAL;
-            out.train_route.push_back(std::move(L));
+          }
+
+          if (!fused_alg3)
+          {
+            int best_c = k;
+            double best_cost = std::numeric_limits<double>::infinity();
+            for (int cand = k; cand < k + r; ++cand)
+            {
+              int cc = block_cluster(stripe, cand);
+              if (cc < 0)
+                continue;
+              double sum = 0.0;
+              for (int d : N)
+              {
+                int64_t b = delta_bytes_for_block(block_intervals, d);
+                if (b <= 0)
+                  continue;
+                int dc = block_cluster(stripe, d);
+                if (dc < 0)
+                  continue;
+                sum += transfer_sec(dc, cc, b, tp);
+              }
+              if (sum < best_cost)
+              {
+                best_cost = sum;
+                best_c = cand;
+              }
+            }
+            out.center_global_block_id = best_c;
+            emit_star_from_center(best_c, block_cluster(stripe, best_c));
           }
         }
         else
@@ -369,11 +602,14 @@ namespace ECProject
             ++gi;
             continue;
           }
-          int numV = 1 + r;
-          std::vector<int> vid(numV);
+          const int Lb = local_parity_block_for_data_block(stripe, d);
+          const int numV = 1 + r + (Lb >= 0 ? 1 : 0);
+          std::vector<int> vid(static_cast<size_t>(numV));
           vid[0] = d;
           for (int j = 0; j < r; ++j)
-            vid[1 + j] = k + j;
+            vid[static_cast<size_t>(1 + j)] = k + j;
+          if (Lb >= 0)
+            vid[static_cast<size_t>(1 + r)] = Lb;
 
           std::vector<KruskalEdge> edges;
           edges.reserve(static_cast<size_t>(numV * (numV - 1) / 2));
@@ -423,6 +659,9 @@ namespace ECProject
             L.est_transfer_sec = transfer_sec(sc, dc, bd, tp);
             L.group_index = gi;
             L.kind = TrainLinkKind::MST_FORWARD;
+            // |N|=1：最小生成树上每跳均传输同一数据块的数据增量 ΔD（非校验增量）
+            L.delta_kind = CordDeltaPayloadKind::DATA_DELTA;
+            L.mst_origin_data_block = d;
             out.train_route.push_back(std::move(L));
           }
         }
@@ -445,6 +684,27 @@ namespace ECProject
       }
 
       int ts = 0;
+      /** 收集器扇出校验增量前，同组内发往该 collector 的所有数据增量链路须已完成全部时隙（remaining==0）。 */
+      auto collector_star_data_ingress_done = [&](int group_idx, int collector_block_id) -> bool {
+        for (size_t j = 0; j < out.train_route.size(); ++j)
+        {
+          const TrainLink &J = out.train_route[j];
+          if (J.kind != TrainLinkKind::STAR_DATA_TO_CENTER)
+            continue;
+          if (J.group_index != group_idx || J.dst_block_id != collector_block_id)
+            continue;
+          if (remaining[j] > 0)
+            return false;
+        }
+        return true;
+      };
+      auto link_eligible_for_slot = [&](size_t i) -> bool {
+        const TrainLink &L = out.train_route[i];
+        if (L.kind == TrainLinkKind::STAR_CENTER_TO_GLOBAL || L.kind == TrainLinkKind::STAR_CENTER_TO_LOCAL)
+          return collector_star_data_ingress_done(L.group_index, L.src_block_id);
+        return true;
+      };
+
       while (true)
       {
         bool any = false;
@@ -469,6 +729,8 @@ namespace ECProject
         {
           if (remaining[i] <= 0)
             continue;
+          if (!link_eligible_for_slot(i))
+            continue;
           const TrainLink &L = out.train_route[i];
           if (L.src_cluster < 0 || L.dst_cluster < 0 ||
               L.src_cluster >= C || L.dst_cluster >= C)
@@ -483,10 +745,10 @@ namespace ECProject
         din.collect_used_links(C, used);
         if (used.empty())
         {
-          // 无匹配（不应发生）；强制推进一条剩余链路避免死循环
+          // 无匹配：强制推进一条「依赖已满足」的剩余链路，避免死循环
           for (size_t i = 0; i < remaining.size(); ++i)
           {
-            if (remaining[i] > 0)
+            if (remaining[i] > 0 && link_eligible_for_slot(i))
             {
               used.push_back(static_cast<int>(i));
               break;

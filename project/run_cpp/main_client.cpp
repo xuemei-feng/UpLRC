@@ -22,7 +22,7 @@ int main(int argc, char **argv)
     std::cout << "Current working directory: " << sys_config_path << std::endl;
 
     const ECProject::Config *config = ECProject::Config::getInstance(sys_config_path);
-    std::string client_ip = "127.0.0.1";
+    std::string client_ip = "10.10.1.1";
     int client_port = 77777;
     ECProject::Client client(client_ip, client_port, config->CoordinatorIP + ":" + std::to_string(config->CoordinatorPort), sys_config_path);
     std::cout << client.sayHelloToCoordinatorByGrpc("Client ID: " + client_ip + ":" + std::to_string(client_port)) << std::endl;
@@ -71,10 +71,10 @@ int main(int argc, char **argv)
     if (input == 'y') 
     {
         std::string method;
-        std::cout << "Select update method: " << std::endl;
+        std::cout << "Select update method (xue | cord): " << std::endl;
         std::cin >> method;
 
-        if (method == "xue") 
+        if (method == "xue")
         {
             int stripe_id = 0;
             int range_cnt = 0;
@@ -98,8 +98,39 @@ int main(int argc, char **argv)
             std::cout << "Calling xue's update function..." << std::endl;
             const bool ok = client.xue_update(stripe_id, logical_ranges);
             std::cout << "xue_update result: " << (ok ? "success" : "failed") << std::endl;
-        } 
-        else 
+        }
+        else if (method == "cord")
+        {
+            int stripe_id = 0;
+            int range_cnt = 0;
+            std::cout << "CoRD: stripe_id range_count (then enter each [start,end) interval):" << std::endl;
+            std::cin >> stripe_id >> range_cnt;
+            if (range_cnt <= 0)
+            {
+                std::cout << "Invalid range_count: " << range_cnt << std::endl;
+                return 1;
+            }
+            std::vector<std::pair<int, int>> logical_ranges;
+            logical_ranges.reserve(static_cast<size_t>(range_cnt));
+            std::cout << "Each line: logical_offset_start logical_offset_end_exclusive" << std::endl;
+            for (int i = 0; i < range_cnt; i++)
+            {
+                int logical_offset_start = 0;
+                int logical_offset_end = 0;
+                std::cin >> logical_offset_start >> logical_offset_end;
+                logical_ranges.emplace_back(logical_offset_start, logical_offset_end);
+            }
+            std::cout << "Calling cord_update (xfer plan updates global parity; LP RPC updates local parity)..." << std::endl;
+            const std::chrono::high_resolution_clock::time_point req_start = std::chrono::high_resolution_clock::now();
+            const bool ok = client.cord_update(stripe_id, logical_ranges, nullptr, 0);
+            const std::chrono::high_resolution_clock::time_point req_end = std::chrono::high_resolution_clock::now();
+            const std::chrono::duration<double> cord_wall =
+                std::chrono::duration_cast<std::chrono::duration<double>>(req_end - req_start);
+            std::cout << "cord_update result: " << (ok ? "success" : "failed") << std::endl;
+            std::cout << "cord_update wall time (Client::cord_update only): " << std::fixed << std::setprecision(6)
+                      << cord_wall.count() << " s" << std::endl;
+        }
+        else
         {
             std::cout << "Unknown method: " << method << std::endl;
         }

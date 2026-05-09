@@ -47,6 +47,13 @@ service proxyService {
   rpc cordLpHubPartialPush(CordLpHubPartialPush) returns (SetReply);
   rpc cordLpComputePartialAndPush(CordLpComputePartialAndPush) returns (SetReply);
   rpc cordLpApplyParityDelta(CordLpParityApplyDelta) returns (SetReply);
+  // CoRD：下发算法二生成的跨 proxy 传输计划（train_route + timeslot_schedule 的可序列化形式）
+  rpc scheduleCordTransferPlan(CordTransferPlan) returns (SetReply);
+  rpc cordPlanJoinExecution(CordPlanKeyMsg) returns (SetReply);
+  // CoRD 跨 proxy：收集器聚合数据增量 / 校验块 XOR 落盘 / MST 转发数据增量
+  rpc cordPlanCollectorIngestDataDelta(CordPlanCollectorIngestReq) returns (SetReply);
+  rpc cordPlanApplyParityXorDelta(CordPlanApplyParityXorReq) returns (SetReply);
+  rpc cordPlanMstDataDeltaChunk(CordPlanMstDataDeltaReq) returns (SetReply);
   // get stripe
   rpc getBlocks(StripeAndBlockIDs) returns (GetReply);
 }
@@ -257,6 +264,175 @@ message AppendStripeDataPlacement{
   bool is_merge_parity = 11;
   string append_mode = 12;
   bool is_serialized = 13;
+}
+
+// 算法二链路类型，与 cord_alg2::TrainLinkKind 一致
+enum CordTransferLinkKind {
+  CORD_TRANSFER_STAR_DATA_TO_CENTER = 0;
+  CORD_TRANSFER_STAR_CENTER_TO_GLOBAL = 1;
+  CORD_TRANSFER_STAR_CENTER_TO_LOCAL = 2;
+  CORD_TRANSFER_MST_FORWARD = 3;
+}
+
+// 与 cord_alg2::CordDeltaPayloadKind 一致：线上是数据增量还是校验增量
+enum CordDeltaPayloadKind {
+  CORD_DELTA_DATA = 0;
+  CORD_DELTA_PARITY = 1;
+}
+
+message CordTransferClusterEndpoint {
+  int32 cluster_id = 1;
+  string proxy_ip = 2;
+  int32 proxy_port = 3;
+}
+
+message CordTransferBlockPlacement {
+  int32 block_id = 1;
+  string block_key = 2;
+  string datanode_ip = 3;
+  int32 datanode_port = 4;
+}
+
+message CordTransferDeltaBlobRef {
+  int32 cluster_id = 1;
+  string cord_plan_key = 2;
+  string delta_blob_key = 3;
+  string delta_datanode_ip = 4;
+  int32 delta_datanode_port = 5;
+}
+
+// 相交集一组内，收集器按字节 XOR 合并数据增量时的缓冲区长度（取组内各数据链路 payload 上界）
+message CordTransferGroupXorHint {
+  int32 group_index = 1;
+  uint64 xor_accum_byte_length = 2;
+}
+
+// 每个 cluster 上 cord delta 拼接 blob 内，各数据块增量区间的起点与长度（与 notify cord_update 顺序一致）
+message CordTransferClusterDeltaLayout {
+  int32 cluster_id = 1;
+  repeated int32 data_block_ids = 2;
+  repeated uint64 delta_base_offset = 3;
+  repeated uint64 delta_total_length = 4;
+}
+
+// 单条传输步骤（对应一次时隙内选中的一条 train_route 链路片段）
+message CordTransferStep {
+  int32 step_index = 1;
+  int32 src_proxy_cluster_id = 2;
+  int32 dst_proxy_cluster_id = 3;
+  int32 src_block_id = 4;
+  int32 dst_block_id = 5;
+  uint64 payload_bytes = 6;
+  CordTransferLinkKind link_kind = 7;
+  uint32 scheduled_slot = 8;
+  int32 depends_on_step_index = 9;
+  double estimated_transfer_sec = 10;
+  int32 group_index = 11;
+  CordDeltaPayloadKind delta_payload_kind = 12;
+  uint64 chunk_byte_offset = 13;
+  uint64 chunk_byte_length = 14;
+  // 仅 STAR_CENTER_TO_LOCAL 且矩阵/合并语义：只使用 map2group==该值的数据块增量参与编码；不设置则扇出用全量收集缓冲
+  optional int32 parity_ingest_stripe_group = 15;
+  // |N|=1 MST：载荷恒为原始数据块 d 的增量；中继 hop 的 src_block_id 可能为校验块
+  optional int32 mst_origin_data_block_id = 16;
+  // 非空：STAR_CENTER 校验扇出合并跨度/XOR 仅含这些数据块（与算法三 collector 子集一致）；空则按 parity_ingest_stripe_group 全组
+  repeated int32 parity_merge_data_block_ids = 17;
+}
+
+message CordBlockStripeGroup {
+  int32 block_id = 1;
+  int32 stripe_group = 2;
+}
+
+// 本次 CoRD 更新中各数据块在块内的半开区间 [lo, hi_excl)（与 coordinator block_intervals 一致）；
+// 供 proxy 将「合并校验跨度」内的逻辑字节偏移映射到 ingest 缓冲区内的 packed 下标。
+message CordBlockHalfOpenSeg {
+  int32 block_id = 1;
+  int32 lo = 2;
+  int32 hi_excl = 3;
+}
+
+// LRC 矩阵编码条带（与 coordinator build_slice_plan + lrc_make_matrix 一致）
+message CordTransferEncodeMeta {
+  int32 encode_type = 1;         // ECProject::EncodeType
+  int32 k = 2;
+  int32 g_m = 3;
+  int32 l = 4;
+  int32 parity_slice_offset = 5;
+  int32 parity_slice_size = 6;
+}
+
+// 每个收集器期望收到的数据块增量（按块分缓冲，供矩阵乘）
+message CordCollectorIngressExpect {
+  int32 group_index = 1;
+  int32 collector_block_id = 2;
+  repeated int32 src_data_block_ids = 3;
+  repeated uint64 src_delta_total_bytes = 4;
+}
+
+// 各数据块在本次更新中相对于校验条带的切片（块内 [slice_offset, slice_offset+slice_len)）
+message CordDataStripDesc {
+  int32 block_id = 1;
+  int32 slice_offset = 2;
+  int32 slice_len = 3;
+}
+
+message CordPlanKeyMsg {
+  string plan_key = 1;
+}
+
+message CordTransferPlan {
+  int32 stripe_id = 1;
+  string plan_key = 2;
+  uint32 total_rounds = 3;
+  repeated CordTransferStep steps = 4;
+  int32 slot_unit_bytes = 5;
+  int32 k_datablock = 6;
+  repeated CordTransferClusterEndpoint cluster_endpoints = 7;
+  repeated CordTransferBlockPlacement block_placements = 8;
+  repeated CordTransferDeltaBlobRef delta_blob_refs = 9;
+  repeated CordTransferGroupXorHint group_xor_hints = 10;
+  repeated CordTransferClusterDeltaLayout cluster_delta_layouts = 11;
+  CordTransferEncodeMeta cord_encode_meta = 12;
+  repeated CordCollectorIngressExpect cord_collector_expects = 13;
+  repeated CordDataStripDesc cord_data_strip_descs = 14;
+  repeated CordBlockStripeGroup cord_block_stripe_groups = 15;
+  repeated CordBlockHalfOpenSeg cord_block_delta_segs = 16;
+}
+
+message CordPlanCollectorIngestReq {
+  string plan_key = 1;
+  int32 group_index = 2;
+  int32 collector_block_id = 3;
+  uint64 chunk_byte_offset = 4;
+  bytes chunk_payload = 5;
+  uint64 xor_accum_byte_length = 6;
+  int32 src_data_block_id = 7;
+}
+
+message CordPlanApplyParityXorReq {
+  string plan_key = 1;
+  int32 dst_block_id = 2;
+  string block_key = 3;
+  string datanode_ip = 4;
+  int32 datanode_port = 5;
+  int32 parity_slice_offset = 6;
+  int32 parity_slice_length = 7;
+  bytes parity_delta_payload = 8;
+}
+
+message CordPlanMstDataDeltaReq {
+  string plan_key = 1;
+  int32 dst_proxy_cluster_id = 2;
+  int32 dst_block_id = 3;
+  int32 k_datablock = 4;
+  uint64 chunk_byte_offset = 5;
+  bytes chunk_payload = 6;
+  uint64 total_expected_bytes = 7;
+  string parity_block_key = 8;
+  string parity_datanode_ip = 9;
+  int32 parity_datanode_port = 10;
+  int32 src_data_block_id = 11;
 }
 
 message CordDataUpdatePlacement {

@@ -5,11 +5,28 @@
 #include <thread>
 #include <assert.h>
 #include <chrono>
+#include <iomanip>
+#include <random>
+#include <sstream>
 #include "unilrc_encoder.h"
 namespace ECProject
 {
   namespace
   {
+    std::string cord_client_hex_preview(const char *p, size_t len, size_t max_show = 48)
+    {
+      if (!p || len == 0)
+        return "";
+      std::ostringstream oss;
+      oss << std::hex << std::setfill('0');
+      const size_t n = std::min(len, max_show);
+      for (size_t i = 0; i < n; ++i)
+        oss << std::setw(2) << static_cast<unsigned>(static_cast<unsigned char>(p[i]));
+      if (len > max_show)
+        oss << "...+" << (len - max_show) << "b";
+      return oss.str();
+    }
+
     bool is_azure_like_code(const std::string &code_type)
     {
       return code_type == "AzureLRC" || code_type == "RandomLRC";
@@ -332,18 +349,25 @@ namespace ECProject
 
   void Client::async_cord_update_to_proxies(char *cluster_slice_data, std::string cord_key, int cluster_slice_size, std::string proxy_ip, int proxy_port, int index, bool *if_commit_arr)
   {
-    asio::io_context io_context;
-    asio::error_code error;
-    asio::ip::tcp::resolver resolver(io_context);
-    asio::ip::tcp::resolver::results_type endpoints =
-        resolver.resolve(proxy_ip, std::to_string(proxy_port));
-    asio::ip::tcp::socket sock_data(io_context);
-    asio::connect(sock_data, endpoints);
+    std::cout << "[CoRD][Client " << m_clientID << "] TCP send slice_idx=" << index << " bytes=" << cluster_slice_size
+              << " -> proxy " << proxy_ip << ":" << proxy_port << " cord_key=" << cord_key
+              << " payload_preview=" << cord_client_hex_preview(cluster_slice_data, static_cast<size_t>(cluster_slice_size))
+              << std::endl;
+    {
+      std::lock_guard<std::mutex> lk(m_proxy_tcp_mu);
+      asio::io_context io_context;
+      asio::error_code error;
+      asio::ip::tcp::resolver resolver(io_context);
+      asio::ip::tcp::resolver::results_type endpoints =
+          resolver.resolve(proxy_ip, std::to_string(proxy_port));
+      asio::ip::tcp::socket sock_data(io_context);
+      asio::connect(sock_data, endpoints);
 
-    asio::write(sock_data, asio::buffer(cluster_slice_data, cluster_slice_size), error);
-    asio::error_code ignore_ec;
-    sock_data.shutdown(asio::ip::tcp::socket::shutdown_send, ignore_ec);
-    sock_data.close(ignore_ec);
+      asio::write(sock_data, asio::buffer(cluster_slice_data, static_cast<size_t>(cluster_slice_size)), error);
+      asio::error_code ignore_ec;
+      sock_data.shutdown(asio::ip::tcp::socket::shutdown_send, ignore_ec);
+      sock_data.close(ignore_ec);
+    }
 
     grpc::ClientContext check_commit;
     coordinator_proto::AskIfSuccess request;
@@ -364,18 +388,21 @@ namespace ECProject
   void Client::async_append_to_proxies(char *cluster_slice_data, std::string append_key, int cluster_slice_size, std::string proxy_ip, int proxy_port, int index, bool *if_commit_arr)
   {
     // std::cout << "[Append174] Appending size " << cluster_slice_size << " to proxy_address:" << proxy_ip << ":" << proxy_port << std::endl;
-    asio::io_context io_context;
-    asio::error_code error;
-    asio::ip::tcp::resolver resolver(io_context);
-    asio::ip::tcp::resolver::results_type endpoints =
-        resolver.resolve(proxy_ip, std::to_string(proxy_port));
-    asio::ip::tcp::socket sock_data(io_context);
-    asio::connect(sock_data, endpoints);
+    {
+      std::lock_guard<std::mutex> lk(m_proxy_tcp_mu);
+      asio::io_context io_context;
+      asio::error_code error;
+      asio::ip::tcp::resolver resolver(io_context);
+      asio::ip::tcp::resolver::results_type endpoints =
+          resolver.resolve(proxy_ip, std::to_string(proxy_port));
+      asio::ip::tcp::socket sock_data(io_context);
+      asio::connect(sock_data, endpoints);
 
-    asio::write(sock_data, asio::buffer(cluster_slice_data, cluster_slice_size), error);
-    asio::error_code ignore_ec;
-    sock_data.shutdown(asio::ip::tcp::socket::shutdown_send, ignore_ec);
-    sock_data.close(ignore_ec);
+      asio::write(sock_data, asio::buffer(cluster_slice_data, static_cast<size_t>(cluster_slice_size)), error);
+      asio::error_code ignore_ec;
+      sock_data.shutdown(asio::ip::tcp::socket::shutdown_send, ignore_ec);
+      sock_data.close(ignore_ec);
+    }
 
     // check if metadata is saved successfully
     grpc::ClientContext check_commit;
@@ -664,7 +691,6 @@ namespace ECProject
     }
     else
     {
-      std::vector<std::thread> threads;
       std::vector<char *> cluster_slice_data = m_toolbox->splitCharPointer(m_pre_allocated_buffer, &reply);
       std::unique_ptr<bool[]> if_commit_arr(new bool[reply.append_keys_size()]);
       std::fill_n(if_commit_arr.get(), reply.append_keys_size(), false);
@@ -700,12 +726,8 @@ namespace ECProject
       }
       for (int i = 0; i < reply.append_keys_size(); i++)
       {
-        threads.push_back(std::thread(&Client::async_append_to_proxies,
-                                      this, cluster_slice_data[i], reply.append_keys(i), reply.cluster_slice_sizes(i), reply.proxyips(i), reply.proxyports(i), i, if_commit_arr.get()));
-      }
-      for (auto &thread : threads)
-      {
-        thread.join();
+        async_append_to_proxies(cluster_slice_data[i], reply.append_keys(i), reply.cluster_slice_sizes(i),
+                                reply.proxyips(i), reply.proxyports(i), i, if_commit_arr.get());
       }
 
       // check if all appends are successful
@@ -744,7 +766,6 @@ namespace ECProject
     }
     else
     {
-      std::vector<std::thread> threads;
       std::vector<char *> cluster_slice_data = m_toolbox->splitCharPointer(m_pre_allocated_buffer, &reply);
       std::unique_ptr<bool[]> if_commit_arr(new bool[reply.append_keys_size()]);
       std::fill_n(if_commit_arr.get(), reply.append_keys_size(), false);
@@ -790,12 +811,8 @@ namespace ECProject
       }
       for (int i = 0; i < reply.append_keys_size(); i++)
       {
-        threads.push_back(std::thread(&Client::async_append_to_proxies,
-                                      this, cluster_slice_data[i], reply.append_keys(i), reply.cluster_slice_sizes(i), reply.proxyips(i), reply.proxyports(i), i, if_commit_arr.get()));
-      }
-      for (auto &thread : threads)
-      {
-        thread.join();
+        async_append_to_proxies(cluster_slice_data[i], reply.append_keys(i), reply.cluster_slice_sizes(i),
+                                reply.proxyips(i), reply.proxyports(i), i, if_commit_arr.get());
       }
 
       // check if all appends are successful
@@ -848,19 +865,14 @@ namespace ECProject
       return false;
     }
 
-    std::vector<std::thread> threads;
     std::vector<char *> cluster_slice_data = m_toolbox->splitCharPointer(m_pre_allocated_buffer, &reply);
     std::unique_ptr<bool[]> if_commit_arr(new bool[reply.append_keys_size()]);
     std::fill_n(if_commit_arr.get(), reply.append_keys_size(), false);
 
     for (int i = 0; i < reply.append_keys_size(); i++)
     {
-      threads.push_back(std::thread(&Client::async_append_to_proxies,
-                                    this, cluster_slice_data[i], reply.append_keys(i), reply.cluster_slice_sizes(i), reply.proxyips(i), reply.proxyports(i), i, if_commit_arr.get()));
-    }
-    for (auto &thread : threads)
-    {
-      thread.join();
+      async_append_to_proxies(cluster_slice_data[i], reply.append_keys(i), reply.cluster_slice_sizes(i),
+                              reply.proxyips(i), reply.proxyports(i), i, if_commit_arr.get());
     }
 
     bool all_true = std::all_of(if_commit_arr.get(), if_commit_arr.get() + reply.append_keys_size(), [](bool val)
@@ -873,17 +885,11 @@ namespace ECProject
   }
 
   bool Client::cord_update(int stripe_id, const std::vector<std::pair<int, int>> &logical_ranges,
-                           const char *update_payload, size_t update_payload_bytes, int interval_count,
-                           bool cord_lp_via_global_hub)
+                           const char *update_payload, size_t update_payload_bytes)
   {
     if (logical_ranges.empty())
     {
       std::cout << "[CoRD] Empty update intervals." << std::endl;
-      return false;
-    }
-    if (update_payload == nullptr)
-    {
-      std::cout << "[CoRD] update_payload is null." << std::endl;
       return false;
     }
     grpc::ClientContext ctx;
@@ -891,10 +897,7 @@ namespace ECProject
     coordinator_proto::ReplyProxyIPsPorts reply;
     request.set_client_id(m_clientID);
     request.set_stripe_id(stripe_id);
-    if (interval_count > 0)
-    {
-      request.set_interval_count(interval_count);
-    }
+    request.set_interval_count(static_cast<int32_t>(logical_ranges.size()));
     for (const auto &r : logical_ranges)
     {
       if (r.second <= r.first)
@@ -907,6 +910,7 @@ namespace ECProject
       range->set_logical_offset_end(r.second);
     }
 
+    const auto cord_wall_t0 = std::chrono::steady_clock::now();
     grpc::Status status = m_coordinator_ptr->uploadCordUpdate(&ctx, request, &reply);
     if (!status.ok())
     {
@@ -917,45 +921,88 @@ namespace ECProject
     {
       return true;
     }
-    if (update_payload_bytes != static_cast<size_t>(reply.sum_append_size()))
+
+    std::vector<char> owned_random;
+    const char *payload_send = update_payload;
+    if (update_payload == nullptr)
+    {
+      if (update_payload_bytes != 0)
+      {
+        std::cout << "[CoRD] auto random payload: require update_payload_bytes==0 when payload is null" << std::endl;
+        return false;
+      }
+      owned_random.resize(static_cast<size_t>(reply.sum_append_size()));
+      std::random_device rd;
+      std::mt19937 gen(rd());
+      std::uniform_int_distribution<unsigned> dist(0, 255);
+      for (size_t i = 0; i < owned_random.size(); ++i)
+        owned_random[i] = static_cast<char>(static_cast<unsigned char>(dist(gen)));
+      payload_send = owned_random.data();
+      std::cout << "[CoRD][Client " << m_clientID << "] stripe_id=" << stripe_id
+                << " auto random payload total_bytes=" << owned_random.size() << " intervals:";
+      for (const auto &r : logical_ranges)
+        std::cout << " [" << r.first << "," << r.second << ")";
+      std::cout << '\n'
+                << "[CoRD][Client " << m_clientID << "] random_payload_preview="
+                << cord_client_hex_preview(owned_random.data(), owned_random.size()) << std::endl;
+    }
+    else if (update_payload_bytes != static_cast<size_t>(reply.sum_append_size()))
     {
       std::cout << "[CoRD] payload size mismatch: got " << update_payload_bytes << " expected " << reply.sum_append_size() << std::endl;
       return false;
     }
-    std::vector<char *> cluster_slices = m_toolbox->splitCharPointer(update_payload, &reply);
-    std::vector<std::thread> threads;
+
+    std::cout << "[CoRD][Client " << m_clientID << "] coordinator replied append_keys=" << reply.append_keys_size()
+              << " sum_append_size=" << reply.sum_append_size() << std::endl;
+    for (int i = 0; i < reply.append_keys_size(); ++i)
+    {
+      std::cout << "[CoRD][Client " << m_clientID << "]   slice " << i << " cluster_gid=" << reply.group_ids(i)
+                << " bytes=" << reply.cluster_slice_sizes(i) << " -> proxy " << reply.proxyips(i) << ":"
+                << reply.proxyports(i) << " key=" << reply.append_keys(i) << std::endl;
+    }
+
+    std::vector<char *> cluster_slices = m_toolbox->splitCharPointer(payload_send, &reply);
     std::unique_ptr<bool[]> if_commit_arr(new bool[reply.append_keys_size()]);
     std::fill_n(if_commit_arr.get(), reply.append_keys_size(), false);
     for (int i = 0; i < reply.append_keys_size(); i++)
     {
-      threads.push_back(std::thread(&Client::async_cord_update_to_proxies, this, cluster_slices[i],
-                                    reply.append_keys(i), static_cast<int>(reply.cluster_slice_sizes(i)),
-                                    reply.proxyips(i), reply.proxyports(i), i, if_commit_arr.get()));
+      async_cord_update_to_proxies(cluster_slices[i], reply.append_keys(i), static_cast<int>(reply.cluster_slice_sizes(i)),
+                                   reply.proxyips(i), reply.proxyports(i), i, if_commit_arr.get());
     }
-    for (auto &thread : threads)
-      thread.join();
     if (!std::all_of(if_commit_arr.get(), if_commit_arr.get() + reply.append_keys_size(),
                      [](bool v) { return v; }))
       return false;
 
-    request.set_cord_lp_use_global_hub(cord_lp_via_global_hub);
-    grpc::ClientContext ctx_lp;
-    coordinator_proto::RepIfSuccess lp_reply;
-    grpc::Status lpst;
-    if (cord_lp_via_global_hub)
-      lpst = m_coordinator_ptr->uploadCordLocalParityViaGlobalHub(&ctx_lp, request, &lp_reply);
-    else
-      lpst = m_coordinator_ptr->uploadCordLocalParityApply(&ctx_lp, request, &lp_reply);
-    if (!lpst.ok())
+    if (!reply.cord_transfer_plan_key().empty())
     {
-      std::cout << "[CoRD-LP] uploadCordLocalParity failed: " << lpst.error_message() << std::endl;
-      return false;
+      grpc::ClientContext ctx_begin;
+      coordinator_proto::CordPlanKeyOnly begin_req;
+      begin_req.set_plan_key(reply.cord_transfer_plan_key());
+      coordinator_proto::RepIfSuccess begin_rep;
+      grpc::Status st_begin = m_coordinator_ptr->cordPlanBeginTransfer(&ctx_begin, begin_req, &begin_rep);
+      if (!st_begin.ok() || !begin_rep.ifcommit())
+      {
+        std::cout << "[CoRD] cordPlanBeginTransfer failed: " << st_begin.error_message() << std::endl;
+        return false;
+      }
+      grpc::ClientContext ctx_wait;
+      coordinator_proto::CordPlanWaitRequest wait_req;
+      wait_req.set_plan_key(reply.cord_transfer_plan_key());
+      coordinator_proto::RepIfSuccess wait_rep;
+      grpc::Status st_wait = m_coordinator_ptr->cordPlanWaitTransferComplete(&ctx_wait, wait_req, &wait_rep);
+      if (!st_wait.ok() || !wait_rep.ifcommit())
+      {
+        std::cout << "[CoRD] cordPlanWaitTransferComplete failed: " << st_wait.error_message() << std::endl;
+        return false;
+      }
     }
-    if (!lp_reply.ifcommit())
-    {
-      std::cout << "[CoRD-LP] local parity apply not committed." << std::endl;
-      return false;
-    }
+
+    const auto cord_wall_t1 = std::chrono::steady_clock::now();
+    const double cord_wall_sec = std::chrono::duration<double>(cord_wall_t1 - cord_wall_t0).count();
+    std::cout << "[CoRD][Client " << m_clientID << "] round_wall_time_sec=" << cord_wall_sec
+              << " (uploadCordUpdate + TCP delta + transfer plan execute)" << std::endl;
+
+    // 本地校验仅由 CordTransferPlan（星型/MST）更新，不再单独 uploadCordLocalParityApply。
     return true;
   }
 

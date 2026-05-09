@@ -12,6 +12,7 @@
 #include <asio.hpp>
 #include "config.h"
 #include "toolbox.h"
+#include <mutex>
 #include <utility>
 #include <vector>
 namespace ECProject
@@ -73,10 +74,12 @@ namespace ECProject
     bool sub_set(int block_num);
     /** 同一条带内多个不连续逻辑区间 [start, end] */
     bool xue_update(int stripe_id, const std::vector<std::pair<int, int>> &logical_ranges);
-    /** CoRD：条带逻辑地址空间上的多个半开区间；interval_count>0 时与区间数校验 */
+    /** CoRD：半开区间列表；全局校验由 uploadCordUpdate 下发的传输计划在 proxy 侧完成，
+     * 本地校验由随后的 uploadCordLocalParityApply 完成（无需二选一）。
+     * interval_count 由客户端按区间条数自动填充。
+     * 若 update_payload==nullptr 且 update_payload_bytes==0，则在 coordinator 返回长度后生成随机负载。 */
     bool cord_update(int stripe_id, const std::vector<std::pair<int, int>> &logical_ranges,
-                       const char *update_payload, size_t update_payload_bytes, int interval_count = 0,
-                       bool cord_lp_via_global_hub = false);
+                     const char *update_payload, size_t update_payload_bytes);
     std::shared_ptr<char[]> get_degraded_read_block(int stripe_id, int failed_block_id);
     std::shared_ptr<char[]> get_degraded_read_block_breakdown(int stripe_id, int failed_block_id, double &total_time, double &disk_io_time, double &network_time, double &encode_time);
     bool recovery_breakdown(int stripe_id, int failed_block_id, double &disk_read_time, double &network_time, double &decode_time, double &disk_write_time);
@@ -119,6 +122,8 @@ namespace ECProject
     ECProject::ToolBox *m_toolbox;
     char *m_pre_allocated_buffer = nullptr;
     char **m_cached_buffer = nullptr;
+    /** 串行化发往各 proxy 数据口的 TCP，避免与 coordinator 并行 notify 导致的 accept/期望长度错配。 */
+    std::mutex m_proxy_tcp_mu;
   };
 
 } // namespace ECProject
