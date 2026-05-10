@@ -1733,7 +1733,8 @@ namespace ECProject  //定义一个名为 ECProject 的命名空间，防止命�
     cord_alg2::Algorithm2Result alg2_result;
     {
       cord_alg2::TransferParams tp;
-      const int slot_unit = static_cast<int>(std::max(1u, m_sys_config->BlockSize / 64u));
+      constexpr unsigned k_cord_alg2_slot_unit_bytes = 8192u; // 8 KiB
+      const int slot_unit = static_cast<int>(k_cord_alg2_slot_unit_bytes);
       alg2_result =
           cord_alg2::build_algorithm2(*stripe, block_intervals, groups, m_sys_config->ClusterNum, tp, slot_unit);
       std::cout << "[CoRD] Algorithm 2 train_route (|U|=" << groups.size() << ", links=" << alg2_result.train_route.size()

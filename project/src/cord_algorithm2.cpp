@@ -12,46 +12,7 @@ namespace ECProject
 {
   namespace cord_alg2
   {
-    int64_t merged_delta_union_bytes(
-        const std::map<int, std::vector<std::pair<int, int>>> &block_intervals,
-        const std::vector<int> &data_block_ids)
-    {
-      std::vector<std::pair<int, int>> segs;
-      segs.reserve(static_cast<size_t>(data_block_ids.size()) * 2);
-      for (int bid : data_block_ids)
-      {
-        auto it = block_intervals.find(bid);
-        if (it == block_intervals.end())
-          continue;
-        for (const auto &seg : it->second)
-        {
-          if (seg.second > seg.first)
-            segs.push_back(seg);
-        }
-      }
-      if (segs.empty())
-        return 0;
-      std::sort(segs.begin(), segs.end());
-      int64_t total = 0;
-      int cur_l = segs[0].first;
-      int cur_r = segs[0].second;
-      for (size_t i = 1; i < segs.size(); ++i)
-      {
-        int l = segs[i].first;
-        int r = segs[i].second;
-        if (l <= cur_r)
-          cur_r = std::max(cur_r, r);
-        else
-        {
-          total += static_cast<int64_t>(cur_r - cur_l);
-          cur_l = l;
-          cur_r = r;
-        }
-      }
-      total += static_cast<int64_t>(cur_r - cur_l);
-      return total;
-    }
-
+    // 合并多个数据块的更新区间，输出最小外包区间 [lo, hi) 的长度（中间可能有空洞）
     int64_t merged_delta_hull_span_bytes(
         const std::map<int, std::vector<std::pair<int, int>>> &block_intervals,
         const std::vector<int> &data_block_ids)
@@ -78,6 +39,7 @@ namespace ECProject
 
     namespace
     {
+      //返回一个数据块的更新区间总长度，比如数据块1的更新区间是[100,200)和[300,400)，则返回200-100+400-300=200
       int64_t delta_bytes_for_block(
           const std::map<int, std::vector<std::pair<int, int>>> &block_intervals,
           int block_id)
@@ -447,8 +409,8 @@ namespace ECProject
               if (assign_ok && !used_collectors.empty())
               {
                 fused_alg3 = true;
-                std::cout << "[CoRD] Algorithm 2+3 fused |N|=" << N.size() << " g=" << alg3.G.size()
-                          << " collectors:";
+                std::cout << "[CoRD] Algorithm 2+3 fused |N|=" << N.size() << " P=" << alg3.G.size()
+                          << " g_col=" << alg3.g << " collectors:";
                 for (int col : used_collectors)
                   std::cout << " " << col;
                 std::cout << "\n";

@@ -51,10 +51,10 @@ int main(int argc, char **argv)
     double block_size = static_cast<double> (parameters[3]) / 1024 / 1024; //MB
     int n = k + r + z;
 
-
-    
-    size_t total_write_size = 3000; //MB
-    int stripe_num = total_write_size / (block_size * n);
+    // 固定预填充条带数；否则块变小时间接写满「3000MB」会导致条带数暴涨
+    const int stripe_num = 3;
+    const double total_write_size = static_cast<double>(stripe_num) * block_size * static_cast<double>(n); // MB
+    std::cout << "Set phase: stripe_num=" << stripe_num << ", total_write_size_mb=" << total_write_size << std::endl;
     std::cout << "Starting set stripe operation" << std::endl;
     std::chrono::high_resolution_clock::time_point set_start = std::chrono::high_resolution_clock::now();
     for(int i = 0; i < stripe_num; i++){

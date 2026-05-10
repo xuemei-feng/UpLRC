@@ -15,6 +15,9 @@
 #include <config.h>
 #include <toolbox.h>
 #include <queue>
+#include <map>
+#include <mutex>
+#include <memory>
 // #define IF_DEBUG true
 #define IF_DEBUG false
 namespace ECProject
@@ -165,6 +168,8 @@ namespace ECProject
     bool CordRangeReadFromDatanode(const std::string &block_key, int block_id, int range_offset, char *out, size_t length, const char *ip, int port);
     bool CordRangeWriteToDatanode(const std::string &block_key, int block_id, int range_offset, const char *data, size_t length, const char *ip, int port);
     bool CordDeltaBlobToDatanode(const std::string &blob_key, const char *data, size_t length, const char *ip, int port);
+    /** CoRD：与其它 proxy（ip:port）之间的长连接池，跨 RPC 调用复用 HTTP/2 channel。 */
+    proxy_proto::proxyService::Stub *stub_for_peer_proxy(const std::string &endpoint);
     bool RecoveryToDatanode(const char *block_key, int block_id, const char *buf, const char *ip, int port);
     bool RecoveryToDatanodeBreakdown(const char *block_key, int block_id, const char *buf, const char *ip, int port, double *network_time, double *disk_io_time);
     void get_from_node(const std::string &block_key, char *block_value, const size_t block_size, const char *datanode_ip, const int datanode_port, bool *status, int index);
@@ -172,6 +177,13 @@ namespace ECProject
       double *disk_io_start_time, double *disk_io_end_time, double *network_start_time, double *network_end_time, double *grpc_notify_time, double *grpc_start_time);
 
   private:
+    struct PeerProxyGrpcEntry {
+      std::shared_ptr<grpc::Channel> channel;
+      std::unique_ptr<proxy_proto::proxyService::Stub> stub;
+    };
+    std::mutex m_peer_proxy_stub_mu;
+    std::map<std::string, std::unique_ptr<PeerProxyGrpcEntry>> m_peer_proxy_stub_pool;
+
     std::mutex m_mutex;
     std::condition_variable cv;
     bool init_coordinator();

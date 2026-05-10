@@ -44,9 +44,10 @@ namespace ECProject
 
     /**
      * 算法 3（不改变算法 1 的输入/分组定义；本函数仅消费 |N|≥3 的交集组）。
-     * PDP：按条带逻辑起始地址排序；cost[i][j]=覆盖块 i..j 的最小连续字节跨度；DP 最小化「各组 span 的最大值」。
-     * g = min(r, ceil(|N|/2))，C 为全部全局校验块。
-     * DCP：二分完成时间 T，检验是否存在分配使每组选一个收集器且各收集器上总传输时间 ≤ T（回溯）。
+     * PDP：按条带逻辑起始地址排序；cost[i][j]=merged_delta_hull_span_bytes(块 i..j)（与算法二校验载荷 hull 跨度同定义）；DP 最小化「各组 span 的最大值」。
+     * 分段数 P = ceil(|N|/2)；收集器个数指标 g_col = min(r, ceil(|N|/2))（与原先 g 公式一致）。
+     * DCP：将 P 个 PDP 组各映射到一个全局校验块（0..r-1），同一收集器上负载为组传出时间之和；二分 makespan 上界 T + 可行回溯。
+     * 小规模 (P,R) 下枚举所有满足 T 的分配，按字典序最小化 (max 传出时间, 各收集器块数极差, PDP 组数极差)；否则保留首次可行分配。
      */
     Algorithm3Result build_algorithm3(
         const Stripe &stripe,

@@ -92,11 +92,6 @@ namespace ECProject
 
     std::string train_link_kind_name(TrainLinkKind k);
 
-    /** 多数据块更新半开区间在同一 in-block offset 轴上合并后的总长度（各连通分量长度之和）。 */
-    int64_t merged_delta_union_bytes(
-        const std::map<int, std::vector<std::pair<int, int>>> &block_intervals,
-        const std::vector<int> &data_block_ids);
-
     /**
      * 校验增量载荷跨度：在同一 in-block offset 轴上，取所有涉及区间的最小 lo 与最大 hi_excl，
      * 长度为 hi_excl - lo（连续 hull，中间空洞在载荷与 XOR 中补零语义）。

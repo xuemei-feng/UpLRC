@@ -624,8 +624,6 @@ namespace ECProject
           continue;
         }
         const std::string dst_channel = dst_ip + ":" + std::to_string(dst_port);
-        std::shared_ptr<grpc::Channel> channel = grpc::CreateChannel(dst_channel, grpc::InsecureChannelCredentials());
-        std::unique_ptr<proxy_proto::proxyService::Stub> stub = proxy_proto::proxyService::NewStub(channel);
 
         const size_t chunk_len = static_cast<size_t>(st.chunk_byte_length());
         if (chunk_len == 0u)
@@ -676,6 +674,7 @@ namespace ECProject
           req.set_chunk_payload(buf.data(), chunk_len);
           req.set_xor_accum_byte_length(cord_xor_hint_for_group(plan, st.group_index()));
           req.set_src_data_block_id(st.src_block_id());
+          proxy_proto::proxyService::Stub *stub = proxy->stub_for_peer_proxy(dst_channel);
           proxy_proto::SetReply rep;
           grpc::ClientContext cctx;
           grpc::Status s = stub->cordPlanCollectorIngestDataDelta(&cctx, req, &rep);
@@ -825,6 +824,7 @@ namespace ECProject
           req.set_parity_slice_offset(slice_off);
           req.set_parity_slice_length(send_len);
           req.set_parity_delta_payload(buf.data() + nz.first, static_cast<size_t>(send_len));
+          proxy_proto::proxyService::Stub *stub = proxy->stub_for_peer_proxy(dst_channel);
           proxy_proto::SetReply rep;
           grpc::ClientContext cctx;
           grpc::Status s = stub->cordPlanApplyParityXorDelta(&cctx, req, &rep);
@@ -912,6 +912,7 @@ namespace ECProject
           req.set_parity_block_key(pbk);
           req.set_parity_datanode_ip(pip);
           req.set_parity_datanode_port(pp);
+          proxy_proto::proxyService::Stub *stub = proxy->stub_for_peer_proxy(dst_channel);
           proxy_proto::SetReply rep;
           grpc::ClientContext cctx;
           grpc::Status s = stub->cordPlanMstDataDeltaChunk(&cctx, req, &rep);
@@ -964,6 +965,20 @@ namespace ECProject
     //   std::cout << "[Coordinator Check] failed to connect " << m_coordinator_address << std::endl;
     // }
     return true;
+  }
+
+  proxy_proto::proxyService::Stub *ProxyImpl::stub_for_peer_proxy(const std::string &endpoint)
+  {
+    std::lock_guard<std::mutex> lk(m_peer_proxy_stub_mu);
+    auto it = m_peer_proxy_stub_pool.find(endpoint);
+    if (it != m_peer_proxy_stub_pool.end())
+      return it->second->stub.get();
+    auto ent = std::make_unique<PeerProxyGrpcEntry>();
+    ent->channel = grpc::CreateChannel(endpoint, grpc::InsecureChannelCredentials());
+    ent->stub = proxy_proto::proxyService::NewStub(ent->channel);
+    proxy_proto::proxyService::Stub *s = ent->stub.get();
+    m_peer_proxy_stub_pool.emplace(endpoint, std::move(ent));
+    return s;
   }
 
   bool ProxyImpl::init_datanodes(std::string m_datanodeinfo_path)
@@ -2107,12 +2122,11 @@ namespace ECProject
     std::mutex g_cord_lp_hub_mu;
     std::unordered_map<std::string, std::shared_ptr<CordLpHubSessionState>> g_cord_lp_hub;
 
-    static void cord_lp_hub_forward_to_lp_proxy(const proxy_proto::CordLpHubSessionBegin &meta,
+    static void cord_lp_hub_forward_to_lp_proxy(ProxyImpl *proxy, const proxy_proto::CordLpHubSessionBegin &meta,
                                                 const std::vector<uint8_t> &delta)
     {
       std::string dst = meta.dest_lp_proxy_ip() + ":" + std::to_string(meta.dest_lp_proxy_port());
-      auto ch = grpc::CreateChannel(dst, grpc::InsecureChannelCredentials());
-      std::unique_ptr<proxy_proto::proxyService::Stub> stub = proxy_proto::proxyService::NewStub(ch);
+      proxy_proto::proxyService::Stub *stub = proxy->stub_for_peer_proxy(dst);
       proxy_proto::CordLpParityApplyDelta req;
       req.set_stripe_id(meta.stripe_id());
       req.set_local_block_id(meta.local_block_id());
@@ -2197,7 +2211,7 @@ namespace ECProject
     }
     if (do_erase)
     {
-      cord_lp_hub_forward_to_lp_proxy(meta_copy, forward_delta);
+      cord_lp_hub_forward_to_lp_proxy(this, meta_copy, forward_delta);
       std::lock_guard<std::mutex> lk(g_cord_lp_hub_mu);
       g_cord_lp_hub.erase(sk);
     }
@@ -2241,8 +2255,7 @@ namespace ECProject
                               static_cast<unsigned char>(chunk[u]));
     }
     std::string hub_addr = request->hub_proxy_ip() + ":" + std::to_string(request->hub_proxy_port());
-    auto ch = grpc::CreateChannel(hub_addr, grpc::InsecureChannelCredentials());
-    std::unique_ptr<proxy_proto::proxyService::Stub> hub_stub = proxy_proto::proxyService::NewStub(ch);
+    proxy_proto::proxyService::Stub *hub_stub = stub_for_peer_proxy(hub_addr);
     proxy_proto::CordLpHubPartialPush push;
     push.set_session_key(request->session_key());
     push.set_partial_payload(acc.data(), acc.size());
