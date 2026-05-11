@@ -638,6 +638,17 @@ namespace ECProject  //定义一个名为 ECProject 的命名空间，防止命�
       return static_cast<uint64_t>(hi);
     }
 
+    /** 连续时隙若激活链路集合相同（多重集），则视为同一调度轮次的重复 quantum；合并传输不改变总字节与每 quantum 上限 su。 */
+    static bool cord_timeslot_same_active_links(const std::vector<int> &a, const std::vector<int> &b)
+    {
+      if (a.size() != b.size())
+        return false;
+      std::vector<int> sa(a), sb(b);
+      std::sort(sa.begin(), sa.end());
+      std::sort(sb.begin(), sb.end());
+      return sa == sb;
+    }
+
     /** 将算法二的 train_route + timeslot_schedule 压平为 CordTransferPlan；chunk_* 为一条逻辑链路在本时隙内的字节切片。 */
     proxy_proto::CordTransferPlan cord_transfer_plan_from_algorithm2(
         int stripe_id, const std::string &plan_key, const cord_alg2::Algorithm2Result &alg2, int k_datablock,
@@ -648,27 +659,58 @@ namespace ECProject  //定义一个名为 ECProject 的命名空间，防止命�
       plan.set_plan_key(plan_key);
       plan.set_slot_unit_bytes(alg2.slot_unit_bytes);
       plan.set_k_datablock(k_datablock);
-      plan.set_total_rounds(static_cast<uint32_t>(alg2.timeslot_schedule.size()));
+      const auto &sched = alg2.timeslot_schedule;
+      uint32_t merged_rounds = 0;
+      for (size_t si = 0; si < sched.size();)
+      {
+        size_t sj = si + 1;
+        while (sj < sched.size() && cord_timeslot_same_active_links(sched[si].link_indices, sched[sj].link_indices))
+          ++sj;
+        ++merged_rounds;
+        si = sj;
+      }
+      plan.set_total_rounds(merged_rounds);
       std::vector<int64_t> link_bytes_left(alg2.train_route.size());
       for (size_t i = 0; i < alg2.train_route.size(); ++i)
         link_bytes_left[i] = std::max<int64_t>(0, alg2.train_route[i].payload_bytes);
       const int64_t su = static_cast<int64_t>(std::max(1, alg2.slot_unit_bytes));
       int step_idx = 0;
-      for (const auto &ts : alg2.timeslot_schedule)
+      for (size_t slot_i = 0; slot_i < sched.size();)
       {
-        for (int li : ts.link_indices)
+        size_t slot_j = slot_i + 1;
+        while (slot_j < sched.size() &&
+               cord_timeslot_same_active_links(sched[slot_i].link_indices, sched[slot_j].link_indices))
+          ++slot_j;
+
+        const auto &head_ts = sched[slot_i];
+        const uint32_t merged_sched_slot = static_cast<uint32_t>(head_ts.timeslot);
+
+        for (int li : head_ts.link_indices)
         {
           if (li < 0 || li >= static_cast<int>(alg2.train_route.size()))
-          continue;
+            continue;
           const cord_alg2::TrainLink &L = alg2.train_route[static_cast<size_t>(li)];
           const int64_t full = std::max<int64_t>(0, L.payload_bytes);
           if (full <= 0)
-          continue;
-          int64_t left = link_bytes_left[static_cast<size_t>(li)];
-          if (left <= 0)
-          continue;
-          const int64_t chunk_len = std::min(su, left);
-          const int64_t offset_in_link = full - left;
+            continue;
+          const int64_t left_before = link_bytes_left[static_cast<size_t>(li)];
+          if (left_before <= 0)
+            continue;
+
+          int64_t total_chunk = 0;
+          for (size_t sk = slot_i; sk < slot_j; ++sk)
+          {
+            int64_t left = link_bytes_left[static_cast<size_t>(li)];
+            if (left <= 0)
+              break;
+            const int64_t chunk = std::min(su, left);
+            total_chunk += chunk;
+            link_bytes_left[static_cast<size_t>(li)] -= chunk;
+          }
+          if (total_chunk <= 0)
+            continue;
+
+          const int64_t offset_in_link = full - left_before;
           proxy_proto::CordTransferStep *st = plan.add_steps();
           st->set_step_index(step_idx++);
           st->set_src_proxy_cluster_id(L.src_cluster);
@@ -677,7 +719,7 @@ namespace ECProject  //定义一个名为 ECProject 的命名空间，防止命�
           st->set_dst_block_id(L.dst_block_id);
           st->set_payload_bytes(static_cast<uint64_t>(full));
           st->set_link_kind(static_cast<proxy_proto::CordTransferLinkKind>(static_cast<int>(L.kind)));
-          st->set_scheduled_slot(static_cast<uint32_t>(ts.timeslot));
+          st->set_scheduled_slot(merged_sched_slot);
           st->set_depends_on_step_index(-1);
           st->set_estimated_transfer_sec(L.est_transfer_sec);
           st->set_group_index(L.group_index);
@@ -694,7 +736,7 @@ namespace ECProject  //定义一个名为 ECProject 的命名空间，防止命�
                   cord_packed_offset_to_logical_in_block(bit->second, offset_in_link));
           }
           st->set_chunk_byte_offset(chunk_off);
-          st->set_chunk_byte_length(static_cast<uint64_t>(chunk_len));
+          st->set_chunk_byte_length(static_cast<uint64_t>(total_chunk));
           if (L.mst_origin_data_block >= 0)
             st->set_mst_origin_data_block_id(L.mst_origin_data_block);
           else
@@ -702,8 +744,8 @@ namespace ECProject  //定义一个名为 ECProject 的命名空间，防止命�
           st->clear_parity_merge_data_block_ids();
           for (int pb : L.parity_merge_data_block_ids)
             st->add_parity_merge_data_block_ids(pb);
-          link_bytes_left[static_cast<size_t>(li)] -= chunk_len;
         }
+        slot_i = slot_j;
       }
       return plan;
     }
@@ -1771,6 +1813,10 @@ namespace ECProject  //定义一个名为 ECProject 的命名空间，防止命�
                                               .count());
       cord_xfer_plan = cord_transfer_plan_from_algorithm2(stripe_id, cord_xfer_plan_key, alg2_result, stripe->k,
                                                             block_intervals);
+      std::cout << "[CoRD] CordTransferPlan merged consecutive identical slots: steps=" << cord_xfer_plan.steps_size()
+                << " total_rounds=" << cord_xfer_plan.total_rounds()
+                << " (debug print above still shows raw Algorithm2 timeslots="
+                << alg2_result.timeslot_schedule.size() << ")\n";
       enrich_cord_transfer_plan_delta_segs(block_intervals, stripe->k, &cord_xfer_plan);
       fill_group_xor_hints_from_alg2(alg2_result, block_intervals, &cord_xfer_plan);
       enrich_cord_transfer_plan_encoding(stripe, block_intervals, alg2_result, &cord_xfer_plan);
