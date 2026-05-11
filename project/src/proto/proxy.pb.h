@@ -10899,8 +10899,39 @@ class SetReply final :
   // accessors -------------------------------------------------------
 
   enum : int {
+    kCordJoinPureXferSecFieldNumber = 3,
+    kCordJoinPureXferStartUnixMsFieldNumber = 4,
+    kCordJoinPureXferEndUnixMsFieldNumber = 5,
     kIfcommitFieldNumber = 1,
+    kCordJoinXferTimingPresentFieldNumber = 2,
   };
+  // double cord_join_pure_xfer_sec = 3;
+  void clear_cord_join_pure_xfer_sec();
+  double cord_join_pure_xfer_sec() const;
+  void set_cord_join_pure_xfer_sec(double value);
+  private:
+  double _internal_cord_join_pure_xfer_sec() const;
+  void _internal_set_cord_join_pure_xfer_sec(double value);
+  public:
+
+  // int64 cord_join_pure_xfer_start_unix_ms = 4;
+  void clear_cord_join_pure_xfer_start_unix_ms();
+  int64_t cord_join_pure_xfer_start_unix_ms() const;
+  void set_cord_join_pure_xfer_start_unix_ms(int64_t value);
+  private:
+  int64_t _internal_cord_join_pure_xfer_start_unix_ms() const;
+  void _internal_set_cord_join_pure_xfer_start_unix_ms(int64_t value);
+  public:
+
+  // int64 cord_join_pure_xfer_end_unix_ms = 5;
+  void clear_cord_join_pure_xfer_end_unix_ms();
+  int64_t cord_join_pure_xfer_end_unix_ms() const;
+  void set_cord_join_pure_xfer_end_unix_ms(int64_t value);
+  private:
+  int64_t _internal_cord_join_pure_xfer_end_unix_ms() const;
+  void _internal_set_cord_join_pure_xfer_end_unix_ms(int64_t value);
+  public:
+
   // bool ifcommit = 1;
   void clear_ifcommit();
   bool ifcommit() const;
@@ -10908,6 +10939,15 @@ class SetReply final :
   private:
   bool _internal_ifcommit() const;
   void _internal_set_ifcommit(bool value);
+  public:
+
+  // bool cord_join_xfer_timing_present = 2;
+  void clear_cord_join_xfer_timing_present();
+  bool cord_join_xfer_timing_present() const;
+  void set_cord_join_xfer_timing_present(bool value);
+  private:
+  bool _internal_cord_join_xfer_timing_present() const;
+  void _internal_set_cord_join_xfer_timing_present(bool value);
   public:
 
   // @@protoc_insertion_point(class_scope:proxy_proto.SetReply)
@@ -10918,7 +10958,11 @@ class SetReply final :
   typedef void InternalArenaConstructable_;
   typedef void DestructorSkippable_;
   struct Impl_ {
+    double cord_join_pure_xfer_sec_;
+    int64_t cord_join_pure_xfer_start_unix_ms_;
+    int64_t cord_join_pure_xfer_end_unix_ms_;
     bool ifcommit_;
+    bool cord_join_xfer_timing_present_;
     mutable ::PROTOBUF_NAMESPACE_ID::internal::CachedSize _cached_size_;
   };
   union { Impl_ _impl_; };
@@ -21667,6 +21711,86 @@ inline void SetReply::_internal_set_ifcommit(bool value) {
 inline void SetReply::set_ifcommit(bool value) {
   _internal_set_ifcommit(value);
   // @@protoc_insertion_point(field_set:proxy_proto.SetReply.ifcommit)
+}
+
+// bool cord_join_xfer_timing_present = 2;
+inline void SetReply::clear_cord_join_xfer_timing_present() {
+  _impl_.cord_join_xfer_timing_present_ = false;
+}
+inline bool SetReply::_internal_cord_join_xfer_timing_present() const {
+  return _impl_.cord_join_xfer_timing_present_;
+}
+inline bool SetReply::cord_join_xfer_timing_present() const {
+  // @@protoc_insertion_point(field_get:proxy_proto.SetReply.cord_join_xfer_timing_present)
+  return _internal_cord_join_xfer_timing_present();
+}
+inline void SetReply::_internal_set_cord_join_xfer_timing_present(bool value) {
+  
+  _impl_.cord_join_xfer_timing_present_ = value;
+}
+inline void SetReply::set_cord_join_xfer_timing_present(bool value) {
+  _internal_set_cord_join_xfer_timing_present(value);
+  // @@protoc_insertion_point(field_set:proxy_proto.SetReply.cord_join_xfer_timing_present)
+}
+
+// double cord_join_pure_xfer_sec = 3;
+inline void SetReply::clear_cord_join_pure_xfer_sec() {
+  _impl_.cord_join_pure_xfer_sec_ = 0;
+}
+inline double SetReply::_internal_cord_join_pure_xfer_sec() const {
+  return _impl_.cord_join_pure_xfer_sec_;
+}
+inline double SetReply::cord_join_pure_xfer_sec() const {
+  // @@protoc_insertion_point(field_get:proxy_proto.SetReply.cord_join_pure_xfer_sec)
+  return _internal_cord_join_pure_xfer_sec();
+}
+inline void SetReply::_internal_set_cord_join_pure_xfer_sec(double value) {
+  
+  _impl_.cord_join_pure_xfer_sec_ = value;
+}
+inline void SetReply::set_cord_join_pure_xfer_sec(double value) {
+  _internal_set_cord_join_pure_xfer_sec(value);
+  // @@protoc_insertion_point(field_set:proxy_proto.SetReply.cord_join_pure_xfer_sec)
+}
+
+// int64 cord_join_pure_xfer_start_unix_ms = 4;
+inline void SetReply::clear_cord_join_pure_xfer_start_unix_ms() {
+  _impl_.cord_join_pure_xfer_start_unix_ms_ = int64_t{0};
+}
+inline int64_t SetReply::_internal_cord_join_pure_xfer_start_unix_ms() const {
+  return _impl_.cord_join_pure_xfer_start_unix_ms_;
+}
+inline int64_t SetReply::cord_join_pure_xfer_start_unix_ms() const {
+  // @@protoc_insertion_point(field_get:proxy_proto.SetReply.cord_join_pure_xfer_start_unix_ms)
+  return _internal_cord_join_pure_xfer_start_unix_ms();
+}
+inline void SetReply::_internal_set_cord_join_pure_xfer_start_unix_ms(int64_t value) {
+  
+  _impl_.cord_join_pure_xfer_start_unix_ms_ = value;
+}
+inline void SetReply::set_cord_join_pure_xfer_start_unix_ms(int64_t value) {
+  _internal_set_cord_join_pure_xfer_start_unix_ms(value);
+  // @@protoc_insertion_point(field_set:proxy_proto.SetReply.cord_join_pure_xfer_start_unix_ms)
+}
+
+// int64 cord_join_pure_xfer_end_unix_ms = 5;
+inline void SetReply::clear_cord_join_pure_xfer_end_unix_ms() {
+  _impl_.cord_join_pure_xfer_end_unix_ms_ = int64_t{0};
+}
+inline int64_t SetReply::_internal_cord_join_pure_xfer_end_unix_ms() const {
+  return _impl_.cord_join_pure_xfer_end_unix_ms_;
+}
+inline int64_t SetReply::cord_join_pure_xfer_end_unix_ms() const {
+  // @@protoc_insertion_point(field_get:proxy_proto.SetReply.cord_join_pure_xfer_end_unix_ms)
+  return _internal_cord_join_pure_xfer_end_unix_ms();
+}
+inline void SetReply::_internal_set_cord_join_pure_xfer_end_unix_ms(int64_t value) {
+  
+  _impl_.cord_join_pure_xfer_end_unix_ms_ = value;
+}
+inline void SetReply::set_cord_join_pure_xfer_end_unix_ms(int64_t value) {
+  _internal_set_cord_join_pure_xfer_end_unix_ms(value);
+  // @@protoc_insertion_point(field_set:proxy_proto.SetReply.cord_join_pure_xfer_end_unix_ms)
 }
 
 // -------------------------------------------------------------------

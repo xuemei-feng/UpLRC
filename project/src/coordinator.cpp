@@ -1990,6 +1990,12 @@ namespace ECProject  //定义一个名为 ECProject 的命名空间，防止命�
     }
     proxy_proto::CordPlanKeyMsg msg;
     msg.set_plan_key(pk);
+    bool span_have = false;
+    int64_t span_min_start_ms = 0;
+    int64_t span_max_end_ms = 0;
+    int joined_proxies = 0;
+    int timing_samples = 0;
+    double max_proxy_pure_xfer_sec = 0.;
     for (int cid : clusters)
     {
       if (cid < 0)
@@ -2013,10 +2019,59 @@ namespace ECProject  //定义一个名为 ECProject 的命名空间，防止命�
                   << std::endl;
         return grpc::Status(grpc::StatusCode::INTERNAL, "cordPlanJoinExecution failed");
       }
+      ++joined_proxies;
+      if (rep.cord_join_xfer_timing_present())
+      {
+        const int64_t sm = rep.cord_join_pure_xfer_start_unix_ms();
+        const int64_t em = rep.cord_join_pure_xfer_end_unix_ms();
+        const double proxy_wall_span_sec =
+            (em >= sm) ? static_cast<double>(em - sm) / 1000. : -1.;
+        std::cout << "[CoRD-PLAN][Coordinator] proxy_pure_xfer plan_key=" << pk << " cluster=" << cid
+                  << " proxy_endpoint=" << pkey << " pure_xfer_sec=" << rep.cord_join_pure_xfer_sec()
+                  << " wall_start_unix_ms=" << sm << " wall_end_unix_ms=" << em << " proxy_wall_span_sec="
+                  << proxy_wall_span_sec << std::endl;
+        max_proxy_pure_xfer_sec = std::max(max_proxy_pure_xfer_sec, rep.cord_join_pure_xfer_sec());
+        if (!span_have)
+        {
+          span_min_start_ms = sm;
+          span_max_end_ms = em;
+          span_have = true;
+          timing_samples = 1;
+        }
+        else
+        {
+          span_min_start_ms = std::min(span_min_start_ms, sm);
+          span_max_end_ms = std::max(span_max_end_ms, em);
+          ++timing_samples;
+        }
+      }
+      else
+      {
+        std::cout << "[CoRD-PLAN][Coordinator] proxy_pure_xfer plan_key=" << pk << " cluster=" << cid
+                  << " proxy_endpoint=" << pkey << " timing=n/a (no cord_join_xfer_timing from proxy)"
+                  << std::endl;
+      }
     }
     {
       std::lock_guard<std::mutex> lk(m_cord_pending_mu);
       m_cord_pending_plan_clusters.erase(pk);
+    }
+    if (span_have && span_max_end_ms >= span_min_start_ms)
+    {
+      const double cluster_pure_xfer_span_wall_sec =
+          static_cast<double>(span_max_end_ms - span_min_start_ms) / 1000.;
+      std::cout << "[CoRD-PLAN][Coordinator] cluster_pure_xfer_span_wall_sec=" << cluster_pure_xfer_span_wall_sec
+                << " plan_key=" << pk << " joined_proxies=" << joined_proxies
+                << " timing_samples=" << timing_samples << " max_proxy_pure_xfer_sec=" << max_proxy_pure_xfer_sec
+                << " (min wall start -> max wall end over proxies; clock sync assumed)" << std::endl;
+      if (timing_samples < joined_proxies)
+        std::cout << "[CoRD-PLAN][Coordinator] WARN timing_samples<joined_proxies (mixed proxy versions?)"
+                  << std::endl;
+    }
+    else if (joined_proxies > 0)
+    {
+      std::cout << "[CoRD-PLAN][Coordinator] WARN cluster_pure_xfer_span_wall_sec unavailable plan_key=" << pk
+                << " joined_proxies=" << joined_proxies << std::endl;
     }
     reply->set_ifcommit(true);
     return grpc::Status::OK;

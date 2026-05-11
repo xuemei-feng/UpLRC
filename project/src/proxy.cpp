@@ -12,7 +12,9 @@
 #include <sys/mman.h>
 #include "unilrc_encoder.h"
 #include <chrono>
+#include <cstdint>
 #include <unordered_map>
+#include <unordered_set>
 #include <map>
 #include <memory>
 #include <mutex>
@@ -68,6 +70,160 @@ namespace ECProject
   static std::map<std::string, std::shared_ptr<const proxy_proto::CordTransferPlan>> g_cord_plans_by_key;
   static std::mutex g_cord_plan_exec_mu;
   static std::unordered_map<std::string, std::thread> g_cord_plan_exec_threads;
+
+  static std::string cord_plan_wall_ts_ms();
+
+  /** 单 plan_key：纯传输窗口（peer stub 预热后步骤循环起点 → 本 proxy 发送步骤结束且入站 parity 写盘+校验读完成）。 */
+  struct CordPureXferTracker {
+    std::mutex mu;
+    bool pure_xfer_loop_started = false;
+    std::chrono::steady_clock::time_point pure_xfer_t0{};
+    bool have_xfer_wall_t0 = false;
+    std::chrono::system_clock::time_point xfer_wall_t0{};
+    int parity_dn_write_inflight = 0;
+    std::chrono::steady_clock::time_point last_parity_dn_verified{};
+    bool have_last_parity_dn_verified = false;
+    bool have_last_parity_wall_verified = false;
+    std::chrono::system_clock::time_point last_parity_wall_verified{};
+  };
+  static std::mutex g_cord_pure_xfer_mu;
+  static std::unordered_map<std::string, std::shared_ptr<CordPureXferTracker>> g_cord_pure_xfer_trackers;
+
+  struct CordJoinXferTimingSample {
+    double pure_xfer_sec = 0.;
+    int64_t wall_start_unix_ms = 0;
+    int64_t wall_end_unix_ms = 0;
+  };
+  static std::mutex g_cord_join_xfer_timing_mu;
+  static std::unordered_map<std::string, CordJoinXferTimingSample> g_cord_join_xfer_timing_by_plan;
+
+  static int64_t cord_sys_clock_to_unix_ms(std::chrono::system_clock::time_point tp)
+  {
+    return std::chrono::duration_cast<std::chrono::milliseconds>(tp.time_since_epoch()).count();
+  }
+
+
+  static std::shared_ptr<CordPureXferTracker> cord_pure_xfer_tracker_ptr(const std::string &pk)
+  {
+    std::lock_guard<std::mutex> lk(g_cord_pure_xfer_mu);
+    auto &p = g_cord_pure_xfer_trackers[pk];
+    if (!p)
+      p = std::make_shared<CordPureXferTracker>();
+    return p;
+  }
+
+  static void cord_pure_xfer_erase_tracker(const std::string &pk)
+  {
+    std::lock_guard<std::mutex> lk(g_cord_pure_xfer_mu);
+    g_cord_pure_xfer_trackers.erase(pk);
+  }
+
+  static void cord_pure_xfer_note_loop_start(const std::string &pk)
+  {
+    auto tr = cord_pure_xfer_tracker_ptr(pk);
+    const auto now = std::chrono::steady_clock::now();
+    const auto wall_now = std::chrono::system_clock::now();
+    std::lock_guard<std::mutex> lk(tr->mu);
+    if (!tr->pure_xfer_loop_started)
+    {
+      tr->pure_xfer_loop_started = true;
+      tr->pure_xfer_t0 = now;
+      tr->xfer_wall_t0 = wall_now;
+      tr->have_xfer_wall_t0 = true;
+    }
+  }
+
+  static void cord_pure_xfer_parity_dn_begin(const std::string &pk)
+  {
+    auto tr = cord_pure_xfer_tracker_ptr(pk);
+    std::lock_guard<std::mutex> lk(tr->mu);
+    ++tr->parity_dn_write_inflight;
+  }
+
+  static void cord_pure_xfer_parity_dn_abort(const std::string &pk)
+  {
+    auto tr = cord_pure_xfer_tracker_ptr(pk);
+    std::lock_guard<std::mutex> lk(tr->mu);
+    if (tr->parity_dn_write_inflight > 0)
+      --tr->parity_dn_write_inflight;
+  }
+
+  static void cord_pure_xfer_parity_dn_done_verified(const std::string &pk)
+  {
+    auto tr = cord_pure_xfer_tracker_ptr(pk);
+    const auto now = std::chrono::steady_clock::now();
+    const auto wall_now = std::chrono::system_clock::now();
+    std::lock_guard<std::mutex> lk(tr->mu);
+    tr->last_parity_dn_verified = now;
+    tr->have_last_parity_dn_verified = true;
+    tr->last_parity_wall_verified = wall_now;
+    tr->have_last_parity_wall_verified = true;
+    if (tr->parity_dn_write_inflight > 0)
+      --tr->parity_dn_write_inflight;
+  }
+
+  /** 步骤循环结束后调用：等待本机入站 parity 写盘+校验读收尾，再打 pure_xfer 日志，并发布 join 回报样本。 */
+  static void cord_pure_xfer_log_after_sender_loop(const std::string &pk, const std::string &proxy_tag,
+                                                   std::chrono::steady_clock::time_point sender_loop_done,
+                                                   std::chrono::system_clock::time_point sender_wall_done)
+  {
+    auto tr = cord_pure_xfer_tracker_ptr(pk);
+    const auto deadline = std::chrono::steady_clock::now() + std::chrono::minutes(30);
+    for (;;)
+    {
+      int inflight = 0;
+      {
+        std::lock_guard<std::mutex> lk(tr->mu);
+        inflight = tr->parity_dn_write_inflight;
+      }
+      if (inflight <= 0 || std::chrono::steady_clock::now() >= deadline)
+        break;
+      std::this_thread::sleep_for(std::chrono::milliseconds(1));
+    }
+    int inflight_left = 0;
+    bool loop_started = false;
+    double pure_sec = -1.;
+    std::chrono::steady_clock::time_point t_end = sender_loop_done;
+    std::chrono::system_clock::time_point wall_start{};
+    std::chrono::system_clock::time_point wall_end = sender_wall_done;
+    {
+      std::lock_guard<std::mutex> lk(tr->mu);
+      inflight_left = tr->parity_dn_write_inflight;
+      loop_started = tr->pure_xfer_loop_started;
+      if (loop_started)
+      {
+        t_end = sender_loop_done;
+        if (tr->have_last_parity_dn_verified && tr->last_parity_dn_verified > t_end)
+          t_end = tr->last_parity_dn_verified;
+        pure_sec = std::chrono::duration<double>(t_end - tr->pure_xfer_t0).count();
+        wall_end = sender_wall_done;
+        if (tr->have_last_parity_wall_verified && tr->last_parity_wall_verified > wall_end)
+          wall_end = tr->last_parity_wall_verified;
+        wall_start = tr->have_xfer_wall_t0 ? tr->xfer_wall_t0 : sender_wall_done;
+      }
+    }
+    std::ostringstream ob;
+    ob << "[CoRD-PLAN][" << cord_plan_wall_ts_ms() << "][" << proxy_tag
+       << "] pure_xfer_wall_sec="; // 本机：stub 预热后进入步骤循环 → 步骤循环结束且本机 parity DN 写+校验读收尾
+    if (loop_started && pure_sec >= 0.)
+      ob << pure_sec;
+    else
+      ob << "n/a";
+    ob << " plan_key=" << pk << " parity_dn_inflight_left=" << inflight_left;
+    if (inflight_left > 0)
+      ob << " WARN_timeout_waiting_inflight";
+    std::cout << ob.str() << std::endl;
+
+    if (loop_started && pure_sec >= 0.)
+    {
+      CordJoinXferTimingSample samp;
+      samp.pure_xfer_sec = pure_sec;
+      samp.wall_start_unix_ms = cord_sys_clock_to_unix_ms(wall_start);
+      samp.wall_end_unix_ms = cord_sys_clock_to_unix_ms(wall_end);
+      std::lock_guard<std::mutex> lk(g_cord_join_xfer_timing_mu);
+      g_cord_join_xfer_timing_by_plan[pk] = samp;
+    }
+  }
 
   static std::string cord_collector_acc_key(const std::string &plan_key, int group_index, int collector_block_id)
   {
@@ -317,6 +473,7 @@ namespace ECProject
           ++it;
       }
     }
+    cord_pure_xfer_erase_tracker(plan_key);
   }
 
   namespace
@@ -387,6 +544,28 @@ namespace ECProject
     }
     return false;
   }
+
+
+  /** 对本 proxy 作为 src 的所有步骤，预先创建 peer gRPC channel/stub（与步骤循环内 stub_for_peer_proxy 一致）。 */
+  static void cord_pure_xfer_peer_stub_preheat(const proxy_proto::CordTransferPlan &plan, int self_cluster_id,
+                                               ProxyImpl *proxy)
+  {
+    std::unordered_set<std::string> endpoints;
+    for (int si = 0; si < plan.steps_size(); ++si)
+    {
+      const proxy_proto::CordTransferStep &st = plan.steps(si);
+      if (st.src_proxy_cluster_id() != self_cluster_id)
+        continue;
+      std::string dst_ip;
+      int dst_port = 0;
+      if (!cord_lookup_cluster_endpoint(plan, st.dst_proxy_cluster_id(), &dst_ip, &dst_port))
+        continue;
+      endpoints.insert(dst_ip + ":" + std::to_string(dst_port));
+    }
+    for (const auto &ep : endpoints)
+      (void)proxy->stub_for_peer_proxy(ep);
+  }
+
 
   static bool cord_lookup_block_placement(const proxy_proto::CordTransferPlan &plan, int block_id,
                                           std::string *bk, std::string *dip, int *dport)
@@ -606,6 +785,8 @@ namespace ECProject
       {
         return;
       }
+      cord_pure_xfer_peer_stub_preheat(plan, self_cluster_id, proxy);
+      cord_pure_xfer_note_loop_start(plan.plan_key());
       const auto wall_t0 = std::chrono::steady_clock::now();
 
       const int k = plan.k_datablock();
@@ -940,6 +1121,9 @@ namespace ECProject
                  cord_plan_delta_kind_name(st.delta_payload_kind()));
       }
 
+      const auto sender_loop_done = std::chrono::steady_clock::now();
+      const auto sender_wall_done = std::chrono::system_clock::now();
+      cord_pure_xfer_log_after_sender_loop(plan.plan_key(), proxy_tag, sender_loop_done, sender_wall_done);
       cord_xfer_cleanup_xfer_plan(plan.plan_key());
       const auto wall_t1 = std::chrono::steady_clock::now();
       const double wall_sec = std::chrono::duration<double>(wall_t1 - wall_t0).count();
@@ -1758,6 +1942,19 @@ namespace ECProject
     }
     if (worker.joinable())
       worker.join();
+    {
+      std::lock_guard<std::mutex> lk(g_cord_join_xfer_timing_mu);
+      auto it = g_cord_join_xfer_timing_by_plan.find(pk);
+      if (it != g_cord_join_xfer_timing_by_plan.end())
+      {
+        const CordJoinXferTimingSample &s = it->second;
+        response->set_cord_join_xfer_timing_present(true);
+        response->set_cord_join_pure_xfer_sec(s.pure_xfer_sec);
+        response->set_cord_join_pure_xfer_start_unix_ms(s.wall_start_unix_ms);
+        response->set_cord_join_pure_xfer_end_unix_ms(s.wall_end_unix_ms);
+        g_cord_join_xfer_timing_by_plan.erase(it);
+      }
+    }
     response->set_ifcommit(true);
     return grpc::Status::OK;
   }
@@ -1845,10 +2042,14 @@ namespace ECProject
       cur[static_cast<size_t>(u)] = static_cast<char>(
           static_cast<unsigned char>(cur[static_cast<size_t>(u)]) ^
           static_cast<unsigned char>(request->parity_delta_payload()[static_cast<int>(u)]));
+    cord_pure_xfer_parity_dn_begin(request->plan_key());
     if (!CordRangeWriteToDatanode(request->block_key(), request->dst_block_id(), request->parity_slice_offset(),
                                    cur.data(), static_cast<size_t>(psz), request->datanode_ip().c_str(),
                                    request->datanode_port()))
+    {
+      cord_pure_xfer_parity_dn_abort(request->plan_key());
       return grpc::Status(grpc::StatusCode::INTERNAL, "write parity failed");
+    }
     std::vector<char> verify(static_cast<size_t>(psz));
     if (CordRangeReadFromDatanode(request->block_key(), request->dst_block_id(), request->parity_slice_offset(),
                                   verify.data(), static_cast<size_t>(psz), request->datanode_ip().c_str(),
@@ -1858,6 +2059,7 @@ namespace ECProject
                 << " off=" << request->parity_slice_offset() << " AFTER_disk_hex="
                 << cord_dbg_hex_preview(verify.data(), verify.size()) << std::endl;
     }
+    cord_pure_xfer_parity_dn_done_verified(request->plan_key());
     response->set_ifcommit(true);
     return grpc::Status::OK;
   }
@@ -1950,10 +2152,14 @@ namespace ECProject
               cur[static_cast<size_t>(u)] = static_cast<char>(
                   static_cast<unsigned char>(cur[static_cast<size_t>(u)]) ^
                   static_cast<unsigned char>(pdelta[static_cast<size_t>(poff + u)]));
+            cord_pure_xfer_parity_dn_begin(pk);
             if (!CordRangeWriteToDatanode(request->parity_block_key(), request->dst_block_id(), po + poff, cur.data(),
                                           static_cast<size_t>(plen), request->parity_datanode_ip().c_str(),
                                           request->parity_datanode_port()))
+            {
+              cord_pure_xfer_parity_dn_abort(pk);
               return grpc::Status(grpc::StatusCode::INTERNAL, "write parity failed (mst mat)");
+            }
             {
               std::vector<char> mst_pv(static_cast<size_t>(plen));
               if (CordRangeReadFromDatanode(request->parity_block_key(), request->dst_block_id(), po + poff,
@@ -1964,6 +2170,7 @@ namespace ECProject
                           << " disk_hex=" << cord_dbg_hex_preview(mst_pv.data(), mst_pv.size()) << std::endl;
               }
             }
+            cord_pure_xfer_parity_dn_done_verified(pk);
           }
           else
           {
@@ -1999,10 +2206,14 @@ namespace ECProject
             cur[static_cast<size_t>(u)] = static_cast<char>(
                 static_cast<unsigned char>(cur[static_cast<size_t>(u)]) ^
                 static_cast<unsigned char>(chunk[static_cast<int>(nz.first + static_cast<size_t>(u))]));
+          cord_pure_xfer_parity_dn_begin(pk);
           if (!CordRangeWriteToDatanode(request->parity_block_key(), request->dst_block_id(), slice_off, cur.data(),
                                         static_cast<size_t>(psz), request->parity_datanode_ip().c_str(),
                                         request->parity_datanode_port()))
+          {
+            cord_pure_xfer_parity_dn_abort(pk);
             return grpc::Status(grpc::StatusCode::INTERNAL, "write parity failed (mst)");
+          }
           {
             std::vector<char> mst_lv(static_cast<size_t>(psz));
             if (CordRangeReadFromDatanode(request->parity_block_key(), request->dst_block_id(), slice_off, mst_lv.data(),
@@ -2013,6 +2224,7 @@ namespace ECProject
                         << " disk_hex=" << cord_dbg_hex_preview(mst_lv.data(), mst_lv.size()) << std::endl;
             }
           }
+          cord_pure_xfer_parity_dn_done_verified(pk);
         }
       }
     }

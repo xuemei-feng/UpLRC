@@ -876,7 +876,11 @@ struct CordLpParityApplyDeltaDefaultTypeInternal {
 PROTOBUF_ATTRIBUTE_NO_DESTROY PROTOBUF_CONSTINIT PROTOBUF_ATTRIBUTE_INIT_PRIORITY1 CordLpParityApplyDeltaDefaultTypeInternal _CordLpParityApplyDelta_default_instance_;
 PROTOBUF_CONSTEXPR SetReply::SetReply(
     ::_pbi::ConstantInitialized): _impl_{
-    /*decltype(_impl_.ifcommit_)*/false
+    /*decltype(_impl_.cord_join_pure_xfer_sec_)*/0
+  , /*decltype(_impl_.cord_join_pure_xfer_start_unix_ms_)*/int64_t{0}
+  , /*decltype(_impl_.cord_join_pure_xfer_end_unix_ms_)*/int64_t{0}
+  , /*decltype(_impl_.ifcommit_)*/false
+  , /*decltype(_impl_.cord_join_xfer_timing_present_)*/false
   , /*decltype(_impl_._cached_size_)*/{}} {}
 struct SetReplyDefaultTypeInternal {
   PROTOBUF_CONSTEXPR SetReplyDefaultTypeInternal()
@@ -1507,6 +1511,10 @@ const uint32_t TableStruct_proxy_2eproto::offsets[] PROTOBUF_SECTION_VARIABLE(pr
   ~0u,  // no _weak_field_map_
   ~0u,  // no _inlined_string_donated_
   PROTOBUF_FIELD_OFFSET(::proxy_proto::SetReply, _impl_.ifcommit_),
+  PROTOBUF_FIELD_OFFSET(::proxy_proto::SetReply, _impl_.cord_join_xfer_timing_present_),
+  PROTOBUF_FIELD_OFFSET(::proxy_proto::SetReply, _impl_.cord_join_pure_xfer_sec_),
+  PROTOBUF_FIELD_OFFSET(::proxy_proto::SetReply, _impl_.cord_join_pure_xfer_start_unix_ms_),
+  PROTOBUF_FIELD_OFFSET(::proxy_proto::SetReply, _impl_.cord_join_pure_xfer_end_unix_ms_),
   ~0u,  // no _has_bits_
   PROTOBUF_FIELD_OFFSET(::proxy_proto::GetReply, _internal_metadata_),
   ~0u,  // no _extensions_
@@ -1575,8 +1583,8 @@ static const ::_pbi::MigrationSchema schemas[] PROTOBUF_SECTION_VARIABLE(protode
   { 544, -1, -1, sizeof(::proxy_proto::CordLpComputePartialAndPush)},
   { 558, -1, -1, sizeof(::proxy_proto::CordLpParityApplyDelta)},
   { 572, -1, -1, sizeof(::proxy_proto::SetReply)},
-  { 579, -1, -1, sizeof(::proxy_proto::GetReply)},
-  { 586, -1, -1, sizeof(::proxy_proto::StripeAndBlockIDs)},
+  { 583, -1, -1, sizeof(::proxy_proto::GetReply)},
+  { 590, -1, -1, sizeof(::proxy_proto::StripeAndBlockIDs)},
 };
 
 static const ::_pb::Message* const file_default_instances[] = {
@@ -1839,78 +1847,82 @@ const char descriptor_table_protodef_proxy_2eproto[] PROTOBUF_SECTION_VARIABLE(p
   "k_key\030\003 \001(\t\022\031\n\021local_datanode_ip\030\004 \001(\t\022\033"
   "\n\023local_datanode_port\030\005 \001(\005\022\033\n\023parity_sl"
   "ice_offset\030\006 \001(\005\022\031\n\021parity_slice_size\030\007 "
-  "\001(\005\022\025\n\rdelta_payload\030\010 \001(\014\"\034\n\010SetReply\022\020"
-  "\n\010ifcommit\030\001 \001(\010\"\036\n\010GetReply\022\022\n\ngetsucce"
-  "ss\030\001 \001(\010\"\261\001\n\021StripeAndBlockIDs\022\021\n\tstripe"
-  "_id\030\001 \001(\005\022\020\n\010group_id\030\002 \001(\005\022\020\n\010clientip\030"
-  "\003 \001(\t\022\022\n\nclientport\030\004 \001(\005\022\021\n\tblock_ids\030\005"
-  " \003(\005\022\022\n\nblock_keys\030\006 \003(\t\022\023\n\013datanodeips\030"
-  "\007 \003(\t\022\025\n\rdatanodeports\030\010 \003(\005*\255\001\n\024CordTra"
-  "nsferLinkKind\022%\n!CORD_TRANSFER_STAR_DATA"
-  "_TO_CENTER\020\000\022\'\n#CORD_TRANSFER_STAR_CENTE"
-  "R_TO_GLOBAL\020\001\022&\n\"CORD_TRANSFER_STAR_CENT"
-  "ER_TO_LOCAL\020\002\022\035\n\031CORD_TRANSFER_MST_FORWA"
-  "RD\020\003*B\n\024CordDeltaPayloadKind\022\023\n\017CORD_DEL"
-  "TA_DATA\020\000\022\025\n\021CORD_DELTA_PARITY\020\0012\220\021\n\014pro"
-  "xyService\022D\n\ncheckalive\022\032.proxy_proto.Ch"
-  "eckaliveCMD\032\032.proxy_proto.RequestResult\022"
-  "L\n\022encodeAndSetObject\022\037.proxy_proto.Obje"
-  "ctAndPlacement\032\025.proxy_proto.SetReply\022L\n"
-  "\022decodeAndGetObject\022\037.proxy_proto.Object"
-  "AndPlacement\032\025.proxy_proto.GetReply\022P\n\014d"
-  "egradedRead\022 .proxy_proto.DegradedReadRe"
-  "quest\032\036.proxy_proto.DegradedReadReply\022S\n"
-  "\023degradedRead2Client\022\034.proxy_proto.Recov"
-  "eryRequest\032\036.proxy_proto.DegradedReadRep"
-  "ly\022Y\n\025degradedReadBreakdown\022 .proxy_prot"
-  "o.DegradedReadRequest\032\036.proxy_proto.Degr"
-  "adedReadReply\022\\\n\034degradedRead2ClientBrea"
-  "kdown\022\034.proxy_proto.RecoveryRequest\032\036.pr"
-  "oxy_proto.DegradedReadReply\022X\n\035degradedR"
-  "eadWithBlockStripeID\022 .proxy_proto.Degra"
-  "dedReadRequest\032\025.proxy_proto.GetReply\022V\n"
-  "\017partialDecoding\022#.proxy_proto.PartialDe"
-  "codingRequest\032\036.proxy_proto.DegradedRead"
-  "Reply\022D\n\010recovery\022\034.proxy_proto.Recovery"
-  "Request\032\032.proxy_proto.RecoveryReply\022M\n\021r"
-  "ecoveryBreakdown\022\034.proxy_proto.RecoveryR"
-  "equest\032\032.proxy_proto.RecoveryReply\022O\n\020mu"
-  "ltipleRecovery\022$.proxy_proto.MultipleRec"
-  "overyRequest\032\025.proxy_proto.GetReply\022\?\n\013d"
-  "eleteBlock\022\031.proxy_proto.NodeAndBlock\032\025."
-  "proxy_proto.DelReply\022X\n\027scheduleAppend2D"
-  "atanode\022&.proxy_proto.AppendStripeDataPl"
-  "acement\032\025.proxy_proto.SetReply\022U\n\026schedu"
-  "leCordDataUpdate\022$.proxy_proto.CordDataU"
-  "pdatePlacement\032\025.proxy_proto.SetReply\022Y\n"
-  "\034scheduleCordLocalParityApply\022\".proxy_pr"
-  "oto.CordLocalParityBundle\032\025.proxy_proto."
-  "SetReply\022R\n\025cordLpHubSessionBegin\022\".prox"
-  "y_proto.CordLpHubSessionBegin\032\025.proxy_pr"
-  "oto.SetReply\022P\n\024cordLpHubPartialPush\022!.p"
-  "roxy_proto.CordLpHubPartialPush\032\025.proxy_"
-  "proto.SetReply\022^\n\033cordLpComputePartialAn"
-  "dPush\022(.proxy_proto.CordLpComputePartial"
-  "AndPush\032\025.proxy_proto.SetReply\022T\n\026cordLp"
-  "ApplyParityDelta\022#.proxy_proto.CordLpPar"
-  "ityApplyDelta\032\025.proxy_proto.SetReply\022P\n\030"
-  "scheduleCordTransferPlan\022\035.proxy_proto.C"
-  "ordTransferPlan\032\025.proxy_proto.SetReply\022K"
-  "\n\025cordPlanJoinExecution\022\033.proxy_proto.Co"
-  "rdPlanKeyMsg\032\025.proxy_proto.SetReply\022b\n c"
-  "ordPlanCollectorIngestDataDelta\022\'.proxy_"
-  "proto.CordPlanCollectorIngestReq\032\025.proxy"
-  "_proto.SetReply\022\\\n\033cordPlanApplyParityXo"
-  "rDelta\022&.proxy_proto.CordPlanApplyParity"
-  "XorReq\032\025.proxy_proto.SetReply\022X\n\031cordPla"
-  "nMstDataDeltaChunk\022$.proxy_proto.CordPla"
-  "nMstDataDeltaReq\032\025.proxy_proto.SetReply\022"
-  "B\n\tgetBlocks\022\036.proxy_proto.StripeAndBloc"
-  "kIDs\032\025.proxy_proto.GetReplyb\006proto3"
+  "\001(\005\022\025\n\rdelta_payload\030\010 \001(\014\"\270\001\n\010SetReply\022"
+  "\020\n\010ifcommit\030\001 \001(\010\022%\n\035cord_join_xfer_timi"
+  "ng_present\030\002 \001(\010\022\037\n\027cord_join_pure_xfer_"
+  "sec\030\003 \001(\001\022)\n!cord_join_pure_xfer_start_u"
+  "nix_ms\030\004 \001(\003\022\'\n\037cord_join_pure_xfer_end_"
+  "unix_ms\030\005 \001(\003\"\036\n\010GetReply\022\022\n\ngetsuccess\030"
+  "\001 \001(\010\"\261\001\n\021StripeAndBlockIDs\022\021\n\tstripe_id"
+  "\030\001 \001(\005\022\020\n\010group_id\030\002 \001(\005\022\020\n\010clientip\030\003 \001"
+  "(\t\022\022\n\nclientport\030\004 \001(\005\022\021\n\tblock_ids\030\005 \003("
+  "\005\022\022\n\nblock_keys\030\006 \003(\t\022\023\n\013datanodeips\030\007 \003"
+  "(\t\022\025\n\rdatanodeports\030\010 \003(\005*\255\001\n\024CordTransf"
+  "erLinkKind\022%\n!CORD_TRANSFER_STAR_DATA_TO"
+  "_CENTER\020\000\022\'\n#CORD_TRANSFER_STAR_CENTER_T"
+  "O_GLOBAL\020\001\022&\n\"CORD_TRANSFER_STAR_CENTER_"
+  "TO_LOCAL\020\002\022\035\n\031CORD_TRANSFER_MST_FORWARD\020"
+  "\003*B\n\024CordDeltaPayloadKind\022\023\n\017CORD_DELTA_"
+  "DATA\020\000\022\025\n\021CORD_DELTA_PARITY\020\0012\220\021\n\014proxyS"
+  "ervice\022D\n\ncheckalive\022\032.proxy_proto.Check"
+  "aliveCMD\032\032.proxy_proto.RequestResult\022L\n\022"
+  "encodeAndSetObject\022\037.proxy_proto.ObjectA"
+  "ndPlacement\032\025.proxy_proto.SetReply\022L\n\022de"
+  "codeAndGetObject\022\037.proxy_proto.ObjectAnd"
+  "Placement\032\025.proxy_proto.GetReply\022P\n\014degr"
+  "adedRead\022 .proxy_proto.DegradedReadReque"
+  "st\032\036.proxy_proto.DegradedReadReply\022S\n\023de"
+  "gradedRead2Client\022\034.proxy_proto.Recovery"
+  "Request\032\036.proxy_proto.DegradedReadReply\022"
+  "Y\n\025degradedReadBreakdown\022 .proxy_proto.D"
+  "egradedReadRequest\032\036.proxy_proto.Degrade"
+  "dReadReply\022\\\n\034degradedRead2ClientBreakdo"
+  "wn\022\034.proxy_proto.RecoveryRequest\032\036.proxy"
+  "_proto.DegradedReadReply\022X\n\035degradedRead"
+  "WithBlockStripeID\022 .proxy_proto.Degraded"
+  "ReadRequest\032\025.proxy_proto.GetReply\022V\n\017pa"
+  "rtialDecoding\022#.proxy_proto.PartialDecod"
+  "ingRequest\032\036.proxy_proto.DegradedReadRep"
+  "ly\022D\n\010recovery\022\034.proxy_proto.RecoveryReq"
+  "uest\032\032.proxy_proto.RecoveryReply\022M\n\021reco"
+  "veryBreakdown\022\034.proxy_proto.RecoveryRequ"
+  "est\032\032.proxy_proto.RecoveryReply\022O\n\020multi"
+  "pleRecovery\022$.proxy_proto.MultipleRecove"
+  "ryRequest\032\025.proxy_proto.GetReply\022\?\n\013dele"
+  "teBlock\022\031.proxy_proto.NodeAndBlock\032\025.pro"
+  "xy_proto.DelReply\022X\n\027scheduleAppend2Data"
+  "node\022&.proxy_proto.AppendStripeDataPlace"
+  "ment\032\025.proxy_proto.SetReply\022U\n\026scheduleC"
+  "ordDataUpdate\022$.proxy_proto.CordDataUpda"
+  "tePlacement\032\025.proxy_proto.SetReply\022Y\n\034sc"
+  "heduleCordLocalParityApply\022\".proxy_proto"
+  ".CordLocalParityBundle\032\025.proxy_proto.Set"
+  "Reply\022R\n\025cordLpHubSessionBegin\022\".proxy_p"
+  "roto.CordLpHubSessionBegin\032\025.proxy_proto"
+  ".SetReply\022P\n\024cordLpHubPartialPush\022!.prox"
+  "y_proto.CordLpHubPartialPush\032\025.proxy_pro"
+  "to.SetReply\022^\n\033cordLpComputePartialAndPu"
+  "sh\022(.proxy_proto.CordLpComputePartialAnd"
+  "Push\032\025.proxy_proto.SetReply\022T\n\026cordLpApp"
+  "lyParityDelta\022#.proxy_proto.CordLpParity"
+  "ApplyDelta\032\025.proxy_proto.SetReply\022P\n\030sch"
+  "eduleCordTransferPlan\022\035.proxy_proto.Cord"
+  "TransferPlan\032\025.proxy_proto.SetReply\022K\n\025c"
+  "ordPlanJoinExecution\022\033.proxy_proto.CordP"
+  "lanKeyMsg\032\025.proxy_proto.SetReply\022b\n cord"
+  "PlanCollectorIngestDataDelta\022\'.proxy_pro"
+  "to.CordPlanCollectorIngestReq\032\025.proxy_pr"
+  "oto.SetReply\022\\\n\033cordPlanApplyParityXorDe"
+  "lta\022&.proxy_proto.CordPlanApplyParityXor"
+  "Req\032\025.proxy_proto.SetReply\022X\n\031cordPlanMs"
+  "tDataDeltaChunk\022$.proxy_proto.CordPlanMs"
+  "tDataDeltaReq\032\025.proxy_proto.SetReply\022B\n\t"
+  "getBlocks\022\036.proxy_proto.StripeAndBlockID"
+  "s\032\025.proxy_proto.GetReplyb\006proto3"
   ;
 static ::_pbi::once_flag descriptor_table_proxy_2eproto_once;
 const ::_pbi::DescriptorTable descriptor_table_proxy_2eproto = {
-    false, false, 11075, descriptor_table_protodef_proxy_2eproto,
+    false, false, 11232, descriptor_table_protodef_proxy_2eproto,
     "proxy.proto",
     &descriptor_table_proxy_2eproto_once, nullptr, 0, 47,
     schemas, file_default_instances, TableStruct_proxy_2eproto::offsets,
@@ -18918,11 +18930,17 @@ SetReply::SetReply(const SetReply& from)
   : ::PROTOBUF_NAMESPACE_ID::Message() {
   SetReply* const _this = this; (void)_this;
   new (&_impl_) Impl_{
-      decltype(_impl_.ifcommit_){}
+      decltype(_impl_.cord_join_pure_xfer_sec_){}
+    , decltype(_impl_.cord_join_pure_xfer_start_unix_ms_){}
+    , decltype(_impl_.cord_join_pure_xfer_end_unix_ms_){}
+    , decltype(_impl_.ifcommit_){}
+    , decltype(_impl_.cord_join_xfer_timing_present_){}
     , /*decltype(_impl_._cached_size_)*/{}};
 
   _internal_metadata_.MergeFrom<::PROTOBUF_NAMESPACE_ID::UnknownFieldSet>(from._internal_metadata_);
-  _this->_impl_.ifcommit_ = from._impl_.ifcommit_;
+  ::memcpy(&_impl_.cord_join_pure_xfer_sec_, &from._impl_.cord_join_pure_xfer_sec_,
+    static_cast<size_t>(reinterpret_cast<char*>(&_impl_.cord_join_xfer_timing_present_) -
+    reinterpret_cast<char*>(&_impl_.cord_join_pure_xfer_sec_)) + sizeof(_impl_.cord_join_xfer_timing_present_));
   // @@protoc_insertion_point(copy_constructor:proxy_proto.SetReply)
 }
 
@@ -18931,7 +18949,11 @@ inline void SetReply::SharedCtor(
   (void)arena;
   (void)is_message_owned;
   new (&_impl_) Impl_{
-      decltype(_impl_.ifcommit_){false}
+      decltype(_impl_.cord_join_pure_xfer_sec_){0}
+    , decltype(_impl_.cord_join_pure_xfer_start_unix_ms_){int64_t{0}}
+    , decltype(_impl_.cord_join_pure_xfer_end_unix_ms_){int64_t{0}}
+    , decltype(_impl_.ifcommit_){false}
+    , decltype(_impl_.cord_join_xfer_timing_present_){false}
     , /*decltype(_impl_._cached_size_)*/{}
   };
 }
@@ -18959,7 +18981,9 @@ void SetReply::Clear() {
   // Prevent compiler warnings about cached_has_bits being unused
   (void) cached_has_bits;
 
-  _impl_.ifcommit_ = false;
+  ::memset(&_impl_.cord_join_pure_xfer_sec_, 0, static_cast<size_t>(
+      reinterpret_cast<char*>(&_impl_.cord_join_xfer_timing_present_) -
+      reinterpret_cast<char*>(&_impl_.cord_join_pure_xfer_sec_)) + sizeof(_impl_.cord_join_xfer_timing_present_));
   _internal_metadata_.Clear<::PROTOBUF_NAMESPACE_ID::UnknownFieldSet>();
 }
 
@@ -18973,6 +18997,38 @@ const char* SetReply::_InternalParse(const char* ptr, ::_pbi::ParseContext* ctx)
       case 1:
         if (PROTOBUF_PREDICT_TRUE(static_cast<uint8_t>(tag) == 8)) {
           _impl_.ifcommit_ = ::PROTOBUF_NAMESPACE_ID::internal::ReadVarint64(&ptr);
+          CHK_(ptr);
+        } else
+          goto handle_unusual;
+        continue;
+      // bool cord_join_xfer_timing_present = 2;
+      case 2:
+        if (PROTOBUF_PREDICT_TRUE(static_cast<uint8_t>(tag) == 16)) {
+          _impl_.cord_join_xfer_timing_present_ = ::PROTOBUF_NAMESPACE_ID::internal::ReadVarint64(&ptr);
+          CHK_(ptr);
+        } else
+          goto handle_unusual;
+        continue;
+      // double cord_join_pure_xfer_sec = 3;
+      case 3:
+        if (PROTOBUF_PREDICT_TRUE(static_cast<uint8_t>(tag) == 25)) {
+          _impl_.cord_join_pure_xfer_sec_ = ::PROTOBUF_NAMESPACE_ID::internal::UnalignedLoad<double>(ptr);
+          ptr += sizeof(double);
+        } else
+          goto handle_unusual;
+        continue;
+      // int64 cord_join_pure_xfer_start_unix_ms = 4;
+      case 4:
+        if (PROTOBUF_PREDICT_TRUE(static_cast<uint8_t>(tag) == 32)) {
+          _impl_.cord_join_pure_xfer_start_unix_ms_ = ::PROTOBUF_NAMESPACE_ID::internal::ReadVarint64(&ptr);
+          CHK_(ptr);
+        } else
+          goto handle_unusual;
+        continue;
+      // int64 cord_join_pure_xfer_end_unix_ms = 5;
+      case 5:
+        if (PROTOBUF_PREDICT_TRUE(static_cast<uint8_t>(tag) == 40)) {
+          _impl_.cord_join_pure_xfer_end_unix_ms_ = ::PROTOBUF_NAMESPACE_ID::internal::ReadVarint64(&ptr);
           CHK_(ptr);
         } else
           goto handle_unusual;
@@ -19012,6 +19068,34 @@ uint8_t* SetReply::_InternalSerialize(
     target = ::_pbi::WireFormatLite::WriteBoolToArray(1, this->_internal_ifcommit(), target);
   }
 
+  // bool cord_join_xfer_timing_present = 2;
+  if (this->_internal_cord_join_xfer_timing_present() != 0) {
+    target = stream->EnsureSpace(target);
+    target = ::_pbi::WireFormatLite::WriteBoolToArray(2, this->_internal_cord_join_xfer_timing_present(), target);
+  }
+
+  // double cord_join_pure_xfer_sec = 3;
+  static_assert(sizeof(uint64_t) == sizeof(double), "Code assumes uint64_t and double are the same size.");
+  double tmp_cord_join_pure_xfer_sec = this->_internal_cord_join_pure_xfer_sec();
+  uint64_t raw_cord_join_pure_xfer_sec;
+  memcpy(&raw_cord_join_pure_xfer_sec, &tmp_cord_join_pure_xfer_sec, sizeof(tmp_cord_join_pure_xfer_sec));
+  if (raw_cord_join_pure_xfer_sec != 0) {
+    target = stream->EnsureSpace(target);
+    target = ::_pbi::WireFormatLite::WriteDoubleToArray(3, this->_internal_cord_join_pure_xfer_sec(), target);
+  }
+
+  // int64 cord_join_pure_xfer_start_unix_ms = 4;
+  if (this->_internal_cord_join_pure_xfer_start_unix_ms() != 0) {
+    target = stream->EnsureSpace(target);
+    target = ::_pbi::WireFormatLite::WriteInt64ToArray(4, this->_internal_cord_join_pure_xfer_start_unix_ms(), target);
+  }
+
+  // int64 cord_join_pure_xfer_end_unix_ms = 5;
+  if (this->_internal_cord_join_pure_xfer_end_unix_ms() != 0) {
+    target = stream->EnsureSpace(target);
+    target = ::_pbi::WireFormatLite::WriteInt64ToArray(5, this->_internal_cord_join_pure_xfer_end_unix_ms(), target);
+  }
+
   if (PROTOBUF_PREDICT_FALSE(_internal_metadata_.have_unknown_fields())) {
     target = ::_pbi::WireFormat::InternalSerializeUnknownFieldsToArray(
         _internal_metadata_.unknown_fields<::PROTOBUF_NAMESPACE_ID::UnknownFieldSet>(::PROTOBUF_NAMESPACE_ID::UnknownFieldSet::default_instance), target, stream);
@@ -19028,8 +19112,32 @@ size_t SetReply::ByteSizeLong() const {
   // Prevent compiler warnings about cached_has_bits being unused
   (void) cached_has_bits;
 
+  // double cord_join_pure_xfer_sec = 3;
+  static_assert(sizeof(uint64_t) == sizeof(double), "Code assumes uint64_t and double are the same size.");
+  double tmp_cord_join_pure_xfer_sec = this->_internal_cord_join_pure_xfer_sec();
+  uint64_t raw_cord_join_pure_xfer_sec;
+  memcpy(&raw_cord_join_pure_xfer_sec, &tmp_cord_join_pure_xfer_sec, sizeof(tmp_cord_join_pure_xfer_sec));
+  if (raw_cord_join_pure_xfer_sec != 0) {
+    total_size += 1 + 8;
+  }
+
+  // int64 cord_join_pure_xfer_start_unix_ms = 4;
+  if (this->_internal_cord_join_pure_xfer_start_unix_ms() != 0) {
+    total_size += ::_pbi::WireFormatLite::Int64SizePlusOne(this->_internal_cord_join_pure_xfer_start_unix_ms());
+  }
+
+  // int64 cord_join_pure_xfer_end_unix_ms = 5;
+  if (this->_internal_cord_join_pure_xfer_end_unix_ms() != 0) {
+    total_size += ::_pbi::WireFormatLite::Int64SizePlusOne(this->_internal_cord_join_pure_xfer_end_unix_ms());
+  }
+
   // bool ifcommit = 1;
   if (this->_internal_ifcommit() != 0) {
+    total_size += 1 + 1;
+  }
+
+  // bool cord_join_xfer_timing_present = 2;
+  if (this->_internal_cord_join_xfer_timing_present() != 0) {
     total_size += 1 + 1;
   }
 
@@ -19051,8 +19159,24 @@ void SetReply::MergeImpl(::PROTOBUF_NAMESPACE_ID::Message& to_msg, const ::PROTO
   uint32_t cached_has_bits = 0;
   (void) cached_has_bits;
 
+  static_assert(sizeof(uint64_t) == sizeof(double), "Code assumes uint64_t and double are the same size.");
+  double tmp_cord_join_pure_xfer_sec = from._internal_cord_join_pure_xfer_sec();
+  uint64_t raw_cord_join_pure_xfer_sec;
+  memcpy(&raw_cord_join_pure_xfer_sec, &tmp_cord_join_pure_xfer_sec, sizeof(tmp_cord_join_pure_xfer_sec));
+  if (raw_cord_join_pure_xfer_sec != 0) {
+    _this->_internal_set_cord_join_pure_xfer_sec(from._internal_cord_join_pure_xfer_sec());
+  }
+  if (from._internal_cord_join_pure_xfer_start_unix_ms() != 0) {
+    _this->_internal_set_cord_join_pure_xfer_start_unix_ms(from._internal_cord_join_pure_xfer_start_unix_ms());
+  }
+  if (from._internal_cord_join_pure_xfer_end_unix_ms() != 0) {
+    _this->_internal_set_cord_join_pure_xfer_end_unix_ms(from._internal_cord_join_pure_xfer_end_unix_ms());
+  }
   if (from._internal_ifcommit() != 0) {
     _this->_internal_set_ifcommit(from._internal_ifcommit());
+  }
+  if (from._internal_cord_join_xfer_timing_present() != 0) {
+    _this->_internal_set_cord_join_xfer_timing_present(from._internal_cord_join_xfer_timing_present());
   }
   _this->_internal_metadata_.MergeFrom<::PROTOBUF_NAMESPACE_ID::UnknownFieldSet>(from._internal_metadata_);
 }
@@ -19071,7 +19195,12 @@ bool SetReply::IsInitialized() const {
 void SetReply::InternalSwap(SetReply* other) {
   using std::swap;
   _internal_metadata_.InternalSwap(&other->_internal_metadata_);
-  swap(_impl_.ifcommit_, other->_impl_.ifcommit_);
+  ::PROTOBUF_NAMESPACE_ID::internal::memswap<
+      PROTOBUF_FIELD_OFFSET(SetReply, _impl_.cord_join_xfer_timing_present_)
+      + sizeof(SetReply::_impl_.cord_join_xfer_timing_present_)
+      - PROTOBUF_FIELD_OFFSET(SetReply, _impl_.cord_join_pure_xfer_sec_)>(
+          reinterpret_cast<char*>(&_impl_.cord_join_pure_xfer_sec_),
+          reinterpret_cast<char*>(&other->_impl_.cord_join_pure_xfer_sec_));
 }
 
 ::PROTOBUF_NAMESPACE_ID::Metadata SetReply::GetMetadata() const {

@@ -520,6 +520,11 @@ message CordLpParityApplyDelta {
 
 message SetReply {
   bool ifcommit = 1;
+  // cordPlanJoinExecution：本 proxy 纯传输窗口（与 pure_xfer_wall_sec 一致），供 Coordinator 聚合 cluster_pure_xfer_span_wall_sec
+  bool cord_join_xfer_timing_present = 2;
+  double cord_join_pure_xfer_sec = 3;
+  int64 cord_join_pure_xfer_start_unix_ms = 4;
+  int64 cord_join_pure_xfer_end_unix_ms = 5;
 }
 message GetReply {
   bool getsuccess = 1;
