@@ -10,6 +10,7 @@ storage/*
 !storage/.gitkeep
 data/*
 project/config/*
+!project/config/BW_limit
 small_tools/*
 logs/*
 project/build/*
