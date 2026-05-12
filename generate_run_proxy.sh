@@ -1,14 +1,12 @@
-#!/bin/bash
+#!/usr/bin/env bash
+set -euo pipefail
 
-# 定义源文件路径
-SOURCE_FILE="/users/xue/xue/small_tools/generator_sh.py"
+SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
+SOURCE_FILE="${SCRIPT_DIR}/small_tools/generator_sh.py"
+HOSTS_FILE="${SCRIPT_DIR}/hosts"
 
-# 定义 hosts 文件路径
-HOSTS_FILE="hosts"
-
-# 检查 hosts 文件是否存在
-if [ ! -f "$HOSTS_FILE" ]; then
-  echo "Error: hosts file not found!"
+if [[ ! -f "$HOSTS_FILE" ]]; then
+  echo "Error: hosts file not found: $HOSTS_FILE" >&2
   exit 1
 fi
 
@@ -19,7 +17,7 @@ HOSTS=$(cat "$HOSTS_FILE")
 echo "Copying $SOURCE_FILE to all hosts..."
 for HOST in $HOSTS; do
   echo "Copying to $HOST..."
-  scp "$SOURCE_FILE" "$HOST:/users/xue/xue/small_tools/"
+  scp "$SOURCE_FILE" "${HOST}:/users/xue/xue/small_tools/"
   if [ $? -eq 0 ]; then
     echo "Successfully copied to $HOST!"
   else
@@ -34,7 +32,7 @@ PARALLEL=50
 USER="root"
 
 echo "Running generator_sh.py on all hosts..."
-pdsh -R ssh -w ^$HOSTS_FILE -l $USER -f $PARALLEL "$REMOTE_COMMAND"
+pdsh -R ssh -w "^${HOSTS_FILE}" -l "$USER" -f "$PARALLEL" "$REMOTE_COMMAND"
 
 # 检查脚本是否成功运行
 if [ $? -eq 0 ]; then

@@ -5,9 +5,9 @@ fi
 set -euo pipefail
 
 # Real bandwidth shaping by tc/htb (egress).
-# Matrix: /users/xue/xue/project/config/BW_limit — symmetric Asia rack MB/s table (TABLE II),
-#   converted to Mbit/s for tc (×8, override with BW_MATRIX_MB_TO_MBIT).
-# get_bw_mbps(src_cluster,dst_cluster) → egress rate to dst (Mbps).
+# Matrix: /users/xue/xue/project/config/BW_limit — TABLE II MB/s (symmetric from upper triangle + diagonal),
+#   converted to Mbit/s for tc via BW_MATRIX_MB_PER_SEC_TO_TC_MBIT (default ×8).
+# get_bw_mbps(src,dst) is a legacy name: it returns tc rate in Mbit/s (see get_bw_tc_mbit_rate in BW_limit).
 # 输出：默认一行摘要；BW_MATRIX_VERBOSE=1 打印每条 dst；=2 再 dump tc。
 
 BW_FILE="/users/xue/xue/project/config/BW_limit"
@@ -138,7 +138,7 @@ main() {
     tc class add dev "$iface" parent 1: classid "$classid" htb rate "${bw_mbit}mbit" ceil "${bw_mbit}mbit"
     tc filter add dev "$iface" protocol ip parent 1:0 prio 1 u32 match ip dst "${dst_ip}/32" flowid "$classid"
     ((rules++)) || true
-    ((v >= 1)) && echo "Limit dst=${dst_ip} cluster=${idx} bw=${bw_mbps}Mbps (${bw_mbit}mbit)"
+    ((v >= 1)) && echo "Limit dst=${dst_ip} cluster=${idx} tc_rate=${bw_mbit}mbit (from matrix MB/s×${BW_MATRIX_MB_PER_SEC_TO_TC_MBIT:-8})"
   done
 
   echo "OK bw-matrix dev=${iface} host=${CLUSTER_IPS[$src_cluster]} cluster_id=${src_cluster} dst_rules=${rules}"
