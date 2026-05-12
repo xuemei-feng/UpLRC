@@ -1,4 +1,5 @@
 #include "coordinator.h"
+#include <cstdint>
 #include "cord_algorithm2.h"
 #include "tinyxml2.h"
 #include <random>
@@ -48,6 +49,20 @@ namespace ECProject  //定义一个名为 ECProject 的命名空间，防止命�
     bool is_azure_like_code(const std::string &code_type) // 辅助函数：判断是否为 Azure 系列分组规则编码
     {
       return code_type == "AzureLRC" || code_type == "RandomLRC";
+    }
+
+    /** Deterministic seed for placement RNG: same placement_seed + stripe_id -> same sequence (shuffle / cluster / node). */
+    static void seed_placement_mt19937(std::mt19937 &gen, std::uint64_t placement_seed, int stripe_id)
+    {
+      const std::uint64_t mixed =
+          placement_seed ^ (static_cast<std::uint64_t>(static_cast<std::uint32_t>(stripe_id)) * UINT64_C(0x9e3779b97f4a7c15));
+      const std::uint32_t seeds[] = {
+          static_cast<std::uint32_t>(mixed),
+          static_cast<std::uint32_t>(mixed >> 32),
+          static_cast<std::uint32_t>(stripe_id),
+          static_cast<std::uint32_t>(stripe_id) ^ static_cast<std::uint32_t>(mixed >> 48)};
+      std::seed_seq ss(seeds, seeds + sizeof(seeds) / sizeof(seeds[0]));
+      gen.seed(ss);
     }
 
     // CoRD：半开区间 [a0,a1) 与 [b0,b1) 是否有非空交集
@@ -1119,8 +1134,17 @@ namespace ECProject  //定义一个名为 ECProject 的命名空间，防止命�
       selected_clusters.push_back((start_cluster + i) % cluster_num);
     }
 
-    std::random_device rd;
-    std::mt19937 gen(rd());
+    std::mt19937 gen;
+    const std::uint64_t placement_seed = m_sys_config->PlacementRandomSeed;
+    if (placement_seed != 0ULL)
+    {
+      seed_placement_mt19937(gen, placement_seed, stripe->stripe_id);
+    }
+    else
+    {
+      std::random_device rd;
+      gen.seed(rd());
+    }
 
     // 按 Azure 风格构建 group：数据组 0..z-1，全局校验组 z，本地校验组 0..z-1。
     const int global_parity_group_id = stripe->z;
@@ -1221,7 +1245,7 @@ namespace ECProject  //定义一个名为 ECProject 的命名空间，防止命�
     for (int i = 0; i < stripe->n; i++)
     {
       blocks_info[i].map2cluster = assigned_cluster[i];
-      int t_node_id = randomly_select_a_node(blocks_info[i].map2cluster, stripe->stripe_id);
+      int t_node_id = randomly_select_a_node(blocks_info[i].map2cluster, stripe->stripe_id, gen);
       blocks_info[i].map2node = t_node_id;
       update_stripe_info_in_node(t_node_id, stripe->stripe_id, i);
       m_cluster_table[blocks_info[i].map2cluster].blocks.push_back(&blocks_info[i]);
@@ -4778,6 +4802,11 @@ namespace ECProject  //定义一个名为 ECProject 的命名空间，防止命�
   {
     std::random_device rd;
     std::mt19937 gen(rd());
+    return randomly_select_a_cluster(stripe_id, gen);
+  }
+
+  int CoordinatorImpl::randomly_select_a_cluster(int stripe_id, std::mt19937 &gen)
+  {
     std::uniform_int_distribution<int> dis_cluster(0, m_num_of_Clusters - 1);
     int r_cluster_id = dis_cluster(gen);
     while (m_cluster_table[r_cluster_id].stripes.find(stripe_id) != m_cluster_table[r_cluster_id].stripes.end())
@@ -4793,6 +4822,11 @@ namespace ECProject  //定义一个名为 ECProject 的命名空间，防止命�
   {
     std::random_device rd;
     std::mt19937 gen(rd());
+    return randomly_select_a_node(cluster_id, stripe_id, gen);
+  }
+
+  int CoordinatorImpl::randomly_select_a_node(int cluster_id, int stripe_id, std::mt19937 &gen)
+  {
     std::uniform_int_distribution<int> dis_node(0, m_cluster_table[cluster_id].nodes.size() - 1);
     int r_node_id = m_cluster_table[cluster_id].nodes[dis_node(gen)];
     while (m_node_table[r_node_id].stripes.find(stripe_id) != m_node_table[r_node_id].stripes.end())
@@ -4903,6 +4937,19 @@ namespace ECProject  //定义一个名为 ECProject 的命名空间，防止命�
           }
 
           int g_cluster_id = -1;
+          std::mt19937 encode_ran_gen_storage;
+          std::mt19937 *encode_ran_gen = nullptr;
+          if (m_sys_config->PlacementRandomSeed != 0ULL)
+          {
+            seed_placement_mt19937(encode_ran_gen_storage, m_sys_config->PlacementRandomSeed, stripe_id);
+            encode_ran_gen = &encode_ran_gen_storage;
+          }
+          auto pick_cluster = [&](int sid) -> int {
+            return encode_ran_gen ? randomly_select_a_cluster(sid, *encode_ran_gen) : randomly_select_a_cluster(sid);
+          };
+          auto pick_node = [&](int cid, int sid) -> int {
+            return encode_ran_gen ? randomly_select_a_node(cid, sid, *encode_ran_gen) : randomly_select_a_node(cid, sid);
+          };
           for (int i = 0; i < l; i++)
           {
             for (int j = i * b; j < (i + 1) * b; j += g_m + 1)
@@ -4911,13 +4958,13 @@ namespace ECProject  //定义一个名为 ECProject 的命名空间，防止命�
               if (j + g_m + 1 >= (i + 1) * b)
                 flag = true;
               // randomly select a cluster
-              int t_cluster_id = randomly_select_a_cluster(stripe_id);
+              int t_cluster_id = pick_cluster(stripe_id);
               Cluster &t_cluster = m_cluster_table[t_cluster_id];
               // place every g+1 data blocks from each group to a single cluster
               for (int o = j; o < j + g_m + 1 && o < (i + 1) * b; o++)
               {
                 // randomly select a node in the selected cluster
-                int t_node_id = randomly_select_a_node(t_cluster_id, stripe_id);
+                int t_node_id = pick_node(t_cluster_id, stripe_id);
                 blocks_info[o].map2cluster = t_cluster_id;
                 blocks_info[o].map2node = t_node_id;
                 update_stripe_info_in_node(true, t_node_id, stripe_id);
@@ -4931,7 +4978,7 @@ namespace ECProject  //定义一个名为 ECProject 的命名空间，防止命�
                 if (j + g_m + 1 != (i + 1) * b) // b % (g + 1) != 0
                 {
                   // randomly select a node in the selected cluster
-                  int t_node_id = randomly_select_a_node(t_cluster_id, stripe_id);
+                  int t_node_id = pick_node(t_cluster_id, stripe_id);
                   blocks_info[k + g_m + i].map2cluster = t_cluster_id;
                   blocks_info[k + g_m + i].map2node = t_node_id;
                   update_stripe_info_in_node(true, t_node_id, stripe_id);
@@ -4943,10 +4990,10 @@ namespace ECProject  //定义一个名为 ECProject 的命名空间，防止命�
                 {
                   if (g_cluster_id == -1) // randomly select a new cluster
                   {
-                    g_cluster_id = randomly_select_a_cluster(stripe_id);
+                    g_cluster_id = pick_cluster(stripe_id);
                   }
                   Cluster &g_cluster = m_cluster_table[g_cluster_id];
-                  int t_node_id = randomly_select_a_node(g_cluster_id, stripe_id);
+                  int t_node_id = pick_node(g_cluster_id, stripe_id);
                   blocks_info[k + g_m + i].map2cluster = g_cluster_id;
                   blocks_info[k + g_m + i].map2node = t_node_id;
                   update_stripe_info_in_node(true, t_node_id, stripe_id);
@@ -4959,13 +5006,13 @@ namespace ECProject  //定义一个名为 ECProject 的命名空间，防止命�
           }
           if (g_cluster_id == -1) // randomly select a new cluster
           {
-            g_cluster_id = randomly_select_a_cluster(stripe_id);
+            g_cluster_id = pick_cluster(stripe_id);
           }
           Cluster &g_cluster = m_cluster_table[g_cluster_id];
           // place the global parity blocks to the selected cluster
           for (int i = 0; i < g_m; i++)
           {
-            int t_node_id = randomly_select_a_node(g_cluster_id, stripe_id);
+            int t_node_id = pick_node(g_cluster_id, stripe_id);
             blocks_info[k + i].map2cluster = g_cluster_id;
             blocks_info[k + i].map2node = t_node_id;
             update_stripe_info_in_node(true, t_node_id, stripe_id);

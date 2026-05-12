@@ -1,6 +1,7 @@
 #ifndef CONFIG_H
 #define CONFIG_H
 
+#include <cstdint>
 #include "devcommon.h"
 
 namespace ECProject
@@ -35,6 +36,8 @@ namespace ECProject
     int CoordinatorPort = 55555;
     std::string AppendMode = "UNILRC_MODE";
     std::string CodeType = "UniLRC";
+    /** 0: placement uses random_device where applicable. Non-zero: deterministic placement for same seed, stripe_id, topology (RandomLRC + encode Ran). */
+    std::uint64_t PlacementRandomSeed = 0;
   };
 }
 
