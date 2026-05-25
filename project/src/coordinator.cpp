@@ -1497,11 +1497,11 @@ namespace ECProject  //定义一个名为 ECProject 的命名空间，防止命�
         std::cout << "[CoRD-PLAN] scheduleCordTransferPlan failed cluster " << cid << " st=" << st.error_message()
                   << std::endl;
       }
-      else
-      {
-        std::cout << "[CoRD-PLAN][Coordinator] scheduleCordTransferPlan ok cluster=" << cid << " proxy_endpoint=" << pkey
-                  << " plan_key=" << plan.plan_key() << " stripe_id=" << plan.stripe_id() << std::endl;
-      }
+      // else
+      // {
+      //   std::cout << "[CoRD-PLAN][Coordinator] scheduleCordTransferPlan ok cluster=" << cid << " proxy_endpoint=" << pkey
+      //             << " plan_key=" << plan.plan_key() << " stripe_id=" << plan.stripe_id() << std::endl;
+      // }
     }
   }
 
@@ -1770,31 +1770,32 @@ namespace ECProject  //定义一个名为 ECProject 的命名空间，防止命�
       cord_add_logical_range_to_data_blocks(block_size, k, s, e, &block_intervals);
     }
 
-    std::cout << "[CoRD] stripe_id=" << stripe_id
-              << " updated data blocks (block_id -> in-block intervals [off,end)):\n";
-    for (const auto &kv : block_intervals)
-    {
-      std::cout << "  block " << kv.first << ":";
-      for (const auto &seg : kv.second)
-      {
-        std::cout << " [" << seg.first << "," << seg.second << ")";
-      }
-      std::cout << "\n";
-    }
+    // --- CoRD uploadCordUpdate verbose debug (muted) ---
+    // std::cout << "[CoRD] stripe_id=" << stripe_id
+    //           << " updated data blocks (block_id -> in-block intervals [off,end)):\n";
+    // for (const auto &kv : block_intervals)
+    // {
+    //   std::cout << "  block " << kv.first << ":";
+    //   for (const auto &seg : kv.second)
+    //   {
+    //     std::cout << " [" << seg.first << "," << seg.second << ")";
+    //   }
+    //   std::cout << "\n";
+    // }
 
     const auto groups = cord_partition_groups_algorithm1(block_intervals);
 
-    std::cout << "[CoRD] Algorithm 1 partition (intersection closure; singletons = pairwise disjoint from all other "
-                 "updated blocks):\n";
-    for (size_t gi = 0; gi < groups.size(); ++gi)
-    {
-      const auto &g = groups[gi];
-      const char *tag = (g.size() >= 2) ? "intersecting_group" : "disjoint_singleton";
-      std::cout << "  cluster " << gi << " [" << tag << "] blocks";
-      for (int bid : g)
-        std::cout << " " << bid;
-      std::cout << "\n";
-    }
+    // std::cout << "[CoRD] Algorithm 1 partition (intersection closure; singletons = pairwise disjoint from all other "
+    //              "updated blocks):\n";
+    // for (size_t gi = 0; gi < groups.size(); ++gi)
+    // {
+    //   const auto &g = groups[gi];
+    //   const char *tag = (g.size() >= 2) ? "intersecting_group" : "disjoint_singleton";
+    //   std::cout << "  cluster " << gi << " [" << tag << "] blocks";
+    //   for (int bid : g)
+    //     std::cout << " " << bid;
+    //   std::cout << "\n";
+    // }
 
     cord_alg2::Algorithm2Result alg2_result;
     {
@@ -1803,28 +1804,28 @@ namespace ECProject  //定义一个名为 ECProject 的命名空间，防止命�
       const int slot_unit = static_cast<int>(k_cord_alg2_slot_unit_bytes);
       alg2_result =
           cord_alg2::build_algorithm2(*stripe, block_intervals, groups, m_sys_config->ClusterNum, tp, slot_unit);
-      std::cout << "[CoRD] Algorithm 2 train_route (|U|=" << groups.size() << ", links=" << alg2_result.train_route.size()
-                << "):\n";
-      for (size_t i = 0; i < alg2_result.train_route.size(); ++i)
-      {
-        const auto &L = alg2_result.train_route[i];
-        std::cout << "  [" << i << "] " << cord_alg2::train_link_kind_name(L.kind) << " blk " << L.src_block_id
-                  << "->" << L.dst_block_id << " c " << L.src_cluster << "->" << L.dst_cluster
-                  << " bytes=" << L.payload_bytes << " est_s=" << L.est_transfer_sec << " grp=" << L.group_index
-                  << "\n";
-      }
-      std::cout << "[CoRD] Algorithm 2 timeslots=" << alg2_result.timeslot_schedule.size()
-                << " slot_unit_bytes=" << alg2_result.slot_unit_bytes;
-      if (alg2_result.center_global_block_id >= 0)
-        std::cout << " last_star_center_G=" << alg2_result.center_global_block_id;
-      std::cout << "\n";
-      for (const auto &ts : alg2_result.timeslot_schedule)
-      {
-        std::cout << "  slot " << ts.timeslot << ":";
-        for (int id : ts.link_indices)
-          std::cout << " " << id;
-        std::cout << "\n";
-      }
+      // std::cout << "[CoRD] Algorithm 2 train_route (|U|=" << groups.size() << ", links=" << alg2_result.train_route.size()
+      //           << "):\n";
+      // for (size_t i = 0; i < alg2_result.train_route.size(); ++i)
+      // {
+      //   const auto &L = alg2_result.train_route[i];
+      //   std::cout << "  [" << i << "] " << cord_alg2::train_link_kind_name(L.kind) << " blk " << L.src_block_id
+      //             << "->" << L.dst_block_id << " c " << L.src_cluster << "->" << L.dst_cluster
+      //             << " bytes=" << L.payload_bytes << " est_s=" << L.est_transfer_sec << " grp=" << L.group_index
+      //             << "\n";
+      // }
+      // std::cout << "[CoRD] Algorithm 2 timeslots=" << alg2_result.timeslot_schedule.size()
+      //           << " slot_unit_bytes=" << alg2_result.slot_unit_bytes;
+      // if (alg2_result.center_global_block_id >= 0)
+      //   std::cout << " last_star_center_G=" << alg2_result.center_global_block_id;
+      // std::cout << "\n";
+      // for (const auto &ts : alg2_result.timeslot_schedule)
+      // {
+      //   std::cout << "  slot " << ts.timeslot << ":";
+      //   for (int id : ts.link_indices)
+      //     std::cout << " " << id;
+      //   std::cout << "\n";
+      // }
       // 算法三已在 build_algorithm2 内与算法二融合（|N|≥3 成功时）；此处不再单独调用以免重复计算。
     }
 
@@ -1837,10 +1838,10 @@ namespace ECProject  //定义一个名为 ECProject 的命名空间，防止命�
                                               .count());
       cord_xfer_plan = cord_transfer_plan_from_algorithm2(stripe_id, cord_xfer_plan_key, alg2_result, stripe->k,
                                                             block_intervals);
-      std::cout << "[CoRD] CordTransferPlan merged consecutive identical slots: steps=" << cord_xfer_plan.steps_size()
-                << " total_rounds=" << cord_xfer_plan.total_rounds()
-                << " (debug print above still shows raw Algorithm2 timeslots="
-                << alg2_result.timeslot_schedule.size() << ")\n";
+      // std::cout << "[CoRD] CordTransferPlan merged consecutive identical slots: steps=" << cord_xfer_plan.steps_size()
+      //           << " total_rounds=" << cord_xfer_plan.total_rounds()
+      //           << " (debug print above still shows raw Algorithm2 timeslots="
+      //           << alg2_result.timeslot_schedule.size() << ")\n";
       enrich_cord_transfer_plan_delta_segs(block_intervals, stripe->k, &cord_xfer_plan);
       fill_group_xor_hints_from_alg2(alg2_result, block_intervals, &cord_xfer_plan);
       enrich_cord_transfer_plan_encoding(stripe, block_intervals, alg2_result, &cord_xfer_plan);
@@ -2050,10 +2051,12 @@ namespace ECProject  //定义一个名为 ECProject 的命名空间，防止命�
         const int64_t em = rep.cord_join_pure_xfer_end_unix_ms();
         const double proxy_wall_span_sec =
             (em >= sm) ? static_cast<double>(em - sm) / 1000. : -1.;
-        std::cout << "[CoRD-PLAN][Coordinator] proxy_pure_xfer plan_key=" << pk << " cluster=" << cid
-                  << " proxy_endpoint=" << pkey << " pure_xfer_sec=" << rep.cord_join_pure_xfer_sec()
-                  << " wall_start_unix_ms=" << sm << " wall_end_unix_ms=" << em << " proxy_wall_span_sec="
-                  << proxy_wall_span_sec << std::endl;
+        // std::cout << "[CoRD-PLAN][Coordinator] proxy_pure_xfer plan_key=" << pk << " cluster=" << cid
+        //           << " proxy_endpoint=" << pkey << " pure_xfer_sec=" << rep.cord_join_pure_xfer_sec()
+        //           << " wall_start_unix_ms=" << sm << " wall_end_unix_ms=" << em << " proxy_wall_span_sec="
+        //           << proxy_wall_span_sec << std::endl;
+        (void)proxy_wall_span_sec;
+        (void)pkey;
         max_proxy_pure_xfer_sec = std::max(max_proxy_pure_xfer_sec, rep.cord_join_pure_xfer_sec());
         if (!span_have)
         {
@@ -2069,12 +2072,13 @@ namespace ECProject  //定义一个名为 ECProject 的命名空间，防止命�
           ++timing_samples;
         }
       }
-      else
-      {
-        std::cout << "[CoRD-PLAN][Coordinator] proxy_pure_xfer plan_key=" << pk << " cluster=" << cid
-                  << " proxy_endpoint=" << pkey << " timing=n/a (no cord_join_xfer_timing from proxy)"
-                  << std::endl;
-      }
+      // else
+      // {
+      //   std::cout << "[CoRD-PLAN][Coordinator] proxy_pure_xfer plan_key=" << pk << " cluster=" << cid
+      //             << " proxy_endpoint=" << pkey << " timing=n/a (no cord_join_xfer_timing from proxy)"
+      //             << std::endl;
+      // }
+      (void)pkey;
     }
     {
       std::lock_guard<std::mutex> lk(m_cord_pending_mu);
@@ -2084,19 +2088,23 @@ namespace ECProject  //定义一个名为 ECProject 的命名空间，防止命�
     {
       const double cluster_pure_xfer_span_wall_sec =
           static_cast<double>(span_max_end_ms - span_min_start_ms) / 1000.;
-      std::cout << "[CoRD-PLAN][Coordinator] cluster_pure_xfer_span_wall_sec=" << cluster_pure_xfer_span_wall_sec
-                << " plan_key=" << pk << " joined_proxies=" << joined_proxies
-                << " timing_samples=" << timing_samples << " max_proxy_pure_xfer_sec=" << max_proxy_pure_xfer_sec
-                << " (min wall start -> max wall end over proxies; clock sync assumed)" << std::endl;
-      if (timing_samples < joined_proxies)
-        std::cout << "[CoRD-PLAN][Coordinator] WARN timing_samples<joined_proxies (mixed proxy versions?)"
-                  << std::endl;
+      // std::cout << "[CoRD-PLAN][Coordinator] cluster_pure_xfer_span_wall_sec=" << cluster_pure_xfer_span_wall_sec
+      //           << " plan_key=" << pk << " joined_proxies=" << joined_proxies
+      //           << " timing_samples=" << timing_samples << " max_proxy_pure_xfer_sec=" << max_proxy_pure_xfer_sec
+      //           << " (min wall start -> max wall end over proxies; clock sync assumed)" << std::endl;
+      // if (timing_samples < joined_proxies)
+      //   std::cout << "[CoRD-PLAN][Coordinator] WARN timing_samples<joined_proxies (mixed proxy versions?)"
+      //             << std::endl;
+      (void)cluster_pure_xfer_span_wall_sec;
+      (void)joined_proxies;
+      (void)timing_samples;
+      (void)max_proxy_pure_xfer_sec;
     }
-    else if (joined_proxies > 0)
-    {
-      std::cout << "[CoRD-PLAN][Coordinator] WARN cluster_pure_xfer_span_wall_sec unavailable plan_key=" << pk
-                << " joined_proxies=" << joined_proxies << std::endl;
-    }
+    // else if (joined_proxies > 0)
+    // {
+    //   std::cout << "[CoRD-PLAN][Coordinator] WARN cluster_pure_xfer_span_wall_sec unavailable plan_key=" << pk
+    //             << " joined_proxies=" << joined_proxies << std::endl;
+    // }
     reply->set_ifcommit(true);
     return grpc::Status::OK;
   }
@@ -2283,10 +2291,10 @@ namespace ECProject  //定义一个名为 ECProject 的命名空间，防止命�
         fs.source_cluster_id = cid;
         w.fetches.push_back(std::move(fs));
 
-        std::cout << "[CoRD-LP] map2group=" << gnum << " hub_global_blk=" << hub_blk
-                  << " data_blk=" << bid << " seg=[" << a << "," << b << ") -> LP blk " << lb
-                  << " parity_off=" << poff << " len=" << psz << " fetch " << blob_key << "@" << blob_off
-                  << " len=" << seg_len << std::endl;
+        // std::cout << "[CoRD-LP] map2group=" << gnum << " hub_global_blk=" << hub_blk
+        //           << " data_blk=" << bid << " seg=[" << a << "," << b << ") -> LP blk " << lb
+        //           << " parity_off=" << poff << " len=" << psz << " fetch " << blob_key << "@" << blob_off
+        //           << " len=" << seg_len << std::endl;
       }
     }
 
