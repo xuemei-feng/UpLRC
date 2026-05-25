@@ -1894,21 +1894,39 @@ namespace ECProject
                                                    const proxy_proto::CordTransferPlan *plan,
                                                    proxy_proto::SetReply *response)
   {
+    (void)context;
     // std::cout << "[CoRD-PLAN][" << proxy_ip_port << "] RECV grpc scheduleCordTransferPlan peer=" << context->peer()
     //           << " plan_key=" << plan->plan_key() << " stripe_id=" << plan->stripe_id()
     //           << " steps=" << plan->steps_size() << std::endl;
-    response->set_ifcommit(true);
+    response->set_ifcommit(false);
+    if (plan->plan_key().empty())
+      return grpc::Status(grpc::StatusCode::INVALID_ARGUMENT, "empty plan_key");
     auto plan_copy = std::make_shared<proxy_proto::CordTransferPlan>(*plan);
     {
       std::lock_guard<std::mutex> lk(g_cord_plan_reg_mu);
       g_cord_plans_by_key[plan_copy->plan_key()] =
           std::shared_ptr<const proxy_proto::CordTransferPlan>(plan_copy);
     }
+    response->set_ifcommit(true);
+    return grpc::Status::OK;
+  }
+
+  grpc::Status ProxyImpl::cordPlanStartExecution(grpc::ServerContext *context,
+                                                 const proxy_proto::CordPlanKeyMsg *request,
+                                                 proxy_proto::SetReply *response)
+  {
+    (void)context;
+    response->set_ifcommit(false);
+    const std::string &pk = request->plan_key();
+    if (pk.empty())
+      return grpc::Status(grpc::StatusCode::INVALID_ARGUMENT, "empty plan_key");
+    auto plan_ptr = cord_lookup_registered_plan(pk);
+    if (!plan_ptr)
+      return grpc::Status(grpc::StatusCode::NOT_FOUND, "cord plan_key not registered");
     const int self_cid = m_self_cluster_id;
     const std::string tag = proxy_ip_port;
-    const std::string pk = plan_copy->plan_key();
-    std::thread th([plan_copy, self_cid, tag, p = this]() {
-      cord_transfer_plan_execute_async(*plan_copy, self_cid, p, tag);
+    std::thread th([plan_ptr, self_cid, tag, p = this]() {
+      cord_transfer_plan_execute_async(*plan_ptr, self_cid, p, tag);
     });
     {
       std::lock_guard<std::mutex> lk(g_cord_plan_exec_mu);
@@ -1917,6 +1935,7 @@ namespace ECProject
         it->second.join();
       g_cord_plan_exec_threads[pk] = std::move(th);
     }
+    response->set_ifcommit(true);
     return grpc::Status::OK;
   }
 

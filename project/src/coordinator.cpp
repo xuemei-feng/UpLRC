@@ -1471,6 +1471,7 @@ namespace ECProject  //定义一个名为 ECProject 的命名空间，防止命�
       clusters.insert(plan.steps(i).src_proxy_cluster_id());
       clusters.insert(plan.steps(i).dst_proxy_cluster_id());
     }
+  // Phase 1: register plan on every involved proxy before any execution starts.
     for (int cid : clusters)
     {
       if (cid < 0)
@@ -1497,11 +1498,35 @@ namespace ECProject  //定义一个名为 ECProject 的命名空间，防止命�
         std::cout << "[CoRD-PLAN] scheduleCordTransferPlan failed cluster " << cid << " st=" << st.error_message()
                   << std::endl;
       }
-      // else
-      // {
-      //   std::cout << "[CoRD-PLAN][Coordinator] scheduleCordTransferPlan ok cluster=" << cid << " proxy_endpoint=" << pkey
-      //             << " plan_key=" << plan.plan_key() << " stripe_id=" << plan.stripe_id() << std::endl;
-      // }
+    }
+  // Phase 2: start execution on all proxies (all plan_key registrations are visible).
+    proxy_proto::CordPlanKeyMsg start_msg;
+    start_msg.set_plan_key(plan.plan_key());
+    for (int cid : clusters)
+    {
+      if (cid < 0)
+      {
+        continue;
+      }
+      auto cit = m_cluster_table.find(cid);
+      if (cit == m_cluster_table.end())
+      {
+        continue;
+      }
+      const std::string pkey = cit->second.proxy_ip + ":" + std::to_string(cit->second.proxy_port);
+      auto pit = m_proxy_ptrs.find(pkey);
+      if (pit == m_proxy_ptrs.end() || !pit->second)
+      {
+        continue;
+      }
+      grpc::ClientContext ctx;
+      proxy_proto::SetReply rep;
+      grpc::Status st = pit->second->cordPlanStartExecution(&ctx, start_msg, &rep);
+      if (!st.ok() || !rep.ifcommit())
+      {
+        std::cout << "[CoRD-PLAN] cordPlanStartExecution failed cluster " << cid << " st=" << st.error_message()
+                  << std::endl;
+      }
     }
   }
 

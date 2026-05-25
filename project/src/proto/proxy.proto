@@ -49,6 +49,7 @@ service proxyService {
   rpc cordLpApplyParityDelta(CordLpParityApplyDelta) returns (SetReply);
   // CoRD：下发算法二生成的跨 proxy 传输计划（train_route + timeslot_schedule 的可序列化形式）
   rpc scheduleCordTransferPlan(CordTransferPlan) returns (SetReply);
+  rpc cordPlanStartExecution(CordPlanKeyMsg) returns (SetReply);
   rpc cordPlanJoinExecution(CordPlanKeyMsg) returns (SetReply);
   // CoRD 跨 proxy：收集器聚合数据增量 / 校验块 XOR 落盘 / MST 转发数据增量
   rpc cordPlanCollectorIngestDataDelta(CordPlanCollectorIngestReq) returns (SetReply);

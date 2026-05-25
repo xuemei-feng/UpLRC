@@ -79,6 +79,10 @@ namespace ECProject
         grpc::ServerContext *context,
         const proxy_proto::CordTransferPlan *plan,
         proxy_proto::SetReply *response) override;
+    grpc::Status cordPlanStartExecution(
+        grpc::ServerContext *context,
+        const proxy_proto::CordPlanKeyMsg *request,
+        proxy_proto::SetReply *response) override;
     grpc::Status cordPlanJoinExecution(
         grpc::ServerContext *context,
         const proxy_proto::CordPlanKeyMsg *request,

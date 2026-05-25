@@ -1863,7 +1863,7 @@ const char descriptor_table_protodef_proxy_2eproto[] PROTOBUF_SECTION_VARIABLE(p
   "O_GLOBAL\020\001\022&\n\"CORD_TRANSFER_STAR_CENTER_"
   "TO_LOCAL\020\002\022\035\n\031CORD_TRANSFER_MST_FORWARD\020"
   "\003*B\n\024CordDeltaPayloadKind\022\023\n\017CORD_DELTA_"
-  "DATA\020\000\022\025\n\021CORD_DELTA_PARITY\020\0012\220\021\n\014proxyS"
+  "DATA\020\000\022\025\n\021CORD_DELTA_PARITY\020\0012\336\021\n\014proxyS"
   "ervice\022D\n\ncheckalive\022\032.proxy_proto.Check"
   "aliveCMD\032\032.proxy_proto.RequestResult\022L\n\022"
   "encodeAndSetObject\022\037.proxy_proto.ObjectA"
@@ -1907,22 +1907,24 @@ const char descriptor_table_protodef_proxy_2eproto[] PROTOBUF_SECTION_VARIABLE(p
   "lyParityDelta\022#.proxy_proto.CordLpParity"
   "ApplyDelta\032\025.proxy_proto.SetReply\022P\n\030sch"
   "eduleCordTransferPlan\022\035.proxy_proto.Cord"
-  "TransferPlan\032\025.proxy_proto.SetReply\022K\n\025c"
-  "ordPlanJoinExecution\022\033.proxy_proto.CordP"
-  "lanKeyMsg\032\025.proxy_proto.SetReply\022b\n cord"
-  "PlanCollectorIngestDataDelta\022\'.proxy_pro"
-  "to.CordPlanCollectorIngestReq\032\025.proxy_pr"
-  "oto.SetReply\022\\\n\033cordPlanApplyParityXorDe"
-  "lta\022&.proxy_proto.CordPlanApplyParityXor"
-  "Req\032\025.proxy_proto.SetReply\022X\n\031cordPlanMs"
-  "tDataDeltaChunk\022$.proxy_proto.CordPlanMs"
-  "tDataDeltaReq\032\025.proxy_proto.SetReply\022B\n\t"
-  "getBlocks\022\036.proxy_proto.StripeAndBlockID"
-  "s\032\025.proxy_proto.GetReplyb\006proto3"
+  "TransferPlan\032\025.proxy_proto.SetReply\022L\n\026c"
+  "ordPlanStartExecution\022\033.proxy_proto.Cord"
+  "PlanKeyMsg\032\025.proxy_proto.SetReply\022K\n\025cor"
+  "dPlanJoinExecution\022\033.proxy_proto.CordPla"
+  "nKeyMsg\032\025.proxy_proto.SetReply\022b\n cordPl"
+  "anCollectorIngestDataDelta\022\'.proxy_proto"
+  ".CordPlanCollectorIngestReq\032\025.proxy_prot"
+  "o.SetReply\022\\\n\033cordPlanApplyParityXorDelt"
+  "a\022&.proxy_proto.CordPlanApplyParityXorRe"
+  "q\032\025.proxy_proto.SetReply\022X\n\031cordPlanMstD"
+  "ataDeltaChunk\022$.proxy_proto.CordPlanMstD"
+  "ataDeltaReq\032\025.proxy_proto.SetReply\022B\n\tge"
+  "tBlocks\022\036.proxy_proto.StripeAndBlockIDs\032"
+  "\025.proxy_proto.GetReplyb\006proto3"
   ;
 static ::_pbi::once_flag descriptor_table_proxy_2eproto_once;
 const ::_pbi::DescriptorTable descriptor_table_proxy_2eproto = {
-    false, false, 11232, descriptor_table_protodef_proxy_2eproto,
+    false, false, 11310, descriptor_table_protodef_proxy_2eproto,
     "proxy.proto",
     &descriptor_table_proxy_2eproto_once, nullptr, 0, 47,
     schemas, file_default_instances, TableStruct_proxy_2eproto::offsets,
