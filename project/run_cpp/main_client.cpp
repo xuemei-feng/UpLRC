@@ -10,7 +10,64 @@
 #include <chrono>
 #include <algorithm>
 #include <random>
+#include <sstream>
+#include <string>
+#include <vector>
 #include "unilrc_encoder.h"
+
+namespace
+{
+  bool parse_cord_trace_line(const std::string &line, int &stripe_id, int &range_cnt,
+                             std::vector<std::pair<int, int>> &logical_ranges, std::string &err)
+  {
+    logical_ranges.clear();
+    std::istringstream iss(line);
+    if (!(iss >> stripe_id >> range_cnt))
+    {
+      err = "expected stripe_id range_count";
+      return false;
+    }
+    if (range_cnt <= 0)
+    {
+      err = "range_count must be positive";
+      return false;
+    }
+    logical_ranges.reserve(static_cast<size_t>(range_cnt));
+    for (int i = 0; i < range_cnt; ++i)
+    {
+      int start = 0;
+      int end = 0;
+      if (!(iss >> start >> end))
+      {
+        err = "expected logical_offset_start logical_offset_end per range (half-open [start,end))";
+        return false;
+      }
+      if (end <= start)
+      {
+        err = "invalid range [" + std::to_string(start) + "," + std::to_string(end) + ")";
+        return false;
+      }
+      logical_ranges.emplace_back(start, end);
+    }
+    std::string extra;
+    if (iss >> extra)
+    {
+      err = "trailing tokens after ranges";
+      return false;
+    }
+    return true;
+  }
+
+  bool is_blank_or_comment_line(const std::string &line)
+  {
+    size_t i = 0;
+    while (i < line.size() && (line[i] == ' ' || line[i] == '\t' || line[i] == '\r'))
+      ++i;
+    if (i >= line.size())
+      return true;
+    return line[i] == '#';
+  }
+}
 
 int main(int argc, char **argv)
 {
@@ -52,7 +109,7 @@ int main(int argc, char **argv)
     int n = k + r + z;
 
     // 固定预填充条带数；否则块变小时间接写满「3000MB」会导致条带数暴涨
-    const int stripe_num = 3;
+    const int stripe_num = 10;
     const double total_write_size = static_cast<double>(stripe_num) * block_size * static_cast<double>(n); // MB
     std::cout << "Set phase: stripe_num=" << stripe_num << ", total_write_size_mb=" << total_write_size << std::endl;
     std::cout << "Starting set stripe operation" << std::endl;
@@ -65,77 +122,92 @@ int main(int argc, char **argv)
     std::cout << "Conducting experiments, please wait..." << std::endl;
     std::chrono::duration<double> set_time = std::chrono::duration_cast<std::chrono::duration<double>>(set_end - set_start);
     std::cout << "write throughput: " << (static_cast<double> (total_write_size) / set_time.count() / 1024) << "MB/s" << std::endl;
-    char input;
-    std::cout << "Start update? (type 'y' to proceed): " << std::endl;
+    char input = 0;
+    std::cout << "Start CoRD batch update? (type 'y' to proceed): " << std::endl;
     std::cin >> input;
-    if (input == 'y') 
+    if (input == 'y')
     {
-        std::string method;
-        std::cout << "Select update method (xue | cord): " << std::endl;
-        std::cin >> method;
+        if (argc < 2)
+        {
+            std::cout << "Usage: " << argv[0] << " <cord_update_trace_file>" << std::endl;
+            std::cout << "Trace file: one request per line -> stripe_id range_count "
+                         "then range_count pairs of (logical_offset_start logical_offset_end) "
+                         "for half-open [start,end). Lines starting with # are ignored." << std::endl;
+            return 1;
+        }
+        const std::string trace_path = argv[1];
+        std::ifstream trace_file(trace_path);
+        if (!trace_file.is_open())
+        {
+            std::cout << "Failed to open trace file: " << trace_path << std::endl;
+            return 1;
+        }
 
-        if (method == "xue")
+        int total_failures = 0;
+        int success_count = 0;
+        std::vector<double> per_success_wall_sec;
+        per_success_wall_sec.reserve(64);
+
+        const auto batch_t0 = std::chrono::steady_clock::now();
+        std::string line;
+        int line_no = 0;
+
+        while (std::getline(trace_file, line))
         {
+            ++line_no;
+            if (is_blank_or_comment_line(line))
+                continue;
+
             int stripe_id = 0;
             int range_cnt = 0;
-            std::cout << "Input stripe_id range_count: " << std::endl;
-            std::cin >> stripe_id >> range_cnt;
-            if (range_cnt <= 0)
-            {
-                std::cout << "Invalid range_count: " << range_cnt << std::endl;
-                return 1;
-            }
             std::vector<std::pair<int, int>> logical_ranges;
-            logical_ranges.reserve(static_cast<size_t>(range_cnt));
-            std::cout << "Input each logical range as [start, end): logical_offset_start logical_offset_end_exclusive" << std::endl;
-            for (int i = 0; i < range_cnt; i++)
+            std::string parse_err;
+            if (!parse_cord_trace_line(line, stripe_id, range_cnt, logical_ranges, parse_err))
             {
-                int logical_offset_start = 0;
-                int logical_offset_end = 0;
-                std::cin >> logical_offset_start >> logical_offset_end;
-                logical_ranges.emplace_back(logical_offset_start, logical_offset_end);
+                std::cout << "[CoRD batch] line " << line_no << " parse error: " << parse_err
+                          << " (skipped, continue)" << std::endl;
+                ++total_failures;
+                continue;
             }
-            std::cout << "Calling xue's update function..." << std::endl;
-            const bool ok = client.xue_update(stripe_id, logical_ranges);
-            std::cout << "xue_update result: " << (ok ? "success" : "failed") << std::endl;
-        }
-        else if (method == "cord")
-        {
-            int stripe_id = 0;
-            int range_cnt = 0;
-            std::cout << "CoRD: stripe_id range_count (then enter each [start,end) interval):" << std::endl;
-            std::cin >> stripe_id >> range_cnt;
-            if (range_cnt <= 0)
-            {
-                std::cout << "Invalid range_count: " << range_cnt << std::endl;
-                return 1;
-            }
-            std::vector<std::pair<int, int>> logical_ranges;
-            logical_ranges.reserve(static_cast<size_t>(range_cnt));
-            std::cout << "Each line: logical_offset_start logical_offset_end_exclusive" << std::endl;
-            for (int i = 0; i < range_cnt; i++)
-            {
-                int logical_offset_start = 0;
-                int logical_offset_end = 0;
-                std::cin >> logical_offset_start >> logical_offset_end;
-                logical_ranges.emplace_back(logical_offset_start, logical_offset_end);
-            }
-            std::cout << "Calling cord_update (xfer plan updates global parity; LP RPC updates local parity)..." << std::endl;
-            const std::chrono::high_resolution_clock::time_point req_start = std::chrono::high_resolution_clock::now();
+
+            std::cout << "[CoRD batch] line " << line_no << " stripe_id=" << stripe_id
+                      << " ranges=" << range_cnt << " ..." << std::endl;
+            const auto req_t0 = std::chrono::steady_clock::now();
             const bool ok = client.cord_update(stripe_id, logical_ranges, nullptr, 0);
-            const std::chrono::high_resolution_clock::time_point req_end = std::chrono::high_resolution_clock::now();
-            const std::chrono::duration<double> cord_wall =
-                std::chrono::duration_cast<std::chrono::duration<double>>(req_end - req_start);
-            std::cout << "cord_update result: " << (ok ? "success" : "failed") << std::endl;
-            std::cout << "cord_update wall time (Client::cord_update only): " << std::fixed << std::setprecision(6)
-                      << cord_wall.count() << " s" << std::endl;
+            const auto req_t1 = std::chrono::steady_clock::now();
+            const double req_wall_sec = std::chrono::duration<double>(req_t1 - req_t0).count();
+
+            if (!ok)
+            {
+                std::cout << "[CoRD batch] line " << line_no << " FAILED wall_sec=" << std::fixed
+                          << std::setprecision(6) << req_wall_sec << " (skipped, continue)" << std::endl;
+                ++total_failures;
+                continue;
+            }
+
+            ++success_count;
+            per_success_wall_sec.push_back(req_wall_sec);
+            std::cout << "[CoRD batch] line " << line_no << " OK wall_sec=" << std::fixed
+                      << std::setprecision(6) << req_wall_sec << std::endl;
         }
-        else
+
+        const auto batch_t1 = std::chrono::steady_clock::now();
+        const double batch_total_sec = std::chrono::duration<double>(batch_t1 - batch_t0).count();
+
+        std::cout << "=== CoRD batch summary ===" << std::endl;
+        std::cout << "trace_file=" << trace_path << std::endl;
+        std::cout << "success_count=" << success_count << std::endl;
+        std::cout << "total_failures=" << total_failures << std::endl;
+        std::cout << "batch_total_wall_sec=" << std::fixed << std::setprecision(6) << batch_total_sec << std::endl;
+        for (size_t i = 0; i < per_success_wall_sec.size(); ++i)
         {
-            std::cout << "Unknown method: " << method << std::endl;
+            std::cout << "  success[" << i << "] wall_sec=" << std::fixed << std::setprecision(6)
+                      << per_success_wall_sec[i] << std::endl;
         }
-    } 
-    else 
+        if (total_failures > 0)
+            return 1;
+    }
+    else
     {
         std::cout << "Update cancelled." << std::endl;
     }
