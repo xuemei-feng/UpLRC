@@ -109,7 +109,7 @@ int main(int argc, char **argv)
     int n = k + r + z;
 
     // 固定预填充条带数；否则块变小时间接写满「3000MB」会导致条带数暴涨
-    const int stripe_num = 10;
+    const int stripe_num = 1000;
     const double total_write_size = static_cast<double>(stripe_num) * block_size * static_cast<double>(n); // MB
     std::cout << "Set phase: stripe_num=" << stripe_num << ", total_write_size_mb=" << total_write_size << std::endl;
     std::cout << "Starting set stripe operation" << std::endl;
@@ -145,10 +145,10 @@ int main(int argc, char **argv)
 
         int total_failures = 0;
         int success_count = 0;
+        double success_wall_sum = 0.0;
         std::vector<double> per_success_wall_sec;
         per_success_wall_sec.reserve(64);
 
-        const auto batch_t0 = std::chrono::steady_clock::now();
         std::string line;
         int line_no = 0;
 
@@ -186,23 +186,27 @@ int main(int argc, char **argv)
             }
 
             ++success_count;
+            success_wall_sum += req_wall_sec;
             per_success_wall_sec.push_back(req_wall_sec);
             std::cout << "[CoRD batch] line " << line_no << " OK wall_sec=" << std::fixed
                       << std::setprecision(6) << req_wall_sec << std::endl;
         }
 
-        const auto batch_t1 = std::chrono::steady_clock::now();
-        const double batch_total_sec = std::chrono::duration<double>(batch_t1 - batch_t0).count();
-
         std::cout << "=== CoRD batch summary ===" << std::endl;
         std::cout << "trace_file=" << trace_path << std::endl;
-        std::cout << "success_count=" << success_count << std::endl;
-        std::cout << "total_failures=" << total_failures << std::endl;
-        std::cout << "batch_total_wall_sec=" << std::fixed << std::setprecision(6) << batch_total_sec << std::endl;
         for (size_t i = 0; i < per_success_wall_sec.size(); ++i)
         {
             std::cout << "  success[" << i << "] wall_sec=" << std::fixed << std::setprecision(6)
                       << per_success_wall_sec[i] << std::endl;
+        }
+        std::cout << "success_count=" << success_count << std::endl;
+        std::cout << "total_failures=" << total_failures << std::endl;
+        std::cout << "batch_total_wall_sec=" << std::fixed << std::setprecision(6) << success_wall_sum << std::endl;
+        if (success_count > 0)
+        {
+            const double avg_wall_sec_per_request = success_wall_sum / static_cast<double>(success_count);
+            std::cout << "avg_wall_sec_per_request=" << std::fixed << std::setprecision(6)
+                      << avg_wall_sec_per_request << std::endl;
         }
         if (total_failures > 0)
             return 1;

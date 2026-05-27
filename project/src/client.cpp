@@ -8,6 +8,7 @@
 #include <iomanip>
 #include <random>
 #include <sstream>
+#include <sys/socket.h>
 #include "unilrc_encoder.h"
 namespace ECProject
 {
@@ -30,6 +31,59 @@ namespace ECProject
     bool is_azure_like_code(const std::string &code_type)
     {
       return code_type == "AzureLRC" || code_type == "RandomLRC";
+    }
+
+    using CordClock = std::chrono::steady_clock;
+    constexpr std::chrono::milliseconds kCordRequestTimeout{500};
+    thread_local const CordClock::time_point *g_cord_request_deadline = nullptr;
+
+    bool cord_request_timed_out()
+    {
+      return g_cord_request_deadline != nullptr && CordClock::now() >= *g_cord_request_deadline;
+    }
+
+    int cord_remaining_ms()
+    {
+      if (g_cord_request_deadline == nullptr)
+        return -1;
+      const auto rem = std::chrono::duration_cast<std::chrono::milliseconds>(
+                           *g_cord_request_deadline - CordClock::now())
+                           .count();
+      return rem > 0 ? static_cast<int>(rem) : 0;
+    }
+
+    void cord_apply_grpc_deadline(grpc::ClientContext &ctx)
+    {
+      const int ms = cord_remaining_ms();
+      if (ms <= 0)
+        ctx.set_deadline(std::chrono::system_clock::now());
+      else
+        ctx.set_deadline(std::chrono::system_clock::now() + std::chrono::milliseconds(ms));
+    }
+
+    void cord_apply_socket_timeouts(asio::ip::tcp::socket &sock)
+    {
+      const int ms = cord_remaining_ms();
+      if (ms <= 0)
+        return;
+      struct timeval tv;
+      tv.tv_sec = ms / 1000;
+      tv.tv_usec = static_cast<suseconds_t>((ms % 1000) * 1000);
+      const auto native = sock.native_handle();
+      if (native != -1)
+      {
+        setsockopt(native, SOL_SOCKET, SO_SNDTIMEO, &tv, sizeof(tv));
+        setsockopt(native, SOL_SOCKET, SO_RCVTIMEO, &tv, sizeof(tv));
+      }
+    }
+
+    bool cord_abort_if_timed_out()
+    {
+      if (!cord_request_timed_out())
+        return false;
+      std::cout << "[CoRD] request timeout (>" << (kCordRequestTimeout.count() / 1000.0)
+                << "s), aborted" << std::endl;
+      return true;
     }
   }
 
@@ -349,27 +403,39 @@ namespace ECProject
 
   void Client::async_cord_update_to_proxies(char *cluster_slice_data, std::string cord_key, int cluster_slice_size, std::string proxy_ip, int proxy_port, int index, bool *if_commit_arr)
   {
+    if (cord_abort_if_timed_out())
+      return;
     std::cout << "[CoRD][Client " << m_clientID << "] TCP send slice_idx=" << index << " bytes=" << cluster_slice_size
               << " -> proxy " << proxy_ip << ":" << proxy_port << " cord_key=" << cord_key
               << " payload_preview=" << cord_client_hex_preview(cluster_slice_data, static_cast<size_t>(cluster_slice_size))
               << std::endl;
     {
       std::lock_guard<std::mutex> lk(m_proxy_tcp_mu);
+      if (cord_abort_if_timed_out())
+        return;
       asio::io_context io_context;
       asio::error_code error;
       asio::ip::tcp::resolver resolver(io_context);
       asio::ip::tcp::resolver::results_type endpoints =
           resolver.resolve(proxy_ip, std::to_string(proxy_port));
       asio::ip::tcp::socket sock_data(io_context);
-      asio::connect(sock_data, endpoints);
+      cord_apply_socket_timeouts(sock_data);
+      asio::connect(sock_data, endpoints, error);
+      if (error || cord_abort_if_timed_out())
+        return;
 
       asio::write(sock_data, asio::buffer(cluster_slice_data, static_cast<size_t>(cluster_slice_size)), error);
+      if (error || cord_abort_if_timed_out())
+        return;
       asio::error_code ignore_ec;
       sock_data.shutdown(asio::ip::tcp::socket::shutdown_send, ignore_ec);
       sock_data.close(ignore_ec);
     }
 
+    if (cord_abort_if_timed_out())
+      return;
     grpc::ClientContext check_commit;
+    cord_apply_grpc_deadline(check_commit);
     coordinator_proto::AskIfSuccess request;
     request.set_key(cord_key);
     request.set_opp(CORD_UPDATE);
@@ -892,7 +958,15 @@ namespace ECProject
       std::cout << "[CoRD] Empty update intervals." << std::endl;
       return false;
     }
+    const CordClock::time_point cord_deadline = CordClock::now() + kCordRequestTimeout;
+    g_cord_request_deadline = &cord_deadline;
+    struct CordDeadlineGuard
+    {
+      ~CordDeadlineGuard() { g_cord_request_deadline = nullptr; }
+    } cord_deadline_guard;
+
     grpc::ClientContext ctx;
+    cord_apply_grpc_deadline(ctx);
     coordinator_proto::CordUpdateRequest request;
     coordinator_proto::ReplyProxyIPsPorts reply;
     request.set_client_id(m_clientID);
@@ -912,6 +986,8 @@ namespace ECProject
 
     const auto cord_wall_t0 = std::chrono::steady_clock::now();
     grpc::Status status = m_coordinator_ptr->uploadCordUpdate(&ctx, request, &reply);
+    if (cord_abort_if_timed_out())
+      return false;
     if (!status.ok())
     {
       std::cout << "[CoRD] uploadCordUpdate failed: " << status.error_message() << std::endl;
@@ -966,30 +1042,44 @@ namespace ECProject
     std::fill_n(if_commit_arr.get(), reply.append_keys_size(), false);
     for (int i = 0; i < reply.append_keys_size(); i++)
     {
+      if (cord_abort_if_timed_out())
+        return false;
       async_cord_update_to_proxies(cluster_slices[i], reply.append_keys(i), static_cast<int>(reply.cluster_slice_sizes(i)),
                                    reply.proxyips(i), reply.proxyports(i), i, if_commit_arr.get());
     }
+    if (cord_abort_if_timed_out())
+      return false;
     if (!std::all_of(if_commit_arr.get(), if_commit_arr.get() + reply.append_keys_size(),
                      [](bool v) { return v; }))
       return false;
 
     if (!reply.cord_transfer_plan_key().empty())
     {
+      if (cord_abort_if_timed_out())
+        return false;
       grpc::ClientContext ctx_begin;
+      cord_apply_grpc_deadline(ctx_begin);
       coordinator_proto::CordPlanKeyOnly begin_req;
       begin_req.set_plan_key(reply.cord_transfer_plan_key());
       coordinator_proto::RepIfSuccess begin_rep;
       grpc::Status st_begin = m_coordinator_ptr->cordPlanBeginTransfer(&ctx_begin, begin_req, &begin_rep);
+      if (cord_abort_if_timed_out())
+        return false;
       if (!st_begin.ok() || !begin_rep.ifcommit())
       {
         std::cout << "[CoRD] cordPlanBeginTransfer failed: " << st_begin.error_message() << std::endl;
         return false;
       }
+      if (cord_abort_if_timed_out())
+        return false;
       grpc::ClientContext ctx_wait;
+      cord_apply_grpc_deadline(ctx_wait);
       coordinator_proto::CordPlanWaitRequest wait_req;
       wait_req.set_plan_key(reply.cord_transfer_plan_key());
       coordinator_proto::RepIfSuccess wait_rep;
       grpc::Status st_wait = m_coordinator_ptr->cordPlanWaitTransferComplete(&ctx_wait, wait_req, &wait_rep);
+      if (cord_abort_if_timed_out())
+        return false;
       if (!st_wait.ok() || !wait_rep.ifcommit())
       {
         std::cout << "[CoRD] cordPlanWaitTransferComplete failed: " << st_wait.error_message() << std::endl;
