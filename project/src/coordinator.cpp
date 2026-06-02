@@ -1795,6 +1795,25 @@ namespace ECProject  //定义一个名为 ECProject 的命名空间，防止命�
       cord_add_logical_range_to_data_blocks(block_size, k, s, e, &block_intervals);
     }
 
+    // Flip offsets for even-numbered data blocks: mirror the update range within the block.
+    // e.g., a range at the last 8 KB of the block → first 8 KB of the block.
+    for (auto &kv : block_intervals)
+    {
+      const int bid = kv.first;
+      if (bid % 2 == 0)
+      {
+        for (auto &seg : kv.second)
+        {
+          const int lo = seg.first;
+          const int hi = seg.second;
+          seg.first  = block_size - hi;
+          seg.second = block_size - lo;
+        }
+        // restore ascending order after flipping
+        std::sort(kv.second.begin(), kv.second.end());
+      }
+    }
+
     // --- CoRD uploadCordUpdate verbose debug (muted) ---
     // std::cout << "[CoRD] stripe_id=" << stripe_id
     //           << " updated data blocks (block_id -> in-block intervals [off,end)):\n";
