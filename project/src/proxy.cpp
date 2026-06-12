@@ -774,25 +774,84 @@ namespace ECProject
   static void cord_transfer_plan_execute_async(const proxy_proto::CordTransferPlan &plan, int self_cluster_id,
                                                ProxyImpl *proxy, const std::string &proxy_tag)
   {
-      const auto plan_log = [&](const std::string &msg) {
-        // std::cout << "[CoRD-PLAN][" << cord_plan_wall_ts_ms() << "][" << proxy_tag << "] " << msg << std::endl;
-        (void)msg;
+      // 打开日志文件: /tmp/cord_transfer_<plan_key>.log
+      const std::string log_path = "/tmp/cord_transfer_" + plan.plan_key() + ".log";
+      std::ofstream log_ofs(log_path, std::ios::out | std::ios::app);
+      const auto wall_now_ns = []() -> int64_t {
+        return std::chrono::duration_cast<std::chrono::nanoseconds>(
+            std::chrono::steady_clock::now().time_since_epoch()).count();
+      };
+      const auto wall_ts_ms_str = [&]() -> std::string {
+        return std::to_string(wall_now_ns() / 1000000LL);
       };
 
-      plan_log(std::string("plan_start stripe_id=") + std::to_string(plan.stripe_id()) + " plan_key=" + plan.plan_key() +
-               " total_rounds=" + std::to_string(plan.total_rounds()) +
-               " steps=" + std::to_string(plan.steps_size()) + " self_cluster=" + std::to_string(self_cluster_id));
+      const auto plan_log = [&](const std::string &msg) {
+        log_ofs << "[" << wall_ts_ms_str() << "][" << proxy_tag << "] " << msg << std::endl;
+      };
+
+      // 也输出到 stdout 方便实时观察
+      const auto plan_log_both = [&](const std::string &msg) {
+        const std::string line = "[" + wall_ts_ms_str() + "][" + proxy_tag + "] " + msg;
+        log_ofs << line << std::endl;
+        std::cout << "[CoRD-XFER] " << line << std::endl;
+      };
+
+      plan_log_both("══════ CordTransferPlan EXECUTION START ══════");
+      plan_log_both("stripe_id=" + std::to_string(plan.stripe_id()) +
+                    " plan_key=" + plan.plan_key() +
+                    " total_rounds=" + std::to_string(plan.total_rounds()) +
+                    " steps=" + std::to_string(plan.steps_size()) +
+                    " self_cluster=c" + std::to_string(self_cluster_id) +
+                    " log_file=" + log_path);
       if (plan.steps_size() <= 0)
       {
+        plan_log_both("plan has 0 steps, nothing to do");
+        log_ofs.close();
         return;
+      }
+
+      // 打印完整 plan 概览
+      {
+        std::ostringstream os;
+        os << "Plan overview: rounds=" << plan.total_rounds()
+           << " slot_unit=" << plan.slot_unit_bytes() << "B k=" << plan.k_datablock()
+           << " encode=" << (cord_uses_matrix_encode(plan) ? "matrix" : "xor");
+        plan_log(os.str());
+        for (int si = 0; si < plan.steps_size(); ++si) {
+          const auto &s = plan.steps(si);
+          std::ostringstream ss;
+          ss << "  step[" << si << "] slot=" << s.scheduled_slot()
+             << " c" << s.src_proxy_cluster_id() << "→c" << s.dst_proxy_cluster_id()
+             << " blk" << s.src_block_id() << "→blk" << s.dst_block_id()
+             << " chunk=[" << s.chunk_byte_offset() << "+" << s.chunk_byte_length() << "B]"
+             << " link=" << cord_transfer_link_kind_name(s.link_kind())
+             << " delta=" << cord_plan_delta_kind_name(s.delta_payload_kind())
+             << " grp=" << s.group_index();
+          if (s.has_mst_origin_data_block_id())
+            ss << " mst_origin=" << s.mst_origin_data_block_id();
+          if (s.parity_merge_data_block_ids_size() > 0) {
+            ss << " merge_src=[";
+            for (int mi = 0; mi < s.parity_merge_data_block_ids_size(); ++mi) {
+              if (mi > 0) ss << ",";
+              ss << s.parity_merge_data_block_ids(mi);
+            }
+            ss << "]";
+          }
+          plan_log(ss.str());
+        }
       }
       cord_pure_xfer_peer_stub_preheat(plan, self_cluster_id, proxy);
       cord_pure_xfer_note_loop_start(plan.plan_key());
       const auto wall_t0 = std::chrono::steady_clock::now();
 
+      int executed_steps = 0;
+      int skipped_steps = 0;
+      int failed_steps = 0;
+
       const int k = plan.k_datablock();
       for (int si = 0; si < plan.steps_size(); ++si)
       {
+        const auto t_step0 = std::chrono::steady_clock::now();
         const proxy_proto::CordTransferStep &st = plan.steps(si);
         if (st.src_proxy_cluster_id() != self_cluster_id)
           continue;
@@ -810,10 +869,11 @@ namespace ECProject
         const size_t chunk_len = static_cast<size_t>(st.chunk_byte_length());
         if (chunk_len == 0u)
         {
-          plan_log(std::string("skip_step zero_chunk_in_plan step_index=") + std::to_string(st.step_index()) +
+          plan_log(std::string("SKIP zero_chunk step_index=") + std::to_string(st.step_index()) +
                    " scheduled_slot=" + std::to_string(st.scheduled_slot()) + " link=" +
                    cord_transfer_link_kind_name(st.link_kind()) + " payload=" +
                    cord_plan_delta_kind_name(st.delta_payload_kind()));
+          skipped_steps++;
           continue;
         }
 
@@ -825,29 +885,38 @@ namespace ECProject
           int dn_port = 0;
           if (!cord_lookup_delta_blob(plan, self_cluster_id, &blob_key, &dn_ip, &dn_port))
           {
-            plan_log("abort_step STAR_DATA_TO_CENTER no_delta_blob_ref cluster=" + std::to_string(self_cluster_id) +
-                     " step_index=" + std::to_string(st.step_index()));
+            plan_log_both("FAIL STAR_DATA_TO_CENTER no_delta_blob step=" + std::to_string(st.step_index()) +
+                         " cluster=c" + std::to_string(self_cluster_id));
+            failed_steps++;
             continue;
           }
           uint64_t base_off = 0, blk_tot = 0;
-          (void)blk_tot;
           if (!cord_lookup_cluster_delta_layout(plan, self_cluster_id, st.src_block_id(), &base_off, &blk_tot))
           {
-            plan_log("abort_step STAR_DATA_TO_CENTER no_cluster_delta_layout cluster=" +
-                     std::to_string(self_cluster_id) + " data_blk=" + std::to_string(st.src_block_id()) +
-                     " step_index=" + std::to_string(st.step_index()));
+            plan_log_both("FAIL STAR_DATA_TO_CENTER no_cluster_delta_layout step=" + std::to_string(st.step_index()) +
+                         " cluster=c" + std::to_string(self_cluster_id) + " data_blk=" + std::to_string(st.src_block_id()));
+            failed_steps++;
             continue;
           }
           const uint64_t abs_off = base_off + st.chunk_byte_offset();
+
+          // 1) 从本地 datanode 读 delta blob
+          const auto t_read0 = std::chrono::steady_clock::now();
           std::vector<char> buf(chunk_len);
           if (!proxy->CordRangeReadFromDatanode(blob_key, 0, static_cast<int>(abs_off), buf.data(), chunk_len,
                                                 dn_ip.c_str(), dn_port))
           {
-            plan_log("abort_step STAR_DATA_TO_CENTER CordRangeRead_delta_blob_failed step_index=" +
-                     std::to_string(st.step_index()) + " abs_off=" + std::to_string(abs_off) +
-                     " bytes=" + std::to_string(chunk_len));
+            plan_log_both("FAIL STAR_DATA_TO_CENTER datanode_read_failed step=" + std::to_string(st.step_index()) +
+                         " abs_off=" + std::to_string(abs_off) + " bytes=" + std::to_string(chunk_len) +
+                         " datanode=" + dn_ip + ":" + std::to_string(dn_port));
+            failed_steps++;
             continue;
           }
+          const auto t_read1 = std::chrono::steady_clock::now();
+          const double read_ms = std::chrono::duration<double, std::milli>(t_read1 - t_read0).count();
+
+          // 2) gRPC 发送到 collector proxy
+          const auto t_grpc0 = std::chrono::steady_clock::now();
           proxy_proto::CordPlanCollectorIngestReq req;
           req.set_plan_key(plan.plan_key());
           req.set_group_index(st.group_index());
@@ -860,20 +929,27 @@ namespace ECProject
           proxy_proto::SetReply rep;
           grpc::ClientContext cctx;
           grpc::Status s = stub->cordPlanCollectorIngestDataDelta(&cctx, req, &rep);
+          const auto t_grpc1 = std::chrono::steady_clock::now();
+          const double grpc_ms = std::chrono::duration<double, std::milli>(t_grpc1 - t_grpc0).count();
           const bool ok = s.ok() && rep.ifcommit();
+          const double step_ms = std::chrono::duration<double, std::milli>(t_grpc1 - t_step0).count();
           {
             std::ostringstream ob;
-            ob << (ok ? "grpc_ok" : "grpc_FAIL") << " cordPlanCollectorIngestDataDelta step_index=" << st.step_index()
-               << " scheduled_slot=" << st.scheduled_slot() << " link=" << cord_transfer_link_kind_name(st.link_kind())
-               << " payload=" << cord_plan_delta_kind_name(st.delta_payload_kind()) << " group_index="
-               << st.group_index() << " data_blk=" << st.src_block_id()
-               << "->collector_blk=" << st.dst_block_id() << " clusters " << st.src_proxy_cluster_id() << "->"
-               << st.dst_proxy_cluster_id() << " chunk_byte_range=[" << st.chunk_byte_offset() << ","
-               << (st.chunk_byte_offset() + static_cast<int32_t>(chunk_len)) << ") wire_bytes=" << chunk_len
-               << " grpc_dst=" << dst_channel << " preview=" << cord_dbg_hex_preview(buf.data(), chunk_len, 16);
-            if (!ok)
-              ob << " grpc_err=" << s.error_message();
-            plan_log(ob.str());
+            ob << (ok ? "OK" : "FAIL")
+               << " DATA_TO_CENTER step=" << st.step_index()
+               << " slot=" << st.scheduled_slot()
+               << " ΔD blk" << st.src_block_id() << "(c" << st.src_proxy_cluster_id()
+               << ") → collector_blk" << st.dst_block_id() << "(c" << st.dst_proxy_cluster_id() << ")"
+               << " chunk=[" << st.chunk_byte_offset() << "+" << chunk_len << "B]"
+               << " dn_read=" << read_ms << "ms"
+               << " grpc=" << grpc_ms << "ms"
+               << " step_total=" << step_ms << "ms"
+               << " grp=" << st.group_index()
+               << " dst=" << dst_channel;
+            if (!ok) ob << " grpc_err=" << s.error_message();
+            if (ok) plan_log(ob.str()); else plan_log_both(ob.str());
+            if (!ok) failed_steps++;
+            else executed_steps++;
           }
           continue;
         }
@@ -883,6 +959,7 @@ namespace ECProject
             (st.link_kind() == proxy_proto::CORD_TRANSFER_STAR_CENTER_TO_GLOBAL ||
              st.link_kind() == proxy_proto::CORD_TRANSFER_STAR_CENTER_TO_LOCAL))
         {
+          const auto t_compute0 = std::chrono::steady_clock::now();
           std::vector<char> buf(chunk_len);
           bool filled = false;
           std::string parity_compute_src;
@@ -895,16 +972,18 @@ namespace ECProject
           {
             if (!cord_ensure_collector_parity_coded(plan, st.group_index(), st.src_block_id(), parity_ingest))
             {
-              plan_log("abort_step parity cord_ensure_collector_parity_coded_failed step_index=" +
-                       std::to_string(st.step_index()) + " collector_blk=" + std::to_string(st.src_block_id()));
+              plan_log_both("FAIL PARITY_FANOUT cord_ensure_collector_parity_coded_failed step=" +
+                           std::to_string(st.step_index()) + " collector_blk=" + std::to_string(st.src_block_id()));
+              failed_steps++;
               continue;
             }
             const int row = st.dst_block_id() - plan.k_datablock();
             const auto &meta = plan.cord_encode_meta();
             if (row < 0 || row >= meta.g_m() + meta.l())
             {
-              plan_log("abort_step parity bad_row dst_blk=" + std::to_string(st.dst_block_id()) + " row=" +
-                       std::to_string(row) + " step_index=" + std::to_string(st.step_index()));
+              plan_log_both("FAIL PARITY_FANOUT bad_row dst_blk=" + std::to_string(st.dst_block_id()) +
+                           " row=" + std::to_string(row) + " step=" + std::to_string(st.step_index()));
+              failed_steps++;
               continue;
             }
             const std::string pck =
@@ -916,8 +995,9 @@ namespace ECProject
                 pit->second[static_cast<size_t>(row)].size() <
                     static_cast<size_t>(st.chunk_byte_offset()) + chunk_len)
             {
-              plan_log("abort_step parity coded_cache_short row=" + std::to_string(row) + " step_index=" +
-                       std::to_string(st.step_index()));
+              plan_log_both("FAIL PARITY_FANOUT coded_cache_short row=" + std::to_string(row) +
+                           " step=" + std::to_string(st.step_index()));
+              failed_steps++;
               continue;
             }
             std::memcpy(buf.data(), pit->second[static_cast<size_t>(row)].data() + st.chunk_byte_offset(), chunk_len);
@@ -933,8 +1013,9 @@ namespace ECProject
                 if (!cord_spin_until_collector_ingress_ready(plan, st.group_index(), st.src_block_id(),
                                                              st.parity_ingest_stripe_group()))
                 {
-                  plan_log("abort_step parity filtered_xor ingress_timeout collector_blk=" +
-                           std::to_string(st.src_block_id()) + " step_index=" + std::to_string(st.step_index()));
+                  plan_log_both("FAIL PARITY_FANOUT filtered_xor ingress_timeout collector_blk=" +
+                               std::to_string(st.src_block_id()) + " step=" + std::to_string(st.step_index()));
+                  failed_steps++;
                   continue;
                 }
               }
@@ -948,8 +1029,9 @@ namespace ECProject
             {
               if (!cord_spin_until_collector_ingress_ready(plan, st.group_index(), st.src_block_id(), -1))
               {
-                plan_log("abort_step parity collector_xor_acc ingress_timeout collector_blk=" +
-                         std::to_string(st.src_block_id()) + " step_index=" + std::to_string(st.step_index()));
+                plan_log_both("FAIL PARITY_FANOUT collector_xor_acc ingress_timeout collector_blk=" +
+                             std::to_string(st.src_block_id()) + " step=" + std::to_string(st.step_index()));
+                failed_steps++;
                 continue;
               }
               const uint64_t acc_off =
@@ -960,8 +1042,9 @@ namespace ECProject
               auto it = g_cord_collector_xor_acc.find(acc_key);
               if (it == g_cord_collector_xor_acc.end() || it->second.size() < static_cast<size_t>(acc_off) + chunk_len)
               {
-                plan_log("abort_step parity collector_xor_acc_missing key=" + acc_key + " step_index=" +
-                         std::to_string(st.step_index()));
+                plan_log_both("FAIL PARITY_FANOUT collector_xor_acc_missing key=" + acc_key +
+                             " step=" + std::to_string(st.step_index()));
+                failed_steps++;
                 continue;
               }
               std::memcpy(buf.data(), it->second.data() + static_cast<size_t>(acc_off), chunk_len);
@@ -972,10 +1055,14 @@ namespace ECProject
           int pp = 0;
           if (!cord_lookup_block_placement(plan, st.dst_block_id(), &pbk, &pip, &pp))
           {
-            plan_log("abort_step parity block_placement_missing dst_blk=" + std::to_string(st.dst_block_id()) +
-                     " step_index=" + std::to_string(st.step_index()));
+            plan_log_both("FAIL PARITY_FANOUT block_placement_missing dst_blk=" + std::to_string(st.dst_block_id()) +
+                         " step=" + std::to_string(st.step_index()));
+            failed_steps++;
             continue;
           }
+          const auto t_compute1 = std::chrono::steady_clock::now();
+          const double compute_ms = std::chrono::duration<double, std::milli>(t_compute1 - t_compute0).count();
+
           const int32_t slice_base =
               cord_uses_matrix_encode(plan)
                   ? static_cast<int32_t>(plan.cord_encode_meta().parity_slice_offset() + st.chunk_byte_offset())
@@ -983,20 +1070,18 @@ namespace ECProject
           const auto nz = cord_parity_delta_nonzero_span(buf.data(), chunk_len);
           if (nz.second == 0)
           {
-            std::ostringstream ob;
-            ob << "noop_skip_wire cordPlanApplyParityXorDelta_not_called (computed parity slice all-zero in plan chunk)"
-               << " step_index=" << st.step_index() << " scheduled_slot=" << st.scheduled_slot() << " link="
-               << cord_transfer_link_kind_name(st.link_kind()) << " payload="
-               << cord_plan_delta_kind_name(st.delta_payload_kind()) << " collector_blk=" << st.src_block_id()
-               << " dst_parity_blk=" << st.dst_block_id() << " group_index=" << st.group_index()
-               << " plan_chunk_byte_range=[" << st.chunk_byte_offset() << ","
-               << (st.chunk_byte_offset() + static_cast<int32_t>(chunk_len)) << ") parity_compute_src="
-               << parity_compute_src << " grpc_dst_would_be=" << dst_channel;
-            plan_log(ob.str());
+            plan_log("SKIP zero_delta step=" + std::to_string(st.step_index())
+                     + " slot=" + std::to_string(st.scheduled_slot()) + " link="
+                     + cord_transfer_link_kind_name(st.link_kind()) + " payload="
+                     + cord_plan_delta_kind_name(st.delta_payload_kind()) + " collector_blk=" + std::to_string(st.src_block_id())
+                     + " dst_blk=" + std::to_string(st.dst_block_id())
+                     + " compute_src=" + parity_compute_src + " compute=" + std::to_string(compute_ms) + "ms");
+            skipped_steps++;
             continue;
           }
           const int32_t slice_off = slice_base + static_cast<int32_t>(nz.first);
           const int32_t send_len = static_cast<int32_t>(nz.second);
+          const auto t_grpc0 = std::chrono::steady_clock::now();
           proxy_proto::CordPlanApplyParityXorReq req;
           req.set_plan_key(plan.plan_key());
           req.set_dst_block_id(st.dst_block_id());
@@ -1010,23 +1095,31 @@ namespace ECProject
           proxy_proto::SetReply rep;
           grpc::ClientContext cctx;
           grpc::Status s = stub->cordPlanApplyParityXorDelta(&cctx, req, &rep);
+          const auto t_grpc1 = std::chrono::steady_clock::now();
+          const double grpc_ms = std::chrono::duration<double, std::milli>(t_grpc1 - t_grpc0).count();
           const bool ok = s.ok() && rep.ifcommit();
+          const double step_ms = std::chrono::duration<double, std::milli>(t_grpc1 - t_step0).count();
           {
+            const char *tag = (st.link_kind() == proxy_proto::CORD_TRANSFER_STAR_CENTER_TO_GLOBAL)
+                                  ? "CTR_TO_GLOBAL" : "CTR_TO_LOCAL";
             std::ostringstream ob;
-            ob << (ok ? "grpc_ok" : "grpc_FAIL") << " cordPlanApplyParityXorDelta step_index=" << st.step_index()
-               << " scheduled_slot=" << st.scheduled_slot() << " link="
-               << cord_transfer_link_kind_name(st.link_kind()) << " payload="
-               << cord_plan_delta_kind_name(st.delta_payload_kind()) << " collector_blk=" << st.src_block_id()
-               << " dst_parity_blk=" << st.dst_block_id() << " group_index=" << st.group_index()
-               << " plan_chunk_byte_range=[" << st.chunk_byte_offset() << ","
-               << (st.chunk_byte_offset() + static_cast<int32_t>(chunk_len))
-               << ") sparse_trim: kept_plan_subrange=[" << nz.first << "," << (nz.first + nz.second)
-               << ") wire_parity_slice_abs=[" << slice_off << "," << (slice_off + send_len) << ") wire_bytes="
-               << send_len << " parity_compute_src=" << parity_compute_src << " grpc_dst=" << dst_channel
-               << " preview=" << cord_dbg_hex_preview(buf.data() + nz.first, static_cast<size_t>(send_len), 16);
-            if (!ok)
-              ob << " grpc_err=" << s.error_message();
-            plan_log(ob.str());
+            ob << (ok ? "OK" : "FAIL")
+               << " " << tag << " step=" << st.step_index()
+               << " slot=" << st.scheduled_slot()
+               << " ΔP collector_blk" << st.src_block_id() << "(c" << st.src_proxy_cluster_id()
+               << ") → " << (st.link_kind() == proxy_proto::CORD_TRANSFER_STAR_CENTER_TO_GLOBAL ? "global_blk" : "local_blk")
+               << st.dst_block_id() << "(c" << st.dst_proxy_cluster_id() << ")"
+               << " chunk=[" << st.chunk_byte_offset() << "+" << chunk_len
+               << "B→wire[" << slice_off << "+" << send_len << "B]]"
+               << " compute=" << compute_ms << "ms(" << parity_compute_src << ")"
+               << " grpc=" << grpc_ms << "ms"
+               << " step_total=" << step_ms << "ms"
+               << " grp=" << st.group_index()
+               << " dst=" << dst_channel;
+            if (!ok) ob << " grpc_err=" << s.error_message();
+            if (ok) plan_log(ob.str()); else plan_log_both(ob.str());
+            if (!ok) failed_steps++;
+            else executed_steps++;
           }
           continue;
         }
@@ -1036,30 +1129,37 @@ namespace ECProject
         {
           std::vector<char> buf(chunk_len);
           std::string mst_buf_src;
+          double read_ms = 0.0;
           if (st.src_block_id() < k)
           {
             std::string blob_key, dn_ip;
             int dn_port = 0;
             if (!cord_lookup_delta_blob(plan, self_cluster_id, &blob_key, &dn_ip, &dn_port))
             {
-              plan_log("abort_step MST no_delta_blob_ref cluster=" + std::to_string(self_cluster_id) +
-                       " step_index=" + std::to_string(st.step_index()));
+              plan_log_both("FAIL MST_FORWARD no_delta_blob step=" + std::to_string(st.step_index()) +
+                           " cluster=c" + std::to_string(self_cluster_id));
+              failed_steps++;
               continue;
             }
             uint64_t base_off = 0, blk_tot = 0;
             if (!cord_lookup_cluster_delta_layout(plan, self_cluster_id, st.src_block_id(), &base_off, &blk_tot))
             {
-              plan_log("abort_step MST no_delta_layout step_index=" + std::to_string(st.step_index()));
+              plan_log_both("FAIL MST_FORWARD no_delta_layout step=" + std::to_string(st.step_index()));
+              failed_steps++;
               continue;
             }
+            const auto t_read0 = std::chrono::steady_clock::now();
             const uint64_t abs_off = base_off + st.chunk_byte_offset();
             if (!proxy->CordRangeReadFromDatanode(blob_key, 0, static_cast<int>(abs_off), buf.data(), chunk_len,
                                                   dn_ip.c_str(), dn_port))
             {
-              plan_log("abort_step MST CordRangeRead_failed step_index=" + std::to_string(st.step_index()));
+              plan_log_both("FAIL MST_FORWARD datanode_read_failed step=" + std::to_string(st.step_index()));
+              failed_steps++;
               continue;
             }
-            mst_buf_src = "datanode_delta_blob";
+            const auto t_read1 = std::chrono::steady_clock::now();
+            read_ms = std::chrono::duration<double, std::milli>(t_read1 - t_read0).count();
+            mst_buf_src = "dn_blob@" + dn_ip + ":" + std::to_string(dn_port);
           }
           else
           {
@@ -1068,19 +1168,23 @@ namespace ECProject
             if (it == g_cord_mst_stream.end() ||
                 it->second.size() < static_cast<size_t>(st.chunk_byte_offset()) + chunk_len)
             {
-              plan_log("abort_step MST relay_buffer_missing step_index=" + std::to_string(st.step_index()));
+              plan_log_both("FAIL MST_FORWARD relay_buffer_missing step=" + std::to_string(st.step_index()));
+              failed_steps++;
               continue;
             }
             std::memcpy(buf.data(), it->second.data() + static_cast<size_t>(st.chunk_byte_offset()), chunk_len);
-            mst_buf_src = "mst_relay_buffer";
+            mst_buf_src = "relay_buffer";
           }
           std::string pbk, pip;
           int pp = 0;
           if (!cord_lookup_block_placement(plan, st.dst_block_id(), &pbk, &pip, &pp))
           {
-            plan_log("abort_step MST block_placement_missing dst_blk=" + std::to_string(st.dst_block_id()));
+            plan_log_both("FAIL MST_FORWARD block_placement_missing dst_blk=" + std::to_string(st.dst_block_id()) +
+                         " step=" + std::to_string(st.step_index()));
+            failed_steps++;
             continue;
           }
+          const auto t_grpc0 = std::chrono::steady_clock::now();
           proxy_proto::CordPlanMstDataDeltaReq req;
           req.set_plan_key(plan.plan_key());
           req.set_dst_proxy_cluster_id(st.dst_proxy_cluster_id());
@@ -1098,28 +1202,37 @@ namespace ECProject
           proxy_proto::SetReply rep;
           grpc::ClientContext cctx;
           grpc::Status s = stub->cordPlanMstDataDeltaChunk(&cctx, req, &rep);
+          const auto t_grpc1 = std::chrono::steady_clock::now();
+          const double grpc_ms = std::chrono::duration<double, std::milli>(t_grpc1 - t_grpc0).count();
           const bool ok = s.ok() && rep.ifcommit();
+          const double step_ms = std::chrono::duration<double, std::milli>(t_grpc1 - t_step0).count();
           {
+            const int origin_blk = st.has_mst_origin_data_block_id() ? st.mst_origin_data_block_id() : st.src_block_id();
             std::ostringstream ob;
-            ob << (ok ? "grpc_ok" : "grpc_FAIL") << " cordPlanMstDataDeltaChunk step_index=" << st.step_index()
-               << " scheduled_slot=" << st.scheduled_slot() << " link="
-               << cord_transfer_link_kind_name(st.link_kind()) << " payload="
-               << cord_plan_delta_kind_name(st.delta_payload_kind()) << " src_blk=" << st.src_block_id()
-               << " dst_blk=" << st.dst_block_id() << " clusters " << st.src_proxy_cluster_id() << "->"
-               << st.dst_proxy_cluster_id() << " chunk_byte_range=[" << st.chunk_byte_offset() << ","
-               << (st.chunk_byte_offset() + static_cast<int32_t>(chunk_len)) << ") wire_bytes=" << chunk_len
-               << " mst_buf_src=" << mst_buf_src << " grpc_dst=" << dst_channel
-               << " preview=" << cord_dbg_hex_preview(buf.data(), chunk_len, 16);
-            if (!ok)
-              ob << " grpc_err=" << s.error_message();
-            plan_log(ob.str());
+            ob << (ok ? "OK" : "FAIL")
+               << " MST_FORWARD step=" << st.step_index()
+               << " slot=" << st.scheduled_slot()
+               << " ΔD blk" << st.src_block_id() << "(c" << st.src_proxy_cluster_id()
+               << ") → blk" << st.dst_block_id() << "(c" << st.dst_proxy_cluster_id() << ")"
+               << " chunk=[" << st.chunk_byte_offset() << "+" << chunk_len << "B]"
+               << " origin_data_blk=" << origin_blk
+               << " buf_src=" << mst_buf_src;
+            if (st.src_block_id() < k) ob << " dn_read=" << read_ms << "ms";
+            ob << " grpc=" << grpc_ms << "ms"
+               << " step_total=" << step_ms << "ms"
+               << " dst=" << dst_channel;
+            if (!ok) ob << " grpc_err=" << s.error_message();
+            if (ok) plan_log(ob.str()); else plan_log_both(ob.str());
+            if (!ok) failed_steps++;
+            else executed_steps++;
           }
           continue;
         }
 
-        plan_log(std::string("skip_unhandled_step step_index=") + std::to_string(st.step_index()) + " link=" +
-                 cord_transfer_link_kind_name(st.link_kind()) + " payload=" +
-                 cord_plan_delta_kind_name(st.delta_payload_kind()));
+        plan_log_both("SKIP unhandled_link step=" + std::to_string(st.step_index()) + " link=" +
+                     cord_transfer_link_kind_name(st.link_kind()) + " payload=" +
+                     cord_plan_delta_kind_name(st.delta_payload_kind()));
+        skipped_steps++;
       }
 
       const auto sender_loop_done = std::chrono::steady_clock::now();
@@ -1128,7 +1241,14 @@ namespace ECProject
       cord_xfer_cleanup_xfer_plan(plan.plan_key());
       const auto wall_t1 = std::chrono::steady_clock::now();
       const double wall_sec = std::chrono::duration<double>(wall_t1 - wall_t0).count();
-      plan_log(std::string("plan_done plan_key=") + plan.plan_key() + " wall_time_sec=" + std::to_string(wall_sec));
+      plan_log_both("══════ CordTransferPlan EXECUTION DONE ══════");
+      plan_log_both("plan_key=" + plan.plan_key()
+                    + " wall_sec=" + std::to_string(wall_sec)
+                    + " executed=" + std::to_string(executed_steps)
+                    + " skipped=" + std::to_string(skipped_steps)
+                    + " failed=" + std::to_string(failed_steps)
+                    + " log_file=" + log_path);
+      log_ofs.close();
   }
 
   bool ProxyImpl::init_coordinator()

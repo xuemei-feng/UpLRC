@@ -1055,6 +1055,8 @@ namespace ECProject
 
     if (!reply.cord_transfer_plan_key().empty())
     {
+      std::cout << "[CoRD][Client " << m_clientID << "] initiating cross-cluster transfer plan: "
+                << reply.cord_transfer_plan_key() << "\n";
       if (cord_abort_if_timed_out())
         return false;
       grpc::ClientContext ctx_begin;
@@ -1062,6 +1064,7 @@ namespace ECProject
       coordinator_proto::CordPlanKeyOnly begin_req;
       begin_req.set_plan_key(reply.cord_transfer_plan_key());
       coordinator_proto::RepIfSuccess begin_rep;
+      const auto t_xfer0 = std::chrono::steady_clock::now();
       grpc::Status st_begin = m_coordinator_ptr->cordPlanBeginTransfer(&ctx_begin, begin_req, &begin_rep);
       if (cord_abort_if_timed_out())
         return false;
@@ -1077,7 +1080,9 @@ namespace ECProject
       coordinator_proto::CordPlanWaitRequest wait_req;
       wait_req.set_plan_key(reply.cord_transfer_plan_key());
       coordinator_proto::RepIfSuccess wait_rep;
+      std::cout << "[CoRD][Client " << m_clientID << "] waiting for cross-cluster transfer to complete...\n";
       grpc::Status st_wait = m_coordinator_ptr->cordPlanWaitTransferComplete(&ctx_wait, wait_req, &wait_rep);
+      const auto t_xfer1 = std::chrono::steady_clock::now();
       if (cord_abort_if_timed_out())
         return false;
       if (!st_wait.ok() || !wait_rep.ifcommit())
@@ -1085,6 +1090,8 @@ namespace ECProject
         std::cout << "[CoRD] cordPlanWaitTransferComplete failed: " << st_wait.error_message() << std::endl;
         return false;
       }
+      std::cout << "[CoRD][Client " << m_clientID << "] cross-cluster transfer complete, wall_sec="
+                << std::chrono::duration<double>(t_xfer1 - t_xfer0).count() << "\n";
     }
 
     const auto cord_wall_t1 = std::chrono::steady_clock::now();
