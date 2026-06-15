@@ -26,19 +26,18 @@ for HOST in $HOSTS; do
   fi
 done
 
-# 使用 pdsh 在所有主机上运行 Python 脚本
-REMOTE_COMMAND="cd /users/xue/xue/small_tools/ && python generator_sh.py"
-PARALLEL=50
+# pdsh -R ssh 不会展开远程命令里的 %h/%n，需显式传入 LOCAL_IP
+PARALLEL=10
 USER="root"
+REMOTE_DIR="/users/xue/xue/small_tools"
 
-echo "Running generator_sh.py on all hosts..."
-pdsh -R ssh -w "^${HOSTS_FILE}" -l "$USER" -f "$PARALLEL" "$REMOTE_COMMAND"
-
-# 检查脚本是否成功运行
-if [ $? -eq 0 ]; then
+echo "Running generator_sh.py on all hosts (parallel=${PARALLEL})..."
+if xargs -P "$PARALLEL" -I{} ssh -o ConnectTimeout=15 "${USER}@{}" \
+  "LOCAL_IP={} cd ${REMOTE_DIR} && python generator_sh.py" \
+  < "$HOSTS_FILE"; then
   echo "Successfully ran generator_sh.py on all hosts!"
 else
-  echo "Failed to run generator_sh.py on some hosts!"
+  echo "Failed to run generator_sh.py on some hosts!" >&2
   exit 1
 fi
 

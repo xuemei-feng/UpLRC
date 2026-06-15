@@ -5,8 +5,8 @@ import netifaces
 
 current_path = os.getcwd()
 parent_path = os.path.dirname(current_path)
-cluster_number = 4
-datanode_number_per_cluster = 30
+cluster_number = 6
+datanode_number_per_cluster = 8
 datanode_port_start = 17600
 cluster_id_start = 0
 iftest = False
@@ -14,9 +14,11 @@ RUN_ENV = os.environ.get("UNILRC_ENV", "half-sim").strip().lower()
 
 proxy_ip_list = [
     ["10.10.1.3",50405],
-    ["10.10.1.4",50405],
-    ["10.10.1.5",50405],
-    ["10.10.1.6",50405]
+    ["10.10.1.12",50405],
+    ["10.10.1.21",50405],
+    ["10.10.1.30",50405],
+    ["10.10.1.39",50405],
+    ["10.10.1.48",50405]
 ]
 coordinator_ip = "10.10.1.2"
 
@@ -28,19 +30,53 @@ def get_local_ip(interface_name):
     addresses = netifaces.ifaddresses(interface_name)
     return addresses[netifaces.AF_INET][0]['addr']
 
-def get_interface_with_ip_prefix(prefix="10.10.1"):
-    interfaces = netifaces.interfaces()
-    for interface in interfaces:
+def get_all_ips_with_prefix(prefix="10.10.1"):
+    ips = []
+    for interface in netifaces.interfaces():
         try:
             addresses = netifaces.ifaddresses(interface)
-            if netifaces.AF_INET in addresses:  # 检查是否有IPv4地址
-                for addr in addresses[netifaces.AF_INET]:
-                    ip = addr['addr']
-                    if ip.startswith(prefix):  # 检查IP地址是否以指定前缀开头
-                        return ip
+            if netifaces.AF_INET not in addresses:
+                continue
+            for addr in addresses[netifaces.AF_INET]:
+                ip = addr["addr"]
+                if ip.startswith(prefix) and ip not in ips:
+                    ips.append(ip)
         except Exception as e:
             print(f"Error processing interface {interface}: {e}")
-    return None, None
+    return ips
+
+
+def get_cluster_host_ips():
+    hosts = set()
+    for info in cluster_informtion.values():
+        hosts.add(info["proxy"].split(":", 1)[0])
+        for host, _port in info["datanode"]:
+            hosts.add(host)
+    return hosts
+
+
+def resolve_local_ip(prefix="10.10.1"):
+    """确定本机在集群中使用的 IP：优先 LOCAL_IP 环境变量（由 generate_run_proxy.sh 传入）。"""
+    env_ip = os.environ.get("LOCAL_IP", "").strip()
+    if env_ip in ("%h", "%n", "%%"):
+        env_ip = ""
+    if env_ip and env_ip.startswith(prefix):
+        return env_ip
+
+    candidates = get_all_ips_with_prefix(prefix=prefix)
+    cluster_hosts = get_cluster_host_ips()
+    matched = [ip for ip in candidates if ip in cluster_hosts]
+    if len(matched) == 1:
+        return matched[0]
+    if len(matched) > 1:
+        print(
+            "Warning: multiple cluster IPs on this host; set LOCAL_IP explicitly "
+            "(generate_run_proxy.sh should pass it). candidates:",
+            matched,
+        )
+        return None
+
+    return candidates[0] if candidates else None
 
 
 cluster_informtion = {}
@@ -148,9 +184,7 @@ def generate_run_proxy_datanode_file():
             f.write("\n")
         return
 
-    local_ip = get_interface_with_ip_prefix(prefix="10.10.1")
-    if isinstance(local_ip, tuple):
-        local_ip = local_ip[0]
+    local_ip = resolve_local_ip(prefix="10.10.1")
     if not local_ip:
         print("Warning: no 10.10.1.x address found; skip run_proxy_datanode.sh")
         return
@@ -223,10 +257,6 @@ if __name__ == "__main__":
     if RUN_ENV == "local":
         convert_cluster_info_to_local()
     # print(cluster_informtion)
-    local_ip = get_interface_with_ip_prefix(prefix="10.10.1")
-    if isinstance(local_ip, tuple):
-        local_ip = local_ip[0]
-    #local_ip = "0.0.0.0" # for test
     generate_run_proxy_datanode_file()
     #generate_run_proxy_datanode_file() # for test
     # 不再默认重写 clusterInformation.xml：update_all -> generate_run_proxy 会在各节点执行本脚本，
