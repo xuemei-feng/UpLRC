@@ -480,7 +480,7 @@ namespace ECProject
   {
     inline bool is_azure_like_code(const std::string &code_type)
     {
-      return code_type == "AzureLRC" || code_type == "RandomLRC" || code_type == "SplitParityLRC";
+      return code_type == "AzureLRC" || code_type == "RandomLRC" || code_type == "SplitParityLRC" || code_type == "CordXueLRC";
     }
   }
 
@@ -708,6 +708,37 @@ namespace ECProject
     }
   }
 
+
+  static bool cord_mst_relay_buffer_ready_locked(const std::string &plan_key, uint64_t chunk_off,
+                                                 size_t chunk_len)
+  {
+    auto it = g_cord_mst_stream.find(plan_key);
+    if (it == g_cord_mst_stream.end())
+      return false;
+    return it->second.size() >= static_cast<size_t>(chunk_off) + chunk_len;
+  }
+
+  /** 等待 MST 中继 hop：前继 cluster 经 cordPlanMstDataDeltaChunk 写入 g_cord_mst_stream 后再读。 */
+  static bool cord_spin_until_mst_relay_ready(const std::string &plan_key, uint64_t chunk_off, size_t chunk_len)
+  {
+    int spins = 0;
+    while (true)
+    {
+      {
+        std::lock_guard<std::mutex> lk(g_cord_xfer_mu);
+        if (cord_mst_relay_buffer_ready_locked(plan_key, chunk_off, chunk_len))
+          return true;
+      }
+      std::this_thread::sleep_for(std::chrono::milliseconds(1));
+      if (++spins > 120000)
+      {
+        std::cout << "[CoRD-PLAN] mst relay buffer timeout plan_key=" << plan_key << " off=" << chunk_off
+                  << " len=" << chunk_len << std::endl;
+        return false;
+      }
+    }
+  }
+
   static bool cord_ensure_collector_parity_coded(const proxy_proto::CordTransferPlan &plan, int group,
                                                int collector_block_id, int parity_ingest_stripe_group)
   {
@@ -770,6 +801,7 @@ namespace ECProject
    * 收集器扇出须晚于同组 STAR 数据到达由算法二时隙依赖保证。
    * N>1：STAR 数据增量 -> cordPlanCollectorIngestDataDelta；收集器再发 cordPlanApplyParityXorDelta。
    * N=1 MST：全程数据增量 cordPlanMstDataDeltaChunk（校验侧矩阵编码或 XOR）。
+   * MST 中继读 relay_buffer 前 spin-wait 前继 hop 写入（与 STAR collector ingress 同理）。
    */
   static void cord_transfer_plan_execute_async(const proxy_proto::CordTransferPlan &plan, int self_cluster_id,
                                                ProxyImpl *proxy, const std::string &proxy_tag)
@@ -1163,16 +1195,17 @@ namespace ECProject
           }
           else
           {
-            std::lock_guard<std::mutex> lk(g_cord_xfer_mu);
-            auto it = g_cord_mst_stream.find(plan.plan_key());
-            if (it == g_cord_mst_stream.end() ||
-                it->second.size() < static_cast<size_t>(st.chunk_byte_offset()) + chunk_len)
+            const uint64_t relay_off = st.chunk_byte_offset();
+            if (!cord_spin_until_mst_relay_ready(plan.plan_key(), relay_off, chunk_len))
             {
-              plan_log_both("FAIL MST_FORWARD relay_buffer_missing step=" + std::to_string(st.step_index()));
+              plan_log_both("FAIL MST_FORWARD relay_buffer_timeout step=" + std::to_string(st.step_index()) +
+                           " off=" + std::to_string(relay_off) + " len=" + std::to_string(chunk_len));
               failed_steps++;
               continue;
             }
-            std::memcpy(buf.data(), it->second.data() + static_cast<size_t>(st.chunk_byte_offset()), chunk_len);
+            std::lock_guard<std::mutex> lk(g_cord_xfer_mu);
+            auto it = g_cord_mst_stream.find(plan.plan_key());
+            std::memcpy(buf.data(), it->second.data() + static_cast<size_t>(relay_off), chunk_len);
             mst_buf_src = "relay_buffer";
           }
           std::string pbk, pip;
