@@ -271,11 +271,9 @@ namespace ECProject
         const std::map<int, std::vector<std::pair<int, int>>> &block_intervals,
         const std::vector<std::vector<int>> &U,
         int cluster_num,
-        const TransferParams &tp,
-        int slot_unit_bytes)
+        const TransferParams &tp)
     {
       Algorithm2Result out;
-      out.slot_unit_bytes = std::max(1, slot_unit_bytes);
       const int k = stripe.k;
       const int r = stripe.r;
       if (cluster_num <= 0 || k <= 0)
@@ -283,7 +281,7 @@ namespace ECProject
 
       int gi = 0;
       std::cout << "[CoRD-Alg2] ===== build_algorithm2 start: |U|=" << U.size() << " r=" << r
-                << " k=" << k << " cluster_num=" << cluster_num << " slot_unit=" << out.slot_unit_bytes << " =====\n";
+                << " k=" << k << " cluster_num=" << cluster_num << " =====\n";
       for (const std::vector<int> &N : U)
       {
         if (N.empty())
@@ -714,7 +712,7 @@ namespace ECProject
         ++gi;
       }
 
-      // ---------- 最大流时隙调度 ----------
+      // ---------- 时间步调度（每条链路一次性传完 payload；每步 cluster 容量 + 依赖约束） ----------
       const int C = cluster_num;
       const int S = 0;
       const int T = 2 + 2 * C;
@@ -722,24 +720,22 @@ namespace ECProject
 
       std::vector<int> remaining;
       remaining.reserve(out.train_route.size());
-      std::cout << "[CoRD-Alg2] ===== Timeslot scheduling: " << out.train_route.size() << " links, slot_unit="
-                << out.slot_unit_bytes << "B =====\n";
+      std::cout << "[CoRD-Alg2] ===== Transfer scheduling: " << out.train_route.size()
+                << " links (full payload per link) =====\n";
       for (size_t li = 0; li < out.train_route.size(); ++li) {
         const auto &L = out.train_route[li];
-        int slots = static_cast<int>(
-            std::ceil(static_cast<double>(L.payload_bytes) / static_cast<double>(out.slot_unit_bytes)));
-        remaining.push_back(std::max(1, slots));
+        remaining.push_back(L.payload_bytes > 0 ? 1 : 0);
         std::cout << "[CoRD-Alg2]   link[" << li << "] " << train_link_kind_name(L.kind)
                   << " blk" << L.src_block_id << "(c" << L.src_cluster << ")->blk" << L.dst_block_id
                   << "(c" << L.dst_cluster << ") payload=" << L.payload_bytes
-                  << "B slots=" << remaining.back() << " grp=" << L.group_index;
+                  << "B grp=" << L.group_index;
         if (L.delta_kind == CordDeltaPayloadKind::PARITY_DELTA)
           std::cout << " [depends on DATA_TO_CENTER ingressing to blk" << L.src_block_id << "]";
         std::cout << "\n";
       }
 
       int ts = 0;
-      /** 收集器扇出校验增量前，同组内发往该 collector 的所有数据增量链路须已完成全部时隙（remaining==0）。 */
+      /** 收集器扇出校验增量前，同组内发往该 collector 的所有数据增量链路须已完成。 */
       auto collector_star_data_ingress_done = [&](int group_idx, int collector_block_id) -> bool {
         for (size_t j = 0; j < out.train_route.size(); ++j)
         {
@@ -753,11 +749,35 @@ namespace ECProject
         }
         return true;
       };
-      auto link_eligible_for_slot = [&](size_t i) -> bool {
+      /** MST 中继：同 origin 下，指向本链路 src 的入边须先完成。 */
+      auto mst_predecessors_done = [&](size_t i) -> bool {
+        const TrainLink &L = out.train_route[i];
+        if (L.kind != TrainLinkKind::MST_FORWARD)
+          return true;
+        for (size_t j = 0; j < out.train_route.size(); ++j)
+        {
+          if (j == i)
+            continue;
+          const TrainLink &J = out.train_route[j];
+          if (J.kind != TrainLinkKind::MST_FORWARD)
+            continue;
+          if (J.mst_origin_data_block != L.mst_origin_data_block)
+            continue;
+          if (J.dst_block_id != L.src_block_id)
+            continue;
+          if (remaining[j] > 0)
+            return false;
+        }
+        return true;
+      };
+      auto link_eligible_for_step = [&](size_t i) -> bool {
         const TrainLink &L = out.train_route[i];
         if (L.kind == TrainLinkKind::STAR_CENTER_TO_GLOBAL || L.kind == TrainLinkKind::STAR_CENTER_TO_LOCAL)
-          return collector_star_data_ingress_done(L.group_index, L.src_block_id);
-        return true;
+        {
+          if (!collector_star_data_ingress_done(L.group_index, L.src_block_id))
+            return false;
+        }
+        return mst_predecessors_done(i);
       };
 
       while (true)
@@ -780,17 +800,17 @@ namespace ECProject
         for (int c = 0; c < C; ++c)
           din.add_edge(1 + C + c, T, 1, -1);
 
-        // 打印本时隙候选链路
-        std::cout << "[CoRD-Alg2] --- slot " << ts << " candidates (remaining>0 & eligible):\n";
+        // 打印本时间步候选链路
+        std::cout << "[CoRD-Alg2] --- step " << ts << " candidates (pending & eligible):\n";
         for (size_t i = 0; i < out.train_route.size(); ++i)
         {
           if (remaining[i] <= 0)
             continue;
-          bool eligible = link_eligible_for_slot(i);
+          bool eligible = link_eligible_for_step(i);
           const TrainLink &L = out.train_route[i];
           std::cout << "[CoRD-Alg2]   link[" << i << "] blk" << L.src_block_id << "->blk" << L.dst_block_id
                     << " c" << L.src_cluster << "->c" << L.dst_cluster
-                    << " rem=" << remaining[i] << " eligible=" << (eligible ? "Y" : "N") << "\n";
+                    << " pending=" << remaining[i] << " eligible=" << (eligible ? "Y" : "N") << "\n";
           if (!eligible)
             continue;
           if (L.src_cluster < 0 || L.dst_cluster < 0 ||
@@ -809,7 +829,7 @@ namespace ECProject
           // 无匹配：强制推进一条「依赖已满足」的剩余链路，避免死循环
           for (size_t i = 0; i < remaining.size(); ++i)
           {
-            if (remaining[i] > 0 && link_eligible_for_slot(i))
+            if (remaining[i] > 0 && link_eligible_for_step(i))
             {
               std::cout << "[CoRD-Alg2]   [deadlock-prevention] forcing link[" << i << "]\n";
               used.push_back(static_cast<int>(i));
@@ -817,7 +837,7 @@ namespace ECProject
             }
           }
         }
-        std::cout << "[CoRD-Alg2]   slot " << ts << " selected " << used.size() << " link(s): [";
+        std::cout << "[CoRD-Alg2]   step " << ts << " selected " << used.size() << " link(s): [";
         for (size_t ui = 0; ui < used.size(); ++ui) {
           if (ui > 0) std::cout << ", ";
           int li = used[ui];
@@ -825,7 +845,7 @@ namespace ECProject
           std::cout << li << "(" << train_link_kind_name(L.kind)
                     << " c" << L.src_cluster << "→c" << L.dst_cluster << ")";
         }
-        std::cout << "] — these links transmit concurrently in this slot\n";
+        std::cout << "] — these links may run concurrently in this step\n";
 
         TimeslotEntry te;
         te.timeslot = ts++;
@@ -838,7 +858,7 @@ namespace ECProject
         out.timeslot_schedule.push_back(std::move(te));
       }
 
-      std::cout << "[CoRD-Alg2] ===== Timeslot scheduling done: total_slots=" << ts << " =====\n";
+      std::cout << "[CoRD-Alg2] ===== Transfer scheduling done: total_steps=" << ts << " =====\n";
       return out;
     }
   } // namespace cord_alg2

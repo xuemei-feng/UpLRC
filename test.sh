@@ -1,6 +1,6 @@
 #!/usr/bin/env bash
 # CoRD 批量更新 trace：改下面路径即可，每行格式见 main_client.cpp 用法说明
-CORD_TRACE_FILE="/users/xue/xue/stripe Ten/T-64KB-10/T00-result10000.txt"
+CORD_TRACE_FILE="/users/xue/xue/10"
 
 SCRIPT_DIR="$(cd "$(dirname "$0")" && pwd)"
 # 必须用相对路径启动 main_client，否则 config 路径拼接会出错（见 main_client.cpp）
@@ -21,5 +21,6 @@ if [ ! -f "${CORD_TRACE_FILE}" ]; then
   exit 1
 fi
 
+export CORD_BATCH_THREADS=1
 echo "CoRD batch trace: ${CORD_TRACE_FILE}"
 echo y | "${MAIN_CLIENT}" "${CORD_TRACE_FILE}"

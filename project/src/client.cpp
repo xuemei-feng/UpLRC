@@ -950,14 +950,38 @@ namespace ECProject
     return all_true;
   }
 
+  namespace
+  {
+    void cord_fill_timing(CordUpdateTiming *out, const std::chrono::steady_clock::time_point &wall_t0,
+                          double plan_sec, double payload_prep_sec, double upload_sec,
+                          double xfer_begin_sec, double xfer_wait_sec)
+    {
+      if (out == nullptr)
+        return;
+      out->plan_sec = plan_sec;
+      out->payload_prep_sec = payload_prep_sec;
+      out->upload_sec = upload_sec;
+      out->xfer_begin_sec = xfer_begin_sec;
+      out->xfer_wait_sec = xfer_wait_sec;
+      out->wall_sec = std::chrono::duration<double>(std::chrono::steady_clock::now() - wall_t0).count();
+    }
+  }
+
   bool Client::cord_update(int stripe_id, const std::vector<std::pair<int, int>> &logical_ranges,
-                           const char *update_payload, size_t update_payload_bytes)
+                           const char *update_payload, size_t update_payload_bytes,
+                           CordUpdateTiming *out_timing)
   {
     if (logical_ranges.empty())
     {
       std::cout << "[CoRD] Empty update intervals." << std::endl;
       return false;
     }
+    const auto wall_t0 = std::chrono::steady_clock::now();
+    double plan_sec = 0.0;
+    double payload_prep_sec = 0.0;
+    double upload_sec = 0.0;
+    double xfer_begin_sec = 0.0;
+    double xfer_wait_sec = 0.0;
     const CordClock::time_point cord_deadline = CordClock::now() + kCordRequestTimeout;
     g_cord_request_deadline = &cord_deadline;
     struct CordDeadlineGuard
@@ -977,6 +1001,7 @@ namespace ECProject
       if (r.second <= r.first)
       {
         std::cout << "[CoRD] Invalid half-open interval: [" << r.first << ", " << r.second << ")" << std::endl;
+        cord_fill_timing(out_timing, wall_t0, plan_sec, payload_prep_sec, upload_sec, xfer_begin_sec, xfer_wait_sec);
         return false;
       }
       auto *range = request.add_update_intervals();
@@ -984,17 +1009,23 @@ namespace ECProject
       range->set_logical_offset_end(r.second);
     }
 
-    const auto cord_wall_t0 = std::chrono::steady_clock::now();
+    const auto plan_t0 = std::chrono::steady_clock::now();
     grpc::Status status = m_coordinator_ptr->uploadCordUpdate(&ctx, request, &reply);
+    plan_sec = std::chrono::duration<double>(std::chrono::steady_clock::now() - plan_t0).count();
     if (cord_abort_if_timed_out())
+    {
+      cord_fill_timing(out_timing, wall_t0, plan_sec, payload_prep_sec, upload_sec, xfer_begin_sec, xfer_wait_sec);
       return false;
+    }
     if (!status.ok())
     {
       std::cout << "[CoRD] uploadCordUpdate failed: " << status.error_message() << std::endl;
+      cord_fill_timing(out_timing, wall_t0, plan_sec, payload_prep_sec, upload_sec, xfer_begin_sec, xfer_wait_sec);
       return false;
     }
     if (reply.sum_append_size() == 0)
     {
+      cord_fill_timing(out_timing, wall_t0, plan_sec, payload_prep_sec, upload_sec, xfer_begin_sec, xfer_wait_sec);
       return true;
     }
 
@@ -1005,14 +1036,17 @@ namespace ECProject
       if (update_payload_bytes != 0)
       {
         std::cout << "[CoRD] auto random payload: require update_payload_bytes==0 when payload is null" << std::endl;
+        cord_fill_timing(out_timing, wall_t0, plan_sec, payload_prep_sec, upload_sec, xfer_begin_sec, xfer_wait_sec);
         return false;
       }
+      const auto prep_t0 = std::chrono::steady_clock::now();
       owned_random.resize(static_cast<size_t>(reply.sum_append_size()));
       std::random_device rd;
       std::mt19937 gen(rd());
       std::uniform_int_distribution<unsigned> dist(0, 255);
       for (size_t i = 0; i < owned_random.size(); ++i)
         owned_random[i] = static_cast<char>(static_cast<unsigned char>(dist(gen)));
+      payload_prep_sec = std::chrono::duration<double>(std::chrono::steady_clock::now() - prep_t0).count();
       payload_send = owned_random.data();
       std::cout << "[CoRD][Client " << m_clientID << "] stripe_id=" << stripe_id
                 << " auto random payload total_bytes=" << owned_random.size() << " intervals:";
@@ -1025,6 +1059,7 @@ namespace ECProject
     else if (update_payload_bytes != static_cast<size_t>(reply.sum_append_size()))
     {
       std::cout << "[CoRD] payload size mismatch: got " << update_payload_bytes << " expected " << reply.sum_append_size() << std::endl;
+      cord_fill_timing(out_timing, wall_t0, plan_sec, payload_prep_sec, upload_sec, xfer_begin_sec, xfer_wait_sec);
       return false;
     }
 
@@ -1037,66 +1072,96 @@ namespace ECProject
                 << reply.proxyports(i) << " key=" << reply.append_keys(i) << std::endl;
     }
 
+    const auto upload_t0 = std::chrono::steady_clock::now();
     std::vector<char *> cluster_slices = m_toolbox->splitCharPointer(payload_send, &reply);
     std::unique_ptr<bool[]> if_commit_arr(new bool[reply.append_keys_size()]);
     std::fill_n(if_commit_arr.get(), reply.append_keys_size(), false);
     for (int i = 0; i < reply.append_keys_size(); i++)
     {
       if (cord_abort_if_timed_out())
+      {
+        upload_sec = std::chrono::duration<double>(std::chrono::steady_clock::now() - upload_t0).count();
+        cord_fill_timing(out_timing, wall_t0, plan_sec, payload_prep_sec, upload_sec, xfer_begin_sec, xfer_wait_sec);
         return false;
+      }
       async_cord_update_to_proxies(cluster_slices[i], reply.append_keys(i), static_cast<int>(reply.cluster_slice_sizes(i)),
                                    reply.proxyips(i), reply.proxyports(i), i, if_commit_arr.get());
     }
+    upload_sec = std::chrono::duration<double>(std::chrono::steady_clock::now() - upload_t0).count();
     if (cord_abort_if_timed_out())
+    {
+      cord_fill_timing(out_timing, wall_t0, plan_sec, payload_prep_sec, upload_sec, xfer_begin_sec, xfer_wait_sec);
       return false;
+    }
     if (!std::all_of(if_commit_arr.get(), if_commit_arr.get() + reply.append_keys_size(),
                      [](bool v) { return v; }))
+    {
+      cord_fill_timing(out_timing, wall_t0, plan_sec, payload_prep_sec, upload_sec, xfer_begin_sec, xfer_wait_sec);
       return false;
+    }
 
     if (!reply.cord_transfer_plan_key().empty())
     {
       std::cout << "[CoRD][Client " << m_clientID << "] initiating cross-cluster transfer plan: "
                 << reply.cord_transfer_plan_key() << "\n";
       if (cord_abort_if_timed_out())
+      {
+        cord_fill_timing(out_timing, wall_t0, plan_sec, payload_prep_sec, upload_sec, xfer_begin_sec, xfer_wait_sec);
         return false;
+      }
       grpc::ClientContext ctx_begin;
       cord_apply_grpc_deadline(ctx_begin);
       coordinator_proto::CordPlanKeyOnly begin_req;
       begin_req.set_plan_key(reply.cord_transfer_plan_key());
       coordinator_proto::RepIfSuccess begin_rep;
-      const auto t_xfer0 = std::chrono::steady_clock::now();
+      const auto xfer_begin_t0 = std::chrono::steady_clock::now();
       grpc::Status st_begin = m_coordinator_ptr->cordPlanBeginTransfer(&ctx_begin, begin_req, &begin_rep);
+      xfer_begin_sec = std::chrono::duration<double>(std::chrono::steady_clock::now() - xfer_begin_t0).count();
       if (cord_abort_if_timed_out())
+      {
+        cord_fill_timing(out_timing, wall_t0, plan_sec, payload_prep_sec, upload_sec, xfer_begin_sec, xfer_wait_sec);
         return false;
+      }
       if (!st_begin.ok() || !begin_rep.ifcommit())
       {
         std::cout << "[CoRD] cordPlanBeginTransfer failed: " << st_begin.error_message() << std::endl;
+        cord_fill_timing(out_timing, wall_t0, plan_sec, payload_prep_sec, upload_sec, xfer_begin_sec, xfer_wait_sec);
         return false;
       }
       if (cord_abort_if_timed_out())
+      {
+        cord_fill_timing(out_timing, wall_t0, plan_sec, payload_prep_sec, upload_sec, xfer_begin_sec, xfer_wait_sec);
         return false;
+      }
       grpc::ClientContext ctx_wait;
       cord_apply_grpc_deadline(ctx_wait);
       coordinator_proto::CordPlanWaitRequest wait_req;
       wait_req.set_plan_key(reply.cord_transfer_plan_key());
       coordinator_proto::RepIfSuccess wait_rep;
       std::cout << "[CoRD][Client " << m_clientID << "] waiting for cross-cluster transfer to complete...\n";
+      const auto xfer_wait_t0 = std::chrono::steady_clock::now();
       grpc::Status st_wait = m_coordinator_ptr->cordPlanWaitTransferComplete(&ctx_wait, wait_req, &wait_rep);
-      const auto t_xfer1 = std::chrono::steady_clock::now();
+      xfer_wait_sec = std::chrono::duration<double>(std::chrono::steady_clock::now() - xfer_wait_t0).count();
       if (cord_abort_if_timed_out())
+      {
+        cord_fill_timing(out_timing, wall_t0, plan_sec, payload_prep_sec, upload_sec, xfer_begin_sec, xfer_wait_sec);
         return false;
+      }
       if (!st_wait.ok() || !wait_rep.ifcommit())
       {
         std::cout << "[CoRD] cordPlanWaitTransferComplete failed: " << st_wait.error_message() << std::endl;
+        cord_fill_timing(out_timing, wall_t0, plan_sec, payload_prep_sec, upload_sec, xfer_begin_sec, xfer_wait_sec);
         return false;
       }
-      std::cout << "[CoRD][Client " << m_clientID << "] cross-cluster transfer complete, wall_sec="
-                << std::chrono::duration<double>(t_xfer1 - t_xfer0).count() << "\n";
+      std::cout << "[CoRD][Client " << m_clientID << "] cross-cluster transfer complete, xfer_begin_sec="
+                << xfer_begin_sec << " xfer_wait_sec=" << xfer_wait_sec << "\n";
     }
 
-    const auto cord_wall_t1 = std::chrono::steady_clock::now();
-    const double cord_wall_sec = std::chrono::duration<double>(cord_wall_t1 - cord_wall_t0).count();
-    std::cout << "[CoRD][Client " << m_clientID << "] round_wall_time_sec=" << cord_wall_sec
+    cord_fill_timing(out_timing, wall_t0, plan_sec, payload_prep_sec, upload_sec, xfer_begin_sec, xfer_wait_sec);
+    std::cout << "[CoRD][Client " << m_clientID << "] round_wall_time_sec=" << (out_timing ? out_timing->wall_sec : 0.0)
+              << " plan_sec=" << plan_sec << " payload_prep_sec=" << payload_prep_sec
+              << " upload_sec=" << upload_sec << " xfer_begin_sec=" << xfer_begin_sec
+              << " xfer_wait_sec=" << xfer_wait_sec
               << " (uploadCordUpdate + TCP delta + transfer plan execute)" << std::endl;
 
     // 本地校验仅由 CordTransferPlan（星型/MST）更新，不再单独 uploadCordLocalParityApply。

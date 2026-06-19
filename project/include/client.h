@@ -17,6 +17,17 @@
 #include <vector>
 namespace ECProject
 {
+  /** CoRD 单次 cord_update 各阶段耗时（秒），由 cord_update 填充。 */
+  struct CordUpdateTiming
+  {
+    double wall_sec = 0.0;
+    double plan_sec = 0.0;         // uploadCordUpdate（coordinator 规划）
+    double payload_prep_sec = 0.0; // 随机负载生成等
+    double upload_sec = 0.0;         // TCP 上传各 cluster slice + checkCommitAbort
+    double xfer_begin_sec = 0.0;     // cordPlanBeginTransfer
+    double xfer_wait_sec = 0.0;      // cordPlanWaitTransferComplete（含跨 cluster 执行）
+  };
+
   class Client
   {
   public:
@@ -79,7 +90,8 @@ namespace ECProject
      * interval_count 由客户端按区间条数自动填充。
      * 若 update_payload==nullptr 且 update_payload_bytes==0，则在 coordinator 返回长度后生成随机负载。 */
     bool cord_update(int stripe_id, const std::vector<std::pair<int, int>> &logical_ranges,
-                     const char *update_payload, size_t update_payload_bytes);
+                     const char *update_payload, size_t update_payload_bytes,
+                     CordUpdateTiming *out_timing = nullptr);
     std::shared_ptr<char[]> get_degraded_read_block(int stripe_id, int failed_block_id);
     std::shared_ptr<char[]> get_degraded_read_block_breakdown(int stripe_id, int failed_block_id, double &total_time, double &disk_io_time, double &network_time, double &encode_time);
     bool recovery_breakdown(int stripe_id, int failed_block_id, double &disk_read_time, double &network_time, double &decode_time, double &disk_write_time);

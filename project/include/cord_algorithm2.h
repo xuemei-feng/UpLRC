@@ -66,7 +66,6 @@ namespace ECProject
     {
       std::vector<TrainLink> train_route;
       std::vector<TimeslotEntry> timeslot_schedule;
-      int slot_unit_bytes = 1;
       int center_global_block_id = -1; // 最后一组相交集中心（调试）
     };
 
@@ -75,9 +74,8 @@ namespace ECProject
      * |N|≥3 且算法三成功：先做 PDP+DCP，数据仅发往指派的全局校验收集器；各收集器再向其它全局块与局校验扇出（语义对齐原单中心星型的第二、三段）。
      * |N|=2 或算法三未成功：单全局中心星型（pop_c = argmin_c Σ_i t_{i,c}·b_i）。
      * |N|=1：MST(Kruskal) 于 V={d}∪{全局校验}。
-     * 调度：链路按 slot_unit_bytes 切时隙；每时隙 Dinic 匹配（每 cluster 每时隙最多 1 发、1 收，可同时收发）。
-     * 数据依赖：STAR_CENTER_TO_GLOBAL / STAR_CENTER_TO_LOCAL 仅在同 group_index 下、发往该收集器的
-     * STAR_DATA_TO_CENTER 链路全部完成（该链路的 remaining 用尽）后才可参与匹配，保证 collector 收齐 Δ 并完成编码后再扇出校验增量。
+     * 调度：每条 train_route 链路一次性传完 payload；按时间步 Dinic 匹配（每 cluster 每步最多 1 发、1 收）。
+     * 数据依赖：STAR_CENTER_TO_* 须等同组 STAR_DATA_TO_CENTER 全部完成；MST_FORWARD 须同 origin 的入边先完成。
      *
      * TrainLink.delta_kind：相交集链路上「发往收集器」段为数据增量 ΔD；收集器扇出为校验增量（由 proxy 对 Δ 聚合后再 XOR 落盘）。
      * |N|=1 的 MST 边均为数据增量在线上传输。
@@ -87,8 +85,7 @@ namespace ECProject
         const std::map<int, std::vector<std::pair<int, int>>> &block_intervals,
         const std::vector<std::vector<int>> &U,
         int cluster_num,
-        const TransferParams &tp,
-        int slot_unit_bytes);
+        const TransferParams &tp);
 
     std::string train_link_kind_name(TrainLinkKind k);
 

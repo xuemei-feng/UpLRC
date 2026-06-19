@@ -67,6 +67,52 @@ namespace
       return true;
     return line[i] == '#';
   }
+
+  std::ostream &print_cord_timing_fields(std::ostream &os, const ECProject::CordUpdateTiming &t)
+  {
+    os << "wall_sec=" << std::fixed << std::setprecision(6) << t.wall_sec
+       << " plan_sec=" << t.plan_sec
+       << " payload_prep_sec=" << t.payload_prep_sec
+       << " upload_sec=" << t.upload_sec
+       << " xfer_begin_sec=" << t.xfer_begin_sec
+       << " xfer_wait_sec=" << t.xfer_wait_sec;
+    return os;
+  }
+
+  struct CordTimingTotals
+  {
+    double wall_sec = 0.0;
+    double plan_sec = 0.0;
+    double payload_prep_sec = 0.0;
+    double upload_sec = 0.0;
+    double xfer_begin_sec = 0.0;
+    double xfer_wait_sec = 0.0;
+
+    void add(const ECProject::CordUpdateTiming &t)
+    {
+      wall_sec += t.wall_sec;
+      plan_sec += t.plan_sec;
+      payload_prep_sec += t.payload_prep_sec;
+      upload_sec += t.upload_sec;
+      xfer_begin_sec += t.xfer_begin_sec;
+      xfer_wait_sec += t.xfer_wait_sec;
+    }
+
+    ECProject::CordUpdateTiming avg(int count) const
+    {
+      ECProject::CordUpdateTiming out;
+      if (count <= 0)
+        return out;
+      const double n = static_cast<double>(count);
+      out.wall_sec = wall_sec / n;
+      out.plan_sec = plan_sec / n;
+      out.payload_prep_sec = payload_prep_sec / n;
+      out.upload_sec = upload_sec / n;
+      out.xfer_begin_sec = xfer_begin_sec / n;
+      out.xfer_wait_sec = xfer_wait_sec / n;
+      return out;
+    }
+  };
 }
 
 int main(int argc, char **argv)
@@ -145,9 +191,9 @@ int main(int argc, char **argv)
 
         int total_failures = 0;
         int success_count = 0;
-        double success_wall_sum = 0.0;
-        std::vector<double> per_success_wall_sec;
-        per_success_wall_sec.reserve(64);
+        CordTimingTotals timing_totals;
+        std::vector<ECProject::CordUpdateTiming> per_success_timing;
+        per_success_timing.reserve(64);
 
         std::string line;
         int line_no = 0;
@@ -172,41 +218,47 @@ int main(int argc, char **argv)
 
             std::cout << "[CoRD batch] line " << line_no << " stripe_id=" << stripe_id
                       << " ranges=" << range_cnt << " ..." << std::endl;
-            const auto req_t0 = std::chrono::steady_clock::now();
-            const bool ok = client.cord_update(stripe_id, logical_ranges, nullptr, 0);
-            const auto req_t1 = std::chrono::steady_clock::now();
-            const double req_wall_sec = std::chrono::duration<double>(req_t1 - req_t0).count();
+            ECProject::CordUpdateTiming timing;
+            const bool ok = client.cord_update(stripe_id, logical_ranges, nullptr, 0, &timing);
 
             if (!ok)
             {
-                std::cout << "[CoRD batch] line " << line_no << " FAILED wall_sec=" << std::fixed
-                          << std::setprecision(6) << req_wall_sec << " (skipped, continue)" << std::endl;
+                std::cout << "[CoRD batch] line " << line_no << " FAILED ";
+                print_cord_timing_fields(std::cout, timing);
+                std::cout << " (skipped, continue)" << std::endl;
                 ++total_failures;
                 continue;
             }
 
             ++success_count;
-            success_wall_sum += req_wall_sec;
-            per_success_wall_sec.push_back(req_wall_sec);
-            std::cout << "[CoRD batch] line " << line_no << " OK wall_sec=" << std::fixed
-                      << std::setprecision(6) << req_wall_sec << std::endl;
+            timing_totals.add(timing);
+            per_success_timing.push_back(timing);
+            std::cout << "[CoRD batch] line " << line_no << " OK ";
+            print_cord_timing_fields(std::cout, timing);
+            std::cout << std::endl;
         }
 
         std::cout << "=== CoRD batch summary ===" << std::endl;
         std::cout << "trace_file=" << trace_path << std::endl;
-        for (size_t i = 0; i < per_success_wall_sec.size(); ++i)
+        for (size_t i = 0; i < per_success_timing.size(); ++i)
         {
-            std::cout << "  success[" << i << "] wall_sec=" << std::fixed << std::setprecision(6)
-                      << per_success_wall_sec[i] << std::endl;
+            std::cout << "  success[" << i << "] ";
+            print_cord_timing_fields(std::cout, per_success_timing[i]);
+            std::cout << std::endl;
         }
         std::cout << "success_count=" << success_count << std::endl;
         std::cout << "total_failures=" << total_failures << std::endl;
-        std::cout << "batch_total_wall_sec=" << std::fixed << std::setprecision(6) << success_wall_sum << std::endl;
+        std::cout << "batch_total ";
+        print_cord_timing_fields(std::cout, ECProject::CordUpdateTiming{
+            timing_totals.wall_sec, timing_totals.plan_sec, timing_totals.payload_prep_sec,
+            timing_totals.upload_sec, timing_totals.xfer_begin_sec, timing_totals.xfer_wait_sec});
+        std::cout << std::endl;
         if (success_count > 0)
         {
-            const double avg_wall_sec_per_request = success_wall_sum / static_cast<double>(success_count);
-            std::cout << "avg_wall_sec_per_request=" << std::fixed << std::setprecision(6)
-                      << avg_wall_sec_per_request << std::endl;
+            const ECProject::CordUpdateTiming avg_timing = timing_totals.avg(success_count);
+            std::cout << "batch_avg ";
+            print_cord_timing_fields(std::cout, avg_timing);
+            std::cout << std::endl;
         }
         if (total_failures > 0)
             return 1;
