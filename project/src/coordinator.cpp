@@ -1628,6 +1628,75 @@ namespace ECProject  //定义一个名为 ECProject 的命名空间，防止命�
     }
   }
 
+
+  bool CoordinatorImpl::cord_start_pending_transfer_plan(const std::string &plan_key)
+  {
+    proxy_proto::CordTransferPlan plan;
+    {
+      std::lock_guard<std::mutex> lk(m_cord_pending_mu);
+      auto it = m_cord_pending_plans.find(plan_key);
+      if (it == m_cord_pending_plans.end())
+        return false;
+      plan = it->second;
+      m_cord_pending_plans.erase(it);
+    }
+    std::cout << "[CoRD] start CordTransferPlan: plan_key=" << plan_key
+              << " steps=" << plan.steps_size() << " rounds=" << plan.total_rounds() << "\n";
+    notify_proxies_cord_transfer_plan(plan);
+    return true;
+  }
+
+  void CoordinatorImpl::cord_register_auto_begin_session(const std::string &plan_key,
+                                                         const std::vector<std::string> &delta_append_keys)
+  {
+    std::lock_guard<std::mutex> lk(m_cord_pending_mu);
+    CordAutoBeginSession session;
+    session.transfer_started = false;
+    for (const auto &k : delta_append_keys)
+    {
+      session.pending_delta_keys.insert(k);
+      m_cord_append_key_to_plan_key[k] = plan_key;
+    }
+    m_cord_auto_begin_sessions[plan_key] = std::move(session);
+  }
+
+  void CoordinatorImpl::cord_on_delta_key_committed(const std::string &delta_append_key)
+  {
+    std::string plan_key;
+    bool should_start = false;
+    {
+      std::lock_guard<std::mutex> lk(m_cord_pending_mu);
+      auto kit = m_cord_append_key_to_plan_key.find(delta_append_key);
+      if (kit == m_cord_append_key_to_plan_key.end())
+        return;
+      plan_key = kit->second;
+      auto sit = m_cord_auto_begin_sessions.find(plan_key);
+      if (sit == m_cord_auto_begin_sessions.end())
+        return;
+      sit->second.pending_delta_keys.erase(delta_append_key);
+      if (!sit->second.pending_delta_keys.empty() || sit->second.transfer_started)
+        return;
+      sit->second.transfer_started = true;
+      should_start = m_cord_pending_plans.find(plan_key) != m_cord_pending_plans.end();
+    }
+    if (should_start)
+    {
+      std::cout << "[CoRD] all delta uploads committed, auto-start transfer plan_key=" << plan_key << "\n";
+      cord_start_pending_transfer_plan(plan_key);
+    }
+  }
+
+  void CoordinatorImpl::cord_clear_auto_begin_session(const std::string &plan_key)
+  {
+    std::lock_guard<std::mutex> lk(m_cord_pending_mu);
+    auto sit = m_cord_auto_begin_sessions.find(plan_key);
+    if (sit == m_cord_auto_begin_sessions.end())
+      return;
+    for (const auto &k : sit->second.pending_delta_keys)
+      m_cord_append_key_to_plan_key.erase(k);
+    m_cord_auto_begin_sessions.erase(sit);
+  }
+
   void CoordinatorImpl::enrich_cord_transfer_plan_encoding(
       Stripe *stripe,
       const std::map<int, std::vector<std::pair<int, int>>> &block_intervals,
@@ -2068,6 +2137,8 @@ namespace ECProject  //定义一个名为 ECProject 的命名空间，防止命�
     }
 
     std::cout << "[CoRD] Delta store dispatch: " << sorted_clusters.size() << " clusters\n";
+    std::vector<std::string> cord_delta_append_keys;
+    cord_delta_append_keys.reserve(sorted_clusters.size());
     for (const auto &plan_entry : sorted_clusters)
     {
       const int cid = plan_entry.first;
@@ -2114,6 +2185,7 @@ namespace ECProject  //定义一个名为 ECProject 的命名空间，防止命�
       proxyIPPort->add_proxyports(m_cluster_table[cid].proxy_port + ECProject::PROXY_PORT_SHIFT);
       proxyIPPort->add_cluster_slice_sizes(cluster_payload);
       proxyIPPort->add_group_ids(cid);
+      cord_delta_append_keys.push_back(plan.key());
     }
     proxyIPPort->set_sum_append_size(sum_update_bytes);
     if (cord_xfer_plan.steps_size() > 0)
@@ -2158,18 +2230,8 @@ namespace ECProject  //定义一个名为 ECProject 的命名空间，防止命�
     const std::string &pk = request->plan_key();
     if (pk.empty())
       return grpc::Status(grpc::StatusCode::INVALID_ARGUMENT, "empty plan_key");
-    proxy_proto::CordTransferPlan plan;
-    {
-      std::lock_guard<std::mutex> lk(m_cord_pending_mu);
-      auto it = m_cord_pending_plans.find(pk);
-      if (it == m_cord_pending_plans.end())
-        return grpc::Status(grpc::StatusCode::NOT_FOUND, "unknown or already started cord plan_key");
-      plan = it->second;
-      m_cord_pending_plans.erase(it);
-    }
-    std::cout << "[CoRD] cordPlanBeginTransfer: plan_key=" << pk
-              << " steps=" << plan.steps_size() << " rounds=" << plan.total_rounds() << "\n";
-    notify_proxies_cord_transfer_plan(plan);
+    if (!cord_start_pending_transfer_plan(pk))
+      return grpc::Status(grpc::StatusCode::NOT_FOUND, "unknown or already started cord plan_key");
     reply->set_ifcommit(true);
     return grpc::Status::OK;
   }
@@ -2183,6 +2245,8 @@ namespace ECProject  //定义一个名为 ECProject 的命名空间，防止命�
     const std::string &pk = request->plan_key();
     if (pk.empty())
       return grpc::Status(grpc::StatusCode::INVALID_ARGUMENT, "empty plan_key");
+    // upload 后应已 auto-start；若 Client 仍调用 wait 而 plan 尚未启动，在此兜底启动。
+    (void)cord_start_pending_transfer_plan(pk);
     std::vector<int> clusters;
     {
       std::lock_guard<std::mutex> lk(m_cord_pending_mu);
@@ -2262,6 +2326,7 @@ namespace ECProject  //定义一个名为 ECProject 的命名空间，防止命�
       std::lock_guard<std::mutex> lk(m_cord_pending_mu);
       m_cord_pending_plan_clusters.erase(pk);
     }
+    cord_clear_auto_begin_session(pk);
     if (span_have && span_max_end_ms >= span_min_start_ms)
     {
       const double cluster_pure_xfer_span_wall_sec =
@@ -4756,6 +4821,8 @@ namespace ECProject  //定义一个名为 ECProject 的命名空间，防止命�
           m_object_commit_table[key] = m_object_updating_table[key];
           cv.notify_all();
           m_object_updating_table.erase(key);
+          if (opp == CORD_UPDATE)
+            cord_on_delta_key_committed(key);
         }
         else if (opp == DEL) // delete the metadata
         {

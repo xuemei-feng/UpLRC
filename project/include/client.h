@@ -24,7 +24,7 @@ namespace ECProject
     double plan_sec = 0.0;         // uploadCordUpdate（coordinator 规划）
     double payload_prep_sec = 0.0; // 随机负载生成等
     double upload_sec = 0.0;         // TCP 上传各 cluster slice + checkCommitAbort
-    double xfer_begin_sec = 0.0;     // cordPlanBeginTransfer
+    double xfer_begin_sec = 0.0;     // 保留字段；auto-start 模式下恒为 0
     double xfer_wait_sec = 0.0;      // cordPlanWaitTransferComplete（含跨 cluster 执行）
   };
 

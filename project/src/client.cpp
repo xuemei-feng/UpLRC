@@ -1102,32 +1102,8 @@ namespace ECProject
 
     if (!reply.cord_transfer_plan_key().empty())
     {
-      std::cout << "[CoRD][Client " << m_clientID << "] initiating cross-cluster transfer plan: "
+      std::cout << "[CoRD][Client " << m_clientID << "] waiting for cross-cluster transfer (auto-start after upload): "
                 << reply.cord_transfer_plan_key() << "\n";
-      if (cord_abort_if_timed_out())
-      {
-        cord_fill_timing(out_timing, wall_t0, plan_sec, payload_prep_sec, upload_sec, xfer_begin_sec, xfer_wait_sec);
-        return false;
-      }
-      grpc::ClientContext ctx_begin;
-      cord_apply_grpc_deadline(ctx_begin);
-      coordinator_proto::CordPlanKeyOnly begin_req;
-      begin_req.set_plan_key(reply.cord_transfer_plan_key());
-      coordinator_proto::RepIfSuccess begin_rep;
-      const auto xfer_begin_t0 = std::chrono::steady_clock::now();
-      grpc::Status st_begin = m_coordinator_ptr->cordPlanBeginTransfer(&ctx_begin, begin_req, &begin_rep);
-      xfer_begin_sec = std::chrono::duration<double>(std::chrono::steady_clock::now() - xfer_begin_t0).count();
-      if (cord_abort_if_timed_out())
-      {
-        cord_fill_timing(out_timing, wall_t0, plan_sec, payload_prep_sec, upload_sec, xfer_begin_sec, xfer_wait_sec);
-        return false;
-      }
-      if (!st_begin.ok() || !begin_rep.ifcommit())
-      {
-        std::cout << "[CoRD] cordPlanBeginTransfer failed: " << st_begin.error_message() << std::endl;
-        cord_fill_timing(out_timing, wall_t0, plan_sec, payload_prep_sec, upload_sec, xfer_begin_sec, xfer_wait_sec);
-        return false;
-      }
       if (cord_abort_if_timed_out())
       {
         cord_fill_timing(out_timing, wall_t0, plan_sec, payload_prep_sec, upload_sec, xfer_begin_sec, xfer_wait_sec);
@@ -1138,7 +1114,6 @@ namespace ECProject
       coordinator_proto::CordPlanWaitRequest wait_req;
       wait_req.set_plan_key(reply.cord_transfer_plan_key());
       coordinator_proto::RepIfSuccess wait_rep;
-      std::cout << "[CoRD][Client " << m_clientID << "] waiting for cross-cluster transfer to complete...\n";
       const auto xfer_wait_t0 = std::chrono::steady_clock::now();
       grpc::Status st_wait = m_coordinator_ptr->cordPlanWaitTransferComplete(&ctx_wait, wait_req, &wait_rep);
       xfer_wait_sec = std::chrono::duration<double>(std::chrono::steady_clock::now() - xfer_wait_t0).count();
@@ -1153,8 +1128,8 @@ namespace ECProject
         cord_fill_timing(out_timing, wall_t0, plan_sec, payload_prep_sec, upload_sec, xfer_begin_sec, xfer_wait_sec);
         return false;
       }
-      std::cout << "[CoRD][Client " << m_clientID << "] cross-cluster transfer complete, xfer_begin_sec="
-                << xfer_begin_sec << " xfer_wait_sec=" << xfer_wait_sec << "\n";
+      std::cout << "[CoRD][Client " << m_clientID << "] cross-cluster transfer complete, xfer_wait_sec="
+                << xfer_wait_sec << "\n";
     }
 
     cord_fill_timing(out_timing, wall_t0, plan_sec, payload_prep_sec, upload_sec, xfer_begin_sec, xfer_wait_sec);
@@ -1162,7 +1137,7 @@ namespace ECProject
               << " plan_sec=" << plan_sec << " payload_prep_sec=" << payload_prep_sec
               << " upload_sec=" << upload_sec << " xfer_begin_sec=" << xfer_begin_sec
               << " xfer_wait_sec=" << xfer_wait_sec
-              << " (uploadCordUpdate + TCP delta + transfer plan execute)" << std::endl;
+              << " (uploadCordUpdate + TCP delta + auto transfer + wait)" << std::endl;
 
     // 本地校验仅由 CordTransferPlan（星型/MST）更新，不再单独 uploadCordLocalParityApply。
     return true;

@@ -15,6 +15,7 @@
 #include <thread>
 #include <condition_variable>
 #include <unordered_map>
+#include <unordered_set>
 #include <config.h>
 #include <toolbox.h>
 #include "unilrc_encoder.h"
@@ -191,6 +192,12 @@ namespace ECProject
     void notify_proxies_ready(const proxy_proto::AppendStripeDataPlacement &plan);
     void notify_proxies_cord_ready(const proxy_proto::CordDataUpdatePlacement &plan);
     void notify_proxies_cord_transfer_plan(const proxy_proto::CordTransferPlan &plan);
+    /** 若 plan 仍在 pending 表，取出并 notify；已 auto-start 则返回 false。 */
+    bool cord_start_pending_transfer_plan(const std::string &plan_key);
+    void cord_register_auto_begin_session(const std::string &plan_key,
+                                          const std::vector<std::string> &delta_append_keys);
+    void cord_on_delta_key_committed(const std::string &delta_append_key);
+    void cord_clear_auto_begin_session(const std::string &plan_key);
     /** CoRD 传输计划：写入矩阵编码元数据、收集器 ingress 期望与各数据块切片描述 */
     void enrich_cord_transfer_plan_encoding(
         Stripe *stripe,
@@ -233,9 +240,16 @@ namespace ECProject
 
   private:
     std::mutex m_mutex;
+    struct CordAutoBeginSession
+    {
+      std::unordered_set<std::string> pending_delta_keys;
+      bool transfer_started = false;
+    };
     std::mutex m_cord_pending_mu;
     std::unordered_map<std::string, proxy_proto::CordTransferPlan> m_cord_pending_plans;
     std::unordered_map<std::string, std::vector<int>> m_cord_pending_plan_clusters;
+    std::unordered_map<std::string, CordAutoBeginSession> m_cord_auto_begin_sessions;
+    std::unordered_map<std::string, std::string> m_cord_append_key_to_plan_key;
     std::condition_variable cv;
     std::map<std::string, std::unique_ptr<proxy_proto::proxyService::Stub>>
         m_proxy_ptrs;
