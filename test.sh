@@ -1,8 +1,15 @@
 #!/usr/bin/env bash
 # CoRD 批量更新 trace：改下面路径即可，每行格式见 main_client.cpp 用法说明
-CORD_TRACE_FILE="/users/xue/xue/10"
+CORD_TRACE_FILE="/users/xue/xue/T00-64KB-100-10"
 
 SCRIPT_DIR="$(cd "$(dirname "$0")" && pwd)"
+CONFIG_XML="${SCRIPT_DIR}/project/config/parameterConfiguration.xml"
+# 条带放置数量：修改 parameterConfiguration.xml 中的 ClientStripeNum
+CLIENT_STRIPE_NUM="$(sed -n 's:.*<ClientStripeNum>\([0-9][0-9]*\)</ClientStripeNum>.*:\1:p' "${CONFIG_XML}" | head -1)"
+if [ -z "${CLIENT_STRIPE_NUM}" ]; then
+  CLIENT_STRIPE_NUM=100
+fi
+
 # 必须用相对路径启动 main_client，否则 config 路径拼接会出错（见 main_client.cpp）
 MAIN_CLIENT="./project/cmake/build/main_client"
 
@@ -23,4 +30,5 @@ fi
 
 export CORD_BATCH_THREADS=1
 echo "CoRD batch trace: ${CORD_TRACE_FILE}"
+echo "ClientStripeNum=${CLIENT_STRIPE_NUM} (from ${CONFIG_XML})"
 echo y | "${MAIN_CLIENT}" "${CORD_TRACE_FILE}"

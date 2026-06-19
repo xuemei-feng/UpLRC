@@ -154,10 +154,31 @@ int main(int argc, char **argv)
     double block_size = static_cast<double> (parameters[3]) / 1024 / 1024; //MB
     int n = k + r + z;
 
-    // 固定预填充条带数；否则块变小时间接写满「3000MB」会导致条带数暴涨
-    const int stripe_num = 1000;
+    // 条带放置数量由 parameterConfiguration.xml 的 ClientStripeNum 控制
+    const int stripe_num = config->ClientStripeNum;
+    if (argc >= 2)
+    {
+        std::ifstream trace_scan(argv[1]);
+        int max_sid = -1;
+        std::string scan_line;
+        while (std::getline(trace_scan, scan_line))
+        {
+            if (scan_line.empty() || scan_line[0] == '#')
+                continue;
+            int sid = 0, rc = 0;
+            std::istringstream siss(scan_line);
+            if (siss >> sid >> rc)
+                max_sid = std::max(max_sid, sid);
+        }
+        if (max_sid >= stripe_num)
+        {
+            std::cout << "[WARN] trace max stripe_id=" << max_sid
+                      << " >= ClientStripeNum=" << stripe_num
+                      << "; updates for stripe_id>=" << stripe_num << " will fail." << std::endl;
+        }
+    }
     const double total_write_size = static_cast<double>(stripe_num) * block_size * static_cast<double>(n); // MB
-    std::cout << "Set phase: stripe_num=" << stripe_num << ", total_write_size_mb=" << total_write_size << std::endl;
+    std::cout << "Set phase: ClientStripeNum=" << stripe_num << ", total_write_size_mb=" << total_write_size << std::endl;
     std::cout << "Starting set stripe operation" << std::endl;
     std::chrono::high_resolution_clock::time_point set_start = std::chrono::high_resolution_clock::now();
     for(int i = 0; i < stripe_num; i++){
