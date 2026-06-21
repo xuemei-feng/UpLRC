@@ -25,7 +25,9 @@ namespace ECProject
     double payload_prep_sec = 0.0; // 随机负载生成等
     double upload_sec = 0.0;         // TCP 上传各 cluster slice + checkCommitAbort
     double xfer_begin_sec = 0.0;     // 保留字段；auto-start 模式下恒为 0
-    double xfer_wait_sec = 0.0;      // cordPlanWaitTransferComplete（含跨 cluster 执行）
+    double xfer_wait_sec = 0.0;      // cordPlanWaitTransferComplete 总 wall time
+    double xfer_pure_sec = 0.0;      // 跨 cluster 真实传输（proxy 上报 wall span）
+    double xfer_grpc_sec = 0.0;      // xfer_wait 中非 pure 部分（gRPC + 编排 + Client↔Coordinator RTT）
   };
 
   class Client

@@ -75,7 +75,9 @@ namespace
        << " payload_prep_sec=" << t.payload_prep_sec
        << " upload_sec=" << t.upload_sec
        << " xfer_begin_sec=" << t.xfer_begin_sec
-       << " xfer_wait_sec=" << t.xfer_wait_sec;
+       << " xfer_wait_sec=" << t.xfer_wait_sec
+       << " xfer_pure_sec=" << t.xfer_pure_sec
+       << " xfer_grpc_sec=" << t.xfer_grpc_sec;
     return os;
   }
 
@@ -87,6 +89,8 @@ namespace
     double upload_sec = 0.0;
     double xfer_begin_sec = 0.0;
     double xfer_wait_sec = 0.0;
+    double xfer_pure_sec = 0.0;
+    double xfer_grpc_sec = 0.0;
 
     void add(const ECProject::CordUpdateTiming &t)
     {
@@ -96,6 +100,8 @@ namespace
       upload_sec += t.upload_sec;
       xfer_begin_sec += t.xfer_begin_sec;
       xfer_wait_sec += t.xfer_wait_sec;
+      xfer_pure_sec += t.xfer_pure_sec;
+      xfer_grpc_sec += t.xfer_grpc_sec;
     }
 
     ECProject::CordUpdateTiming avg(int count) const
@@ -110,6 +116,8 @@ namespace
       out.upload_sec = upload_sec / n;
       out.xfer_begin_sec = xfer_begin_sec / n;
       out.xfer_wait_sec = xfer_wait_sec / n;
+      out.xfer_pure_sec = xfer_pure_sec / n;
+      out.xfer_grpc_sec = xfer_grpc_sec / n;
       return out;
     }
   };
@@ -272,7 +280,8 @@ int main(int argc, char **argv)
         std::cout << "batch_total ";
         print_cord_timing_fields(std::cout, ECProject::CordUpdateTiming{
             timing_totals.wall_sec, timing_totals.plan_sec, timing_totals.payload_prep_sec,
-            timing_totals.upload_sec, timing_totals.xfer_begin_sec, timing_totals.xfer_wait_sec});
+            timing_totals.upload_sec, timing_totals.xfer_begin_sec, timing_totals.xfer_wait_sec,
+            timing_totals.xfer_pure_sec, timing_totals.xfer_grpc_sec});
         std::cout << std::endl;
         if (success_count > 0)
         {

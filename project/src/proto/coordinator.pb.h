@@ -2273,8 +2273,29 @@ class RepIfSuccess final :
   // accessors -------------------------------------------------------
 
   enum : int {
+    kCordXferPureSecFieldNumber = 3,
+    kCordXferGrpcSecFieldNumber = 4,
     kIfcommitFieldNumber = 1,
+    kCordXferTimingPresentFieldNumber = 2,
   };
+  // double cord_xfer_pure_sec = 3;
+  void clear_cord_xfer_pure_sec();
+  double cord_xfer_pure_sec() const;
+  void set_cord_xfer_pure_sec(double value);
+  private:
+  double _internal_cord_xfer_pure_sec() const;
+  void _internal_set_cord_xfer_pure_sec(double value);
+  public:
+
+  // double cord_xfer_grpc_sec = 4;
+  void clear_cord_xfer_grpc_sec();
+  double cord_xfer_grpc_sec() const;
+  void set_cord_xfer_grpc_sec(double value);
+  private:
+  double _internal_cord_xfer_grpc_sec() const;
+  void _internal_set_cord_xfer_grpc_sec(double value);
+  public:
+
   // bool ifcommit = 1;
   void clear_ifcommit();
   bool ifcommit() const;
@@ -2282,6 +2303,15 @@ class RepIfSuccess final :
   private:
   bool _internal_ifcommit() const;
   void _internal_set_ifcommit(bool value);
+  public:
+
+  // bool cord_xfer_timing_present = 2;
+  void clear_cord_xfer_timing_present();
+  bool cord_xfer_timing_present() const;
+  void set_cord_xfer_timing_present(bool value);
+  private:
+  bool _internal_cord_xfer_timing_present() const;
+  void _internal_set_cord_xfer_timing_present(bool value);
   public:
 
   // @@protoc_insertion_point(class_scope:coordinator_proto.RepIfSuccess)
@@ -2292,7 +2322,10 @@ class RepIfSuccess final :
   typedef void InternalArenaConstructable_;
   typedef void DestructorSkippable_;
   struct Impl_ {
+    double cord_xfer_pure_sec_;
+    double cord_xfer_grpc_sec_;
     bool ifcommit_;
+    bool cord_xfer_timing_present_;
     mutable ::PROTOBUF_NAMESPACE_ID::internal::CachedSize _cached_size_;
   };
   union { Impl_ _impl_; };
@@ -6060,6 +6093,66 @@ inline void RepIfSuccess::_internal_set_ifcommit(bool value) {
 inline void RepIfSuccess::set_ifcommit(bool value) {
   _internal_set_ifcommit(value);
   // @@protoc_insertion_point(field_set:coordinator_proto.RepIfSuccess.ifcommit)
+}
+
+// bool cord_xfer_timing_present = 2;
+inline void RepIfSuccess::clear_cord_xfer_timing_present() {
+  _impl_.cord_xfer_timing_present_ = false;
+}
+inline bool RepIfSuccess::_internal_cord_xfer_timing_present() const {
+  return _impl_.cord_xfer_timing_present_;
+}
+inline bool RepIfSuccess::cord_xfer_timing_present() const {
+  // @@protoc_insertion_point(field_get:coordinator_proto.RepIfSuccess.cord_xfer_timing_present)
+  return _internal_cord_xfer_timing_present();
+}
+inline void RepIfSuccess::_internal_set_cord_xfer_timing_present(bool value) {
+  
+  _impl_.cord_xfer_timing_present_ = value;
+}
+inline void RepIfSuccess::set_cord_xfer_timing_present(bool value) {
+  _internal_set_cord_xfer_timing_present(value);
+  // @@protoc_insertion_point(field_set:coordinator_proto.RepIfSuccess.cord_xfer_timing_present)
+}
+
+// double cord_xfer_pure_sec = 3;
+inline void RepIfSuccess::clear_cord_xfer_pure_sec() {
+  _impl_.cord_xfer_pure_sec_ = 0;
+}
+inline double RepIfSuccess::_internal_cord_xfer_pure_sec() const {
+  return _impl_.cord_xfer_pure_sec_;
+}
+inline double RepIfSuccess::cord_xfer_pure_sec() const {
+  // @@protoc_insertion_point(field_get:coordinator_proto.RepIfSuccess.cord_xfer_pure_sec)
+  return _internal_cord_xfer_pure_sec();
+}
+inline void RepIfSuccess::_internal_set_cord_xfer_pure_sec(double value) {
+  
+  _impl_.cord_xfer_pure_sec_ = value;
+}
+inline void RepIfSuccess::set_cord_xfer_pure_sec(double value) {
+  _internal_set_cord_xfer_pure_sec(value);
+  // @@protoc_insertion_point(field_set:coordinator_proto.RepIfSuccess.cord_xfer_pure_sec)
+}
+
+// double cord_xfer_grpc_sec = 4;
+inline void RepIfSuccess::clear_cord_xfer_grpc_sec() {
+  _impl_.cord_xfer_grpc_sec_ = 0;
+}
+inline double RepIfSuccess::_internal_cord_xfer_grpc_sec() const {
+  return _impl_.cord_xfer_grpc_sec_;
+}
+inline double RepIfSuccess::cord_xfer_grpc_sec() const {
+  // @@protoc_insertion_point(field_get:coordinator_proto.RepIfSuccess.cord_xfer_grpc_sec)
+  return _internal_cord_xfer_grpc_sec();
+}
+inline void RepIfSuccess::_internal_set_cord_xfer_grpc_sec(double value) {
+  
+  _impl_.cord_xfer_grpc_sec_ = value;
+}
+inline void RepIfSuccess::set_cord_xfer_grpc_sec(double value) {
+  _internal_set_cord_xfer_grpc_sec(value);
+  // @@protoc_insertion_point(field_set:coordinator_proto.RepIfSuccess.cord_xfer_grpc_sec)
 }
 
 // -------------------------------------------------------------------

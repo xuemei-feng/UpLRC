@@ -85,6 +85,17 @@ namespace ECProject
                 << "s), aborted" << std::endl;
       return true;
     }
+
+    /** 并行 upload 工作线程继承主线程 CoRD 超时 deadline。 */
+    struct CordThreadDeadlineScope
+    {
+      CordThreadDeadlineScope(const CordClock::time_point *dl, int timeout_sec)
+      {
+        g_cord_request_timeout_sec = timeout_sec;
+        g_cord_request_deadline = dl;
+      }
+      ~CordThreadDeadlineScope() { g_cord_request_deadline = nullptr; }
+    };
   }
 
   std::string Client::sayHelloToCoordinatorByGrpc(std::string hello)
@@ -409,28 +420,25 @@ namespace ECProject
               << " -> proxy " << proxy_ip << ":" << proxy_port << " cord_key=" << cord_key
               << " payload_preview=" << cord_client_hex_preview(cluster_slice_data, static_cast<size_t>(cluster_slice_size))
               << std::endl;
-    {
-      std::lock_guard<std::mutex> lk(m_proxy_tcp_mu);
-      if (cord_abort_if_timed_out())
-        return;
-      asio::io_context io_context;
-      asio::error_code error;
-      asio::ip::tcp::resolver resolver(io_context);
-      asio::ip::tcp::resolver::results_type endpoints =
-          resolver.resolve(proxy_ip, std::to_string(proxy_port));
-      asio::ip::tcp::socket sock_data(io_context);
-      cord_apply_socket_timeouts(sock_data);
-      asio::connect(sock_data, endpoints, error);
-      if (error || cord_abort_if_timed_out())
-        return;
+    if (cord_abort_if_timed_out())
+      return;
+    asio::io_context io_context;
+    asio::error_code error;
+    asio::ip::tcp::resolver resolver(io_context);
+    asio::ip::tcp::resolver::results_type endpoints =
+        resolver.resolve(proxy_ip, std::to_string(proxy_port));
+    asio::ip::tcp::socket sock_data(io_context);
+    cord_apply_socket_timeouts(sock_data);
+    asio::connect(sock_data, endpoints, error);
+    if (error || cord_abort_if_timed_out())
+      return;
 
-      asio::write(sock_data, asio::buffer(cluster_slice_data, static_cast<size_t>(cluster_slice_size)), error);
-      if (error || cord_abort_if_timed_out())
-        return;
-      asio::error_code ignore_ec;
-      sock_data.shutdown(asio::ip::tcp::socket::shutdown_send, ignore_ec);
-      sock_data.close(ignore_ec);
-    }
+    asio::write(sock_data, asio::buffer(cluster_slice_data, static_cast<size_t>(cluster_slice_size)), error);
+    if (error || cord_abort_if_timed_out())
+      return;
+    asio::error_code ignore_ec;
+    sock_data.shutdown(asio::ip::tcp::socket::shutdown_send, ignore_ec);
+    sock_data.close(ignore_ec);
 
     if (cord_abort_if_timed_out())
       return;
@@ -954,7 +962,8 @@ namespace ECProject
   {
     void cord_fill_timing(CordUpdateTiming *out, const std::chrono::steady_clock::time_point &wall_t0,
                           double plan_sec, double payload_prep_sec, double upload_sec,
-                          double xfer_begin_sec, double xfer_wait_sec)
+                          double xfer_begin_sec, double xfer_wait_sec,
+                          double xfer_pure_sec = 0.0, double xfer_grpc_sec = 0.0)
     {
       if (out == nullptr)
         return;
@@ -963,6 +972,8 @@ namespace ECProject
       out->upload_sec = upload_sec;
       out->xfer_begin_sec = xfer_begin_sec;
       out->xfer_wait_sec = xfer_wait_sec;
+      out->xfer_pure_sec = xfer_pure_sec;
+      out->xfer_grpc_sec = xfer_grpc_sec;
       out->wall_sec = std::chrono::duration<double>(std::chrono::steady_clock::now() - wall_t0).count();
     }
   }
@@ -982,6 +993,8 @@ namespace ECProject
     double upload_sec = 0.0;
     double xfer_begin_sec = 0.0;
     double xfer_wait_sec = 0.0;
+    double xfer_pure_sec = 0.0;
+    double xfer_grpc_sec = 0.0;
     g_cord_request_timeout_sec = m_sys_config->CordRequestTimeoutSec;
     const CordClock::time_point cord_deadline =
         CordClock::now() + std::chrono::seconds(g_cord_request_timeout_sec);
@@ -1076,19 +1089,29 @@ namespace ECProject
 
     const auto upload_t0 = std::chrono::steady_clock::now();
     std::vector<char *> cluster_slices = m_toolbox->splitCharPointer(payload_send, &reply);
-    std::unique_ptr<bool[]> if_commit_arr(new bool[reply.append_keys_size()]);
-    std::fill_n(if_commit_arr.get(), reply.append_keys_size(), false);
-    for (int i = 0; i < reply.append_keys_size(); i++)
+    const int slice_count = reply.append_keys_size();
+    std::unique_ptr<bool[]> if_commit_arr(new bool[slice_count]);
+    std::fill_n(if_commit_arr.get(), slice_count, false);
+    if (cord_abort_if_timed_out())
     {
-      if (cord_abort_if_timed_out())
-      {
-        upload_sec = std::chrono::duration<double>(std::chrono::steady_clock::now() - upload_t0).count();
-        cord_fill_timing(out_timing, wall_t0, plan_sec, payload_prep_sec, upload_sec, xfer_begin_sec, xfer_wait_sec);
-        return false;
-      }
-      async_cord_update_to_proxies(cluster_slices[i], reply.append_keys(i), static_cast<int>(reply.cluster_slice_sizes(i)),
-                                   reply.proxyips(i), reply.proxyports(i), i, if_commit_arr.get());
+      upload_sec = std::chrono::duration<double>(std::chrono::steady_clock::now() - upload_t0).count();
+      cord_fill_timing(out_timing, wall_t0, plan_sec, payload_prep_sec, upload_sec, xfer_begin_sec, xfer_wait_sec);
+      return false;
     }
+    const int cord_timeout_sec = g_cord_request_timeout_sec;
+    std::vector<std::thread> upload_threads;
+    upload_threads.reserve(static_cast<size_t>(slice_count));
+    for (int i = 0; i < slice_count; ++i)
+    {
+      upload_threads.emplace_back([this, i, &cord_deadline, cord_timeout_sec, &cluster_slices, &reply, if_commit_arr = if_commit_arr.get()]() {
+        CordThreadDeadlineScope deadline_scope(&cord_deadline, cord_timeout_sec);
+        async_cord_update_to_proxies(cluster_slices[static_cast<size_t>(i)], reply.append_keys(i),
+                                     static_cast<int>(reply.cluster_slice_sizes(i)), reply.proxyips(i),
+                                     reply.proxyports(i), i, if_commit_arr);
+      });
+    }
+    for (auto &t : upload_threads)
+      t.join();
     upload_sec = std::chrono::duration<double>(std::chrono::steady_clock::now() - upload_t0).count();
     if (cord_abort_if_timed_out())
     {
@@ -1119,26 +1142,39 @@ namespace ECProject
       const auto xfer_wait_t0 = std::chrono::steady_clock::now();
       grpc::Status st_wait = m_coordinator_ptr->cordPlanWaitTransferComplete(&ctx_wait, wait_req, &wait_rep);
       xfer_wait_sec = std::chrono::duration<double>(std::chrono::steady_clock::now() - xfer_wait_t0).count();
+      if (wait_rep.cord_xfer_timing_present())
+      {
+        xfer_pure_sec = wait_rep.cord_xfer_pure_sec();
+        xfer_grpc_sec = std::max(0., xfer_wait_sec - xfer_pure_sec);
+      }
+      else
+      {
+        xfer_grpc_sec = xfer_wait_sec;
+      }
       if (cord_abort_if_timed_out())
       {
-        cord_fill_timing(out_timing, wall_t0, plan_sec, payload_prep_sec, upload_sec, xfer_begin_sec, xfer_wait_sec);
+        cord_fill_timing(out_timing, wall_t0, plan_sec, payload_prep_sec, upload_sec, xfer_begin_sec, xfer_wait_sec,
+                         xfer_pure_sec, xfer_grpc_sec);
         return false;
       }
       if (!st_wait.ok() || !wait_rep.ifcommit())
       {
         std::cout << "[CoRD] cordPlanWaitTransferComplete failed: " << st_wait.error_message() << std::endl;
-        cord_fill_timing(out_timing, wall_t0, plan_sec, payload_prep_sec, upload_sec, xfer_begin_sec, xfer_wait_sec);
+        cord_fill_timing(out_timing, wall_t0, plan_sec, payload_prep_sec, upload_sec, xfer_begin_sec, xfer_wait_sec,
+                         xfer_pure_sec, xfer_grpc_sec);
         return false;
       }
       std::cout << "[CoRD][Client " << m_clientID << "] cross-cluster transfer complete, xfer_wait_sec="
-                << xfer_wait_sec << "\n";
+                << xfer_wait_sec << " xfer_pure_sec=" << xfer_pure_sec << " xfer_grpc_sec=" << xfer_grpc_sec << "\n";
     }
 
-    cord_fill_timing(out_timing, wall_t0, plan_sec, payload_prep_sec, upload_sec, xfer_begin_sec, xfer_wait_sec);
+    cord_fill_timing(out_timing, wall_t0, plan_sec, payload_prep_sec, upload_sec, xfer_begin_sec, xfer_wait_sec,
+                     xfer_pure_sec, xfer_grpc_sec);
     std::cout << "[CoRD][Client " << m_clientID << "] round_wall_time_sec=" << (out_timing ? out_timing->wall_sec : 0.0)
               << " plan_sec=" << plan_sec << " payload_prep_sec=" << payload_prep_sec
               << " upload_sec=" << upload_sec << " xfer_begin_sec=" << xfer_begin_sec
-              << " xfer_wait_sec=" << xfer_wait_sec
+              << " xfer_wait_sec=" << xfer_wait_sec << " xfer_pure_sec=" << xfer_pure_sec
+              << " xfer_grpc_sec=" << xfer_grpc_sec
               << " (uploadCordUpdate + TCP delta + auto transfer + wait)" << std::endl;
 
     // 本地校验仅由 CordTransferPlan（星型/MST）更新，不再单独 uploadCordLocalParityApply。

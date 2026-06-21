@@ -2422,6 +2422,10 @@ namespace ECProject  //定义一个名为 ECProject 的命名空间，防止命�
   {
     (void)context;
     reply->set_ifcommit(false);
+    reply->set_cord_xfer_timing_present(false);
+    reply->set_cord_xfer_pure_sec(0.);
+    reply->set_cord_xfer_grpc_sec(0.);
+    const auto handler_t0 = std::chrono::steady_clock::now();
     const std::string &pk = request->plan_key();
     if (pk.empty())
       return grpc::Status(grpc::StatusCode::INVALID_ARGUMENT, "empty plan_key");
@@ -2507,27 +2511,38 @@ namespace ECProject  //定义一个名为 ECProject 的命名空间，防止命�
       m_cord_pending_plan_clusters.erase(pk);
     }
     cord_clear_auto_begin_session(pk);
+    const double handler_sec =
+        std::chrono::duration<double>(std::chrono::steady_clock::now() - handler_t0).count();
+    double pure_xfer_sec = 0.;
     if (span_have && span_max_end_ms >= span_min_start_ms)
     {
-      const double cluster_pure_xfer_span_wall_sec =
-          static_cast<double>(span_max_end_ms - span_min_start_ms) / 1000.;
-      // std::cout << "[CoRD-PLAN][Coordinator] cluster_pure_xfer_span_wall_sec=" << cluster_pure_xfer_span_wall_sec
-      //           << " plan_key=" << pk << " joined_proxies=" << joined_proxies
-      //           << " timing_samples=" << timing_samples << " max_proxy_pure_xfer_sec=" << max_proxy_pure_xfer_sec
-      //           << " (min wall start -> max wall end over proxies; clock sync assumed)" << std::endl;
-      // if (timing_samples < joined_proxies)
-      //   std::cout << "[CoRD-PLAN][Coordinator] WARN timing_samples<joined_proxies (mixed proxy versions?)"
-      //             << std::endl;
-      (void)cluster_pure_xfer_span_wall_sec;
-      (void)joined_proxies;
-      (void)timing_samples;
-      (void)max_proxy_pure_xfer_sec;
+      pure_xfer_sec = static_cast<double>(span_max_end_ms - span_min_start_ms) / 1000.;
     }
-    // else if (joined_proxies > 0)
-    // {
-    //   std::cout << "[CoRD-PLAN][Coordinator] WARN cluster_pure_xfer_span_wall_sec unavailable plan_key=" << pk
-    //             << " joined_proxies=" << joined_proxies << std::endl;
-    // }
+    else if (max_proxy_pure_xfer_sec > 0.)
+    {
+      pure_xfer_sec = max_proxy_pure_xfer_sec;
+    }
+    if (pure_xfer_sec > 0.)
+    {
+      const double grpc_sec = std::max(0., handler_sec - pure_xfer_sec);
+      reply->set_cord_xfer_timing_present(true);
+      reply->set_cord_xfer_pure_sec(pure_xfer_sec);
+      reply->set_cord_xfer_grpc_sec(grpc_sec);
+      std::cout << "[CoRD-PLAN][Coordinator] xfer_wait breakdown plan_key=" << pk
+                << " handler_sec=" << handler_sec << " pure_xfer_sec=" << pure_xfer_sec
+                << " grpc_sec=" << grpc_sec << " joined_proxies=" << joined_proxies
+                << " timing_samples=" << timing_samples << std::endl;
+    }
+    else if (joined_proxies > 0)
+    {
+      reply->set_cord_xfer_timing_present(true);
+      reply->set_cord_xfer_pure_sec(0.);
+      reply->set_cord_xfer_grpc_sec(handler_sec);
+      std::cout << "[CoRD-PLAN][Coordinator] xfer_wait breakdown plan_key=" << pk
+                << " handler_sec=" << handler_sec << " pure_xfer_sec=n/a grpc_sec=" << handler_sec
+                << std::endl;
+    }
+    (void)timing_samples;
     reply->set_ifcommit(true);
     return grpc::Status::OK;
   }

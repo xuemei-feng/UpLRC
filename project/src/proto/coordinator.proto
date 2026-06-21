@@ -142,6 +142,10 @@ message AskIfSuccess {
 
 message RepIfSuccess {
   bool ifcommit = 1;
+  // cordPlanWaitTransferComplete 耗时拆分（proxy 上报 pure_xfer + coordinator 侧 join 编排）
+  bool cord_xfer_timing_present = 2;
+  double cord_xfer_pure_sec = 3;  // 跨 cluster 真实传输（proxy wall span 或 max pure_xfer）
+  double cord_xfer_grpc_sec = 4;  // coordinator handler 中非 pure 部分（串行 join gRPC/编排）
 }
 
 // get
