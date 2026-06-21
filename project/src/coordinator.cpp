@@ -641,16 +641,18 @@ namespace ECProject  //定义一个名为 ECProject 的命名空间，防止命�
       }
     }
 
-    static uint64_t cord_block_delta_hi_exclusive(
+    /** STAR_DATA 一次传 packed ΔD：ingest 从首段 lo 起连续写入 sum(seg.len)；ready 判定须用 lo+packed 而非 max(hi)。 */
+    static uint64_t cord_block_delta_ingress_buffer_end(
         const std::map<int, std::vector<std::pair<int, int>>> &block_intervals, int block_id)
     {
       auto it = block_intervals.find(block_id);
-      if (it == block_intervals.end())
+      if (it == block_intervals.end() || it->second.empty())
         return 0;
-      int hi = 0;
+      int64_t packed = 0;
       for (const auto &seg : it->second)
-        hi = std::max(hi, seg.second);
-      return static_cast<uint64_t>(hi);
+        packed += static_cast<int64_t>(seg.second - seg.first);
+      const int64_t lo = cord_packed_offset_to_logical_in_block(it->second, 0);
+      return static_cast<uint64_t>(lo + packed);
     }
 
     /** 将算法二的 train_route + timeslot_schedule 压平为 CordTransferPlan；每条链路一步传完 payload。 */
@@ -1938,7 +1940,7 @@ namespace ECProject  //定义一个名为 ECProject 的命名空间，防止命�
       if (L.delta_kind != cord_alg2::CordDeltaPayloadKind::DATA_DELTA)
         continue;
       const std::pair<int, int> key(L.group_index, L.dst_block_id);
-      const uint64_t ext = cord_block_delta_hi_exclusive(block_intervals, L.src_block_id);
+      const uint64_t ext = cord_block_delta_ingress_buffer_end(block_intervals, L.src_block_id);
       auto &m = coll_agg[key];
       auto it = m.find(L.src_block_id);
       if (it == m.end() || ext > it->second)

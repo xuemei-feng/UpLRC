@@ -34,8 +34,8 @@ namespace ECProject
     }
 
     using CordClock = std::chrono::steady_clock;
-    constexpr std::chrono::milliseconds kCordRequestTimeout{2000};
     thread_local const CordClock::time_point *g_cord_request_deadline = nullptr;
+    thread_local int g_cord_request_timeout_sec = 2;
 
     bool cord_request_timed_out()
     {
@@ -81,7 +81,7 @@ namespace ECProject
     {
       if (!cord_request_timed_out())
         return false;
-      std::cout << "[CoRD] request timeout (>" << (kCordRequestTimeout.count() / 1000.0)
+      std::cout << "[CoRD] request timeout (>" << g_cord_request_timeout_sec
                 << "s), aborted" << std::endl;
       return true;
     }
@@ -982,7 +982,9 @@ namespace ECProject
     double upload_sec = 0.0;
     double xfer_begin_sec = 0.0;
     double xfer_wait_sec = 0.0;
-    const CordClock::time_point cord_deadline = CordClock::now() + kCordRequestTimeout;
+    g_cord_request_timeout_sec = m_sys_config->CordRequestTimeoutSec;
+    const CordClock::time_point cord_deadline =
+        CordClock::now() + std::chrono::seconds(g_cord_request_timeout_sec);
     g_cord_request_deadline = &cord_deadline;
     struct CordDeadlineGuard
     {

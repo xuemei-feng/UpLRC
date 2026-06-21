@@ -40,6 +40,8 @@ namespace ECProject
     std::uint64_t PlacementRandomSeed = 0;
     /** SET 阶段放置的条带数；有效 stripe_id 为 0 .. ClientStripeNum-1 */
     int ClientStripeNum = 100;
+    /** CoRD 单次 update 总超时（秒），含 plan、upload、跨 cluster 传输等待 */
+    int CordRequestTimeoutSec = 2;
   };
 }
 

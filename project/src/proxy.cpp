@@ -271,6 +271,18 @@ namespace ECProject
     return out;
   }
 
+  /** 与 coordinator cord_block_delta_ingress_buffer_end / STAR_DATA ingest 布局一致。 */
+  static uint64_t cord_plan_block_ingress_buffer_end(const proxy_proto::CordTransferPlan &plan, int block_id)
+  {
+    const std::vector<std::pair<int, int>> segs = cord_plan_sorted_segs_for_block(plan, block_id);
+    if (segs.empty())
+      return 0;
+    int64_t packed = 0;
+    for (const auto &pr : segs)
+      packed += static_cast<int64_t>(pr.second - pr.first);
+    return static_cast<uint64_t>(segs.front().first) + static_cast<uint64_t>(packed);
+  }
+
   /** strip 轴上的逻辑字节是否在块更新区间内；若在则返回 ingest 缓冲区内 packed 下标，否则 -1。 */
   static int cord_logical_strip_to_packed_delta_idx(const std::vector<std::pair<int, int>> &segs_sorted,
                                                     int strip_logical)
@@ -653,10 +665,17 @@ namespace ECProject
           cord_plan_data_block_stripe_group(plan, sid) != parity_ingest_stripe_group)
         continue;
       any_required = true;
+      uint64_t required = ex->src_delta_total_bytes(i);
+      if (plan.cord_block_delta_segs_size() > 0)
+      {
+        const uint64_t computed = cord_plan_block_ingress_buffer_end(plan, sid);
+        if (computed > 0)
+          required = computed;
+      }
       const std::string bk = cord_collector_block_buf_key(plan.plan_key(), group, collector_block_id, sid);
       auto it = g_cord_collector_block_delta.find(bk);
       if (it == g_cord_collector_block_delta.end() ||
-          it->second.size() < static_cast<size_t>(ex->src_delta_total_bytes(i)))
+          it->second.size() < static_cast<size_t>(required))
         return false;
     }
     if (parity_ingest_stripe_group >= 0 && !any_required)
