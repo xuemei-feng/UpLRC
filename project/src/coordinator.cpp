@@ -2062,11 +2062,25 @@ namespace ECProject  //定义一个名为 ECProject 的命名空间，防止命�
       m_mutex.unlock();
     }
 
-    // 3. notify proxies to receive data（顺序 notify，与 client 按 reply 顺序发 TCP 配对，避免多 accept 错配长度）
+    // 3. 并行通知所有 proxy 接收数据
     int sum_append_size = 0;
+    {
+      const int plan_count = static_cast<int>(append_plans.size());
+      std::vector<std::thread> notify_threads;
+      notify_threads.reserve(static_cast<size_t>(plan_count));
+      for (int i = 0; i < plan_count; ++i)
+      {
+        notify_threads.emplace_back([this, &plan = append_plans[static_cast<size_t>(i)]]() {
+          notify_proxies_ready(plan);
+        });
+      }
+      for (auto &t : notify_threads)
+        t.join();
+    }
+
+    // 串行填充 proxyIPPort（protobuf 非线程安全）
     for (const auto &plan : append_plans)
     {
-      notify_proxies_ready(plan);
       proxyIPPort->add_append_keys(plan.key());
       proxyIPPort->add_proxyips(m_cluster_table[plan.cluster_id()].proxy_ip);
       proxyIPPort->add_proxyports(m_cluster_table[plan.cluster_id()].proxy_port + ECProject::PROXY_PORT_SHIFT); // use another port to accept data
@@ -2201,6 +2215,7 @@ namespace ECProject  //定义一个名为 ECProject 的命名空间，防止命�
     cord_alg2::Algorithm2Result alg2_result;
     {
       cord_alg2::TransferParams tp;
+      tp.enforce_one_send_one_recv_per_cluster = false; 
       alg2_result =
           cord_alg2::build_algorithm2(*stripe, block_intervals, groups, m_sys_config->ClusterNum, tp);
       std::cout << "[CoRD] Algorithm 2 train_route (|U|=" << groups.size() << ", links=" << alg2_result.train_route.size()
@@ -3129,9 +3144,25 @@ namespace ECProject  //定义一个名为 ECProject 的命名空间，防止命�
     }
 
     size_t sum_append_size = 0;
+
+    // 并行通知所有 proxy，减少串行 gRPC 延迟
+    {
+      const int plan_count = static_cast<int>(add_plans.size());
+      std::vector<std::thread> notify_threads;
+      notify_threads.reserve(static_cast<size_t>(plan_count));
+      for (int i = 0; i < plan_count; ++i)
+      {
+        notify_threads.emplace_back([this, &plan = add_plans[static_cast<size_t>(i)]]() {
+          notify_proxies_ready(plan);
+        });
+      }
+      for (auto &t : notify_threads)
+        t.join();
+    }
+
+    // 串行填充 proxyIPPort（protobuf 非线程安全）
     for (const auto &plan : add_plans)
     {
-      notify_proxies_ready(plan);
       proxyIPPort->add_append_keys(plan.key());
       proxyIPPort->add_proxyips(m_cluster_table[plan.cluster_id()].proxy_ip);
       proxyIPPort->add_proxyports(m_cluster_table[plan.cluster_id()].proxy_port + ECProject::PROXY_PORT_SHIFT); // use another port to accept data
@@ -3199,9 +3230,25 @@ namespace ECProject  //定义一个名为 ECProject 的命名空间，防止命�
     }
 
     size_t sum_append_size = 0;
+
+    // 并行通知所有 proxy，减少串行 gRPC 延迟
+    {
+      const int plan_count = static_cast<int>(add_plans.size());
+      std::vector<std::thread> notify_threads;
+      notify_threads.reserve(static_cast<size_t>(plan_count));
+      for (int i = 0; i < plan_count; ++i)
+      {
+        notify_threads.emplace_back([this, &plan = add_plans[static_cast<size_t>(i)]]() {
+          notify_proxies_ready(plan);
+        });
+      }
+      for (auto &t : notify_threads)
+        t.join();
+    }
+
+    // 串行填充 proxyIPPort（protobuf 非线程安全）
     for (const auto &plan : add_plans)
     {
-      notify_proxies_ready(plan);
       proxyIPPort->add_append_keys(plan.key());
       proxyIPPort->add_proxyips(m_cluster_table[plan.cluster_id()].proxy_ip);
       proxyIPPort->add_proxyports(m_cluster_table[plan.cluster_id()].proxy_port + ECProject::PROXY_PORT_SHIFT); // use another port to accept data

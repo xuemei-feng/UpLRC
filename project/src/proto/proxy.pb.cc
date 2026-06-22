@@ -403,6 +403,11 @@ PROTOBUF_CONSTEXPR AppendStripeDataPlacement::AppendStripeDataPlacement(
   , /*decltype(_impl_._offsets_cached_byte_size_)*/{0}
   , /*decltype(_impl_.sizes_)*/{}
   , /*decltype(_impl_._sizes_cached_byte_size_)*/{0}
+  , /*decltype(_impl_.forward_proxy_ips_)*/{}
+  , /*decltype(_impl_.forward_proxy_ports_)*/{}
+  , /*decltype(_impl_._forward_proxy_ports_cached_byte_size_)*/{0}
+  , /*decltype(_impl_.forward_cluster_ids_)*/{}
+  , /*decltype(_impl_._forward_cluster_ids_cached_byte_size_)*/{0}
   , /*decltype(_impl_.key_)*/{&::_pbi::fixed_address_empty_string, ::_pbi::ConstantInitialized{}}
   , /*decltype(_impl_.append_mode_)*/{&::_pbi::fixed_address_empty_string, ::_pbi::ConstantInitialized{}}
   , /*decltype(_impl_.cluster_id_)*/0
@@ -410,6 +415,7 @@ PROTOBUF_CONSTEXPR AppendStripeDataPlacement::AppendStripeDataPlacement(
   , /*decltype(_impl_.append_size_)*/uint64_t{0u}
   , /*decltype(_impl_.is_merge_parity_)*/false
   , /*decltype(_impl_.is_serialized_)*/false
+  , /*decltype(_impl_.is_main_entry_)*/false
   , /*decltype(_impl_._cached_size_)*/{}} {}
 struct AppendStripeDataPlacementDefaultTypeInternal {
   PROTOBUF_CONSTEXPR AppendStripeDataPlacementDefaultTypeInternal()
@@ -1188,6 +1194,10 @@ const uint32_t TableStruct_proxy_2eproto::offsets[] PROTOBUF_SECTION_VARIABLE(pr
   PROTOBUF_FIELD_OFFSET(::proxy_proto::AppendStripeDataPlacement, _impl_.is_merge_parity_),
   PROTOBUF_FIELD_OFFSET(::proxy_proto::AppendStripeDataPlacement, _impl_.append_mode_),
   PROTOBUF_FIELD_OFFSET(::proxy_proto::AppendStripeDataPlacement, _impl_.is_serialized_),
+  PROTOBUF_FIELD_OFFSET(::proxy_proto::AppendStripeDataPlacement, _impl_.is_main_entry_),
+  PROTOBUF_FIELD_OFFSET(::proxy_proto::AppendStripeDataPlacement, _impl_.forward_proxy_ips_),
+  PROTOBUF_FIELD_OFFSET(::proxy_proto::AppendStripeDataPlacement, _impl_.forward_proxy_ports_),
+  PROTOBUF_FIELD_OFFSET(::proxy_proto::AppendStripeDataPlacement, _impl_.forward_cluster_ids_),
   ~0u,  // no _has_bits_
   PROTOBUF_FIELD_OFFSET(::proxy_proto::CordTransferClusterEndpoint, _internal_metadata_),
   ~0u,  // no _extensions_
@@ -1558,33 +1568,33 @@ static const ::_pbi::MigrationSchema schemas[] PROTOBUF_SECTION_VARIABLE(protode
   { 207, -1, -1, sizeof(::proxy_proto::MultipleRecoveryRequest)},
   { 218, -1, -1, sizeof(::proxy_proto::RecoveryReply)},
   { 237, -1, -1, sizeof(::proxy_proto::AppendStripeDataPlacement)},
-  { 256, -1, -1, sizeof(::proxy_proto::CordTransferClusterEndpoint)},
-  { 265, -1, -1, sizeof(::proxy_proto::CordTransferBlockPlacement)},
-  { 275, -1, -1, sizeof(::proxy_proto::CordTransferDeltaBlobRef)},
-  { 286, -1, -1, sizeof(::proxy_proto::CordTransferGroupXorHint)},
-  { 294, -1, -1, sizeof(::proxy_proto::CordTransferClusterDeltaLayout)},
-  { 304, 327, -1, sizeof(::proxy_proto::CordTransferStep)},
-  { 344, -1, -1, sizeof(::proxy_proto::CordBlockStripeGroup)},
-  { 352, -1, -1, sizeof(::proxy_proto::CordBlockHalfOpenSeg)},
-  { 361, -1, -1, sizeof(::proxy_proto::CordTransferEncodeMeta)},
-  { 373, -1, -1, sizeof(::proxy_proto::CordCollectorIngressExpect)},
-  { 383, -1, -1, sizeof(::proxy_proto::CordDataStripDesc)},
-  { 392, -1, -1, sizeof(::proxy_proto::CordPlanKeyMsg)},
-  { 399, -1, -1, sizeof(::proxy_proto::CordTransferPlan)},
-  { 421, -1, -1, sizeof(::proxy_proto::CordPlanCollectorIngestReq)},
-  { 434, -1, -1, sizeof(::proxy_proto::CordPlanApplyParityXorReq)},
-  { 448, -1, -1, sizeof(::proxy_proto::CordPlanMstDataDeltaReq)},
-  { 465, -1, -1, sizeof(::proxy_proto::CordDataUpdatePlacement)},
-  { 484, -1, -1, sizeof(::proxy_proto::CordLpDeltaFetch)},
-  { 496, -1, -1, sizeof(::proxy_proto::CordLpWorkItem)},
-  { 509, -1, -1, sizeof(::proxy_proto::CordLocalParityBundle)},
-  { 518, -1, -1, sizeof(::proxy_proto::CordLpHubSessionBegin)},
-  { 536, -1, -1, sizeof(::proxy_proto::CordLpHubPartialPush)},
-  { 544, -1, -1, sizeof(::proxy_proto::CordLpComputePartialAndPush)},
-  { 558, -1, -1, sizeof(::proxy_proto::CordLpParityApplyDelta)},
-  { 572, -1, -1, sizeof(::proxy_proto::SetReply)},
-  { 583, -1, -1, sizeof(::proxy_proto::GetReply)},
-  { 590, -1, -1, sizeof(::proxy_proto::StripeAndBlockIDs)},
+  { 260, -1, -1, sizeof(::proxy_proto::CordTransferClusterEndpoint)},
+  { 269, -1, -1, sizeof(::proxy_proto::CordTransferBlockPlacement)},
+  { 279, -1, -1, sizeof(::proxy_proto::CordTransferDeltaBlobRef)},
+  { 290, -1, -1, sizeof(::proxy_proto::CordTransferGroupXorHint)},
+  { 298, -1, -1, sizeof(::proxy_proto::CordTransferClusterDeltaLayout)},
+  { 308, 331, -1, sizeof(::proxy_proto::CordTransferStep)},
+  { 348, -1, -1, sizeof(::proxy_proto::CordBlockStripeGroup)},
+  { 356, -1, -1, sizeof(::proxy_proto::CordBlockHalfOpenSeg)},
+  { 365, -1, -1, sizeof(::proxy_proto::CordTransferEncodeMeta)},
+  { 377, -1, -1, sizeof(::proxy_proto::CordCollectorIngressExpect)},
+  { 387, -1, -1, sizeof(::proxy_proto::CordDataStripDesc)},
+  { 396, -1, -1, sizeof(::proxy_proto::CordPlanKeyMsg)},
+  { 403, -1, -1, sizeof(::proxy_proto::CordTransferPlan)},
+  { 425, -1, -1, sizeof(::proxy_proto::CordPlanCollectorIngestReq)},
+  { 438, -1, -1, sizeof(::proxy_proto::CordPlanApplyParityXorReq)},
+  { 452, -1, -1, sizeof(::proxy_proto::CordPlanMstDataDeltaReq)},
+  { 469, -1, -1, sizeof(::proxy_proto::CordDataUpdatePlacement)},
+  { 488, -1, -1, sizeof(::proxy_proto::CordLpDeltaFetch)},
+  { 500, -1, -1, sizeof(::proxy_proto::CordLpWorkItem)},
+  { 513, -1, -1, sizeof(::proxy_proto::CordLocalParityBundle)},
+  { 522, -1, -1, sizeof(::proxy_proto::CordLpHubSessionBegin)},
+  { 540, -1, -1, sizeof(::proxy_proto::CordLpHubPartialPush)},
+  { 548, -1, -1, sizeof(::proxy_proto::CordLpComputePartialAndPush)},
+  { 562, -1, -1, sizeof(::proxy_proto::CordLpParityApplyDelta)},
+  { 576, -1, -1, sizeof(::proxy_proto::SetReply)},
+  { 587, -1, -1, sizeof(::proxy_proto::GetReply)},
+  { 594, -1, -1, sizeof(::proxy_proto::StripeAndBlockIDs)},
 };
 
 static const ::_pb::Message* const file_default_instances[] = {
@@ -1716,215 +1726,218 @@ const char descriptor_table_protodef_proxy_2eproto[] PROTOBUF_SECTION_VARIABLE(p
   "ta_node_grpc_notify_time\030\n \001(\001\022!\n\031data_n"
   "ode_grpc_start_time\030\013 \001(\001\022#\n\033dest_data_n"
   "ode_network_time\030\014 \001(\001\022#\n\033dest_data_node"
-  "_disk_io_time\030\r \001(\001\"\230\002\n\031AppendStripeData"
+  "_disk_io_time\030\r \001(\001\"\204\003\n\031AppendStripeData"
   "Placement\022\013\n\003key\030\001 \001(\t\022\022\n\ncluster_id\030\002 \001"
   "(\005\022\021\n\tstripe_id\030\003 \001(\005\022\023\n\013append_size\030\004 \001"
   "(\004\022\022\n\ndatanodeip\030\005 \003(\t\022\024\n\014datanodeport\030\006"
   " \003(\005\022\021\n\tblockkeys\030\007 \003(\t\022\020\n\010blockids\030\010 \003("
   "\005\022\017\n\007offsets\030\t \003(\004\022\r\n\005sizes\030\n \003(\004\022\027\n\017is_"
   "merge_parity\030\013 \001(\010\022\023\n\013append_mode\030\014 \001(\t\022"
-  "\025\n\ris_serialized\030\r \001(\010\"W\n\033CordTransferCl"
-  "usterEndpoint\022\022\n\ncluster_id\030\001 \001(\005\022\020\n\010pro"
-  "xy_ip\030\002 \001(\t\022\022\n\nproxy_port\030\003 \001(\005\"m\n\032CordT"
-  "ransferBlockPlacement\022\020\n\010block_id\030\001 \001(\005\022"
-  "\021\n\tblock_key\030\002 \001(\t\022\023\n\013datanode_ip\030\003 \001(\t\022"
-  "\025\n\rdatanode_port\030\004 \001(\005\"\225\001\n\030CordTransferD"
-  "eltaBlobRef\022\022\n\ncluster_id\030\001 \001(\005\022\025\n\rcord_"
-  "plan_key\030\002 \001(\t\022\026\n\016delta_blob_key\030\003 \001(\t\022\031"
-  "\n\021delta_datanode_ip\030\004 \001(\t\022\033\n\023delta_datan"
-  "ode_port\030\005 \001(\005\"N\n\030CordTransferGroupXorHi"
-  "nt\022\023\n\013group_index\030\001 \001(\005\022\035\n\025xor_accum_byt"
-  "e_length\030\002 \001(\004\"\203\001\n\036CordTransferClusterDe"
-  "ltaLayout\022\022\n\ncluster_id\030\001 \001(\005\022\026\n\016data_bl"
-  "ock_ids\030\002 \003(\005\022\031\n\021delta_base_offset\030\003 \003(\004"
-  "\022\032\n\022delta_total_length\030\004 \003(\004\"\355\004\n\020CordTra"
-  "nsferStep\022\022\n\nstep_index\030\001 \001(\005\022\034\n\024src_pro"
-  "xy_cluster_id\030\002 \001(\005\022\034\n\024dst_proxy_cluster"
-  "_id\030\003 \001(\005\022\024\n\014src_block_id\030\004 \001(\005\022\024\n\014dst_b"
-  "lock_id\030\005 \001(\005\022\025\n\rpayload_bytes\030\006 \001(\004\0224\n\t"
-  "link_kind\030\007 \001(\0162!.proxy_proto.CordTransf"
-  "erLinkKind\022\026\n\016scheduled_slot\030\010 \001(\r\022\035\n\025de"
-  "pends_on_step_index\030\t \001(\005\022\036\n\026estimated_t"
-  "ransfer_sec\030\n \001(\001\022\023\n\013group_index\030\013 \001(\005\022="
-  "\n\022delta_payload_kind\030\014 \001(\0162!.proxy_proto"
-  ".CordDeltaPayloadKind\022\031\n\021chunk_byte_offs"
-  "et\030\r \001(\004\022\031\n\021chunk_byte_length\030\016 \001(\004\022\'\n\032p"
-  "arity_ingest_stripe_group\030\017 \001(\005H\000\210\001\001\022%\n\030"
-  "mst_origin_data_block_id\030\020 \001(\005H\001\210\001\001\022#\n\033p"
-  "arity_merge_data_block_ids\030\021 \003(\005B\035\n\033_par"
-  "ity_ingest_stripe_groupB\033\n\031_mst_origin_d"
-  "ata_block_id\">\n\024CordBlockStripeGroup\022\020\n\010"
-  "block_id\030\001 \001(\005\022\024\n\014stripe_group\030\002 \001(\005\"E\n\024"
-  "CordBlockHalfOpenSeg\022\020\n\010block_id\030\001 \001(\005\022\n"
-  "\n\002lo\030\002 \001(\005\022\017\n\007hi_excl\030\003 \001(\005\"\210\001\n\026CordTran"
-  "sferEncodeMeta\022\023\n\013encode_type\030\001 \001(\005\022\t\n\001k"
-  "\030\002 \001(\005\022\013\n\003g_m\030\003 \001(\005\022\t\n\001l\030\004 \001(\005\022\033\n\023parity"
-  "_slice_offset\030\005 \001(\005\022\031\n\021parity_slice_size"
-  "\030\006 \001(\005\"\210\001\n\032CordCollectorIngressExpect\022\023\n"
-  "\013group_index\030\001 \001(\005\022\032\n\022collector_block_id"
-  "\030\002 \001(\005\022\032\n\022src_data_block_ids\030\003 \003(\005\022\035\n\025sr"
-  "c_delta_total_bytes\030\004 \003(\004\"N\n\021CordDataStr"
-  "ipDesc\022\020\n\010block_id\030\001 \001(\005\022\024\n\014slice_offset"
-  "\030\002 \001(\005\022\021\n\tslice_len\030\003 \001(\005\"\"\n\016CordPlanKey"
-  "Msg\022\020\n\010plan_key\030\001 \001(\t\"\313\006\n\020CordTransferPl"
-  "an\022\021\n\tstripe_id\030\001 \001(\005\022\020\n\010plan_key\030\002 \001(\t\022"
-  "\024\n\014total_rounds\030\003 \001(\r\022,\n\005steps\030\004 \003(\0132\035.p"
-  "roxy_proto.CordTransferStep\022\027\n\017slot_unit"
-  "_bytes\030\005 \001(\005\022\023\n\013k_datablock\030\006 \001(\005\022C\n\021clu"
-  "ster_endpoints\030\007 \003(\0132(.proxy_proto.CordT"
-  "ransferClusterEndpoint\022A\n\020block_placemen"
-  "ts\030\010 \003(\0132\'.proxy_proto.CordTransferBlock"
-  "Placement\022>\n\017delta_blob_refs\030\t \003(\0132%.pro"
-  "xy_proto.CordTransferDeltaBlobRef\022>\n\017gro"
-  "up_xor_hints\030\n \003(\0132%.proxy_proto.CordTra"
-  "nsferGroupXorHint\022J\n\025cluster_delta_layou"
-  "ts\030\013 \003(\0132+.proxy_proto.CordTransferClust"
-  "erDeltaLayout\022=\n\020cord_encode_meta\030\014 \001(\0132"
-  "#.proxy_proto.CordTransferEncodeMeta\022G\n\026"
-  "cord_collector_expects\030\r \003(\0132\'.proxy_pro"
-  "to.CordCollectorIngressExpect\022=\n\025cord_da"
-  "ta_strip_descs\030\016 \003(\0132\036.proxy_proto.CordD"
-  "ataStripDesc\022C\n\030cord_block_stripe_groups"
-  "\030\017 \003(\0132!.proxy_proto.CordBlockStripeGrou"
-  "p\022@\n\025cord_block_delta_segs\030\020 \003(\0132!.proxy"
-  "_proto.CordBlockHalfOpenSeg\"\313\001\n\032CordPlan"
-  "CollectorIngestReq\022\020\n\010plan_key\030\001 \001(\t\022\023\n\013"
-  "group_index\030\002 \001(\005\022\032\n\022collector_block_id\030"
-  "\003 \001(\005\022\031\n\021chunk_byte_offset\030\004 \001(\004\022\025\n\rchun"
-  "k_payload\030\005 \001(\014\022\035\n\025xor_accum_byte_length"
-  "\030\006 \001(\004\022\031\n\021src_data_block_id\030\007 \001(\005\"\332\001\n\031Co"
-  "rdPlanApplyParityXorReq\022\020\n\010plan_key\030\001 \001("
-  "\t\022\024\n\014dst_block_id\030\002 \001(\005\022\021\n\tblock_key\030\003 \001"
-  "(\t\022\023\n\013datanode_ip\030\004 \001(\t\022\025\n\rdatanode_port"
-  "\030\005 \001(\005\022\033\n\023parity_slice_offset\030\006 \001(\005\022\033\n\023p"
-  "arity_slice_length\030\007 \001(\005\022\034\n\024parity_delta"
-  "_payload\030\010 \001(\014\"\263\002\n\027CordPlanMstDataDeltaR"
-  "eq\022\020\n\010plan_key\030\001 \001(\t\022\034\n\024dst_proxy_cluste"
-  "r_id\030\002 \001(\005\022\024\n\014dst_block_id\030\003 \001(\005\022\023\n\013k_da"
-  "tablock\030\004 \001(\005\022\031\n\021chunk_byte_offset\030\005 \001(\004"
-  "\022\025\n\rchunk_payload\030\006 \001(\014\022\034\n\024total_expecte"
-  "d_bytes\030\007 \001(\004\022\030\n\020parity_block_key\030\010 \001(\t\022"
-  "\032\n\022parity_datanode_ip\030\t \001(\t\022\034\n\024parity_da"
-  "tanode_port\030\n \001(\005\022\031\n\021src_data_block_id\030\013"
-  " \001(\005\"\251\002\n\027CordDataUpdatePlacement\022\013\n\003key\030"
-  "\001 \001(\t\022\022\n\ncluster_id\030\002 \001(\005\022\021\n\tstripe_id\030\003"
-  " \001(\005\022\033\n\023update_payload_size\030\004 \001(\004\022\022\n\ndat"
-  "anodeip\030\005 \003(\t\022\024\n\014datanodeport\030\006 \003(\005\022\021\n\tb"
-  "lockkeys\030\007 \003(\t\022\020\n\010blockids\030\010 \003(\005\022\017\n\007offs"
-  "ets\030\t \003(\004\022\r\n\005sizes\030\n \003(\004\022\026\n\016delta_blob_k"
-  "ey\030\013 \001(\t\022\031\n\021delta_datanode_ip\030\014 \001(\t\022\033\n\023d"
-  "elta_datanode_port\030\r \001(\005\"\213\001\n\020CordLpDelta"
-  "Fetch\022\020\n\010blob_key\030\001 \001(\t\022\023\n\013datanode_ip\030\002"
-  " \001(\t\022\025\n\rdatanode_port\030\003 \001(\005\022\023\n\013blob_offs"
-  "et\030\004 \001(\004\022\020\n\010read_len\030\005 \001(\004\022\022\n\nacc_offset"
-  "\030\006 \001(\005\"\341\001\n\016CordLpWorkItem\022\026\n\016local_block"
-  "_id\030\001 \001(\005\022\027\n\017local_block_key\030\002 \001(\t\022\031\n\021lo"
-  "cal_datanode_ip\030\003 \001(\t\022\033\n\023local_datanode_"
-  "port\030\004 \001(\005\022\033\n\023parity_slice_offset\030\005 \001(\005\022"
-  "\031\n\021parity_slice_size\030\006 \001(\005\022.\n\007fetches\030\007 "
-  "\003(\0132\035.proxy_proto.CordLpDeltaFetch\"c\n\025Co"
-  "rdLocalParityBundle\022\013\n\003key\030\001 \001(\t\022\021\n\tstri"
-  "pe_id\030\002 \001(\005\022*\n\005items\030\003 \003(\0132\033.proxy_proto"
-  ".CordLpWorkItem\"\316\002\n\025CordLpHubSessionBegi"
-  "n\022\023\n\013session_key\030\001 \001(\t\022\031\n\021expected_parti"
-  "als\030\002 \001(\005\022\031\n\021parity_slice_size\030\003 \001(\005\022\033\n\023"
-  "parity_slice_offset\030\004 \001(\005\022\026\n\016local_block"
-  "_id\030\005 \001(\005\022\027\n\017local_block_key\030\006 \001(\t\022\031\n\021lo"
-  "cal_datanode_ip\030\007 \001(\t\022\033\n\023local_datanode_"
-  "port\030\010 \001(\005\022\030\n\020dest_lp_proxy_ip\030\t \001(\t\022\032\n\022"
-  "dest_lp_proxy_port\030\n \001(\005\022\021\n\tstripe_id\030\013 "
-  "\001(\005\022\033\n\023hub_global_block_id\030\014 \001(\005\"D\n\024Cord"
-  "LpHubPartialPush\022\023\n\013session_key\030\001 \001(\t\022\027\n"
-  "\017partial_payload\030\002 \001(\014\"\373\001\n\033CordLpCompute"
-  "PartialAndPush\022\023\n\013session_key\030\001 \001(\t\022\024\n\014h"
-  "ub_proxy_ip\030\002 \001(\t\022\026\n\016hub_proxy_port\030\003 \001("
-  "\005\022\026\n\016delta_blob_key\030\004 \001(\t\022\031\n\021delta_datan"
-  "ode_ip\030\005 \001(\t\022\033\n\023delta_datanode_port\030\006 \001("
-  "\005\022\031\n\021parity_slice_size\030\007 \001(\005\022.\n\007fetches\030"
-  "\010 \003(\0132\035.proxy_proto.CordLpDeltaFetch\"\343\001\n"
-  "\026CordLpParityApplyDelta\022\021\n\tstripe_id\030\001 \001"
-  "(\005\022\026\n\016local_block_id\030\002 \001(\005\022\027\n\017local_bloc"
-  "k_key\030\003 \001(\t\022\031\n\021local_datanode_ip\030\004 \001(\t\022\033"
-  "\n\023local_datanode_port\030\005 \001(\005\022\033\n\023parity_sl"
-  "ice_offset\030\006 \001(\005\022\031\n\021parity_slice_size\030\007 "
-  "\001(\005\022\025\n\rdelta_payload\030\010 \001(\014\"\270\001\n\010SetReply\022"
-  "\020\n\010ifcommit\030\001 \001(\010\022%\n\035cord_join_xfer_timi"
-  "ng_present\030\002 \001(\010\022\037\n\027cord_join_pure_xfer_"
-  "sec\030\003 \001(\001\022)\n!cord_join_pure_xfer_start_u"
-  "nix_ms\030\004 \001(\003\022\'\n\037cord_join_pure_xfer_end_"
-  "unix_ms\030\005 \001(\003\"\036\n\010GetReply\022\022\n\ngetsuccess\030"
-  "\001 \001(\010\"\261\001\n\021StripeAndBlockIDs\022\021\n\tstripe_id"
-  "\030\001 \001(\005\022\020\n\010group_id\030\002 \001(\005\022\020\n\010clientip\030\003 \001"
-  "(\t\022\022\n\nclientport\030\004 \001(\005\022\021\n\tblock_ids\030\005 \003("
-  "\005\022\022\n\nblock_keys\030\006 \003(\t\022\023\n\013datanodeips\030\007 \003"
-  "(\t\022\025\n\rdatanodeports\030\010 \003(\005*\255\001\n\024CordTransf"
-  "erLinkKind\022%\n!CORD_TRANSFER_STAR_DATA_TO"
-  "_CENTER\020\000\022\'\n#CORD_TRANSFER_STAR_CENTER_T"
-  "O_GLOBAL\020\001\022&\n\"CORD_TRANSFER_STAR_CENTER_"
-  "TO_LOCAL\020\002\022\035\n\031CORD_TRANSFER_MST_FORWARD\020"
-  "\003*B\n\024CordDeltaPayloadKind\022\023\n\017CORD_DELTA_"
-  "DATA\020\000\022\025\n\021CORD_DELTA_PARITY\020\0012\336\021\n\014proxyS"
-  "ervice\022D\n\ncheckalive\022\032.proxy_proto.Check"
-  "aliveCMD\032\032.proxy_proto.RequestResult\022L\n\022"
-  "encodeAndSetObject\022\037.proxy_proto.ObjectA"
-  "ndPlacement\032\025.proxy_proto.SetReply\022L\n\022de"
-  "codeAndGetObject\022\037.proxy_proto.ObjectAnd"
-  "Placement\032\025.proxy_proto.GetReply\022P\n\014degr"
-  "adedRead\022 .proxy_proto.DegradedReadReque"
-  "st\032\036.proxy_proto.DegradedReadReply\022S\n\023de"
-  "gradedRead2Client\022\034.proxy_proto.Recovery"
-  "Request\032\036.proxy_proto.DegradedReadReply\022"
-  "Y\n\025degradedReadBreakdown\022 .proxy_proto.D"
-  "egradedReadRequest\032\036.proxy_proto.Degrade"
-  "dReadReply\022\\\n\034degradedRead2ClientBreakdo"
-  "wn\022\034.proxy_proto.RecoveryRequest\032\036.proxy"
-  "_proto.DegradedReadReply\022X\n\035degradedRead"
-  "WithBlockStripeID\022 .proxy_proto.Degraded"
-  "ReadRequest\032\025.proxy_proto.GetReply\022V\n\017pa"
-  "rtialDecoding\022#.proxy_proto.PartialDecod"
-  "ingRequest\032\036.proxy_proto.DegradedReadRep"
-  "ly\022D\n\010recovery\022\034.proxy_proto.RecoveryReq"
-  "uest\032\032.proxy_proto.RecoveryReply\022M\n\021reco"
-  "veryBreakdown\022\034.proxy_proto.RecoveryRequ"
-  "est\032\032.proxy_proto.RecoveryReply\022O\n\020multi"
-  "pleRecovery\022$.proxy_proto.MultipleRecove"
-  "ryRequest\032\025.proxy_proto.GetReply\022\?\n\013dele"
-  "teBlock\022\031.proxy_proto.NodeAndBlock\032\025.pro"
-  "xy_proto.DelReply\022X\n\027scheduleAppend2Data"
-  "node\022&.proxy_proto.AppendStripeDataPlace"
-  "ment\032\025.proxy_proto.SetReply\022U\n\026scheduleC"
-  "ordDataUpdate\022$.proxy_proto.CordDataUpda"
-  "tePlacement\032\025.proxy_proto.SetReply\022Y\n\034sc"
-  "heduleCordLocalParityApply\022\".proxy_proto"
-  ".CordLocalParityBundle\032\025.proxy_proto.Set"
-  "Reply\022R\n\025cordLpHubSessionBegin\022\".proxy_p"
-  "roto.CordLpHubSessionBegin\032\025.proxy_proto"
-  ".SetReply\022P\n\024cordLpHubPartialPush\022!.prox"
-  "y_proto.CordLpHubPartialPush\032\025.proxy_pro"
-  "to.SetReply\022^\n\033cordLpComputePartialAndPu"
-  "sh\022(.proxy_proto.CordLpComputePartialAnd"
-  "Push\032\025.proxy_proto.SetReply\022T\n\026cordLpApp"
-  "lyParityDelta\022#.proxy_proto.CordLpParity"
-  "ApplyDelta\032\025.proxy_proto.SetReply\022P\n\030sch"
-  "eduleCordTransferPlan\022\035.proxy_proto.Cord"
-  "TransferPlan\032\025.proxy_proto.SetReply\022L\n\026c"
-  "ordPlanStartExecution\022\033.proxy_proto.Cord"
-  "PlanKeyMsg\032\025.proxy_proto.SetReply\022K\n\025cor"
-  "dPlanJoinExecution\022\033.proxy_proto.CordPla"
-  "nKeyMsg\032\025.proxy_proto.SetReply\022b\n cordPl"
-  "anCollectorIngestDataDelta\022\'.proxy_proto"
-  ".CordPlanCollectorIngestReq\032\025.proxy_prot"
-  "o.SetReply\022\\\n\033cordPlanApplyParityXorDelt"
-  "a\022&.proxy_proto.CordPlanApplyParityXorRe"
-  "q\032\025.proxy_proto.SetReply\022X\n\031cordPlanMstD"
-  "ataDeltaChunk\022$.proxy_proto.CordPlanMstD"
-  "ataDeltaReq\032\025.proxy_proto.SetReply\022B\n\tge"
-  "tBlocks\022\036.proxy_proto.StripeAndBlockIDs\032"
-  "\025.proxy_proto.GetReplyb\006proto3"
+  "\025\n\ris_serialized\030\r \001(\010\022\025\n\ris_main_entry\030"
+  "\016 \001(\010\022\031\n\021forward_proxy_ips\030\017 \003(\t\022\033\n\023forw"
+  "ard_proxy_ports\030\020 \003(\005\022\033\n\023forward_cluster"
+  "_ids\030\021 \003(\005\"W\n\033CordTransferClusterEndpoin"
+  "t\022\022\n\ncluster_id\030\001 \001(\005\022\020\n\010proxy_ip\030\002 \001(\t\022"
+  "\022\n\nproxy_port\030\003 \001(\005\"m\n\032CordTransferBlock"
+  "Placement\022\020\n\010block_id\030\001 \001(\005\022\021\n\tblock_key"
+  "\030\002 \001(\t\022\023\n\013datanode_ip\030\003 \001(\t\022\025\n\rdatanode_"
+  "port\030\004 \001(\005\"\225\001\n\030CordTransferDeltaBlobRef\022"
+  "\022\n\ncluster_id\030\001 \001(\005\022\025\n\rcord_plan_key\030\002 \001"
+  "(\t\022\026\n\016delta_blob_key\030\003 \001(\t\022\031\n\021delta_data"
+  "node_ip\030\004 \001(\t\022\033\n\023delta_datanode_port\030\005 \001"
+  "(\005\"N\n\030CordTransferGroupXorHint\022\023\n\013group_"
+  "index\030\001 \001(\005\022\035\n\025xor_accum_byte_length\030\002 \001"
+  "(\004\"\203\001\n\036CordTransferClusterDeltaLayout\022\022\n"
+  "\ncluster_id\030\001 \001(\005\022\026\n\016data_block_ids\030\002 \003("
+  "\005\022\031\n\021delta_base_offset\030\003 \003(\004\022\032\n\022delta_to"
+  "tal_length\030\004 \003(\004\"\355\004\n\020CordTransferStep\022\022\n"
+  "\nstep_index\030\001 \001(\005\022\034\n\024src_proxy_cluster_i"
+  "d\030\002 \001(\005\022\034\n\024dst_proxy_cluster_id\030\003 \001(\005\022\024\n"
+  "\014src_block_id\030\004 \001(\005\022\024\n\014dst_block_id\030\005 \001("
+  "\005\022\025\n\rpayload_bytes\030\006 \001(\004\0224\n\tlink_kind\030\007 "
+  "\001(\0162!.proxy_proto.CordTransferLinkKind\022\026"
+  "\n\016scheduled_slot\030\010 \001(\r\022\035\n\025depends_on_ste"
+  "p_index\030\t \001(\005\022\036\n\026estimated_transfer_sec\030"
+  "\n \001(\001\022\023\n\013group_index\030\013 \001(\005\022=\n\022delta_payl"
+  "oad_kind\030\014 \001(\0162!.proxy_proto.CordDeltaPa"
+  "yloadKind\022\031\n\021chunk_byte_offset\030\r \001(\004\022\031\n\021"
+  "chunk_byte_length\030\016 \001(\004\022\'\n\032parity_ingest"
+  "_stripe_group\030\017 \001(\005H\000\210\001\001\022%\n\030mst_origin_d"
+  "ata_block_id\030\020 \001(\005H\001\210\001\001\022#\n\033parity_merge_"
+  "data_block_ids\030\021 \003(\005B\035\n\033_parity_ingest_s"
+  "tripe_groupB\033\n\031_mst_origin_data_block_id"
+  "\">\n\024CordBlockStripeGroup\022\020\n\010block_id\030\001 \001"
+  "(\005\022\024\n\014stripe_group\030\002 \001(\005\"E\n\024CordBlockHal"
+  "fOpenSeg\022\020\n\010block_id\030\001 \001(\005\022\n\n\002lo\030\002 \001(\005\022\017"
+  "\n\007hi_excl\030\003 \001(\005\"\210\001\n\026CordTransferEncodeMe"
+  "ta\022\023\n\013encode_type\030\001 \001(\005\022\t\n\001k\030\002 \001(\005\022\013\n\003g_"
+  "m\030\003 \001(\005\022\t\n\001l\030\004 \001(\005\022\033\n\023parity_slice_offse"
+  "t\030\005 \001(\005\022\031\n\021parity_slice_size\030\006 \001(\005\"\210\001\n\032C"
+  "ordCollectorIngressExpect\022\023\n\013group_index"
+  "\030\001 \001(\005\022\032\n\022collector_block_id\030\002 \001(\005\022\032\n\022sr"
+  "c_data_block_ids\030\003 \003(\005\022\035\n\025src_delta_tota"
+  "l_bytes\030\004 \003(\004\"N\n\021CordDataStripDesc\022\020\n\010bl"
+  "ock_id\030\001 \001(\005\022\024\n\014slice_offset\030\002 \001(\005\022\021\n\tsl"
+  "ice_len\030\003 \001(\005\"\"\n\016CordPlanKeyMsg\022\020\n\010plan_"
+  "key\030\001 \001(\t\"\313\006\n\020CordTransferPlan\022\021\n\tstripe"
+  "_id\030\001 \001(\005\022\020\n\010plan_key\030\002 \001(\t\022\024\n\014total_rou"
+  "nds\030\003 \001(\r\022,\n\005steps\030\004 \003(\0132\035.proxy_proto.C"
+  "ordTransferStep\022\027\n\017slot_unit_bytes\030\005 \001(\005"
+  "\022\023\n\013k_datablock\030\006 \001(\005\022C\n\021cluster_endpoin"
+  "ts\030\007 \003(\0132(.proxy_proto.CordTransferClust"
+  "erEndpoint\022A\n\020block_placements\030\010 \003(\0132\'.p"
+  "roxy_proto.CordTransferBlockPlacement\022>\n"
+  "\017delta_blob_refs\030\t \003(\0132%.proxy_proto.Cor"
+  "dTransferDeltaBlobRef\022>\n\017group_xor_hints"
+  "\030\n \003(\0132%.proxy_proto.CordTransferGroupXo"
+  "rHint\022J\n\025cluster_delta_layouts\030\013 \003(\0132+.p"
+  "roxy_proto.CordTransferClusterDeltaLayou"
+  "t\022=\n\020cord_encode_meta\030\014 \001(\0132#.proxy_prot"
+  "o.CordTransferEncodeMeta\022G\n\026cord_collect"
+  "or_expects\030\r \003(\0132\'.proxy_proto.CordColle"
+  "ctorIngressExpect\022=\n\025cord_data_strip_des"
+  "cs\030\016 \003(\0132\036.proxy_proto.CordDataStripDesc"
+  "\022C\n\030cord_block_stripe_groups\030\017 \003(\0132!.pro"
+  "xy_proto.CordBlockStripeGroup\022@\n\025cord_bl"
+  "ock_delta_segs\030\020 \003(\0132!.proxy_proto.CordB"
+  "lockHalfOpenSeg\"\313\001\n\032CordPlanCollectorIng"
+  "estReq\022\020\n\010plan_key\030\001 \001(\t\022\023\n\013group_index\030"
+  "\002 \001(\005\022\032\n\022collector_block_id\030\003 \001(\005\022\031\n\021chu"
+  "nk_byte_offset\030\004 \001(\004\022\025\n\rchunk_payload\030\005 "
+  "\001(\014\022\035\n\025xor_accum_byte_length\030\006 \001(\004\022\031\n\021sr"
+  "c_data_block_id\030\007 \001(\005\"\332\001\n\031CordPlanApplyP"
+  "arityXorReq\022\020\n\010plan_key\030\001 \001(\t\022\024\n\014dst_blo"
+  "ck_id\030\002 \001(\005\022\021\n\tblock_key\030\003 \001(\t\022\023\n\013datano"
+  "de_ip\030\004 \001(\t\022\025\n\rdatanode_port\030\005 \001(\005\022\033\n\023pa"
+  "rity_slice_offset\030\006 \001(\005\022\033\n\023parity_slice_"
+  "length\030\007 \001(\005\022\034\n\024parity_delta_payload\030\010 \001"
+  "(\014\"\263\002\n\027CordPlanMstDataDeltaReq\022\020\n\010plan_k"
+  "ey\030\001 \001(\t\022\034\n\024dst_proxy_cluster_id\030\002 \001(\005\022\024"
+  "\n\014dst_block_id\030\003 \001(\005\022\023\n\013k_datablock\030\004 \001("
+  "\005\022\031\n\021chunk_byte_offset\030\005 \001(\004\022\025\n\rchunk_pa"
+  "yload\030\006 \001(\014\022\034\n\024total_expected_bytes\030\007 \001("
+  "\004\022\030\n\020parity_block_key\030\010 \001(\t\022\032\n\022parity_da"
+  "tanode_ip\030\t \001(\t\022\034\n\024parity_datanode_port\030"
+  "\n \001(\005\022\031\n\021src_data_block_id\030\013 \001(\005\"\251\002\n\027Cor"
+  "dDataUpdatePlacement\022\013\n\003key\030\001 \001(\t\022\022\n\nclu"
+  "ster_id\030\002 \001(\005\022\021\n\tstripe_id\030\003 \001(\005\022\033\n\023upda"
+  "te_payload_size\030\004 \001(\004\022\022\n\ndatanodeip\030\005 \003("
+  "\t\022\024\n\014datanodeport\030\006 \003(\005\022\021\n\tblockkeys\030\007 \003"
+  "(\t\022\020\n\010blockids\030\010 \003(\005\022\017\n\007offsets\030\t \003(\004\022\r\n"
+  "\005sizes\030\n \003(\004\022\026\n\016delta_blob_key\030\013 \001(\t\022\031\n\021"
+  "delta_datanode_ip\030\014 \001(\t\022\033\n\023delta_datanod"
+  "e_port\030\r \001(\005\"\213\001\n\020CordLpDeltaFetch\022\020\n\010blo"
+  "b_key\030\001 \001(\t\022\023\n\013datanode_ip\030\002 \001(\t\022\025\n\rdata"
+  "node_port\030\003 \001(\005\022\023\n\013blob_offset\030\004 \001(\004\022\020\n\010"
+  "read_len\030\005 \001(\004\022\022\n\nacc_offset\030\006 \001(\005\"\341\001\n\016C"
+  "ordLpWorkItem\022\026\n\016local_block_id\030\001 \001(\005\022\027\n"
+  "\017local_block_key\030\002 \001(\t\022\031\n\021local_datanode"
+  "_ip\030\003 \001(\t\022\033\n\023local_datanode_port\030\004 \001(\005\022\033"
+  "\n\023parity_slice_offset\030\005 \001(\005\022\031\n\021parity_sl"
+  "ice_size\030\006 \001(\005\022.\n\007fetches\030\007 \003(\0132\035.proxy_"
+  "proto.CordLpDeltaFetch\"c\n\025CordLocalParit"
+  "yBundle\022\013\n\003key\030\001 \001(\t\022\021\n\tstripe_id\030\002 \001(\005\022"
+  "*\n\005items\030\003 \003(\0132\033.proxy_proto.CordLpWorkI"
+  "tem\"\316\002\n\025CordLpHubSessionBegin\022\023\n\013session"
+  "_key\030\001 \001(\t\022\031\n\021expected_partials\030\002 \001(\005\022\031\n"
+  "\021parity_slice_size\030\003 \001(\005\022\033\n\023parity_slice"
+  "_offset\030\004 \001(\005\022\026\n\016local_block_id\030\005 \001(\005\022\027\n"
+  "\017local_block_key\030\006 \001(\t\022\031\n\021local_datanode"
+  "_ip\030\007 \001(\t\022\033\n\023local_datanode_port\030\010 \001(\005\022\030"
+  "\n\020dest_lp_proxy_ip\030\t \001(\t\022\032\n\022dest_lp_prox"
+  "y_port\030\n \001(\005\022\021\n\tstripe_id\030\013 \001(\005\022\033\n\023hub_g"
+  "lobal_block_id\030\014 \001(\005\"D\n\024CordLpHubPartial"
+  "Push\022\023\n\013session_key\030\001 \001(\t\022\027\n\017partial_pay"
+  "load\030\002 \001(\014\"\373\001\n\033CordLpComputePartialAndPu"
+  "sh\022\023\n\013session_key\030\001 \001(\t\022\024\n\014hub_proxy_ip\030"
+  "\002 \001(\t\022\026\n\016hub_proxy_port\030\003 \001(\005\022\026\n\016delta_b"
+  "lob_key\030\004 \001(\t\022\031\n\021delta_datanode_ip\030\005 \001(\t"
+  "\022\033\n\023delta_datanode_port\030\006 \001(\005\022\031\n\021parity_"
+  "slice_size\030\007 \001(\005\022.\n\007fetches\030\010 \003(\0132\035.prox"
+  "y_proto.CordLpDeltaFetch\"\343\001\n\026CordLpParit"
+  "yApplyDelta\022\021\n\tstripe_id\030\001 \001(\005\022\026\n\016local_"
+  "block_id\030\002 \001(\005\022\027\n\017local_block_key\030\003 \001(\t\022"
+  "\031\n\021local_datanode_ip\030\004 \001(\t\022\033\n\023local_data"
+  "node_port\030\005 \001(\005\022\033\n\023parity_slice_offset\030\006"
+  " \001(\005\022\031\n\021parity_slice_size\030\007 \001(\005\022\025\n\rdelta"
+  "_payload\030\010 \001(\014\"\270\001\n\010SetReply\022\020\n\010ifcommit\030"
+  "\001 \001(\010\022%\n\035cord_join_xfer_timing_present\030\002"
+  " \001(\010\022\037\n\027cord_join_pure_xfer_sec\030\003 \001(\001\022)\n"
+  "!cord_join_pure_xfer_start_unix_ms\030\004 \001(\003"
+  "\022\'\n\037cord_join_pure_xfer_end_unix_ms\030\005 \001("
+  "\003\"\036\n\010GetReply\022\022\n\ngetsuccess\030\001 \001(\010\"\261\001\n\021St"
+  "ripeAndBlockIDs\022\021\n\tstripe_id\030\001 \001(\005\022\020\n\010gr"
+  "oup_id\030\002 \001(\005\022\020\n\010clientip\030\003 \001(\t\022\022\n\nclient"
+  "port\030\004 \001(\005\022\021\n\tblock_ids\030\005 \003(\005\022\022\n\nblock_k"
+  "eys\030\006 \003(\t\022\023\n\013datanodeips\030\007 \003(\t\022\025\n\rdatano"
+  "deports\030\010 \003(\005*\255\001\n\024CordTransferLinkKind\022%"
+  "\n!CORD_TRANSFER_STAR_DATA_TO_CENTER\020\000\022\'\n"
+  "#CORD_TRANSFER_STAR_CENTER_TO_GLOBAL\020\001\022&"
+  "\n\"CORD_TRANSFER_STAR_CENTER_TO_LOCAL\020\002\022\035"
+  "\n\031CORD_TRANSFER_MST_FORWARD\020\003*B\n\024CordDel"
+  "taPayloadKind\022\023\n\017CORD_DELTA_DATA\020\000\022\025\n\021CO"
+  "RD_DELTA_PARITY\020\0012\336\021\n\014proxyService\022D\n\nch"
+  "eckalive\022\032.proxy_proto.CheckaliveCMD\032\032.p"
+  "roxy_proto.RequestResult\022L\n\022encodeAndSet"
+  "Object\022\037.proxy_proto.ObjectAndPlacement\032"
+  "\025.proxy_proto.SetReply\022L\n\022decodeAndGetOb"
+  "ject\022\037.proxy_proto.ObjectAndPlacement\032\025."
+  "proxy_proto.GetReply\022P\n\014degradedRead\022 .p"
+  "roxy_proto.DegradedReadRequest\032\036.proxy_p"
+  "roto.DegradedReadReply\022S\n\023degradedRead2C"
+  "lient\022\034.proxy_proto.RecoveryRequest\032\036.pr"
+  "oxy_proto.DegradedReadReply\022Y\n\025degradedR"
+  "eadBreakdown\022 .proxy_proto.DegradedReadR"
+  "equest\032\036.proxy_proto.DegradedReadReply\022\\"
+  "\n\034degradedRead2ClientBreakdown\022\034.proxy_p"
+  "roto.RecoveryRequest\032\036.proxy_proto.Degra"
+  "dedReadReply\022X\n\035degradedReadWithBlockStr"
+  "ipeID\022 .proxy_proto.DegradedReadRequest\032"
+  "\025.proxy_proto.GetReply\022V\n\017partialDecodin"
+  "g\022#.proxy_proto.PartialDecodingRequest\032\036"
+  ".proxy_proto.DegradedReadReply\022D\n\010recove"
+  "ry\022\034.proxy_proto.RecoveryRequest\032\032.proxy"
+  "_proto.RecoveryReply\022M\n\021recoveryBreakdow"
+  "n\022\034.proxy_proto.RecoveryRequest\032\032.proxy_"
+  "proto.RecoveryReply\022O\n\020multipleRecovery\022"
+  "$.proxy_proto.MultipleRecoveryRequest\032\025."
+  "proxy_proto.GetReply\022\?\n\013deleteBlock\022\031.pr"
+  "oxy_proto.NodeAndBlock\032\025.proxy_proto.Del"
+  "Reply\022X\n\027scheduleAppend2Datanode\022&.proxy"
+  "_proto.AppendStripeDataPlacement\032\025.proxy"
+  "_proto.SetReply\022U\n\026scheduleCordDataUpdat"
+  "e\022$.proxy_proto.CordDataUpdatePlacement\032"
+  "\025.proxy_proto.SetReply\022Y\n\034scheduleCordLo"
+  "calParityApply\022\".proxy_proto.CordLocalPa"
+  "rityBundle\032\025.proxy_proto.SetReply\022R\n\025cor"
+  "dLpHubSessionBegin\022\".proxy_proto.CordLpH"
+  "ubSessionBegin\032\025.proxy_proto.SetReply\022P\n"
+  "\024cordLpHubPartialPush\022!.proxy_proto.Cord"
+  "LpHubPartialPush\032\025.proxy_proto.SetReply\022"
+  "^\n\033cordLpComputePartialAndPush\022(.proxy_p"
+  "roto.CordLpComputePartialAndPush\032\025.proxy"
+  "_proto.SetReply\022T\n\026cordLpApplyParityDelt"
+  "a\022#.proxy_proto.CordLpParityApplyDelta\032\025"
+  ".proxy_proto.SetReply\022P\n\030scheduleCordTra"
+  "nsferPlan\022\035.proxy_proto.CordTransferPlan"
+  "\032\025.proxy_proto.SetReply\022L\n\026cordPlanStart"
+  "Execution\022\033.proxy_proto.CordPlanKeyMsg\032\025"
+  ".proxy_proto.SetReply\022K\n\025cordPlanJoinExe"
+  "cution\022\033.proxy_proto.CordPlanKeyMsg\032\025.pr"
+  "oxy_proto.SetReply\022b\n cordPlanCollectorI"
+  "ngestDataDelta\022\'.proxy_proto.CordPlanCol"
+  "lectorIngestReq\032\025.proxy_proto.SetReply\022\\"
+  "\n\033cordPlanApplyParityXorDelta\022&.proxy_pr"
+  "oto.CordPlanApplyParityXorReq\032\025.proxy_pr"
+  "oto.SetReply\022X\n\031cordPlanMstDataDeltaChun"
+  "k\022$.proxy_proto.CordPlanMstDataDeltaReq\032"
+  "\025.proxy_proto.SetReply\022B\n\tgetBlocks\022\036.pr"
+  "oxy_proto.StripeAndBlockIDs\032\025.proxy_prot"
+  "o.GetReplyb\006proto3"
   ;
 static ::_pbi::once_flag descriptor_table_proxy_2eproto_once;
 const ::_pbi::DescriptorTable descriptor_table_proxy_2eproto = {
-    false, false, 11310, descriptor_table_protodef_proxy_2eproto,
+    false, false, 11418, descriptor_table_protodef_proxy_2eproto,
     "proxy.proto",
     &descriptor_table_proxy_2eproto_once, nullptr, 0, 47,
     schemas, file_default_instances, TableStruct_proxy_2eproto::offsets,
@@ -9295,6 +9308,11 @@ AppendStripeDataPlacement::AppendStripeDataPlacement(const AppendStripeDataPlace
     , /*decltype(_impl_._offsets_cached_byte_size_)*/{0}
     , decltype(_impl_.sizes_){from._impl_.sizes_}
     , /*decltype(_impl_._sizes_cached_byte_size_)*/{0}
+    , decltype(_impl_.forward_proxy_ips_){from._impl_.forward_proxy_ips_}
+    , decltype(_impl_.forward_proxy_ports_){from._impl_.forward_proxy_ports_}
+    , /*decltype(_impl_._forward_proxy_ports_cached_byte_size_)*/{0}
+    , decltype(_impl_.forward_cluster_ids_){from._impl_.forward_cluster_ids_}
+    , /*decltype(_impl_._forward_cluster_ids_cached_byte_size_)*/{0}
     , decltype(_impl_.key_){}
     , decltype(_impl_.append_mode_){}
     , decltype(_impl_.cluster_id_){}
@@ -9302,6 +9320,7 @@ AppendStripeDataPlacement::AppendStripeDataPlacement(const AppendStripeDataPlace
     , decltype(_impl_.append_size_){}
     , decltype(_impl_.is_merge_parity_){}
     , decltype(_impl_.is_serialized_){}
+    , decltype(_impl_.is_main_entry_){}
     , /*decltype(_impl_._cached_size_)*/{}};
 
   _internal_metadata_.MergeFrom<::PROTOBUF_NAMESPACE_ID::UnknownFieldSet>(from._internal_metadata_);
@@ -9322,8 +9341,8 @@ AppendStripeDataPlacement::AppendStripeDataPlacement(const AppendStripeDataPlace
       _this->GetArenaForAllocation());
   }
   ::memcpy(&_impl_.cluster_id_, &from._impl_.cluster_id_,
-    static_cast<size_t>(reinterpret_cast<char*>(&_impl_.is_serialized_) -
-    reinterpret_cast<char*>(&_impl_.cluster_id_)) + sizeof(_impl_.is_serialized_));
+    static_cast<size_t>(reinterpret_cast<char*>(&_impl_.is_main_entry_) -
+    reinterpret_cast<char*>(&_impl_.cluster_id_)) + sizeof(_impl_.is_main_entry_));
   // @@protoc_insertion_point(copy_constructor:proxy_proto.AppendStripeDataPlacement)
 }
 
@@ -9342,6 +9361,11 @@ inline void AppendStripeDataPlacement::SharedCtor(
     , /*decltype(_impl_._offsets_cached_byte_size_)*/{0}
     , decltype(_impl_.sizes_){arena}
     , /*decltype(_impl_._sizes_cached_byte_size_)*/{0}
+    , decltype(_impl_.forward_proxy_ips_){arena}
+    , decltype(_impl_.forward_proxy_ports_){arena}
+    , /*decltype(_impl_._forward_proxy_ports_cached_byte_size_)*/{0}
+    , decltype(_impl_.forward_cluster_ids_){arena}
+    , /*decltype(_impl_._forward_cluster_ids_cached_byte_size_)*/{0}
     , decltype(_impl_.key_){}
     , decltype(_impl_.append_mode_){}
     , decltype(_impl_.cluster_id_){0}
@@ -9349,6 +9373,7 @@ inline void AppendStripeDataPlacement::SharedCtor(
     , decltype(_impl_.append_size_){uint64_t{0u}}
     , decltype(_impl_.is_merge_parity_){false}
     , decltype(_impl_.is_serialized_){false}
+    , decltype(_impl_.is_main_entry_){false}
     , /*decltype(_impl_._cached_size_)*/{}
   };
   _impl_.key_.InitDefault();
@@ -9378,6 +9403,9 @@ inline void AppendStripeDataPlacement::SharedDtor() {
   _impl_.blockids_.~RepeatedField();
   _impl_.offsets_.~RepeatedField();
   _impl_.sizes_.~RepeatedField();
+  _impl_.forward_proxy_ips_.~RepeatedPtrField();
+  _impl_.forward_proxy_ports_.~RepeatedField();
+  _impl_.forward_cluster_ids_.~RepeatedField();
   _impl_.key_.Destroy();
   _impl_.append_mode_.Destroy();
 }
@@ -9398,11 +9426,14 @@ void AppendStripeDataPlacement::Clear() {
   _impl_.blockids_.Clear();
   _impl_.offsets_.Clear();
   _impl_.sizes_.Clear();
+  _impl_.forward_proxy_ips_.Clear();
+  _impl_.forward_proxy_ports_.Clear();
+  _impl_.forward_cluster_ids_.Clear();
   _impl_.key_.ClearToEmpty();
   _impl_.append_mode_.ClearToEmpty();
   ::memset(&_impl_.cluster_id_, 0, static_cast<size_t>(
-      reinterpret_cast<char*>(&_impl_.is_serialized_) -
-      reinterpret_cast<char*>(&_impl_.cluster_id_)) + sizeof(_impl_.is_serialized_));
+      reinterpret_cast<char*>(&_impl_.is_main_entry_) -
+      reinterpret_cast<char*>(&_impl_.cluster_id_)) + sizeof(_impl_.is_main_entry_));
   _internal_metadata_.Clear<::PROTOBUF_NAMESPACE_ID::UnknownFieldSet>();
 }
 
@@ -9546,6 +9577,51 @@ const char* AppendStripeDataPlacement::_InternalParse(const char* ptr, ::_pbi::P
         } else
           goto handle_unusual;
         continue;
+      // bool is_main_entry = 14;
+      case 14:
+        if (PROTOBUF_PREDICT_TRUE(static_cast<uint8_t>(tag) == 112)) {
+          _impl_.is_main_entry_ = ::PROTOBUF_NAMESPACE_ID::internal::ReadVarint64(&ptr);
+          CHK_(ptr);
+        } else
+          goto handle_unusual;
+        continue;
+      // repeated string forward_proxy_ips = 15;
+      case 15:
+        if (PROTOBUF_PREDICT_TRUE(static_cast<uint8_t>(tag) == 122)) {
+          ptr -= 1;
+          do {
+            ptr += 1;
+            auto str = _internal_add_forward_proxy_ips();
+            ptr = ::_pbi::InlineGreedyStringParser(str, ptr, ctx);
+            CHK_(ptr);
+            CHK_(::_pbi::VerifyUTF8(str, "proxy_proto.AppendStripeDataPlacement.forward_proxy_ips"));
+            if (!ctx->DataAvailable(ptr)) break;
+          } while (::PROTOBUF_NAMESPACE_ID::internal::ExpectTag<122>(ptr));
+        } else
+          goto handle_unusual;
+        continue;
+      // repeated int32 forward_proxy_ports = 16;
+      case 16:
+        if (PROTOBUF_PREDICT_TRUE(static_cast<uint8_t>(tag) == 130)) {
+          ptr = ::PROTOBUF_NAMESPACE_ID::internal::PackedInt32Parser(_internal_mutable_forward_proxy_ports(), ptr, ctx);
+          CHK_(ptr);
+        } else if (static_cast<uint8_t>(tag) == 128) {
+          _internal_add_forward_proxy_ports(::PROTOBUF_NAMESPACE_ID::internal::ReadVarint32(&ptr));
+          CHK_(ptr);
+        } else
+          goto handle_unusual;
+        continue;
+      // repeated int32 forward_cluster_ids = 17;
+      case 17:
+        if (PROTOBUF_PREDICT_TRUE(static_cast<uint8_t>(tag) == 138)) {
+          ptr = ::PROTOBUF_NAMESPACE_ID::internal::PackedInt32Parser(_internal_mutable_forward_cluster_ids(), ptr, ctx);
+          CHK_(ptr);
+        } else if (static_cast<uint8_t>(tag) == 136) {
+          _internal_add_forward_cluster_ids(::PROTOBUF_NAMESPACE_ID::internal::ReadVarint32(&ptr));
+          CHK_(ptr);
+        } else
+          goto handle_unusual;
+        continue;
       default:
         goto handle_unusual;
     }  // switch
@@ -9681,6 +9757,40 @@ uint8_t* AppendStripeDataPlacement::_InternalSerialize(
     target = ::_pbi::WireFormatLite::WriteBoolToArray(13, this->_internal_is_serialized(), target);
   }
 
+  // bool is_main_entry = 14;
+  if (this->_internal_is_main_entry() != 0) {
+    target = stream->EnsureSpace(target);
+    target = ::_pbi::WireFormatLite::WriteBoolToArray(14, this->_internal_is_main_entry(), target);
+  }
+
+  // repeated string forward_proxy_ips = 15;
+  for (int i = 0, n = this->_internal_forward_proxy_ips_size(); i < n; i++) {
+    const auto& s = this->_internal_forward_proxy_ips(i);
+    ::PROTOBUF_NAMESPACE_ID::internal::WireFormatLite::VerifyUtf8String(
+      s.data(), static_cast<int>(s.length()),
+      ::PROTOBUF_NAMESPACE_ID::internal::WireFormatLite::SERIALIZE,
+      "proxy_proto.AppendStripeDataPlacement.forward_proxy_ips");
+    target = stream->WriteString(15, s, target);
+  }
+
+  // repeated int32 forward_proxy_ports = 16;
+  {
+    int byte_size = _impl_._forward_proxy_ports_cached_byte_size_.load(std::memory_order_relaxed);
+    if (byte_size > 0) {
+      target = stream->WriteInt32Packed(
+          16, _internal_forward_proxy_ports(), byte_size, target);
+    }
+  }
+
+  // repeated int32 forward_cluster_ids = 17;
+  {
+    int byte_size = _impl_._forward_cluster_ids_cached_byte_size_.load(std::memory_order_relaxed);
+    if (byte_size > 0) {
+      target = stream->WriteInt32Packed(
+          17, _internal_forward_cluster_ids(), byte_size, target);
+    }
+  }
+
   if (PROTOBUF_PREDICT_FALSE(_internal_metadata_.have_unknown_fields())) {
     target = ::_pbi::WireFormat::InternalSerializeUnknownFieldsToArray(
         _internal_metadata_.unknown_fields<::PROTOBUF_NAMESPACE_ID::UnknownFieldSet>(::PROTOBUF_NAMESPACE_ID::UnknownFieldSet::default_instance), target, stream);
@@ -9769,6 +9879,42 @@ size_t AppendStripeDataPlacement::ByteSizeLong() const {
     total_size += data_size;
   }
 
+  // repeated string forward_proxy_ips = 15;
+  total_size += 1 *
+      ::PROTOBUF_NAMESPACE_ID::internal::FromIntSize(_impl_.forward_proxy_ips_.size());
+  for (int i = 0, n = _impl_.forward_proxy_ips_.size(); i < n; i++) {
+    total_size += ::PROTOBUF_NAMESPACE_ID::internal::WireFormatLite::StringSize(
+      _impl_.forward_proxy_ips_.Get(i));
+  }
+
+  // repeated int32 forward_proxy_ports = 16;
+  {
+    size_t data_size = ::_pbi::WireFormatLite::
+      Int32Size(this->_impl_.forward_proxy_ports_);
+    if (data_size > 0) {
+      total_size += 2 +
+        ::_pbi::WireFormatLite::Int32Size(static_cast<int32_t>(data_size));
+    }
+    int cached_size = ::_pbi::ToCachedSize(data_size);
+    _impl_._forward_proxy_ports_cached_byte_size_.store(cached_size,
+                                    std::memory_order_relaxed);
+    total_size += data_size;
+  }
+
+  // repeated int32 forward_cluster_ids = 17;
+  {
+    size_t data_size = ::_pbi::WireFormatLite::
+      Int32Size(this->_impl_.forward_cluster_ids_);
+    if (data_size > 0) {
+      total_size += 2 +
+        ::_pbi::WireFormatLite::Int32Size(static_cast<int32_t>(data_size));
+    }
+    int cached_size = ::_pbi::ToCachedSize(data_size);
+    _impl_._forward_cluster_ids_cached_byte_size_.store(cached_size,
+                                    std::memory_order_relaxed);
+    total_size += data_size;
+  }
+
   // string key = 1;
   if (!this->_internal_key().empty()) {
     total_size += 1 +
@@ -9808,6 +9954,11 @@ size_t AppendStripeDataPlacement::ByteSizeLong() const {
     total_size += 1 + 1;
   }
 
+  // bool is_main_entry = 14;
+  if (this->_internal_is_main_entry() != 0) {
+    total_size += 1 + 1;
+  }
+
   return MaybeComputeUnknownFieldsSize(total_size, &_impl_._cached_size_);
 }
 
@@ -9832,6 +9983,9 @@ void AppendStripeDataPlacement::MergeImpl(::PROTOBUF_NAMESPACE_ID::Message& to_m
   _this->_impl_.blockids_.MergeFrom(from._impl_.blockids_);
   _this->_impl_.offsets_.MergeFrom(from._impl_.offsets_);
   _this->_impl_.sizes_.MergeFrom(from._impl_.sizes_);
+  _this->_impl_.forward_proxy_ips_.MergeFrom(from._impl_.forward_proxy_ips_);
+  _this->_impl_.forward_proxy_ports_.MergeFrom(from._impl_.forward_proxy_ports_);
+  _this->_impl_.forward_cluster_ids_.MergeFrom(from._impl_.forward_cluster_ids_);
   if (!from._internal_key().empty()) {
     _this->_internal_set_key(from._internal_key());
   }
@@ -9852,6 +10006,9 @@ void AppendStripeDataPlacement::MergeImpl(::PROTOBUF_NAMESPACE_ID::Message& to_m
   }
   if (from._internal_is_serialized() != 0) {
     _this->_internal_set_is_serialized(from._internal_is_serialized());
+  }
+  if (from._internal_is_main_entry() != 0) {
+    _this->_internal_set_is_main_entry(from._internal_is_main_entry());
   }
   _this->_internal_metadata_.MergeFrom<::PROTOBUF_NAMESPACE_ID::UnknownFieldSet>(from._internal_metadata_);
 }
@@ -9878,6 +10035,9 @@ void AppendStripeDataPlacement::InternalSwap(AppendStripeDataPlacement* other) {
   _impl_.blockids_.InternalSwap(&other->_impl_.blockids_);
   _impl_.offsets_.InternalSwap(&other->_impl_.offsets_);
   _impl_.sizes_.InternalSwap(&other->_impl_.sizes_);
+  _impl_.forward_proxy_ips_.InternalSwap(&other->_impl_.forward_proxy_ips_);
+  _impl_.forward_proxy_ports_.InternalSwap(&other->_impl_.forward_proxy_ports_);
+  _impl_.forward_cluster_ids_.InternalSwap(&other->_impl_.forward_cluster_ids_);
   ::PROTOBUF_NAMESPACE_ID::internal::ArenaStringPtr::InternalSwap(
       &_impl_.key_, lhs_arena,
       &other->_impl_.key_, rhs_arena
@@ -9887,8 +10047,8 @@ void AppendStripeDataPlacement::InternalSwap(AppendStripeDataPlacement* other) {
       &other->_impl_.append_mode_, rhs_arena
   );
   ::PROTOBUF_NAMESPACE_ID::internal::memswap<
-      PROTOBUF_FIELD_OFFSET(AppendStripeDataPlacement, _impl_.is_serialized_)
-      + sizeof(AppendStripeDataPlacement::_impl_.is_serialized_)
+      PROTOBUF_FIELD_OFFSET(AppendStripeDataPlacement, _impl_.is_main_entry_)
+      + sizeof(AppendStripeDataPlacement::_impl_.is_main_entry_)
       - PROTOBUF_FIELD_OFFSET(AppendStripeDataPlacement, _impl_.cluster_id_)>(
           reinterpret_cast<char*>(&_impl_.cluster_id_),
           reinterpret_cast<char*>(&other->_impl_.cluster_id_));

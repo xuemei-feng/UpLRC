@@ -5036,6 +5036,9 @@ class AppendStripeDataPlacement final :
     kBlockidsFieldNumber = 8,
     kOffsetsFieldNumber = 9,
     kSizesFieldNumber = 10,
+    kForwardProxyIpsFieldNumber = 15,
+    kForwardProxyPortsFieldNumber = 16,
+    kForwardClusterIdsFieldNumber = 17,
     kKeyFieldNumber = 1,
     kAppendModeFieldNumber = 12,
     kClusterIdFieldNumber = 2,
@@ -5043,6 +5046,7 @@ class AppendStripeDataPlacement final :
     kAppendSizeFieldNumber = 4,
     kIsMergeParityFieldNumber = 11,
     kIsSerializedFieldNumber = 13,
+    kIsMainEntryFieldNumber = 14,
   };
   // repeated string datanodeip = 5;
   int datanodeip_size() const;
@@ -5180,6 +5184,74 @@ class AppendStripeDataPlacement final :
   ::PROTOBUF_NAMESPACE_ID::RepeatedField< uint64_t >*
       mutable_sizes();
 
+  // repeated string forward_proxy_ips = 15;
+  int forward_proxy_ips_size() const;
+  private:
+  int _internal_forward_proxy_ips_size() const;
+  public:
+  void clear_forward_proxy_ips();
+  const std::string& forward_proxy_ips(int index) const;
+  std::string* mutable_forward_proxy_ips(int index);
+  void set_forward_proxy_ips(int index, const std::string& value);
+  void set_forward_proxy_ips(int index, std::string&& value);
+  void set_forward_proxy_ips(int index, const char* value);
+  void set_forward_proxy_ips(int index, const char* value, size_t size);
+  std::string* add_forward_proxy_ips();
+  void add_forward_proxy_ips(const std::string& value);
+  void add_forward_proxy_ips(std::string&& value);
+  void add_forward_proxy_ips(const char* value);
+  void add_forward_proxy_ips(const char* value, size_t size);
+  const ::PROTOBUF_NAMESPACE_ID::RepeatedPtrField<std::string>& forward_proxy_ips() const;
+  ::PROTOBUF_NAMESPACE_ID::RepeatedPtrField<std::string>* mutable_forward_proxy_ips();
+  private:
+  const std::string& _internal_forward_proxy_ips(int index) const;
+  std::string* _internal_add_forward_proxy_ips();
+  public:
+
+  // repeated int32 forward_proxy_ports = 16;
+  int forward_proxy_ports_size() const;
+  private:
+  int _internal_forward_proxy_ports_size() const;
+  public:
+  void clear_forward_proxy_ports();
+  private:
+  int32_t _internal_forward_proxy_ports(int index) const;
+  const ::PROTOBUF_NAMESPACE_ID::RepeatedField< int32_t >&
+      _internal_forward_proxy_ports() const;
+  void _internal_add_forward_proxy_ports(int32_t value);
+  ::PROTOBUF_NAMESPACE_ID::RepeatedField< int32_t >*
+      _internal_mutable_forward_proxy_ports();
+  public:
+  int32_t forward_proxy_ports(int index) const;
+  void set_forward_proxy_ports(int index, int32_t value);
+  void add_forward_proxy_ports(int32_t value);
+  const ::PROTOBUF_NAMESPACE_ID::RepeatedField< int32_t >&
+      forward_proxy_ports() const;
+  ::PROTOBUF_NAMESPACE_ID::RepeatedField< int32_t >*
+      mutable_forward_proxy_ports();
+
+  // repeated int32 forward_cluster_ids = 17;
+  int forward_cluster_ids_size() const;
+  private:
+  int _internal_forward_cluster_ids_size() const;
+  public:
+  void clear_forward_cluster_ids();
+  private:
+  int32_t _internal_forward_cluster_ids(int index) const;
+  const ::PROTOBUF_NAMESPACE_ID::RepeatedField< int32_t >&
+      _internal_forward_cluster_ids() const;
+  void _internal_add_forward_cluster_ids(int32_t value);
+  ::PROTOBUF_NAMESPACE_ID::RepeatedField< int32_t >*
+      _internal_mutable_forward_cluster_ids();
+  public:
+  int32_t forward_cluster_ids(int index) const;
+  void set_forward_cluster_ids(int index, int32_t value);
+  void add_forward_cluster_ids(int32_t value);
+  const ::PROTOBUF_NAMESPACE_ID::RepeatedField< int32_t >&
+      forward_cluster_ids() const;
+  ::PROTOBUF_NAMESPACE_ID::RepeatedField< int32_t >*
+      mutable_forward_cluster_ids();
+
   // string key = 1;
   void clear_key();
   const std::string& key() const;
@@ -5253,6 +5325,15 @@ class AppendStripeDataPlacement final :
   void _internal_set_is_serialized(bool value);
   public:
 
+  // bool is_main_entry = 14;
+  void clear_is_main_entry();
+  bool is_main_entry() const;
+  void set_is_main_entry(bool value);
+  private:
+  bool _internal_is_main_entry() const;
+  void _internal_set_is_main_entry(bool value);
+  public:
+
   // @@protoc_insertion_point(class_scope:proxy_proto.AppendStripeDataPlacement)
  private:
   class _Internal;
@@ -5271,6 +5352,11 @@ class AppendStripeDataPlacement final :
     mutable std::atomic<int> _offsets_cached_byte_size_;
     ::PROTOBUF_NAMESPACE_ID::RepeatedField< uint64_t > sizes_;
     mutable std::atomic<int> _sizes_cached_byte_size_;
+    ::PROTOBUF_NAMESPACE_ID::RepeatedPtrField<std::string> forward_proxy_ips_;
+    ::PROTOBUF_NAMESPACE_ID::RepeatedField< int32_t > forward_proxy_ports_;
+    mutable std::atomic<int> _forward_proxy_ports_cached_byte_size_;
+    ::PROTOBUF_NAMESPACE_ID::RepeatedField< int32_t > forward_cluster_ids_;
+    mutable std::atomic<int> _forward_cluster_ids_cached_byte_size_;
     ::PROTOBUF_NAMESPACE_ID::internal::ArenaStringPtr key_;
     ::PROTOBUF_NAMESPACE_ID::internal::ArenaStringPtr append_mode_;
     int32_t cluster_id_;
@@ -5278,6 +5364,7 @@ class AppendStripeDataPlacement final :
     uint64_t append_size_;
     bool is_merge_parity_;
     bool is_serialized_;
+    bool is_main_entry_;
     mutable ::PROTOBUF_NAMESPACE_ID::internal::CachedSize _cached_size_;
   };
   union { Impl_ _impl_; };
@@ -16595,6 +16682,195 @@ inline void AppendStripeDataPlacement::_internal_set_is_serialized(bool value) {
 inline void AppendStripeDataPlacement::set_is_serialized(bool value) {
   _internal_set_is_serialized(value);
   // @@protoc_insertion_point(field_set:proxy_proto.AppendStripeDataPlacement.is_serialized)
+}
+
+// bool is_main_entry = 14;
+inline void AppendStripeDataPlacement::clear_is_main_entry() {
+  _impl_.is_main_entry_ = false;
+}
+inline bool AppendStripeDataPlacement::_internal_is_main_entry() const {
+  return _impl_.is_main_entry_;
+}
+inline bool AppendStripeDataPlacement::is_main_entry() const {
+  // @@protoc_insertion_point(field_get:proxy_proto.AppendStripeDataPlacement.is_main_entry)
+  return _internal_is_main_entry();
+}
+inline void AppendStripeDataPlacement::_internal_set_is_main_entry(bool value) {
+  
+  _impl_.is_main_entry_ = value;
+}
+inline void AppendStripeDataPlacement::set_is_main_entry(bool value) {
+  _internal_set_is_main_entry(value);
+  // @@protoc_insertion_point(field_set:proxy_proto.AppendStripeDataPlacement.is_main_entry)
+}
+
+// repeated string forward_proxy_ips = 15;
+inline int AppendStripeDataPlacement::_internal_forward_proxy_ips_size() const {
+  return _impl_.forward_proxy_ips_.size();
+}
+inline int AppendStripeDataPlacement::forward_proxy_ips_size() const {
+  return _internal_forward_proxy_ips_size();
+}
+inline void AppendStripeDataPlacement::clear_forward_proxy_ips() {
+  _impl_.forward_proxy_ips_.Clear();
+}
+inline std::string* AppendStripeDataPlacement::add_forward_proxy_ips() {
+  std::string* _s = _internal_add_forward_proxy_ips();
+  // @@protoc_insertion_point(field_add_mutable:proxy_proto.AppendStripeDataPlacement.forward_proxy_ips)
+  return _s;
+}
+inline const std::string& AppendStripeDataPlacement::_internal_forward_proxy_ips(int index) const {
+  return _impl_.forward_proxy_ips_.Get(index);
+}
+inline const std::string& AppendStripeDataPlacement::forward_proxy_ips(int index) const {
+  // @@protoc_insertion_point(field_get:proxy_proto.AppendStripeDataPlacement.forward_proxy_ips)
+  return _internal_forward_proxy_ips(index);
+}
+inline std::string* AppendStripeDataPlacement::mutable_forward_proxy_ips(int index) {
+  // @@protoc_insertion_point(field_mutable:proxy_proto.AppendStripeDataPlacement.forward_proxy_ips)
+  return _impl_.forward_proxy_ips_.Mutable(index);
+}
+inline void AppendStripeDataPlacement::set_forward_proxy_ips(int index, const std::string& value) {
+  _impl_.forward_proxy_ips_.Mutable(index)->assign(value);
+  // @@protoc_insertion_point(field_set:proxy_proto.AppendStripeDataPlacement.forward_proxy_ips)
+}
+inline void AppendStripeDataPlacement::set_forward_proxy_ips(int index, std::string&& value) {
+  _impl_.forward_proxy_ips_.Mutable(index)->assign(std::move(value));
+  // @@protoc_insertion_point(field_set:proxy_proto.AppendStripeDataPlacement.forward_proxy_ips)
+}
+inline void AppendStripeDataPlacement::set_forward_proxy_ips(int index, const char* value) {
+  GOOGLE_DCHECK(value != nullptr);
+  _impl_.forward_proxy_ips_.Mutable(index)->assign(value);
+  // @@protoc_insertion_point(field_set_char:proxy_proto.AppendStripeDataPlacement.forward_proxy_ips)
+}
+inline void AppendStripeDataPlacement::set_forward_proxy_ips(int index, const char* value, size_t size) {
+  _impl_.forward_proxy_ips_.Mutable(index)->assign(
+    reinterpret_cast<const char*>(value), size);
+  // @@protoc_insertion_point(field_set_pointer:proxy_proto.AppendStripeDataPlacement.forward_proxy_ips)
+}
+inline std::string* AppendStripeDataPlacement::_internal_add_forward_proxy_ips() {
+  return _impl_.forward_proxy_ips_.Add();
+}
+inline void AppendStripeDataPlacement::add_forward_proxy_ips(const std::string& value) {
+  _impl_.forward_proxy_ips_.Add()->assign(value);
+  // @@protoc_insertion_point(field_add:proxy_proto.AppendStripeDataPlacement.forward_proxy_ips)
+}
+inline void AppendStripeDataPlacement::add_forward_proxy_ips(std::string&& value) {
+  _impl_.forward_proxy_ips_.Add(std::move(value));
+  // @@protoc_insertion_point(field_add:proxy_proto.AppendStripeDataPlacement.forward_proxy_ips)
+}
+inline void AppendStripeDataPlacement::add_forward_proxy_ips(const char* value) {
+  GOOGLE_DCHECK(value != nullptr);
+  _impl_.forward_proxy_ips_.Add()->assign(value);
+  // @@protoc_insertion_point(field_add_char:proxy_proto.AppendStripeDataPlacement.forward_proxy_ips)
+}
+inline void AppendStripeDataPlacement::add_forward_proxy_ips(const char* value, size_t size) {
+  _impl_.forward_proxy_ips_.Add()->assign(reinterpret_cast<const char*>(value), size);
+  // @@protoc_insertion_point(field_add_pointer:proxy_proto.AppendStripeDataPlacement.forward_proxy_ips)
+}
+inline const ::PROTOBUF_NAMESPACE_ID::RepeatedPtrField<std::string>&
+AppendStripeDataPlacement::forward_proxy_ips() const {
+  // @@protoc_insertion_point(field_list:proxy_proto.AppendStripeDataPlacement.forward_proxy_ips)
+  return _impl_.forward_proxy_ips_;
+}
+inline ::PROTOBUF_NAMESPACE_ID::RepeatedPtrField<std::string>*
+AppendStripeDataPlacement::mutable_forward_proxy_ips() {
+  // @@protoc_insertion_point(field_mutable_list:proxy_proto.AppendStripeDataPlacement.forward_proxy_ips)
+  return &_impl_.forward_proxy_ips_;
+}
+
+// repeated int32 forward_proxy_ports = 16;
+inline int AppendStripeDataPlacement::_internal_forward_proxy_ports_size() const {
+  return _impl_.forward_proxy_ports_.size();
+}
+inline int AppendStripeDataPlacement::forward_proxy_ports_size() const {
+  return _internal_forward_proxy_ports_size();
+}
+inline void AppendStripeDataPlacement::clear_forward_proxy_ports() {
+  _impl_.forward_proxy_ports_.Clear();
+}
+inline int32_t AppendStripeDataPlacement::_internal_forward_proxy_ports(int index) const {
+  return _impl_.forward_proxy_ports_.Get(index);
+}
+inline int32_t AppendStripeDataPlacement::forward_proxy_ports(int index) const {
+  // @@protoc_insertion_point(field_get:proxy_proto.AppendStripeDataPlacement.forward_proxy_ports)
+  return _internal_forward_proxy_ports(index);
+}
+inline void AppendStripeDataPlacement::set_forward_proxy_ports(int index, int32_t value) {
+  _impl_.forward_proxy_ports_.Set(index, value);
+  // @@protoc_insertion_point(field_set:proxy_proto.AppendStripeDataPlacement.forward_proxy_ports)
+}
+inline void AppendStripeDataPlacement::_internal_add_forward_proxy_ports(int32_t value) {
+  _impl_.forward_proxy_ports_.Add(value);
+}
+inline void AppendStripeDataPlacement::add_forward_proxy_ports(int32_t value) {
+  _internal_add_forward_proxy_ports(value);
+  // @@protoc_insertion_point(field_add:proxy_proto.AppendStripeDataPlacement.forward_proxy_ports)
+}
+inline const ::PROTOBUF_NAMESPACE_ID::RepeatedField< int32_t >&
+AppendStripeDataPlacement::_internal_forward_proxy_ports() const {
+  return _impl_.forward_proxy_ports_;
+}
+inline const ::PROTOBUF_NAMESPACE_ID::RepeatedField< int32_t >&
+AppendStripeDataPlacement::forward_proxy_ports() const {
+  // @@protoc_insertion_point(field_list:proxy_proto.AppendStripeDataPlacement.forward_proxy_ports)
+  return _internal_forward_proxy_ports();
+}
+inline ::PROTOBUF_NAMESPACE_ID::RepeatedField< int32_t >*
+AppendStripeDataPlacement::_internal_mutable_forward_proxy_ports() {
+  return &_impl_.forward_proxy_ports_;
+}
+inline ::PROTOBUF_NAMESPACE_ID::RepeatedField< int32_t >*
+AppendStripeDataPlacement::mutable_forward_proxy_ports() {
+  // @@protoc_insertion_point(field_mutable_list:proxy_proto.AppendStripeDataPlacement.forward_proxy_ports)
+  return _internal_mutable_forward_proxy_ports();
+}
+
+// repeated int32 forward_cluster_ids = 17;
+inline int AppendStripeDataPlacement::_internal_forward_cluster_ids_size() const {
+  return _impl_.forward_cluster_ids_.size();
+}
+inline int AppendStripeDataPlacement::forward_cluster_ids_size() const {
+  return _internal_forward_cluster_ids_size();
+}
+inline void AppendStripeDataPlacement::clear_forward_cluster_ids() {
+  _impl_.forward_cluster_ids_.Clear();
+}
+inline int32_t AppendStripeDataPlacement::_internal_forward_cluster_ids(int index) const {
+  return _impl_.forward_cluster_ids_.Get(index);
+}
+inline int32_t AppendStripeDataPlacement::forward_cluster_ids(int index) const {
+  // @@protoc_insertion_point(field_get:proxy_proto.AppendStripeDataPlacement.forward_cluster_ids)
+  return _internal_forward_cluster_ids(index);
+}
+inline void AppendStripeDataPlacement::set_forward_cluster_ids(int index, int32_t value) {
+  _impl_.forward_cluster_ids_.Set(index, value);
+  // @@protoc_insertion_point(field_set:proxy_proto.AppendStripeDataPlacement.forward_cluster_ids)
+}
+inline void AppendStripeDataPlacement::_internal_add_forward_cluster_ids(int32_t value) {
+  _impl_.forward_cluster_ids_.Add(value);
+}
+inline void AppendStripeDataPlacement::add_forward_cluster_ids(int32_t value) {
+  _internal_add_forward_cluster_ids(value);
+  // @@protoc_insertion_point(field_add:proxy_proto.AppendStripeDataPlacement.forward_cluster_ids)
+}
+inline const ::PROTOBUF_NAMESPACE_ID::RepeatedField< int32_t >&
+AppendStripeDataPlacement::_internal_forward_cluster_ids() const {
+  return _impl_.forward_cluster_ids_;
+}
+inline const ::PROTOBUF_NAMESPACE_ID::RepeatedField< int32_t >&
+AppendStripeDataPlacement::forward_cluster_ids() const {
+  // @@protoc_insertion_point(field_list:proxy_proto.AppendStripeDataPlacement.forward_cluster_ids)
+  return _internal_forward_cluster_ids();
+}
+inline ::PROTOBUF_NAMESPACE_ID::RepeatedField< int32_t >*
+AppendStripeDataPlacement::_internal_mutable_forward_cluster_ids() {
+  return &_impl_.forward_cluster_ids_;
+}
+inline ::PROTOBUF_NAMESPACE_ID::RepeatedField< int32_t >*
+AppendStripeDataPlacement::mutable_forward_cluster_ids() {
+  // @@protoc_insertion_point(field_mutable_list:proxy_proto.AppendStripeDataPlacement.forward_cluster_ids)
+  return _internal_mutable_forward_cluster_ids();
 }
 
 // -------------------------------------------------------------------

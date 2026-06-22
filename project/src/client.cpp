@@ -3,6 +3,8 @@
 
 #include <asio.hpp>
 #include <thread>
+#include <atomic>
+#include <memory>
 #include <assert.h>
 #include <chrono>
 #include <iomanip>
@@ -504,6 +506,72 @@ namespace ECProject
     }
   }
 
+  // 真正的异步版本（Asio 多路复用）：只负责异步 TCP 发送，不阻塞
+  void Client::async_append_to_proxies_async(asio::io_context &io_context,
+                                             char *cluster_slice_data,
+                                             std::string append_key,
+                                             int cluster_slice_size,
+                                             std::string proxy_ip,
+                                             int proxy_port,
+                                             int index,
+                                             bool *if_commit_arr,
+                                             std::shared_ptr<std::atomic<int>> pending_counter)
+  {
+    std::cout << "[ASYNC_APPEND][START] idx=" << index << " key=" << append_key
+              << " target=" << proxy_ip << ":" << proxy_port
+              << " size=" << cluster_slice_size << "B" << std::endl;
+
+    auto socket = std::make_shared<asio::ip::tcp::socket>(io_context);
+    auto resolver = std::make_shared<asio::ip::tcp::resolver>(io_context);
+
+    std::cout << "[ASYNC_APPEND][RESOLVE] idx=" << index << " calling async_resolve..." << std::endl;
+
+    resolver->async_resolve(proxy_ip, std::to_string(proxy_port),
+      [this, socket, resolver, cluster_slice_data, append_key, cluster_slice_size, proxy_ip, proxy_port, index, if_commit_arr, pending_counter]
+      (const asio::error_code &ec, asio::ip::tcp::resolver::results_type endpoints) {
+        std::cout << "[ASYNC_APPEND][RESOLVE_CB] idx=" << index << " ec=" << ec.message() << std::endl;
+        if (ec)
+        {
+          std::cout << "[ASYNC_APPEND] resolve failed: " << ec.message() << std::endl;
+          if (pending_counter) pending_counter->fetch_sub(1);
+          return;
+        }
+
+        std::cout << "[ASYNC_APPEND][CONNECT] idx=" << index << " calling async_connect..." << std::endl;
+
+        asio::async_connect(*socket, endpoints,
+          [this, socket, cluster_slice_data, append_key, cluster_slice_size, proxy_ip, proxy_port, index, if_commit_arr, pending_counter]
+          (const asio::error_code &ec, const asio::ip::tcp::endpoint &) {
+            std::cout << "[ASYNC_APPEND][CONNECT_CB] idx=" << index << " ec=" << ec.message() << std::endl;
+            if (ec)
+            {
+              std::cout << "[ASYNC_APPEND] connect failed: " << ec.message() << std::endl;
+              if (pending_counter) pending_counter->fetch_sub(1);
+              return;
+            }
+
+            std::cout << "[ASYNC_APPEND][WRITE] idx=" << index << " calling async_write size=" << cluster_slice_size << "B..." << std::endl;
+
+            asio::async_write(*socket, asio::buffer(cluster_slice_data, static_cast<size_t>(cluster_slice_size)),
+              [this, socket, append_key, proxy_ip, proxy_port, index, if_commit_arr, pending_counter]
+              (const asio::error_code &ec, std::size_t bytes) {
+                std::cout << "[ASYNC_APPEND][WRITE_CB] idx=" << index << " ec=" << ec.message() << " bytes=" << bytes << std::endl;
+                asio::error_code ignore_ec;
+                socket->shutdown(asio::ip::tcp::socket::shutdown_send, ignore_ec);
+                socket->close(ignore_ec);
+
+                if (ec)
+                {
+                  std::cout << "[ASYNC_APPEND] write failed: " << ec.message() << std::endl;
+                }
+
+                // TCP 发送完成，计数减一
+                if (pending_counter) pending_counter->fetch_sub(1);
+              });
+          });
+      });
+  }
+
   void Client::get_cached_parity_slices(std::vector<char *> &global_parity_ptr_array, std::vector<char *> &local_parity_ptr_array, const int parity_slice_size, const int parity_slice_offset)
   {
     assert(global_parity_ptr_array.size() == m_sys_config->r);
@@ -778,34 +846,77 @@ namespace ECProject
       std::vector<char *> parity_ptr_array;
       parity_ptr_array.insert(parity_ptr_array.end(), global_parity_ptr_array.begin(), global_parity_ptr_array.end());
       parity_ptr_array.insert(parity_ptr_array.end(), local_parity_ptr_array.begin(), local_parity_ptr_array.end());
-      if (m_sys_config->CodeType == "UniLRC")
+
+      // 测试数据恒定（0xaa），校验块只需编码一次，后续条带直接复用
+      if (!m_parity_precomputed)
       {
-        //ECProject::encode_unilrc(m_sys_config->k, m_sys_config->r, m_sys_config->z, reinterpret_cast<unsigned char **>(data_ptr_array.data()), reinterpret_cast<unsigned char **>(global_parity_ptr_array.data()), reinterpret_cast<unsigned char **>(local_parity_ptr_array.data()), m_sys_config->BlockSize);
-        ECProject::encode_unilrc(m_sys_config->k, m_sys_config->r, m_sys_config->z, reinterpret_cast<unsigned char **>(data_ptr_array.data()), reinterpret_cast<unsigned char **>(parity_ptr_array.data()), m_sys_config->BlockSize);
+        if (m_sys_config->CodeType == "UniLRC")
+        {
+          ECProject::encode_unilrc(m_sys_config->k, m_sys_config->r, m_sys_config->z, reinterpret_cast<unsigned char **>(data_ptr_array.data()), reinterpret_cast<unsigned char **>(parity_ptr_array.data()), m_sys_config->BlockSize);
+        }
+        else if (m_sys_config->CodeType == "OptimalLRC")
+        {
+          ECProject::encode_optimal_lrc(m_sys_config->k, m_sys_config->r, m_sys_config->z, reinterpret_cast<unsigned char **>(data_ptr_array.data()), reinterpret_cast<unsigned char **>(parity_ptr_array.data()), m_sys_config->BlockSize);
+        }
+        else if (m_sys_config->CodeType == "UniformLRC")
+        {
+          ECProject::encode_uniform_lrc(m_sys_config->k, m_sys_config->r, m_sys_config->z, reinterpret_cast<unsigned char **>(data_ptr_array.data()), reinterpret_cast<unsigned char **>(parity_ptr_array.data()), m_sys_config->BlockSize);
+        }
+        else if (is_azure_like_code(m_sys_config->CodeType))
+        {
+          ECProject::encode_azure_lrc(m_sys_config->k, m_sys_config->r, m_sys_config->z, reinterpret_cast<unsigned char **>(data_ptr_array.data()), reinterpret_cast<unsigned char **>(parity_ptr_array.data()), m_sys_config->BlockSize);
+        }
+        m_parity_precomputed = true;
       }
-      else if (m_sys_config->CodeType == "OptimalLRC")
-      {
-        //ECProject::encode_optimal_lrc(m_sys_config->k, m_sys_config->r, m_sys_config->z, reinterpret_cast<unsigned char **>(data_ptr_array.data()), reinterpret_cast<unsigned char **>(global_parity_ptr_array.data()), reinterpret_cast<unsigned char **>(local_parity_ptr_array.data()), m_sys_config->BlockSize);
-        ECProject::encode_optimal_lrc(m_sys_config->k, m_sys_config->r, m_sys_config->z, reinterpret_cast<unsigned char **>(data_ptr_array.data()), reinterpret_cast<unsigned char **>(parity_ptr_array.data()), m_sys_config->BlockSize);
-      }
-      else if (m_sys_config->CodeType == "UniformLRC")
-      {
-        //ECProject::encode_uniform_lrc(m_sys_config->k, m_sys_config->r, m_sys_config->z, reinterpret_cast<unsigned char **>(data_ptr_array.data()), reinterpret_cast<unsigned char **>(global_parity_ptr_array.data()), reinterpret_cast<unsigned char **>(local_parity_ptr_array.data()), m_sys_config->BlockSize);
-        ECProject::encode_uniform_lrc(m_sys_config->k, m_sys_config->r, m_sys_config->z, reinterpret_cast<unsigned char **>(data_ptr_array.data()), reinterpret_cast<unsigned char **>(parity_ptr_array.data()), m_sys_config->BlockSize);
-      }
-      else if (is_azure_like_code(m_sys_config->CodeType))
-      {
-        //ECProject::encode_azure_lrc(m_sys_config->k, m_sys_config->r, m_sys_config->z, reinterpret_cast<unsigned char **>(data_ptr_array.data()), reinterpret_cast<unsigned char **>(global_parity_ptr_array.data()), reinterpret_cast<unsigned char **>(local_parity_ptr_array.data()), m_sys_config->BlockSize);
-        ECProject::encode_azure_lrc(m_sys_config->k, m_sys_config->r, m_sys_config->z, reinterpret_cast<unsigned char **>(data_ptr_array.data()), reinterpret_cast<unsigned char **>(parity_ptr_array.data()), m_sys_config->BlockSize);
-      }
+      // 回退到 client 直接并发发送给所有 proxy（旧逻辑），先跑通带宽测试
+      // 使用 Asio 多路复用实现真正的异步并发发送（单线程事件循环）
+      asio::io_context io_context;
+      auto pending = std::make_shared<std::atomic<int>>(reply.append_keys_size());
+
       for (int i = 0; i < reply.append_keys_size(); i++)
       {
-        async_append_to_proxies(cluster_slice_data[i], reply.append_keys(i), reply.cluster_slice_sizes(i),
-                                reply.proxyips(i), reply.proxyports(i), i, if_commit_arr.get());
+        async_append_to_proxies_async(io_context,
+                                      cluster_slice_data[i],
+                                      reply.append_keys(i),
+                                      reply.cluster_slice_sizes(i),
+                                      reply.proxyips(i),
+                                      reply.proxyports(i),
+                                      i,
+                                      if_commit_arr.get(),
+                                      pending);
       }
 
+      io_context.run();  // 等待所有异步 TCP 发送完成
+
+      // 并行 gRPC 检查（每个 slice 独立 checkCommitAbort，减少尾延迟）
+      const int slice_count = reply.append_keys_size();
+      std::vector<std::thread> check_threads;
+      check_threads.reserve(static_cast<size_t>(slice_count));
+      for (int i = 0; i < slice_count; i++)
+      {
+        check_threads.emplace_back([this, i, &reply, if_commit_arr = if_commit_arr.get()]() {
+          grpc::ClientContext check_commit;
+          coordinator_proto::AskIfSuccess request;
+          request.set_key(reply.append_keys(i));
+          OpperateType opp = APPEND;
+          request.set_opp(opp);
+          coordinator_proto::RepIfSuccess reply_chk;
+          grpc::Status st = m_coordinator_ptr->checkCommitAbort(&check_commit, request, &reply_chk);
+          if (st.ok() && reply_chk.ifcommit())
+          {
+            if_commit_arr[i] = true;
+          }
+          else if (!st.ok())
+          {
+            std::cout << "[SET-ASYNC] checkCommitAbort failed for key=" << reply.append_keys(i) << std::endl;
+          }
+        });
+      }
+      for (auto &t : check_threads)
+        t.join();
+
       // check if all appends are successful
-      bool all_true = std::all_of(if_commit_arr.get(), if_commit_arr.get() + reply.append_keys_size(), [](bool val)
+      bool all_true = std::all_of(if_commit_arr.get(), if_commit_arr.get() + slice_count, [](bool val)
                                   { return val == true; });
 
       if (all_true)
@@ -883,14 +994,54 @@ namespace ECProject
         //ECProject::encode_azure_lrc(m_sys_config->k, m_sys_config->r, m_sys_config->z, reinterpret_cast<unsigned char **>(data_ptr_array.data()), reinterpret_cast<unsigned char **>(global_parity_ptr_array.data()), reinterpret_cast<unsigned char **>(local_parity_ptr_array.data()), m_sys_config->BlockSize);
         ECProject::partial_encode_azure_lrc(m_sys_config->k, m_sys_config->r, m_sys_config->z, block_num, reinterpret_cast<unsigned char **>(data_ptr_array.data()), reinterpret_cast<unsigned char **>(parity_ptr_array.data()), m_sys_config->BlockSize);
       }
+      // 使用 Asio 多路复用实现真正的异步并发发送（单线程事件循环）
+      asio::io_context io_context;
+      auto pending = std::make_shared<std::atomic<int>>(reply.append_keys_size());
+
       for (int i = 0; i < reply.append_keys_size(); i++)
       {
-        async_append_to_proxies(cluster_slice_data[i], reply.append_keys(i), reply.cluster_slice_sizes(i),
-                                reply.proxyips(i), reply.proxyports(i), i, if_commit_arr.get());
+        async_append_to_proxies_async(io_context,
+                                      cluster_slice_data[i],
+                                      reply.append_keys(i),
+                                      reply.cluster_slice_sizes(i),
+                                      reply.proxyips(i),
+                                      reply.proxyports(i),
+                                      i,
+                                      if_commit_arr.get(),
+                                      pending);
       }
 
+      io_context.run();  // 等待所有异步 TCP 发送完成
+
+      // 并行 gRPC 检查（每个 slice 独立 checkCommitAbort，减少尾延迟）
+      const int slice_count = reply.append_keys_size();
+      std::vector<std::thread> check_threads;
+      check_threads.reserve(static_cast<size_t>(slice_count));
+      for (int i = 0; i < slice_count; i++)
+      {
+        check_threads.emplace_back([this, i, &reply, if_commit_arr = if_commit_arr.get()]() {
+          grpc::ClientContext check_commit;
+          coordinator_proto::AskIfSuccess request;
+          request.set_key(reply.append_keys(i));
+          OpperateType opp = APPEND;
+          request.set_opp(opp);
+          coordinator_proto::RepIfSuccess reply_chk;
+          grpc::Status st = m_coordinator_ptr->checkCommitAbort(&check_commit, request, &reply_chk);
+          if (st.ok() && reply_chk.ifcommit())
+          {
+            if_commit_arr[i] = true;
+          }
+          else if (!st.ok())
+          {
+            std::cout << "[SET-ASYNC] checkCommitAbort failed for key=" << reply.append_keys(i) << std::endl;
+          }
+        });
+      }
+      for (auto &t : check_threads)
+        t.join();
+
       // check if all appends are successful
-      bool all_true = std::all_of(if_commit_arr.get(), if_commit_arr.get() + reply.append_keys_size(), [](bool val)
+      bool all_true = std::all_of(if_commit_arr.get(), if_commit_arr.get() + slice_count, [](bool val)
                                   { return val == true; });
 
       if (all_true)
@@ -978,23 +1129,29 @@ namespace ECProject
     }
   }
 
-  bool Client::cord_update(int stripe_id, const std::vector<std::pair<int, int>> &logical_ranges,
-                           const char *update_payload, size_t update_payload_bytes,
-                           CordUpdateTiming *out_timing)
+  bool Client::cord_update_start(int stripe_id, const std::vector<std::pair<int, int>> &logical_ranges,
+                                 const char *update_payload, size_t update_payload_bytes,
+                                 CordUpdatePending *pending, CordUpdateTiming *partial_timing)
   {
+    if (pending == nullptr)
+    {
+      std::cout << "[CoRD] cord_update_start: pending is null." << std::endl;
+      return false;
+    }
+    pending->stripe_id = stripe_id;
+    pending->transfer_plan_key.clear();
+    pending->plan_sec = 0.0;
+    pending->payload_prep_sec = 0.0;
+    pending->upload_sec = 0.0;
+    pending->wall_t0 = std::chrono::steady_clock::now();
+
     if (logical_ranges.empty())
     {
       std::cout << "[CoRD] Empty update intervals." << std::endl;
+      cord_fill_timing(partial_timing, pending->wall_t0, pending->plan_sec, pending->payload_prep_sec,
+                       pending->upload_sec, 0.0, 0.0);
       return false;
     }
-    const auto wall_t0 = std::chrono::steady_clock::now();
-    double plan_sec = 0.0;
-    double payload_prep_sec = 0.0;
-    double upload_sec = 0.0;
-    double xfer_begin_sec = 0.0;
-    double xfer_wait_sec = 0.0;
-    double xfer_pure_sec = 0.0;
-    double xfer_grpc_sec = 0.0;
     g_cord_request_timeout_sec = m_sys_config->CordRequestTimeoutSec;
     const CordClock::time_point cord_deadline =
         CordClock::now() + std::chrono::seconds(g_cord_request_timeout_sec);
@@ -1016,7 +1173,8 @@ namespace ECProject
       if (r.second <= r.first)
       {
         std::cout << "[CoRD] Invalid half-open interval: [" << r.first << ", " << r.second << ")" << std::endl;
-        cord_fill_timing(out_timing, wall_t0, plan_sec, payload_prep_sec, upload_sec, xfer_begin_sec, xfer_wait_sec);
+        cord_fill_timing(partial_timing, pending->wall_t0, pending->plan_sec, pending->payload_prep_sec,
+                         pending->upload_sec, 0.0, 0.0);
         return false;
       }
       auto *range = request.add_update_intervals();
@@ -1026,21 +1184,24 @@ namespace ECProject
 
     const auto plan_t0 = std::chrono::steady_clock::now();
     grpc::Status status = m_coordinator_ptr->uploadCordUpdate(&ctx, request, &reply);
-    plan_sec = std::chrono::duration<double>(std::chrono::steady_clock::now() - plan_t0).count();
+    pending->plan_sec = std::chrono::duration<double>(std::chrono::steady_clock::now() - plan_t0).count();
     if (cord_abort_if_timed_out())
     {
-      cord_fill_timing(out_timing, wall_t0, plan_sec, payload_prep_sec, upload_sec, xfer_begin_sec, xfer_wait_sec);
+      cord_fill_timing(partial_timing, pending->wall_t0, pending->plan_sec, pending->payload_prep_sec,
+                       pending->upload_sec, 0.0, 0.0);
       return false;
     }
     if (!status.ok())
     {
       std::cout << "[CoRD] uploadCordUpdate failed: " << status.error_message() << std::endl;
-      cord_fill_timing(out_timing, wall_t0, plan_sec, payload_prep_sec, upload_sec, xfer_begin_sec, xfer_wait_sec);
+      cord_fill_timing(partial_timing, pending->wall_t0, pending->plan_sec, pending->payload_prep_sec,
+                       pending->upload_sec, 0.0, 0.0);
       return false;
     }
     if (reply.sum_append_size() == 0)
     {
-      cord_fill_timing(out_timing, wall_t0, plan_sec, payload_prep_sec, upload_sec, xfer_begin_sec, xfer_wait_sec);
+      cord_fill_timing(partial_timing, pending->wall_t0, pending->plan_sec, pending->payload_prep_sec,
+                       pending->upload_sec, 0.0, 0.0);
       return true;
     }
 
@@ -1051,7 +1212,8 @@ namespace ECProject
       if (update_payload_bytes != 0)
       {
         std::cout << "[CoRD] auto random payload: require update_payload_bytes==0 when payload is null" << std::endl;
-        cord_fill_timing(out_timing, wall_t0, plan_sec, payload_prep_sec, upload_sec, xfer_begin_sec, xfer_wait_sec);
+        cord_fill_timing(partial_timing, pending->wall_t0, pending->plan_sec, pending->payload_prep_sec,
+                         pending->upload_sec, 0.0, 0.0);
         return false;
       }
       const auto prep_t0 = std::chrono::steady_clock::now();
@@ -1061,7 +1223,7 @@ namespace ECProject
       std::uniform_int_distribution<unsigned> dist(0, 255);
       for (size_t i = 0; i < owned_random.size(); ++i)
         owned_random[i] = static_cast<char>(static_cast<unsigned char>(dist(gen)));
-      payload_prep_sec = std::chrono::duration<double>(std::chrono::steady_clock::now() - prep_t0).count();
+      pending->payload_prep_sec = std::chrono::duration<double>(std::chrono::steady_clock::now() - prep_t0).count();
       payload_send = owned_random.data();
       std::cout << "[CoRD][Client " << m_clientID << "] stripe_id=" << stripe_id
                 << " auto random payload total_bytes=" << owned_random.size() << " intervals:";
@@ -1074,7 +1236,8 @@ namespace ECProject
     else if (update_payload_bytes != static_cast<size_t>(reply.sum_append_size()))
     {
       std::cout << "[CoRD] payload size mismatch: got " << update_payload_bytes << " expected " << reply.sum_append_size() << std::endl;
-      cord_fill_timing(out_timing, wall_t0, plan_sec, payload_prep_sec, upload_sec, xfer_begin_sec, xfer_wait_sec);
+      cord_fill_timing(partial_timing, pending->wall_t0, pending->plan_sec, pending->payload_prep_sec,
+                       pending->upload_sec, 0.0, 0.0);
       return false;
     }
 
@@ -1094,8 +1257,9 @@ namespace ECProject
     std::fill_n(if_commit_arr.get(), slice_count, false);
     if (cord_abort_if_timed_out())
     {
-      upload_sec = std::chrono::duration<double>(std::chrono::steady_clock::now() - upload_t0).count();
-      cord_fill_timing(out_timing, wall_t0, plan_sec, payload_prep_sec, upload_sec, xfer_begin_sec, xfer_wait_sec);
+      pending->upload_sec = std::chrono::duration<double>(std::chrono::steady_clock::now() - upload_t0).count();
+      cord_fill_timing(partial_timing, pending->wall_t0, pending->plan_sec, pending->payload_prep_sec,
+                       pending->upload_sec, 0.0, 0.0);
       return false;
     }
     const int cord_timeout_sec = g_cord_request_timeout_sec;
@@ -1112,73 +1276,127 @@ namespace ECProject
     }
     for (auto &t : upload_threads)
       t.join();
-    upload_sec = std::chrono::duration<double>(std::chrono::steady_clock::now() - upload_t0).count();
+    pending->upload_sec = std::chrono::duration<double>(std::chrono::steady_clock::now() - upload_t0).count();
     if (cord_abort_if_timed_out())
     {
-      cord_fill_timing(out_timing, wall_t0, plan_sec, payload_prep_sec, upload_sec, xfer_begin_sec, xfer_wait_sec);
+      cord_fill_timing(partial_timing, pending->wall_t0, pending->plan_sec, pending->payload_prep_sec,
+                       pending->upload_sec, 0.0, 0.0);
       return false;
     }
     if (!std::all_of(if_commit_arr.get(), if_commit_arr.get() + reply.append_keys_size(),
                      [](bool v) { return v; }))
     {
-      cord_fill_timing(out_timing, wall_t0, plan_sec, payload_prep_sec, upload_sec, xfer_begin_sec, xfer_wait_sec);
+      cord_fill_timing(partial_timing, pending->wall_t0, pending->plan_sec, pending->payload_prep_sec,
+                       pending->upload_sec, 0.0, 0.0);
       return false;
     }
 
     if (!reply.cord_transfer_plan_key().empty())
     {
-      std::cout << "[CoRD][Client " << m_clientID << "] waiting for cross-cluster transfer (auto-start after upload): "
-                << reply.cord_transfer_plan_key() << "\n";
-      if (cord_abort_if_timed_out())
-      {
-        cord_fill_timing(out_timing, wall_t0, plan_sec, payload_prep_sec, upload_sec, xfer_begin_sec, xfer_wait_sec);
-        return false;
-      }
-      grpc::ClientContext ctx_wait;
-      cord_apply_grpc_deadline(ctx_wait);
-      coordinator_proto::CordPlanWaitRequest wait_req;
-      wait_req.set_plan_key(reply.cord_transfer_plan_key());
-      coordinator_proto::RepIfSuccess wait_rep;
-      const auto xfer_wait_t0 = std::chrono::steady_clock::now();
-      grpc::Status st_wait = m_coordinator_ptr->cordPlanWaitTransferComplete(&ctx_wait, wait_req, &wait_rep);
-      xfer_wait_sec = std::chrono::duration<double>(std::chrono::steady_clock::now() - xfer_wait_t0).count();
-      if (wait_rep.cord_xfer_timing_present())
-      {
-        xfer_pure_sec = wait_rep.cord_xfer_pure_sec();
-        xfer_grpc_sec = std::max(0., xfer_wait_sec - xfer_pure_sec);
-      }
-      else
-      {
-        xfer_grpc_sec = xfer_wait_sec;
-      }
-      if (cord_abort_if_timed_out())
-      {
-        cord_fill_timing(out_timing, wall_t0, plan_sec, payload_prep_sec, upload_sec, xfer_begin_sec, xfer_wait_sec,
-                         xfer_pure_sec, xfer_grpc_sec);
-        return false;
-      }
-      if (!st_wait.ok() || !wait_rep.ifcommit())
-      {
-        std::cout << "[CoRD] cordPlanWaitTransferComplete failed: " << st_wait.error_message() << std::endl;
-        cord_fill_timing(out_timing, wall_t0, plan_sec, payload_prep_sec, upload_sec, xfer_begin_sec, xfer_wait_sec,
-                         xfer_pure_sec, xfer_grpc_sec);
-        return false;
-      }
-      std::cout << "[CoRD][Client " << m_clientID << "] cross-cluster transfer complete, xfer_wait_sec="
-                << xfer_wait_sec << " xfer_pure_sec=" << xfer_pure_sec << " xfer_grpc_sec=" << xfer_grpc_sec << "\n";
+      pending->transfer_plan_key = reply.cord_transfer_plan_key();
+      std::cout << "[CoRD][Client " << m_clientID << "] upload done; deferred xfer wait for plan_key="
+                << pending->transfer_plan_key << "\n";
     }
 
-    cord_fill_timing(out_timing, wall_t0, plan_sec, payload_prep_sec, upload_sec, xfer_begin_sec, xfer_wait_sec,
-                     xfer_pure_sec, xfer_grpc_sec);
-    std::cout << "[CoRD][Client " << m_clientID << "] round_wall_time_sec=" << (out_timing ? out_timing->wall_sec : 0.0)
-              << " plan_sec=" << plan_sec << " payload_prep_sec=" << payload_prep_sec
-              << " upload_sec=" << upload_sec << " xfer_begin_sec=" << xfer_begin_sec
-              << " xfer_wait_sec=" << xfer_wait_sec << " xfer_pure_sec=" << xfer_pure_sec
-              << " xfer_grpc_sec=" << xfer_grpc_sec
-              << " (uploadCordUpdate + TCP delta + auto transfer + wait)" << std::endl;
-
-    // 本地校验仅由 CordTransferPlan（星型/MST）更新，不再单独 uploadCordLocalParityApply。
+    if (partial_timing != nullptr)
+    {
+      partial_timing->plan_sec = pending->plan_sec;
+      partial_timing->payload_prep_sec = pending->payload_prep_sec;
+      partial_timing->upload_sec = pending->upload_sec;
+      partial_timing->xfer_begin_sec = 0.0;
+      partial_timing->xfer_wait_sec = 0.0;
+      partial_timing->xfer_pure_sec = 0.0;
+      partial_timing->xfer_grpc_sec = 0.0;
+      partial_timing->wall_sec =
+          std::chrono::duration<double>(std::chrono::steady_clock::now() - pending->wall_t0).count();
+    }
     return true;
+  }
+
+  bool Client::cord_update_wait_xfer(CordUpdatePending *pending, CordUpdateTiming *out_timing)
+  {
+    if (pending == nullptr)
+      return false;
+    double xfer_wait_sec = 0.0;
+    double xfer_pure_sec = 0.0;
+    double xfer_grpc_sec = 0.0;
+    if (pending->transfer_plan_key.empty())
+    {
+      cord_fill_timing(out_timing, pending->wall_t0, pending->plan_sec, pending->payload_prep_sec,
+                       pending->upload_sec, 0.0, 0.0, 0.0, 0.0);
+      return true;
+    }
+
+    g_cord_request_timeout_sec = m_sys_config->CordRequestTimeoutSec;
+    const CordClock::time_point cord_deadline =
+        CordClock::now() + std::chrono::seconds(g_cord_request_timeout_sec);
+    g_cord_request_deadline = &cord_deadline;
+    struct CordDeadlineGuard
+    {
+      ~CordDeadlineGuard() { g_cord_request_deadline = nullptr; }
+    } cord_deadline_guard;
+
+    std::cout << "[CoRD][Client " << m_clientID << "] waiting for cross-cluster transfer (auto-start after upload): "
+              << pending->transfer_plan_key << " stripe_id=" << pending->stripe_id << "\n";
+    if (cord_abort_if_timed_out())
+    {
+      cord_fill_timing(out_timing, pending->wall_t0, pending->plan_sec, pending->payload_prep_sec,
+                       pending->upload_sec, 0.0, xfer_wait_sec, xfer_pure_sec, xfer_grpc_sec);
+      return false;
+    }
+    grpc::ClientContext ctx_wait;
+    cord_apply_grpc_deadline(ctx_wait);
+    coordinator_proto::CordPlanWaitRequest wait_req;
+    wait_req.set_plan_key(pending->transfer_plan_key);
+    coordinator_proto::RepIfSuccess wait_rep;
+    const auto xfer_wait_t0 = std::chrono::steady_clock::now();
+    grpc::Status st_wait = m_coordinator_ptr->cordPlanWaitTransferComplete(&ctx_wait, wait_req, &wait_rep);
+    xfer_wait_sec = std::chrono::duration<double>(std::chrono::steady_clock::now() - xfer_wait_t0).count();
+    if (wait_rep.cord_xfer_timing_present())
+    {
+      xfer_pure_sec = wait_rep.cord_xfer_pure_sec();
+      xfer_grpc_sec = std::max(0., xfer_wait_sec - xfer_pure_sec);
+    }
+    else
+    {
+      xfer_grpc_sec = xfer_wait_sec;
+    }
+    if (cord_abort_if_timed_out())
+    {
+      cord_fill_timing(out_timing, pending->wall_t0, pending->plan_sec, pending->payload_prep_sec,
+                       pending->upload_sec, 0.0, xfer_wait_sec, xfer_pure_sec, xfer_grpc_sec);
+      return false;
+    }
+    if (!st_wait.ok() || !wait_rep.ifcommit())
+    {
+      std::cout << "[CoRD] cordPlanWaitTransferComplete failed: " << st_wait.error_message() << std::endl;
+      cord_fill_timing(out_timing, pending->wall_t0, pending->plan_sec, pending->payload_prep_sec,
+                       pending->upload_sec, 0.0, xfer_wait_sec, xfer_pure_sec, xfer_grpc_sec);
+      return false;
+    }
+    std::cout << "[CoRD][Client " << m_clientID << "] cross-cluster transfer complete stripe_id=" << pending->stripe_id
+              << " xfer_wait_sec=" << xfer_wait_sec << " xfer_pure_sec=" << xfer_pure_sec
+              << " xfer_grpc_sec=" << xfer_grpc_sec << "\n";
+
+    pending->transfer_plan_key.clear();
+    cord_fill_timing(out_timing, pending->wall_t0, pending->plan_sec, pending->payload_prep_sec,
+                     pending->upload_sec, 0.0, xfer_wait_sec, xfer_pure_sec, xfer_grpc_sec);
+    std::cout << "[CoRD][Client " << m_clientID << "] round_wall_time_sec=" << (out_timing ? out_timing->wall_sec : 0.0)
+              << " plan_sec=" << pending->plan_sec << " payload_prep_sec=" << pending->payload_prep_sec
+              << " upload_sec=" << pending->upload_sec << " xfer_wait_sec=" << xfer_wait_sec
+              << " xfer_pure_sec=" << xfer_pure_sec << " xfer_grpc_sec=" << xfer_grpc_sec
+              << " (uploadCordUpdate + TCP delta + auto transfer + wait)" << std::endl;
+    return true;
+  }
+
+  bool Client::cord_update(int stripe_id, const std::vector<std::pair<int, int>> &logical_ranges,
+                           const char *update_payload, size_t update_payload_bytes,
+                           CordUpdateTiming *out_timing)
+  {
+    CordUpdatePending pending;
+    if (!cord_update_start(stripe_id, logical_ranges, update_payload, update_payload_bytes, &pending, out_timing))
+      return false;
+    return cord_update_wait_xfer(&pending, out_timing);
   }
 
   std::shared_ptr<char[]> Client::get_degraded_read_block_breakdown(int stripe_id, int failed_block_id, double &total_time,double &disk_io_time, double &network_time, double &decode_time)

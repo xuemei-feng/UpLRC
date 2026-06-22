@@ -796,9 +796,9 @@ namespace ECProject
 
         Dinic din(nV, S, T);
         for (int c = 0; c < C; ++c)
-          din.add_edge(S, 1 + c, 1, -1);
+          din.add_edge(S, 1 + c, tp.enforce_one_send_one_recv_per_cluster ? 1 : C, -1);
         for (int c = 0; c < C; ++c)
-          din.add_edge(1 + C + c, T, 1, -1);
+          din.add_edge(1 + C + c, T, tp.enforce_one_send_one_recv_per_cluster ? 1 : C, -1);
 
         // 打印本时间步候选链路
         std::cout << "[CoRD-Alg2] --- step " << ts << " candidates (pending & eligible):\n";

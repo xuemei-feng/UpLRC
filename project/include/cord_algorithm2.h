@@ -22,6 +22,8 @@ namespace ECProject
       double same_cluster_latency_sec = 1e-4;
       double cross_cluster_latency_sec = 2e-3;
       double inv_bw_sec_per_byte = 1.0 / (100.0 * 1024.0 * 1024.0); // ~100 MiB/s
+      /** 是否在 Dinic 调度中强制「每 cluster 每步最多 1 发 + 1 收」（默认 true，保持原有约束） */
+      bool enforce_one_send_one_recv_per_cluster = true;
     };
 
     enum class TrainLinkKind

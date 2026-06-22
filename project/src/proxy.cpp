@@ -1433,7 +1433,15 @@ namespace ECProject
       append_info.set_append_offset(slice_offset);
       append_info.set_is_serialized(is_serialized);
       std::string node_ip_port = std::string(ip) + ":" + std::to_string(port);
-      grpc::Status stat = m_datanode_ptrs[node_ip_port]->handleAppend(&context, append_info, &result);
+      // gRPC notify in parallel with TCP data transfer (same pattern as RecoveryToDatanode)
+      std::thread notify_datanode_thread([this, &context, &append_info, &result, &node_ip_port, block_key, block_id]()
+      {
+        grpc::Status stat = m_datanode_ptrs[node_ip_port]->handleAppend(&context, append_info, &result);
+        if (!stat.ok())
+        {
+          std::cout << "[AppendToDatanode] notify datanode failed! block_key: " << block_key << " block_id: " << block_id << std::endl;
+        }
+      });
 
       asio::error_code error;
       asio::io_context io_context;
@@ -1454,6 +1462,7 @@ namespace ECProject
       asio::error_code ignore_ec;
       socket.shutdown(asio::ip::tcp::socket::shutdown_both, ignore_ec);
       socket.close(ignore_ec);
+      notify_datanode_thread.join();
       if (IF_DEBUG)
       {
         std::cout << "[Proxy" << m_self_cluster_id << "][Append139]"
@@ -2747,48 +2756,65 @@ namespace ECProject
         // char *append_buf = new char[cluster_append_size];
         // memset(append_buf, 0, cluster_append_size);
         // std::shared_ptr<char> append_buf_ptr(append_buf, [](char* p) { delete[] p; }); // 使用智能指针管理内存
-        std::vector<char> append_buf(cluster_append_size, 0);
-        asio::read(socket_data, asio::buffer(append_buf.data(), cluster_append_size), error);
-        if (error == asio::error::eof)
+        // === 优化：每收到一个 block 的 slice 就立即起线程写 datanode（边收边写）===
+        std::vector<std::thread> senders;
+        std::vector<std::shared_ptr<std::vector<char>>> block_buffers; // 保持每个 block 的数据生命周期
+
+        for (int j = 0; j < slice_num; j++)
         {
-          std::cout << "error == asio::error::eof" << std::endl;
-        }
-        else if (error)
-        {
-          throw asio::system_error(error);
+          size_t this_size = placement_copy->sizes(j);
+          auto block_buf = std::make_shared<std::vector<char>>(this_size);
+
+          asio::read(socket_data, asio::buffer(block_buf->data(), this_size), error);
+          if (error == asio::error::eof)
+          {
+            std::cout << "error == asio::error::eof (block " << j << ")" << std::endl;
+          }
+          else if (error)
+          {
+            throw asio::system_error(error);
+          }
+
+          if (IF_DEBUG)
+          {
+            std::cout << "[Proxy" << m_self_cluster_id << "][Append339]"
+                      << " received block " << j << " size=" << this_size << std::endl;
+          }
+
+          // 立即启动写线程，不等待后续 block
+          senders.emplace_back([this, placement_copy, j, block_buf, is_serialized]() {
+            if (IF_DEBUG)
+            {
+              std::cout << "[Proxy" << m_self_cluster_id << "][Append353]"
+                        << "Append to Block " << placement_copy->blockkeys(j)
+                        << " offset=" << placement_copy->offsets(j) << std::endl;
+            }
+            AppendToDatanode(placement_copy->blockkeys(j).c_str(),
+                             placement_copy->blockids(j),
+                             block_buf->size(),
+                             block_buf->data(),
+                             placement_copy->offsets(j),
+                             placement_copy->datanodeip(j).c_str(),
+                             placement_copy->datanodeport(j),
+                             is_serialized);
+          });
+
+          block_buffers.push_back(block_buf);
         }
 
-        if (IF_DEBUG)
+        // 等待所有写线程完成
+        for (auto& t : senders)
         {
-          std::cout << "[Proxy" << m_self_cluster_id << "][Append339]"
-                    << "Append to Stripe " << stripe_id << " with length of " << cluster_append_size << std::endl;
+          t.join();
         }
+
+        // === 单入口转发（保持原有大块转发逻辑，需在 per-block 模式下调整）===
+        // 注意：当前 per-block 模式下转发仍使用完整数据，需额外收集或改为 per-block 转发
+        // 这里暂时保留原有转发位置（需 big buffer），如需严格 per-block 转发可在此扩展
 
         asio::error_code ignore_ec;
         socket_data.shutdown(asio::ip::tcp::socket::shutdown_receive, ignore_ec);
         socket_data.close(ignore_ec);
-
-        std::vector<char *> slices = m_toolbox->splitCharPointer(append_buf.data(), placement_copy);
-
-        auto append_to_datanode = [this](const char *block_key, int block_id, size_t slice_size, const char *slice_buf, int slice_offset, const char *ip, int port, bool is_serialized)
-        {
-          if (IF_DEBUG)
-          {
-            std::cout << "[Proxy" << m_self_cluster_id << "][Append353]"
-                      << "Append to Block " << block_key << " of block_id " << block_id << " at the offset of " << slice_offset << " with length of " << slice_size << std::endl;
-          }
-          AppendToDatanode(block_key, block_id, slice_size, slice_buf, slice_offset, ip, port, is_serialized);
-        };
-
-        std::vector<std::thread> senders;
-        for (int j = 0; j < slice_num; j++)
-        {
-          senders.push_back(std::thread(append_to_datanode, placement_copy->blockkeys(j).c_str(), placement_copy->blockids(j), placement_copy->sizes(j), slices[j], placement_copy->offsets(j), placement_copy->datanodeip(j).c_str(), placement_copy->datanodeport(j), is_serialized));
-        }
-        for (int j = 0; j < int(senders.size()); j++)
-        {
-          senders[j].join();
-        }
 
         if (IF_DEBUG)
         {
