@@ -16,15 +16,20 @@ HOSTS_FILE="hosts"
 
 USER="root"
 
-REMOTE_COMMAND="cd /users/xue/xue && sh run_proxy_datanode.sh"
+REMOTE_COMMAND="cd /root/xue && sh run_proxy_datanode.sh"
 
 PARALLEL=50
 
 echo "Running command on all nodes..."
-sudo pdsh -R ssh -w ^$HOSTS_FILE -l $USER -f $PARALLEL "$REMOTE_COMMAND"
+PDSH_OUT="$(mktemp)"
+sudo pdsh -R ssh -w ^$HOSTS_FILE -l $USER -f $PARALLEL "$REMOTE_COMMAND" 2>&1 | tee "$PDSH_OUT"
+PDSH_RC=${PIPESTATUS[0]}
+FAIL_COUNT=$(grep -c 'ssh exited with exit code [1-9]' "$PDSH_OUT" || true)
+rm -f "$PDSH_OUT"
 
-if [ $? -eq 0 ]; then
+if [ "$PDSH_RC" -eq 0 ] && [ "${FAIL_COUNT:-0}" -eq 0 ]; then
 	echo "Command executed successfully on all nodes."
 else
-	echo "Failed to execute command on some nodes."
+	echo "Failed on ${FAIL_COUNT:-?} node(s) (pdsh_rc=${PDSH_RC}). Regenerate scripts: SKIP_COPY=1 bash generate_run_proxy.sh"
+	exit 1
 fi

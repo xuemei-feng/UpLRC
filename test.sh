@@ -1,9 +1,45 @@
 #!/usr/bin/env bash
 # CoRD 批量更新 trace：改下面路径即可，每行格式见 main_client.cpp 用法说明
-CORD_TRACE_FILE="/users/xue/xue/T00-1MB-1000-10log"
+CORD_TRACE_FILE="/root/xue/T00-1MB-1000-10log"
 
 SCRIPT_DIR="$(cd "$(dirname "$0")" && pwd)"
 CONFIG_XML="${SCRIPT_DIR}/project/config/parameterConfiguration.xml"
+HOSTS_FILE="${SCRIPT_DIR}/hosts"
+
+resolve_client_ip() {
+  if [ -n "${CORD_CLIENT_IP:-}" ]; then
+    echo "${CORD_CLIENT_IP}"
+    return 0
+  fi
+  local hosts_ip=""
+  if [ -f "${HOSTS_FILE}" ]; then
+    hosts_ip="$(head -1 "${HOSTS_FILE}" | tr -d '[:space:]')"
+  fi
+  if [ -n "${hosts_ip}" ] && ip -4 addr show 2>/dev/null | grep -qE "inet ${hosts_ip}/"; then
+    echo "${hosts_ip}"
+    return 0
+  fi
+  local prefix=""
+  if [ -n "${hosts_ip}" ]; then
+    prefix="$(echo "${hosts_ip}" | cut -d. -f1-3)"
+  else
+    prefix="$(sed -n 's:.*<CoordinatorIP>\([0-9]*\.[0-9]*\.[0-9]*\)\.[0-9]*</CoordinatorIP>.*:\1:p' "${CONFIG_XML}" | head -1)"
+  fi
+  if [ -n "${prefix}" ]; then
+    local detected=""
+    detected="$(ip -4 -o addr show scope global 2>/dev/null | awk -v p="${prefix}" '$4 ~ "^"p"." {print $4; exit}' | cut -d/ -f1)"
+    if [ -n "${detected}" ]; then
+      echo "${detected}"
+      return 0
+    fi
+  fi
+  if [ -n "${hosts_ip}" ]; then
+    echo "${hosts_ip}"
+  fi
+}
+
+CLIENT_IP="$(resolve_client_ip)"
+CLIENT_PORT="${CORD_CLIENT_PORT:-77777}"
 # 条带放置数量：修改 parameterConfiguration.xml 中的 ClientStripeNum
 CLIENT_STRIPE_NUM="$(sed -n 's:.*<ClientStripeNum>\([0-9][0-9]*\)</ClientStripeNum>.*:\1:p' "${CONFIG_XML}" | head -1)"
 if [ -z "${CLIENT_STRIPE_NUM}" ]; then
@@ -42,4 +78,6 @@ echo "CordRequestTimeoutSec=${CORD_REQUEST_TIMEOUT_SEC} (from ${CONFIG_XML})"
 echo "CORD_BATCH_THREADS=${CORD_BATCH_THREADS}"
 echo "CORD_PIPELINE_XFER=${CORD_PIPELINE_XFER}"
 echo "CORD_UPDATE_SLICE_PARALLEL=${CORD_UPDATE_SLICE_PARALLEL}"
-echo y | "${MAIN_CLIENT}" "${CORD_TRACE_FILE}"
+echo "Client IP=${CLIENT_IP} (override with CORD_CLIENT_IP)"
+echo "Client port=${CLIENT_PORT} (override with CORD_CLIENT_PORT)"
+echo y | "${MAIN_CLIENT}" --config "${CONFIG_XML}" --ip "${CLIENT_IP}" --port "${CLIENT_PORT}" "${CORD_TRACE_FILE}"

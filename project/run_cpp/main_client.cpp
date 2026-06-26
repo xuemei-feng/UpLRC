@@ -22,10 +22,122 @@
 #include <condition_variable>
 #include <functional>
 #include <cstdlib>
+#include <ifaddrs.h>
+#include <arpa/inet.h>
+#include <climits>
 #include "unilrc_encoder.h"
 
 namespace
 {
+  struct ClientRunOptions
+  {
+    std::string batch_file;
+    std::string config_path;
+    std::string client_ip;
+    int client_port = 77777;
+  };
+
+  std::string default_config_path(const char *argv0)
+  {
+    char cwd[PATH_MAX];
+    if (getcwd(cwd, sizeof(cwd)) == nullptr)
+      return "";
+    std::string exe(argv0);
+    const std::size_t slash = exe.rfind('/');
+    if (slash == std::string::npos)
+      return std::string(cwd) + "/../../config/parameterConfiguration.xml";
+    return std::string(cwd) + exe.substr(1, slash) + "/../../config/parameterConfiguration.xml";
+  }
+
+  std::string ip_prefix(const std::string &ip)
+  {
+    const std::size_t last_dot = ip.rfind('.');
+    if (last_dot == std::string::npos)
+      return ip;
+    return ip.substr(0, last_dot);
+  }
+
+  std::string detect_local_cluster_ip(const std::string &prefix)
+  {
+    struct ifaddrs *ifap = nullptr;
+    if (getifaddrs(&ifap) != 0)
+      return "";
+    std::string found;
+    for (struct ifaddrs *ifa = ifap; ifa != nullptr; ifa = ifa->ifa_next)
+    {
+      if (ifa->ifa_addr == nullptr || ifa->ifa_addr->sa_family != AF_INET)
+        continue;
+      char buf[INET_ADDRSTRLEN] = {};
+      const auto *sin = reinterpret_cast<const struct sockaddr_in *>(ifa->ifa_addr);
+      if (inet_ntop(AF_INET, &sin->sin_addr, buf, sizeof(buf)) == nullptr)
+        continue;
+      const std::string ip(buf);
+      if (ip.rfind(prefix + ".", 0) == 0)
+      {
+        found = ip;
+        break;
+      }
+    }
+    freeifaddrs(ifap);
+    return found;
+  }
+
+  std::string resolve_client_ip(const ECProject::Config *config)
+  {
+    if (const char *env = std::getenv("CORD_CLIENT_IP"))
+    {
+      if (env[0] != '\0')
+        return env;
+    }
+    const std::string detected = detect_local_cluster_ip(ip_prefix(config->CoordinatorIP));
+    if (!detected.empty())
+      return detected;
+    return "172.16.2.31";
+  }
+
+  bool parse_client_args(int argc, char **argv, ClientRunOptions &opts)
+  {
+    opts.config_path = default_config_path(argv[0]);
+    for (int i = 1; i < argc; ++i)
+    {
+      const std::string arg = argv[i];
+      if (arg == "--ip" && i + 1 < argc)
+      {
+        opts.client_ip = argv[++i];
+      }
+      else if (arg == "--port" && i + 1 < argc)
+      {
+        opts.client_port = std::atoi(argv[++i]);
+      }
+      else if (arg == "--config" && i + 1 < argc)
+      {
+        opts.config_path = argv[++i];
+      }
+      else if (arg == "--help" || arg == "-h")
+      {
+        return false;
+      }
+      else if (!arg.empty() && arg[0] != '-')
+      {
+        opts.batch_file = arg;
+      }
+      else
+      {
+        std::cerr << "Unknown argument: " << arg << std::endl;
+        return false;
+      }
+    }
+    return true;
+  }
+
+  void print_client_usage(const char *argv0)
+  {
+    std::cout << "Usage: " << argv0
+              << " [--ip CLIENT_IP] [--port PORT] [--config PATH] <cord_update_trace_file>"
+              << std::endl;
+    std::cout << "Environment: CORD_CLIENT_IP overrides auto-detected cluster client IP." << std::endl;
+  }
+
   bool parse_cord_trace_line(const std::string &line, int &stripe_id, int &range_cnt,
                              std::vector<std::pair<int, int>> &logical_ranges, std::string &err)
   {
@@ -214,16 +326,20 @@ namespace
 
 int main(int argc, char **argv)
 {
-    char buff[256];
-    getcwd(buff, 256);
-    std::string cwf = std::string(argv[0]);
-    std::string sys_config_path = std::string(buff) + cwf.substr(1, cwf.rfind('/') - 1) + "/../../config/parameterConfiguration.xml";
-    //std::string sys_config_path = "/home/GuanTian/lql/UniLRC/project/config/parameterConfiguration.xml";
-    std::cout << "Current working directory: " << sys_config_path << std::endl;
+    ClientRunOptions opts;
+    if (!parse_client_args(argc, argv, opts))
+    {
+      print_client_usage(argv[0]);
+      return 1;
+    }
+
+    const std::string sys_config_path = opts.config_path;
+    std::cout << "Config path: " << sys_config_path << std::endl;
 
     const ECProject::Config *config = ECProject::Config::getInstance(sys_config_path);
-    std::string client_ip = "10.10.1.1";
-    int client_port = 77777;
+    std::string client_ip = opts.client_ip.empty() ? resolve_client_ip(config) : opts.client_ip;
+    const int client_port = opts.client_port;
+    std::cout << "Client bind/advertise: " << client_ip << ":" << client_port << std::endl;
     ECProject::Client client(client_ip, client_port, config->CoordinatorIP + ":" + std::to_string(config->CoordinatorPort), sys_config_path);
     std::cout << client.sayHelloToCoordinatorByGrpc("Client ID: " + client_ip + ":" + std::to_string(client_port)) << std::endl;
 
@@ -253,9 +369,9 @@ int main(int argc, char **argv)
 
     // 条带放置数量由 parameterConfiguration.xml 的 ClientStripeNum 控制
     const int stripe_num = config->ClientStripeNum;
-    if (argc >= 2)
+    if (!opts.batch_file.empty())
     {
-        std::ifstream trace_scan(argv[1]);
+        std::ifstream trace_scan(opts.batch_file);
         int max_sid = -1;
         std::string scan_line;
         while (std::getline(trace_scan, scan_line))
@@ -332,15 +448,15 @@ int main(int argc, char **argv)
     std::cin >> input;
     if (input == 'y')
     {
-        if (argc < 2)
+        if (opts.batch_file.empty())
         {
-            std::cout << "Usage: " << argv[0] << " <cord_update_trace_file>" << std::endl;
+            print_client_usage(argv[0]);
             std::cout << "Trace file: one request per line -> stripe_id range_count "
                          "then range_count pairs of (logical_offset_start logical_offset_end) "
                          "for half-open [start,end). Lines starting with # are ignored." << std::endl;
             return 1;
         }
-        const std::string trace_path = argv[1];
+        const std::string trace_path = opts.batch_file;
         std::ifstream trace_file(trace_path);
         if (!trace_file.is_open())
         {

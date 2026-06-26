@@ -67,6 +67,74 @@ namespace ECProject
     return {lo, hi - lo};
   }
 
+  /** 单次 vector 扩容上限（默认 32MiB）；可用 CORD_XFER_MAX_RESIZE_BYTES 覆盖。 */
+  static uint64_t cord_xfer_max_resize_bytes()
+  {
+    static const uint64_t kDefault = 32ull * 1024ull * 1024ull;
+    const char *env = std::getenv("CORD_XFER_MAX_RESIZE_BYTES");
+    if (env == nullptr || env[0] == '\0')
+      return kDefault;
+    char *end = nullptr;
+    const unsigned long long v = std::strtoull(env, &end, 10);
+    if (end == env || v == 0)
+      return kDefault;
+    return static_cast<uint64_t>(v);
+  }
+
+  static bool cord_xfer_safe_resize(std::vector<uint8_t> &v, size_t new_size, const char *what,
+                                    const std::string &ctx, bool zero_fill = true)
+  {
+    const uint64_t cap = cord_xfer_max_resize_bytes();
+    if (static_cast<uint64_t>(new_size) > cap)
+    {
+      std::cerr << "[CoRD-PLAN][RESIZE_REJECT] " << what << " need=" << new_size << " cap=" << cap << " " << ctx
+                << std::endl;
+      return false;
+    }
+    if (new_size > static_cast<size_t>(1024 * 1024))
+      std::cout << "[CoRD-PLAN][RESIZE_LARGE] " << what << " need=" << new_size << " cur=" << v.size() << " " << ctx
+                << std::endl;
+    try
+    {
+      if (zero_fill)
+        v.resize(new_size, 0);
+      else
+        v.resize(new_size);
+    }
+    catch (const std::bad_alloc &e)
+    {
+      std::cerr << "[CoRD-PLAN][BAD_ALLOC] " << what << " need=" << new_size << " cur=" << v.size() << " " << ctx
+                << " err=" << e.what() << std::endl;
+      return false;
+    }
+    return true;
+  }
+
+  static bool cord_xfer_safe_resize(std::vector<char> &v, size_t new_size, const char *what, const std::string &ctx)
+  {
+    const uint64_t cap = cord_xfer_max_resize_bytes();
+    if (static_cast<uint64_t>(new_size) > cap)
+    {
+      std::cerr << "[CoRD-PLAN][RESIZE_REJECT] " << what << " need=" << new_size << " cap=" << cap << " " << ctx
+                << std::endl;
+      return false;
+    }
+    if (new_size > static_cast<size_t>(1024 * 1024))
+      std::cout << "[CoRD-PLAN][RESIZE_LARGE] " << what << " need=" << new_size << " cur=" << v.size() << " " << ctx
+                << std::endl;
+    try
+    {
+      v.resize(new_size);
+    }
+    catch (const std::bad_alloc &e)
+    {
+      std::cerr << "[CoRD-PLAN][BAD_ALLOC] " << what << " need=" << new_size << " cur=" << v.size() << " " << ctx
+                << " err=" << e.what() << std::endl;
+      return false;
+    }
+    return true;
+  }
+
   static std::mutex g_cord_xfer_mu;
   static std::map<std::string, std::vector<uint8_t>> g_cord_collector_xor_acc;
   static std::map<std::string, std::vector<uint8_t>> g_cord_mst_stream;
@@ -716,19 +784,47 @@ namespace ECProject
   {
     if (static_cast<int>(data_strips.size()) != k)
       return false;
-    std::vector<char *> dptrs(static_cast<size_t>(k));
-    std::vector<std::vector<char>> coding(static_cast<size_t>(g_m + l), std::vector<char>(strip_size));
-    std::vector<char *> cptrs(static_cast<size_t>(g_m + l));
-    for (int i = 0; i < k; ++i)
-      dptrs[static_cast<size_t>(i)] = const_cast<char *>(data_strips[static_cast<size_t>(i)].data());
-    for (int j = 0; j < g_m + l; ++j)
-      cptrs[static_cast<size_t>(j)] = coding[static_cast<size_t>(j)].data();
-    if (!encode(k, g_m, l, dptrs.data(), cptrs.data(), strip_size, et))
+    const int coding_rows = g_m + l;
+    if (k <= 0 || k > 64 || coding_rows <= 0 || coding_rows > 64 || strip_size <= 0)
+    {
+      std::cerr << "[CoRD-PLAN][MATRIX_ENCODE_REJECT] invalid_dims k=" << k << " g_m=" << g_m << " l=" << l
+                << " strip_size=" << strip_size << std::endl;
       return false;
-    coding_out->resize(static_cast<size_t>(g_m + l));
-    for (int j = 0; j < g_m + l; ++j)
-      (*coding_out)[static_cast<size_t>(j)].assign(coding[static_cast<size_t>(j)].begin(),
-                                                    coding[static_cast<size_t>(j)].end());
+    }
+    const uint64_t cap = cord_xfer_max_resize_bytes();
+    const uint64_t coding_bytes = static_cast<uint64_t>(coding_rows) * static_cast<uint64_t>(strip_size);
+    const uint64_t data_bytes = static_cast<uint64_t>(k) * static_cast<uint64_t>(strip_size);
+    if (coding_bytes > cap || data_bytes > cap)
+    {
+      std::cerr << "[CoRD-PLAN][MATRIX_ENCODE_REJECT] too_large k=" << k << " rows=" << coding_rows
+                << " strip_size=" << strip_size << " data_bytes=" << data_bytes << " coding_bytes=" << coding_bytes
+                << " cap=" << cap << std::endl;
+      return false;
+    }
+    std::cout << "[CoRD-PLAN][MATRIX_ENCODE] k=" << k << " rows=" << coding_rows << " strip_size=" << strip_size
+              << " data_bytes=" << data_bytes << " coding_bytes=" << coding_bytes << std::endl;
+    try
+    {
+      std::vector<char *> dptrs(static_cast<size_t>(k));
+      std::vector<std::vector<char>> coding(static_cast<size_t>(coding_rows), std::vector<char>(strip_size));
+      std::vector<char *> cptrs(static_cast<size_t>(coding_rows));
+      for (int i = 0; i < k; ++i)
+        dptrs[static_cast<size_t>(i)] = const_cast<char *>(data_strips[static_cast<size_t>(i)].data());
+      for (int j = 0; j < coding_rows; ++j)
+        cptrs[static_cast<size_t>(j)] = coding[static_cast<size_t>(j)].data();
+      if (!encode(k, g_m, l, dptrs.data(), cptrs.data(), strip_size, et))
+        return false;
+      coding_out->resize(static_cast<size_t>(coding_rows));
+      for (int j = 0; j < coding_rows; ++j)
+        (*coding_out)[static_cast<size_t>(j)].assign(coding[static_cast<size_t>(j)].begin(),
+                                                      coding[static_cast<size_t>(j)].end());
+    }
+    catch (const std::bad_alloc &e)
+    {
+      std::cerr << "[CoRD-PLAN][BAD_ALLOC] matrix_encode k=" << k << " rows=" << coding_rows
+                << " strip_size=" << strip_size << " err=" << e.what() << std::endl;
+      return false;
+    }
     return true;
   }
 
@@ -804,7 +900,20 @@ namespace ECProject
     const int k = meta.k();
     const int ps = meta.parity_slice_size();
     const int po = meta.parity_slice_offset();
-    std::vector<std::vector<char>> strips(static_cast<size_t>(k), std::vector<char>(static_cast<size_t>(ps), 0));
+    std::cout << "[CoRD-PLAN][COLLECTOR_ENCODE_BEGIN] plan=" << plan.plan_key() << " grp=" << group
+              << " col_blk=" << collector_block_id << " pig=" << parity_ingest_stripe_group << " k=" << k
+              << " ps=" << ps << " po=" << po << std::endl;
+    std::vector<std::vector<char>> strips;
+    try
+    {
+      strips.assign(static_cast<size_t>(k), std::vector<char>(static_cast<size_t>(ps), 0));
+    }
+    catch (const std::bad_alloc &e)
+    {
+      std::cerr << "[CoRD-PLAN][BAD_ALLOC] collector_strips k=" << k << " ps=" << ps << " err=" << e.what()
+                << std::endl;
+      return false;
+    }
     for (int didx = 0; didx < plan.cord_data_strip_descs_size(); ++didx)
     {
       const auto &desc = plan.cord_data_strip_descs(didx);
@@ -916,6 +1025,12 @@ namespace ECProject
       return false;
     const uint64_t off = request.chunk_byte_offset();
     const uint64_t need = off + static_cast<uint64_t>(payload_len);
+    std::ostringstream ctx;
+    ctx << "plan=" << request.plan_key() << " grp=" << request.group_index()
+        << " col_blk=" << request.collector_block_id() << " src_blk=" << request.src_data_block_id() << " off=" << off
+        << " payload_len=" << payload_len << " need=" << need
+        << " xor_hint=" << request.xor_accum_byte_length();
+    const std::string ctx_s = ctx.str();
     std::lock_guard<std::mutex> lk(g_cord_xfer_mu);
     if (request.src_data_block_id() >= 0)
     {
@@ -924,7 +1039,10 @@ namespace ECProject
                                        request.src_data_block_id());
       auto &bd = g_cord_collector_block_delta[bkey];
       if (bd.size() < static_cast<size_t>(need))
-        bd.resize(static_cast<size_t>(need), 0);
+      {
+        if (!cord_xfer_safe_resize(bd, static_cast<size_t>(need), "collector_block_delta", ctx_s))
+          return false;
+      }
       std::memcpy(bd.data() + static_cast<size_t>(off), payload, payload_len);
     }
     if (!cord_uses_matrix_encode(*pl))
@@ -934,9 +1052,15 @@ namespace ECProject
       auto &acc = g_cord_collector_xor_acc[key];
       const uint64_t hint = request.xor_accum_byte_length();
       if (hint > 0u && acc.size() < static_cast<size_t>(hint))
-        acc.resize(static_cast<size_t>(hint), 0);
+      {
+        if (!cord_xfer_safe_resize(acc, static_cast<size_t>(hint), "collector_xor_acc_hint", ctx_s))
+          return false;
+      }
       if (acc.size() < static_cast<size_t>(need))
-        acc.resize(static_cast<size_t>(need), 0);
+      {
+        if (!cord_xfer_safe_resize(acc, static_cast<size_t>(need), "collector_xor_acc_need", ctx_s))
+          return false;
+      }
       for (size_t i = 0; i < payload_len; ++i)
         acc[static_cast<size_t>(off) + i] ^=
             static_cast<uint8_t>(payload[i]);
@@ -984,7 +1108,12 @@ namespace ECProject
       auto &stream = g_cord_mst_stream[pk];
       const uint64_t need = off + static_cast<uint64_t>(chunk_size);
       if (stream.size() < static_cast<size_t>(need))
-        stream.resize(static_cast<size_t>(need), 0);
+      {
+        const std::string ctx = "plan=" + pk + " off=" + std::to_string(off) + " chunk_size=" +
+                                std::to_string(chunk_size) + " need=" + std::to_string(need);
+        if (!cord_xfer_safe_resize(stream, static_cast<size_t>(need), "mst_stream", ctx))
+          return false;
+      }
       for (size_t i = 0; i < chunk_size; ++i)
         stream[static_cast<size_t>(off) + i] = static_cast<uint8_t>(chunk_data[i]);
     }
@@ -1272,7 +1401,18 @@ namespace ECProject
 
           // 1) 从本地 datanode 读 delta blob
           const auto t_read0 = std::chrono::steady_clock::now();
-          std::vector<char> buf(chunk_len);
+          std::vector<char> buf;
+          {
+            const std::string buf_ctx = "step=" + std::to_string(st.step_index()) + " STAR_DATA chunk_len=" +
+                                        std::to_string(chunk_len) + " abs_off=" + std::to_string(abs_off);
+            if (!cord_xfer_safe_resize(buf, chunk_len, "step_star_data_buf", buf_ctx))
+            {
+              plan_log_both_sync("FAIL STAR_DATA_TO_CENTER buf_alloc step=" + std::to_string(st.step_index()) +
+                           " chunk_len=" + std::to_string(chunk_len));
+              stats.failed = 1;
+              return stats;
+            }
+          }
           if (!proxy->CordRangeReadFromDatanode(blob_key, 0, static_cast<int>(abs_off), buf.data(), chunk_len,
                                                 dn_ip.c_str(), dn_port))
           {
@@ -1326,7 +1466,18 @@ namespace ECProject
              st.link_kind() == proxy_proto::CORD_TRANSFER_STAR_CENTER_TO_LOCAL))
         {
           const auto t_compute0 = std::chrono::steady_clock::now();
-          std::vector<char> buf(chunk_len);
+          std::vector<char> buf;
+          {
+            const std::string buf_ctx = "step=" + std::to_string(st.step_index()) + " PARITY_FANOUT chunk_len=" +
+                                        std::to_string(chunk_len);
+            if (!cord_xfer_safe_resize(buf, chunk_len, "step_parity_fanout_buf", buf_ctx))
+            {
+              plan_log_both_sync("FAIL PARITY_FANOUT buf_alloc step=" + std::to_string(st.step_index()) +
+                           " chunk_len=" + std::to_string(chunk_len));
+              stats.failed = 1;
+              return stats;
+            }
+          }
           bool filled = false;
           std::string parity_compute_src;
           const int parity_payload_abs_lo = cord_plan_parity_payload_abs_lo(plan, st);
@@ -1482,7 +1633,18 @@ namespace ECProject
         // ---------- N=1：MST 上全程传输数据增量 ----------
         if (st.link_kind() == proxy_proto::CORD_TRANSFER_MST_FORWARD)
         {
-          std::vector<char> buf(chunk_len);
+          std::vector<char> buf;
+          {
+            const std::string buf_ctx =
+                "step=" + std::to_string(st.step_index()) + " MST_FORWARD chunk_len=" + std::to_string(chunk_len);
+            if (!cord_xfer_safe_resize(buf, chunk_len, "step_mst_forward_buf", buf_ctx))
+            {
+              plan_log_both_sync("FAIL MST_FORWARD buf_alloc step=" + std::to_string(st.step_index()) +
+                           " chunk_len=" + std::to_string(chunk_len));
+              stats.failed = 1;
+              return stats;
+            }
+          }
           std::string mst_buf_src;
           double read_ms = 0.0;
           if (st.src_block_id() < k)
@@ -1729,7 +1891,14 @@ namespace ECProject
       std::vector<char> payload;
       if (payload_len > 0)
       {
-        payload.resize(static_cast<size_t>(payload_len));
+        const std::string ctx = "xfer_tag=" + std::to_string(xfer_tag) + " kind=" + std::to_string(kind) +
+                                " meta_len=" + std::to_string(meta_len) + " payload_len=" +
+                                std::to_string(payload_len);
+        if (!cord_xfer_safe_resize(payload, static_cast<size_t>(payload_len), "crdx_tcp_payload", ctx))
+        {
+          asio::write(socket, asio::buffer(&ack, 1));
+          return;
+        }
         asio::read(socket, asio::buffer(payload.data(), static_cast<size_t>(payload_len)));
       }
       bool ok = false;
@@ -1762,6 +1931,18 @@ namespace ECProject
       }
       ack = ok ? 0 : 1;
       asio::write(socket, asio::buffer(&ack, 1));
+    }
+    catch (const std::bad_alloc &e)
+    {
+      std::cerr << "[CoRD-PLAN][BAD_ALLOC] cord_handle_xfer_tcp_connection err=" << e.what() << std::endl;
+      try
+      {
+        ack = 1;
+        asio::write(socket, asio::buffer(&ack, 1));
+      }
+      catch (...)
+      {
+      }
     }
     catch (...)
     {
@@ -1909,7 +2090,7 @@ namespace ECProject
       // gRPC notify in parallel with TCP data transfer (same pattern as RecoveryToDatanode)
       std::thread notify_datanode_thread([this, &context, &append_info, &result, &node_ip_port, block_key, block_id]()
       {
-        grpc::Status stat = m_datanode_ptrs[node_ip_port]->handleAppend(&context, append_info, &result);
+      grpc::Status stat = m_datanode_ptrs[node_ip_port]->handleAppend(&context, append_info, &result);
         if (!stat.ok())
         {
           std::cout << "[AppendToDatanode] notify datanode failed! block_key: " << block_key << " block_id: " << block_id << std::endl;
@@ -2347,7 +2528,7 @@ namespace ECProject
       std::string node_ip_port = std::string(ip) + ":" + std::to_string(port);
       grpc::Status stat = m_datanode_ptrs[node_ip_port]->handleCordRangeRead(&context, info, &result);
       if (!stat.ok() || !result.message())
-        return false;
+    return false;
       const uint64_t xfer_tag = result.cord_tcp_xfer_tag();
       if (xfer_tag == 0)
         return false;
@@ -2388,7 +2569,7 @@ namespace ECProject
       std::string node_ip_port = std::string(ip) + ":" + std::to_string(port);
       grpc::Status stat = m_datanode_ptrs[node_ip_port]->handleCordRangeWrite(&context, info, &result);
       if (!stat.ok() || !result.message())
-        return false;
+    return false;
       const uint64_t xfer_tag = result.cord_tcp_xfer_tag();
       if (xfer_tag == 0)
         return false;
@@ -2427,7 +2608,7 @@ namespace ECProject
       std::string node_ip_port = std::string(ip) + ":" + std::to_string(port);
       grpc::Status stat = m_datanode_ptrs[node_ip_port]->handleCordDeltaBlob(&context, info, &result);
       if (!stat.ok() || !result.message())
-        return false;
+    return false;
       const uint64_t xfer_tag = result.cord_tcp_xfer_tag();
       if (xfer_tag == 0)
         return false;
@@ -3088,26 +3269,26 @@ namespace ECProject
           auto block_buf = std::make_shared<std::vector<char>>(this_size);
 
           asio::read(socket_data, asio::buffer(block_buf->data(), this_size), error);
-          if (error == asio::error::eof)
-          {
+        if (error == asio::error::eof)
+        {
             std::cout << "error == asio::error::eof (block " << j << ")" << std::endl;
-          }
-          else if (error)
-          {
-            throw asio::system_error(error);
-          }
+        }
+        else if (error)
+        {
+          throw asio::system_error(error);
+        }
 
-          if (IF_DEBUG)
-          {
-            std::cout << "[Proxy" << m_self_cluster_id << "][Append339]"
+        if (IF_DEBUG)
+        {
+          std::cout << "[Proxy" << m_self_cluster_id << "][Append339]"
                       << " received block " << j << " size=" << this_size << std::endl;
           }
 
           // 立即启动写线程，不等待后续 block
           senders.emplace_back([this, placement_copy, j, block_buf, is_serialized]() {
-            if (IF_DEBUG)
-            {
-              std::cout << "[Proxy" << m_self_cluster_id << "][Append353]"
+          if (IF_DEBUG)
+          {
+            std::cout << "[Proxy" << m_self_cluster_id << "][Append353]"
                         << "Append to Block " << placement_copy->blockkeys(j)
                         << " offset=" << placement_copy->offsets(j) << std::endl;
             }
