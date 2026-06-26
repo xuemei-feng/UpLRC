@@ -21,6 +21,7 @@
 #include <memory>
 #include <mutex>
 #include <cstring>
+#include <cstdlib>
 #include <ctime>
 #include <arpa/inet.h>
 #include <sys/socket.h>
@@ -75,6 +76,27 @@ namespace ECProject
   static std::map<std::string, std::shared_ptr<const proxy_proto::CordTransferPlan>> g_cord_plans_by_key;
   static std::mutex g_cord_plan_exec_mu;
   static std::unordered_map<std::string, std::thread> g_cord_plan_exec_threads;
+
+  /** CoRD local update：同一 datanode endpoint 上 range read/write 串行，不同 endpoint 可并行。 */
+  static std::mutex g_cord_dn_endpoint_map_mu;
+  static std::map<std::string, std::shared_ptr<std::mutex>> g_cord_dn_endpoint_mu;
+
+  static std::shared_ptr<std::mutex> cord_dn_endpoint_mu_for(const std::string &endpoint)
+  {
+    std::lock_guard<std::mutex> lk(g_cord_dn_endpoint_map_mu);
+    auto &p = g_cord_dn_endpoint_mu[endpoint];
+    if (!p)
+      p = std::make_shared<std::mutex>();
+    return p;
+  }
+
+  static bool cord_update_slice_parallel_enabled()
+  {
+    const char *env = std::getenv("CORD_UPDATE_SLICE_PARALLEL");
+    if (env == nullptr || env[0] == '\0')
+      return true;
+    return std::strcmp(env, "0") != 0 && std::strcmp(env, "false") != 0 && std::strcmp(env, "FALSE") != 0;
+  }
 
   static std::string cord_plan_wall_ts_ms();
 
@@ -2472,31 +2494,104 @@ namespace ECProject
         std::vector<char *> slices =
             m_toolbox->splitCharPointer(buf.data(), static_cast<size_t>(payload_size), sizes);
 
-        std::vector<char> delta_concat;
-        delta_concat.reserve(static_cast<size_t>(payload_size));
-        for (int j = 0; j < slice_num; ++j)
-        {
+        struct CordUpdateSliceResult {
+          bool ok = false;
+          std::vector<char> delta;
+        };
+
+        auto build_delta_for_slice = [&](int j, CordUpdateSliceResult *out) -> bool {
           const size_t slen = sizes[static_cast<size_t>(j)];
           std::vector<char> oldbuf(slen);
-          if (!CordRangeReadFromDatanode(placement_copy->blockkeys(j), placement_copy->blockids(j),
-                                        static_cast<int>(placement_copy->offsets(j)), oldbuf.data(), slen,
-                                        placement_copy->datanodeip(j).c_str(), placement_copy->datanodeport(j)))
+          const std::string ep = placement_copy->datanodeip(j) + ":" + std::to_string(placement_copy->datanodeport(j));
+          const auto endpoint_mu = cord_dn_endpoint_mu_for(ep);
           {
-            std::cout << "[CoRD][Proxy] range read failed slice " << j << std::endl;
-            return;
+            std::lock_guard<std::mutex> dn_lk(*endpoint_mu);
+            if (!CordRangeReadFromDatanode(placement_copy->blockkeys(j), placement_copy->blockids(j),
+                                           static_cast<int>(placement_copy->offsets(j)), oldbuf.data(), slen,
+                                           placement_copy->datanodeip(j).c_str(), placement_copy->datanodeport(j)))
+            {
+              std::cout << "[CoRD][Proxy] range read failed slice " << j << std::endl;
+              return false;
+            }
+            if (!CordRangeWriteToDatanode(placement_copy->blockkeys(j), placement_copy->blockids(j),
+                                          static_cast<int>(placement_copy->offsets(j)), slices[static_cast<size_t>(j)],
+                                          slen, placement_copy->datanodeip(j).c_str(), placement_copy->datanodeport(j)))
+            {
+              std::cout << "[CoRD][Proxy] range write failed slice " << j << std::endl;
+              return false;
+            }
           }
-          // std::cout << "[CoRD-DATA][" << proxy_ip_port << "] data_blk=" << placement_copy->blockids(j)
-          //           << " key=" << placement_copy->blockkeys(j) << " off=" << placement_copy->offsets(j)
-          //           << " len=" << slen << " BEFORE_disk_hex=" << cord_dbg_hex_preview(oldbuf.data(), slen)
-          //           << " new_slice_hex=" << cord_dbg_hex_preview(slices[static_cast<size_t>(j)], slen) << std::endl;
+          out->delta.resize(slen);
           for (size_t u = 0; u < slen; ++u)
-            delta_concat.push_back(static_cast<char>(oldbuf[u] ^ slices[static_cast<size_t>(j)][u]));
-          if (!CordRangeWriteToDatanode(placement_copy->blockkeys(j), placement_copy->blockids(j),
-                                        static_cast<int>(placement_copy->offsets(j)), slices[static_cast<size_t>(j)],
-                                        slen, placement_copy->datanodeip(j).c_str(), placement_copy->datanodeport(j)))
+            out->delta[u] = static_cast<char>(oldbuf[u] ^ slices[static_cast<size_t>(j)][u]);
+          out->ok = true;
+          return true;
+        };
+
+        std::vector<char> delta_concat;
+        delta_concat.reserve(static_cast<size_t>(payload_size));
+
+        const bool use_slice_parallel = cord_update_slice_parallel_enabled() && slice_num > 1;
+        if (!use_slice_parallel)
+        {
+          for (int j = 0; j < slice_num; ++j)
           {
-            std::cout << "[CoRD][Proxy] range write failed slice " << j << std::endl;
+            CordUpdateSliceResult one{};
+            if (!build_delta_for_slice(j, &one))
+              return;
+            delta_concat.insert(delta_concat.end(), one.delta.begin(), one.delta.end());
+          }
+        }
+        else
+        {
+          std::map<std::string, std::vector<int>> slices_by_endpoint;
+          for (int j = 0; j < slice_num; ++j)
+          {
+            const std::string ep =
+                placement_copy->datanodeip(j) + ":" + std::to_string(placement_copy->datanodeport(j));
+            slices_by_endpoint[ep].push_back(j);
+          }
+          if (IF_DEBUG)
+          {
+            std::cout << "[CoRD-DATA][" << proxy_ip_port << "] slice_parallel endpoints=" << slices_by_endpoint.size()
+                      << " slices=" << slice_num << " stripe_id=" << stripe_id << std::endl;
+          }
+
+          std::vector<CordUpdateSliceResult> slice_results(static_cast<size_t>(slice_num));
+          std::atomic<bool> update_failed{false};
+          std::vector<std::thread> slice_workers;
+          slice_workers.reserve(slices_by_endpoint.size());
+          for (const auto &entry : slices_by_endpoint)
+          {
+            const std::vector<int> indices = entry.second;
+            slice_workers.emplace_back([&build_delta_for_slice, &slice_results, &update_failed, indices]() {
+              for (int j : indices)
+              {
+                if (update_failed.load(std::memory_order_relaxed))
+                  return;
+                CordUpdateSliceResult one{};
+                if (!build_delta_for_slice(j, &one))
+                {
+                  update_failed.store(true, std::memory_order_relaxed);
+                  return;
+                }
+                slice_results[static_cast<size_t>(j)] = std::move(one);
+              }
+            });
+          }
+          for (auto &th : slice_workers)
+            th.join();
+          if (update_failed.load(std::memory_order_relaxed))
             return;
+          for (int j = 0; j < slice_num; ++j)
+          {
+            const auto &one = slice_results[static_cast<size_t>(j)];
+            if (!one.ok)
+            {
+              std::cout << "[CoRD][Proxy] slice result missing index " << j << std::endl;
+              return;
+            }
+            delta_concat.insert(delta_concat.end(), one.delta.begin(), one.delta.end());
           }
         }
         if (!CordDeltaBlobToDatanode(placement_copy->delta_blob_key(), delta_concat.data(), delta_concat.size(),
