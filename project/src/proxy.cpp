@@ -162,7 +162,7 @@ namespace ECProject
       --tr->parity_dn_write_inflight;
   }
 
-  /** 步骤循环结束后调用：等待本机入站 parity 写盘+校验读收尾，再打 pure_xfer 日志，并发布 join 回报样本。 */
+  /** 步骤循环结束后调用：等待本机入站 parity 写盘收尾，再打 pure_xfer 日志，并发布 join 回报样本。 */
   static void cord_pure_xfer_log_after_sender_loop(const std::string &pk, const std::string &proxy_tag,
                                                    std::chrono::steady_clock::time_point sender_loop_done,
                                                    std::chrono::system_clock::time_point sender_wall_done)
@@ -2032,15 +2032,6 @@ namespace ECProject
             std::cout << "[CoRD][Proxy] range write failed slice " << j << std::endl;
             return;
           }
-          std::vector<char> verify_new(slen);
-          if (CordRangeReadFromDatanode(placement_copy->blockkeys(j), placement_copy->blockids(j),
-                                        static_cast<int>(placement_copy->offsets(j)), verify_new.data(), slen,
-                                        placement_copy->datanodeip(j).c_str(), placement_copy->datanodeport(j)))
-          {
-            // std::cout << "[CoRD-DATA][" << proxy_ip_port << "] data_blk=" << placement_copy->blockids(j)
-            //           << " off=" << placement_copy->offsets(j) << " len=" << slen
-            //           << " AFTER_disk_hex=" << cord_dbg_hex_preview(verify_new.data(), slen) << std::endl;
-          }
         }
         if (!CordDeltaBlobToDatanode(placement_copy->delta_blob_key(), delta_concat.data(), delta_concat.size(),
                                      placement_copy->delta_datanode_ip().c_str(),
@@ -2251,15 +2242,6 @@ namespace ECProject
       cord_pure_xfer_parity_dn_abort(request->plan_key());
       return grpc::Status(grpc::StatusCode::INTERNAL, "write parity failed");
     }
-    std::vector<char> verify(static_cast<size_t>(psz));
-    if (CordRangeReadFromDatanode(request->block_key(), request->dst_block_id(), request->parity_slice_offset(),
-                                  verify.data(), static_cast<size_t>(psz), request->datanode_ip().c_str(),
-                                  request->datanode_port()))
-    {
-      // std::cout << "[CoRD-PLAN][" << proxy_ip_port << "] parity_blk=" << request->dst_block_id()
-      //           << " off=" << request->parity_slice_offset() << " AFTER_disk_hex="
-      //           << cord_dbg_hex_preview(verify.data(), verify.size()) << std::endl;
-    }
     cord_pure_xfer_parity_dn_done_verified(request->plan_key());
     response->set_ifcommit(true);
     return grpc::Status::OK;
@@ -2361,16 +2343,6 @@ namespace ECProject
               cord_pure_xfer_parity_dn_abort(pk);
               return grpc::Status(grpc::StatusCode::INTERNAL, "write parity failed (mst mat)");
             }
-            {
-              std::vector<char> mst_pv(static_cast<size_t>(plen));
-              if (CordRangeReadFromDatanode(request->parity_block_key(), request->dst_block_id(), po + poff,
-                                            mst_pv.data(), static_cast<size_t>(plen), request->parity_datanode_ip().c_str(),
-                                            request->parity_datanode_port()))
-              {
-                // std::cout << "[CoRD-PLAN][" << proxy_ip_port << "] MST_matrix AFTER parity_blk=" << request->dst_block_id()
-                //           << " disk_hex=" << cord_dbg_hex_preview(mst_pv.data(), mst_pv.size()) << std::endl;
-              }
-            }
             cord_pure_xfer_parity_dn_done_verified(pk);
           }
           else
@@ -2414,16 +2386,6 @@ namespace ECProject
           {
             cord_pure_xfer_parity_dn_abort(pk);
             return grpc::Status(grpc::StatusCode::INTERNAL, "write parity failed (mst)");
-          }
-          {
-            std::vector<char> mst_lv(static_cast<size_t>(psz));
-            if (CordRangeReadFromDatanode(request->parity_block_key(), request->dst_block_id(), slice_off, mst_lv.data(),
-                                          static_cast<size_t>(psz), request->parity_datanode_ip().c_str(),
-                                          request->parity_datanode_port()))
-            {
-              // std::cout << "[CoRD-PLAN][" << proxy_ip_port << "] MST_xor AFTER parity_blk=" << request->dst_block_id()
-              //           << " disk_hex=" << cord_dbg_hex_preview(mst_lv.data(), mst_lv.size()) << std::endl;
-            }
           }
           cord_pure_xfer_parity_dn_done_verified(pk);
         }
@@ -2494,15 +2456,6 @@ namespace ECProject
           {
             std::cout << "[CoRD-LP][Proxy] write LP blk " << it.local_block_id() << " failed" << std::endl;
             continue;
-          }
-          std::vector<char> lp_verify(static_cast<size_t>(psz));
-          if (CordRangeReadFromDatanode(it.local_block_key(), it.local_block_id(), it.parity_slice_offset(),
-                                        lp_verify.data(), static_cast<size_t>(psz), it.local_datanode_ip().c_str(),
-                                        it.local_datanode_port()))
-          {
-            // std::cout << "[CoRD-LP][" << proxy_ip_port << "] AFTER_local_parity_write blk=" << it.local_block_id()
-            //           << " off=" << it.parity_slice_offset() << " len=" << psz
-            //           << " disk_hex=" << cord_dbg_hex_preview(lp_verify.data(), lp_verify.size()) << std::endl;
           }
           if (IF_DEBUG)
             std::cout << "[CoRD-LP][Proxy] LP blk " << it.local_block_id() << " off=" << it.parity_slice_offset()

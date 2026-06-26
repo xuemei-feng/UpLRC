@@ -8,7 +8,7 @@
 #include <assert.h>
 #include <chrono>
 #include <iomanip>
-#include <random>
+#include <cstring>
 #include <sstream>
 #include <sys/socket.h>
 #include "unilrc_encoder.h"
@@ -1205,33 +1205,29 @@ namespace ECProject
       return true;
     }
 
-    std::vector<char> owned_random;
+    std::vector<char> owned_payload;
     const char *payload_send = update_payload;
     if (update_payload == nullptr)
     {
       if (update_payload_bytes != 0)
       {
-        std::cout << "[CoRD] auto random payload: require update_payload_bytes==0 when payload is null" << std::endl;
+        std::cout << "[CoRD] auto fill payload: require update_payload_bytes==0 when payload is null" << std::endl;
         cord_fill_timing(partial_timing, pending->wall_t0, pending->plan_sec, pending->payload_prep_sec,
                          pending->upload_sec, 0.0, 0.0);
         return false;
       }
       const auto prep_t0 = std::chrono::steady_clock::now();
-      owned_random.resize(static_cast<size_t>(reply.sum_append_size()));
-      std::random_device rd;
-      std::mt19937 gen(rd());
-      std::uniform_int_distribution<unsigned> dist(0, 255);
-      for (size_t i = 0; i < owned_random.size(); ++i)
-        owned_random[i] = static_cast<char>(static_cast<unsigned char>(dist(gen)));
+      owned_payload.resize(static_cast<size_t>(reply.sum_append_size()));
+      std::memset(owned_payload.data(), 0xbb, owned_payload.size());
       pending->payload_prep_sec = std::chrono::duration<double>(std::chrono::steady_clock::now() - prep_t0).count();
-      payload_send = owned_random.data();
+      payload_send = owned_payload.data();
       std::cout << "[CoRD][Client " << m_clientID << "] stripe_id=" << stripe_id
-                << " auto random payload total_bytes=" << owned_random.size() << " intervals:";
+                << " auto 0xBB fill payload total_bytes=" << owned_payload.size() << " intervals:";
       for (const auto &r : logical_ranges)
         std::cout << " [" << r.first << "," << r.second << ")";
       std::cout << '\n'
-                << "[CoRD][Client " << m_clientID << "] random_payload_preview="
-                << cord_client_hex_preview(owned_random.data(), owned_random.size()) << std::endl;
+                << "[CoRD][Client " << m_clientID << "] fill_payload_preview="
+                << cord_client_hex_preview(owned_payload.data(), owned_payload.size()) << std::endl;
     }
     else if (update_payload_bytes != static_cast<size_t>(reply.sum_append_size()))
     {
