@@ -191,7 +191,7 @@ namespace ECProject
     void update_stripe_info_in_node(int t_node_id, int stripe_id, int index);
     int getClusterAppendSize(Stripe *stripe, const std::map<int, std::pair<int, int>> &block_to_slice_sizes, int curr_group_id, int parity_slice_size);
     void notify_proxies_ready(const proxy_proto::AppendStripeDataPlacement &plan);
-    void notify_proxies_cord_ready(const proxy_proto::CordDataUpdatePlacement &plan);
+    bool notify_proxies_cord_ready(const proxy_proto::CordDataUpdatePlacement &plan);
     void notify_proxies_cord_transfer_plan(const proxy_proto::CordTransferPlan &plan);
     /** 若 plan 仍在 pending 表，取出并 notify；已 auto-start 则返回 false。 */
     bool cord_start_pending_transfer_plan(const std::string &plan_key);

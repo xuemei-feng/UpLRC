@@ -14,6 +14,7 @@
 #include <stdexcept>
 #include <numeric>
 #include <algorithm>
+#include <thread>
 #include <tuple>
 #include <google/protobuf/repeated_field.h>
 
@@ -1712,7 +1713,7 @@ namespace ECProject  //定义一个名为 ECProject 的命名空间，防止命�
     return append_plans;
   }
 
-  void CoordinatorImpl::notify_proxies_cord_ready(const proxy_proto::CordDataUpdatePlacement &plan)
+  bool CoordinatorImpl::notify_proxies_cord_ready(const proxy_proto::CordDataUpdatePlacement &plan)
   {
     grpc::ClientContext cont;
     proxy_proto::SetReply set_reply;
@@ -1726,11 +1727,11 @@ namespace ECProject  //定义一个名为 ECProject 的命名空间，防止命�
       m_object_updating_table[plan.key()] =
           ObjectInfo(static_cast<int>(plan.update_payload_size()), plan.stripe_id());
       m_mutex.unlock();
+      return true;
     }
-    else
-    {
-      std::cout << "[CoRD] scheduleCordDataUpdate key=" << plan.key() << " failed" << std::endl;
-    }
+    std::cout << "[CoRD] scheduleCordDataUpdate key=" << plan.key() << " failed: " << status.error_message()
+              << std::endl;
+    return false;
   }
 
   void CoordinatorImpl::notify_proxies_cord_transfer_plan(const proxy_proto::CordTransferPlan &plan)
@@ -2331,9 +2332,15 @@ namespace ECProject  //定义一个名为 ECProject 的命名空间，防止命�
       }
     }
 
-    std::cout << "[CoRD] Delta store dispatch: " << sorted_clusters.size() << " clusters\n";
-    std::vector<std::string> cord_delta_append_keys;
-    cord_delta_append_keys.reserve(sorted_clusters.size());
+    std::cout << "[CoRD] Delta store dispatch: " << sorted_clusters.size() << " clusters (parallel notify)\n";
+    struct CordDeltaNotifyJob {
+      proxy_proto::CordDataUpdatePlacement plan;
+      int cid = -1;
+      uint64_t cluster_payload = 0;
+      bool ok = false;
+    };
+    std::vector<CordDeltaNotifyJob> notify_jobs;
+    notify_jobs.reserve(sorted_clusters.size());
     for (const auto &plan_entry : sorted_clusters)
     {
       const int cid = plan_entry.first;
@@ -2343,14 +2350,15 @@ namespace ECProject  //定义一个名为 ECProject 的命名空间，防止命�
       {
         return grpc::Status(grpc::StatusCode::INTERNAL, "cluster has no datanode for CoRD delta store");
       }
-      proxy_proto::CordDataUpdatePlacement plan;
+      CordDeltaNotifyJob job;
+      job.cid = cid;
+      proxy_proto::CordDataUpdatePlacement &plan = job.plan;
       plan.set_key(m_toolbox->gen_cord_key(stripe_id, cid));
       plan.set_cluster_id(cid);
       plan.set_stripe_id(stripe_id);
-      uint64_t cluster_payload = 0;
       for (const auto &s : slices)
-        cluster_payload += static_cast<uint64_t>(s.len);
-      plan.set_update_payload_size(cluster_payload);
+        job.cluster_payload += static_cast<uint64_t>(s.len);
+      plan.set_update_payload_size(job.cluster_payload);
       const int delta_node_id = m_cluster_table[cid].nodes.front();
       const Node &delta_node = m_node_table[delta_node_id];
       plan.set_delta_blob_key(plan.key() + "_delta");
@@ -2372,15 +2380,36 @@ namespace ECProject  //定义一个名为 ECProject 的命名空间，防止命�
       m_object_commit_table.erase(plan.key());
       m_mutex.unlock();
 
-      std::thread t(&CoordinatorImpl::notify_proxies_cord_ready, this, plan);
-      t.join();
+      notify_jobs.push_back(std::move(job));
+    }
 
-      proxyIPPort->add_append_keys(plan.key());
-      proxyIPPort->add_proxyips(m_cluster_table[cid].proxy_ip);
-      proxyIPPort->add_proxyports(m_cluster_table[cid].proxy_port + ECProject::PROXY_PORT_SHIFT);
-      proxyIPPort->add_cluster_slice_sizes(cluster_payload);
-      proxyIPPort->add_group_ids(cid);
-      cord_delta_append_keys.push_back(plan.key());
+    std::vector<std::thread> notify_threads;
+    notify_threads.reserve(notify_jobs.size());
+    for (auto &job : notify_jobs)
+    {
+      notify_threads.emplace_back([this, &job]() {
+        job.ok = notify_proxies_cord_ready(job.plan);
+      });
+    }
+    for (auto &th : notify_threads)
+      th.join();
+
+    std::vector<std::string> cord_delta_append_keys;
+    cord_delta_append_keys.reserve(notify_jobs.size());
+    for (const auto &job : notify_jobs)
+    {
+      if (!job.ok)
+      {
+        return grpc::Status(grpc::StatusCode::INTERNAL,
+                            "scheduleCordDataUpdate failed for cluster " + std::to_string(job.cid) +
+                                " key=" + job.plan.key());
+      }
+      proxyIPPort->add_append_keys(job.plan.key());
+      proxyIPPort->add_proxyips(m_cluster_table[job.cid].proxy_ip);
+      proxyIPPort->add_proxyports(m_cluster_table[job.cid].proxy_port + ECProject::PROXY_PORT_SHIFT);
+      proxyIPPort->add_cluster_slice_sizes(job.cluster_payload);
+      proxyIPPort->add_group_ids(job.cid);
+      cord_delta_append_keys.push_back(job.plan.key());
     }
     proxyIPPort->set_sum_append_size(sum_update_bytes);
     if (cord_xfer_plan.steps_size() > 0)
