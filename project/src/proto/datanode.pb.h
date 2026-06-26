@@ -367,6 +367,7 @@ class RequestResult final :
     kDiskIoStartTimeFieldNumber = 3,
     kDiskIoEndTimeFieldNumber = 4,
     kGrpcStartTimeFieldNumber = 5,
+    kCordTcpXferTagFieldNumber = 6,
   };
   // bool message = 1;
   void clear_message();
@@ -413,6 +414,15 @@ class RequestResult final :
   void _internal_set_grpc_start_time(double value);
   public:
 
+  // uint64 cord_tcp_xfer_tag = 6;
+  void clear_cord_tcp_xfer_tag();
+  uint64_t cord_tcp_xfer_tag() const;
+  void set_cord_tcp_xfer_tag(uint64_t value);
+  private:
+  uint64_t _internal_cord_tcp_xfer_tag() const;
+  void _internal_set_cord_tcp_xfer_tag(uint64_t value);
+  public:
+
   // @@protoc_insertion_point(class_scope:datanode_proto.RequestResult)
  private:
   class _Internal;
@@ -426,6 +436,7 @@ class RequestResult final :
     double disk_io_start_time_;
     double disk_io_end_time_;
     double grpc_start_time_;
+    uint64_t cord_tcp_xfer_tag_;
     mutable ::PROTOBUF_NAMESPACE_ID::internal::CachedSize _cached_size_;
   };
   union { Impl_ _impl_; };
@@ -1927,6 +1938,26 @@ inline void RequestResult::_internal_set_grpc_start_time(double value) {
 inline void RequestResult::set_grpc_start_time(double value) {
   _internal_set_grpc_start_time(value);
   // @@protoc_insertion_point(field_set:datanode_proto.RequestResult.grpc_start_time)
+}
+
+// uint64 cord_tcp_xfer_tag = 6;
+inline void RequestResult::clear_cord_tcp_xfer_tag() {
+  _impl_.cord_tcp_xfer_tag_ = uint64_t{0u};
+}
+inline uint64_t RequestResult::_internal_cord_tcp_xfer_tag() const {
+  return _impl_.cord_tcp_xfer_tag_;
+}
+inline uint64_t RequestResult::cord_tcp_xfer_tag() const {
+  // @@protoc_insertion_point(field_get:datanode_proto.RequestResult.cord_tcp_xfer_tag)
+  return _internal_cord_tcp_xfer_tag();
+}
+inline void RequestResult::_internal_set_cord_tcp_xfer_tag(uint64_t value) {
+  
+  _impl_.cord_tcp_xfer_tag_ = value;
+}
+inline void RequestResult::set_cord_tcp_xfer_tag(uint64_t value) {
+  _internal_set_cord_tcp_xfer_tag(value);
+  // @@protoc_insertion_point(field_set:datanode_proto.RequestResult.cord_tcp_xfer_tag)
 }
 
 // -------------------------------------------------------------------

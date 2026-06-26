@@ -54,6 +54,8 @@ message RequestResult {
     double disk_io_start_time = 3;
     double disk_io_end_time = 4;
     double grpc_start_time = 5;
+    /** CoRD TCP 数据通道配对 tag：proxy 连接后先发 tag(u64 BE)，datanode 单 acceptor 多并发连接时防错配 */
+    uint64 cord_tcp_xfer_tag = 6;
 }
 
 message SetInfo {

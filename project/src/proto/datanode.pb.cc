@@ -41,6 +41,7 @@ PROTOBUF_CONSTEXPR RequestResult::RequestResult(
   , /*decltype(_impl_.disk_io_start_time_)*/0
   , /*decltype(_impl_.disk_io_end_time_)*/0
   , /*decltype(_impl_.grpc_start_time_)*/0
+  , /*decltype(_impl_.cord_tcp_xfer_tag_)*/uint64_t{0u}
   , /*decltype(_impl_._cached_size_)*/{}} {}
 struct RequestResultDefaultTypeInternal {
   PROTOBUF_CONSTEXPR RequestResultDefaultTypeInternal()
@@ -188,6 +189,7 @@ const uint32_t TableStruct_datanode_2eproto::offsets[] PROTOBUF_SECTION_VARIABLE
   PROTOBUF_FIELD_OFFSET(::datanode_proto::RequestResult, _impl_.disk_io_start_time_),
   PROTOBUF_FIELD_OFFSET(::datanode_proto::RequestResult, _impl_.disk_io_end_time_),
   PROTOBUF_FIELD_OFFSET(::datanode_proto::RequestResult, _impl_.grpc_start_time_),
+  PROTOBUF_FIELD_OFFSET(::datanode_proto::RequestResult, _impl_.cord_tcp_xfer_tag_),
   ~0u,  // no _has_bits_
   PROTOBUF_FIELD_OFFSET(::datanode_proto::SetInfo, _internal_metadata_),
   ~0u,  // no _extensions_
@@ -263,13 +265,13 @@ const uint32_t TableStruct_datanode_2eproto::offsets[] PROTOBUF_SECTION_VARIABLE
 static const ::_pbi::MigrationSchema schemas[] PROTOBUF_SECTION_VARIABLE(protodesc_cold) = {
   { 0, -1, -1, sizeof(::datanode_proto::CheckaliveCMD)},
   { 7, -1, -1, sizeof(::datanode_proto::RequestResult)},
-  { 18, -1, -1, sizeof(::datanode_proto::SetInfo)},
-  { 30, -1, -1, sizeof(::datanode_proto::AppendInfo)},
-  { 41, -1, -1, sizeof(::datanode_proto::MergeParityInfo)},
-  { 49, -1, -1, sizeof(::datanode_proto::GetInfo)},
-  { 60, -1, -1, sizeof(::datanode_proto::CordRangeRWInfo)},
-  { 72, -1, -1, sizeof(::datanode_proto::CordDeltaBlobInfo)},
-  { 82, -1, -1, sizeof(::datanode_proto::DelInfo)},
+  { 19, -1, -1, sizeof(::datanode_proto::SetInfo)},
+  { 31, -1, -1, sizeof(::datanode_proto::AppendInfo)},
+  { 42, -1, -1, sizeof(::datanode_proto::MergeParityInfo)},
+  { 50, -1, -1, sizeof(::datanode_proto::GetInfo)},
+  { 61, -1, -1, sizeof(::datanode_proto::CordRangeRWInfo)},
+  { 73, -1, -1, sizeof(::datanode_proto::CordDeltaBlobInfo)},
+  { 83, -1, -1, sizeof(::datanode_proto::DelInfo)},
 };
 
 static const ::_pb::Message* const file_default_instances[] = {
@@ -286,58 +288,59 @@ static const ::_pb::Message* const file_default_instances[] = {
 
 const char descriptor_table_protodef_datanode_2eproto[] PROTOBUF_SECTION_VARIABLE(protodesc_cold) =
   "\n\016datanode.proto\022\016datanode_proto\"\035\n\rChec"
-  "kaliveCMD\022\014\n\004name\030\001 \001(\t\"\207\001\n\rRequestResul"
+  "kaliveCMD\022\014\n\004name\030\001 \001(\t\"\242\001\n\rRequestResul"
   "t\022\017\n\007message\030\001 \001(\010\022\026\n\016valuesizebytes\030\002 \001"
   "(\005\022\032\n\022disk_io_start_time\030\003 \001(\001\022\030\n\020disk_i"
   "o_end_time\030\004 \001(\001\022\027\n\017grpc_start_time\030\005 \001("
-  "\001\"x\n\007SetInfo\022\021\n\tblock_key\030\001 \001(\t\022\022\n\nblock"
-  "_size\030\002 \001(\005\022\020\n\010block_id\030\003 \001(\005\022\020\n\010proxy_i"
-  "p\030\004 \001(\t\022\022\n\nproxy_port\030\005 \001(\005\022\016\n\006ispull\030\006 "
-  "\001(\010\"t\n\nAppendInfo\022\021\n\tblock_key\030\001 \001(\t\022\020\n\010"
-  "block_id\030\002 \001(\005\022\023\n\013append_size\030\003 \001(\005\022\025\n\ra"
-  "ppend_offset\030\004 \001(\005\022\025\n\ris_serialized\030\005 \001("
-  "\010\"6\n\017MergeParityInfo\022\021\n\tblock_key\030\001 \001(\t\022"
-  "\020\n\010block_id\030\002 \001(\005\"h\n\007GetInfo\022\021\n\tblock_ke"
-  "y\030\001 \001(\t\022\022\n\nblock_size\030\002 \001(\005\022\020\n\010block_id\030"
-  "\003 \001(\005\022\020\n\010proxy_ip\030\004 \001(\t\022\022\n\nproxy_port\030\005 "
-  "\001(\005\"\210\001\n\017CordRangeRWInfo\022\021\n\tblock_key\030\001 \001"
-  "(\t\022\020\n\010block_id\030\002 \001(\005\022\024\n\014range_offset\030\003 \001"
-  "(\005\022\024\n\014range_length\030\004 \001(\005\022\020\n\010proxy_ip\030\005 \001"
-  "(\t\022\022\n\nproxy_port\030\006 \001(\005\"`\n\021CordDeltaBlobI"
-  "nfo\022\020\n\010blob_key\030\001 \001(\t\022\023\n\013byte_length\030\002 \001"
-  "(\005\022\020\n\010proxy_ip\030\003 \001(\t\022\022\n\nproxy_port\030\004 \001(\005"
-  "\"\034\n\007DelInfo\022\021\n\tblock_key\030\001 \001(\t2\256\010\n\017datan"
-  "odeService\022J\n\ncheckalive\022\035.datanode_prot"
-  "o.CheckaliveCMD\032\035.datanode_proto.Request"
-  "Result\022C\n\thandleSet\022\027.datanode_proto.Set"
-  "Info\032\035.datanode_proto.RequestResult\022I\n\014h"
-  "andleAppend\022\032.datanode_proto.AppendInfo\032"
-  "\035.datanode_proto.RequestResult\022S\n\021handle"
-  "MergeParity\022\037.datanode_proto.MergeParity"
-  "Info\032\035.datanode_proto.RequestResult\022Z\n\030h"
-  "andleMergeParityWithRep\022\037.datanode_proto"
+  "\001\022\031\n\021cord_tcp_xfer_tag\030\006 \001(\004\"x\n\007SetInfo\022"
+  "\021\n\tblock_key\030\001 \001(\t\022\022\n\nblock_size\030\002 \001(\005\022\020"
+  "\n\010block_id\030\003 \001(\005\022\020\n\010proxy_ip\030\004 \001(\t\022\022\n\npr"
+  "oxy_port\030\005 \001(\005\022\016\n\006ispull\030\006 \001(\010\"t\n\nAppend"
+  "Info\022\021\n\tblock_key\030\001 \001(\t\022\020\n\010block_id\030\002 \001("
+  "\005\022\023\n\013append_size\030\003 \001(\005\022\025\n\rappend_offset\030"
+  "\004 \001(\005\022\025\n\ris_serialized\030\005 \001(\010\"6\n\017MergePar"
+  "ityInfo\022\021\n\tblock_key\030\001 \001(\t\022\020\n\010block_id\030\002"
+  " \001(\005\"h\n\007GetInfo\022\021\n\tblock_key\030\001 \001(\t\022\022\n\nbl"
+  "ock_size\030\002 \001(\005\022\020\n\010block_id\030\003 \001(\005\022\020\n\010prox"
+  "y_ip\030\004 \001(\t\022\022\n\nproxy_port\030\005 \001(\005\"\210\001\n\017CordR"
+  "angeRWInfo\022\021\n\tblock_key\030\001 \001(\t\022\020\n\010block_i"
+  "d\030\002 \001(\005\022\024\n\014range_offset\030\003 \001(\005\022\024\n\014range_l"
+  "ength\030\004 \001(\005\022\020\n\010proxy_ip\030\005 \001(\t\022\022\n\nproxy_p"
+  "ort\030\006 \001(\005\"`\n\021CordDeltaBlobInfo\022\020\n\010blob_k"
+  "ey\030\001 \001(\t\022\023\n\013byte_length\030\002 \001(\005\022\020\n\010proxy_i"
+  "p\030\003 \001(\t\022\022\n\nproxy_port\030\004 \001(\005\"\034\n\007DelInfo\022\021"
+  "\n\tblock_key\030\001 \001(\t2\256\010\n\017datanodeService\022J\n"
+  "\ncheckalive\022\035.datanode_proto.CheckaliveC"
+  "MD\032\035.datanode_proto.RequestResult\022C\n\than"
+  "dleSet\022\027.datanode_proto.SetInfo\032\035.datano"
+  "de_proto.RequestResult\022I\n\014handleAppend\022\032"
+  ".datanode_proto.AppendInfo\032\035.datanode_pr"
+  "oto.RequestResult\022S\n\021handleMergeParity\022\037"
+  ".datanode_proto.MergeParityInfo\032\035.datano"
+  "de_proto.RequestResult\022Z\n\030handleMergePar"
+  "ityWithRep\022\037.datanode_proto.MergeParityI"
+  "nfo\032\035.datanode_proto.RequestResult\022P\n\016ha"
+  "ndleRecovery\022\037.datanode_proto.MergeParit"
+  "yInfo\032\035.datanode_proto.RequestResult\022Y\n\027"
+  "handleRecoveryBreakdown\022\037.datanode_proto"
   ".MergeParityInfo\032\035.datanode_proto.Reques"
-  "tResult\022P\n\016handleRecovery\022\037.datanode_pro"
-  "to.MergeParityInfo\032\035.datanode_proto.Requ"
-  "estResult\022Y\n\027handleRecoveryBreakdown\022\037.d"
-  "atanode_proto.MergeParityInfo\032\035.datanode"
-  "_proto.RequestResult\022C\n\thandleGet\022\027.data"
-  "node_proto.GetInfo\032\035.datanode_proto.Requ"
-  "estResult\022L\n\022handleGetBreakdown\022\027.datano"
-  "de_proto.GetInfo\032\035.datanode_proto.Reques"
-  "tResult\022U\n\023handleCordRangeRead\022\037.datanod"
-  "e_proto.CordRangeRWInfo\032\035.datanode_proto"
-  ".RequestResult\022V\n\024handleCordRangeWrite\022\037"
-  ".datanode_proto.CordRangeRWInfo\032\035.datano"
-  "de_proto.RequestResult\022W\n\023handleCordDelt"
-  "aBlob\022!.datanode_proto.CordDeltaBlobInfo"
-  "\032\035.datanode_proto.RequestResult\022F\n\014handl"
-  "eDelete\022\027.datanode_proto.DelInfo\032\035.datan"
-  "ode_proto.RequestResultb\006proto3"
+  "tResult\022C\n\thandleGet\022\027.datanode_proto.Ge"
+  "tInfo\032\035.datanode_proto.RequestResult\022L\n\022"
+  "handleGetBreakdown\022\027.datanode_proto.GetI"
+  "nfo\032\035.datanode_proto.RequestResult\022U\n\023ha"
+  "ndleCordRangeRead\022\037.datanode_proto.CordR"
+  "angeRWInfo\032\035.datanode_proto.RequestResul"
+  "t\022V\n\024handleCordRangeWrite\022\037.datanode_pro"
+  "to.CordRangeRWInfo\032\035.datanode_proto.Requ"
+  "estResult\022W\n\023handleCordDeltaBlob\022!.datan"
+  "ode_proto.CordDeltaBlobInfo\032\035.datanode_p"
+  "roto.RequestResult\022F\n\014handleDelete\022\027.dat"
+  "anode_proto.DelInfo\032\035.datanode_proto.Req"
+  "uestResultb\006proto3"
   ;
 static ::_pbi::once_flag descriptor_table_datanode_2eproto_once;
 const ::_pbi::DescriptorTable descriptor_table_datanode_2eproto = {
-    false, false, 1951, descriptor_table_protodef_datanode_2eproto,
+    false, false, 1978, descriptor_table_protodef_datanode_2eproto,
     "datanode.proto",
     &descriptor_table_datanode_2eproto_once, nullptr, 0, 9,
     schemas, file_default_instances, TableStruct_datanode_2eproto::offsets,
@@ -576,12 +579,13 @@ RequestResult::RequestResult(const RequestResult& from)
     , decltype(_impl_.disk_io_start_time_){}
     , decltype(_impl_.disk_io_end_time_){}
     , decltype(_impl_.grpc_start_time_){}
+    , decltype(_impl_.cord_tcp_xfer_tag_){}
     , /*decltype(_impl_._cached_size_)*/{}};
 
   _internal_metadata_.MergeFrom<::PROTOBUF_NAMESPACE_ID::UnknownFieldSet>(from._internal_metadata_);
   ::memcpy(&_impl_.message_, &from._impl_.message_,
-    static_cast<size_t>(reinterpret_cast<char*>(&_impl_.grpc_start_time_) -
-    reinterpret_cast<char*>(&_impl_.message_)) + sizeof(_impl_.grpc_start_time_));
+    static_cast<size_t>(reinterpret_cast<char*>(&_impl_.cord_tcp_xfer_tag_) -
+    reinterpret_cast<char*>(&_impl_.message_)) + sizeof(_impl_.cord_tcp_xfer_tag_));
   // @@protoc_insertion_point(copy_constructor:datanode_proto.RequestResult)
 }
 
@@ -595,6 +599,7 @@ inline void RequestResult::SharedCtor(
     , decltype(_impl_.disk_io_start_time_){0}
     , decltype(_impl_.disk_io_end_time_){0}
     , decltype(_impl_.grpc_start_time_){0}
+    , decltype(_impl_.cord_tcp_xfer_tag_){uint64_t{0u}}
     , /*decltype(_impl_._cached_size_)*/{}
   };
 }
@@ -623,8 +628,8 @@ void RequestResult::Clear() {
   (void) cached_has_bits;
 
   ::memset(&_impl_.message_, 0, static_cast<size_t>(
-      reinterpret_cast<char*>(&_impl_.grpc_start_time_) -
-      reinterpret_cast<char*>(&_impl_.message_)) + sizeof(_impl_.grpc_start_time_));
+      reinterpret_cast<char*>(&_impl_.cord_tcp_xfer_tag_) -
+      reinterpret_cast<char*>(&_impl_.message_)) + sizeof(_impl_.cord_tcp_xfer_tag_));
   _internal_metadata_.Clear<::PROTOBUF_NAMESPACE_ID::UnknownFieldSet>();
 }
 
@@ -671,6 +676,14 @@ const char* RequestResult::_InternalParse(const char* ptr, ::_pbi::ParseContext*
         if (PROTOBUF_PREDICT_TRUE(static_cast<uint8_t>(tag) == 41)) {
           _impl_.grpc_start_time_ = ::PROTOBUF_NAMESPACE_ID::internal::UnalignedLoad<double>(ptr);
           ptr += sizeof(double);
+        } else
+          goto handle_unusual;
+        continue;
+      // uint64 cord_tcp_xfer_tag = 6;
+      case 6:
+        if (PROTOBUF_PREDICT_TRUE(static_cast<uint8_t>(tag) == 48)) {
+          _impl_.cord_tcp_xfer_tag_ = ::PROTOBUF_NAMESPACE_ID::internal::ReadVarint64(&ptr);
+          CHK_(ptr);
         } else
           goto handle_unusual;
         continue;
@@ -745,6 +758,12 @@ uint8_t* RequestResult::_InternalSerialize(
     target = ::_pbi::WireFormatLite::WriteDoubleToArray(5, this->_internal_grpc_start_time(), target);
   }
 
+  // uint64 cord_tcp_xfer_tag = 6;
+  if (this->_internal_cord_tcp_xfer_tag() != 0) {
+    target = stream->EnsureSpace(target);
+    target = ::_pbi::WireFormatLite::WriteUInt64ToArray(6, this->_internal_cord_tcp_xfer_tag(), target);
+  }
+
   if (PROTOBUF_PREDICT_FALSE(_internal_metadata_.have_unknown_fields())) {
     target = ::_pbi::WireFormat::InternalSerializeUnknownFieldsToArray(
         _internal_metadata_.unknown_fields<::PROTOBUF_NAMESPACE_ID::UnknownFieldSet>(::PROTOBUF_NAMESPACE_ID::UnknownFieldSet::default_instance), target, stream);
@@ -798,6 +817,11 @@ size_t RequestResult::ByteSizeLong() const {
     total_size += 1 + 8;
   }
 
+  // uint64 cord_tcp_xfer_tag = 6;
+  if (this->_internal_cord_tcp_xfer_tag() != 0) {
+    total_size += ::_pbi::WireFormatLite::UInt64SizePlusOne(this->_internal_cord_tcp_xfer_tag());
+  }
+
   return MaybeComputeUnknownFieldsSize(total_size, &_impl_._cached_size_);
 }
 
@@ -843,6 +867,9 @@ void RequestResult::MergeImpl(::PROTOBUF_NAMESPACE_ID::Message& to_msg, const ::
   if (raw_grpc_start_time != 0) {
     _this->_internal_set_grpc_start_time(from._internal_grpc_start_time());
   }
+  if (from._internal_cord_tcp_xfer_tag() != 0) {
+    _this->_internal_set_cord_tcp_xfer_tag(from._internal_cord_tcp_xfer_tag());
+  }
   _this->_internal_metadata_.MergeFrom<::PROTOBUF_NAMESPACE_ID::UnknownFieldSet>(from._internal_metadata_);
 }
 
@@ -861,8 +888,8 @@ void RequestResult::InternalSwap(RequestResult* other) {
   using std::swap;
   _internal_metadata_.InternalSwap(&other->_internal_metadata_);
   ::PROTOBUF_NAMESPACE_ID::internal::memswap<
-      PROTOBUF_FIELD_OFFSET(RequestResult, _impl_.grpc_start_time_)
-      + sizeof(RequestResult::_impl_.grpc_start_time_)
+      PROTOBUF_FIELD_OFFSET(RequestResult, _impl_.cord_tcp_xfer_tag_)
+      + sizeof(RequestResult::_impl_.cord_tcp_xfer_tag_)
       - PROTOBUF_FIELD_OFFSET(RequestResult, _impl_.message_)>(
           reinterpret_cast<char*>(&_impl_.message_),
           reinterpret_cast<char*>(&other->_impl_.message_));
