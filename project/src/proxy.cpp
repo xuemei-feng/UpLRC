@@ -20,6 +20,7 @@
 #include <mutex>
 #include <cstring>
 #include <ctime>
+#include <arpa/inet.h>
 #include <limits>
 #include <iomanip>
 #include <sstream>
@@ -815,11 +816,272 @@ namespace ECProject
     return true;
   }
 
+  // =========================================================================
+  // CoRD proxy↔proxy delta TCP side channel (payload); gRPC reserved for control/metadata.
+  // Frame: magic "CRDX" | kind u32 BE | meta_len u32 BE | meta bytes | payload_len u64 BE | payload | ack u8
+  // =========================================================================
+  enum CordXferTcpKind : uint32_t
+  {
+    CORD_XFER_TCP_COLLECTOR_INGEST = 1,
+    CORD_XFER_TCP_PARITY_XOR = 2,
+    CORD_XFER_TCP_MST_CHUNK = 3,
+  };
+
+  static int cord_peer_xfer_tcp_port(int grpc_proxy_port)
+  {
+    return grpc_proxy_port + ECProject::PROXY_PORT_SHIFT + ECProject::PROXY_XFER_PORT_SUB_OFFSET;
+  }
+
+  static void cord_write_u32_be(asio::ip::tcp::socket &sock, uint32_t v)
+  {
+    const uint32_t be = htonl(v);
+    asio::write(sock, asio::buffer(&be, 4));
+  }
+
+  static uint32_t cord_read_u32_be(asio::ip::tcp::socket &sock)
+  {
+    uint32_t be = 0;
+    asio::read(sock, asio::buffer(&be, 4));
+    return ntohl(be);
+  }
+
+  static void cord_write_u64_be(asio::ip::tcp::socket &sock, uint64_t v)
+  {
+    uint8_t b[8];
+    for (int i = 0; i < 8; ++i)
+      b[7 - i] = static_cast<uint8_t>((v >> (8 * i)) & 0xffu);
+    asio::write(sock, asio::buffer(b, 8));
+  }
+
+  static uint64_t cord_read_u64_be(asio::ip::tcp::socket &sock)
+  {
+    uint8_t b[8];
+    asio::read(sock, asio::buffer(b, 8));
+    uint64_t v = 0;
+    for (int i = 0; i < 8; ++i)
+      v = (v << 8) | static_cast<uint64_t>(b[i]);
+    return v;
+  }
+
+  static bool cord_apply_collector_ingest(ProxyImpl *proxy, const proxy_proto::CordPlanCollectorIngestReq &request,
+                                          const char *payload, size_t payload_len)
+  {
+    auto pl = cord_lookup_registered_plan(request.plan_key());
+    if (!pl)
+      return false;
+    if (cord_uses_matrix_encode(*pl) && request.src_data_block_id() < 0)
+      return false;
+    const uint64_t off = request.chunk_byte_offset();
+    const uint64_t need = off + static_cast<uint64_t>(payload_len);
+    std::lock_guard<std::mutex> lk(g_cord_xfer_mu);
+    if (request.src_data_block_id() >= 0)
+    {
+      const std::string bkey =
+          cord_collector_block_buf_key(request.plan_key(), request.group_index(), request.collector_block_id(),
+                                       request.src_data_block_id());
+      auto &bd = g_cord_collector_block_delta[bkey];
+      if (bd.size() < static_cast<size_t>(need))
+        bd.resize(static_cast<size_t>(need), 0);
+      std::memcpy(bd.data() + static_cast<size_t>(off), payload, payload_len);
+    }
+    if (!cord_uses_matrix_encode(*pl))
+    {
+      const std::string key =
+          cord_collector_acc_key(request.plan_key(), request.group_index(), request.collector_block_id());
+      auto &acc = g_cord_collector_xor_acc[key];
+      const uint64_t hint = request.xor_accum_byte_length();
+      if (hint > 0u && acc.size() < static_cast<size_t>(hint))
+        acc.resize(static_cast<size_t>(hint), 0);
+      if (acc.size() < static_cast<size_t>(need))
+        acc.resize(static_cast<size_t>(need), 0);
+      for (size_t i = 0; i < payload_len; ++i)
+        acc[static_cast<size_t>(off) + i] ^=
+            static_cast<uint8_t>(payload[i]);
+    }
+    (void)proxy;
+    return true;
+  }
+
+  static bool cord_apply_parity_xor_delta(ProxyImpl *proxy, const proxy_proto::CordPlanApplyParityXorReq &request,
+                                          const char *payload, size_t payload_len)
+  {
+    const int psz = request.parity_slice_length();
+    if (psz <= 0 || static_cast<size_t>(psz) != payload_len)
+      return false;
+    std::vector<char> cur(static_cast<size_t>(psz));
+    if (!proxy->CordRangeReadFromDatanode(request.block_key(), request.dst_block_id(), request.parity_slice_offset(),
+                                          cur.data(), static_cast<size_t>(psz), request.datanode_ip().c_str(),
+                                          request.datanode_port()))
+      return false;
+    for (int u = 0; u < psz; ++u)
+      cur[static_cast<size_t>(u)] = static_cast<char>(
+          static_cast<unsigned char>(cur[static_cast<size_t>(u)]) ^
+          static_cast<unsigned char>(payload[u]));
+    cord_pure_xfer_parity_dn_begin(request.plan_key());
+    if (!proxy->CordRangeWriteToDatanode(request.block_key(), request.dst_block_id(), request.parity_slice_offset(),
+                                         cur.data(), static_cast<size_t>(psz), request.datanode_ip().c_str(),
+                                         request.datanode_port()))
+    {
+      cord_pure_xfer_parity_dn_abort(request.plan_key());
+      return false;
+    }
+    cord_pure_xfer_parity_dn_done_verified(request.plan_key());
+    return true;
+  }
+
+  static bool cord_apply_mst_data_delta(ProxyImpl *proxy, const proxy_proto::CordPlanMstDataDeltaReq &request,
+                                          const char *chunk_data, size_t chunk_size)
+  {
+    if (chunk_size == 0)
+      return false;
+    const std::string &pk = request.plan_key();
+    const uint64_t off = request.chunk_byte_offset();
+    {
+      std::lock_guard<std::mutex> lk(g_cord_xfer_mu);
+      auto &stream = g_cord_mst_stream[pk];
+      const uint64_t need = off + static_cast<uint64_t>(chunk_size);
+      if (stream.size() < static_cast<size_t>(need))
+        stream.resize(static_cast<size_t>(need), 0);
+      for (size_t i = 0; i < chunk_size; ++i)
+        stream[static_cast<size_t>(off) + i] = static_cast<uint8_t>(chunk_data[i]);
+    }
+
+    if (request.dst_proxy_cluster_id() == proxy->self_cluster_id() &&
+        request.dst_block_id() >= request.k_datablock())
+    {
+      bool applied_matrix = false;
+      auto pl = cord_lookup_registered_plan(pk);
+      if (pl && cord_uses_matrix_encode(*pl) && request.src_data_block_id() >= 0)
+      {
+        const auto &meta = pl->cord_encode_meta();
+        const int kblk = meta.k();
+        const int ps = meta.parity_slice_size();
+        const int po = meta.parity_slice_offset();
+        const int src_bid = request.src_data_block_id();
+        const proxy_proto::CordDataStripDesc *sdesc = nullptr;
+        for (int di = 0; di < pl->cord_data_strip_descs_size(); ++di)
+        {
+          if (pl->cord_data_strip_descs(di).block_id() == src_bid)
+          {
+            sdesc = &pl->cord_data_strip_descs(di);
+            break;
+          }
+        }
+        if (sdesc != nullptr && src_bid >= 0 && src_bid < kblk && ps > 0)
+        {
+          const int so = sdesc->slice_offset();
+          std::vector<std::vector<char>> strips(static_cast<size_t>(kblk),
+                                                std::vector<char>(static_cast<size_t>(ps), 0));
+          for (size_t i = 0; i < chunk_size; ++i)
+          {
+            const int x = so + static_cast<int>(off) + static_cast<int>(i);
+            if (x >= po && x < po + ps)
+              strips[static_cast<size_t>(src_bid)][static_cast<size_t>(x - po)] = chunk_data[i];
+          }
+          std::vector<std::vector<uint8_t>> coded;
+          const ECProject::EncodeType et = static_cast<ECProject::EncodeType>(meta.encode_type());
+          if (!cord_matrix_encode_strips(kblk, meta.g_m(), meta.l(), et, ps, strips, &coded))
+            return false;
+          const int row = request.dst_block_id() - kblk;
+          if (row < 0 || row >= static_cast<int>(coded.size()))
+            return false;
+          const auto &pdelta = coded[static_cast<size_t>(row)];
+          const auto nz =
+              cord_parity_delta_nonzero_span(reinterpret_cast<const char *>(pdelta.data()), pdelta.size());
+          if (nz.second > 0)
+          {
+            const int poff = static_cast<int>(nz.first);
+            const int plen = static_cast<int>(nz.second);
+            std::vector<char> cur(static_cast<size_t>(plen));
+            if (!proxy->CordRangeReadFromDatanode(request.parity_block_key(), request.dst_block_id(), po + poff,
+                                                  cur.data(), static_cast<size_t>(plen),
+                                                  request.parity_datanode_ip().c_str(),
+                                                  request.parity_datanode_port()))
+              return false;
+            for (int u = 0; u < plen; ++u)
+              cur[static_cast<size_t>(u)] = static_cast<char>(
+                  static_cast<unsigned char>(cur[static_cast<size_t>(u)]) ^
+                  static_cast<unsigned char>(pdelta[static_cast<size_t>(poff + u)]));
+            cord_pure_xfer_parity_dn_begin(pk);
+            if (!proxy->CordRangeWriteToDatanode(request.parity_block_key(), request.dst_block_id(), po + poff,
+                                                 cur.data(), static_cast<size_t>(plen),
+                                                 request.parity_datanode_ip().c_str(),
+                                                 request.parity_datanode_port()))
+            {
+              cord_pure_xfer_parity_dn_abort(pk);
+              return false;
+            }
+            cord_pure_xfer_parity_dn_done_verified(pk);
+          }
+          applied_matrix = true;
+        }
+      }
+      if (!applied_matrix)
+      {
+        const auto nz = cord_parity_delta_nonzero_span(chunk_data, chunk_size);
+        if (nz.second > 0)
+        {
+          const int psz = static_cast<int>(nz.second);
+          const int slice_off = static_cast<int>(off) + static_cast<int>(nz.first);
+          std::vector<char> cur(static_cast<size_t>(psz));
+          if (!proxy->CordRangeReadFromDatanode(request.parity_block_key(), request.dst_block_id(), slice_off,
+                                                cur.data(), static_cast<size_t>(psz),
+                                                request.parity_datanode_ip().c_str(),
+                                                request.parity_datanode_port()))
+            return false;
+          for (int u = 0; u < psz; ++u)
+            cur[static_cast<size_t>(u)] = static_cast<char>(
+                static_cast<unsigned char>(cur[static_cast<size_t>(u)]) ^
+                static_cast<unsigned char>(chunk_data[nz.first + static_cast<size_t>(u)]));
+          cord_pure_xfer_parity_dn_begin(pk);
+          if (!proxy->CordRangeWriteToDatanode(request.parity_block_key(), request.dst_block_id(), slice_off,
+                                               cur.data(), static_cast<size_t>(psz),
+                                               request.parity_datanode_ip().c_str(),
+                                               request.parity_datanode_port()))
+          {
+            cord_pure_xfer_parity_dn_abort(pk);
+            return false;
+          }
+          cord_pure_xfer_parity_dn_done_verified(pk);
+        }
+      }
+    }
+    return true;
+  }
+
+  static bool cord_tcp_xfer_send(const std::string &dst_ip, int dst_grpc_port, uint32_t kind,
+                                 const std::string &meta, const void *payload, size_t payload_len)
+  {
+    try
+    {
+      asio::io_context io;
+      asio::ip::tcp::socket sock(io);
+      const int tcp_port = cord_peer_xfer_tcp_port(dst_grpc_port);
+      asio::connect(sock, asio::ip::tcp::resolver(io).resolve(dst_ip, std::to_string(tcp_port)));
+      const char magic[4] = {'C', 'R', 'D', 'X'};
+      asio::write(sock, asio::buffer(magic, 4));
+      cord_write_u32_be(sock, kind);
+      cord_write_u32_be(sock, static_cast<uint32_t>(meta.size()));
+      if (!meta.empty())
+        asio::write(sock, asio::buffer(meta.data(), meta.size()));
+      cord_write_u64_be(sock, static_cast<uint64_t>(payload_len));
+      if (payload_len > 0)
+        asio::write(sock, asio::buffer(payload, payload_len));
+      uint8_t ack = 0xff;
+      asio::read(sock, asio::buffer(&ack, 1));
+      return ack == 0;
+    }
+    catch (...)
+    {
+      return false;
+    }
+  }
+
   /**
    * 按 plan step 顺序执行；coordinator 按算法二的 scheduled_slot 重排步骤，星型与 MST 可穿插。
    * 收集器扇出须晚于同组 STAR 数据到达由算法二时隙依赖保证。
-   * N>1：STAR 数据增量 -> cordPlanCollectorIngestDataDelta；收集器再发 cordPlanApplyParityXorDelta。
-   * N=1 MST：全程数据增量 cordPlanMstDataDeltaChunk（校验侧矩阵编码或 XOR）。
+   * N>1：STAR 数据增量 -> TCP CRDX collector ingest；收集器再发 TCP parity xor。
+   * N=1 MST：全程数据增量 TCP CRDX mst chunk（校验侧矩阵编码或 XOR）。
    * MST 中继读 relay_buffer 前 spin-wait 前继 hop 写入（与 STAR collector ingress 同理）。
    */
   static void cord_transfer_plan_execute_async(const proxy_proto::CordTransferPlan &plan, int self_cluster_id,
@@ -966,24 +1228,23 @@ namespace ECProject
           const auto t_read1 = std::chrono::steady_clock::now();
           const double read_ms = std::chrono::duration<double, std::milli>(t_read1 - t_read0).count();
 
-          // 2) gRPC 发送到 collector proxy
-          const auto t_grpc0 = std::chrono::steady_clock::now();
+          // 2) TCP 发送 delta 到 collector proxy（元数据 protobuf，payload 走 side channel）
+          const auto t_tcp0 = std::chrono::steady_clock::now();
           proxy_proto::CordPlanCollectorIngestReq req;
           req.set_plan_key(plan.plan_key());
           req.set_group_index(st.group_index());
           req.set_collector_block_id(st.dst_block_id());
           req.set_chunk_byte_offset(st.chunk_byte_offset());
-          req.set_chunk_payload(buf.data(), chunk_len);
           req.set_xor_accum_byte_length(cord_xor_hint_for_group(plan, st.group_index()));
           req.set_src_data_block_id(st.src_block_id());
-          proxy_proto::proxyService::Stub *stub = proxy->stub_for_peer_proxy(dst_channel);
-          proxy_proto::SetReply rep;
-          grpc::ClientContext cctx;
-          grpc::Status s = stub->cordPlanCollectorIngestDataDelta(&cctx, req, &rep);
-          const auto t_grpc1 = std::chrono::steady_clock::now();
-          const double grpc_ms = std::chrono::duration<double, std::milli>(t_grpc1 - t_grpc0).count();
-          const bool ok = s.ok() && rep.ifcommit();
-          const double step_ms = std::chrono::duration<double, std::milli>(t_grpc1 - t_step0).count();
+          std::string meta;
+          req.SerializeToString(&meta);
+          const bool ok_xfer = cord_tcp_xfer_send(dst_ip, dst_port, CORD_XFER_TCP_COLLECTOR_INGEST, meta, buf.data(),
+                                                  chunk_len);
+          const auto t_tcp1 = std::chrono::steady_clock::now();
+          const double tcp_ms = std::chrono::duration<double, std::milli>(t_tcp1 - t_tcp0).count();
+          const bool ok = ok_xfer;
+          const double step_ms = std::chrono::duration<double, std::milli>(t_tcp1 - t_step0).count();
           {
             std::ostringstream ob;
             ob << (ok ? "OK" : "FAIL")
@@ -993,11 +1254,10 @@ namespace ECProject
                << ") → collector_blk" << st.dst_block_id() << "(c" << st.dst_proxy_cluster_id() << ")"
                << " chunk=[" << st.chunk_byte_offset() << "+" << chunk_len << "B]"
                << " dn_read=" << read_ms << "ms"
-               << " grpc=" << grpc_ms << "ms"
+               << " tcp=" << tcp_ms << "ms"
                << " step_total=" << step_ms << "ms"
                << " grp=" << st.group_index()
                << " dst=" << dst_channel;
-            if (!ok) ob << " grpc_err=" << s.error_message();
             if (ok) plan_log(ob.str()); else plan_log_both(ob.str());
             if (!ok) failed_steps++;
             else executed_steps++;
@@ -1132,7 +1392,7 @@ namespace ECProject
           }
           const int32_t slice_off = slice_base + static_cast<int32_t>(nz.first);
           const int32_t send_len = static_cast<int32_t>(nz.second);
-          const auto t_grpc0 = std::chrono::steady_clock::now();
+          const auto t_tcp0 = std::chrono::steady_clock::now();
           proxy_proto::CordPlanApplyParityXorReq req;
           req.set_plan_key(plan.plan_key());
           req.set_dst_block_id(st.dst_block_id());
@@ -1141,15 +1401,14 @@ namespace ECProject
           req.set_datanode_port(pp);
           req.set_parity_slice_offset(slice_off);
           req.set_parity_slice_length(send_len);
-          req.set_parity_delta_payload(buf.data() + nz.first, static_cast<size_t>(send_len));
-          proxy_proto::proxyService::Stub *stub = proxy->stub_for_peer_proxy(dst_channel);
-          proxy_proto::SetReply rep;
-          grpc::ClientContext cctx;
-          grpc::Status s = stub->cordPlanApplyParityXorDelta(&cctx, req, &rep);
-          const auto t_grpc1 = std::chrono::steady_clock::now();
-          const double grpc_ms = std::chrono::duration<double, std::milli>(t_grpc1 - t_grpc0).count();
-          const bool ok = s.ok() && rep.ifcommit();
-          const double step_ms = std::chrono::duration<double, std::milli>(t_grpc1 - t_step0).count();
+          std::string meta;
+          req.SerializeToString(&meta);
+          const bool ok_xfer = cord_tcp_xfer_send(dst_ip, dst_port, CORD_XFER_TCP_PARITY_XOR, meta,
+                                                  buf.data() + nz.first, static_cast<size_t>(send_len));
+          const auto t_tcp1 = std::chrono::steady_clock::now();
+          const double tcp_ms = std::chrono::duration<double, std::milli>(t_tcp1 - t_tcp0).count();
+          const bool ok = ok_xfer;
+          const double step_ms = std::chrono::duration<double, std::milli>(t_tcp1 - t_step0).count();
           {
             const char *tag = (st.link_kind() == proxy_proto::CORD_TRANSFER_STAR_CENTER_TO_GLOBAL)
                                   ? "CTR_TO_GLOBAL" : "CTR_TO_LOCAL";
@@ -1163,11 +1422,10 @@ namespace ECProject
                << " chunk=[" << st.chunk_byte_offset() << "+" << chunk_len
                << "B→wire[" << slice_off << "+" << send_len << "B]]"
                << " compute=" << compute_ms << "ms(" << parity_compute_src << ")"
-               << " grpc=" << grpc_ms << "ms"
+               << " tcp=" << tcp_ms << "ms"
                << " step_total=" << step_ms << "ms"
                << " grp=" << st.group_index()
                << " dst=" << dst_channel;
-            if (!ok) ob << " grpc_err=" << s.error_message();
             if (ok) plan_log(ob.str()); else plan_log_both(ob.str());
             if (!ok) failed_steps++;
             else executed_steps++;
@@ -1236,28 +1494,27 @@ namespace ECProject
             failed_steps++;
             continue;
           }
-          const auto t_grpc0 = std::chrono::steady_clock::now();
+          const auto t_tcp0 = std::chrono::steady_clock::now();
           proxy_proto::CordPlanMstDataDeltaReq req;
           req.set_plan_key(plan.plan_key());
           req.set_dst_proxy_cluster_id(st.dst_proxy_cluster_id());
           req.set_dst_block_id(st.dst_block_id());
           req.set_k_datablock(k);
           req.set_chunk_byte_offset(st.chunk_byte_offset());
-          req.set_chunk_payload(buf.data(), chunk_len);
           req.set_total_expected_bytes(st.payload_bytes());
           req.set_src_data_block_id(st.has_mst_origin_data_block_id() ? st.mst_origin_data_block_id()
                                                                       : st.src_block_id());
           req.set_parity_block_key(pbk);
           req.set_parity_datanode_ip(pip);
           req.set_parity_datanode_port(pp);
-          proxy_proto::proxyService::Stub *stub = proxy->stub_for_peer_proxy(dst_channel);
-          proxy_proto::SetReply rep;
-          grpc::ClientContext cctx;
-          grpc::Status s = stub->cordPlanMstDataDeltaChunk(&cctx, req, &rep);
-          const auto t_grpc1 = std::chrono::steady_clock::now();
-          const double grpc_ms = std::chrono::duration<double, std::milli>(t_grpc1 - t_grpc0).count();
-          const bool ok = s.ok() && rep.ifcommit();
-          const double step_ms = std::chrono::duration<double, std::milli>(t_grpc1 - t_step0).count();
+          std::string meta;
+          req.SerializeToString(&meta);
+          const bool ok_xfer =
+              cord_tcp_xfer_send(dst_ip, dst_port, CORD_XFER_TCP_MST_CHUNK, meta, buf.data(), chunk_len);
+          const auto t_tcp1 = std::chrono::steady_clock::now();
+          const double tcp_ms = std::chrono::duration<double, std::milli>(t_tcp1 - t_tcp0).count();
+          const bool ok = ok_xfer;
+          const double step_ms = std::chrono::duration<double, std::milli>(t_tcp1 - t_step0).count();
           {
             const int origin_blk = st.has_mst_origin_data_block_id() ? st.mst_origin_data_block_id() : st.src_block_id();
             std::ostringstream ob;
@@ -1270,10 +1527,9 @@ namespace ECProject
                << " origin_data_blk=" << origin_blk
                << " buf_src=" << mst_buf_src;
             if (st.src_block_id() < k) ob << " dn_read=" << read_ms << "ms";
-            ob << " grpc=" << grpc_ms << "ms"
+            ob << " tcp=" << tcp_ms << "ms"
                << " step_total=" << step_ms << "ms"
                << " dst=" << dst_channel;
-            if (!ok) ob << " grpc_err=" << s.error_message();
             if (ok) plan_log(ob.str()); else plan_log_both(ob.str());
             if (!ok) failed_steps++;
             else executed_steps++;
@@ -1301,6 +1557,111 @@ namespace ECProject
                     + " failed=" + std::to_string(failed_steps)
                     + " log_file=" + log_path);
       log_ofs.close();
+  }
+
+  void ProxyImpl::start_cord_xfer_tcp_acceptor()
+  {
+    const int xfer_port = cord_peer_xfer_tcp_port(m_port);
+    std::cout << "[CoRD-PLAN][" << proxy_ip_port << "] cord xfer TCP acceptor listening port=" << xfer_port << std::endl;
+    std::thread([this]() {
+      for (;;)
+      {
+        try
+        {
+          asio::ip::tcp::socket sock(this->io_context);
+          this->m_cord_xfer_acceptor.accept(sock);
+          std::thread([this, s = std::move(sock)]() mutable {
+            this->cord_handle_xfer_tcp_connection(std::move(s));
+          }).detach();
+        }
+        catch (const std::exception &e)
+        {
+          std::cerr << "[CoRD-PLAN][" << this->proxy_ip_port << "] cord xfer accept error: " << e.what() << std::endl;
+        }
+      }
+    }).detach();
+  }
+
+  void ProxyImpl::cord_handle_xfer_tcp_connection(asio::ip::tcp::socket socket)
+  {
+    uint8_t ack = 1;
+    try
+    {
+      char magic[4];
+      asio::read(socket, asio::buffer(magic, 4));
+      if (magic[0] != 'C' || magic[1] != 'R' || magic[2] != 'D' || magic[3] != 'X')
+      {
+        asio::write(socket, asio::buffer(&ack, 1));
+        return;
+      }
+      const uint32_t kind = cord_read_u32_be(socket);
+      const uint32_t meta_len = cord_read_u32_be(socket);
+      constexpr uint32_t kMaxMeta = 4u * 1024u * 1024u;
+      if (meta_len > kMaxMeta)
+      {
+        asio::write(socket, asio::buffer(&ack, 1));
+        return;
+      }
+      std::string meta;
+      if (meta_len > 0)
+      {
+        meta.resize(meta_len);
+        asio::read(socket, asio::buffer(meta.data(), meta_len));
+      }
+      const uint64_t payload_len = cord_read_u64_be(socket);
+      constexpr uint64_t kMaxPayload = 256ull * 1024ull * 1024ull;
+      if (payload_len > kMaxPayload)
+      {
+        asio::write(socket, asio::buffer(&ack, 1));
+        return;
+      }
+      std::vector<char> payload;
+      if (payload_len > 0)
+      {
+        payload.resize(static_cast<size_t>(payload_len));
+        asio::read(socket, asio::buffer(payload.data(), static_cast<size_t>(payload_len)));
+      }
+      bool ok = false;
+      switch (kind)
+      {
+      case CORD_XFER_TCP_COLLECTOR_INGEST:
+      {
+        proxy_proto::CordPlanCollectorIngestReq req;
+        if (req.ParseFromString(meta))
+          ok = cord_apply_collector_ingest(this, req, payload.data(), payload.size());
+        break;
+      }
+      case CORD_XFER_TCP_PARITY_XOR:
+      {
+        proxy_proto::CordPlanApplyParityXorReq req;
+        if (req.ParseFromString(meta))
+          ok = cord_apply_parity_xor_delta(this, req, payload.data(), payload.size());
+        break;
+      }
+      case CORD_XFER_TCP_MST_CHUNK:
+      {
+        proxy_proto::CordPlanMstDataDeltaReq req;
+        if (req.ParseFromString(meta))
+          ok = cord_apply_mst_data_delta(this, req, payload.data(), payload.size());
+        break;
+      }
+      default:
+        break;
+      }
+      ack = ok ? 0 : 1;
+      asio::write(socket, asio::buffer(&ack, 1));
+    }
+    catch (...)
+    {
+      try
+      {
+        ack = 1;
+        asio::write(socket, asio::buffer(&ack, 1));
+      }
+      catch (...)
+      {
+      }
+    }
   }
 
   bool ProxyImpl::init_coordinator()
@@ -2156,52 +2517,16 @@ namespace ECProject
       const proxy_proto::CordPlanCollectorIngestReq *request,
       proxy_proto::SetReply *response)
   {
+    (void)context;
     response->set_ifcommit(false);
     const auto &chunk = request->chunk_payload();
-    auto pl = cord_lookup_registered_plan(request->plan_key());
-    if (!pl)
+    if (chunk.empty())
+      return grpc::Status(grpc::StatusCode::INVALID_ARGUMENT, "empty chunk (use TCP CRDX side channel)");
+    if (!cord_apply_collector_ingest(this, *request, chunk.data(), chunk.size()))
     {
-      std::cout << "[CoRD-PLAN][" << proxy_ip_port << "] REJECT cordPlanCollectorIngestDataDelta peer="
-                << context->peer() << " plan_key=" << request->plan_key() << " grp=" << request->group_index()
-                << " collector_blk=" << request->collector_block_id() << " src_data_blk=" << request->src_data_block_id()
-                << " chunk_off=" << request->chunk_byte_offset() << " chunk_len=" << chunk.size()
-                << " reason=plan_key_not_registered" << std::endl;
-      return grpc::Status(grpc::StatusCode::NOT_FOUND, "cord plan_key not registered");
-    }
-    // std::cout << "[CoRD-PLAN][" << proxy_ip_port << "] RECV grpc cordPlanCollectorIngest peer=" << context->peer()
-    //           << " plan_key=" << request->plan_key() << " grp=" << request->group_index()
-    //           << " collector_blk=" << request->collector_block_id() << " src_data_blk=" << request->src_data_block_id()
-    //           << " chunk_off=" << request->chunk_byte_offset() << " chunk_len=" << chunk.size()
-    //           << " chunk_hex=" << cord_dbg_hex_preview(chunk.data(), chunk.size()) << std::endl;
-    if (cord_uses_matrix_encode(*pl) && request->src_data_block_id() < 0)
-      return grpc::Status(grpc::StatusCode::INVALID_ARGUMENT, "src_data_block_id required");
-    const uint64_t off = request->chunk_byte_offset();
-    const uint64_t need = off + static_cast<uint64_t>(chunk.size());
-    {
-      std::lock_guard<std::mutex> lk(g_cord_xfer_mu);
-      if (request->src_data_block_id() >= 0)
-      {
-        const std::string bkey =
-            cord_collector_block_buf_key(request->plan_key(), request->group_index(), request->collector_block_id(),
-                                         request->src_data_block_id());
-        auto &bd = g_cord_collector_block_delta[bkey];
-        if (bd.size() < static_cast<size_t>(need))
-          bd.resize(static_cast<size_t>(need), 0);
-        std::memcpy(bd.data() + static_cast<size_t>(off), chunk.data(), chunk.size());
-      }
-      if (!cord_uses_matrix_encode(*pl))
-      {
-        const std::string key =
-            cord_collector_acc_key(request->plan_key(), request->group_index(), request->collector_block_id());
-        auto &acc = g_cord_collector_xor_acc[key];
-        const uint64_t hint = request->xor_accum_byte_length();
-        if (hint > 0u && acc.size() < static_cast<size_t>(hint))
-          acc.resize(static_cast<size_t>(hint), 0);
-        if (acc.size() < static_cast<size_t>(need))
-          acc.resize(static_cast<size_t>(need), 0);
-        for (size_t i = 0; i < chunk.size(); ++i)
-          acc[static_cast<size_t>(off) + i] ^= static_cast<uint8_t>(chunk[static_cast<int>(i)]);
-      }
+      std::cout << "[CoRD-PLAN][" << proxy_ip_port << "] REJECT cordPlanCollectorIngestDataDelta plan_key="
+                << request->plan_key() << " reason=ingest_failed" << std::endl;
+      return grpc::Status(grpc::StatusCode::NOT_FOUND, "cord plan ingest failed");
     }
     response->set_ifcommit(true);
     return grpc::Status::OK;
@@ -2212,37 +2537,13 @@ namespace ECProject
       const proxy_proto::CordPlanApplyParityXorReq *request,
       proxy_proto::SetReply *response)
   {
+    (void)context;
     response->set_ifcommit(false);
-    const int psz = request->parity_slice_length();
-    if (psz <= 0)
-      return grpc::Status(grpc::StatusCode::INVALID_ARGUMENT, "bad parity slice");
-    std::vector<char> cur(static_cast<size_t>(psz));
-    if (!CordRangeReadFromDatanode(request->block_key(), request->dst_block_id(), request->parity_slice_offset(),
-                                   cur.data(), static_cast<size_t>(psz), request->datanode_ip().c_str(),
-                                   request->datanode_port()))
-      return grpc::Status(grpc::StatusCode::INTERNAL, "read parity failed");
-    // std::cout << "[CoRD-PLAN][" << proxy_ip_port << "] RECV grpc cordPlanApplyParityXor peer=" << context->peer()
-    //           << " plan_key=" << request->plan_key() << " parity_blk=" << request->dst_block_id()
-    //           << " off=" << request->parity_slice_offset() << " len=" << psz
-    //           << " BEFORE_disk_hex=" << cord_dbg_hex_preview(cur.data(), cur.size())
-    //           << " delta_hex=" << cord_dbg_hex_preview(request->parity_delta_payload().data(),
-    //                                                    request->parity_delta_payload().size())
-    //           << std::endl;
-    if (static_cast<int>(request->parity_delta_payload().size()) != psz)
-      return grpc::Status(grpc::StatusCode::INVALID_ARGUMENT, "delta size mismatch");
-    for (int u = 0; u < psz; ++u)
-      cur[static_cast<size_t>(u)] = static_cast<char>(
-          static_cast<unsigned char>(cur[static_cast<size_t>(u)]) ^
-          static_cast<unsigned char>(request->parity_delta_payload()[static_cast<int>(u)]));
-    cord_pure_xfer_parity_dn_begin(request->plan_key());
-    if (!CordRangeWriteToDatanode(request->block_key(), request->dst_block_id(), request->parity_slice_offset(),
-                                   cur.data(), static_cast<size_t>(psz), request->datanode_ip().c_str(),
-                                   request->datanode_port()))
-    {
-      cord_pure_xfer_parity_dn_abort(request->plan_key());
-      return grpc::Status(grpc::StatusCode::INTERNAL, "write parity failed");
-    }
-    cord_pure_xfer_parity_dn_done_verified(request->plan_key());
+    const auto &delta = request->parity_delta_payload();
+    if (delta.empty())
+      return grpc::Status(grpc::StatusCode::INVALID_ARGUMENT, "empty delta (use TCP CRDX side channel)");
+    if (!cord_apply_parity_xor_delta(this, *request, delta.data(), delta.size()))
+      return grpc::Status(grpc::StatusCode::INTERNAL, "parity xor apply failed");
     response->set_ifcommit(true);
     return grpc::Status::OK;
   }
@@ -2252,145 +2553,13 @@ namespace ECProject
       const proxy_proto::CordPlanMstDataDeltaReq *request,
       proxy_proto::SetReply *response)
   {
+    (void)context;
     response->set_ifcommit(false);
-    const std::string &pk = request->plan_key();
-    const uint64_t off = request->chunk_byte_offset();
     const std::string &chunk = request->chunk_payload();
     if (chunk.empty())
-      return grpc::Status(grpc::StatusCode::INVALID_ARGUMENT, "empty chunk");
-
-    {
-      std::lock_guard<std::mutex> lk(g_cord_xfer_mu);
-      auto &stream = g_cord_mst_stream[pk];
-      const uint64_t need = off + static_cast<uint64_t>(chunk.size());
-      if (stream.size() < static_cast<size_t>(need))
-        stream.resize(static_cast<size_t>(need), 0);
-      for (size_t i = 0; i < chunk.size(); ++i)
-        stream[static_cast<size_t>(off) + i] = static_cast<uint8_t>(chunk[static_cast<int>(i)]);
-    }
-
-    if (request->dst_proxy_cluster_id() == m_self_cluster_id &&
-        request->dst_block_id() >= request->k_datablock())
-    {
-      // std::cout << "[CoRD-PLAN][" << proxy_ip_port << "] RECV grpc cordPlanMstDataDeltaChunk peer=" << context->peer()
-      //           << " plan_key=" << pk << " dst_blk=" << request->dst_block_id() << " src_data_blk="
-      //           << request->src_data_block_id() << " chunk_off=" << off << " chunk_len=" << chunk.size()
-      //           << " chunk_hex=" << cord_dbg_hex_preview(chunk.data(), chunk.size()) << std::endl;
-      bool applied_matrix = false;
-      auto pl = cord_lookup_registered_plan(pk);
-      if (pl && cord_uses_matrix_encode(*pl) && request->src_data_block_id() >= 0)
-      {
-        const auto &meta = pl->cord_encode_meta();
-        const int kblk = meta.k();
-        const int ps = meta.parity_slice_size();
-        const int po = meta.parity_slice_offset();
-        const int src_bid = request->src_data_block_id();
-        const proxy_proto::CordDataStripDesc *sdesc = nullptr;
-        for (int di = 0; di < pl->cord_data_strip_descs_size(); ++di)
-        {
-          if (pl->cord_data_strip_descs(di).block_id() == src_bid)
-          {
-            sdesc = &pl->cord_data_strip_descs(di);
-            break;
-          }
-        }
-        if (sdesc != nullptr && src_bid >= 0 && src_bid < kblk && ps > 0)
-        {
-          const int so = sdesc->slice_offset();
-          std::vector<std::vector<char>> strips(static_cast<size_t>(kblk),
-                                                std::vector<char>(static_cast<size_t>(ps), 0));
-          for (size_t i = 0; i < chunk.size(); ++i)
-          {
-            const int x = so + static_cast<int>(off) + static_cast<int>(i);
-            if (x >= po && x < po + ps)
-              strips[static_cast<size_t>(src_bid)][static_cast<size_t>(x - po)] =
-                  chunk[static_cast<int>(i)];
-          }
-          std::vector<std::vector<uint8_t>> coded;
-          const ECProject::EncodeType et = static_cast<ECProject::EncodeType>(meta.encode_type());
-          if (!cord_matrix_encode_strips(kblk, meta.g_m(), meta.l(), et, ps, strips, &coded))
-            return grpc::Status(grpc::StatusCode::INTERNAL, "mst matrix encode failed");
-          const int row = request->dst_block_id() - kblk;
-          if (row < 0 || row >= static_cast<int>(coded.size()))
-            return grpc::Status(grpc::StatusCode::INVALID_ARGUMENT, "mst bad parity row");
-          const auto &pdelta = coded[static_cast<size_t>(row)];
-          const auto nz =
-              cord_parity_delta_nonzero_span(reinterpret_cast<const char *>(pdelta.data()), pdelta.size());
-          if (nz.second > 0)
-          {
-            const int poff = static_cast<int>(nz.first);
-            const int plen = static_cast<int>(nz.second);
-            std::vector<char> cur(static_cast<size_t>(plen));
-            if (!CordRangeReadFromDatanode(request->parity_block_key(), request->dst_block_id(), po + poff, cur.data(),
-                                           static_cast<size_t>(plen), request->parity_datanode_ip().c_str(),
-                                           request->parity_datanode_port()))
-              return grpc::Status(grpc::StatusCode::INTERNAL, "read parity failed (mst mat)");
-            // std::cout << "[CoRD-PLAN][" << proxy_ip_port << "] MST_matrix parity_blk=" << request->dst_block_id()
-            //           << " row=" << row << " strip_off=" << po << " strip_len=" << ps << " sparse_off=" << poff
-            //           << " sparse_len=" << plen << " BEFORE_disk_hex=" << cord_dbg_hex_preview(cur.data(), cur.size())
-            //           << " coded_delta_hex="
-            //           << cord_dbg_hex_preview(pdelta.data() + static_cast<size_t>(poff), static_cast<size_t>(plen))
-            //           << std::endl;
-            for (int u = 0; u < plen; ++u)
-              cur[static_cast<size_t>(u)] = static_cast<char>(
-                  static_cast<unsigned char>(cur[static_cast<size_t>(u)]) ^
-                  static_cast<unsigned char>(pdelta[static_cast<size_t>(poff + u)]));
-            cord_pure_xfer_parity_dn_begin(pk);
-            if (!CordRangeWriteToDatanode(request->parity_block_key(), request->dst_block_id(), po + poff, cur.data(),
-                                          static_cast<size_t>(plen), request->parity_datanode_ip().c_str(),
-                                          request->parity_datanode_port()))
-            {
-              cord_pure_xfer_parity_dn_abort(pk);
-              return grpc::Status(grpc::StatusCode::INTERNAL, "write parity failed (mst mat)");
-            }
-            cord_pure_xfer_parity_dn_done_verified(pk);
-          }
-          else
-          {
-            // std::cout << "[CoRD-PLAN][" << proxy_ip_port << "] MST_matrix SKIP all-zero parity delta blk="
-            //           << request->dst_block_id() << " row=" << row << std::endl;
-          }
-          applied_matrix = true;
-        }
-      }
-      if (!applied_matrix)
-      {
-        const auto nz = cord_parity_delta_nonzero_span(chunk.data(), chunk.size());
-        if (nz.second == 0)
-        {
-          // std::cout << "[CoRD-PLAN][" << proxy_ip_port << "] MST_xor SKIP all-zero chunk parity_blk="
-          //           << request->dst_block_id() << std::endl;
-        }
-        else
-        {
-          const int psz = static_cast<int>(nz.second);
-          const int slice_off = static_cast<int>(off) + static_cast<int>(nz.first);
-          std::vector<char> cur(static_cast<size_t>(psz));
-          if (!CordRangeReadFromDatanode(request->parity_block_key(), request->dst_block_id(), slice_off, cur.data(),
-                                         static_cast<size_t>(psz), request->parity_datanode_ip().c_str(),
-                                         request->parity_datanode_port()))
-            return grpc::Status(grpc::StatusCode::INTERNAL, "read parity failed (mst)");
-          // std::cout << "[CoRD-PLAN][" << proxy_ip_port << "] MST_xor parity_blk=" << request->dst_block_id()
-          //           << " off=" << slice_off << " len=" << psz
-          //           << " BEFORE_disk_hex=" << cord_dbg_hex_preview(cur.data(), cur.size())
-          //           << " chunk_hex=" << cord_dbg_hex_preview(chunk.data() + nz.first, static_cast<size_t>(psz))
-          //           << std::endl;
-          for (int u = 0; u < psz; ++u)
-            cur[static_cast<size_t>(u)] = static_cast<char>(
-                static_cast<unsigned char>(cur[static_cast<size_t>(u)]) ^
-                static_cast<unsigned char>(chunk[static_cast<int>(nz.first + static_cast<size_t>(u))]));
-          cord_pure_xfer_parity_dn_begin(pk);
-          if (!CordRangeWriteToDatanode(request->parity_block_key(), request->dst_block_id(), slice_off, cur.data(),
-                                        static_cast<size_t>(psz), request->parity_datanode_ip().c_str(),
-                                        request->parity_datanode_port()))
-          {
-            cord_pure_xfer_parity_dn_abort(pk);
-            return grpc::Status(grpc::StatusCode::INTERNAL, "write parity failed (mst)");
-          }
-          cord_pure_xfer_parity_dn_done_verified(pk);
-        }
-      }
-    }
+      return grpc::Status(grpc::StatusCode::INVALID_ARGUMENT, "empty chunk (use TCP CRDX side channel)");
+    if (!cord_apply_mst_data_delta(this, *request, chunk.data(), chunk.size()))
+      return grpc::Status(grpc::StatusCode::INTERNAL, "mst chunk apply failed");
     response->set_ifcommit(true);
     return grpc::Status::OK;
   }

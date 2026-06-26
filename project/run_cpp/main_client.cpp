@@ -634,8 +634,7 @@ int main(int argc, char **argv)
 
         std::cout << "=== CoRD batch summary ===" << std::endl;
         std::cout << "trace_file=" << trace_path << std::endl;
-        std::cout << "batch_threads=" << batch_threads << " batch_wall_sec=" << std::fixed << std::setprecision(6)
-                  << batch_wall_sec << std::endl;
+        std::cout << "batch_threads=" << batch_threads << std::endl;
         for (const CordBatchResult &br : batch_results)
         {
             if (!br.ok)
@@ -659,6 +658,8 @@ int main(int argc, char **argv)
             print_cord_timing_fields(std::cout, avg_timing);
             std::cout << std::endl;
         }
+        std::cout << "[CoRD] e2e_wall_sec=" << std::fixed << std::setprecision(6) << batch_wall_sec
+                  << " success=" << success_count << " failures=" << total_failures << std::endl;
         if (total_failures > 0)
             return 1;
     }

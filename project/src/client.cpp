@@ -1377,11 +1377,6 @@ namespace ECProject
     pending->transfer_plan_key.clear();
     cord_fill_timing(out_timing, pending->wall_t0, pending->plan_sec, pending->payload_prep_sec,
                      pending->upload_sec, 0.0, xfer_wait_sec, xfer_pure_sec, xfer_grpc_sec);
-    std::cout << "[CoRD][Client " << m_clientID << "] round_wall_time_sec=" << (out_timing ? out_timing->wall_sec : 0.0)
-              << " plan_sec=" << pending->plan_sec << " payload_prep_sec=" << pending->payload_prep_sec
-              << " upload_sec=" << pending->upload_sec << " xfer_wait_sec=" << xfer_wait_sec
-              << " xfer_pure_sec=" << xfer_pure_sec << " xfer_grpc_sec=" << xfer_grpc_sec
-              << " (uploadCordUpdate + TCP delta + auto transfer + wait)" << std::endl;
     return true;
   }
 

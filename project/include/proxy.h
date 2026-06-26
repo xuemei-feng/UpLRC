@@ -28,13 +28,28 @@ namespace ECProject
   {
 
   public:
-    ProxyImpl(std::string proxy_ip_port, std::string config_path, std::string coordinator_address) : config_path(config_path), proxy_ip_port(proxy_ip_port), acceptor(io_context, asio::ip::tcp::endpoint(asio::ip::address::from_string(proxy_ip_port.substr(0, proxy_ip_port.find(':')).c_str()), ECProject::PROXY_PORT_SHIFT + std::stoi(proxy_ip_port.substr(proxy_ip_port.find(':') + 1, proxy_ip_port.size())))), m_coordinator_address(coordinator_address)
+    ProxyImpl(std::string proxy_ip_port, std::string config_path, std::string coordinator_address)
+        : config_path(config_path),
+          proxy_ip_port(proxy_ip_port),
+          acceptor(io_context,
+                   asio::ip::tcp::endpoint(
+                       asio::ip::address::from_string(proxy_ip_port.substr(0, proxy_ip_port.find(':')).c_str()),
+                       ECProject::PROXY_PORT_SHIFT +
+                           std::stoi(proxy_ip_port.substr(proxy_ip_port.find(':') + 1, proxy_ip_port.size())))),
+          m_cord_xfer_acceptor(
+              io_context,
+              asio::ip::tcp::endpoint(
+                  asio::ip::address::from_string(proxy_ip_port.substr(0, proxy_ip_port.find(':')).c_str()),
+                  ECProject::PROXY_PORT_SHIFT + ECProject::PROXY_XFER_PORT_SUB_OFFSET +
+                      std::stoi(proxy_ip_port.substr(proxy_ip_port.find(':') + 1, proxy_ip_port.size())))),
+          m_coordinator_address(coordinator_address)
     {
       init_coordinator();
       init_datanodes(config_path);
       m_ip = proxy_ip_port.substr(0, proxy_ip_port.find(':'));
       m_port = std::stoi(proxy_ip_port.substr(proxy_ip_port.find(':') + 1, proxy_ip_port.size()));
       std::cout << "Cluster id:" << m_self_cluster_id << std::endl;
+      start_cord_xfer_tcp_acceptor();
     }
     ~ProxyImpl() {};
     grpc::Status checkalive(
@@ -174,6 +189,7 @@ namespace ECProject
     bool CordDeltaBlobToDatanode(const std::string &blob_key, const char *data, size_t length, const char *ip, int port);
     /** CoRD：与其它 proxy（ip:port）之间的长连接池，跨 RPC 调用复用 HTTP/2 channel。 */
     proxy_proto::proxyService::Stub *stub_for_peer_proxy(const std::string &endpoint);
+    int self_cluster_id() const { return m_self_cluster_id; }
     bool RecoveryToDatanode(const char *block_key, int block_id, const char *buf, const char *ip, int port);
     bool RecoveryToDatanodeBreakdown(const char *block_key, int block_id, const char *buf, const char *ip, int port, double *network_time, double *disk_io_time);
     void get_from_node(const std::string &block_key, char *block_value, const size_t block_size, const char *datanode_ip, const int datanode_port, bool *status, int index);
@@ -192,6 +208,8 @@ namespace ECProject
     std::condition_variable cv;
     bool init_coordinator();
     bool init_datanodes(std::string datanodeinfo_path);
+    void start_cord_xfer_tcp_acceptor();
+    void cord_handle_xfer_tcp_connection(asio::ip::tcp::socket socket);
     std::unique_ptr<coordinator_proto::coordinatorService::Stub> m_coordinator_ptr;
     std::map<std::string, std::unique_ptr<datanode_proto::datanodeService::Stub>> m_datanode_ptrs;
     std::string config_path;
@@ -201,6 +219,7 @@ namespace ECProject
     int m_self_cluster_id;
     asio::io_context io_context;
     asio::ip::tcp::acceptor acceptor;
+    asio::ip::tcp::acceptor m_cord_xfer_acceptor;
     sem_t sem;
     std::string m_coordinator_address;
   };

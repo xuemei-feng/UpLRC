@@ -7,7 +7,9 @@
 namespace ECProject
 {
   const int DATANODE_PORT_SHIFT = 500;
-  const int PROXY_PORT_SHIFT = 100; 
+  const int PROXY_PORT_SHIFT = 100;
+  /** CoRD proxy↔proxy delta 直连 TCP：grpc_port + PROXY_PORT_SHIFT + 此偏移（与 client 数据口 +100 错开） */
+  const int PROXY_XFER_PORT_SUB_OFFSET = 1;
 
   class Config
   {
