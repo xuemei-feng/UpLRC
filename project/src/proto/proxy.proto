@@ -281,6 +281,8 @@ enum CordTransferLinkKind {
   CORD_TRANSFER_STAR_CENTER_TO_GLOBAL = 1;
   CORD_TRANSFER_STAR_CENTER_TO_LOCAL = 2;
   CORD_TRANSFER_MST_FORWARD = 3;
+  // class3 并发：data 机架编码 local parity ΔP 后直发 local 机架
+  CORD_TRANSFER_STAR_DATA_TO_LOCAL = 4;
 }
 
 // 与 cord_alg2::CordDeltaPayloadKind 一致：线上是数据增量还是校验增量
@@ -390,6 +392,11 @@ message CordPlanKeyMsg {
   string plan_key = 1;
 }
 
+message CordIngressCacheRef {
+  int32 cluster_id = 1;
+  string append_key = 2;
+}
+
 message CordTransferPlan {
   int32 stripe_id = 1;
   string plan_key = 2;
@@ -407,6 +414,7 @@ message CordTransferPlan {
   repeated CordDataStripDesc cord_data_strip_descs = 14;
   repeated CordBlockStripeGroup cord_block_stripe_groups = 15;
   repeated CordBlockHalfOpenSeg cord_block_delta_segs = 16;
+  repeated CordIngressCacheRef ingress_cache_refs = 17;
 }
 
 message CordPlanCollectorIngestReq {
@@ -444,6 +452,14 @@ message CordPlanMstDataDeltaReq {
   int32 src_data_block_id = 11;
 }
 
+message CordIngressParityWrite {
+  int32 block_id = 1;
+  string block_key = 2;
+  string datanode_ip = 3;
+  int32 datanode_port = 4;
+  int32 stripe_group = 5;
+}
+
 message CordDataUpdatePlacement {
   string key = 1;
   int32 cluster_id = 2;
@@ -458,6 +474,10 @@ message CordDataUpdatePlacement {
   string delta_blob_key = 11;
   string delta_datanode_ip = 12;
   int32 delta_datanode_port = 13;
+  // CordXueLRC class 算法：ingress 机架内校验更新 / 缓存（由 coordinator 填写）
+  repeated CordIngressParityWrite cord_ingress_local_parity_writes = 14;
+  repeated CordIngressParityWrite cord_ingress_global_parity_writes = 15;
+  repeated int32 cord_ingress_cache_lp_stripe_groups = 16;
 }
 
 message CordLpDeltaFetch {

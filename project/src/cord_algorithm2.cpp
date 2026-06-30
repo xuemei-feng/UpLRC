@@ -3,10 +3,12 @@
 #include "meta_definition.h"
 #include <algorithm>
 #include <cmath>
+#include <fstream>
 #include <iostream>
 #include <limits>
 #include <queue>
 #include <set>
+#include <sstream>
 
 namespace ECProject
 {
@@ -261,8 +263,12 @@ namespace ECProject
         return "STAR_CENTER_TO_GLOBAL";
       case TrainLinkKind::STAR_CENTER_TO_LOCAL:
         return "STAR_CENTER_TO_LOCAL";
-      default:
+      case TrainLinkKind::MST_FORWARD:
         return "MST_FORWARD";
+      case TrainLinkKind::STAR_DATA_TO_LOCAL:
+        return "STAR_DATA_TO_LOCAL";
+      default:
+        return "UNKNOWN";
       }
     }
 
@@ -860,6 +866,170 @@ namespace ECProject
 
       std::cout << "[CoRD-Alg2] ===== Transfer scheduling done: total_steps=" << ts << " =====\n";
       return out;
+    }
+
+    void schedule_train_route_timeslots(Algorithm2Result *out, int cluster_num, const TransferParams &tp)
+    {
+      if (out == nullptr)
+        return;
+      out->timeslot_schedule.clear();
+      if (out->train_route.empty())
+        return;
+
+      const int C = cluster_num;
+      const int S = 0;
+      const int T = 2 + 2 * C;
+      const int nV = T + 1;
+
+      std::vector<int> remaining;
+      remaining.reserve(out->train_route.size());
+      for (const auto &L : out->train_route)
+        remaining.push_back(L.payload_bytes > 0 ? 1 : 0);
+
+      auto collector_star_data_ingress_done = [&](int group_idx, int collector_block_id) -> bool {
+        for (size_t j = 0; j < out->train_route.size(); ++j)
+        {
+          const TrainLink &J = out->train_route[j];
+          if (J.kind != TrainLinkKind::STAR_DATA_TO_CENTER)
+            continue;
+          if (J.group_index != group_idx || J.dst_block_id != collector_block_id)
+            continue;
+          if (remaining[j] > 0)
+            return false;
+        }
+        return true;
+      };
+
+      auto mst_predecessors_done = [&](size_t i) -> bool {
+        const TrainLink &L = out->train_route[i];
+        if (L.kind != TrainLinkKind::MST_FORWARD)
+          return true;
+        for (size_t j = 0; j < out->train_route.size(); ++j)
+        {
+          if (j == i)
+            continue;
+          const TrainLink &J = out->train_route[j];
+          if (J.kind != TrainLinkKind::MST_FORWARD)
+            continue;
+          if (J.mst_origin_data_block != L.mst_origin_data_block)
+            continue;
+          if (J.dst_block_id != L.src_block_id)
+            continue;
+          if (remaining[j] > 0)
+            return false;
+        }
+        return true;
+      };
+
+      auto link_eligible_for_step = [&](size_t i) -> bool {
+        const TrainLink &L = out->train_route[i];
+        if (L.kind == TrainLinkKind::STAR_CENTER_TO_GLOBAL || L.kind == TrainLinkKind::STAR_CENTER_TO_LOCAL)
+        {
+          if (!collector_star_data_ingress_done(L.group_index, L.src_block_id))
+            return false;
+        }
+        return mst_predecessors_done(i);
+      };
+
+      int ts = 0;
+      while (true)
+      {
+        bool any = false;
+        for (int x : remaining)
+        {
+          if (x > 0)
+          {
+            any = true;
+            break;
+          }
+        }
+        if (!any)
+          break;
+
+        Dinic din(nV, S, T);
+        const int cap = tp.enforce_one_send_one_recv_per_cluster ? 1 : C;
+        for (int c = 0; c < C; ++c)
+          din.add_edge(S, 1 + c, cap, -1);
+        for (int c = 0; c < C; ++c)
+          din.add_edge(1 + C + c, T, cap, -1);
+
+        for (size_t i = 0; i < out->train_route.size(); ++i)
+        {
+          if (remaining[i] <= 0 || !link_eligible_for_step(i))
+            continue;
+          const TrainLink &L = out->train_route[i];
+          if (L.src_cluster < 0 || L.dst_cluster < 0 || L.src_cluster >= C || L.dst_cluster >= C)
+            continue;
+          din.add_edge(1 + L.src_cluster, 1 + C + L.dst_cluster, 1, static_cast<int>(i));
+        }
+
+        din.maxflow();
+        std::vector<int> used;
+        din.collect_used_links(C, used);
+        if (used.empty())
+        {
+          for (size_t i = 0; i < remaining.size(); ++i)
+          {
+            if (remaining[i] > 0 && link_eligible_for_step(i))
+            {
+              used.push_back(static_cast<int>(i));
+              break;
+            }
+          }
+        }
+        TimeslotEntry te;
+        te.timeslot = ts++;
+        te.link_indices = std::move(used);
+        for (int id : te.link_indices)
+        {
+          if (id >= 0 && id < static_cast<int>(remaining.size()) && remaining[id] > 0)
+            remaining[id]--;
+        }
+        out->timeslot_schedule.push_back(std::move(te));
+      }
+    }
+
+    bool load_bw_matrix_from_limitsame_file(const std::string &path, int cluster_num, TransferParams *tp)
+    {
+      if (tp == nullptr || cluster_num <= 0 || cluster_num > TransferParams::kMaxBwClusters)
+        return false;
+      for (int i = 0; i < TransferParams::kMaxBwClusters; ++i)
+        for (int j = 0; j < TransferParams::kMaxBwClusters; ++j)
+          tp->bw_matrix_mb_per_sec[i][j] = 0.0;
+
+      std::ifstream ifs(path);
+      if (!ifs)
+        return false;
+      std::string line;
+      bool in_array = false;
+      std::vector<double> vals;
+      while (std::getline(ifs, line))
+      {
+        if (line.find("BW_MATRIX_MB_PER_SEC=(") != std::string::npos)
+        {
+          in_array = true;
+          continue;
+        }
+        if (!in_array)
+          continue;
+        if (line.find(')') != std::string::npos)
+          break;
+        std::istringstream iss(line);
+        double v = 0.0;
+        while (iss >> v)
+          vals.push_back(v);
+      }
+      if (static_cast<int>(vals.size()) < cluster_num * cluster_num)
+      {
+        std::cout << "[CoRD-Class] BW matrix parse failed: need " << (cluster_num * cluster_num) << " got "
+                  << vals.size() << " from " << path << "\n";
+        return false;
+      }
+      for (int i = 0; i < cluster_num; ++i)
+        for (int j = 0; j < cluster_num; ++j)
+          tp->bw_matrix_mb_per_sec[i][j] = vals[static_cast<size_t>(i * cluster_num + j)];
+      std::cout << "[CoRD-Class] Loaded BW matrix " << cluster_num << "x" << cluster_num << " from " << path << "\n";
+      return true;
     }
   } // namespace cord_alg2
 } // namespace ECProject

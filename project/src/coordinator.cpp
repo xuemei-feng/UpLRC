@@ -1,6 +1,7 @@
 #include "coordinator.h"
 #include <cstdint>
 #include "cord_algorithm2.h"
+#include "cord_class_algorithm.h"
 #include "tinyxml2.h"
 #include <random>
 #include <unistd.h>
@@ -475,7 +476,8 @@ namespace ECProject  //定义一个名为 ECProject 的命名空间，防止命�
       {
         proxy_proto::CordTransferStep *st = plan->mutable_steps(i);
         st->clear_parity_ingest_stripe_group();
-        if (st->link_kind() != proxy_proto::CORD_TRANSFER_STAR_CENTER_TO_LOCAL ||
+        if ((st->link_kind() != proxy_proto::CORD_TRANSFER_STAR_CENTER_TO_LOCAL &&
+             st->link_kind() != proxy_proto::CORD_TRANSFER_STAR_DATA_TO_LOCAL) ||
             st->delta_payload_kind() != proxy_proto::CORD_DELTA_PARITY)
           continue;
         const int dst = st->dst_block_id();
@@ -549,6 +551,7 @@ namespace ECProject  //定义一个名为 ECProject 的命名空间，防止命�
       plan->clear_block_placements();
       plan->clear_delta_blob_refs();
       plan->clear_cluster_delta_layouts();
+      plan->clear_ingress_cache_refs();
       for (const auto &cit : cluster_table)
       {
         proxy_proto::CordTransferClusterEndpoint *ep = plan->add_cluster_endpoints();
@@ -598,6 +601,12 @@ namespace ECProject  //定义一个名为 ECProject 的命名空间，防止命�
           lay->add_delta_total_length(static_cast<uint64_t>(sl.len));
           run += static_cast<uint64_t>(sl.len);
         }
+      }
+      for (const auto &sc : sorted_clusters)
+      {
+        proxy_proto::CordIngressCacheRef *cr = plan->add_ingress_cache_refs();
+        cr->set_cluster_id(sc.first);
+        cr->set_append_key(toolbox->gen_cord_key(plan->stripe_id(), sc.first));
       }
     }
 
@@ -701,6 +710,14 @@ namespace ECProject  //定义一个名为 ECProject 的命名空间，防止命�
               L.delta_kind == cord_alg2::CordDeltaPayloadKind::DATA_DELTA)
           {
             auto bit = block_intervals.find(L.src_block_id);
+            if (bit != block_intervals.end())
+              chunk_off = static_cast<uint64_t>(
+                  cord_packed_offset_to_logical_in_block(bit->second, 0));
+          }
+          else if (L.kind == cord_alg2::TrainLinkKind::MST_FORWARD &&
+                   L.mst_origin_data_block >= 0)
+          {
+            auto bit = block_intervals.find(L.mst_origin_data_block);
             if (bit != block_intervals.end())
               chunk_off = static_cast<uint64_t>(
                   cord_packed_offset_to_logical_in_block(bit->second, 0));
@@ -1367,7 +1384,7 @@ namespace ECProject  //定义一个名为 ECProject 的命名空间，防止命�
     // 2) per local group: local parity + min(r,h) data blocks -> dedicated cluster (round-robin, skip global)
     // 3) one data block per group -> global_cluster
     // 4) remaining data per group in batches of (r+1) -> round-robin clusters (skip global)
-    // 5) all leftover data blocks from all groups -> one cluster
+    // 5) equal per-group remainder m>0: pack theta groups' remainders per cluster (theta=floor(r/(m-1)), m=1 -> r+1)
     Block *blocks_info = new Block[stripe->n];
     assert(stripe->object_keys.size() == 1);
 
@@ -1455,7 +1472,7 @@ namespace ECProject  //定义一个名为 ECProject 的命名空间，防止命�
     }
 
     const int n_primary_data = std::min(stripe->r, h);
-    std::vector<int> final_remainder_blocks;
+    std::vector<std::vector<int>> group_remainder_blocks(stripe->z);
 
     for (int g = 0; g < stripe->z; ++g)
     {
@@ -1491,21 +1508,76 @@ namespace ECProject  //定义一个名为 ECProject 的命名空间，防止命�
         }
       }
 
-      // Collect step-5 leftovers for this group
+      // Step 5 leftovers for this group (m blocks when equal across groups)
       while (next_idx < base + h)
       {
-        final_remainder_blocks.push_back(next_idx);
+        group_remainder_blocks[g].push_back(next_idx);
         next_idx++;
       }
     }
 
-    // Step 5: all remaining data blocks in one cluster
-    if (!final_remainder_blocks.empty())
+    // Step 5: merge theta local groups' remainders into one cluster when m is equal
+    int m = -1;
+    bool equal_m = true;
+    for (int g = 0; g < stripe->z; ++g)
     {
-      const int remainder_cluster = next_non_global_cluster();
-      for (int block_idx : final_remainder_blocks)
+      const int gm = static_cast<int>(group_remainder_blocks[g].size());
+      if (m < 0)
       {
-        assigned_cluster[block_idx] = remainder_cluster;
+        m = gm;
+      }
+      else if (gm != m)
+      {
+        equal_m = false;
+        break;
+      }
+    }
+
+    if (m > 0)
+    {
+      if (equal_m)
+      {
+        int theta = 1;
+        if (m == 1)
+        {
+          theta = stripe->r + 1;
+        }
+        else
+        {
+          theta = stripe->r / (m - 1);
+          if (theta < 1)
+          {
+            theta = 1;
+          }
+        }
+
+        for (int g = 0; g < stripe->z; g += theta)
+        {
+          const int batch_groups = std::min(theta, stripe->z - g);
+          const int remainder_cluster = next_non_global_cluster();
+          for (int gi = 0; gi < batch_groups; ++gi)
+          {
+            for (int block_idx : group_remainder_blocks[g + gi])
+            {
+              assigned_cluster[block_idx] = remainder_cluster;
+            }
+          }
+        }
+      }
+      else
+      {
+        for (int g = 0; g < stripe->z; ++g)
+        {
+          if (group_remainder_blocks[g].empty())
+          {
+            continue;
+          }
+          const int remainder_cluster = next_non_global_cluster();
+          for (int block_idx : group_remainder_blocks[g])
+          {
+            assigned_cluster[block_idx] = remainder_cluster;
+          }
+        }
       }
     }
 
@@ -2197,55 +2269,55 @@ namespace ECProject  //定义一个名为 ECProject 的命名空间，防止命�
       std::cout << "\n";
     }
 
-    const auto groups = cord_partition_groups_algorithm1(block_intervals);
-
-    std::cout << "[CoRD] Algorithm 1 partition (intersection closure; singletons = pairwise disjoint from all other "
-                 "updated blocks): |U|=" << groups.size() << "\n";
-    for (size_t gi = 0; gi < groups.size(); ++gi)
-    {
-      const auto &g = groups[gi];
-      const char *tag = (g.size() >= 2) ? "intersecting_group" : "disjoint_singleton";
-      std::cout << "  group[" << gi << "] " << tag << " |N|=" << g.size() << " blocks=[";
-      for (size_t bi = 0; bi < g.size(); ++bi) {
-        if (bi > 0) std::cout << " ";
-        std::cout << g[bi];
-      }
-      std::cout << "]\n";
-    }
+    std::map<int, cord_class::CordIngressClusterHints> ingress_hints_by_cluster;
 
     cord_alg2::Algorithm2Result alg2_result;
     {
       cord_alg2::TransferParams tp;
-      tp.enforce_one_send_one_recv_per_cluster = false; 
-      alg2_result =
-          cord_alg2::build_algorithm2(*stripe, block_intervals, groups, m_sys_config->ClusterNum, tp);
-      std::cout << "[CoRD] Algorithm 2 train_route (|U|=" << groups.size() << ", links=" << alg2_result.train_route.size()
-                << "):\n";
+      tp.enforce_one_send_one_recv_per_cluster = false;
+      const std::vector<std::string> bw_paths = {
+          "/users/xue/xue/project/config/BW_limitsame",
+          "project/config/BW_limitsame",
+          "../project/config/BW_limitsame",
+      };
+      bool bw_ok = false;
+      for (const auto &p : bw_paths)
+      {
+        if (cord_alg2::load_bw_matrix_from_limitsame_file(p, m_sys_config->ClusterNum, &tp))
+        {
+          bw_ok = true;
+          break;
+        }
+      }
+      if (!bw_ok)
+        std::cout << "[CoRD-Class] BW matrix load failed, using fallback inv_bw\n";
+      alg2_result = cord_class::build_class_update_plan(*stripe, block_intervals, m_sys_config->ClusterNum, tp,
+                                                        &ingress_hints_by_cluster);
+      std::cout << "[CoRD-Class] train_route links=" << alg2_result.train_route.size()
+                << " schedule_steps=" << alg2_result.timeslot_schedule.size();
+      if (alg2_result.center_global_block_id >= 0)
+        std::cout << " collector_blk=" << alg2_result.center_global_block_id;
+      std::cout << "\n";
       for (size_t i = 0; i < alg2_result.train_route.size(); ++i)
       {
         const auto &L = alg2_result.train_route[i];
         std::cout << "  [" << i << "] " << cord_alg2::train_link_kind_name(L.kind)
-                  << " blk" << L.src_block_id << "->blk" << L.dst_block_id
-                  << " c" << L.src_cluster << "->c" << L.dst_cluster
-                  << " bytes=" << L.payload_bytes << " est_s=" << L.est_transfer_sec << " grp=" << L.group_index
-                  << " delta=" << (L.delta_kind == cord_alg2::CordDeltaPayloadKind::DATA_DELTA ? "ΔD" : "ΔP")
-                  << (L.mst_origin_data_block >= 0 ? " mst_origin=" + std::to_string(L.mst_origin_data_block) : "")
+                  << " blk" << L.src_block_id << "->blk" << L.dst_block_id << " c" << L.src_cluster << "->c"
+                  << L.dst_cluster << " bytes=" << L.payload_bytes << " grp=" << L.group_index
+                  << " delta=" << (L.delta_kind == cord_alg2::CordDeltaPayloadKind::PARITY_DELTA ? "ΔP" : "ΔD")
                   << "\n";
       }
-      std::cout << "[CoRD] Algorithm 2 schedule_steps=" << alg2_result.timeslot_schedule.size();
-      if (alg2_result.center_global_block_id >= 0)
-        std::cout << " center_global_blk=" << alg2_result.center_global_block_id;
-      std::cout << "\n";
       for (const auto &ts : alg2_result.timeslot_schedule)
       {
-        std::cout << "  step " << ts.timeslot << ": links=[";
-        for (size_t li = 0; li < ts.link_indices.size(); ++li) {
-          if (li > 0) std::cout << " ";
+        std::cout << "  slot " << ts.timeslot << ": links=[";
+        for (size_t li = 0; li < ts.link_indices.size(); ++li)
+        {
+          if (li > 0)
+            std::cout << " ";
           std::cout << ts.link_indices[li];
         }
-        std::cout << "]  (concurrent transfers within this step)\n";
+        std::cout << "]\n";
       }
-      // 算法三已在 build_algorithm2 内与算法二融合（|N|≥3 成功时）；此处不再单独调用以免重复计算。
     }
 
     proxy_proto::CordTransferPlan cord_xfer_plan;
@@ -2374,6 +2446,39 @@ namespace ECProject  //定义一个名为 ECProject 的命名空间，防止命�
         plan.add_blockids(b->block_id);
         plan.add_offsets(static_cast<uint64_t>(s.block_offset));
         plan.add_sizes(static_cast<uint64_t>(s.len));
+      }
+
+      auto ihit = ingress_hints_by_cluster.find(cid);
+      if (ihit != ingress_hints_by_cluster.end())
+      {
+        for (const auto &wr : ihit->second.local_parity_writes)
+        {
+          if (wr.block_id < 0 || wr.block_id >= static_cast<int>(stripe->blocks.size()))
+            continue;
+          Block *bp = stripe->blocks[wr.block_id];
+          const Node &n = m_node_table[bp->map2node];
+          proxy_proto::CordIngressParityWrite *pw = plan.add_cord_ingress_local_parity_writes();
+          pw->set_block_id(wr.block_id);
+          pw->set_block_key(bp->block_key);
+          pw->set_datanode_ip(n.node_ip);
+          pw->set_datanode_port(n.node_port);
+          pw->set_stripe_group(wr.stripe_group);
+        }
+        for (const auto &wr : ihit->second.global_parity_writes)
+        {
+          if (wr.block_id < 0 || wr.block_id >= static_cast<int>(stripe->blocks.size()))
+            continue;
+          Block *bp = stripe->blocks[wr.block_id];
+          const Node &n = m_node_table[bp->map2node];
+          proxy_proto::CordIngressParityWrite *pw = plan.add_cord_ingress_global_parity_writes();
+          pw->set_block_id(wr.block_id);
+          pw->set_block_key(bp->block_key);
+          pw->set_datanode_ip(n.node_ip);
+          pw->set_datanode_port(n.node_port);
+          pw->set_stripe_group(wr.stripe_group);
+        }
+        for (int32_t sg : ihit->second.cache_lp_stripe_groups)
+          plan.add_cord_ingress_cache_lp_stripe_groups(sg);
       }
 
       m_mutex.lock();

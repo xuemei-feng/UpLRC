@@ -24,14 +24,18 @@ namespace ECProject
       double inv_bw_sec_per_byte = 1.0 / (100.0 * 1024.0 * 1024.0); // ~100 MiB/s
       /** 是否在 Dinic 调度中强制「每 cluster 每步最多 1 发 + 1 收」（默认 true，保持原有约束） */
       bool enforce_one_send_one_recv_per_cluster = true;
+      /** 可选：cluster×cluster 带宽 MB/s；<=0 表示用 inv_bw 回退 */
+      static constexpr int kMaxBwClusters = 64;
+      double bw_matrix_mb_per_sec[kMaxBwClusters][kMaxBwClusters] = {};
     };
 
     enum class TrainLinkKind
     {
-      STAR_DATA_TO_CENTER,
-      STAR_CENTER_TO_GLOBAL,
-      STAR_CENTER_TO_LOCAL,
-      MST_FORWARD
+      STAR_DATA_TO_CENTER = 0,
+      STAR_CENTER_TO_GLOBAL = 1,
+      STAR_CENTER_TO_LOCAL = 2,
+      MST_FORWARD = 3,
+      STAR_DATA_TO_LOCAL = 4,
     };
 
     /** 线上载荷语义：数据增量 ΔD（按字节传输） vs 已由收集器聚合得到的校验增量（再 XOR 落盘） */
@@ -98,6 +102,12 @@ namespace ECProject
     int64_t merged_delta_hull_span_bytes(
         const std::map<int, std::vector<std::pair<int, int>>> &block_intervals,
         const std::vector<int> &data_block_ids);
+
+    /** 对 train_route 做依赖感知的时间步调度（Dinic）；结果写入 out->timeslot_schedule */
+    void schedule_train_route_timeslots(Algorithm2Result *out, int cluster_num, const TransferParams &tp);
+
+    /** 从 BW_limitsame 风格文件加载对称带宽矩阵（MB/s） */
+    bool load_bw_matrix_from_limitsame_file(const std::string &path, int cluster_num, TransferParams *tp);
   } // namespace cord_alg2
 } // namespace ECProject
 
