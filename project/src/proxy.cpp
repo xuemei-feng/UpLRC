@@ -151,11 +151,6 @@ namespace ECProject
   static std::mutex g_cord_dn_endpoint_map_mu;
   static std::map<std::string, std::shared_ptr<std::mutex>> g_cord_dn_endpoint_mu;
 
-  /** parity 块「读-改-写」按物理块串行：同一 (endpoint, block_key, block_id) 上 RMW 互斥，
-   * 不同物理块可并行。用于放开 STAR_CENTER_TO_GLOBAL 等 parity 扇出的发送侧串行约束。 */
-  static std::mutex g_cord_parity_block_map_mu;
-  static std::map<std::string, std::shared_ptr<std::mutex>> g_cord_parity_block_mu;
-
   static std::string cord_mst_stream_key(const std::string &plan_key, int origin_data_block)
   {
     return plan_key + ":mst:" + std::to_string(origin_data_block);
@@ -184,17 +179,6 @@ namespace ECProject
   {
     std::lock_guard<std::mutex> lk(g_cord_dn_endpoint_map_mu);
     auto &p = g_cord_dn_endpoint_mu[endpoint];
-    if (!p)
-      p = std::make_shared<std::mutex>();
-    return p;
-  }
-
-  static std::shared_ptr<std::mutex> cord_parity_block_mu_for(const std::string &dn_ip, int dn_port,
-                                                              const std::string &block_key, int block_id)
-  {
-    std::string key = dn_ip + ":" + std::to_string(dn_port) + "|" + block_key + "|" + std::to_string(block_id);
-    std::lock_guard<std::mutex> lk(g_cord_parity_block_map_mu);
-    auto &p = g_cord_parity_block_mu[key];
     if (!p)
       p = std::make_shared<std::mutex>();
     return p;
@@ -1170,23 +1154,11 @@ namespace ECProject
     const int psz = request.parity_slice_length();
     if (psz <= 0 || static_cast<size_t>(psz) != payload_len)
       return false;
-    // 同一物理 parity 块 RMW 互斥（放开发送侧串行后，多个并发 ΔP 落同块时保证不丢更新）。
-    const auto block_mu = cord_parity_block_mu_for(request.datanode_ip(), request.datanode_port(),
-                                                   request.block_key(), request.dst_block_id());
-    std::lock_guard<std::mutex> block_lk(*block_mu);
-    std::vector<char> cur(static_cast<size_t>(psz));
-    if (!proxy->CordRangeReadFromDatanode(request.block_key(), request.dst_block_id(), request.parity_slice_offset(),
-                                          cur.data(), static_cast<size_t>(psz), request.datanode_ip().c_str(),
-                                          request.datanode_port()))
-      return false;
-    for (int u = 0; u < psz; ++u)
-      cur[static_cast<size_t>(u)] = static_cast<char>(
-          static_cast<unsigned char>(cur[static_cast<size_t>(u)]) ^
-          static_cast<unsigned char>(payload[u]));
+    // ΔP 下推 datanode 本地 read-xor-write：省掉读回 proxy 的往返，datanode 按文件串行保证原子。
     cord_pure_xfer_parity_dn_begin(request.plan_key());
-    if (!proxy->CordRangeWriteToDatanode(request.block_key(), request.dst_block_id(), request.parity_slice_offset(),
-                                         cur.data(), static_cast<size_t>(psz), request.datanode_ip().c_str(),
-                                         request.datanode_port()))
+    if (!proxy->CordRangeXorWriteToDatanode(request.block_key(), request.dst_block_id(),
+                                            request.parity_slice_offset(), payload, static_cast<size_t>(psz),
+                                            request.datanode_ip().c_str(), request.datanode_port()))
     {
       cord_pure_xfer_parity_dn_abort(request.plan_key());
       return false;
@@ -1223,10 +1195,6 @@ namespace ECProject
     if (request.dst_proxy_cluster_id() == proxy->self_cluster_id() &&
         request.dst_block_id() >= request.k_datablock())
     {
-      // 同物理 parity 块 RMW 互斥（与 STAR 扇出 / ingress 共用锁）。
-      const auto block_mu = cord_parity_block_mu_for(request.parity_datanode_ip(), request.parity_datanode_port(),
-                                                     request.parity_block_key(), request.dst_block_id());
-      std::lock_guard<std::mutex> block_lk(*block_mu);
       bool applied_matrix = false;
       auto pl = cord_lookup_registered_plan(pk);
       if (pl && cord_uses_matrix_encode(*pl) && request.src_data_block_id() >= 0)
@@ -1270,21 +1238,11 @@ namespace ECProject
           {
             const int poff = static_cast<int>(nz.first);
             const int plen = static_cast<int>(nz.second);
-            std::vector<char> cur(static_cast<size_t>(plen));
-            if (!proxy->CordRangeReadFromDatanode(request.parity_block_key(), request.dst_block_id(), po + poff,
-                                                  cur.data(), static_cast<size_t>(plen),
-                                                  request.parity_datanode_ip().c_str(),
-                                                  request.parity_datanode_port()))
-              return false;
-            for (int u = 0; u < plen; ++u)
-              cur[static_cast<size_t>(u)] = static_cast<char>(
-                  static_cast<unsigned char>(cur[static_cast<size_t>(u)]) ^
-                  static_cast<unsigned char>(pdelta[static_cast<size_t>(poff + u)]));
             cord_pure_xfer_parity_dn_begin(pk);
-            if (!proxy->CordRangeWriteToDatanode(request.parity_block_key(), request.dst_block_id(), po + poff,
-                                                 cur.data(), static_cast<size_t>(plen),
-                                                 request.parity_datanode_ip().c_str(),
-                                                 request.parity_datanode_port()))
+            if (!proxy->CordRangeXorWriteToDatanode(
+                    request.parity_block_key(), request.dst_block_id(), po + poff,
+                    reinterpret_cast<const char *>(pdelta.data()) + poff, static_cast<size_t>(plen),
+                    request.parity_datanode_ip().c_str(), request.parity_datanode_port()))
             {
               cord_pure_xfer_parity_dn_abort(pk);
               return false;
@@ -1301,21 +1259,11 @@ namespace ECProject
         {
           const int psz = static_cast<int>(nz.second);
           const int slice_off = static_cast<int>(off) + static_cast<int>(nz.first);
-          std::vector<char> cur(static_cast<size_t>(psz));
-          if (!proxy->CordRangeReadFromDatanode(request.parity_block_key(), request.dst_block_id(), slice_off,
-                                                cur.data(), static_cast<size_t>(psz),
-                                                request.parity_datanode_ip().c_str(),
-                                                request.parity_datanode_port()))
-            return false;
-          for (int u = 0; u < psz; ++u)
-            cur[static_cast<size_t>(u)] = static_cast<char>(
-                static_cast<unsigned char>(cur[static_cast<size_t>(u)]) ^
-                static_cast<unsigned char>(chunk_data[nz.first + static_cast<size_t>(u)]));
           cord_pure_xfer_parity_dn_begin(pk);
-          if (!proxy->CordRangeWriteToDatanode(request.parity_block_key(), request.dst_block_id(), slice_off,
-                                               cur.data(), static_cast<size_t>(psz),
-                                               request.parity_datanode_ip().c_str(),
-                                               request.parity_datanode_port()))
+          if (!proxy->CordRangeXorWriteToDatanode(request.parity_block_key(), request.dst_block_id(), slice_off,
+                                                  chunk_data + nz.first, static_cast<size_t>(psz),
+                                                  request.parity_datanode_ip().c_str(),
+                                                  request.parity_datanode_port()))
           {
             cord_pure_xfer_parity_dn_abort(pk);
             return false;
@@ -2816,6 +2764,48 @@ namespace ECProject
     }
   }
 
+  /** parity ΔP 下推：proxy 只发增量，datanode 本地完成 read-xor-write，省掉读回 proxy 的整条往返。 */
+  bool ProxyImpl::CordRangeXorWriteToDatanode(const std::string &block_key, int block_id, int range_offset,
+                                              const char *delta, size_t length, const char *ip, int port)
+  {
+    try
+    {
+      grpc::ClientContext context;
+      datanode_proto::CordRangeRWInfo info;
+      datanode_proto::RequestResult result;
+      info.set_block_key(block_key);
+      info.set_block_id(block_id);
+      info.set_range_offset(range_offset);
+      info.set_range_length(static_cast<int>(length));
+      info.set_proxy_ip(m_ip);
+      info.set_proxy_port(m_port);
+      std::string node_ip_port = std::string(ip) + ":" + std::to_string(port);
+      grpc::Status stat = m_datanode_ptrs[node_ip_port]->handleCordRangeXorWrite(&context, info, &result);
+      if (!stat.ok() || !result.message())
+        return false;
+      const uint64_t xfer_tag = result.cord_tcp_xfer_tag();
+      if (xfer_tag == 0)
+        return false;
+      asio::io_context io_context;
+      asio::ip::tcp::resolver resolver(io_context);
+      asio::ip::tcp::socket socket(io_context);
+      asio::connect(socket, resolver.resolve({std::string(ip), std::to_string(port + ECProject::DATANODE_PORT_SHIFT)}));
+      cord_apply_datanode_tcp_timeout(socket, m_sys_config->CordRequestTimeoutSec);
+      cord_write_u64_be(socket, xfer_tag);
+      asio::error_code error;
+      asio::write(socket, asio::buffer(delta, length), error);
+      asio::error_code ignore_ec;
+      socket.shutdown(asio::ip::tcp::socket::shutdown_both, ignore_ec);
+      socket.close(ignore_ec);
+      return !error;
+    }
+    catch (const std::exception &e)
+    {
+      std::cerr << e.what() << '\n';
+      return false;
+    }
+  }
+
   bool ProxyImpl::CordDeltaBlobToDatanode(const std::string &blob_key, const char *data, size_t length, const char *ip,
                                           int port)
   {
@@ -2861,17 +2851,9 @@ namespace ECProject
   {
     if (delta_len == 0)
       return true;
-    // 与 cord_apply_parity_xor_delta 共用按物理块的 RMW 互斥，保证 ingress / 矩阵多块写与扇出并发安全。
-    const auto block_mu = cord_parity_block_mu_for(dn_ip, dn_port, block_key, block_id);
-    std::lock_guard<std::mutex> block_lk(*block_mu);
-    std::vector<char> cur(delta_len);
-    if (!proxy->CordRangeReadFromDatanode(block_key, block_id, slice_off, cur.data(), delta_len, dn_ip.c_str(),
-                                          dn_port))
-      return false;
-    for (size_t u = 0; u < delta_len; ++u)
-      cur[u] = static_cast<char>(static_cast<unsigned char>(cur[u]) ^ static_cast<unsigned char>(delta[u]));
-    return proxy->CordRangeWriteToDatanode(block_key, block_id, slice_off, cur.data(), delta_len, dn_ip.c_str(),
-                                           dn_port);
+    // ΔP 下推 datanode 本地 read-xor-write（datanode 按文件串行保证原子）。
+    return proxy->CordRangeXorWriteToDatanode(block_key, block_id, slice_off, delta, delta_len, dn_ip.c_str(),
+                                              dn_port);
   }
 
   static bool cord_ingress_apply_after_delta(

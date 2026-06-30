@@ -33,7 +33,20 @@ namespace
 
   std::map<uint64_t, CordDnPendingRead> g_cord_dn_pending_reads;
   std::map<uint64_t, CordDnPendingWrite> g_cord_dn_pending_writes;
+  std::map<uint64_t, CordDnPendingWrite> g_cord_dn_pending_xor_writes;
   std::map<uint64_t, CordDnPendingBlob> g_cord_dn_pending_blobs;
+
+  // 同一块文件的 read-xor-write 串行（XOR 可交换，仅需保证单次 RMW 原子）。
+  std::mutex g_cord_dn_file_mu_map_mu;
+  std::map<std::string, std::shared_ptr<std::mutex>> g_cord_dn_file_mu;
+  static std::shared_ptr<std::mutex> cord_dn_file_mu_for(const std::string &path)
+  {
+    std::lock_guard<std::mutex> lk(g_cord_dn_file_mu_map_mu);
+    auto &p = g_cord_dn_file_mu[path];
+    if (!p)
+      p = std::make_shared<std::mutex>();
+    return p;
+  }
 
   static uint64_t cord_dn_alloc_xfer_tag()
   {
@@ -989,6 +1002,98 @@ namespace ECProject
       std::lock_guard<std::mutex> lk(g_cord_dn_pending_mu);
       g_cord_dn_pending_writes.erase(xfer_tag);
       std::cout << "handleCordRangeWrite exception" << std::endl;
+      std::cout << e.what() << std::endl;
+    }
+    return grpc::Status::OK;
+  }
+
+  grpc::Status DatanodeImpl::handleCordRangeXorWrite(
+      grpc::ServerContext *context,
+      const datanode_proto::CordRangeRWInfo *info,
+      datanode_proto::RequestResult *response)
+  {
+    (void)context;
+    std::string block_key = info->block_key();
+    int range_offset = info->range_offset();
+    int range_length = info->range_length();
+    std::string targetdir = "./storage/" + std::to_string(m_port) + "/";
+    std::string writepath = targetdir + block_key;
+    if (access(targetdir.c_str(), 0) == -1)
+      createDirectories(targetdir);
+
+    const uint64_t xfer_tag = cord_dn_alloc_xfer_tag();
+    {
+      std::lock_guard<std::mutex> lk(g_cord_dn_pending_mu);
+      g_cord_dn_pending_xor_writes[xfer_tag] = CordDnPendingWrite{writepath, range_offset, range_length};
+    }
+
+    auto handler = [this]() mutable
+    {
+      try
+      {
+        asio::ip::tcp::socket socket(io_context);
+        uint64_t wire_tag = 0;
+        {
+          std::lock_guard<std::mutex> accept_lk(g_cord_dn_accept_mu);
+          acceptor.accept(socket);
+          wire_tag = cord_dn_read_u64_be(socket);
+        }
+        CordDnPendingWrite pending;
+        {
+          std::lock_guard<std::mutex> lk(g_cord_dn_pending_mu);
+          auto it = g_cord_dn_pending_xor_writes.find(wire_tag);
+          if (it == g_cord_dn_pending_xor_writes.end())
+          {
+            std::cout << "[Datanode] cord range xor write unknown tag=" << wire_tag << std::endl;
+            return;
+          }
+          pending = std::move(it->second);
+          g_cord_dn_pending_xor_writes.erase(it);
+        }
+        const int range_length = pending.range_length;
+        std::vector<char> delta(static_cast<size_t>(range_length));
+        asio::error_code ec;
+        asio::read(socket, asio::buffer(delta.data(), static_cast<size_t>(range_length)), ec);
+        asio::error_code ignore_ec;
+        socket.shutdown(asio::ip::tcp::socket::shutdown_both, ignore_ec);
+        socket.close(ignore_ec);
+        if (ec)
+          return;
+        // 本地 read-xor-write：同一文件串行，XOR 可交换故并发到达顺序无关。
+        const auto file_mu = cord_dn_file_mu_for(pending.writepath);
+        std::lock_guard<std::mutex> file_lk(*file_mu);
+        int fd = ::open(pending.writepath.c_str(), O_CREAT | O_RDWR, 0644);
+        if (fd < 0)
+          return;
+        std::vector<char> cur(static_cast<size_t>(range_length), 0);
+        ssize_t r = ::pread(fd, cur.data(), range_length, pending.range_offset);
+        (void)r;
+        for (int u = 0; u < range_length; ++u)
+          cur[static_cast<size_t>(u)] = static_cast<char>(
+              static_cast<unsigned char>(cur[static_cast<size_t>(u)]) ^
+              static_cast<unsigned char>(delta[static_cast<size_t>(u)]));
+        ssize_t w = ::pwrite(fd, cur.data(), range_length, pending.range_offset);
+        ::fsync(fd);
+        ::close(fd);
+        (void)w;
+      }
+      catch (std::exception &e)
+      {
+        std::cout << "handleCordRangeXorWrite tcp exception: " << e.what() << std::endl;
+      }
+    };
+    try
+    {
+      std::thread my_thread(handler);
+      my_thread.detach();
+      response->set_message(true);
+      response->set_cord_tcp_xfer_tag(xfer_tag);
+    }
+    catch (std::exception &e)
+    {
+      std::lock_guard<std::mutex> lk(g_cord_dn_pending_mu);
+      g_cord_dn_pending_xor_writes.erase(xfer_tag);
+      std::cout << "handleCordRangeXorWrite exception" << std::endl;
       std::cout << e.what() << std::endl;
     }
     return grpc::Status::OK;

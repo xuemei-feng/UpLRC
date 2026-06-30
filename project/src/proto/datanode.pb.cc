@@ -309,7 +309,7 @@ const char descriptor_table_protodef_datanode_2eproto[] PROTOBUF_SECTION_VARIABL
   "ort\030\006 \001(\005\"`\n\021CordDeltaBlobInfo\022\020\n\010blob_k"
   "ey\030\001 \001(\t\022\023\n\013byte_length\030\002 \001(\005\022\020\n\010proxy_i"
   "p\030\003 \001(\t\022\022\n\nproxy_port\030\004 \001(\005\"\034\n\007DelInfo\022\021"
-  "\n\tblock_key\030\001 \001(\t2\256\010\n\017datanodeService\022J\n"
+  "\n\tblock_key\030\001 \001(\t2\211\t\n\017datanodeService\022J\n"
   "\ncheckalive\022\035.datanode_proto.CheckaliveC"
   "MD\032\035.datanode_proto.RequestResult\022C\n\than"
   "dleSet\022\027.datanode_proto.SetInfo\032\035.datano"
@@ -332,15 +332,17 @@ const char descriptor_table_protodef_datanode_2eproto[] PROTOBUF_SECTION_VARIABL
   "angeRWInfo\032\035.datanode_proto.RequestResul"
   "t\022V\n\024handleCordRangeWrite\022\037.datanode_pro"
   "to.CordRangeRWInfo\032\035.datanode_proto.Requ"
-  "estResult\022W\n\023handleCordDeltaBlob\022!.datan"
-  "ode_proto.CordDeltaBlobInfo\032\035.datanode_p"
-  "roto.RequestResult\022F\n\014handleDelete\022\027.dat"
-  "anode_proto.DelInfo\032\035.datanode_proto.Req"
-  "uestResultb\006proto3"
+  "estResult\022Y\n\027handleCordRangeXorWrite\022\037.d"
+  "atanode_proto.CordRangeRWInfo\032\035.datanode"
+  "_proto.RequestResult\022W\n\023handleCordDeltaB"
+  "lob\022!.datanode_proto.CordDeltaBlobInfo\032\035"
+  ".datanode_proto.RequestResult\022F\n\014handleD"
+  "elete\022\027.datanode_proto.DelInfo\032\035.datanod"
+  "e_proto.RequestResultb\006proto3"
   ;
 static ::_pbi::once_flag descriptor_table_datanode_2eproto_once;
 const ::_pbi::DescriptorTable descriptor_table_datanode_2eproto = {
-    false, false, 1978, descriptor_table_protodef_datanode_2eproto,
+    false, false, 2069, descriptor_table_protodef_datanode_2eproto,
     "datanode.proto",
     &descriptor_table_datanode_2eproto_once, nullptr, 0, 9,
     schemas, file_default_instances, TableStruct_datanode_2eproto::offsets,

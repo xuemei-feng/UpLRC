@@ -37,6 +37,8 @@ service datanodeService {
   // CoRD：块内区间读/写；Δ 暂存文件
   rpc handleCordRangeRead(CordRangeRWInfo) returns(RequestResult);
   rpc handleCordRangeWrite(CordRangeRWInfo) returns(RequestResult);
+  // CoRD：parity ΔP 直接下推 datanode 本地 read-xor-write，省掉读回 proxy 的整条往返
+  rpc handleCordRangeXorWrite(CordRangeRWInfo) returns(RequestResult);
   rpc handleCordDeltaBlob(CordDeltaBlobInfo) returns(RequestResult);
   // delete
   rpc handleDelete(DelInfo) returns(RequestResult);

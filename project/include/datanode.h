@@ -75,6 +75,10 @@ namespace ECProject
             grpc::ServerContext *context,
             const datanode_proto::CordRangeRWInfo *info,
             datanode_proto::RequestResult *response) override;
+        grpc::Status handleCordRangeXorWrite(
+            grpc::ServerContext *context,
+            const datanode_proto::CordRangeRWInfo *info,
+            datanode_proto::RequestResult *response) override;
         grpc::Status handleCordDeltaBlob(
             grpc::ServerContext *context,
             const datanode_proto::CordDeltaBlobInfo *info,

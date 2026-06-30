@@ -33,6 +33,7 @@ static const char* datanodeService_method_names[] = {
   "/datanode_proto.datanodeService/handleGetBreakdown",
   "/datanode_proto.datanodeService/handleCordRangeRead",
   "/datanode_proto.datanodeService/handleCordRangeWrite",
+  "/datanode_proto.datanodeService/handleCordRangeXorWrite",
   "/datanode_proto.datanodeService/handleCordDeltaBlob",
   "/datanode_proto.datanodeService/handleDelete",
 };
@@ -55,8 +56,9 @@ datanodeService::Stub::Stub(const std::shared_ptr< ::grpc::ChannelInterface>& ch
   , rpcmethod_handleGetBreakdown_(datanodeService_method_names[8], options.suffix_for_stats(),::grpc::internal::RpcMethod::NORMAL_RPC, channel)
   , rpcmethod_handleCordRangeRead_(datanodeService_method_names[9], options.suffix_for_stats(),::grpc::internal::RpcMethod::NORMAL_RPC, channel)
   , rpcmethod_handleCordRangeWrite_(datanodeService_method_names[10], options.suffix_for_stats(),::grpc::internal::RpcMethod::NORMAL_RPC, channel)
-  , rpcmethod_handleCordDeltaBlob_(datanodeService_method_names[11], options.suffix_for_stats(),::grpc::internal::RpcMethod::NORMAL_RPC, channel)
-  , rpcmethod_handleDelete_(datanodeService_method_names[12], options.suffix_for_stats(),::grpc::internal::RpcMethod::NORMAL_RPC, channel)
+  , rpcmethod_handleCordRangeXorWrite_(datanodeService_method_names[11], options.suffix_for_stats(),::grpc::internal::RpcMethod::NORMAL_RPC, channel)
+  , rpcmethod_handleCordDeltaBlob_(datanodeService_method_names[12], options.suffix_for_stats(),::grpc::internal::RpcMethod::NORMAL_RPC, channel)
+  , rpcmethod_handleDelete_(datanodeService_method_names[13], options.suffix_for_stats(),::grpc::internal::RpcMethod::NORMAL_RPC, channel)
   {}
 
 ::grpc::Status datanodeService::Stub::checkalive(::grpc::ClientContext* context, const ::datanode_proto::CheckaliveCMD& request, ::datanode_proto::RequestResult* response) {
@@ -312,6 +314,29 @@ void datanodeService::Stub::async::handleCordRangeWrite(::grpc::ClientContext* c
   return result;
 }
 
+::grpc::Status datanodeService::Stub::handleCordRangeXorWrite(::grpc::ClientContext* context, const ::datanode_proto::CordRangeRWInfo& request, ::datanode_proto::RequestResult* response) {
+  return ::grpc::internal::BlockingUnaryCall< ::datanode_proto::CordRangeRWInfo, ::datanode_proto::RequestResult, ::grpc::protobuf::MessageLite, ::grpc::protobuf::MessageLite>(channel_.get(), rpcmethod_handleCordRangeXorWrite_, context, request, response);
+}
+
+void datanodeService::Stub::async::handleCordRangeXorWrite(::grpc::ClientContext* context, const ::datanode_proto::CordRangeRWInfo* request, ::datanode_proto::RequestResult* response, std::function<void(::grpc::Status)> f) {
+  ::grpc::internal::CallbackUnaryCall< ::datanode_proto::CordRangeRWInfo, ::datanode_proto::RequestResult, ::grpc::protobuf::MessageLite, ::grpc::protobuf::MessageLite>(stub_->channel_.get(), stub_->rpcmethod_handleCordRangeXorWrite_, context, request, response, std::move(f));
+}
+
+void datanodeService::Stub::async::handleCordRangeXorWrite(::grpc::ClientContext* context, const ::datanode_proto::CordRangeRWInfo* request, ::datanode_proto::RequestResult* response, ::grpc::ClientUnaryReactor* reactor) {
+  ::grpc::internal::ClientCallbackUnaryFactory::Create< ::grpc::protobuf::MessageLite, ::grpc::protobuf::MessageLite>(stub_->channel_.get(), stub_->rpcmethod_handleCordRangeXorWrite_, context, request, response, reactor);
+}
+
+::grpc::ClientAsyncResponseReader< ::datanode_proto::RequestResult>* datanodeService::Stub::PrepareAsynchandleCordRangeXorWriteRaw(::grpc::ClientContext* context, const ::datanode_proto::CordRangeRWInfo& request, ::grpc::CompletionQueue* cq) {
+  return ::grpc::internal::ClientAsyncResponseReaderHelper::Create< ::datanode_proto::RequestResult, ::datanode_proto::CordRangeRWInfo, ::grpc::protobuf::MessageLite, ::grpc::protobuf::MessageLite>(channel_.get(), cq, rpcmethod_handleCordRangeXorWrite_, context, request);
+}
+
+::grpc::ClientAsyncResponseReader< ::datanode_proto::RequestResult>* datanodeService::Stub::AsynchandleCordRangeXorWriteRaw(::grpc::ClientContext* context, const ::datanode_proto::CordRangeRWInfo& request, ::grpc::CompletionQueue* cq) {
+  auto* result =
+    this->PrepareAsynchandleCordRangeXorWriteRaw(context, request, cq);
+  result->StartCall();
+  return result;
+}
+
 ::grpc::Status datanodeService::Stub::handleCordDeltaBlob(::grpc::ClientContext* context, const ::datanode_proto::CordDeltaBlobInfo& request, ::datanode_proto::RequestResult* response) {
   return ::grpc::internal::BlockingUnaryCall< ::datanode_proto::CordDeltaBlobInfo, ::datanode_proto::RequestResult, ::grpc::protobuf::MessageLite, ::grpc::protobuf::MessageLite>(channel_.get(), rpcmethod_handleCordDeltaBlob_, context, request, response);
 }
@@ -472,6 +497,16 @@ datanodeService::Service::Service() {
   AddMethod(new ::grpc::internal::RpcServiceMethod(
       datanodeService_method_names[11],
       ::grpc::internal::RpcMethod::NORMAL_RPC,
+      new ::grpc::internal::RpcMethodHandler< datanodeService::Service, ::datanode_proto::CordRangeRWInfo, ::datanode_proto::RequestResult, ::grpc::protobuf::MessageLite, ::grpc::protobuf::MessageLite>(
+          [](datanodeService::Service* service,
+             ::grpc::ServerContext* ctx,
+             const ::datanode_proto::CordRangeRWInfo* req,
+             ::datanode_proto::RequestResult* resp) {
+               return service->handleCordRangeXorWrite(ctx, req, resp);
+             }, this)));
+  AddMethod(new ::grpc::internal::RpcServiceMethod(
+      datanodeService_method_names[12],
+      ::grpc::internal::RpcMethod::NORMAL_RPC,
       new ::grpc::internal::RpcMethodHandler< datanodeService::Service, ::datanode_proto::CordDeltaBlobInfo, ::datanode_proto::RequestResult, ::grpc::protobuf::MessageLite, ::grpc::protobuf::MessageLite>(
           [](datanodeService::Service* service,
              ::grpc::ServerContext* ctx,
@@ -480,7 +515,7 @@ datanodeService::Service::Service() {
                return service->handleCordDeltaBlob(ctx, req, resp);
              }, this)));
   AddMethod(new ::grpc::internal::RpcServiceMethod(
-      datanodeService_method_names[12],
+      datanodeService_method_names[13],
       ::grpc::internal::RpcMethod::NORMAL_RPC,
       new ::grpc::internal::RpcMethodHandler< datanodeService::Service, ::datanode_proto::DelInfo, ::datanode_proto::RequestResult, ::grpc::protobuf::MessageLite, ::grpc::protobuf::MessageLite>(
           [](datanodeService::Service* service,
@@ -565,6 +600,13 @@ datanodeService::Service::~Service() {
 }
 
 ::grpc::Status datanodeService::Service::handleCordRangeWrite(::grpc::ServerContext* context, const ::datanode_proto::CordRangeRWInfo* request, ::datanode_proto::RequestResult* response) {
+  (void) context;
+  (void) request;
+  (void) response;
+  return ::grpc::Status(::grpc::StatusCode::UNIMPLEMENTED, "");
+}
+
+::grpc::Status datanodeService::Service::handleCordRangeXorWrite(::grpc::ServerContext* context, const ::datanode_proto::CordRangeRWInfo* request, ::datanode_proto::RequestResult* response) {
   (void) context;
   (void) request;
   (void) response;
