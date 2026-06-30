@@ -151,6 +151,11 @@ namespace ECProject
   static std::mutex g_cord_dn_endpoint_map_mu;
   static std::map<std::string, std::shared_ptr<std::mutex>> g_cord_dn_endpoint_mu;
 
+  /** parity 块「读-改-写」按物理块串行：同一 (endpoint, block_key, block_id) 上 RMW 互斥，
+   * 不同物理块可并行。用于放开 STAR_CENTER_TO_GLOBAL 等 parity 扇出的发送侧串行约束。 */
+  static std::mutex g_cord_parity_block_map_mu;
+  static std::map<std::string, std::shared_ptr<std::mutex>> g_cord_parity_block_mu;
+
   static std::string cord_mst_stream_key(const std::string &plan_key, int origin_data_block)
   {
     return plan_key + ":mst:" + std::to_string(origin_data_block);
@@ -179,6 +184,17 @@ namespace ECProject
   {
     std::lock_guard<std::mutex> lk(g_cord_dn_endpoint_map_mu);
     auto &p = g_cord_dn_endpoint_mu[endpoint];
+    if (!p)
+      p = std::make_shared<std::mutex>();
+    return p;
+  }
+
+  static std::shared_ptr<std::mutex> cord_parity_block_mu_for(const std::string &dn_ip, int dn_port,
+                                                              const std::string &block_key, int block_id)
+  {
+    std::string key = dn_ip + ":" + std::to_string(dn_port) + "|" + block_key + "|" + std::to_string(block_id);
+    std::lock_guard<std::mutex> lk(g_cord_parity_block_map_mu);
+    auto &p = g_cord_parity_block_mu[key];
     if (!p)
       p = std::make_shared<std::mutex>();
     return p;
@@ -1154,6 +1170,10 @@ namespace ECProject
     const int psz = request.parity_slice_length();
     if (psz <= 0 || static_cast<size_t>(psz) != payload_len)
       return false;
+    // 同一物理 parity 块 RMW 互斥（放开发送侧串行后，多个并发 ΔP 落同块时保证不丢更新）。
+    const auto block_mu = cord_parity_block_mu_for(request.datanode_ip(), request.datanode_port(),
+                                                   request.block_key(), request.dst_block_id());
+    std::lock_guard<std::mutex> block_lk(*block_mu);
     std::vector<char> cur(static_cast<size_t>(psz));
     if (!proxy->CordRangeReadFromDatanode(request.block_key(), request.dst_block_id(), request.parity_slice_offset(),
                                           cur.data(), static_cast<size_t>(psz), request.datanode_ip().c_str(),
@@ -1203,6 +1223,10 @@ namespace ECProject
     if (request.dst_proxy_cluster_id() == proxy->self_cluster_id() &&
         request.dst_block_id() >= request.k_datablock())
     {
+      // 同物理 parity 块 RMW 互斥（与 STAR 扇出 / ingress 共用锁）。
+      const auto block_mu = cord_parity_block_mu_for(request.parity_datanode_ip(), request.parity_datanode_port(),
+                                                     request.parity_block_key(), request.dst_block_id());
+      std::lock_guard<std::mutex> block_lk(*block_mu);
       bool applied_matrix = false;
       auto pl = cord_lookup_registered_plan(pk);
       if (pl && cord_uses_matrix_encode(*pl) && request.src_data_block_id() >= 0)
@@ -1996,9 +2020,9 @@ namespace ECProject
         for (int si : steps_by_slot[sl])
         {
           const auto &st = plan.steps(si);
+          // STAR_CENTER_TO_GLOBAL 不再整体串行：parity 落盘已由按物理块的 RMW 锁保证不丢更新，
+          // 写不同物理块的步骤可并行，仅写同块时由块锁串行。
           if (st.link_kind() == proxy_proto::CORD_TRANSFER_MST_FORWARD && st.src_block_id() >= k)
-            serial_steps.push_back(si);
-          else if (st.link_kind() == proxy_proto::CORD_TRANSFER_STAR_CENTER_TO_GLOBAL)
             serial_steps.push_back(si);
           else
             parallel_steps.push_back(si);
@@ -2837,6 +2861,9 @@ namespace ECProject
   {
     if (delta_len == 0)
       return true;
+    // 与 cord_apply_parity_xor_delta 共用按物理块的 RMW 互斥，保证 ingress / 矩阵多块写与扇出并发安全。
+    const auto block_mu = cord_parity_block_mu_for(dn_ip, dn_port, block_key, block_id);
+    std::lock_guard<std::mutex> block_lk(*block_mu);
     std::vector<char> cur(delta_len);
     if (!proxy->CordRangeReadFromDatanode(block_key, block_id, slice_off, cur.data(), delta_len, dn_ip.c_str(),
                                           dn_port))
