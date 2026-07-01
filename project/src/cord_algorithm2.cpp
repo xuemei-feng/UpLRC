@@ -79,8 +79,17 @@ namespace ECProject
       {
         if (bytes <= 0)
           return 0.0;
-        double lat = (src_c == dst_c) ? tp.same_cluster_latency_sec : tp.cross_cluster_latency_sec;
-        return lat + static_cast<double>(bytes) * tp.inv_bw_sec_per_byte;
+        const double lat =
+            (src_c == dst_c) ? tp.same_cluster_latency_sec : tp.cross_cluster_latency_sec;
+        double inv_bw_sec_per_byte = tp.inv_bw_sec_per_byte;
+        if (src_c >= 0 && src_c < TransferParams::kMaxBwClusters && dst_c >= 0 &&
+            dst_c < TransferParams::kMaxBwClusters)
+        {
+          const double bw_mbs = tp.bw_matrix_mb_per_sec[src_c][dst_c];
+          if (bw_mbs > 0.0)
+            inv_bw_sec_per_byte = 1.0 / (bw_mbs * 1024.0 * 1024.0);
+        }
+        return lat + static_cast<double>(bytes) * inv_bw_sec_per_byte;
       }
 
       struct DSU

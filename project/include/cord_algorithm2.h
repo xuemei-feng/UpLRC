@@ -16,7 +16,7 @@ namespace ECProject
 {
   namespace cord_alg2
   {
-    /** 传输时间模型：t = latency + bytes * inv_bw（同/跨 cluster） */
+    /** 传输时间模型：t = latency + bytes / bw；优先 bw_matrix_mb_per_sec[src][dst]（MB/s），否则 inv_bw 回退 */
     struct TransferParams
     {
       double same_cluster_latency_sec = 1e-4;
