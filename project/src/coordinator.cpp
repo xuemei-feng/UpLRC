@@ -1819,62 +1819,58 @@ namespace ECProject  //定义一个名为 ECProject 的命名空间，防止命�
       clusters.insert(plan.steps(i).dst_proxy_cluster_id());
     }
   // Phase 1: register plan on every involved proxy before any execution starts.
-    for (int cid : clusters)
-    {
+    const std::vector<int> cluster_list(clusters.begin(), clusters.end());
+    auto notify_one_cluster = [this](int cid, auto rpc_fn) {
       if (cid < 0)
-      {
-        continue;
-      }
+        return;
       auto cit = m_cluster_table.find(cid);
       if (cit == m_cluster_table.end())
-      {
-        continue;
-      }
+        return;
       const std::string pkey = cit->second.proxy_ip + ":" + std::to_string(cit->second.proxy_port);
       auto pit = m_proxy_ptrs.find(pkey);
       if (pit == m_proxy_ptrs.end() || !pit->second)
       {
         std::cout << "[CoRD-PLAN] no proxy stub for cluster " << cid << " (" << pkey << ")" << std::endl;
-        continue;
+        return;
       }
       grpc::ClientContext ctx;
       proxy_proto::SetReply rep;
-      grpc::Status st = pit->second->scheduleCordTransferPlan(&ctx, plan, &rep);
+      grpc::Status st = rpc_fn(pit->second.get(), &ctx, &rep);
       if (!st.ok() || !rep.ifcommit())
       {
-        std::cout << "[CoRD-PLAN] scheduleCordTransferPlan failed cluster " << cid << " st=" << st.error_message()
+        std::cout << "[CoRD-PLAN] transfer plan notify failed cluster " << cid << " st=" << st.error_message()
                   << std::endl;
       }
+    };
+
+    std::vector<std::thread> notify_threads;
+    notify_threads.reserve(cluster_list.size());
+    for (int cid : cluster_list)
+    {
+      notify_threads.emplace_back([this, &plan, cid, &notify_one_cluster]() {
+        notify_one_cluster(cid, [&](auto *stub, grpc::ClientContext *ctx, proxy_proto::SetReply *rep) {
+          return stub->scheduleCordTransferPlan(ctx, plan, rep);
+        });
+      });
     }
+    for (auto &th : notify_threads)
+      th.join();
+
   // Phase 2: start execution on all proxies (all plan_key registrations are visible).
     proxy_proto::CordPlanKeyMsg start_msg;
     start_msg.set_plan_key(plan.plan_key());
-    for (int cid : clusters)
+    notify_threads.clear();
+    notify_threads.reserve(cluster_list.size());
+    for (int cid : cluster_list)
     {
-      if (cid < 0)
-      {
-        continue;
-      }
-      auto cit = m_cluster_table.find(cid);
-      if (cit == m_cluster_table.end())
-      {
-        continue;
-      }
-      const std::string pkey = cit->second.proxy_ip + ":" + std::to_string(cit->second.proxy_port);
-      auto pit = m_proxy_ptrs.find(pkey);
-      if (pit == m_proxy_ptrs.end() || !pit->second)
-      {
-        continue;
-      }
-      grpc::ClientContext ctx;
-      proxy_proto::SetReply rep;
-      grpc::Status st = pit->second->cordPlanStartExecution(&ctx, start_msg, &rep);
-      if (!st.ok() || !rep.ifcommit())
-      {
-        std::cout << "[CoRD-PLAN] cordPlanStartExecution failed cluster " << cid << " st=" << st.error_message()
-                  << std::endl;
-      }
+      notify_threads.emplace_back([this, &start_msg, cid, &notify_one_cluster]() {
+        notify_one_cluster(cid, [&](auto *stub, grpc::ClientContext *ctx, proxy_proto::SetReply *rep) {
+          return stub->cordPlanStartExecution(ctx, start_msg, rep);
+        });
+      });
     }
+    for (auto &th : notify_threads)
+      th.join();
   }
 
 
@@ -2590,12 +2586,14 @@ namespace ECProject  //定义一个名为 ECProject 的命名空间，防止命�
     }
     proxy_proto::CordPlanKeyMsg msg;
     msg.set_plan_key(pk);
-    bool span_have = false;
-    int64_t span_min_start_ms = 0;
-    int64_t span_max_end_ms = 0;
-    int joined_proxies = 0;
-    int timing_samples = 0;
-    double max_proxy_pure_xfer_sec = 0.;
+    struct CordJoinJob {
+      int cid = -1;
+      bool ok = false;
+      proxy_proto::SetReply rep;
+      grpc::Status st;
+    };
+    std::vector<CordJoinJob> join_jobs;
+    join_jobs.reserve(clusters.size());
     for (int cid : clusters)
     {
       if (cid < 0)
@@ -2610,28 +2608,53 @@ namespace ECProject  //定义一个名为 ECProject 的命名空间，防止命�
         std::cout << "[CoRD-PLAN] cordPlanWaitTransferComplete: no stub cluster=" << cid << std::endl;
         return grpc::Status(grpc::StatusCode::INTERNAL, "proxy stub missing");
       }
-      grpc::ClientContext ctx;
-      proxy_proto::SetReply rep;
-      grpc::Status st = pit->second->cordPlanJoinExecution(&ctx, msg, &rep);
-      if (!st.ok() || !rep.ifcommit())
-      {
-        std::cout << "[CoRD-PLAN] cordPlanJoinExecution failed cluster=" << cid << " " << st.error_message()
-                  << std::endl;
+      CordJoinJob job;
+      job.cid = cid;
+      join_jobs.push_back(std::move(job));
+    }
+
+    std::vector<std::thread> join_threads;
+    join_threads.reserve(join_jobs.size());
+    for (size_t ji = 0; ji < join_jobs.size(); ++ji)
+    {
+      join_threads.emplace_back([this, &msg, &join_jobs, ji]() {
+        CordJoinJob &job = join_jobs[ji];
+        auto cit = m_cluster_table.find(job.cid);
+        if (cit == m_cluster_table.end())
+          return;
+        const std::string pkey = cit->second.proxy_ip + ":" + std::to_string(cit->second.proxy_port);
+        auto pit = m_proxy_ptrs.find(pkey);
+        if (pit == m_proxy_ptrs.end() || !pit->second)
+          return;
+        grpc::ClientContext ctx;
+        job.st = pit->second->cordPlanJoinExecution(&ctx, msg, &job.rep);
+        job.ok = job.st.ok() && job.rep.ifcommit();
+        if (!job.ok)
+        {
+          std::cout << "[CoRD-PLAN] cordPlanJoinExecution failed cluster=" << job.cid << " "
+                    << job.st.error_message() << std::endl;
+        }
+      });
+    }
+    for (auto &th : join_threads)
+      th.join();
+
+    bool span_have = false;
+    int64_t span_min_start_ms = 0;
+    int64_t span_max_end_ms = 0;
+    int joined_proxies = 0;
+    int timing_samples = 0;
+    double max_proxy_pure_xfer_sec = 0.;
+    for (const auto &job : join_jobs)
+    {
+      if (!job.ok)
         return grpc::Status(grpc::StatusCode::INTERNAL, "cordPlanJoinExecution failed");
-      }
       ++joined_proxies;
+      const proxy_proto::SetReply &rep = job.rep;
       if (rep.cord_join_xfer_timing_present())
       {
         const int64_t sm = rep.cord_join_pure_xfer_start_unix_ms();
         const int64_t em = rep.cord_join_pure_xfer_end_unix_ms();
-        const double proxy_wall_span_sec =
-            (em >= sm) ? static_cast<double>(em - sm) / 1000. : -1.;
-        // std::cout << "[CoRD-PLAN][Coordinator] proxy_pure_xfer plan_key=" << pk << " cluster=" << cid
-        //           << " proxy_endpoint=" << pkey << " pure_xfer_sec=" << rep.cord_join_pure_xfer_sec()
-        //           << " wall_start_unix_ms=" << sm << " wall_end_unix_ms=" << em << " proxy_wall_span_sec="
-        //           << proxy_wall_span_sec << std::endl;
-        (void)proxy_wall_span_sec;
-        (void)pkey;
         max_proxy_pure_xfer_sec = std::max(max_proxy_pure_xfer_sec, rep.cord_join_pure_xfer_sec());
         if (!span_have)
         {
@@ -2647,13 +2670,6 @@ namespace ECProject  //定义一个名为 ECProject 的命名空间，防止命�
           ++timing_samples;
         }
       }
-      // else
-      // {
-      //   std::cout << "[CoRD-PLAN][Coordinator] proxy_pure_xfer plan_key=" << pk << " cluster=" << cid
-      //             << " proxy_endpoint=" << pkey << " timing=n/a (no cord_join_xfer_timing from proxy)"
-      //             << std::endl;
-      // }
-      (void)pkey;
     }
     {
       std::lock_guard<std::mutex> lk(m_cord_pending_mu);
@@ -5206,7 +5222,12 @@ namespace ECProject  //定义一个名为 ECProject 的命名空间，防止命�
           cv.notify_all();
           m_object_updating_table.erase(key);
           if (opp == CORD_UPDATE)
+          {
+            // Release m_mutex before auto-starting transfer plan so checkCommitAbort
+            // can return immediately after commit without waiting for cross-cluster gRPC.
+            lck.unlock();
             cord_on_delta_key_committed(key);
+          }
         }
         else if (opp == DEL) // delete the metadata
         {
