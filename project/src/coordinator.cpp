@@ -1,4 +1,5 @@
 #include "coordinator.h"
+#include "devcommon.h"
 #include <cstdint>
 #include "cord_algorithm2.h"
 #include "cord_class_algorithm.h"
@@ -2248,21 +2249,25 @@ namespace ECProject  //定义一个名为 ECProject 的命名空间，防止命�
       }
     }
 
-    // --- CoRD uploadCordUpdate verbose debug ---
-    std::cout << "[CoRD] ===== uploadCordUpdate stripe_id=" << stripe_id
-              << " k=" << k << " r=" << stripe->r << " z=" << stripe->z
-              << " n=" << stripe->n << " block_size=" << block_size
-              << " n_intervals=" << request->update_intervals_size() << " =====\n";
-    std::cout << "[CoRD] stripe_id=" << stripe_id
-              << " updated data blocks (block_id -> in-block intervals [off,end)):\n";
-    for (const auto &kv : block_intervals)
+    // --- CoRD uploadCordUpdate verbose debug (IF_DEBUG or CORD_VERBOSE=1) ---
+    const bool cord_trace = cord_trace_log(IF_DEBUG);
+    if (cord_trace)
     {
-      std::cout << "  block " << kv.first << " (cluster c" << stripe->blocks[kv.first]->map2cluster << "):";
-      for (const auto &seg : kv.second)
+      std::cout << "[CoRD] ===== uploadCordUpdate stripe_id=" << stripe_id
+                << " k=" << k << " r=" << stripe->r << " z=" << stripe->z
+                << " n=" << stripe->n << " block_size=" << block_size
+                << " n_intervals=" << request->update_intervals_size() << " =====\n";
+      std::cout << "[CoRD] stripe_id=" << stripe_id
+                << " updated data blocks (block_id -> in-block intervals [off,end)):\n";
+      for (const auto &kv : block_intervals)
       {
-        std::cout << " [" << seg.first << "," << seg.second << ")";
+        std::cout << "  block " << kv.first << " (cluster c" << stripe->blocks[kv.first]->map2cluster << "):";
+        for (const auto &seg : kv.second)
+        {
+          std::cout << " [" << seg.first << "," << seg.second << ")";
+        }
+        std::cout << "\n";
       }
-      std::cout << "\n";
     }
 
     std::map<int, cord_class::CordIngressClusterHints> ingress_hints_by_cluster;
@@ -2285,34 +2290,37 @@ namespace ECProject  //定义一个名为 ECProject 的命名空间，防止命�
           break;
         }
       }
-      if (!bw_ok)
+      if (!bw_ok && cord_trace)
         std::cout << "[CoRD-Class] BW matrix load failed, using fallback inv_bw\n";
       alg2_result = cord_class::build_class_update_plan(*stripe, block_intervals, m_sys_config->ClusterNum, tp,
                                                         &ingress_hints_by_cluster);
-      std::cout << "[CoRD-Class] train_route links=" << alg2_result.train_route.size()
-                << " schedule_steps=" << alg2_result.timeslot_schedule.size();
-      if (alg2_result.center_global_block_id >= 0)
-        std::cout << " collector_blk=" << alg2_result.center_global_block_id;
-      std::cout << "\n";
-      for (size_t i = 0; i < alg2_result.train_route.size(); ++i)
+      if (cord_trace)
       {
-        const auto &L = alg2_result.train_route[i];
-        std::cout << "  [" << i << "] " << cord_alg2::train_link_kind_name(L.kind)
-                  << " blk" << L.src_block_id << "->blk" << L.dst_block_id << " c" << L.src_cluster << "->c"
-                  << L.dst_cluster << " bytes=" << L.payload_bytes << " grp=" << L.group_index
-                  << " delta=" << (L.delta_kind == cord_alg2::CordDeltaPayloadKind::PARITY_DELTA ? "ΔP" : "ΔD")
-                  << "\n";
-      }
-      for (const auto &ts : alg2_result.timeslot_schedule)
-      {
-        std::cout << "  slot " << ts.timeslot << ": links=[";
-        for (size_t li = 0; li < ts.link_indices.size(); ++li)
+        std::cout << "[CoRD-Class] train_route links=" << alg2_result.train_route.size()
+                  << " schedule_steps=" << alg2_result.timeslot_schedule.size();
+        if (alg2_result.center_global_block_id >= 0)
+          std::cout << " collector_blk=" << alg2_result.center_global_block_id;
+        std::cout << "\n";
+        for (size_t i = 0; i < alg2_result.train_route.size(); ++i)
         {
-          if (li > 0)
-            std::cout << " ";
-          std::cout << ts.link_indices[li];
+          const auto &L = alg2_result.train_route[i];
+          std::cout << "  [" << i << "] " << cord_alg2::train_link_kind_name(L.kind)
+                    << " blk" << L.src_block_id << "->blk" << L.dst_block_id << " c" << L.src_cluster << "->c"
+                    << L.dst_cluster << " bytes=" << L.payload_bytes << " grp=" << L.group_index
+                    << " delta=" << (L.delta_kind == cord_alg2::CordDeltaPayloadKind::PARITY_DELTA ? "ΔP" : "ΔD")
+                    << "\n";
         }
-        std::cout << "]\n";
+        for (const auto &ts : alg2_result.timeslot_schedule)
+        {
+          std::cout << "  slot " << ts.timeslot << ": links=[";
+          for (size_t li = 0; li < ts.link_indices.size(); ++li)
+          {
+            if (li > 0)
+              std::cout << " ";
+            std::cout << ts.link_indices[li];
+          }
+          std::cout << "]\n";
+        }
       }
     }
 
@@ -2325,8 +2333,11 @@ namespace ECProject  //定义一个名为 ECProject 的命名空间，防止命�
                                               .count());
       cord_xfer_plan = cord_transfer_plan_from_algorithm2(stripe_id, cord_xfer_plan_key, alg2_result, stripe->k,
                                                             block_intervals);
-      std::cout << "[CoRD] CordTransferPlan: steps=" << cord_xfer_plan.steps_size()
-                << " schedule_steps=" << cord_xfer_plan.total_rounds() << "\n";
+      if (cord_trace)
+      {
+        std::cout << "[CoRD] CordTransferPlan: steps=" << cord_xfer_plan.steps_size()
+                  << " schedule_steps=" << cord_xfer_plan.total_rounds() << "\n";
+      }
       enrich_cord_transfer_plan_delta_segs(block_intervals, stripe->k, &cord_xfer_plan);
       fill_group_xor_hints_from_alg2(alg2_result, block_intervals, &cord_xfer_plan);
       enrich_cord_transfer_plan_encoding(stripe, block_intervals, alg2_result, &cord_xfer_plan);
@@ -2385,7 +2396,7 @@ namespace ECProject  //定义一个名为 ECProject 的命名空间，防止命�
                                        sorted_clusters);
     reorder_cord_plan_steps_execution(&cord_xfer_plan);
 
-    if (cord_xfer_plan.steps_size() > 0) {
+    if (cord_trace && cord_xfer_plan.steps_size() > 0) {
       std::cout << "[CoRD] CordTransferPlan final execution order (" << cord_xfer_plan.steps_size() << " steps):\n";
       for (int si = 0; si < cord_xfer_plan.steps_size(); ++si) {
         const auto &st = cord_xfer_plan.steps(si);
@@ -2400,7 +2411,10 @@ namespace ECProject  //定义一个名为 ECProject 的命名空间，防止命�
       }
     }
 
-    std::cout << "[CoRD] Delta store dispatch: " << sorted_clusters.size() << " clusters (parallel notify)\n";
+    if (cord_trace)
+    {
+      std::cout << "[CoRD] Delta store dispatch: " << sorted_clusters.size() << " clusters (parallel notify)\n";
+    }
     struct CordDeltaNotifyJob {
       proxy_proto::CordDataUpdatePlacement plan;
       int cid = -1;
@@ -2530,19 +2544,26 @@ namespace ECProject  //定义一个名为 ECProject 的命名空间，防止命�
         m_cord_pending_plan_clusters[cord_xfer_plan_key].assign(plan_clusters.begin(), plan_clusters.end());
       }
       proxyIPPort->set_cord_transfer_plan_key(cord_xfer_plan_key);
-      std::cout << "[CoRD] CordTransferPlan registered: key=" << cord_xfer_plan_key
-                << " steps=" << cord_xfer_plan.steps_size()
-                << " rounds=" << cord_xfer_plan.total_rounds()
-                << " plan_clusters=" << plan_clusters.size() << "\n";
+      if (cord_trace)
+      {
+        std::cout << "[CoRD] CordTransferPlan registered: key=" << cord_xfer_plan_key
+                  << " steps=" << cord_xfer_plan.steps_size()
+                  << " rounds=" << cord_xfer_plan.total_rounds()
+                  << " plan_clusters=" << plan_clusters.size() << "\n";
+      }
     }
     else
     {
       proxyIPPort->clear_cord_transfer_plan_key();
-      std::cout << "[CoRD] No cross-cluster transfer needed (0 plan steps)\n";
+      if (cord_trace)
+        std::cout << "[CoRD] No cross-cluster transfer needed (0 plan steps)\n";
     }
-    std::cout << "[CoRD] ===== uploadCordUpdate done: stripe_id=" << stripe_id
-              << " sum_update_bytes=" << sum_update_bytes
-              << " clusters=" << sorted_clusters.size() << " =====\n";
+    if (cord_trace)
+    {
+      std::cout << "[CoRD] ===== uploadCordUpdate done: stripe_id=" << stripe_id
+                << " sum_update_bytes=" << sum_update_bytes
+                << " clusters=" << sorted_clusters.size() << " =====\n";
+    }
     return grpc::Status::OK;
   }
 

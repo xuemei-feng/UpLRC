@@ -418,10 +418,13 @@ namespace ECProject
   {
     if (cord_abort_if_timed_out())
       return;
-    std::cout << "[CoRD][Client " << m_clientID << "] TCP send slice_idx=" << index << " bytes=" << cluster_slice_size
-              << " -> proxy " << proxy_ip << ":" << proxy_port << " cord_key=" << cord_key
-              << " payload_preview=" << cord_client_hex_preview(cluster_slice_data, static_cast<size_t>(cluster_slice_size))
-              << std::endl;
+    if (cord_trace_log(IF_DEBUG))
+    {
+      std::cout << "[CoRD][Client " << m_clientID << "] TCP send slice_idx=" << index << " bytes=" << cluster_slice_size
+                << " -> proxy " << proxy_ip << ":" << proxy_port << " cord_key=" << cord_key
+                << " payload_preview=" << cord_client_hex_preview(cluster_slice_data, static_cast<size_t>(cluster_slice_size))
+                << std::endl;
+    }
     if (cord_abort_if_timed_out())
       return;
     asio::io_context io_context;
@@ -1221,13 +1224,16 @@ namespace ECProject
       std::memset(owned_payload.data(), 0xbb, owned_payload.size());
       pending->payload_prep_sec = std::chrono::duration<double>(std::chrono::steady_clock::now() - prep_t0).count();
       payload_send = owned_payload.data();
-      std::cout << "[CoRD][Client " << m_clientID << "] stripe_id=" << stripe_id
-                << " auto 0xBB fill payload total_bytes=" << owned_payload.size() << " intervals:";
-      for (const auto &r : logical_ranges)
-        std::cout << " [" << r.first << "," << r.second << ")";
-      std::cout << '\n'
-                << "[CoRD][Client " << m_clientID << "] fill_payload_preview="
-                << cord_client_hex_preview(owned_payload.data(), owned_payload.size()) << std::endl;
+      if (cord_trace_log(IF_DEBUG))
+      {
+        std::cout << "[CoRD][Client " << m_clientID << "] stripe_id=" << stripe_id
+                  << " auto 0xBB fill payload total_bytes=" << owned_payload.size() << " intervals:";
+        for (const auto &r : logical_ranges)
+          std::cout << " [" << r.first << "," << r.second << ")";
+        std::cout << '\n'
+                  << "[CoRD][Client " << m_clientID << "] fill_payload_preview="
+                  << cord_client_hex_preview(owned_payload.data(), owned_payload.size()) << std::endl;
+      }
     }
     else if (update_payload_bytes != static_cast<size_t>(reply.sum_append_size()))
     {
@@ -1237,13 +1243,16 @@ namespace ECProject
       return false;
     }
 
-    std::cout << "[CoRD][Client " << m_clientID << "] coordinator replied append_keys=" << reply.append_keys_size()
-              << " sum_append_size=" << reply.sum_append_size() << std::endl;
-    for (int i = 0; i < reply.append_keys_size(); ++i)
+    if (cord_trace_log(IF_DEBUG))
     {
-      std::cout << "[CoRD][Client " << m_clientID << "]   slice " << i << " cluster_gid=" << reply.group_ids(i)
-                << " bytes=" << reply.cluster_slice_sizes(i) << " -> proxy " << reply.proxyips(i) << ":"
-                << reply.proxyports(i) << " key=" << reply.append_keys(i) << std::endl;
+      std::cout << "[CoRD][Client " << m_clientID << "] coordinator replied append_keys=" << reply.append_keys_size()
+                << " sum_append_size=" << reply.sum_append_size() << std::endl;
+      for (int i = 0; i < reply.append_keys_size(); ++i)
+      {
+        std::cout << "[CoRD][Client " << m_clientID << "]   slice " << i << " cluster_gid=" << reply.group_ids(i)
+                  << " bytes=" << reply.cluster_slice_sizes(i) << " -> proxy " << reply.proxyips(i) << ":"
+                  << reply.proxyports(i) << " key=" << reply.append_keys(i) << std::endl;
+      }
     }
 
     const auto upload_t0 = std::chrono::steady_clock::now();
@@ -1290,8 +1299,11 @@ namespace ECProject
     if (!reply.cord_transfer_plan_key().empty())
     {
       pending->transfer_plan_key = reply.cord_transfer_plan_key();
-      std::cout << "[CoRD][Client " << m_clientID << "] upload done; deferred xfer wait for plan_key="
-                << pending->transfer_plan_key << "\n";
+      if (cord_trace_log(IF_DEBUG))
+      {
+        std::cout << "[CoRD][Client " << m_clientID << "] upload done; deferred xfer wait for plan_key="
+                  << pending->transfer_plan_key << "\n";
+      }
     }
 
     if (partial_timing != nullptr)
@@ -1332,8 +1344,11 @@ namespace ECProject
       ~CordDeadlineGuard() { g_cord_request_deadline = nullptr; }
     } cord_deadline_guard;
 
-    std::cout << "[CoRD][Client " << m_clientID << "] waiting for cross-cluster transfer (auto-start after upload): "
-              << pending->transfer_plan_key << " stripe_id=" << pending->stripe_id << "\n";
+    if (cord_trace_log(IF_DEBUG))
+    {
+      std::cout << "[CoRD][Client " << m_clientID << "] waiting for cross-cluster transfer (auto-start after upload): "
+                << pending->transfer_plan_key << " stripe_id=" << pending->stripe_id << "\n";
+    }
     if (cord_abort_if_timed_out())
     {
       cord_fill_timing(out_timing, pending->wall_t0, pending->plan_sec, pending->payload_prep_sec,
@@ -1370,9 +1385,12 @@ namespace ECProject
                        pending->upload_sec, 0.0, xfer_wait_sec, xfer_pure_sec, xfer_grpc_sec);
       return false;
     }
-    std::cout << "[CoRD][Client " << m_clientID << "] cross-cluster transfer complete stripe_id=" << pending->stripe_id
-              << " xfer_wait_sec=" << xfer_wait_sec << " xfer_pure_sec=" << xfer_pure_sec
-              << " xfer_grpc_sec=" << xfer_grpc_sec << "\n";
+    if (cord_trace_log(IF_DEBUG))
+    {
+      std::cout << "[CoRD][Client " << m_clientID << "] cross-cluster transfer complete stripe_id=" << pending->stripe_id
+                << " xfer_wait_sec=" << xfer_wait_sec << " xfer_pure_sec=" << xfer_pure_sec
+                << " xfer_grpc_sec=" << xfer_grpc_sec << "\n";
+    }
 
     pending->transfer_plan_key.clear();
     cord_fill_timing(out_timing, pending->wall_t0, pending->plan_sec, pending->payload_prep_sec,

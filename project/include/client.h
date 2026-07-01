@@ -12,12 +12,15 @@
 #include <asio.hpp>
 #include "config.h"
 #include "toolbox.h"
+#include "devcommon.h"
 #include <chrono>
 #include <memory>
 #include <mutex>
 #include <string>
 #include <utility>
 #include <vector>
+// #define IF_DEBUG true
+#define IF_DEBUG false
 namespace ECProject
 {
   /** CoRD 单次 cord_update 各阶段耗时（秒），由 cord_update 填充。 */
