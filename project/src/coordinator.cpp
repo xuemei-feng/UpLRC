@@ -2276,7 +2276,7 @@ namespace ECProject  //定义一个名为 ECProject 的命名空间，防止命�
       cord_alg2::TransferParams tp;
       tp.enforce_one_send_one_recv_per_cluster = false;
       const std::vector<std::string> bw_paths = {
-          "/root/xue/project/config/BW_limitsame",
+          "/users/xue/xue/project/config/BW_limitsame",
           "project/config/BW_limitsame",
           "../project/config/BW_limitsame",
       };
