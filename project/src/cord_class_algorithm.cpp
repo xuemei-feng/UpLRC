@@ -156,19 +156,25 @@ namespace ECProject
         out->train_route.push_back(std::move(L));
       }
 
-      int pick_relay_cluster(int dc, int gc, int cluster_num, const cord_alg2::TransferParams &tp)
+      // 选择中继 cluster：以完整传输时间为判据。中继两跳 dc→relay→gc 在执行层串行
+      // （先收满 relay 再转发，见 MST_FORWARD 依赖），故总耗时 = transfer_sec(dc,relay) + transfer_sec(relay,gc)，
+      // 两跳的 latency 与 payload 均计入；仅当严格快于直连 transfer_sec(dc,gc) 时才返回中继，否则返回 -1（直连）。
+      int pick_relay_cluster(int dc, int gc, int64_t payload_bytes, int cluster_num,
+                             const cord_alg2::TransferParams &tp)
       {
+        const double direct = transfer_sec_matrix(dc, gc, payload_bytes, cluster_num, tp);
         int best = -1;
-        double best_bw = -1.0;
+        double best_cost = direct;
         for (int c = 0; c < cluster_num; ++c)
         {
           if (c == dc || c == gc)
             continue;
-          const double brg = bw_mbps(c, gc, cluster_num, tp);
-          const double bdg = bw_mbps(dc, gc, cluster_num, tp);
-          if (brg > bdg && brg > best_bw)
+          const double hop1 = transfer_sec_matrix(dc, c, payload_bytes, cluster_num, tp);
+          const double hop2 = transfer_sec_matrix(c, gc, payload_bytes, cluster_num, tp);
+          const double relay_cost = hop1 + hop2;
+          if (relay_cost < best_cost)
           {
-            best_bw = brg;
+            best_cost = relay_cost;
             best = c;
           }
         }
@@ -243,7 +249,7 @@ namespace ECProject
         {
           const int dc = block_cluster(stripe, d);
           const int64_t b = delta_bytes_for_block(block_intervals, d);
-          const int relay = pick_relay_cluster(dc, gc, cluster_num, tp);
+          const int relay = pick_relay_cluster(dc, gc, b, cluster_num, tp);
           if (relay < 0)
           {
             out.train_route.push_back(make_link(d, collector, dc, gc, b,
