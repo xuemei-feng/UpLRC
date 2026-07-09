@@ -81,6 +81,20 @@ namespace ECProject
     return static_cast<uint64_t>(v);
   }
 
+  /**
+   * CoRD 传输执行器的详细日志开关（默认关闭）。
+   * 置 CORD_XFER_VERBOSE=1 时才写 /tmp/cord_transfer_*.log 与 stdout；
+   * 关闭时 plan_log/plan_log_both 直接返回，避免热路径上的同步刷盘开销。
+   */
+  static bool cord_xfer_log_enabled()
+  {
+    static const bool enabled = []() {
+      const char *env = std::getenv("CORD_XFER_VERBOSE");
+      return env != nullptr && env[0] != '\0' && env[0] != '0';
+    }();
+    return enabled;
+  }
+
   static bool cord_xfer_safe_resize(std::vector<uint8_t> &v, size_t new_size, const char *what,
                                     const std::string &ctx, bool zero_fill = true)
   {
@@ -1317,9 +1331,12 @@ namespace ECProject
   static void cord_transfer_plan_execute_async(const proxy_proto::CordTransferPlan &plan, int self_cluster_id,
                                                ProxyImpl *proxy, const std::string &proxy_tag)
   {
-      // 打开日志文件: /tmp/cord_transfer_<plan_key>.log
+      // 打开日志文件: /tmp/cord_transfer_<plan_key>.log（仅 verbose 时打开，避免热路径开销）
+      const bool xfer_log_on = cord_xfer_log_enabled();
       const std::string log_path = "/tmp/cord_transfer_" + plan.plan_key() + ".log";
-      std::ofstream log_ofs(log_path, std::ios::out | std::ios::app);
+      std::ofstream log_ofs;
+      if (xfer_log_on)
+        log_ofs.open(log_path, std::ios::out | std::ios::app);
       const auto wall_now_ns = []() -> int64_t {
         return std::chrono::duration_cast<std::chrono::nanoseconds>(
             std::chrono::steady_clock::now().time_since_epoch()).count();
@@ -1329,14 +1346,19 @@ namespace ECProject
       };
 
       const auto plan_log = [&](const std::string &msg) {
-        log_ofs << "[" << wall_ts_ms_str() << "][" << proxy_tag << "] " << msg << std::endl;
+        if (!xfer_log_on)
+          return;
+        // 用 '\n' 而非 std::endl，避免每行强制 flush（析构/close 时统一刷盘）
+        log_ofs << "[" << wall_ts_ms_str() << "][" << proxy_tag << "] " << msg << '\n';
       };
 
       // 也输出到 stdout 方便实时观察
       const auto plan_log_both = [&](const std::string &msg) {
+        if (!xfer_log_on)
+          return;
         const std::string line = "[" + wall_ts_ms_str() + "][" + proxy_tag + "] " + msg;
-        log_ofs << line << std::endl;
-        std::cout << "[CoRD-XFER] " << line << std::endl;
+        log_ofs << line << '\n';
+        std::cout << "[CoRD-XFER] " << line << '\n';
       };
 
       plan_log_both("══════ CordTransferPlan EXECUTION START ══════");
@@ -1349,7 +1371,8 @@ namespace ECProject
       if (plan.steps_size() <= 0)
       {
         plan_log_both("plan has 0 steps, nothing to do");
-        log_ofs.close();
+        if (log_ofs.is_open())
+          log_ofs.close();
         return;
       }
 
@@ -1999,7 +2022,8 @@ namespace ECProject
                     + " skipped=" + std::to_string(skipped_steps)
                     + " failed=" + std::to_string(failed_steps)
                     + " log_file=" + log_path);
-      log_ofs.close();
+      if (log_ofs.is_open())
+        log_ofs.close();
   }
 
   void ProxyImpl::start_cord_xfer_tcp_acceptor()
