@@ -82,9 +82,8 @@ namespace ECProject
   }
 
   /**
-   * CoRD 传输执行器的详细日志开关（默认关闭）。
-   * 置 CORD_XFER_VERBOSE=1 时才写 /tmp/cord_transfer_*.log 与 stdout；
-   * 关闭时 plan_log/plan_log_both 直接返回，避免热路径上的同步刷盘开销。
+   * CoRD 传输执行器 / 矩阵编码的详细日志开关（默认关闭）。
+   * 置 CORD_XFER_VERBOSE=1 时才输出 plan_log 与矩阵编码相关 stdout/stderr。
    */
   static bool cord_xfer_log_enabled()
   {
@@ -93,6 +92,18 @@ namespace ECProject
       return env != nullptr && env[0] != '\0' && env[0] != '0';
     }();
     return enabled;
+  }
+
+  static void cord_plan_log_out(const std::string &msg)
+  {
+    if (cord_xfer_log_enabled())
+      std::cout << msg << '\n';
+  }
+
+  static void cord_plan_log_err(const std::string &msg)
+  {
+    if (cord_xfer_log_enabled())
+      std::cerr << msg << '\n';
   }
 
   static bool cord_xfer_safe_resize(std::vector<uint8_t> &v, size_t new_size, const char *what,
@@ -835,8 +846,9 @@ namespace ECProject
     const int coding_rows = g_m + l;
     if (k <= 0 || k > 64 || coding_rows <= 0 || coding_rows > 64 || strip_size <= 0)
     {
-      std::cerr << "[CoRD-PLAN][MATRIX_ENCODE_REJECT] invalid_dims k=" << k << " g_m=" << g_m << " l=" << l
-                << " strip_size=" << strip_size << std::endl;
+      cord_plan_log_err("[CoRD-PLAN][MATRIX_ENCODE_REJECT] invalid_dims k=" + std::to_string(k) +
+                        " g_m=" + std::to_string(g_m) + " l=" + std::to_string(l) +
+                        " strip_size=" + std::to_string(strip_size));
       return false;
     }
     const uint64_t cap = cord_xfer_max_resize_bytes();
@@ -844,13 +856,15 @@ namespace ECProject
     const uint64_t data_bytes = static_cast<uint64_t>(k) * static_cast<uint64_t>(strip_size);
     if (coding_bytes > cap || data_bytes > cap)
     {
-      std::cerr << "[CoRD-PLAN][MATRIX_ENCODE_REJECT] too_large k=" << k << " rows=" << coding_rows
-                << " strip_size=" << strip_size << " data_bytes=" << data_bytes << " coding_bytes=" << coding_bytes
-                << " cap=" << cap << std::endl;
+      cord_plan_log_err("[CoRD-PLAN][MATRIX_ENCODE_REJECT] too_large k=" + std::to_string(k) +
+                        " rows=" + std::to_string(coding_rows) + " strip_size=" + std::to_string(strip_size) +
+                        " data_bytes=" + std::to_string(data_bytes) + " coding_bytes=" + std::to_string(coding_bytes) +
+                        " cap=" + std::to_string(cap));
       return false;
     }
-    std::cout << "[CoRD-PLAN][MATRIX_ENCODE] k=" << k << " rows=" << coding_rows << " strip_size=" << strip_size
-              << " data_bytes=" << data_bytes << " coding_bytes=" << coding_bytes << std::endl;
+    cord_plan_log_out("[CoRD-PLAN][MATRIX_ENCODE] k=" + std::to_string(k) + " rows=" + std::to_string(coding_rows) +
+                      " strip_size=" + std::to_string(strip_size) + " data_bytes=" + std::to_string(data_bytes) +
+                      " coding_bytes=" + std::to_string(coding_bytes));
     try
     {
       std::vector<char *> dptrs(static_cast<size_t>(k));
@@ -869,8 +883,9 @@ namespace ECProject
     }
     catch (const std::bad_alloc &e)
     {
-      std::cerr << "[CoRD-PLAN][BAD_ALLOC] matrix_encode k=" << k << " rows=" << coding_rows
-                << " strip_size=" << strip_size << " err=" << e.what() << std::endl;
+      cord_plan_log_err("[CoRD-PLAN][BAD_ALLOC] matrix_encode k=" + std::to_string(k) +
+                        " rows=" + std::to_string(coding_rows) + " strip_size=" + std::to_string(strip_size) +
+                        " err=" + e.what());
       return false;
     }
     return true;
@@ -993,9 +1008,10 @@ namespace ECProject
     const int k = meta.k();
     const int ps = meta.parity_slice_size();
     const int po = meta.parity_slice_offset();
-    std::cout << "[CoRD-PLAN][COLLECTOR_ENCODE_BEGIN] plan=" << plan.plan_key() << " grp=" << group
-              << " col_blk=" << collector_block_id << " pig=" << parity_ingest_stripe_group << " k=" << k
-              << " ps=" << ps << " po=" << po << std::endl;
+    cord_plan_log_out("[CoRD-PLAN][COLLECTOR_ENCODE_BEGIN] plan=" + plan.plan_key() + " grp=" + std::to_string(group) +
+                      " col_blk=" + std::to_string(collector_block_id) +
+                      " pig=" + std::to_string(parity_ingest_stripe_group) + " k=" + std::to_string(k) +
+                      " ps=" + std::to_string(ps) + " po=" + std::to_string(po));
     std::vector<std::vector<char>> strips;
     try
     {
@@ -1003,8 +1019,8 @@ namespace ECProject
     }
     catch (const std::bad_alloc &e)
     {
-      std::cerr << "[CoRD-PLAN][BAD_ALLOC] collector_strips k=" << k << " ps=" << ps << " err=" << e.what()
-                << std::endl;
+      cord_plan_log_err("[CoRD-PLAN][BAD_ALLOC] collector_strips k=" + std::to_string(k) +
+                        " ps=" + std::to_string(ps) + " err=" + e.what());
       return false;
     }
     for (int didx = 0; didx < plan.cord_data_strip_descs_size(); ++didx)
@@ -1037,7 +1053,7 @@ namespace ECProject
     const ECProject::EncodeType et = static_cast<ECProject::EncodeType>(meta.encode_type());
     if (!cord_matrix_encode_strips(k, meta.g_m(), meta.l(), et, ps, strips, &coded))
     {
-      std::cout << "[CoRD-PLAN] matrix encode failed" << std::endl;
+      cord_plan_log_out("[CoRD-PLAN] matrix encode failed");
       return false;
     }
     g_cord_collector_parity_coded[ck] = std::move(coded);
@@ -2939,7 +2955,7 @@ namespace ECProject
     const ECProject::EncodeType et = Azure_LRC;
     if (!cord_matrix_encode_strips(k, r, z, et, ps, strips, &coded))
     {
-      std::cout << "[CoRD][Proxy] ingress matrix encode failed key=" << placement->key() << std::endl;
+      cord_plan_log_out("[CoRD][Proxy] ingress matrix encode failed key=" + placement->key());
       return false;
     }
 
