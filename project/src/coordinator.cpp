@@ -13,6 +13,7 @@
 #include <iostream>
 #include <set>
 #include <cmath>
+#include <cstring>
 #include <stdexcept>
 #include <numeric>
 #include <algorithm>
@@ -1875,6 +1876,47 @@ namespace ECProject  //定义一个名为 ECProject 的命名空间，防止命�
   }
 
 
+  void CoordinatorImpl::cord_fill_transfer_params_bw(cord_alg2::TransferParams *tp)
+  {
+    if (tp == nullptr || m_sys_config == nullptr)
+      return;
+    const int cluster_num = m_sys_config->ClusterNum;
+    std::lock_guard<std::mutex> lk(m_cord_bw_cache_mu);
+    if (!m_cord_bw_matrix_resolved)
+    {
+      m_cord_bw_matrix_resolved = true;
+      const std::vector<std::string> bw_paths = {
+          "/root/xue/project/config/BW_limitsame",
+          "project/config/BW_limitsame",
+          "../project/config/BW_limitsame",
+      };
+      cord_alg2::TransferParams tmp;
+      for (const auto &p : bw_paths)
+      {
+        if (cord_alg2::load_bw_matrix_from_limitsame_file(p, cluster_num, &tmp))
+        {
+          m_cord_bw_matrix_loaded = true;
+          m_cord_bw_matrix_loaded_path = p;
+          std::memcpy(m_cord_bw_matrix_cache, tmp.bw_matrix_mb_per_sec, sizeof(m_cord_bw_matrix_cache));
+          break;
+        }
+      }
+      if (cord_trace_log(IF_DEBUG))
+      {
+        if (m_cord_bw_matrix_loaded)
+          std::cout << "[CoRD-Class] BW matrix cached from " << m_cord_bw_matrix_loaded_path << "\n";
+        else
+          std::cout << "[CoRD-Class] BW matrix load failed, using fallback inv_bw\n";
+      }
+    }
+    if (!m_cord_bw_matrix_loaded)
+      return;
+    const int n = std::min(cluster_num, cord_alg2::TransferParams::kMaxBwClusters);
+    for (int i = 0; i < n; ++i)
+      for (int j = 0; j < n; ++j)
+        tp->bw_matrix_mb_per_sec[i][j] = m_cord_bw_matrix_cache[i][j];
+  }
+
   bool CoordinatorImpl::cord_start_pending_transfer_plan(const std::string &plan_key)
   {
     proxy_proto::CordTransferPlan plan;
@@ -1886,8 +1928,9 @@ namespace ECProject  //定义一个名为 ECProject 的命名空间，防止命�
       plan = it->second;
       m_cord_pending_plans.erase(it);
     }
-    std::cout << "[CoRD] start CordTransferPlan: plan_key=" << plan_key
-              << " steps=" << plan.steps_size() << " rounds=" << plan.total_rounds() << "\n";
+    if (cord_trace_log(IF_DEBUG))
+      std::cout << "[CoRD] start CordTransferPlan: plan_key=" << plan_key
+                << " steps=" << plan.steps_size() << " rounds=" << plan.total_rounds() << "\n";
     notify_proxies_cord_transfer_plan(plan);
     return true;
   }
@@ -1927,7 +1970,8 @@ namespace ECProject  //定义一个名为 ECProject 的命名空间，防止命�
     }
     if (should_start)
     {
-      std::cout << "[CoRD] all delta uploads committed, auto-start transfer plan_key=" << plan_key << "\n";
+      if (cord_trace_log(IF_DEBUG))
+        std::cout << "[CoRD] all delta uploads committed, auto-start transfer plan_key=" << plan_key << "\n";
       cord_start_pending_transfer_plan(plan_key);
     }
   }
@@ -2279,22 +2323,7 @@ namespace ECProject  //定义一个名为 ECProject 的命名空间，防止命�
     {
       cord_alg2::TransferParams tp;
       tp.enforce_one_send_one_recv_per_cluster = false;
-      const std::vector<std::string> bw_paths = {
-          "/root/xue/project/config/BW_limitsame",
-          "project/config/BW_limitsame",
-          "../project/config/BW_limitsame",
-      };
-      bool bw_ok = false;
-      for (const auto &p : bw_paths)
-      {
-        if (cord_alg2::load_bw_matrix_from_limitsame_file(p, m_sys_config->ClusterNum, &tp))
-        {
-          bw_ok = true;
-          break;
-        }
-      }
-      if (!bw_ok && cord_trace)
-        std::cout << "[CoRD-Class] BW matrix load failed, using fallback inv_bw\n";
+      cord_fill_transfer_params_bw(&tp);
       alg2_result = cord_class::build_class_update_plan(*stripe, block_intervals, m_sys_config->ClusterNum, tp,
                                                         &ingress_hints_by_cluster);
       if (cord_trace)
@@ -2717,19 +2746,21 @@ namespace ECProject  //定义一个名为 ECProject 的命名空间，防止命�
       reply->set_cord_xfer_timing_present(true);
       reply->set_cord_xfer_pure_sec(pure_xfer_sec);
       reply->set_cord_xfer_grpc_sec(grpc_sec);
-      std::cout << "[CoRD-PLAN][Coordinator] xfer_wait breakdown plan_key=" << pk
-                << " handler_sec=" << handler_sec << " pure_xfer_sec=" << pure_xfer_sec
-                << " grpc_sec=" << grpc_sec << " joined_proxies=" << joined_proxies
-                << " timing_samples=" << timing_samples << std::endl;
+      if (cord_trace_log(IF_DEBUG))
+        std::cout << "[CoRD-PLAN][Coordinator] xfer_wait breakdown plan_key=" << pk
+                  << " handler_sec=" << handler_sec << " pure_xfer_sec=" << pure_xfer_sec
+                  << " grpc_sec=" << grpc_sec << " joined_proxies=" << joined_proxies
+                  << " timing_samples=" << timing_samples << '\n';
     }
     else if (joined_proxies > 0)
     {
       reply->set_cord_xfer_timing_present(true);
       reply->set_cord_xfer_pure_sec(0.);
       reply->set_cord_xfer_grpc_sec(handler_sec);
-      std::cout << "[CoRD-PLAN][Coordinator] xfer_wait breakdown plan_key=" << pk
-                << " handler_sec=" << handler_sec << " pure_xfer_sec=n/a grpc_sec=" << handler_sec
-                << std::endl;
+      if (cord_trace_log(IF_DEBUG))
+        std::cout << "[CoRD-PLAN][Coordinator] xfer_wait breakdown plan_key=" << pk
+                  << " handler_sec=" << handler_sec << " pure_xfer_sec=n/a grpc_sec=" << handler_sec
+                  << '\n';
     }
     (void)timing_samples;
     reply->set_ifcommit(true);

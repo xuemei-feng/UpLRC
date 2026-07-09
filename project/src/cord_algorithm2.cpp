@@ -1,5 +1,6 @@
 #include "cord_algorithm2.h"
 #include "cord_algorithm3.h"
+#include "devcommon.h"
 #include "meta_definition.h"
 #include <algorithm>
 #include <cmath>
@@ -1037,7 +1038,8 @@ namespace ECProject
       for (int i = 0; i < cluster_num; ++i)
         for (int j = 0; j < cluster_num; ++j)
           tp->bw_matrix_mb_per_sec[i][j] = vals[static_cast<size_t>(i * cluster_num + j)];
-      std::cout << "[CoRD-Class] Loaded BW matrix " << cluster_num << "x" << cluster_num << " from " << path << "\n";
+      if (cord_verbose_enabled())
+        std::cout << "[CoRD-Class] Loaded BW matrix " << cluster_num << "x" << cluster_num << " from " << path << "\n";
       return true;
     }
   } // namespace cord_alg2
