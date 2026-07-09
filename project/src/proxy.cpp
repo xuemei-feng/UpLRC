@@ -1,4 +1,5 @@
 #include "proxy.h"
+#include "devcommon.h"
 #include "jerasure.h"
 #include "reed_sol.h"
 #include "tinyxml2.h"
@@ -116,9 +117,9 @@ namespace ECProject
                 << std::endl;
       return false;
     }
-    if (new_size > static_cast<size_t>(1024 * 1024))
+    if (new_size > static_cast<size_t>(1024 * 1024) && cord_trace_log(IF_DEBUG))
       std::cout << "[CoRD-PLAN][RESIZE_LARGE] " << what << " need=" << new_size << " cur=" << v.size() << " " << ctx
-                << std::endl;
+                << '\n';
     try
     {
       if (zero_fill)
@@ -144,9 +145,9 @@ namespace ECProject
                 << std::endl;
       return false;
     }
-    if (new_size > static_cast<size_t>(1024 * 1024))
+    if (new_size > static_cast<size_t>(1024 * 1024) && cord_trace_log(IF_DEBUG))
       std::cout << "[CoRD-PLAN][RESIZE_LARGE] " << what << " need=" << new_size << " cur=" << v.size() << " " << ctx
-                << std::endl;
+                << '\n';
     try
     {
       v.resize(new_size);
@@ -2045,7 +2046,8 @@ namespace ECProject
   void ProxyImpl::start_cord_xfer_tcp_acceptor()
   {
     const int xfer_port = cord_peer_xfer_tcp_port(m_port);
-    std::cout << "[CoRD-PLAN][" << proxy_ip_port << "] cord xfer TCP acceptor listening port=" << xfer_port << std::endl;
+    if (cord_trace_log(IF_DEBUG))
+      std::cout << "[CoRD-PLAN][" << proxy_ip_port << "] cord xfer TCP acceptor listening port=" << xfer_port << '\n';
     std::thread([this]() {
       for (;;)
       {
@@ -2246,7 +2248,8 @@ namespace ECProject
                                      proxy_proto::RequestResult *response)
   {
 
-    std::cout << "[Proxy] checkalive" << request->name() << std::endl;
+    if (cord_trace_log(IF_DEBUG))
+      std::cout << "[Proxy] checkalive" << request->name() << std::endl;
     response->set_message(false);
     init_coordinator();
     return grpc::Status::OK;
@@ -2314,11 +2317,11 @@ namespace ECProject
       asio::ip::tcp::resolver resolver(io_context);
       asio::error_code con_error;
       asio::connect(socket, resolver.resolve({std::string(ip), std::to_string(port + ECProject::DATANODE_PORT_SHIFT)}), con_error);
-      if (!con_error && IF_DEBUG)
+      if (!con_error && cord_trace_log(IF_DEBUG))
       {
         std::cout << "Connect to " << ip << ":" << port + ECProject::DATANODE_PORT_SHIFT << " success! block_key: " << block_key << " block_id: " << block_id << " slice_size: " << slice_size << " slice_offset: " << slice_offset << " is_serialized: " << is_serialized << std::endl;
       }
-      else if (IF_DEBUG)
+      else if (cord_trace_log(IF_DEBUG))
       {
         std::cout << "Connect to " << ip << ":" << port + ECProject::DATANODE_PORT_SHIFT << " failed! block_key: " << block_key << " block_id: " << block_id << " slice_size: " << slice_size << " slice_offset: " << slice_offset << " is_serialized: " << is_serialized << std::endl;
         exit(-1);
@@ -2328,7 +2331,7 @@ namespace ECProject
       socket.shutdown(asio::ip::tcp::socket::shutdown_both, ignore_ec);
       socket.close(ignore_ec);
       notify_datanode_thread.join();
-      if (IF_DEBUG)
+      if (cord_trace_log(IF_DEBUG))
       {
         std::cout << "[Proxy" << m_self_cluster_id << "][Append139]"
                   << "Append to " << block_key << " with length of " << slice_size << std::endl;
@@ -2369,11 +2372,11 @@ namespace ECProject
       asio::ip::tcp::resolver resolver(io_context);
       asio::error_code con_error;
       asio::connect(socket, resolver.resolve({std::string(ip), std::to_string(port + ECProject::DATANODE_PORT_SHIFT)}), con_error);
-      if (!con_error)
+      if (!con_error && cord_trace_log(IF_DEBUG))
       {
         std::cout << "[RecoveryToDatanode] Connect to " << ip << ":" << port + ECProject::DATANODE_PORT_SHIFT << " success! block_key: " << block_key << " block_id: " << block_id << std::endl;
       }
-      else
+      else if (con_error)
       {
         std::cout << "[RecoveryToDatanode] Connect to " << ip << ":" << port + ECProject::DATANODE_PORT_SHIFT << " failed! block_key: " << block_key << " block_id: " << block_id << std::endl;
         exit(-1);
@@ -2421,11 +2424,11 @@ namespace ECProject
       asio::error_code con_error;
       asio::connect(socket, resolver.resolve({std::string(ip), std::to_string(port + ECProject::DATANODE_PORT_SHIFT)}), con_error);
       std::chrono::high_resolution_clock::time_point begin = std::chrono::high_resolution_clock::now(); // start time for network
-      if (!con_error)
+      if (!con_error && cord_trace_log(IF_DEBUG))
       {
         std::cout << "[RecoveryToDatanode] Connect to " << ip << ":" << port + ECProject::DATANODE_PORT_SHIFT << " success! block_key: " << block_key << " block_id: " << block_id << std::endl;
       }
-      else
+      else if (con_error)
       {
         std::cout << "[RecoveryToDatanode] Connect to " << ip << ":" << port + ECProject::DATANODE_PORT_SHIFT << " failed! block_key: " << block_key << " block_id: " << block_id << std::endl;
         exit(-1);
@@ -2470,7 +2473,7 @@ namespace ECProject
       asio::ip::tcp::resolver resolver(io_context);
       asio::error_code con_error;
       asio::connect(socket, resolver.resolve({std::string(ip), std::to_string(port + ECProject::DATANODE_PORT_SHIFT)}), con_error);
-      if (!con_error && IF_DEBUG)
+      if (!con_error && cord_trace_log(IF_DEBUG))
       {
         std::cout << "Connect to " << ip << ":" << port + ECProject::DATANODE_PORT_SHIFT << " success!" << std::endl;
       }
@@ -2480,7 +2483,7 @@ namespace ECProject
       asio::error_code ignore_ec;
       socket.shutdown(asio::ip::tcp::socket::shutdown_both, ignore_ec);
       socket.close(ignore_ec);
-      if (IF_DEBUG)
+      if (cord_trace_log(IF_DEBUG))
       {
         std::cout << "[Proxy" << m_self_cluster_id << "][SET]"
                   << "Write " << key << " to socket finish! With length of " << strlen(value) << std::endl;
@@ -2499,8 +2502,11 @@ namespace ECProject
     try
     {
 
-      std::cout << "[Proxy" << m_self_cluster_id << "][GET]"
-                << " Ready to recieve data from datanode " << std::endl;
+      if (cord_trace_log(IF_DEBUG))
+      {
+        std::cout << "[Proxy" << m_self_cluster_id << "][GET]"
+                  << " Ready to recieve data from datanode " << std::endl;
+      }
 
       grpc::ClientContext context;
       datanode_proto::GetInfo get_info;
@@ -2513,12 +2519,12 @@ namespace ECProject
       std::string node_ip_port = std::string(ip) + ":" + std::to_string(port);
       std::chrono::high_resolution_clock::time_point grpc_notify = std::chrono::high_resolution_clock::now();
       grpc::Status stat = m_datanode_ptrs[node_ip_port]->handleGetBreakdown(&context, get_info, &result);
-      if (stat.ok() && IF_DEBUG)
+      if (stat.ok() && cord_trace_log(IF_DEBUG))
       {
         std::cout << "[Proxy" << m_self_cluster_id << "][GET]"
                   << " Call datanode to handle get " << key << std::endl;
       }
-      else if (IF_DEBUG)
+      else if (cord_trace_log(IF_DEBUG))
       {
         std::cout << "[Proxy" << m_self_cluster_id << "][GET]"
                   << " Call datanode to handle get " << key << " failed!" << std::endl;
@@ -2543,13 +2549,11 @@ namespace ECProject
       std::chrono::high_resolution_clock::time_point end = std::chrono::high_resolution_clock::now(); // end time for network
       *network_start_time = std::chrono::duration_cast<std::chrono::duration<double>>(begin.time_since_epoch()).count();
       *network_end_time = std::chrono::duration_cast<std::chrono::duration<double>>(end.time_since_epoch()).count();
-      if (IF_DEBUG)
+      if (cord_trace_log(IF_DEBUG))
       {
         std::cout << "[Proxy" << m_self_cluster_id << "][GET]"
                   << " Read data from socket with length of " << value_length << std::endl;
       }
-      std::cout << "[Proxy" << m_self_cluster_id << "][GET]"
-      << " Read data from socket with length of " << value_length << std::endl;
     }
     catch (const std::exception &e)
     {
@@ -2564,7 +2568,7 @@ namespace ECProject
     {
       // ready to recieve
       char *buf = new char[value_length];
-      if (IF_DEBUG)
+      if (cord_trace_log(IF_DEBUG))
       {
         std::cout << "[Proxy" << m_self_cluster_id << "][GET]"
                   << " Ready to recieve data from datanode " << std::endl;
@@ -2579,7 +2583,7 @@ namespace ECProject
       get_info.set_proxy_port(m_port + offset);
       std::string node_ip_port = std::string(ip) + ":" + std::to_string(port);
       grpc::Status stat = m_datanode_ptrs[node_ip_port]->handleGet(&context, get_info, &result);
-      if (IF_DEBUG)
+      if (cord_trace_log(IF_DEBUG))
       {
         std::cout << "[Proxy" << m_self_cluster_id << "][GET]"
                   << " Call datanode to handle get " << key << std::endl;
@@ -2594,7 +2598,7 @@ namespace ECProject
       asio::error_code ignore_ec;
       socket.shutdown(asio::ip::tcp::socket::shutdown_both, ignore_ec);
       socket.close(ignore_ec);
-      if (IF_DEBUG)
+      if (cord_trace_log(IF_DEBUG))
       {
         std::cout << "[Proxy" << m_self_cluster_id << "][GET]"
                   << " Read data from socket with length of " << value_length << std::endl;
@@ -2615,8 +2619,11 @@ namespace ECProject
     try
     {
 
-      std::cout << "[Proxy" << m_self_cluster_id << "][GET]"
-                << " Ready to recieve data from datanode " << std::endl;
+      if (cord_trace_log(IF_DEBUG))
+      {
+        std::cout << "[Proxy" << m_self_cluster_id << "][GET]"
+                  << " Ready to recieve data from datanode " << std::endl;
+      }
 
       grpc::ClientContext context;
       datanode_proto::GetInfo get_info;
@@ -2628,12 +2635,12 @@ namespace ECProject
       get_info.set_proxy_port(m_port);
       std::string node_ip_port = std::string(ip) + ":" + std::to_string(port);
       grpc::Status stat = m_datanode_ptrs[node_ip_port]->handleGet(&context, get_info, &result);
-      if (stat.ok() && IF_DEBUG)
+      if (stat.ok() && cord_trace_log(IF_DEBUG))
       {
         std::cout << "[Proxy" << m_self_cluster_id << "][GET]"
                   << " Call datanode to handle get " << key << std::endl;
       }
-      else if (IF_DEBUG)
+      else if (cord_trace_log(IF_DEBUG))
       {
         std::cout << "[Proxy" << m_self_cluster_id << "][GET]"
                   << " Call datanode to handle get " << key << " failed!" << std::endl;
@@ -2649,13 +2656,11 @@ namespace ECProject
       asio::error_code ignore_ec;
       socket.shutdown(asio::ip::tcp::socket::shutdown_both, ignore_ec);
       socket.close(ignore_ec);
-      if (IF_DEBUG)
+      if (cord_trace_log(IF_DEBUG))
       {
         std::cout << "[Proxy" << m_self_cluster_id << "][GET]"
                   << " Read data from socket with length of " << value_length << std::endl;
       }
-      std::cout << "[Proxy" << m_self_cluster_id << "][GET]"
-      << " Read data from socket with length of " << value_length << std::endl;
     }
     catch (const std::exception &e)
     {
@@ -2674,7 +2679,7 @@ namespace ECProject
       datanode_proto::RequestResult response;
       delinfo.set_block_key(key);
       grpc::Status status = m_datanode_ptrs[node_ip_port]->handleDelete(&context, delinfo, &response);
-      if (status.ok() && IF_DEBUG)
+      if (status.ok() && cord_trace_log(IF_DEBUG))
       {
         std::cout << "[Proxy" << m_self_cluster_id << "][DEL] delete block " << key << " success!" << std::endl;
       }
@@ -3155,7 +3160,7 @@ namespace ECProject
                 placement_copy->datanodeip(j) + ":" + std::to_string(placement_copy->datanodeport(j));
             slices_by_endpoint[ep].push_back(j);
           }
-          if (IF_DEBUG)
+          if (cord_trace_log(IF_DEBUG))
           {
             std::cout << "[CoRD-DATA][" << proxy_ip_port << "] slice_parallel endpoints=" << slices_by_endpoint.size()
                       << " slices=" << slice_num << " stripe_id=" << stripe_id << std::endl;
@@ -3220,7 +3225,7 @@ namespace ECProject
         commit_abort_key.set_stripe_id(stripe_id);
         commit_abort_key.set_ifcommitmetadata(true);
         grpc::Status st = m_coordinator_ptr->reportCommitAbort(&ctx, commit_abort_key, &result);
-        if (!st.ok() && IF_DEBUG)
+        if (!st.ok() && cord_trace_log(IF_DEBUG))
           std::cout << "[CoRD][Proxy] reportCommitAbort failed" << std::endl;
       }
       catch (std::exception &e)
@@ -3436,7 +3441,7 @@ namespace ECProject
             std::cout << "[CoRD-LP][Proxy] write LP blk " << it.local_block_id() << " failed" << std::endl;
             continue;
           }
-          if (IF_DEBUG)
+          if (cord_trace_log(IF_DEBUG))
             std::cout << "[CoRD-LP][Proxy] LP blk " << it.local_block_id() << " off=" << it.parity_slice_offset()
                       << " len=" << psz << " fetches=" << it.fetches_size() << std::endl;
         }
@@ -3698,7 +3703,7 @@ namespace ECProject
           auto block_buf = std::make_shared<std::vector<char>>(this_size);
 
           asio::read(socket_data, asio::buffer(block_buf->data(), this_size), error);
-        if (error == asio::error::eof)
+        if (error == asio::error::eof && cord_trace_log(IF_DEBUG))
         {
             std::cout << "error == asio::error::eof (block " << j << ")" << std::endl;
         }
@@ -3707,7 +3712,7 @@ namespace ECProject
           throw asio::system_error(error);
         }
 
-        if (IF_DEBUG)
+        if (cord_trace_log(IF_DEBUG))
         {
           std::cout << "[Proxy" << m_self_cluster_id << "][Append339]"
                       << " received block " << j << " size=" << this_size << std::endl;
@@ -3715,7 +3720,7 @@ namespace ECProject
 
           // 立即启动写线程，不等待后续 block
           senders.emplace_back([this, placement_copy, j, block_buf, is_serialized]() {
-          if (IF_DEBUG)
+          if (cord_trace_log(IF_DEBUG))
           {
             std::cout << "[Proxy" << m_self_cluster_id << "][Append353]"
                         << "Append to Block " << placement_copy->blockkeys(j)
@@ -3748,7 +3753,7 @@ namespace ECProject
         socket_data.shutdown(asio::ip::tcp::socket::shutdown_receive, ignore_ec);
         socket_data.close(ignore_ec);
 
-        if (IF_DEBUG)
+        if (cord_trace_log(IF_DEBUG))
         {
           std::cout << "[Proxy" << m_self_cluster_id << "][Append371]"
                     << "Finish appending to Stripe " << stripe_id << std::endl;
@@ -3764,7 +3769,7 @@ namespace ECProject
             }
           }
 
-          if (IF_DEBUG)
+          if (cord_trace_log(IF_DEBUG))
           {
             std::cout << "[Proxy" << m_self_cluster_id << "][Append387]"
                       << "Async merging parities of Stripe " << stripe_id << std::endl;
@@ -3782,12 +3787,12 @@ namespace ECProject
         commit_abort_key.set_ifcommitmetadata(true);
         grpc::Status status;
         status = m_coordinator_ptr->reportCommitAbort(&context, commit_abort_key, &result);
-        if (status.ok() && IF_DEBUG)
+        if (status.ok() && cord_trace_log(IF_DEBUG))
         {
           std::cout << "[Proxy" << m_self_cluster_id << "][APPEND405]"
                     << " report to coordinator success" << std::endl;
         }
-        else if (IF_DEBUG)
+        else if (cord_trace_log(IF_DEBUG))
         {
           std::cout << "[Proxy" << m_self_cluster_id << "][APPEND410]"
                     << " report to coordinator fail!" << std::endl;
@@ -3801,7 +3806,7 @@ namespace ECProject
     };
     try
     {
-      if (IF_DEBUG)
+      if (cord_trace_log(IF_DEBUG))
       {
         std::cout << "[Proxy][APPEND424] Handle append_and_save" << std::endl;
       }
@@ -3863,7 +3868,7 @@ namespace ECProject
         {
           throw asio::system_error(error);
         }
-        if (IF_DEBUG)
+        if (cord_trace_log(IF_DEBUG))
         {
           std::cout << "[Proxy" << m_self_cluster_id << "][SET]"
                     << "Check key " << buf_key.data() << std::endl;
@@ -3880,7 +3885,7 @@ namespace ECProject
         }
         if (flag)
         {
-          if (IF_DEBUG)
+          if (cord_trace_log(IF_DEBUG))
           {
             std::cout << "[Proxy" << m_self_cluster_id << "][SET]"
                       << "Read value of " << buf_key.data() << std::endl;
@@ -3897,7 +3902,7 @@ namespace ECProject
         // define a lambda function to send to datanode
         auto send_to_datanode = [this](int j, int k, std::string block_key, char **data, char **coding, int block_size, std::pair<std::string, int> ip_and_port)
         {
-          if (IF_DEBUG)
+          if (cord_trace_log(IF_DEBUG))
           {
             std::cout << "[Proxy" << m_self_cluster_id << "][SET]"
                       << "Thread " << j << " send " << block_key << " to Datanode" << ip_and_port.second << std::endl;
@@ -3930,7 +3935,7 @@ namespace ECProject
         {
           coding[j] = v_coding_area[j].data();
         }
-        if (IF_DEBUG)
+        if (cord_trace_log(IF_DEBUG))
         {
           std::cout << "[Proxy" << m_self_cluster_id << "][SET]"
                     << "Encode value with size of " << v_buf.size() << std::endl;
@@ -3941,7 +3946,7 @@ namespace ECProject
           encode(k, g_m, l, data, coding, block_size, encode_type);
           send_num = k + g_m + l;
         }
-        if (IF_DEBUG)
+        if (cord_trace_log(IF_DEBUG))
         {
           std::cout << "[Proxy" << m_self_cluster_id << "][SET]"
                     << "Distribute blocks to datanodes" << std::endl;
@@ -3959,7 +3964,7 @@ namespace ECProject
         {
           senders[j].join();
         }
-        if (IF_DEBUG)
+        if (cord_trace_log(IF_DEBUG))
         {
           std::cout << "[Proxy" << m_self_cluster_id << "][SET]"
                     << "Finish distributing blocks!" << std::endl;
@@ -3975,7 +3980,7 @@ namespace ECProject
         commit_abort_key.set_ifcommitmetadata(true);
         grpc::Status status;
         status = m_coordinator_ptr->reportCommitAbort(&context, commit_abort_key, &result);
-        if (status.ok() && IF_DEBUG)
+        if (status.ok() && cord_trace_log(IF_DEBUG))
         {
           std::cout << "[Proxy" << m_self_cluster_id << "][SET]"
                     << "[SET] report to coordinator success" << std::endl;
@@ -3994,7 +3999,7 @@ namespace ECProject
     };
     try
     {
-      if (IF_DEBUG)
+      if (cord_trace_log(IF_DEBUG))
       {
         std::cout << "[Proxy][SET] Handle encode and set" << std::endl;
       }
@@ -4054,7 +4059,7 @@ namespace ECProject
 
       auto getFromNode = [this, k, blocks_ptr, blocks_key_ptr, blocks_idx_ptr, myLock_ptr, cv_ptr](int expect_block_number, int block_idx, std::string block_key, int block_size, std::string ip, int port)
       {
-        if (IF_DEBUG)
+        if (cord_trace_log(IF_DEBUG))
         {
           std::cout << "[Proxy" << m_self_cluster_id << "][GET]"
                     << "Block " << block_idx << " with key " << block_key << " from Datanode" << ip << ":" << port << std::endl;
@@ -4097,7 +4102,7 @@ namespace ECProject
       {
         coding[j] = v_coding_area[j].data();
       }
-      if (IF_DEBUG)
+      if (cord_trace_log(IF_DEBUG))
       {
         std::cout << "[Proxy" << m_self_cluster_id << "][GET]"
                   << "ready to get blocks from datanodes!" << std::endl;
@@ -4127,7 +4132,7 @@ namespace ECProject
       {
         cv_ptr->wait(lck);
       }
-      if (IF_DEBUG)
+      if (cord_trace_log(IF_DEBUG))
       {
         std::cout << "[Proxy" << m_self_cluster_id << "][GET]"
                   << "ready to decode!" << std::endl;
@@ -4171,7 +4176,7 @@ namespace ECProject
         value += std::string(data[j]);
       }
 
-      if (IF_DEBUG)
+      if (cord_trace_log(IF_DEBUG))
       {
         std::cout << "\033[1;31m[Proxy" << m_self_cluster_id << "][GET]"
                   << "send " << key << " to client with length of " << value.size() << "\033[0m" << std::endl;
@@ -4201,7 +4206,7 @@ namespace ECProject
     try
     {
       // std::cerr << "decode_and_get_thread start" << std::endl;
-      if (IF_DEBUG)
+      if (cord_trace_log(IF_DEBUG))
       {
         std::cout << "[Proxy] Handle get and decode" << std::endl;
       }
@@ -4232,7 +4237,7 @@ namespace ECProject
 
   void ProxyImpl::get_from_node(const std::string &block_key, char *block_value, const size_t block_size, const char *datanode_ip, const int datanode_port, bool *status, int index)
   {
-    if (IF_DEBUG)
+    if (cord_trace_log(IF_DEBUG))
     {
       std::cout << "[Proxy" << m_self_cluster_id << "][GET]"
                 << "Block key " << block_key << " from Datanode" << datanode_ip << ":" << datanode_port << std::endl;
@@ -4243,7 +4248,7 @@ namespace ECProject
   void ProxyImpl::get_from_node_breakdown(const std::string &block_key, char *block_value, const size_t block_size, const char *datanode_ip, const int datanode_port, bool *status, int index, 
     double *disk_io_start_time, double *disk_io_end_time, double *network_start_time, double *network_end_time, double *grpc_notify_time, double *grpc_start_time)
   {
-    if (IF_DEBUG)
+    if (cord_trace_log(IF_DEBUG))
     {
       std::cout << "[Proxy" << m_self_cluster_id << "][GET]"
                 << "Block key " << block_key << " from Datanode" << datanode_ip << ":" << datanode_port << std::endl;
@@ -4373,7 +4378,7 @@ namespace ECProject
 
     try
     {
-      if (IF_DEBUG)
+      if (cord_trace_log(IF_DEBUG))
       {
         std::cout << "[Proxy" << m_self_cluster_id << "][Degrade read] Handle degraded read" << std::endl;
       }
@@ -4540,7 +4545,7 @@ namespace ECProject
 
     try
     {
-      if (IF_DEBUG)
+      if (cord_trace_log(IF_DEBUG))
       {
         std::cout << "[Proxy" << m_self_cluster_id << "][Degrade read] Handle degraded read" << std::endl;
       }
@@ -4674,7 +4679,7 @@ namespace ECProject
 
   try
   {
-    if (IF_DEBUG)
+    if (cord_trace_log(IF_DEBUG))
     {
       std::cout << "[Proxy" << m_self_cluster_id << "][Degrade read] Handle degraded read" << std::endl;
     }
@@ -4698,7 +4703,7 @@ namespace ECProject
 {
   try
   {
-    if (IF_DEBUG)
+    if (cord_trace_log(IF_DEBUG))
     {
       std::cout << "[Proxy" << m_self_cluster_id << "][Recovery] Handle Degraded Read" << std::endl;
     }
@@ -4874,7 +4879,7 @@ namespace ECProject
   response->set_grpc_start_time(std::chrono::duration_cast<std::chrono::duration<double>>(START.time_since_epoch()).count());
   try
   {
-    if (IF_DEBUG)
+    if (cord_trace_log(IF_DEBUG))
     {
       std::cout << "[Proxy" << m_self_cluster_id << "][Recovery] Handle Degraded Read" << std::endl;
     }
@@ -5080,7 +5085,7 @@ namespace ECProject
   {
     try
     {
-      if (IF_DEBUG)
+      if (cord_trace_log(IF_DEBUG))
       {
         std::cout << "[Proxy" << m_self_cluster_id << "][Recovery] Handle recovery" << std::endl;
       }
@@ -5252,7 +5257,7 @@ namespace ECProject
     response->set_grpc_start_time(std::chrono::duration_cast<std::chrono::duration<double>>(START.time_since_epoch()).count());
     try
     {
-      if (IF_DEBUG)
+      if (cord_trace_log(IF_DEBUG))
       {
         std::cout << "[Proxy" << m_self_cluster_id << "][Recovery] Handle recovery" << std::endl;
       }
@@ -5515,7 +5520,7 @@ namespace ECProject
   {
   try
     {
-      if (IF_DEBUG)
+      if (cord_trace_log(IF_DEBUG))
       {
         std::cout << "[Proxy" << m_self_cluster_id << "][MultipleRecovery] Handle multiple recovery" << std::endl;
       }
@@ -5569,7 +5574,7 @@ namespace ECProject
           asio::error_code ignore_ec;
           socket.shutdown(asio::ip::tcp::socket::shutdown_receive, ignore_ec);
           socket.close(ignore_ec);
-          if (IF_DEBUG)
+          if (cord_trace_log(IF_DEBUG))
             std::cout << "[MultipleRecovery] received " << read_bytes << " bytes from proxy #" << i << std::endl;
         }
         catch (const std::exception &e)
@@ -5614,7 +5619,7 @@ namespace ECProject
           // block id: here we don't have explicit id mapping in the request, use index b.
           // If your system needs specific block ids, adapt to include them in the request.
           RecoveryToDatanode(block_keys[b].c_str(), b, out_blocks[b], replacing_node_ip.c_str(), replacing_node_port);
-          if (IF_DEBUG)
+          if (cord_trace_log(IF_DEBUG))
             std::cout << "[MultipleRecovery] sent recovered block " << block_keys[b] << " (index " << b << ") to " << replacing_node_ip << ":" << replacing_node_port << std::endl;
         }
         catch (const std::exception &e)

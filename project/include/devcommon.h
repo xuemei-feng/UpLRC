@@ -31,6 +31,13 @@ namespace ECProject
   {
     return if_debug || cord_verbose_enabled();
   }
+
+  /** Info-level stdout on CoRD hot paths (honors CORD_VERBOSE / IF_DEBUG via cord_trace_log). */
+  inline void cord_trace_out(bool if_debug, const std::string &msg)
+  {
+    if (cord_trace_log(if_debug))
+      std::cout << msg << '\n';
+  }
 }
 
 #endif

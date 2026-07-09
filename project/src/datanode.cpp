@@ -1,4 +1,5 @@
 #include "datanode.h"
+#include "devcommon.h"
 #include "toolbox.h"
 #include <fstream>
 #include <unistd.h>
@@ -241,7 +242,7 @@ namespace ECProject
                 std::ofstream append_file(writepath, std::ios::binary | std::ios::out | std::ios::app);
                 // Append data from buffer to end of file
                 append_file.write(buf.data(), append_size);
-                if (IF_DEBUG)
+                if (cord_trace_log(IF_DEBUG))
                 {
                     std::cout << "[Datanode" << m_port << "][Append120] successfully append data block " << block_key << " with " << append_size << " bytes" << std::endl;
                 }
@@ -301,7 +302,7 @@ namespace ECProject
                     append_file.close();
                 }
 
-                if (IF_DEBUG)
+                if (cord_trace_log(IF_DEBUG))
                 {
                     std::cout << "[Datanode" << m_port << "][Append167] successfully append parity block " << block_key << " with " << append_size << " bytes" << std::endl;
                 }
@@ -314,7 +315,7 @@ namespace ECProject
 
         try
         {
-            if (IF_DEBUG)
+            if (cord_trace_log(IF_DEBUG))
             {
                 // std::cout << "[Datanode" << m_port << "][Append109] block_key: " << block_key << ", block_id: " << block_id << ", append_size: " << append_size << ", append_offset: " << append_offset << " is_serialized: " << is_serialized << std::endl;
             }
@@ -378,7 +379,7 @@ namespace ECProject
                 ofs.flush();
                 ofs.close();
 
-                if (IF_DEBUG)
+                if (cord_trace_log(IF_DEBUG))
                 {
                     std::cout << "[Datanode" << m_port << "][Recovery] successfully recovery block " << block_key << " with " << m_sys_config->BlockSize << " bytes" << std::endl;
                 }
@@ -450,7 +451,7 @@ namespace ECProject
                 response->set_disk_io_start_time(std::chrono::duration_cast<std::chrono::duration<double>>(begin.time_since_epoch()).count());
                 response->set_disk_io_end_time(std::chrono::duration_cast<std::chrono::duration<double>>(end.time_since_epoch()).count());
 
-                if (IF_DEBUG)
+                if (cord_trace_log(IF_DEBUG))
                 {
                     std::cout << "[Datanode" << m_port << "][Recovery] successfully recovery block " << block_key << " with " << m_sys_config->BlockSize << " bytes" << std::endl;
                 }
@@ -623,7 +624,7 @@ namespace ECProject
                 // write the data to the disk using pagecache
                 std::ofstream ofs(writepath, std::ios::binary | std::ios::out | std::ios::trunc);
                 ofs.write(buf.data(), block_size);
-                if (IF_DEBUG)
+                if (cord_trace_log(IF_DEBUG))
                 {
                     std::cout << "[Datanode" << m_port << "][Write] successfully write " << block_key << " with " << ofs.tellp() << "bytes" << std::endl;
                 }
@@ -646,7 +647,7 @@ namespace ECProject
                 asio::error_code con_error;
                 asio::connect(socket, resolver.resolve({std::string(proxy_ip), std::to_string(proxy_port)}), con_error);
                 asio::error_code ec;
-                if (!con_error && IF_DEBUG)
+                if (!con_error && cord_trace_log(IF_DEBUG))
                 {
                     std::cout << "[Datanode" << m_port << "] Connect to " << proxy_ip << ":" << proxy_port << " success!" << std::endl;
                 }
@@ -666,7 +667,7 @@ namespace ECProject
 
                 std::ofstream ofs(writepath, std::ios::binary | std::ios::out | std::ios::trunc);
                 ofs.write(buf.data(), block_size);
-                if (IF_DEBUG)
+                if (cord_trace_log(IF_DEBUG))
                 {
                     std::cout << "[Datanode" << m_port << "][Write] successfully write " << block_key << " with " << ofs.tellp() << "bytes" << std::endl;
                 }
@@ -680,7 +681,7 @@ namespace ECProject
         };
         try
         {
-            if (IF_DEBUG)
+            if (cord_trace_log(IF_DEBUG))
             {
                 std::cout << "[Datanode" << m_port << "][SET] ready to handle set!" << std::endl;
             }
@@ -726,7 +727,7 @@ namespace ECProject
         }
         else
         {
-            if (IF_DEBUG)
+            if (cord_trace_log(IF_DEBUG))
             {
                 std::cout << "[Datanode" << m_port << "][GET] read from the disk and write to socket with port " << m_port + ECProject::DATANODE_PORT_SHIFT << std::endl;
             }
@@ -748,7 +749,7 @@ namespace ECProject
             asio::error_code ignore_ec;
             socket.shutdown(asio::ip::tcp::socket::shutdown_both, ignore_ec);
             socket.close(ignore_ec);
-            if (IF_DEBUG)
+            if (cord_trace_log(IF_DEBUG))
             {
                 std::cout << "[Datanode" << m_port << "][GET] write to socket!" << std::endl;
             }
@@ -756,7 +757,7 @@ namespace ECProject
         };
         try
         {
-            if (IF_DEBUG)
+            if (cord_trace_log(IF_DEBUG))
             {
                 std::cout << "[Datanode" << m_port << "][GET] ready to handle get!" << std::endl;
             }
@@ -790,7 +791,7 @@ namespace ECProject
         }
         else
         {
-            if (IF_DEBUG)
+            if (cord_trace_log(IF_DEBUG))
             {
                 std::cout << "[Datanode" << m_port << "][GET] read from the disk and write to socket with port " << m_port + ECProject::DATANODE_PORT_SHIFT << std::endl;
             }
@@ -807,7 +808,7 @@ namespace ECProject
             asio::error_code ignore_ec;
             socket.shutdown(asio::ip::tcp::socket::shutdown_both, ignore_ec);
             socket.close(ignore_ec);
-            if (IF_DEBUG)
+            if (cord_trace_log(IF_DEBUG))
             {
                 std::cout << "[Datanode" << m_port << "][GET] write to socket!" << std::endl;
             }
@@ -815,7 +816,7 @@ namespace ECProject
         };
         try
         {
-            if (IF_DEBUG)
+            if (cord_trace_log(IF_DEBUG))
             {
                 std::cout << "[Datanode" << m_port << "][GET] ready to handle get!" << std::endl;
             }
@@ -1184,7 +1185,7 @@ namespace ECProject
     {
         std::string block_key = del_info->block_key();
         std::string file_path = "./storage/" + std::to_string(m_port) + "/" + block_key;
-        if (IF_DEBUG)
+        if (cord_trace_log(IF_DEBUG))
         {
             std::cout << "[Datanode" << m_port << "] File path:" << file_path << std::endl;
         }

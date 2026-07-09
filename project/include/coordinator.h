@@ -205,8 +205,6 @@ namespace ECProject
         const std::map<int, std::vector<std::pair<int, int>>> &block_intervals,
         const cord_alg2::Algorithm2Result &alg2,
         proxy_proto::CordTransferPlan *plan);
-    /** 填充 tp 的 BW 矩阵（进程内只从文件加载一次） */
-    void cord_fill_transfer_params_bw(cord_alg2::TransferParams *tp);
     void notify_proxy_cord_local_parity_bundle(int target_cluster_id,
                                                 const proxy_proto::CordLocalParityBundle &bundle);
 
@@ -253,13 +251,6 @@ namespace ECProject
     std::unordered_map<std::string, std::vector<int>> m_cord_pending_plan_clusters;
     std::unordered_map<std::string, CordAutoBeginSession> m_cord_auto_begin_sessions;
     std::unordered_map<std::string, std::string> m_cord_append_key_to_plan_key;
-    /** BW_limitsame 矩阵缓存：避免每条 uploadCordUpdate 重复读文件 */
-    std::mutex m_cord_bw_cache_mu;
-    bool m_cord_bw_matrix_resolved = false;
-    bool m_cord_bw_matrix_loaded = false;
-    std::string m_cord_bw_matrix_loaded_path;
-    double m_cord_bw_matrix_cache[cord_alg2::TransferParams::kMaxBwClusters]
-                                   [cord_alg2::TransferParams::kMaxBwClusters] = {};
     std::condition_variable cv;
     std::map<std::string, std::unique_ptr<proxy_proto::proxyService::Stub>>
         m_proxy_ptrs;

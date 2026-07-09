@@ -1,4 +1,5 @@
 #include "cord_class_algorithm.h"
+#include "devcommon.h"
 #include "meta_definition.h"
 #include <algorithm>
 #include <cmath>
@@ -333,9 +334,10 @@ namespace ECProject
         const double concurrent_cost = std::max(t_dg, t_dl);
         const bool use_chain = chain_cost <= concurrent_cost;
 
-        std::cout << "[CoRD-Class] class3 dc=" << dc << " group=" << stripe_group << " |S|=" << S.size()
-                  << " chain=" << chain_cost << "s concurrent=" << concurrent_cost << "s pick="
-                  << (use_chain ? "chain" : "concurrent") << "\n";
+        if (cord_verbose_enabled())
+          std::cout << "[CoRD-Class] class3 dc=" << dc << " group=" << stripe_group << " |S|=" << S.size()
+                    << " chain=" << chain_cost << "s concurrent=" << concurrent_cost << "s pick="
+                    << (use_chain ? "chain" : "concurrent") << '\n';
 
         for (int d : S)
         {
@@ -371,8 +373,9 @@ namespace ECProject
 
       cord_alg2::schedule_train_route_timeslots(&out, cluster_num, tp);
 
-      std::cout << "[CoRD-Class] train_route links=" << out.train_route.size()
-                << " slots=" << out.timeslot_schedule.size() << "\n";
+      if (cord_verbose_enabled())
+        std::cout << "[CoRD-Class] train_route links=" << out.train_route.size()
+                  << " slots=" << out.timeslot_schedule.size() << '\n';
       return out;
     }
   } // namespace cord_class
