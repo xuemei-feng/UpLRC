@@ -6,7 +6,15 @@
 #include <grpcpp/ext/proto_server_reflection_plugin.h>
 #include <grpcpp/grpcpp.h>
 #include <asio.hpp>
+#include <array>
+#include <atomic>
+#include <deque>
+#include <future>
+#include <map>
+#include <memory>
+#include <mutex>
 #include <string>
+#include <thread>
 #include <vector>
 #include "meta_definition.h"
 #include "config.h"
@@ -18,13 +26,8 @@ namespace ECProject
         : public datanode_proto::datanodeService::Service
     {
     public:
-        DatanodeImpl(std::string datanode_ip_port) : datanode_ip_port(datanode_ip_port), acceptor(io_context, asio::ip::tcp::endpoint(asio::ip::address::from_string(datanode_ip_port.substr(0, datanode_ip_port.find(':')).c_str()), ECProject::DATANODE_PORT_SHIFT + std::stoi(datanode_ip_port.substr(datanode_ip_port.find(':') + 1, datanode_ip_port.size()))))
-        {
-            m_ip = datanode_ip_port.substr(0, datanode_ip_port.find(':'));
-            m_port = std::stoi(datanode_ip_port.substr(datanode_ip_port.find(':') + 1, datanode_ip_port.size()));
-            m_download_port = m_port + ECProject::DATANODE_PORT_SHIFT;
-        }
-        ~DatanodeImpl() {};
+        explicit DatanodeImpl(std::string datanode_ip_port);
+        ~DatanodeImpl();
         grpc::Status checkalive(
             grpc::ServerContext *context,
             const datanode_proto::CheckaliveCMD *request,
@@ -96,6 +99,68 @@ namespace ECProject
         ECProject::Config *m_sys_config;
 
     private:
+        enum class DnConnWaitKind
+        {
+            PlainRead,
+            PlainWrite
+        };
+
+        struct CordDnPendingRead
+        {
+            std::vector<char> data;
+            int range_length = 0;
+        };
+        struct CordDnPendingWrite
+        {
+            std::string writepath;
+            int range_offset = 0;
+            int range_length = 0;
+        };
+        struct CordDnPendingBlob
+        {
+            std::string writepath;
+            int byte_length = 0;
+        };
+
+        enum class CordDnDispatchOp
+        {
+            Read,
+            Write,
+            XorWrite,
+            Blob
+        };
+
+        struct CordDnDispatchJob
+        {
+            CordDnDispatchOp op = CordDnDispatchOp::Read;
+            CordDnPendingRead read;
+            CordDnPendingWrite write;
+            CordDnPendingBlob blob;
+        };
+
+        struct DnDeliveredSocket
+        {
+            asio::ip::tcp::socket socket;
+            std::array<char, 8> prefix{};
+            size_t prefix_len = 0;
+
+            explicit DnDeliveredSocket(asio::io_context &io_context)
+                : socket(io_context)
+            {
+            }
+        };
+
+        void dn_start_accept_loop();
+        void dn_accept_dispatch_loop();
+        DnDeliveredSocket dn_wait_for_connection(DnConnWaitKind kind);
+        bool dn_take_cord_pending(uint64_t wire_tag, CordDnDispatchJob &job);
+        void dn_dispatch_cord_job(asio::ip::tcp::socket socket, uint64_t wire_tag, CordDnDispatchJob job);
+        void dn_run_cord_read_worker(asio::ip::tcp::socket socket, uint64_t wire_tag, CordDnPendingRead pending);
+        void dn_run_cord_write_worker(asio::ip::tcp::socket socket, uint64_t wire_tag, CordDnPendingWrite pending);
+        void dn_run_cord_xor_write_worker(asio::ip::tcp::socket socket, uint64_t wire_tag, CordDnPendingWrite pending);
+        void dn_run_cord_blob_worker(asio::ip::tcp::socket socket, uint64_t wire_tag, CordDnPendingBlob pending);
+        static asio::error_code dn_tcp_read_with_prefix(DnDeliveredSocket &delivered, char *out, size_t total);
+
         std::string datanode_ip_port;
         std::string m_ip;
         int m_port;
@@ -103,6 +168,17 @@ namespace ECProject
         int m_download_port;
         asio::io_context io_context;
         asio::ip::tcp::acceptor acceptor;
+
+        std::thread m_dn_accept_thread;
+        std::atomic<bool> m_dn_accept_running{false};
+        std::mutex m_dn_conn_wait_mu;
+        std::deque<std::pair<DnConnWaitKind, std::shared_ptr<std::promise<DnDeliveredSocket>>>> m_dn_conn_waiters;
+
+        std::mutex m_cord_pending_mu;
+        std::map<uint64_t, CordDnPendingRead> m_cord_pending_reads;
+        std::map<uint64_t, CordDnPendingWrite> m_cord_pending_writes;
+        std::map<uint64_t, CordDnPendingWrite> m_cord_pending_xor_writes;
+        std::map<uint64_t, CordDnPendingBlob> m_cord_pending_blobs;
     };
 
     class DataNode
