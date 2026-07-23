@@ -1551,6 +1551,12 @@ namespace ECProject  //定义一个名为 ECProject 的命名空间，防止命�
             theta = 1;
           }
         }
+        // (k,r,z)=(10,2,2): 原 theta=2 会把两组剩余数据 D3D4+D8D9 打进同一机架；
+        // 改为 theta=1，使 D3D4 与 D8D9 分到相邻的两个非全局机架（如 stripe0: c3 与 c4）。
+        if (stripe->k == 10 && stripe->r == 2 && stripe->z == 2)
+        {
+          theta = 1;
+        }
 
         for (int g = 0; g < stripe->z; g += theta)
         {
