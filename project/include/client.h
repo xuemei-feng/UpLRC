@@ -14,8 +14,11 @@
 #include "toolbox.h"
 #include "devcommon.h"
 #include <chrono>
+#include <cstdint>
+#include <cstring>
 #include <memory>
 #include <mutex>
+#include <random>
 #include <string>
 #include <utility>
 #include <vector>
@@ -70,8 +73,23 @@ namespace ECProject
       m_clientID = ClientIP + ":" + std::to_string(ClientPort);
       m_sys_config = ECProject::Config::getInstance(config_path);
       m_toolbox = ECProject::ToolBox::getInstance();
-      m_pre_allocated_buffer = new char[static_cast<size_t> (m_sys_config->BlockSize) * static_cast<size_t> (m_sys_config->n)];
-      memset(m_pre_allocated_buffer, 0xaa, (m_sys_config->BlockSize) * static_cast<size_t> (m_sys_config->n));
+      const size_t buf_size = static_cast<size_t>(m_sys_config->BlockSize) * static_cast<size_t>(m_sys_config->n);
+      m_pre_allocated_buffer = new char[buf_size];
+      // 新数据默认用随机字节填充（替代原先恒定的 0xaa）
+      {
+        std::random_device rd;
+        std::mt19937_64 gen(rd());
+        size_t i = 0;
+        for (; i + sizeof(uint64_t) <= buf_size; i += sizeof(uint64_t))
+        {
+          const uint64_t r = gen();
+          std::memcpy(m_pre_allocated_buffer + i, &r, sizeof(r));
+        }
+        for (; i < buf_size; ++i)
+        {
+          m_pre_allocated_buffer[i] = static_cast<char>(gen() & 0xFF);
+        }
+      }
       if (m_sys_config->AppendMode == "CACHED_MODE")
       {
         m_cached_buffer = new char *[m_sys_config->r + m_sys_config->z];
@@ -169,7 +187,7 @@ namespace ECProject
     ECProject::ToolBox *m_toolbox;
     char *m_pre_allocated_buffer = nullptr;
     char **m_cached_buffer = nullptr;
-    /** 预计算校验块缓存：测试数据恒定（0xaa），校验块只需编码一次，后续直接复用。 */
+    /** 预计算校验块缓存：测试数据在构造时随机填充后恒定，校验块只需编码一次，后续直接复用。 */
     bool m_parity_precomputed = false;
     /** 串行化发往各 proxy 数据口的 TCP，避免与 coordinator 并行 notify 导致的 accept/期望长度错配。 */
     std::mutex m_proxy_tcp_mu;

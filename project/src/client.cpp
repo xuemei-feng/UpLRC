@@ -850,7 +850,7 @@ namespace ECProject
       parity_ptr_array.insert(parity_ptr_array.end(), global_parity_ptr_array.begin(), global_parity_ptr_array.end());
       parity_ptr_array.insert(parity_ptr_array.end(), local_parity_ptr_array.begin(), local_parity_ptr_array.end());
 
-      // 测试数据恒定（0xaa），校验块只需编码一次，后续条带直接复用
+      // 测试数据在构造时随机填充后恒定，校验块只需编码一次，后续条带直接复用
       if (!m_parity_precomputed)
       {
         if (m_sys_config->CodeType == "UniLRC")
