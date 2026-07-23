@@ -110,7 +110,7 @@ namespace ECProject
     /** CoRD：半开区间列表；全局校验由 uploadCordUpdate 下发的传输计划在 proxy 侧完成，
      * 本地校验由随后的 uploadCordLocalParityApply 完成（无需二选一）。
      * interval_count 由客户端按区间条数自动填充。
-     * 若 update_payload==nullptr 且 update_payload_bytes==0，则在 coordinator 返回长度后用 0xBB 填充负载。 */
+     * 若 update_payload==nullptr 且 update_payload_bytes==0，则在 coordinator 返回长度后用随机字节填充负载。 */
     bool cord_update(int stripe_id, const std::vector<std::pair<int, int>> &logical_ranges,
                      const char *update_payload, size_t update_payload_bytes,
                      CordUpdateTiming *out_timing = nullptr);

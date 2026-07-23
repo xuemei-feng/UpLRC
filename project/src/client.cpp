@@ -850,7 +850,7 @@ namespace ECProject
       parity_ptr_array.insert(parity_ptr_array.end(), global_parity_ptr_array.begin(), global_parity_ptr_array.end());
       parity_ptr_array.insert(parity_ptr_array.end(), local_parity_ptr_array.begin(), local_parity_ptr_array.end());
 
-      // 每条 stripe 使用不同随机数据，并重新编码校验块（不再跨条带复用）
+      // 每条 stripe 使用不同随机数据，并重新编码校验块（不跨条带复用）
       fill_pre_allocated_buffer_random();
       if (m_sys_config->CodeType == "UniLRC")
       {
@@ -1218,13 +1218,13 @@ namespace ECProject
       }
       const auto prep_t0 = std::chrono::steady_clock::now();
       owned_payload.resize(static_cast<size_t>(reply.sum_append_size()));
-      std::memset(owned_payload.data(), 0xbb, owned_payload.size());
+      fill_buffer_random(owned_payload.data(), owned_payload.size());
       pending->payload_prep_sec = std::chrono::duration<double>(std::chrono::steady_clock::now() - prep_t0).count();
       payload_send = owned_payload.data();
       if (cord_trace_log(IF_DEBUG))
       {
         std::cout << "[CoRD][Client " << m_clientID << "] stripe_id=" << stripe_id
-                  << " auto 0xBB fill payload total_bytes=" << owned_payload.size() << " intervals:";
+                  << " auto random fill payload total_bytes=" << owned_payload.size() << " intervals:";
         for (const auto &r : logical_ranges)
           std::cout << " [" << r.first << "," << r.second << ")";
         std::cout << '\n'
