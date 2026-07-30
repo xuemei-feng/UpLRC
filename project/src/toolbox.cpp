@@ -53,9 +53,9 @@ namespace ECProject
     return std::to_string(stripe_id) + "_" + std::to_string(group_id);
   }
 
-  std::string ToolBox::gen_cord_key(int stripe_id, int cluster_id)
+  std::string ToolBox::gen_uplrc_key(int stripe_id, int cluster_id)
   {
-    return std::to_string(stripe_id) + "_cord_" + std::to_string(cluster_id);
+    return std::to_string(stripe_id) + "_uplrc_" + std::to_string(cluster_id);
   }
 
   bool ToolBox::random_generate_kv(std::string &key, std::string &value,

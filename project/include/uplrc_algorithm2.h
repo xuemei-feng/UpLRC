@@ -1,5 +1,5 @@
-#ifndef ECPROJECT_CORD_ALGORITHM2_H
-#define ECPROJECT_CORD_ALGORITHM2_H
+#ifndef ECPROJECT_UPLRC_ALGORITHM2_H
+#define ECPROJECT_UPLRC_ALGORITHM2_H
 
 #include <cstdint>
 #include <map>
@@ -14,7 +14,7 @@ namespace ECProject
 
 namespace ECProject
 {
-  namespace cord_alg2
+  namespace uplrc_alg2
   {
     /** 传输时间模型：t = latency + bytes / bw；优先 bw_matrix_mb_per_sec[src][dst]（MB/s），否则 inv_bw 回退 */
     struct TransferParams
@@ -39,7 +39,7 @@ namespace ECProject
     };
 
     /** 线上载荷语义：数据增量 ΔD（按字节传输） vs 已由收集器聚合得到的校验增量（再 XOR 落盘） */
-    enum class CordDeltaPayloadKind
+    enum class UpLRCDeltaPayloadKind
     {
       DATA_DELTA,
       PARITY_DELTA
@@ -55,7 +55,7 @@ namespace ECProject
       double est_transfer_sec = 0.0;
       int group_index = -1;
       TrainLinkKind kind = TrainLinkKind::MST_FORWARD;
-      CordDeltaPayloadKind delta_kind = CordDeltaPayloadKind::DATA_DELTA;
+      UpLRCDeltaPayloadKind delta_kind = UpLRCDeltaPayloadKind::DATA_DELTA;
       /** |N|=1 MST：载荷语义对应的数据块 id（中继边 src 可能为校验块） */
       int mst_origin_data_block = -1;
       /** 非空：校验增量合并仅基于这些数据块（同一 collector 子集）；空则由 proxy 按 stripe_group 回落 */
@@ -108,7 +108,7 @@ namespace ECProject
 
     /** 从 BW_limitsame 风格文件加载对称带宽矩阵（MB/s） */
     bool load_bw_matrix_from_limitsame_file(const std::string &path, int cluster_num, TransferParams *tp);
-  } // namespace cord_alg2
+  } // namespace uplrc_alg2
 } // namespace ECProject
 
 #endif

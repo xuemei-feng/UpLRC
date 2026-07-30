@@ -70,21 +70,21 @@ namespace ECProject
             grpc::ServerContext *context,
             const datanode_proto::GetInfo *get_info,
             datanode_proto::RequestResult *response) override;
-        grpc::Status handleCordRangeRead(
+        grpc::Status handleUpLRCRangeRead(
             grpc::ServerContext *context,
-            const datanode_proto::CordRangeRWInfo *info,
+            const datanode_proto::UpLRCRangeRWInfo *info,
             datanode_proto::RequestResult *response) override;
-        grpc::Status handleCordRangeWrite(
+        grpc::Status handleUpLRCRangeWrite(
             grpc::ServerContext *context,
-            const datanode_proto::CordRangeRWInfo *info,
+            const datanode_proto::UpLRCRangeRWInfo *info,
             datanode_proto::RequestResult *response) override;
-        grpc::Status handleCordRangeXorWrite(
+        grpc::Status handleUpLRCRangeXorWrite(
             grpc::ServerContext *context,
-            const datanode_proto::CordRangeRWInfo *info,
+            const datanode_proto::UpLRCRangeRWInfo *info,
             datanode_proto::RequestResult *response) override;
-        grpc::Status handleCordDeltaBlob(
+        grpc::Status handleUpLRCDeltaBlob(
             grpc::ServerContext *context,
-            const datanode_proto::CordDeltaBlobInfo *info,
+            const datanode_proto::UpLRCDeltaBlobInfo *info,
             datanode_proto::RequestResult *response) override;
         // delete
         grpc::Status handleDelete(
@@ -105,24 +105,24 @@ namespace ECProject
             PlainWrite
         };
 
-        struct CordDnPendingRead
+        struct UpLRCDnPendingRead
         {
             std::vector<char> data;
             int range_length = 0;
         };
-        struct CordDnPendingWrite
+        struct UpLRCDnPendingWrite
         {
             std::string writepath;
             int range_offset = 0;
             int range_length = 0;
         };
-        struct CordDnPendingBlob
+        struct UpLRCDnPendingBlob
         {
             std::string writepath;
             int byte_length = 0;
         };
 
-        enum class CordDnDispatchOp
+        enum class UpLRCDnDispatchOp
         {
             Read,
             Write,
@@ -130,12 +130,12 @@ namespace ECProject
             Blob
         };
 
-        struct CordDnDispatchJob
+        struct UpLRCDnDispatchJob
         {
-            CordDnDispatchOp op = CordDnDispatchOp::Read;
-            CordDnPendingRead read;
-            CordDnPendingWrite write;
-            CordDnPendingBlob blob;
+            UpLRCDnDispatchOp op = UpLRCDnDispatchOp::Read;
+            UpLRCDnPendingRead read;
+            UpLRCDnPendingWrite write;
+            UpLRCDnPendingBlob blob;
         };
 
         struct DnDeliveredSocket
@@ -153,12 +153,12 @@ namespace ECProject
         void dn_start_accept_loop();
         void dn_accept_dispatch_loop();
         DnDeliveredSocket dn_wait_for_connection(DnConnWaitKind kind);
-        bool dn_take_cord_pending(uint64_t wire_tag, CordDnDispatchJob &job);
-        void dn_dispatch_cord_job(asio::ip::tcp::socket socket, uint64_t wire_tag, CordDnDispatchJob job);
-        void dn_run_cord_read_worker(asio::ip::tcp::socket socket, uint64_t wire_tag, CordDnPendingRead pending);
-        void dn_run_cord_write_worker(asio::ip::tcp::socket socket, uint64_t wire_tag, CordDnPendingWrite pending);
-        void dn_run_cord_xor_write_worker(asio::ip::tcp::socket socket, uint64_t wire_tag, CordDnPendingWrite pending);
-        void dn_run_cord_blob_worker(asio::ip::tcp::socket socket, uint64_t wire_tag, CordDnPendingBlob pending);
+        bool dn_take_uplrc_pending(uint64_t wire_tag, UpLRCDnDispatchJob &job);
+        void dn_dispatch_uplrc_job(asio::ip::tcp::socket socket, uint64_t wire_tag, UpLRCDnDispatchJob job);
+        void dn_run_uplrc_read_worker(asio::ip::tcp::socket socket, uint64_t wire_tag, UpLRCDnPendingRead pending);
+        void dn_run_uplrc_write_worker(asio::ip::tcp::socket socket, uint64_t wire_tag, UpLRCDnPendingWrite pending);
+        void dn_run_uplrc_xor_write_worker(asio::ip::tcp::socket socket, uint64_t wire_tag, UpLRCDnPendingWrite pending);
+        void dn_run_uplrc_blob_worker(asio::ip::tcp::socket socket, uint64_t wire_tag, UpLRCDnPendingBlob pending);
         static asio::error_code dn_tcp_read_with_prefix(DnDeliveredSocket &delivered, char *out, size_t total);
 
         std::string datanode_ip_port;
@@ -174,11 +174,11 @@ namespace ECProject
         std::mutex m_dn_conn_wait_mu;
         std::deque<std::pair<DnConnWaitKind, std::shared_ptr<std::promise<DnDeliveredSocket>>>> m_dn_conn_waiters;
 
-        std::mutex m_cord_pending_mu;
-        std::map<uint64_t, CordDnPendingRead> m_cord_pending_reads;
-        std::map<uint64_t, CordDnPendingWrite> m_cord_pending_writes;
-        std::map<uint64_t, CordDnPendingWrite> m_cord_pending_xor_writes;
-        std::map<uint64_t, CordDnPendingBlob> m_cord_pending_blobs;
+        std::mutex m_uplrc_pending_mu;
+        std::map<uint64_t, UpLRCDnPendingRead> m_uplrc_pending_reads;
+        std::map<uint64_t, UpLRCDnPendingWrite> m_uplrc_pending_writes;
+        std::map<uint64_t, UpLRCDnPendingWrite> m_uplrc_pending_xor_writes;
+        std::map<uint64_t, UpLRCDnPendingBlob> m_uplrc_pending_blobs;
     };
 
     class DataNode

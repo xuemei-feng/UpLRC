@@ -16,7 +16,7 @@ namespace ECProject
 {
   namespace
   {
-    std::string cord_client_hex_preview(const char *p, size_t len, size_t max_show = 48)
+    std::string uplrc_client_hex_preview(const char *p, size_t len, size_t max_show = 48)
     {
       if (!p || len == 0)
         return "";
@@ -32,40 +32,40 @@ namespace ECProject
 
     bool is_azure_like_code(const std::string &code_type)
     {
-      return code_type == "AzureLRC" || code_type == "RandomLRC" || code_type == "SplitParityLRC" || code_type == "CordXueLRC";
+      return code_type == "AzureLRC" || code_type == "RandomLRC" || code_type == "SplitParityLRC" || code_type == "UpLRC";
     }
 
-    using CordClock = std::chrono::steady_clock;
-    thread_local const CordClock::time_point *g_cord_request_deadline = nullptr;
-    thread_local int g_cord_request_timeout_sec = 2;
+    using UpLRCClock = std::chrono::steady_clock;
+    thread_local const UpLRCClock::time_point *g_uplrc_request_deadline = nullptr;
+    thread_local int g_uplrc_request_timeout_sec = 2;
 
-    bool cord_request_timed_out()
+    bool uplrc_request_timed_out()
     {
-      return g_cord_request_deadline != nullptr && CordClock::now() >= *g_cord_request_deadline;
+      return g_uplrc_request_deadline != nullptr && UpLRCClock::now() >= *g_uplrc_request_deadline;
     }
 
-    int cord_remaining_ms()
+    int uplrc_remaining_ms()
     {
-      if (g_cord_request_deadline == nullptr)
+      if (g_uplrc_request_deadline == nullptr)
         return -1;
       const auto rem = std::chrono::duration_cast<std::chrono::milliseconds>(
-                           *g_cord_request_deadline - CordClock::now())
+                           *g_uplrc_request_deadline - UpLRCClock::now())
                            .count();
       return rem > 0 ? static_cast<int>(rem) : 0;
     }
 
-    void cord_apply_grpc_deadline(grpc::ClientContext &ctx)
+    void uplrc_apply_grpc_deadline(grpc::ClientContext &ctx)
     {
-      const int ms = cord_remaining_ms();
+      const int ms = uplrc_remaining_ms();
       if (ms <= 0)
         ctx.set_deadline(std::chrono::system_clock::now());
       else
         ctx.set_deadline(std::chrono::system_clock::now() + std::chrono::milliseconds(ms));
     }
 
-    void cord_apply_socket_timeouts(asio::ip::tcp::socket &sock)
+    void uplrc_apply_socket_timeouts(asio::ip::tcp::socket &sock)
     {
-      const int ms = cord_remaining_ms();
+      const int ms = uplrc_remaining_ms();
       if (ms <= 0)
         return;
       struct timeval tv;
@@ -79,24 +79,24 @@ namespace ECProject
       }
     }
 
-    bool cord_abort_if_timed_out()
+    bool uplrc_abort_if_timed_out()
     {
-      if (!cord_request_timed_out())
+      if (!uplrc_request_timed_out())
         return false;
-      std::cout << "[CoRD] request timeout (>" << g_cord_request_timeout_sec
+      std::cout << "[UpLRC] request timeout (>" << g_uplrc_request_timeout_sec
                 << "s), aborted" << std::endl;
       return true;
     }
 
-    /** 并行 upload 工作线程继承主线程 CoRD 超时 deadline。 */
-    struct CordThreadDeadlineScope
+    /** 并行 upload 工作线程继承主线程 UpLRC 超时 deadline。 */
+    struct UpLRCThreadDeadlineScope
     {
-      CordThreadDeadlineScope(const CordClock::time_point *dl, int timeout_sec)
+      UpLRCThreadDeadlineScope(const UpLRCClock::time_point *dl, int timeout_sec)
       {
-        g_cord_request_timeout_sec = timeout_sec;
-        g_cord_request_deadline = dl;
+        g_uplrc_request_timeout_sec = timeout_sec;
+        g_uplrc_request_deadline = dl;
       }
-      ~CordThreadDeadlineScope() { g_cord_request_deadline = nullptr; }
+      ~UpLRCThreadDeadlineScope() { g_uplrc_request_deadline = nullptr; }
     };
   }
 
@@ -414,18 +414,18 @@ namespace ECProject
   }*/
 
 
-  void Client::async_cord_update_to_proxies(char *cluster_slice_data, std::string cord_key, int cluster_slice_size, std::string proxy_ip, int proxy_port, int index, bool *if_commit_arr)
+  void Client::async_uplrc_update_to_proxies(char *cluster_slice_data, std::string uplrc_key, int cluster_slice_size, std::string proxy_ip, int proxy_port, int index, bool *if_commit_arr)
   {
-    if (cord_abort_if_timed_out())
+    if (uplrc_abort_if_timed_out())
       return;
-    if (cord_trace_log(IF_DEBUG))
+    if (uplrc_trace_log(IF_DEBUG))
     {
-      std::cout << "[CoRD][Client " << m_clientID << "] TCP send slice_idx=" << index << " bytes=" << cluster_slice_size
-                << " -> proxy " << proxy_ip << ":" << proxy_port << " cord_key=" << cord_key
-                << " payload_preview=" << cord_client_hex_preview(cluster_slice_data, static_cast<size_t>(cluster_slice_size))
+      std::cout << "[UpLRC][Client " << m_clientID << "] TCP send slice_idx=" << index << " bytes=" << cluster_slice_size
+                << " -> proxy " << proxy_ip << ":" << proxy_port << " uplrc_key=" << uplrc_key
+                << " payload_preview=" << uplrc_client_hex_preview(cluster_slice_data, static_cast<size_t>(cluster_slice_size))
                 << std::endl;
     }
-    if (cord_abort_if_timed_out())
+    if (uplrc_abort_if_timed_out())
       return;
     asio::io_context io_context;
     asio::error_code error;
@@ -433,25 +433,25 @@ namespace ECProject
     asio::ip::tcp::resolver::results_type endpoints =
         resolver.resolve(proxy_ip, std::to_string(proxy_port));
     asio::ip::tcp::socket sock_data(io_context);
-    cord_apply_socket_timeouts(sock_data);
+    uplrc_apply_socket_timeouts(sock_data);
     asio::connect(sock_data, endpoints, error);
-    if (error || cord_abort_if_timed_out())
+    if (error || uplrc_abort_if_timed_out())
       return;
 
     asio::write(sock_data, asio::buffer(cluster_slice_data, static_cast<size_t>(cluster_slice_size)), error);
-    if (error || cord_abort_if_timed_out())
+    if (error || uplrc_abort_if_timed_out())
       return;
     asio::error_code ignore_ec;
     sock_data.shutdown(asio::ip::tcp::socket::shutdown_send, ignore_ec);
     sock_data.close(ignore_ec);
 
-    if (cord_abort_if_timed_out())
+    if (uplrc_abort_if_timed_out())
       return;
     grpc::ClientContext check_commit;
-    cord_apply_grpc_deadline(check_commit);
+    uplrc_apply_grpc_deadline(check_commit);
     coordinator_proto::AskIfSuccess request;
-    request.set_key(cord_key);
-    request.set_opp(CORD_UPDATE);
+    request.set_key(uplrc_key);
+    request.set_opp(UPLRC_UPDATE);
     coordinator_proto::RepIfSuccess reply;
     grpc::Status status = m_coordinator_ptr->checkCommitAbort(&check_commit, request, &reply);
     if (status.ok() && reply.ifcommit())
@@ -460,7 +460,7 @@ namespace ECProject
     }
     else
     {
-      std::cout << "[CoRD] commit check failed key=" << cord_key << " proxy=" << proxy_ip << ":" << proxy_port << std::endl;
+      std::cout << "[UpLRC] commit check failed key=" << uplrc_key << " proxy=" << proxy_ip << ":" << proxy_port << std::endl;
     }
   }
 
@@ -839,12 +839,12 @@ namespace ECProject
     std::unique_ptr<bool[]> if_commit_arr(new bool[slice_count]);
     std::fill_n(if_commit_arr.get(), slice_count, false);
 
-    // CordXueLRC：逻辑块序编码后，按物理机架重打包，并发发到各接收机架 proxy
-    if (m_sys_config->CodeType == "CordXueLRC")
+    // UpLRC：逻辑块序编码后，按物理机架重打包，并发发到各接收机架 proxy
+    if (m_sys_config->CodeType == "UpLRC")
     {
       if (reply.slice_block_counts_size() != slice_count)
       {
-        std::cout << "[SET] CordXueLRC: slice_block_counts size mismatch" << std::endl;
+        std::cout << "[SET] UpLRC: slice_block_counts size mismatch" << std::endl;
         return false;
       }
       const int k = m_sys_config->k;
@@ -870,13 +870,13 @@ namespace ECProject
         const size_t expect = static_cast<size_t>(reply.cluster_slice_sizes(i));
         if (expect != static_cast<size_t>(blk_cnt) * bs)
         {
-          std::cout << "[SET] CordXueLRC: slice " << i << " size mismatch expect=" << expect
+          std::cout << "[SET] UpLRC: slice " << i << " size mismatch expect=" << expect
                     << " blocks=" << blk_cnt << std::endl;
           return false;
         }
         if (id_cursor + blk_cnt > reply.slice_block_ids_size())
         {
-          std::cout << "[SET] CordXueLRC: slice_block_ids underflow" << std::endl;
+          std::cout << "[SET] UpLRC: slice_block_ids underflow" << std::endl;
           return false;
         }
         auto &payload = rack_payloads[static_cast<size_t>(i)];
@@ -887,7 +887,7 @@ namespace ECProject
           const int bid = reply.slice_block_ids(id_cursor++);
           if (bid < 0 || bid >= n)
           {
-            std::cout << "[SET] CordXueLRC: invalid block_id=" << bid << std::endl;
+            std::cout << "[SET] UpLRC: invalid block_id=" << bid << std::endl;
             return false;
           }
           std::memcpy(payload.data() + off, m_pre_allocated_buffer + static_cast<size_t>(bid) * bs, bs);
@@ -1123,15 +1123,15 @@ namespace ECProject
     return false;
   }
 
-  bool Client::xue_update(int stripe_id, const std::vector<std::pair<int, int>> &logical_ranges)
+  bool Client::uplrc_legacy_update(int stripe_id, const std::vector<std::pair<int, int>> &logical_ranges)
   {
     if (logical_ranges.empty())
     {
-      std::cout << "[XUE_UPDATE] Empty logical ranges." << std::endl;
+      std::cout << "[UPLRC_LEGACY_UPDATE] Empty logical ranges." << std::endl;
       return false;
     }
     grpc::ClientContext get_proxy_ip_port;
-    coordinator_proto::XueUpdateRequest request;
+    coordinator_proto::UplrcLegacyUpdateRequest request;
     coordinator_proto::ReplyProxyIPsPorts reply;
     request.set_client_id(m_clientID);
     request.set_stripe_id(stripe_id);
@@ -1139,7 +1139,7 @@ namespace ECProject
     {
       if (r.second <= r.first)
       {
-        std::cout << "[XUE_UPDATE] Invalid logical range: [" << r.first
+        std::cout << "[UPLRC_LEGACY_UPDATE] Invalid logical range: [" << r.first
                   << ", " << r.second << ") (require start < end)" << std::endl;
         return false;
       }
@@ -1148,10 +1148,10 @@ namespace ECProject
       range->set_logical_offset_end(r.second);
     }
 
-    grpc::Status status = m_coordinator_ptr->uploadXueUpdate(&get_proxy_ip_port, request, &reply);
+    grpc::Status status = m_coordinator_ptr->uploadUplrcLegacyUpdate(&get_proxy_ip_port, request, &reply);
     if (!status.ok())
     {
-      std::cout << "[XUE_UPDATE] upload failed: " << status.error_message() << std::endl;
+      std::cout << "[UPLRC_LEGACY_UPDATE] upload failed: " << status.error_message() << std::endl;
       return false;
     }
 
@@ -1169,14 +1169,14 @@ namespace ECProject
                                 { return val == true; });
     if (!all_true)
     {
-      std::cout << "[XUE_UPDATE] commit check failed for at least one cluster slice." << std::endl;
+      std::cout << "[UPLRC_LEGACY_UPDATE] commit check failed for at least one cluster slice." << std::endl;
     }
     return all_true;
   }
 
   namespace
   {
-    void cord_fill_timing(CordUpdateTiming *out, const std::chrono::steady_clock::time_point &wall_t0,
+    void uplrc_fill_timing(UpLRCUpdateTiming *out, const std::chrono::steady_clock::time_point &wall_t0,
                           double plan_sec, double payload_prep_sec, double upload_sec,
                           double xfer_begin_sec, double xfer_wait_sec,
                           double xfer_pure_sec = 0.0, double xfer_grpc_sec = 0.0)
@@ -1194,13 +1194,13 @@ namespace ECProject
     }
   }
 
-  bool Client::cord_update_start(int stripe_id, const std::vector<std::pair<int, int>> &logical_ranges,
+  bool Client::uplrc_update_start(int stripe_id, const std::vector<std::pair<int, int>> &logical_ranges,
                                  const char *update_payload, size_t update_payload_bytes,
-                                 CordUpdatePending *pending, CordUpdateTiming *partial_timing)
+                                 UpLRCUpdatePending *pending, UpLRCUpdateTiming *partial_timing)
   {
     if (pending == nullptr)
     {
-      std::cout << "[CoRD] cord_update_start: pending is null." << std::endl;
+      std::cout << "[UpLRC] uplrc_update_start: pending is null." << std::endl;
       return false;
     }
     pending->stripe_id = stripe_id;
@@ -1212,23 +1212,23 @@ namespace ECProject
 
     if (logical_ranges.empty())
     {
-      std::cout << "[CoRD] Empty update intervals." << std::endl;
-      cord_fill_timing(partial_timing, pending->wall_t0, pending->plan_sec, pending->payload_prep_sec,
+      std::cout << "[UpLRC] Empty update intervals." << std::endl;
+      uplrc_fill_timing(partial_timing, pending->wall_t0, pending->plan_sec, pending->payload_prep_sec,
                        pending->upload_sec, 0.0, 0.0);
       return false;
     }
-    g_cord_request_timeout_sec = m_sys_config->CordRequestTimeoutSec;
-    const CordClock::time_point cord_deadline =
-        CordClock::now() + std::chrono::seconds(g_cord_request_timeout_sec);
-    g_cord_request_deadline = &cord_deadline;
-    struct CordDeadlineGuard
+    g_uplrc_request_timeout_sec = m_sys_config->UpLRCRequestTimeoutSec;
+    const UpLRCClock::time_point uplrc_deadline =
+        UpLRCClock::now() + std::chrono::seconds(g_uplrc_request_timeout_sec);
+    g_uplrc_request_deadline = &uplrc_deadline;
+    struct UpLRCDeadlineGuard
     {
-      ~CordDeadlineGuard() { g_cord_request_deadline = nullptr; }
-    } cord_deadline_guard;
+      ~UpLRCDeadlineGuard() { g_uplrc_request_deadline = nullptr; }
+    } uplrc_deadline_guard;
 
     grpc::ClientContext ctx;
-    cord_apply_grpc_deadline(ctx);
-    coordinator_proto::CordUpdateRequest request;
+    uplrc_apply_grpc_deadline(ctx);
+    coordinator_proto::UpLRCUpdateRequest request;
     coordinator_proto::ReplyProxyIPsPorts reply;
     request.set_client_id(m_clientID);
     request.set_stripe_id(stripe_id);
@@ -1237,8 +1237,8 @@ namespace ECProject
     {
       if (r.second <= r.first)
       {
-        std::cout << "[CoRD] Invalid half-open interval: [" << r.first << ", " << r.second << ")" << std::endl;
-        cord_fill_timing(partial_timing, pending->wall_t0, pending->plan_sec, pending->payload_prep_sec,
+        std::cout << "[UpLRC] Invalid half-open interval: [" << r.first << ", " << r.second << ")" << std::endl;
+        uplrc_fill_timing(partial_timing, pending->wall_t0, pending->plan_sec, pending->payload_prep_sec,
                          pending->upload_sec, 0.0, 0.0);
         return false;
       }
@@ -1248,24 +1248,24 @@ namespace ECProject
     }
 
     const auto plan_t0 = std::chrono::steady_clock::now();
-    grpc::Status status = m_coordinator_ptr->uploadCordUpdate(&ctx, request, &reply);
+    grpc::Status status = m_coordinator_ptr->uploadUpLRCUpdate(&ctx, request, &reply);
     pending->plan_sec = std::chrono::duration<double>(std::chrono::steady_clock::now() - plan_t0).count();
-    if (cord_abort_if_timed_out())
+    if (uplrc_abort_if_timed_out())
     {
-      cord_fill_timing(partial_timing, pending->wall_t0, pending->plan_sec, pending->payload_prep_sec,
+      uplrc_fill_timing(partial_timing, pending->wall_t0, pending->plan_sec, pending->payload_prep_sec,
                        pending->upload_sec, 0.0, 0.0);
       return false;
     }
     if (!status.ok())
     {
-      std::cout << "[CoRD] uploadCordUpdate failed: " << status.error_message() << std::endl;
-      cord_fill_timing(partial_timing, pending->wall_t0, pending->plan_sec, pending->payload_prep_sec,
+      std::cout << "[UpLRC] uploadUpLRCUpdate failed: " << status.error_message() << std::endl;
+      uplrc_fill_timing(partial_timing, pending->wall_t0, pending->plan_sec, pending->payload_prep_sec,
                        pending->upload_sec, 0.0, 0.0);
       return false;
     }
     if (reply.sum_append_size() == 0)
     {
-      cord_fill_timing(partial_timing, pending->wall_t0, pending->plan_sec, pending->payload_prep_sec,
+      uplrc_fill_timing(partial_timing, pending->wall_t0, pending->plan_sec, pending->payload_prep_sec,
                        pending->upload_sec, 0.0, 0.0);
       return true;
     }
@@ -1276,8 +1276,8 @@ namespace ECProject
     {
       if (update_payload_bytes != 0)
       {
-        std::cout << "[CoRD] auto fill payload: require update_payload_bytes==0 when payload is null" << std::endl;
-        cord_fill_timing(partial_timing, pending->wall_t0, pending->plan_sec, pending->payload_prep_sec,
+        std::cout << "[UpLRC] auto fill payload: require update_payload_bytes==0 when payload is null" << std::endl;
+        uplrc_fill_timing(partial_timing, pending->wall_t0, pending->plan_sec, pending->payload_prep_sec,
                          pending->upload_sec, 0.0, 0.0);
         return false;
       }
@@ -1286,32 +1286,32 @@ namespace ECProject
       fill_buffer_random(owned_payload.data(), owned_payload.size());
       pending->payload_prep_sec = std::chrono::duration<double>(std::chrono::steady_clock::now() - prep_t0).count();
       payload_send = owned_payload.data();
-      if (cord_trace_log(IF_DEBUG))
+      if (uplrc_trace_log(IF_DEBUG))
       {
-        std::cout << "[CoRD][Client " << m_clientID << "] stripe_id=" << stripe_id
+        std::cout << "[UpLRC][Client " << m_clientID << "] stripe_id=" << stripe_id
                   << " auto random fill payload total_bytes=" << owned_payload.size() << " intervals:";
         for (const auto &r : logical_ranges)
           std::cout << " [" << r.first << "," << r.second << ")";
         std::cout << '\n'
-                  << "[CoRD][Client " << m_clientID << "] fill_payload_preview="
-                  << cord_client_hex_preview(owned_payload.data(), owned_payload.size()) << std::endl;
+                  << "[UpLRC][Client " << m_clientID << "] fill_payload_preview="
+                  << uplrc_client_hex_preview(owned_payload.data(), owned_payload.size()) << std::endl;
       }
     }
     else if (update_payload_bytes != static_cast<size_t>(reply.sum_append_size()))
     {
-      std::cout << "[CoRD] payload size mismatch: got " << update_payload_bytes << " expected " << reply.sum_append_size() << std::endl;
-      cord_fill_timing(partial_timing, pending->wall_t0, pending->plan_sec, pending->payload_prep_sec,
+      std::cout << "[UpLRC] payload size mismatch: got " << update_payload_bytes << " expected " << reply.sum_append_size() << std::endl;
+      uplrc_fill_timing(partial_timing, pending->wall_t0, pending->plan_sec, pending->payload_prep_sec,
                        pending->upload_sec, 0.0, 0.0);
       return false;
     }
 
-    if (cord_trace_log(IF_DEBUG))
+    if (uplrc_trace_log(IF_DEBUG))
     {
-      std::cout << "[CoRD][Client " << m_clientID << "] coordinator replied append_keys=" << reply.append_keys_size()
+      std::cout << "[UpLRC][Client " << m_clientID << "] coordinator replied append_keys=" << reply.append_keys_size()
                 << " sum_append_size=" << reply.sum_append_size() << std::endl;
       for (int i = 0; i < reply.append_keys_size(); ++i)
       {
-        std::cout << "[CoRD][Client " << m_clientID << "]   slice " << i << " cluster_gid=" << reply.group_ids(i)
+        std::cout << "[UpLRC][Client " << m_clientID << "]   slice " << i << " cluster_gid=" << reply.group_ids(i)
                   << " bytes=" << reply.cluster_slice_sizes(i) << " -> proxy " << reply.proxyips(i) << ":"
                   << reply.proxyports(i) << " key=" << reply.append_keys(i) << std::endl;
       }
@@ -1322,21 +1322,21 @@ namespace ECProject
     const int slice_count = reply.append_keys_size();
     std::unique_ptr<bool[]> if_commit_arr(new bool[slice_count]);
     std::fill_n(if_commit_arr.get(), slice_count, false);
-    if (cord_abort_if_timed_out())
+    if (uplrc_abort_if_timed_out())
     {
       pending->upload_sec = std::chrono::duration<double>(std::chrono::steady_clock::now() - upload_t0).count();
-      cord_fill_timing(partial_timing, pending->wall_t0, pending->plan_sec, pending->payload_prep_sec,
+      uplrc_fill_timing(partial_timing, pending->wall_t0, pending->plan_sec, pending->payload_prep_sec,
                        pending->upload_sec, 0.0, 0.0);
       return false;
     }
-    const int cord_timeout_sec = g_cord_request_timeout_sec;
+    const int uplrc_timeout_sec = g_uplrc_request_timeout_sec;
     std::vector<std::thread> upload_threads;
     upload_threads.reserve(static_cast<size_t>(slice_count));
     for (int i = 0; i < slice_count; ++i)
     {
-      upload_threads.emplace_back([this, i, &cord_deadline, cord_timeout_sec, &cluster_slices, &reply, if_commit_arr = if_commit_arr.get()]() {
-        CordThreadDeadlineScope deadline_scope(&cord_deadline, cord_timeout_sec);
-        async_cord_update_to_proxies(cluster_slices[static_cast<size_t>(i)], reply.append_keys(i),
+      upload_threads.emplace_back([this, i, &uplrc_deadline, uplrc_timeout_sec, &cluster_slices, &reply, if_commit_arr = if_commit_arr.get()]() {
+        UpLRCThreadDeadlineScope deadline_scope(&uplrc_deadline, uplrc_timeout_sec);
+        async_uplrc_update_to_proxies(cluster_slices[static_cast<size_t>(i)], reply.append_keys(i),
                                      static_cast<int>(reply.cluster_slice_sizes(i)), reply.proxyips(i),
                                      reply.proxyports(i), i, if_commit_arr);
       });
@@ -1344,26 +1344,26 @@ namespace ECProject
     for (auto &t : upload_threads)
       t.join();
     pending->upload_sec = std::chrono::duration<double>(std::chrono::steady_clock::now() - upload_t0).count();
-    if (cord_abort_if_timed_out())
+    if (uplrc_abort_if_timed_out())
     {
-      cord_fill_timing(partial_timing, pending->wall_t0, pending->plan_sec, pending->payload_prep_sec,
+      uplrc_fill_timing(partial_timing, pending->wall_t0, pending->plan_sec, pending->payload_prep_sec,
                        pending->upload_sec, 0.0, 0.0);
       return false;
     }
     if (!std::all_of(if_commit_arr.get(), if_commit_arr.get() + reply.append_keys_size(),
                      [](bool v) { return v; }))
     {
-      cord_fill_timing(partial_timing, pending->wall_t0, pending->plan_sec, pending->payload_prep_sec,
+      uplrc_fill_timing(partial_timing, pending->wall_t0, pending->plan_sec, pending->payload_prep_sec,
                        pending->upload_sec, 0.0, 0.0);
       return false;
     }
 
-    if (!reply.cord_transfer_plan_key().empty())
+    if (!reply.uplrc_transfer_plan_key().empty())
     {
-      pending->transfer_plan_key = reply.cord_transfer_plan_key();
-      if (cord_trace_log(IF_DEBUG))
+      pending->transfer_plan_key = reply.uplrc_transfer_plan_key();
+      if (uplrc_trace_log(IF_DEBUG))
       {
-        std::cout << "[CoRD][Client " << m_clientID << "] upload done; deferred xfer wait for plan_key="
+        std::cout << "[UpLRC][Client " << m_clientID << "] upload done; deferred xfer wait for plan_key="
                   << pending->transfer_plan_key << "\n";
       }
     }
@@ -1383,7 +1383,7 @@ namespace ECProject
     return true;
   }
 
-  bool Client::cord_update_wait_xfer(CordUpdatePending *pending, CordUpdateTiming *out_timing)
+  bool Client::uplrc_update_wait_xfer(UpLRCUpdatePending *pending, UpLRCUpdateTiming *out_timing)
   {
     if (pending == nullptr)
       return false;
@@ -1392,82 +1392,82 @@ namespace ECProject
     double xfer_grpc_sec = 0.0;
     if (pending->transfer_plan_key.empty())
     {
-      cord_fill_timing(out_timing, pending->wall_t0, pending->plan_sec, pending->payload_prep_sec,
+      uplrc_fill_timing(out_timing, pending->wall_t0, pending->plan_sec, pending->payload_prep_sec,
                        pending->upload_sec, 0.0, 0.0, 0.0, 0.0);
       return true;
     }
 
-    g_cord_request_timeout_sec = m_sys_config->CordRequestTimeoutSec;
-    const CordClock::time_point cord_deadline =
-        CordClock::now() + std::chrono::seconds(g_cord_request_timeout_sec);
-    g_cord_request_deadline = &cord_deadline;
-    struct CordDeadlineGuard
+    g_uplrc_request_timeout_sec = m_sys_config->UpLRCRequestTimeoutSec;
+    const UpLRCClock::time_point uplrc_deadline =
+        UpLRCClock::now() + std::chrono::seconds(g_uplrc_request_timeout_sec);
+    g_uplrc_request_deadline = &uplrc_deadline;
+    struct UpLRCDeadlineGuard
     {
-      ~CordDeadlineGuard() { g_cord_request_deadline = nullptr; }
-    } cord_deadline_guard;
+      ~UpLRCDeadlineGuard() { g_uplrc_request_deadline = nullptr; }
+    } uplrc_deadline_guard;
 
-    if (cord_trace_log(IF_DEBUG))
+    if (uplrc_trace_log(IF_DEBUG))
     {
-      std::cout << "[CoRD][Client " << m_clientID << "] waiting for cross-cluster transfer (auto-start after upload): "
+      std::cout << "[UpLRC][Client " << m_clientID << "] waiting for cross-cluster transfer (auto-start after upload): "
                 << pending->transfer_plan_key << " stripe_id=" << pending->stripe_id << "\n";
     }
-    if (cord_abort_if_timed_out())
+    if (uplrc_abort_if_timed_out())
     {
-      cord_fill_timing(out_timing, pending->wall_t0, pending->plan_sec, pending->payload_prep_sec,
+      uplrc_fill_timing(out_timing, pending->wall_t0, pending->plan_sec, pending->payload_prep_sec,
                        pending->upload_sec, 0.0, xfer_wait_sec, xfer_pure_sec, xfer_grpc_sec);
       return false;
     }
     grpc::ClientContext ctx_wait;
-    cord_apply_grpc_deadline(ctx_wait);
-    coordinator_proto::CordPlanWaitRequest wait_req;
+    uplrc_apply_grpc_deadline(ctx_wait);
+    coordinator_proto::UpLRCPlanWaitRequest wait_req;
     wait_req.set_plan_key(pending->transfer_plan_key);
     coordinator_proto::RepIfSuccess wait_rep;
     const auto xfer_wait_t0 = std::chrono::steady_clock::now();
-    grpc::Status st_wait = m_coordinator_ptr->cordPlanWaitTransferComplete(&ctx_wait, wait_req, &wait_rep);
+    grpc::Status st_wait = m_coordinator_ptr->uplrcPlanWaitTransferComplete(&ctx_wait, wait_req, &wait_rep);
     xfer_wait_sec = std::chrono::duration<double>(std::chrono::steady_clock::now() - xfer_wait_t0).count();
-    if (wait_rep.cord_xfer_timing_present())
+    if (wait_rep.uplrc_xfer_timing_present())
     {
-      xfer_pure_sec = wait_rep.cord_xfer_pure_sec();
+      xfer_pure_sec = wait_rep.uplrc_xfer_pure_sec();
       xfer_grpc_sec = std::max(0., xfer_wait_sec - xfer_pure_sec);
     }
     else
     {
       xfer_grpc_sec = xfer_wait_sec;
     }
-    if (cord_abort_if_timed_out())
+    if (uplrc_abort_if_timed_out())
     {
-      cord_fill_timing(out_timing, pending->wall_t0, pending->plan_sec, pending->payload_prep_sec,
+      uplrc_fill_timing(out_timing, pending->wall_t0, pending->plan_sec, pending->payload_prep_sec,
                        pending->upload_sec, 0.0, xfer_wait_sec, xfer_pure_sec, xfer_grpc_sec);
       return false;
     }
     if (!st_wait.ok() || !wait_rep.ifcommit())
     {
-      std::cout << "[CoRD] cordPlanWaitTransferComplete failed: " << st_wait.error_message() << std::endl;
-      cord_fill_timing(out_timing, pending->wall_t0, pending->plan_sec, pending->payload_prep_sec,
+      std::cout << "[UpLRC] uplrcPlanWaitTransferComplete failed: " << st_wait.error_message() << std::endl;
+      uplrc_fill_timing(out_timing, pending->wall_t0, pending->plan_sec, pending->payload_prep_sec,
                        pending->upload_sec, 0.0, xfer_wait_sec, xfer_pure_sec, xfer_grpc_sec);
       return false;
     }
-    if (cord_trace_log(IF_DEBUG))
+    if (uplrc_trace_log(IF_DEBUG))
     {
-      std::cout << "[CoRD][Client " << m_clientID << "] cross-cluster transfer complete stripe_id=" << pending->stripe_id
+      std::cout << "[UpLRC][Client " << m_clientID << "] cross-cluster transfer complete stripe_id=" << pending->stripe_id
                 << " xfer_wait_sec=" << xfer_wait_sec << " xfer_pure_sec=" << xfer_pure_sec
                 << " xfer_grpc_sec=" << xfer_grpc_sec << "\n";
     }
 
     pending->transfer_plan_key.clear();
-    cord_fill_timing(out_timing, pending->wall_t0, pending->plan_sec, pending->payload_prep_sec,
+    uplrc_fill_timing(out_timing, pending->wall_t0, pending->plan_sec, pending->payload_prep_sec,
                      pending->upload_sec, 0.0, xfer_wait_sec, xfer_pure_sec, xfer_grpc_sec);
     return true;
   }
 
-  bool Client::cord_update(int stripe_id, const std::vector<std::pair<int, int>> &logical_ranges,
+  bool Client::uplrc_update(int stripe_id, const std::vector<std::pair<int, int>> &logical_ranges,
                            const char *update_payload, size_t update_payload_bytes,
-                           CordUpdateTiming *out_timing)
+                           UpLRCUpdateTiming *out_timing)
   {
-    CordUpdatePending pending;
-    if (!cord_update_start(stripe_id, logical_ranges, update_payload, update_payload_bytes, &pending, out_timing))
+    UpLRCUpdatePending pending;
+    if (!uplrc_update_start(stripe_id, logical_ranges, update_payload, update_payload_bytes, &pending, out_timing))
       return false;
-    return cord_update_wait_xfer(&pending, out_timing);
+    return uplrc_update_wait_xfer(&pending, out_timing);
   }
 
   std::shared_ptr<char[]> Client::get_degraded_read_block_breakdown(int stripe_id, int failed_block_id, double &total_time,double &disk_io_time, double &network_time, double &decode_time)

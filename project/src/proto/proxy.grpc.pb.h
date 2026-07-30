@@ -156,92 +156,92 @@ class proxyService final {
     std::unique_ptr< ::grpc::ClientAsyncResponseReaderInterface< ::proxy_proto::SetReply>> PrepareAsyncscheduleAppend2Datanode(::grpc::ClientContext* context, const ::proxy_proto::AppendStripeDataPlacement& request, ::grpc::CompletionQueue* cq) {
       return std::unique_ptr< ::grpc::ClientAsyncResponseReaderInterface< ::proxy_proto::SetReply>>(PrepareAsyncscheduleAppend2DatanodeRaw(context, request, cq));
     }
-    // CoRD：客户端下发新数据；proxy 读旧、异或得 Δ、写新数据，Δ 暂存于本 cluster 的 datanode
-    virtual ::grpc::Status scheduleCordDataUpdate(::grpc::ClientContext* context, const ::proxy_proto::CordDataUpdatePlacement& request, ::proxy_proto::SetReply* response) = 0;
-    std::unique_ptr< ::grpc::ClientAsyncResponseReaderInterface< ::proxy_proto::SetReply>> AsyncscheduleCordDataUpdate(::grpc::ClientContext* context, const ::proxy_proto::CordDataUpdatePlacement& request, ::grpc::CompletionQueue* cq) {
-      return std::unique_ptr< ::grpc::ClientAsyncResponseReaderInterface< ::proxy_proto::SetReply>>(AsyncscheduleCordDataUpdateRaw(context, request, cq));
+    // UpLRC：客户端下发新数据；proxy 读旧、异或得 Δ、写新数据，Δ 暂存于本 cluster 的 datanode
+    virtual ::grpc::Status scheduleUpLRCDataUpdate(::grpc::ClientContext* context, const ::proxy_proto::UpLRCDataUpdatePlacement& request, ::proxy_proto::SetReply* response) = 0;
+    std::unique_ptr< ::grpc::ClientAsyncResponseReaderInterface< ::proxy_proto::SetReply>> AsyncscheduleUpLRCDataUpdate(::grpc::ClientContext* context, const ::proxy_proto::UpLRCDataUpdatePlacement& request, ::grpc::CompletionQueue* cq) {
+      return std::unique_ptr< ::grpc::ClientAsyncResponseReaderInterface< ::proxy_proto::SetReply>>(AsyncscheduleUpLRCDataUpdateRaw(context, request, cq));
     }
-    std::unique_ptr< ::grpc::ClientAsyncResponseReaderInterface< ::proxy_proto::SetReply>> PrepareAsyncscheduleCordDataUpdate(::grpc::ClientContext* context, const ::proxy_proto::CordDataUpdatePlacement& request, ::grpc::CompletionQueue* cq) {
-      return std::unique_ptr< ::grpc::ClientAsyncResponseReaderInterface< ::proxy_proto::SetReply>>(PrepareAsyncscheduleCordDataUpdateRaw(context, request, cq));
+    std::unique_ptr< ::grpc::ClientAsyncResponseReaderInterface< ::proxy_proto::SetReply>> PrepareAsyncscheduleUpLRCDataUpdate(::grpc::ClientContext* context, const ::proxy_proto::UpLRCDataUpdatePlacement& request, ::grpc::CompletionQueue* cq) {
+      return std::unique_ptr< ::grpc::ClientAsyncResponseReaderInterface< ::proxy_proto::SetReply>>(PrepareAsyncscheduleUpLRCDataUpdateRaw(context, request, cq));
     }
-    virtual ::grpc::Status scheduleCordLocalParityApply(::grpc::ClientContext* context, const ::proxy_proto::CordLocalParityBundle& request, ::proxy_proto::SetReply* response) = 0;
-    std::unique_ptr< ::grpc::ClientAsyncResponseReaderInterface< ::proxy_proto::SetReply>> AsyncscheduleCordLocalParityApply(::grpc::ClientContext* context, const ::proxy_proto::CordLocalParityBundle& request, ::grpc::CompletionQueue* cq) {
-      return std::unique_ptr< ::grpc::ClientAsyncResponseReaderInterface< ::proxy_proto::SetReply>>(AsyncscheduleCordLocalParityApplyRaw(context, request, cq));
+    virtual ::grpc::Status scheduleUpLRCLocalParityApply(::grpc::ClientContext* context, const ::proxy_proto::UpLRCLocalParityBundle& request, ::proxy_proto::SetReply* response) = 0;
+    std::unique_ptr< ::grpc::ClientAsyncResponseReaderInterface< ::proxy_proto::SetReply>> AsyncscheduleUpLRCLocalParityApply(::grpc::ClientContext* context, const ::proxy_proto::UpLRCLocalParityBundle& request, ::grpc::CompletionQueue* cq) {
+      return std::unique_ptr< ::grpc::ClientAsyncResponseReaderInterface< ::proxy_proto::SetReply>>(AsyncscheduleUpLRCLocalParityApplyRaw(context, request, cq));
     }
-    std::unique_ptr< ::grpc::ClientAsyncResponseReaderInterface< ::proxy_proto::SetReply>> PrepareAsyncscheduleCordLocalParityApply(::grpc::ClientContext* context, const ::proxy_proto::CordLocalParityBundle& request, ::grpc::CompletionQueue* cq) {
-      return std::unique_ptr< ::grpc::ClientAsyncResponseReaderInterface< ::proxy_proto::SetReply>>(PrepareAsyncscheduleCordLocalParityApplyRaw(context, request, cq));
+    std::unique_ptr< ::grpc::ClientAsyncResponseReaderInterface< ::proxy_proto::SetReply>> PrepareAsyncscheduleUpLRCLocalParityApply(::grpc::ClientContext* context, const ::proxy_proto::UpLRCLocalParityBundle& request, ::grpc::CompletionQueue* cq) {
+      return std::unique_ptr< ::grpc::ClientAsyncResponseReaderInterface< ::proxy_proto::SetReply>>(PrepareAsyncscheduleUpLRCLocalParityApplyRaw(context, request, cq));
     }
-    virtual ::grpc::Status cordLpHubSessionBegin(::grpc::ClientContext* context, const ::proxy_proto::CordLpHubSessionBegin& request, ::proxy_proto::SetReply* response) = 0;
-    std::unique_ptr< ::grpc::ClientAsyncResponseReaderInterface< ::proxy_proto::SetReply>> AsynccordLpHubSessionBegin(::grpc::ClientContext* context, const ::proxy_proto::CordLpHubSessionBegin& request, ::grpc::CompletionQueue* cq) {
-      return std::unique_ptr< ::grpc::ClientAsyncResponseReaderInterface< ::proxy_proto::SetReply>>(AsynccordLpHubSessionBeginRaw(context, request, cq));
+    virtual ::grpc::Status uplrcLpHubSessionBegin(::grpc::ClientContext* context, const ::proxy_proto::UpLRCLpHubSessionBegin& request, ::proxy_proto::SetReply* response) = 0;
+    std::unique_ptr< ::grpc::ClientAsyncResponseReaderInterface< ::proxy_proto::SetReply>> AsyncuplrcLpHubSessionBegin(::grpc::ClientContext* context, const ::proxy_proto::UpLRCLpHubSessionBegin& request, ::grpc::CompletionQueue* cq) {
+      return std::unique_ptr< ::grpc::ClientAsyncResponseReaderInterface< ::proxy_proto::SetReply>>(AsyncuplrcLpHubSessionBeginRaw(context, request, cq));
     }
-    std::unique_ptr< ::grpc::ClientAsyncResponseReaderInterface< ::proxy_proto::SetReply>> PrepareAsynccordLpHubSessionBegin(::grpc::ClientContext* context, const ::proxy_proto::CordLpHubSessionBegin& request, ::grpc::CompletionQueue* cq) {
-      return std::unique_ptr< ::grpc::ClientAsyncResponseReaderInterface< ::proxy_proto::SetReply>>(PrepareAsynccordLpHubSessionBeginRaw(context, request, cq));
+    std::unique_ptr< ::grpc::ClientAsyncResponseReaderInterface< ::proxy_proto::SetReply>> PrepareAsyncuplrcLpHubSessionBegin(::grpc::ClientContext* context, const ::proxy_proto::UpLRCLpHubSessionBegin& request, ::grpc::CompletionQueue* cq) {
+      return std::unique_ptr< ::grpc::ClientAsyncResponseReaderInterface< ::proxy_proto::SetReply>>(PrepareAsyncuplrcLpHubSessionBeginRaw(context, request, cq));
     }
-    virtual ::grpc::Status cordLpHubPartialPush(::grpc::ClientContext* context, const ::proxy_proto::CordLpHubPartialPush& request, ::proxy_proto::SetReply* response) = 0;
-    std::unique_ptr< ::grpc::ClientAsyncResponseReaderInterface< ::proxy_proto::SetReply>> AsynccordLpHubPartialPush(::grpc::ClientContext* context, const ::proxy_proto::CordLpHubPartialPush& request, ::grpc::CompletionQueue* cq) {
-      return std::unique_ptr< ::grpc::ClientAsyncResponseReaderInterface< ::proxy_proto::SetReply>>(AsynccordLpHubPartialPushRaw(context, request, cq));
+    virtual ::grpc::Status uplrcLpHubPartialPush(::grpc::ClientContext* context, const ::proxy_proto::UpLRCLpHubPartialPush& request, ::proxy_proto::SetReply* response) = 0;
+    std::unique_ptr< ::grpc::ClientAsyncResponseReaderInterface< ::proxy_proto::SetReply>> AsyncuplrcLpHubPartialPush(::grpc::ClientContext* context, const ::proxy_proto::UpLRCLpHubPartialPush& request, ::grpc::CompletionQueue* cq) {
+      return std::unique_ptr< ::grpc::ClientAsyncResponseReaderInterface< ::proxy_proto::SetReply>>(AsyncuplrcLpHubPartialPushRaw(context, request, cq));
     }
-    std::unique_ptr< ::grpc::ClientAsyncResponseReaderInterface< ::proxy_proto::SetReply>> PrepareAsynccordLpHubPartialPush(::grpc::ClientContext* context, const ::proxy_proto::CordLpHubPartialPush& request, ::grpc::CompletionQueue* cq) {
-      return std::unique_ptr< ::grpc::ClientAsyncResponseReaderInterface< ::proxy_proto::SetReply>>(PrepareAsynccordLpHubPartialPushRaw(context, request, cq));
+    std::unique_ptr< ::grpc::ClientAsyncResponseReaderInterface< ::proxy_proto::SetReply>> PrepareAsyncuplrcLpHubPartialPush(::grpc::ClientContext* context, const ::proxy_proto::UpLRCLpHubPartialPush& request, ::grpc::CompletionQueue* cq) {
+      return std::unique_ptr< ::grpc::ClientAsyncResponseReaderInterface< ::proxy_proto::SetReply>>(PrepareAsyncuplrcLpHubPartialPushRaw(context, request, cq));
     }
-    virtual ::grpc::Status cordLpComputePartialAndPush(::grpc::ClientContext* context, const ::proxy_proto::CordLpComputePartialAndPush& request, ::proxy_proto::SetReply* response) = 0;
-    std::unique_ptr< ::grpc::ClientAsyncResponseReaderInterface< ::proxy_proto::SetReply>> AsynccordLpComputePartialAndPush(::grpc::ClientContext* context, const ::proxy_proto::CordLpComputePartialAndPush& request, ::grpc::CompletionQueue* cq) {
-      return std::unique_ptr< ::grpc::ClientAsyncResponseReaderInterface< ::proxy_proto::SetReply>>(AsynccordLpComputePartialAndPushRaw(context, request, cq));
+    virtual ::grpc::Status uplrcLpComputePartialAndPush(::grpc::ClientContext* context, const ::proxy_proto::UpLRCLpComputePartialAndPush& request, ::proxy_proto::SetReply* response) = 0;
+    std::unique_ptr< ::grpc::ClientAsyncResponseReaderInterface< ::proxy_proto::SetReply>> AsyncuplrcLpComputePartialAndPush(::grpc::ClientContext* context, const ::proxy_proto::UpLRCLpComputePartialAndPush& request, ::grpc::CompletionQueue* cq) {
+      return std::unique_ptr< ::grpc::ClientAsyncResponseReaderInterface< ::proxy_proto::SetReply>>(AsyncuplrcLpComputePartialAndPushRaw(context, request, cq));
     }
-    std::unique_ptr< ::grpc::ClientAsyncResponseReaderInterface< ::proxy_proto::SetReply>> PrepareAsynccordLpComputePartialAndPush(::grpc::ClientContext* context, const ::proxy_proto::CordLpComputePartialAndPush& request, ::grpc::CompletionQueue* cq) {
-      return std::unique_ptr< ::grpc::ClientAsyncResponseReaderInterface< ::proxy_proto::SetReply>>(PrepareAsynccordLpComputePartialAndPushRaw(context, request, cq));
+    std::unique_ptr< ::grpc::ClientAsyncResponseReaderInterface< ::proxy_proto::SetReply>> PrepareAsyncuplrcLpComputePartialAndPush(::grpc::ClientContext* context, const ::proxy_proto::UpLRCLpComputePartialAndPush& request, ::grpc::CompletionQueue* cq) {
+      return std::unique_ptr< ::grpc::ClientAsyncResponseReaderInterface< ::proxy_proto::SetReply>>(PrepareAsyncuplrcLpComputePartialAndPushRaw(context, request, cq));
     }
-    virtual ::grpc::Status cordLpApplyParityDelta(::grpc::ClientContext* context, const ::proxy_proto::CordLpParityApplyDelta& request, ::proxy_proto::SetReply* response) = 0;
-    std::unique_ptr< ::grpc::ClientAsyncResponseReaderInterface< ::proxy_proto::SetReply>> AsynccordLpApplyParityDelta(::grpc::ClientContext* context, const ::proxy_proto::CordLpParityApplyDelta& request, ::grpc::CompletionQueue* cq) {
-      return std::unique_ptr< ::grpc::ClientAsyncResponseReaderInterface< ::proxy_proto::SetReply>>(AsynccordLpApplyParityDeltaRaw(context, request, cq));
+    virtual ::grpc::Status uplrcLpApplyParityDelta(::grpc::ClientContext* context, const ::proxy_proto::UpLRCLpParityApplyDelta& request, ::proxy_proto::SetReply* response) = 0;
+    std::unique_ptr< ::grpc::ClientAsyncResponseReaderInterface< ::proxy_proto::SetReply>> AsyncuplrcLpApplyParityDelta(::grpc::ClientContext* context, const ::proxy_proto::UpLRCLpParityApplyDelta& request, ::grpc::CompletionQueue* cq) {
+      return std::unique_ptr< ::grpc::ClientAsyncResponseReaderInterface< ::proxy_proto::SetReply>>(AsyncuplrcLpApplyParityDeltaRaw(context, request, cq));
     }
-    std::unique_ptr< ::grpc::ClientAsyncResponseReaderInterface< ::proxy_proto::SetReply>> PrepareAsynccordLpApplyParityDelta(::grpc::ClientContext* context, const ::proxy_proto::CordLpParityApplyDelta& request, ::grpc::CompletionQueue* cq) {
-      return std::unique_ptr< ::grpc::ClientAsyncResponseReaderInterface< ::proxy_proto::SetReply>>(PrepareAsynccordLpApplyParityDeltaRaw(context, request, cq));
+    std::unique_ptr< ::grpc::ClientAsyncResponseReaderInterface< ::proxy_proto::SetReply>> PrepareAsyncuplrcLpApplyParityDelta(::grpc::ClientContext* context, const ::proxy_proto::UpLRCLpParityApplyDelta& request, ::grpc::CompletionQueue* cq) {
+      return std::unique_ptr< ::grpc::ClientAsyncResponseReaderInterface< ::proxy_proto::SetReply>>(PrepareAsyncuplrcLpApplyParityDeltaRaw(context, request, cq));
     }
-    // CoRD：下发算法二生成的跨 proxy 传输计划（train_route + timeslot_schedule 的可序列化形式）
-    virtual ::grpc::Status scheduleCordTransferPlan(::grpc::ClientContext* context, const ::proxy_proto::CordTransferPlan& request, ::proxy_proto::SetReply* response) = 0;
-    std::unique_ptr< ::grpc::ClientAsyncResponseReaderInterface< ::proxy_proto::SetReply>> AsyncscheduleCordTransferPlan(::grpc::ClientContext* context, const ::proxy_proto::CordTransferPlan& request, ::grpc::CompletionQueue* cq) {
-      return std::unique_ptr< ::grpc::ClientAsyncResponseReaderInterface< ::proxy_proto::SetReply>>(AsyncscheduleCordTransferPlanRaw(context, request, cq));
+    // UpLRC：下发算法二生成的跨 proxy 传输计划（train_route + timeslot_schedule 的可序列化形式）
+    virtual ::grpc::Status scheduleUpLRCTransferPlan(::grpc::ClientContext* context, const ::proxy_proto::UpLRCTransferPlan& request, ::proxy_proto::SetReply* response) = 0;
+    std::unique_ptr< ::grpc::ClientAsyncResponseReaderInterface< ::proxy_proto::SetReply>> AsyncscheduleUpLRCTransferPlan(::grpc::ClientContext* context, const ::proxy_proto::UpLRCTransferPlan& request, ::grpc::CompletionQueue* cq) {
+      return std::unique_ptr< ::grpc::ClientAsyncResponseReaderInterface< ::proxy_proto::SetReply>>(AsyncscheduleUpLRCTransferPlanRaw(context, request, cq));
     }
-    std::unique_ptr< ::grpc::ClientAsyncResponseReaderInterface< ::proxy_proto::SetReply>> PrepareAsyncscheduleCordTransferPlan(::grpc::ClientContext* context, const ::proxy_proto::CordTransferPlan& request, ::grpc::CompletionQueue* cq) {
-      return std::unique_ptr< ::grpc::ClientAsyncResponseReaderInterface< ::proxy_proto::SetReply>>(PrepareAsyncscheduleCordTransferPlanRaw(context, request, cq));
+    std::unique_ptr< ::grpc::ClientAsyncResponseReaderInterface< ::proxy_proto::SetReply>> PrepareAsyncscheduleUpLRCTransferPlan(::grpc::ClientContext* context, const ::proxy_proto::UpLRCTransferPlan& request, ::grpc::CompletionQueue* cq) {
+      return std::unique_ptr< ::grpc::ClientAsyncResponseReaderInterface< ::proxy_proto::SetReply>>(PrepareAsyncscheduleUpLRCTransferPlanRaw(context, request, cq));
     }
-    virtual ::grpc::Status cordPlanStartExecution(::grpc::ClientContext* context, const ::proxy_proto::CordPlanKeyMsg& request, ::proxy_proto::SetReply* response) = 0;
-    std::unique_ptr< ::grpc::ClientAsyncResponseReaderInterface< ::proxy_proto::SetReply>> AsynccordPlanStartExecution(::grpc::ClientContext* context, const ::proxy_proto::CordPlanKeyMsg& request, ::grpc::CompletionQueue* cq) {
-      return std::unique_ptr< ::grpc::ClientAsyncResponseReaderInterface< ::proxy_proto::SetReply>>(AsynccordPlanStartExecutionRaw(context, request, cq));
+    virtual ::grpc::Status uplrcPlanStartExecution(::grpc::ClientContext* context, const ::proxy_proto::UpLRCPlanKeyMsg& request, ::proxy_proto::SetReply* response) = 0;
+    std::unique_ptr< ::grpc::ClientAsyncResponseReaderInterface< ::proxy_proto::SetReply>> AsyncuplrcPlanStartExecution(::grpc::ClientContext* context, const ::proxy_proto::UpLRCPlanKeyMsg& request, ::grpc::CompletionQueue* cq) {
+      return std::unique_ptr< ::grpc::ClientAsyncResponseReaderInterface< ::proxy_proto::SetReply>>(AsyncuplrcPlanStartExecutionRaw(context, request, cq));
     }
-    std::unique_ptr< ::grpc::ClientAsyncResponseReaderInterface< ::proxy_proto::SetReply>> PrepareAsynccordPlanStartExecution(::grpc::ClientContext* context, const ::proxy_proto::CordPlanKeyMsg& request, ::grpc::CompletionQueue* cq) {
-      return std::unique_ptr< ::grpc::ClientAsyncResponseReaderInterface< ::proxy_proto::SetReply>>(PrepareAsynccordPlanStartExecutionRaw(context, request, cq));
+    std::unique_ptr< ::grpc::ClientAsyncResponseReaderInterface< ::proxy_proto::SetReply>> PrepareAsyncuplrcPlanStartExecution(::grpc::ClientContext* context, const ::proxy_proto::UpLRCPlanKeyMsg& request, ::grpc::CompletionQueue* cq) {
+      return std::unique_ptr< ::grpc::ClientAsyncResponseReaderInterface< ::proxy_proto::SetReply>>(PrepareAsyncuplrcPlanStartExecutionRaw(context, request, cq));
     }
-    virtual ::grpc::Status cordPlanJoinExecution(::grpc::ClientContext* context, const ::proxy_proto::CordPlanKeyMsg& request, ::proxy_proto::SetReply* response) = 0;
-    std::unique_ptr< ::grpc::ClientAsyncResponseReaderInterface< ::proxy_proto::SetReply>> AsynccordPlanJoinExecution(::grpc::ClientContext* context, const ::proxy_proto::CordPlanKeyMsg& request, ::grpc::CompletionQueue* cq) {
-      return std::unique_ptr< ::grpc::ClientAsyncResponseReaderInterface< ::proxy_proto::SetReply>>(AsynccordPlanJoinExecutionRaw(context, request, cq));
+    virtual ::grpc::Status uplrcPlanJoinExecution(::grpc::ClientContext* context, const ::proxy_proto::UpLRCPlanKeyMsg& request, ::proxy_proto::SetReply* response) = 0;
+    std::unique_ptr< ::grpc::ClientAsyncResponseReaderInterface< ::proxy_proto::SetReply>> AsyncuplrcPlanJoinExecution(::grpc::ClientContext* context, const ::proxy_proto::UpLRCPlanKeyMsg& request, ::grpc::CompletionQueue* cq) {
+      return std::unique_ptr< ::grpc::ClientAsyncResponseReaderInterface< ::proxy_proto::SetReply>>(AsyncuplrcPlanJoinExecutionRaw(context, request, cq));
     }
-    std::unique_ptr< ::grpc::ClientAsyncResponseReaderInterface< ::proxy_proto::SetReply>> PrepareAsynccordPlanJoinExecution(::grpc::ClientContext* context, const ::proxy_proto::CordPlanKeyMsg& request, ::grpc::CompletionQueue* cq) {
-      return std::unique_ptr< ::grpc::ClientAsyncResponseReaderInterface< ::proxy_proto::SetReply>>(PrepareAsynccordPlanJoinExecutionRaw(context, request, cq));
+    std::unique_ptr< ::grpc::ClientAsyncResponseReaderInterface< ::proxy_proto::SetReply>> PrepareAsyncuplrcPlanJoinExecution(::grpc::ClientContext* context, const ::proxy_proto::UpLRCPlanKeyMsg& request, ::grpc::CompletionQueue* cq) {
+      return std::unique_ptr< ::grpc::ClientAsyncResponseReaderInterface< ::proxy_proto::SetReply>>(PrepareAsyncuplrcPlanJoinExecutionRaw(context, request, cq));
     }
-    // CoRD 跨 proxy：收集器聚合数据增量 / 校验块 XOR 落盘 / MST 转发数据增量
-    virtual ::grpc::Status cordPlanCollectorIngestDataDelta(::grpc::ClientContext* context, const ::proxy_proto::CordPlanCollectorIngestReq& request, ::proxy_proto::SetReply* response) = 0;
-    std::unique_ptr< ::grpc::ClientAsyncResponseReaderInterface< ::proxy_proto::SetReply>> AsynccordPlanCollectorIngestDataDelta(::grpc::ClientContext* context, const ::proxy_proto::CordPlanCollectorIngestReq& request, ::grpc::CompletionQueue* cq) {
-      return std::unique_ptr< ::grpc::ClientAsyncResponseReaderInterface< ::proxy_proto::SetReply>>(AsynccordPlanCollectorIngestDataDeltaRaw(context, request, cq));
+    // UpLRC 跨 proxy：收集器聚合数据增量 / 校验块 XOR 落盘 / MST 转发数据增量
+    virtual ::grpc::Status uplrcPlanCollectorIngestDataDelta(::grpc::ClientContext* context, const ::proxy_proto::UpLRCPlanCollectorIngestReq& request, ::proxy_proto::SetReply* response) = 0;
+    std::unique_ptr< ::grpc::ClientAsyncResponseReaderInterface< ::proxy_proto::SetReply>> AsyncuplrcPlanCollectorIngestDataDelta(::grpc::ClientContext* context, const ::proxy_proto::UpLRCPlanCollectorIngestReq& request, ::grpc::CompletionQueue* cq) {
+      return std::unique_ptr< ::grpc::ClientAsyncResponseReaderInterface< ::proxy_proto::SetReply>>(AsyncuplrcPlanCollectorIngestDataDeltaRaw(context, request, cq));
     }
-    std::unique_ptr< ::grpc::ClientAsyncResponseReaderInterface< ::proxy_proto::SetReply>> PrepareAsynccordPlanCollectorIngestDataDelta(::grpc::ClientContext* context, const ::proxy_proto::CordPlanCollectorIngestReq& request, ::grpc::CompletionQueue* cq) {
-      return std::unique_ptr< ::grpc::ClientAsyncResponseReaderInterface< ::proxy_proto::SetReply>>(PrepareAsynccordPlanCollectorIngestDataDeltaRaw(context, request, cq));
+    std::unique_ptr< ::grpc::ClientAsyncResponseReaderInterface< ::proxy_proto::SetReply>> PrepareAsyncuplrcPlanCollectorIngestDataDelta(::grpc::ClientContext* context, const ::proxy_proto::UpLRCPlanCollectorIngestReq& request, ::grpc::CompletionQueue* cq) {
+      return std::unique_ptr< ::grpc::ClientAsyncResponseReaderInterface< ::proxy_proto::SetReply>>(PrepareAsyncuplrcPlanCollectorIngestDataDeltaRaw(context, request, cq));
     }
-    virtual ::grpc::Status cordPlanApplyParityXorDelta(::grpc::ClientContext* context, const ::proxy_proto::CordPlanApplyParityXorReq& request, ::proxy_proto::SetReply* response) = 0;
-    std::unique_ptr< ::grpc::ClientAsyncResponseReaderInterface< ::proxy_proto::SetReply>> AsynccordPlanApplyParityXorDelta(::grpc::ClientContext* context, const ::proxy_proto::CordPlanApplyParityXorReq& request, ::grpc::CompletionQueue* cq) {
-      return std::unique_ptr< ::grpc::ClientAsyncResponseReaderInterface< ::proxy_proto::SetReply>>(AsynccordPlanApplyParityXorDeltaRaw(context, request, cq));
+    virtual ::grpc::Status uplrcPlanApplyParityXorDelta(::grpc::ClientContext* context, const ::proxy_proto::UpLRCPlanApplyParityXorReq& request, ::proxy_proto::SetReply* response) = 0;
+    std::unique_ptr< ::grpc::ClientAsyncResponseReaderInterface< ::proxy_proto::SetReply>> AsyncuplrcPlanApplyParityXorDelta(::grpc::ClientContext* context, const ::proxy_proto::UpLRCPlanApplyParityXorReq& request, ::grpc::CompletionQueue* cq) {
+      return std::unique_ptr< ::grpc::ClientAsyncResponseReaderInterface< ::proxy_proto::SetReply>>(AsyncuplrcPlanApplyParityXorDeltaRaw(context, request, cq));
     }
-    std::unique_ptr< ::grpc::ClientAsyncResponseReaderInterface< ::proxy_proto::SetReply>> PrepareAsynccordPlanApplyParityXorDelta(::grpc::ClientContext* context, const ::proxy_proto::CordPlanApplyParityXorReq& request, ::grpc::CompletionQueue* cq) {
-      return std::unique_ptr< ::grpc::ClientAsyncResponseReaderInterface< ::proxy_proto::SetReply>>(PrepareAsynccordPlanApplyParityXorDeltaRaw(context, request, cq));
+    std::unique_ptr< ::grpc::ClientAsyncResponseReaderInterface< ::proxy_proto::SetReply>> PrepareAsyncuplrcPlanApplyParityXorDelta(::grpc::ClientContext* context, const ::proxy_proto::UpLRCPlanApplyParityXorReq& request, ::grpc::CompletionQueue* cq) {
+      return std::unique_ptr< ::grpc::ClientAsyncResponseReaderInterface< ::proxy_proto::SetReply>>(PrepareAsyncuplrcPlanApplyParityXorDeltaRaw(context, request, cq));
     }
-    virtual ::grpc::Status cordPlanMstDataDeltaChunk(::grpc::ClientContext* context, const ::proxy_proto::CordPlanMstDataDeltaReq& request, ::proxy_proto::SetReply* response) = 0;
-    std::unique_ptr< ::grpc::ClientAsyncResponseReaderInterface< ::proxy_proto::SetReply>> AsynccordPlanMstDataDeltaChunk(::grpc::ClientContext* context, const ::proxy_proto::CordPlanMstDataDeltaReq& request, ::grpc::CompletionQueue* cq) {
-      return std::unique_ptr< ::grpc::ClientAsyncResponseReaderInterface< ::proxy_proto::SetReply>>(AsynccordPlanMstDataDeltaChunkRaw(context, request, cq));
+    virtual ::grpc::Status uplrcPlanMstDataDeltaChunk(::grpc::ClientContext* context, const ::proxy_proto::UpLRCPlanMstDataDeltaReq& request, ::proxy_proto::SetReply* response) = 0;
+    std::unique_ptr< ::grpc::ClientAsyncResponseReaderInterface< ::proxy_proto::SetReply>> AsyncuplrcPlanMstDataDeltaChunk(::grpc::ClientContext* context, const ::proxy_proto::UpLRCPlanMstDataDeltaReq& request, ::grpc::CompletionQueue* cq) {
+      return std::unique_ptr< ::grpc::ClientAsyncResponseReaderInterface< ::proxy_proto::SetReply>>(AsyncuplrcPlanMstDataDeltaChunkRaw(context, request, cq));
     }
-    std::unique_ptr< ::grpc::ClientAsyncResponseReaderInterface< ::proxy_proto::SetReply>> PrepareAsynccordPlanMstDataDeltaChunk(::grpc::ClientContext* context, const ::proxy_proto::CordPlanMstDataDeltaReq& request, ::grpc::CompletionQueue* cq) {
-      return std::unique_ptr< ::grpc::ClientAsyncResponseReaderInterface< ::proxy_proto::SetReply>>(PrepareAsynccordPlanMstDataDeltaChunkRaw(context, request, cq));
+    std::unique_ptr< ::grpc::ClientAsyncResponseReaderInterface< ::proxy_proto::SetReply>> PrepareAsyncuplrcPlanMstDataDeltaChunk(::grpc::ClientContext* context, const ::proxy_proto::UpLRCPlanMstDataDeltaReq& request, ::grpc::CompletionQueue* cq) {
+      return std::unique_ptr< ::grpc::ClientAsyncResponseReaderInterface< ::proxy_proto::SetReply>>(PrepareAsyncuplrcPlanMstDataDeltaChunkRaw(context, request, cq));
     }
     // get stripe
     virtual ::grpc::Status getBlocks(::grpc::ClientContext* context, const ::proxy_proto::StripeAndBlockIDs& request, ::proxy_proto::GetReply* response) = 0;
@@ -289,33 +289,33 @@ class proxyService final {
       // append
       virtual void scheduleAppend2Datanode(::grpc::ClientContext* context, const ::proxy_proto::AppendStripeDataPlacement* request, ::proxy_proto::SetReply* response, std::function<void(::grpc::Status)>) = 0;
       virtual void scheduleAppend2Datanode(::grpc::ClientContext* context, const ::proxy_proto::AppendStripeDataPlacement* request, ::proxy_proto::SetReply* response, ::grpc::ClientUnaryReactor* reactor) = 0;
-      // CoRD：客户端下发新数据；proxy 读旧、异或得 Δ、写新数据，Δ 暂存于本 cluster 的 datanode
-      virtual void scheduleCordDataUpdate(::grpc::ClientContext* context, const ::proxy_proto::CordDataUpdatePlacement* request, ::proxy_proto::SetReply* response, std::function<void(::grpc::Status)>) = 0;
-      virtual void scheduleCordDataUpdate(::grpc::ClientContext* context, const ::proxy_proto::CordDataUpdatePlacement* request, ::proxy_proto::SetReply* response, ::grpc::ClientUnaryReactor* reactor) = 0;
-      virtual void scheduleCordLocalParityApply(::grpc::ClientContext* context, const ::proxy_proto::CordLocalParityBundle* request, ::proxy_proto::SetReply* response, std::function<void(::grpc::Status)>) = 0;
-      virtual void scheduleCordLocalParityApply(::grpc::ClientContext* context, const ::proxy_proto::CordLocalParityBundle* request, ::proxy_proto::SetReply* response, ::grpc::ClientUnaryReactor* reactor) = 0;
-      virtual void cordLpHubSessionBegin(::grpc::ClientContext* context, const ::proxy_proto::CordLpHubSessionBegin* request, ::proxy_proto::SetReply* response, std::function<void(::grpc::Status)>) = 0;
-      virtual void cordLpHubSessionBegin(::grpc::ClientContext* context, const ::proxy_proto::CordLpHubSessionBegin* request, ::proxy_proto::SetReply* response, ::grpc::ClientUnaryReactor* reactor) = 0;
-      virtual void cordLpHubPartialPush(::grpc::ClientContext* context, const ::proxy_proto::CordLpHubPartialPush* request, ::proxy_proto::SetReply* response, std::function<void(::grpc::Status)>) = 0;
-      virtual void cordLpHubPartialPush(::grpc::ClientContext* context, const ::proxy_proto::CordLpHubPartialPush* request, ::proxy_proto::SetReply* response, ::grpc::ClientUnaryReactor* reactor) = 0;
-      virtual void cordLpComputePartialAndPush(::grpc::ClientContext* context, const ::proxy_proto::CordLpComputePartialAndPush* request, ::proxy_proto::SetReply* response, std::function<void(::grpc::Status)>) = 0;
-      virtual void cordLpComputePartialAndPush(::grpc::ClientContext* context, const ::proxy_proto::CordLpComputePartialAndPush* request, ::proxy_proto::SetReply* response, ::grpc::ClientUnaryReactor* reactor) = 0;
-      virtual void cordLpApplyParityDelta(::grpc::ClientContext* context, const ::proxy_proto::CordLpParityApplyDelta* request, ::proxy_proto::SetReply* response, std::function<void(::grpc::Status)>) = 0;
-      virtual void cordLpApplyParityDelta(::grpc::ClientContext* context, const ::proxy_proto::CordLpParityApplyDelta* request, ::proxy_proto::SetReply* response, ::grpc::ClientUnaryReactor* reactor) = 0;
-      // CoRD：下发算法二生成的跨 proxy 传输计划（train_route + timeslot_schedule 的可序列化形式）
-      virtual void scheduleCordTransferPlan(::grpc::ClientContext* context, const ::proxy_proto::CordTransferPlan* request, ::proxy_proto::SetReply* response, std::function<void(::grpc::Status)>) = 0;
-      virtual void scheduleCordTransferPlan(::grpc::ClientContext* context, const ::proxy_proto::CordTransferPlan* request, ::proxy_proto::SetReply* response, ::grpc::ClientUnaryReactor* reactor) = 0;
-      virtual void cordPlanStartExecution(::grpc::ClientContext* context, const ::proxy_proto::CordPlanKeyMsg* request, ::proxy_proto::SetReply* response, std::function<void(::grpc::Status)>) = 0;
-      virtual void cordPlanStartExecution(::grpc::ClientContext* context, const ::proxy_proto::CordPlanKeyMsg* request, ::proxy_proto::SetReply* response, ::grpc::ClientUnaryReactor* reactor) = 0;
-      virtual void cordPlanJoinExecution(::grpc::ClientContext* context, const ::proxy_proto::CordPlanKeyMsg* request, ::proxy_proto::SetReply* response, std::function<void(::grpc::Status)>) = 0;
-      virtual void cordPlanJoinExecution(::grpc::ClientContext* context, const ::proxy_proto::CordPlanKeyMsg* request, ::proxy_proto::SetReply* response, ::grpc::ClientUnaryReactor* reactor) = 0;
-      // CoRD 跨 proxy：收集器聚合数据增量 / 校验块 XOR 落盘 / MST 转发数据增量
-      virtual void cordPlanCollectorIngestDataDelta(::grpc::ClientContext* context, const ::proxy_proto::CordPlanCollectorIngestReq* request, ::proxy_proto::SetReply* response, std::function<void(::grpc::Status)>) = 0;
-      virtual void cordPlanCollectorIngestDataDelta(::grpc::ClientContext* context, const ::proxy_proto::CordPlanCollectorIngestReq* request, ::proxy_proto::SetReply* response, ::grpc::ClientUnaryReactor* reactor) = 0;
-      virtual void cordPlanApplyParityXorDelta(::grpc::ClientContext* context, const ::proxy_proto::CordPlanApplyParityXorReq* request, ::proxy_proto::SetReply* response, std::function<void(::grpc::Status)>) = 0;
-      virtual void cordPlanApplyParityXorDelta(::grpc::ClientContext* context, const ::proxy_proto::CordPlanApplyParityXorReq* request, ::proxy_proto::SetReply* response, ::grpc::ClientUnaryReactor* reactor) = 0;
-      virtual void cordPlanMstDataDeltaChunk(::grpc::ClientContext* context, const ::proxy_proto::CordPlanMstDataDeltaReq* request, ::proxy_proto::SetReply* response, std::function<void(::grpc::Status)>) = 0;
-      virtual void cordPlanMstDataDeltaChunk(::grpc::ClientContext* context, const ::proxy_proto::CordPlanMstDataDeltaReq* request, ::proxy_proto::SetReply* response, ::grpc::ClientUnaryReactor* reactor) = 0;
+      // UpLRC：客户端下发新数据；proxy 读旧、异或得 Δ、写新数据，Δ 暂存于本 cluster 的 datanode
+      virtual void scheduleUpLRCDataUpdate(::grpc::ClientContext* context, const ::proxy_proto::UpLRCDataUpdatePlacement* request, ::proxy_proto::SetReply* response, std::function<void(::grpc::Status)>) = 0;
+      virtual void scheduleUpLRCDataUpdate(::grpc::ClientContext* context, const ::proxy_proto::UpLRCDataUpdatePlacement* request, ::proxy_proto::SetReply* response, ::grpc::ClientUnaryReactor* reactor) = 0;
+      virtual void scheduleUpLRCLocalParityApply(::grpc::ClientContext* context, const ::proxy_proto::UpLRCLocalParityBundle* request, ::proxy_proto::SetReply* response, std::function<void(::grpc::Status)>) = 0;
+      virtual void scheduleUpLRCLocalParityApply(::grpc::ClientContext* context, const ::proxy_proto::UpLRCLocalParityBundle* request, ::proxy_proto::SetReply* response, ::grpc::ClientUnaryReactor* reactor) = 0;
+      virtual void uplrcLpHubSessionBegin(::grpc::ClientContext* context, const ::proxy_proto::UpLRCLpHubSessionBegin* request, ::proxy_proto::SetReply* response, std::function<void(::grpc::Status)>) = 0;
+      virtual void uplrcLpHubSessionBegin(::grpc::ClientContext* context, const ::proxy_proto::UpLRCLpHubSessionBegin* request, ::proxy_proto::SetReply* response, ::grpc::ClientUnaryReactor* reactor) = 0;
+      virtual void uplrcLpHubPartialPush(::grpc::ClientContext* context, const ::proxy_proto::UpLRCLpHubPartialPush* request, ::proxy_proto::SetReply* response, std::function<void(::grpc::Status)>) = 0;
+      virtual void uplrcLpHubPartialPush(::grpc::ClientContext* context, const ::proxy_proto::UpLRCLpHubPartialPush* request, ::proxy_proto::SetReply* response, ::grpc::ClientUnaryReactor* reactor) = 0;
+      virtual void uplrcLpComputePartialAndPush(::grpc::ClientContext* context, const ::proxy_proto::UpLRCLpComputePartialAndPush* request, ::proxy_proto::SetReply* response, std::function<void(::grpc::Status)>) = 0;
+      virtual void uplrcLpComputePartialAndPush(::grpc::ClientContext* context, const ::proxy_proto::UpLRCLpComputePartialAndPush* request, ::proxy_proto::SetReply* response, ::grpc::ClientUnaryReactor* reactor) = 0;
+      virtual void uplrcLpApplyParityDelta(::grpc::ClientContext* context, const ::proxy_proto::UpLRCLpParityApplyDelta* request, ::proxy_proto::SetReply* response, std::function<void(::grpc::Status)>) = 0;
+      virtual void uplrcLpApplyParityDelta(::grpc::ClientContext* context, const ::proxy_proto::UpLRCLpParityApplyDelta* request, ::proxy_proto::SetReply* response, ::grpc::ClientUnaryReactor* reactor) = 0;
+      // UpLRC：下发算法二生成的跨 proxy 传输计划（train_route + timeslot_schedule 的可序列化形式）
+      virtual void scheduleUpLRCTransferPlan(::grpc::ClientContext* context, const ::proxy_proto::UpLRCTransferPlan* request, ::proxy_proto::SetReply* response, std::function<void(::grpc::Status)>) = 0;
+      virtual void scheduleUpLRCTransferPlan(::grpc::ClientContext* context, const ::proxy_proto::UpLRCTransferPlan* request, ::proxy_proto::SetReply* response, ::grpc::ClientUnaryReactor* reactor) = 0;
+      virtual void uplrcPlanStartExecution(::grpc::ClientContext* context, const ::proxy_proto::UpLRCPlanKeyMsg* request, ::proxy_proto::SetReply* response, std::function<void(::grpc::Status)>) = 0;
+      virtual void uplrcPlanStartExecution(::grpc::ClientContext* context, const ::proxy_proto::UpLRCPlanKeyMsg* request, ::proxy_proto::SetReply* response, ::grpc::ClientUnaryReactor* reactor) = 0;
+      virtual void uplrcPlanJoinExecution(::grpc::ClientContext* context, const ::proxy_proto::UpLRCPlanKeyMsg* request, ::proxy_proto::SetReply* response, std::function<void(::grpc::Status)>) = 0;
+      virtual void uplrcPlanJoinExecution(::grpc::ClientContext* context, const ::proxy_proto::UpLRCPlanKeyMsg* request, ::proxy_proto::SetReply* response, ::grpc::ClientUnaryReactor* reactor) = 0;
+      // UpLRC 跨 proxy：收集器聚合数据增量 / 校验块 XOR 落盘 / MST 转发数据增量
+      virtual void uplrcPlanCollectorIngestDataDelta(::grpc::ClientContext* context, const ::proxy_proto::UpLRCPlanCollectorIngestReq* request, ::proxy_proto::SetReply* response, std::function<void(::grpc::Status)>) = 0;
+      virtual void uplrcPlanCollectorIngestDataDelta(::grpc::ClientContext* context, const ::proxy_proto::UpLRCPlanCollectorIngestReq* request, ::proxy_proto::SetReply* response, ::grpc::ClientUnaryReactor* reactor) = 0;
+      virtual void uplrcPlanApplyParityXorDelta(::grpc::ClientContext* context, const ::proxy_proto::UpLRCPlanApplyParityXorReq* request, ::proxy_proto::SetReply* response, std::function<void(::grpc::Status)>) = 0;
+      virtual void uplrcPlanApplyParityXorDelta(::grpc::ClientContext* context, const ::proxy_proto::UpLRCPlanApplyParityXorReq* request, ::proxy_proto::SetReply* response, ::grpc::ClientUnaryReactor* reactor) = 0;
+      virtual void uplrcPlanMstDataDeltaChunk(::grpc::ClientContext* context, const ::proxy_proto::UpLRCPlanMstDataDeltaReq* request, ::proxy_proto::SetReply* response, std::function<void(::grpc::Status)>) = 0;
+      virtual void uplrcPlanMstDataDeltaChunk(::grpc::ClientContext* context, const ::proxy_proto::UpLRCPlanMstDataDeltaReq* request, ::proxy_proto::SetReply* response, ::grpc::ClientUnaryReactor* reactor) = 0;
       // get stripe
       virtual void getBlocks(::grpc::ClientContext* context, const ::proxy_proto::StripeAndBlockIDs* request, ::proxy_proto::GetReply* response, std::function<void(::grpc::Status)>) = 0;
       virtual void getBlocks(::grpc::ClientContext* context, const ::proxy_proto::StripeAndBlockIDs* request, ::proxy_proto::GetReply* response, ::grpc::ClientUnaryReactor* reactor) = 0;
@@ -352,30 +352,30 @@ class proxyService final {
     virtual ::grpc::ClientAsyncResponseReaderInterface< ::proxy_proto::DelReply>* PrepareAsyncdeleteBlockRaw(::grpc::ClientContext* context, const ::proxy_proto::NodeAndBlock& request, ::grpc::CompletionQueue* cq) = 0;
     virtual ::grpc::ClientAsyncResponseReaderInterface< ::proxy_proto::SetReply>* AsyncscheduleAppend2DatanodeRaw(::grpc::ClientContext* context, const ::proxy_proto::AppendStripeDataPlacement& request, ::grpc::CompletionQueue* cq) = 0;
     virtual ::grpc::ClientAsyncResponseReaderInterface< ::proxy_proto::SetReply>* PrepareAsyncscheduleAppend2DatanodeRaw(::grpc::ClientContext* context, const ::proxy_proto::AppendStripeDataPlacement& request, ::grpc::CompletionQueue* cq) = 0;
-    virtual ::grpc::ClientAsyncResponseReaderInterface< ::proxy_proto::SetReply>* AsyncscheduleCordDataUpdateRaw(::grpc::ClientContext* context, const ::proxy_proto::CordDataUpdatePlacement& request, ::grpc::CompletionQueue* cq) = 0;
-    virtual ::grpc::ClientAsyncResponseReaderInterface< ::proxy_proto::SetReply>* PrepareAsyncscheduleCordDataUpdateRaw(::grpc::ClientContext* context, const ::proxy_proto::CordDataUpdatePlacement& request, ::grpc::CompletionQueue* cq) = 0;
-    virtual ::grpc::ClientAsyncResponseReaderInterface< ::proxy_proto::SetReply>* AsyncscheduleCordLocalParityApplyRaw(::grpc::ClientContext* context, const ::proxy_proto::CordLocalParityBundle& request, ::grpc::CompletionQueue* cq) = 0;
-    virtual ::grpc::ClientAsyncResponseReaderInterface< ::proxy_proto::SetReply>* PrepareAsyncscheduleCordLocalParityApplyRaw(::grpc::ClientContext* context, const ::proxy_proto::CordLocalParityBundle& request, ::grpc::CompletionQueue* cq) = 0;
-    virtual ::grpc::ClientAsyncResponseReaderInterface< ::proxy_proto::SetReply>* AsynccordLpHubSessionBeginRaw(::grpc::ClientContext* context, const ::proxy_proto::CordLpHubSessionBegin& request, ::grpc::CompletionQueue* cq) = 0;
-    virtual ::grpc::ClientAsyncResponseReaderInterface< ::proxy_proto::SetReply>* PrepareAsynccordLpHubSessionBeginRaw(::grpc::ClientContext* context, const ::proxy_proto::CordLpHubSessionBegin& request, ::grpc::CompletionQueue* cq) = 0;
-    virtual ::grpc::ClientAsyncResponseReaderInterface< ::proxy_proto::SetReply>* AsynccordLpHubPartialPushRaw(::grpc::ClientContext* context, const ::proxy_proto::CordLpHubPartialPush& request, ::grpc::CompletionQueue* cq) = 0;
-    virtual ::grpc::ClientAsyncResponseReaderInterface< ::proxy_proto::SetReply>* PrepareAsynccordLpHubPartialPushRaw(::grpc::ClientContext* context, const ::proxy_proto::CordLpHubPartialPush& request, ::grpc::CompletionQueue* cq) = 0;
-    virtual ::grpc::ClientAsyncResponseReaderInterface< ::proxy_proto::SetReply>* AsynccordLpComputePartialAndPushRaw(::grpc::ClientContext* context, const ::proxy_proto::CordLpComputePartialAndPush& request, ::grpc::CompletionQueue* cq) = 0;
-    virtual ::grpc::ClientAsyncResponseReaderInterface< ::proxy_proto::SetReply>* PrepareAsynccordLpComputePartialAndPushRaw(::grpc::ClientContext* context, const ::proxy_proto::CordLpComputePartialAndPush& request, ::grpc::CompletionQueue* cq) = 0;
-    virtual ::grpc::ClientAsyncResponseReaderInterface< ::proxy_proto::SetReply>* AsynccordLpApplyParityDeltaRaw(::grpc::ClientContext* context, const ::proxy_proto::CordLpParityApplyDelta& request, ::grpc::CompletionQueue* cq) = 0;
-    virtual ::grpc::ClientAsyncResponseReaderInterface< ::proxy_proto::SetReply>* PrepareAsynccordLpApplyParityDeltaRaw(::grpc::ClientContext* context, const ::proxy_proto::CordLpParityApplyDelta& request, ::grpc::CompletionQueue* cq) = 0;
-    virtual ::grpc::ClientAsyncResponseReaderInterface< ::proxy_proto::SetReply>* AsyncscheduleCordTransferPlanRaw(::grpc::ClientContext* context, const ::proxy_proto::CordTransferPlan& request, ::grpc::CompletionQueue* cq) = 0;
-    virtual ::grpc::ClientAsyncResponseReaderInterface< ::proxy_proto::SetReply>* PrepareAsyncscheduleCordTransferPlanRaw(::grpc::ClientContext* context, const ::proxy_proto::CordTransferPlan& request, ::grpc::CompletionQueue* cq) = 0;
-    virtual ::grpc::ClientAsyncResponseReaderInterface< ::proxy_proto::SetReply>* AsynccordPlanStartExecutionRaw(::grpc::ClientContext* context, const ::proxy_proto::CordPlanKeyMsg& request, ::grpc::CompletionQueue* cq) = 0;
-    virtual ::grpc::ClientAsyncResponseReaderInterface< ::proxy_proto::SetReply>* PrepareAsynccordPlanStartExecutionRaw(::grpc::ClientContext* context, const ::proxy_proto::CordPlanKeyMsg& request, ::grpc::CompletionQueue* cq) = 0;
-    virtual ::grpc::ClientAsyncResponseReaderInterface< ::proxy_proto::SetReply>* AsynccordPlanJoinExecutionRaw(::grpc::ClientContext* context, const ::proxy_proto::CordPlanKeyMsg& request, ::grpc::CompletionQueue* cq) = 0;
-    virtual ::grpc::ClientAsyncResponseReaderInterface< ::proxy_proto::SetReply>* PrepareAsynccordPlanJoinExecutionRaw(::grpc::ClientContext* context, const ::proxy_proto::CordPlanKeyMsg& request, ::grpc::CompletionQueue* cq) = 0;
-    virtual ::grpc::ClientAsyncResponseReaderInterface< ::proxy_proto::SetReply>* AsynccordPlanCollectorIngestDataDeltaRaw(::grpc::ClientContext* context, const ::proxy_proto::CordPlanCollectorIngestReq& request, ::grpc::CompletionQueue* cq) = 0;
-    virtual ::grpc::ClientAsyncResponseReaderInterface< ::proxy_proto::SetReply>* PrepareAsynccordPlanCollectorIngestDataDeltaRaw(::grpc::ClientContext* context, const ::proxy_proto::CordPlanCollectorIngestReq& request, ::grpc::CompletionQueue* cq) = 0;
-    virtual ::grpc::ClientAsyncResponseReaderInterface< ::proxy_proto::SetReply>* AsynccordPlanApplyParityXorDeltaRaw(::grpc::ClientContext* context, const ::proxy_proto::CordPlanApplyParityXorReq& request, ::grpc::CompletionQueue* cq) = 0;
-    virtual ::grpc::ClientAsyncResponseReaderInterface< ::proxy_proto::SetReply>* PrepareAsynccordPlanApplyParityXorDeltaRaw(::grpc::ClientContext* context, const ::proxy_proto::CordPlanApplyParityXorReq& request, ::grpc::CompletionQueue* cq) = 0;
-    virtual ::grpc::ClientAsyncResponseReaderInterface< ::proxy_proto::SetReply>* AsynccordPlanMstDataDeltaChunkRaw(::grpc::ClientContext* context, const ::proxy_proto::CordPlanMstDataDeltaReq& request, ::grpc::CompletionQueue* cq) = 0;
-    virtual ::grpc::ClientAsyncResponseReaderInterface< ::proxy_proto::SetReply>* PrepareAsynccordPlanMstDataDeltaChunkRaw(::grpc::ClientContext* context, const ::proxy_proto::CordPlanMstDataDeltaReq& request, ::grpc::CompletionQueue* cq) = 0;
+    virtual ::grpc::ClientAsyncResponseReaderInterface< ::proxy_proto::SetReply>* AsyncscheduleUpLRCDataUpdateRaw(::grpc::ClientContext* context, const ::proxy_proto::UpLRCDataUpdatePlacement& request, ::grpc::CompletionQueue* cq) = 0;
+    virtual ::grpc::ClientAsyncResponseReaderInterface< ::proxy_proto::SetReply>* PrepareAsyncscheduleUpLRCDataUpdateRaw(::grpc::ClientContext* context, const ::proxy_proto::UpLRCDataUpdatePlacement& request, ::grpc::CompletionQueue* cq) = 0;
+    virtual ::grpc::ClientAsyncResponseReaderInterface< ::proxy_proto::SetReply>* AsyncscheduleUpLRCLocalParityApplyRaw(::grpc::ClientContext* context, const ::proxy_proto::UpLRCLocalParityBundle& request, ::grpc::CompletionQueue* cq) = 0;
+    virtual ::grpc::ClientAsyncResponseReaderInterface< ::proxy_proto::SetReply>* PrepareAsyncscheduleUpLRCLocalParityApplyRaw(::grpc::ClientContext* context, const ::proxy_proto::UpLRCLocalParityBundle& request, ::grpc::CompletionQueue* cq) = 0;
+    virtual ::grpc::ClientAsyncResponseReaderInterface< ::proxy_proto::SetReply>* AsyncuplrcLpHubSessionBeginRaw(::grpc::ClientContext* context, const ::proxy_proto::UpLRCLpHubSessionBegin& request, ::grpc::CompletionQueue* cq) = 0;
+    virtual ::grpc::ClientAsyncResponseReaderInterface< ::proxy_proto::SetReply>* PrepareAsyncuplrcLpHubSessionBeginRaw(::grpc::ClientContext* context, const ::proxy_proto::UpLRCLpHubSessionBegin& request, ::grpc::CompletionQueue* cq) = 0;
+    virtual ::grpc::ClientAsyncResponseReaderInterface< ::proxy_proto::SetReply>* AsyncuplrcLpHubPartialPushRaw(::grpc::ClientContext* context, const ::proxy_proto::UpLRCLpHubPartialPush& request, ::grpc::CompletionQueue* cq) = 0;
+    virtual ::grpc::ClientAsyncResponseReaderInterface< ::proxy_proto::SetReply>* PrepareAsyncuplrcLpHubPartialPushRaw(::grpc::ClientContext* context, const ::proxy_proto::UpLRCLpHubPartialPush& request, ::grpc::CompletionQueue* cq) = 0;
+    virtual ::grpc::ClientAsyncResponseReaderInterface< ::proxy_proto::SetReply>* AsyncuplrcLpComputePartialAndPushRaw(::grpc::ClientContext* context, const ::proxy_proto::UpLRCLpComputePartialAndPush& request, ::grpc::CompletionQueue* cq) = 0;
+    virtual ::grpc::ClientAsyncResponseReaderInterface< ::proxy_proto::SetReply>* PrepareAsyncuplrcLpComputePartialAndPushRaw(::grpc::ClientContext* context, const ::proxy_proto::UpLRCLpComputePartialAndPush& request, ::grpc::CompletionQueue* cq) = 0;
+    virtual ::grpc::ClientAsyncResponseReaderInterface< ::proxy_proto::SetReply>* AsyncuplrcLpApplyParityDeltaRaw(::grpc::ClientContext* context, const ::proxy_proto::UpLRCLpParityApplyDelta& request, ::grpc::CompletionQueue* cq) = 0;
+    virtual ::grpc::ClientAsyncResponseReaderInterface< ::proxy_proto::SetReply>* PrepareAsyncuplrcLpApplyParityDeltaRaw(::grpc::ClientContext* context, const ::proxy_proto::UpLRCLpParityApplyDelta& request, ::grpc::CompletionQueue* cq) = 0;
+    virtual ::grpc::ClientAsyncResponseReaderInterface< ::proxy_proto::SetReply>* AsyncscheduleUpLRCTransferPlanRaw(::grpc::ClientContext* context, const ::proxy_proto::UpLRCTransferPlan& request, ::grpc::CompletionQueue* cq) = 0;
+    virtual ::grpc::ClientAsyncResponseReaderInterface< ::proxy_proto::SetReply>* PrepareAsyncscheduleUpLRCTransferPlanRaw(::grpc::ClientContext* context, const ::proxy_proto::UpLRCTransferPlan& request, ::grpc::CompletionQueue* cq) = 0;
+    virtual ::grpc::ClientAsyncResponseReaderInterface< ::proxy_proto::SetReply>* AsyncuplrcPlanStartExecutionRaw(::grpc::ClientContext* context, const ::proxy_proto::UpLRCPlanKeyMsg& request, ::grpc::CompletionQueue* cq) = 0;
+    virtual ::grpc::ClientAsyncResponseReaderInterface< ::proxy_proto::SetReply>* PrepareAsyncuplrcPlanStartExecutionRaw(::grpc::ClientContext* context, const ::proxy_proto::UpLRCPlanKeyMsg& request, ::grpc::CompletionQueue* cq) = 0;
+    virtual ::grpc::ClientAsyncResponseReaderInterface< ::proxy_proto::SetReply>* AsyncuplrcPlanJoinExecutionRaw(::grpc::ClientContext* context, const ::proxy_proto::UpLRCPlanKeyMsg& request, ::grpc::CompletionQueue* cq) = 0;
+    virtual ::grpc::ClientAsyncResponseReaderInterface< ::proxy_proto::SetReply>* PrepareAsyncuplrcPlanJoinExecutionRaw(::grpc::ClientContext* context, const ::proxy_proto::UpLRCPlanKeyMsg& request, ::grpc::CompletionQueue* cq) = 0;
+    virtual ::grpc::ClientAsyncResponseReaderInterface< ::proxy_proto::SetReply>* AsyncuplrcPlanCollectorIngestDataDeltaRaw(::grpc::ClientContext* context, const ::proxy_proto::UpLRCPlanCollectorIngestReq& request, ::grpc::CompletionQueue* cq) = 0;
+    virtual ::grpc::ClientAsyncResponseReaderInterface< ::proxy_proto::SetReply>* PrepareAsyncuplrcPlanCollectorIngestDataDeltaRaw(::grpc::ClientContext* context, const ::proxy_proto::UpLRCPlanCollectorIngestReq& request, ::grpc::CompletionQueue* cq) = 0;
+    virtual ::grpc::ClientAsyncResponseReaderInterface< ::proxy_proto::SetReply>* AsyncuplrcPlanApplyParityXorDeltaRaw(::grpc::ClientContext* context, const ::proxy_proto::UpLRCPlanApplyParityXorReq& request, ::grpc::CompletionQueue* cq) = 0;
+    virtual ::grpc::ClientAsyncResponseReaderInterface< ::proxy_proto::SetReply>* PrepareAsyncuplrcPlanApplyParityXorDeltaRaw(::grpc::ClientContext* context, const ::proxy_proto::UpLRCPlanApplyParityXorReq& request, ::grpc::CompletionQueue* cq) = 0;
+    virtual ::grpc::ClientAsyncResponseReaderInterface< ::proxy_proto::SetReply>* AsyncuplrcPlanMstDataDeltaChunkRaw(::grpc::ClientContext* context, const ::proxy_proto::UpLRCPlanMstDataDeltaReq& request, ::grpc::CompletionQueue* cq) = 0;
+    virtual ::grpc::ClientAsyncResponseReaderInterface< ::proxy_proto::SetReply>* PrepareAsyncuplrcPlanMstDataDeltaChunkRaw(::grpc::ClientContext* context, const ::proxy_proto::UpLRCPlanMstDataDeltaReq& request, ::grpc::CompletionQueue* cq) = 0;
     virtual ::grpc::ClientAsyncResponseReaderInterface< ::proxy_proto::GetReply>* AsyncgetBlocksRaw(::grpc::ClientContext* context, const ::proxy_proto::StripeAndBlockIDs& request, ::grpc::CompletionQueue* cq) = 0;
     virtual ::grpc::ClientAsyncResponseReaderInterface< ::proxy_proto::GetReply>* PrepareAsyncgetBlocksRaw(::grpc::ClientContext* context, const ::proxy_proto::StripeAndBlockIDs& request, ::grpc::CompletionQueue* cq) = 0;
   };
@@ -480,89 +480,89 @@ class proxyService final {
     std::unique_ptr< ::grpc::ClientAsyncResponseReader< ::proxy_proto::SetReply>> PrepareAsyncscheduleAppend2Datanode(::grpc::ClientContext* context, const ::proxy_proto::AppendStripeDataPlacement& request, ::grpc::CompletionQueue* cq) {
       return std::unique_ptr< ::grpc::ClientAsyncResponseReader< ::proxy_proto::SetReply>>(PrepareAsyncscheduleAppend2DatanodeRaw(context, request, cq));
     }
-    ::grpc::Status scheduleCordDataUpdate(::grpc::ClientContext* context, const ::proxy_proto::CordDataUpdatePlacement& request, ::proxy_proto::SetReply* response) override;
-    std::unique_ptr< ::grpc::ClientAsyncResponseReader< ::proxy_proto::SetReply>> AsyncscheduleCordDataUpdate(::grpc::ClientContext* context, const ::proxy_proto::CordDataUpdatePlacement& request, ::grpc::CompletionQueue* cq) {
-      return std::unique_ptr< ::grpc::ClientAsyncResponseReader< ::proxy_proto::SetReply>>(AsyncscheduleCordDataUpdateRaw(context, request, cq));
+    ::grpc::Status scheduleUpLRCDataUpdate(::grpc::ClientContext* context, const ::proxy_proto::UpLRCDataUpdatePlacement& request, ::proxy_proto::SetReply* response) override;
+    std::unique_ptr< ::grpc::ClientAsyncResponseReader< ::proxy_proto::SetReply>> AsyncscheduleUpLRCDataUpdate(::grpc::ClientContext* context, const ::proxy_proto::UpLRCDataUpdatePlacement& request, ::grpc::CompletionQueue* cq) {
+      return std::unique_ptr< ::grpc::ClientAsyncResponseReader< ::proxy_proto::SetReply>>(AsyncscheduleUpLRCDataUpdateRaw(context, request, cq));
     }
-    std::unique_ptr< ::grpc::ClientAsyncResponseReader< ::proxy_proto::SetReply>> PrepareAsyncscheduleCordDataUpdate(::grpc::ClientContext* context, const ::proxy_proto::CordDataUpdatePlacement& request, ::grpc::CompletionQueue* cq) {
-      return std::unique_ptr< ::grpc::ClientAsyncResponseReader< ::proxy_proto::SetReply>>(PrepareAsyncscheduleCordDataUpdateRaw(context, request, cq));
+    std::unique_ptr< ::grpc::ClientAsyncResponseReader< ::proxy_proto::SetReply>> PrepareAsyncscheduleUpLRCDataUpdate(::grpc::ClientContext* context, const ::proxy_proto::UpLRCDataUpdatePlacement& request, ::grpc::CompletionQueue* cq) {
+      return std::unique_ptr< ::grpc::ClientAsyncResponseReader< ::proxy_proto::SetReply>>(PrepareAsyncscheduleUpLRCDataUpdateRaw(context, request, cq));
     }
-    ::grpc::Status scheduleCordLocalParityApply(::grpc::ClientContext* context, const ::proxy_proto::CordLocalParityBundle& request, ::proxy_proto::SetReply* response) override;
-    std::unique_ptr< ::grpc::ClientAsyncResponseReader< ::proxy_proto::SetReply>> AsyncscheduleCordLocalParityApply(::grpc::ClientContext* context, const ::proxy_proto::CordLocalParityBundle& request, ::grpc::CompletionQueue* cq) {
-      return std::unique_ptr< ::grpc::ClientAsyncResponseReader< ::proxy_proto::SetReply>>(AsyncscheduleCordLocalParityApplyRaw(context, request, cq));
+    ::grpc::Status scheduleUpLRCLocalParityApply(::grpc::ClientContext* context, const ::proxy_proto::UpLRCLocalParityBundle& request, ::proxy_proto::SetReply* response) override;
+    std::unique_ptr< ::grpc::ClientAsyncResponseReader< ::proxy_proto::SetReply>> AsyncscheduleUpLRCLocalParityApply(::grpc::ClientContext* context, const ::proxy_proto::UpLRCLocalParityBundle& request, ::grpc::CompletionQueue* cq) {
+      return std::unique_ptr< ::grpc::ClientAsyncResponseReader< ::proxy_proto::SetReply>>(AsyncscheduleUpLRCLocalParityApplyRaw(context, request, cq));
     }
-    std::unique_ptr< ::grpc::ClientAsyncResponseReader< ::proxy_proto::SetReply>> PrepareAsyncscheduleCordLocalParityApply(::grpc::ClientContext* context, const ::proxy_proto::CordLocalParityBundle& request, ::grpc::CompletionQueue* cq) {
-      return std::unique_ptr< ::grpc::ClientAsyncResponseReader< ::proxy_proto::SetReply>>(PrepareAsyncscheduleCordLocalParityApplyRaw(context, request, cq));
+    std::unique_ptr< ::grpc::ClientAsyncResponseReader< ::proxy_proto::SetReply>> PrepareAsyncscheduleUpLRCLocalParityApply(::grpc::ClientContext* context, const ::proxy_proto::UpLRCLocalParityBundle& request, ::grpc::CompletionQueue* cq) {
+      return std::unique_ptr< ::grpc::ClientAsyncResponseReader< ::proxy_proto::SetReply>>(PrepareAsyncscheduleUpLRCLocalParityApplyRaw(context, request, cq));
     }
-    ::grpc::Status cordLpHubSessionBegin(::grpc::ClientContext* context, const ::proxy_proto::CordLpHubSessionBegin& request, ::proxy_proto::SetReply* response) override;
-    std::unique_ptr< ::grpc::ClientAsyncResponseReader< ::proxy_proto::SetReply>> AsynccordLpHubSessionBegin(::grpc::ClientContext* context, const ::proxy_proto::CordLpHubSessionBegin& request, ::grpc::CompletionQueue* cq) {
-      return std::unique_ptr< ::grpc::ClientAsyncResponseReader< ::proxy_proto::SetReply>>(AsynccordLpHubSessionBeginRaw(context, request, cq));
+    ::grpc::Status uplrcLpHubSessionBegin(::grpc::ClientContext* context, const ::proxy_proto::UpLRCLpHubSessionBegin& request, ::proxy_proto::SetReply* response) override;
+    std::unique_ptr< ::grpc::ClientAsyncResponseReader< ::proxy_proto::SetReply>> AsyncuplrcLpHubSessionBegin(::grpc::ClientContext* context, const ::proxy_proto::UpLRCLpHubSessionBegin& request, ::grpc::CompletionQueue* cq) {
+      return std::unique_ptr< ::grpc::ClientAsyncResponseReader< ::proxy_proto::SetReply>>(AsyncuplrcLpHubSessionBeginRaw(context, request, cq));
     }
-    std::unique_ptr< ::grpc::ClientAsyncResponseReader< ::proxy_proto::SetReply>> PrepareAsynccordLpHubSessionBegin(::grpc::ClientContext* context, const ::proxy_proto::CordLpHubSessionBegin& request, ::grpc::CompletionQueue* cq) {
-      return std::unique_ptr< ::grpc::ClientAsyncResponseReader< ::proxy_proto::SetReply>>(PrepareAsynccordLpHubSessionBeginRaw(context, request, cq));
+    std::unique_ptr< ::grpc::ClientAsyncResponseReader< ::proxy_proto::SetReply>> PrepareAsyncuplrcLpHubSessionBegin(::grpc::ClientContext* context, const ::proxy_proto::UpLRCLpHubSessionBegin& request, ::grpc::CompletionQueue* cq) {
+      return std::unique_ptr< ::grpc::ClientAsyncResponseReader< ::proxy_proto::SetReply>>(PrepareAsyncuplrcLpHubSessionBeginRaw(context, request, cq));
     }
-    ::grpc::Status cordLpHubPartialPush(::grpc::ClientContext* context, const ::proxy_proto::CordLpHubPartialPush& request, ::proxy_proto::SetReply* response) override;
-    std::unique_ptr< ::grpc::ClientAsyncResponseReader< ::proxy_proto::SetReply>> AsynccordLpHubPartialPush(::grpc::ClientContext* context, const ::proxy_proto::CordLpHubPartialPush& request, ::grpc::CompletionQueue* cq) {
-      return std::unique_ptr< ::grpc::ClientAsyncResponseReader< ::proxy_proto::SetReply>>(AsynccordLpHubPartialPushRaw(context, request, cq));
+    ::grpc::Status uplrcLpHubPartialPush(::grpc::ClientContext* context, const ::proxy_proto::UpLRCLpHubPartialPush& request, ::proxy_proto::SetReply* response) override;
+    std::unique_ptr< ::grpc::ClientAsyncResponseReader< ::proxy_proto::SetReply>> AsyncuplrcLpHubPartialPush(::grpc::ClientContext* context, const ::proxy_proto::UpLRCLpHubPartialPush& request, ::grpc::CompletionQueue* cq) {
+      return std::unique_ptr< ::grpc::ClientAsyncResponseReader< ::proxy_proto::SetReply>>(AsyncuplrcLpHubPartialPushRaw(context, request, cq));
     }
-    std::unique_ptr< ::grpc::ClientAsyncResponseReader< ::proxy_proto::SetReply>> PrepareAsynccordLpHubPartialPush(::grpc::ClientContext* context, const ::proxy_proto::CordLpHubPartialPush& request, ::grpc::CompletionQueue* cq) {
-      return std::unique_ptr< ::grpc::ClientAsyncResponseReader< ::proxy_proto::SetReply>>(PrepareAsynccordLpHubPartialPushRaw(context, request, cq));
+    std::unique_ptr< ::grpc::ClientAsyncResponseReader< ::proxy_proto::SetReply>> PrepareAsyncuplrcLpHubPartialPush(::grpc::ClientContext* context, const ::proxy_proto::UpLRCLpHubPartialPush& request, ::grpc::CompletionQueue* cq) {
+      return std::unique_ptr< ::grpc::ClientAsyncResponseReader< ::proxy_proto::SetReply>>(PrepareAsyncuplrcLpHubPartialPushRaw(context, request, cq));
     }
-    ::grpc::Status cordLpComputePartialAndPush(::grpc::ClientContext* context, const ::proxy_proto::CordLpComputePartialAndPush& request, ::proxy_proto::SetReply* response) override;
-    std::unique_ptr< ::grpc::ClientAsyncResponseReader< ::proxy_proto::SetReply>> AsynccordLpComputePartialAndPush(::grpc::ClientContext* context, const ::proxy_proto::CordLpComputePartialAndPush& request, ::grpc::CompletionQueue* cq) {
-      return std::unique_ptr< ::grpc::ClientAsyncResponseReader< ::proxy_proto::SetReply>>(AsynccordLpComputePartialAndPushRaw(context, request, cq));
+    ::grpc::Status uplrcLpComputePartialAndPush(::grpc::ClientContext* context, const ::proxy_proto::UpLRCLpComputePartialAndPush& request, ::proxy_proto::SetReply* response) override;
+    std::unique_ptr< ::grpc::ClientAsyncResponseReader< ::proxy_proto::SetReply>> AsyncuplrcLpComputePartialAndPush(::grpc::ClientContext* context, const ::proxy_proto::UpLRCLpComputePartialAndPush& request, ::grpc::CompletionQueue* cq) {
+      return std::unique_ptr< ::grpc::ClientAsyncResponseReader< ::proxy_proto::SetReply>>(AsyncuplrcLpComputePartialAndPushRaw(context, request, cq));
     }
-    std::unique_ptr< ::grpc::ClientAsyncResponseReader< ::proxy_proto::SetReply>> PrepareAsynccordLpComputePartialAndPush(::grpc::ClientContext* context, const ::proxy_proto::CordLpComputePartialAndPush& request, ::grpc::CompletionQueue* cq) {
-      return std::unique_ptr< ::grpc::ClientAsyncResponseReader< ::proxy_proto::SetReply>>(PrepareAsynccordLpComputePartialAndPushRaw(context, request, cq));
+    std::unique_ptr< ::grpc::ClientAsyncResponseReader< ::proxy_proto::SetReply>> PrepareAsyncuplrcLpComputePartialAndPush(::grpc::ClientContext* context, const ::proxy_proto::UpLRCLpComputePartialAndPush& request, ::grpc::CompletionQueue* cq) {
+      return std::unique_ptr< ::grpc::ClientAsyncResponseReader< ::proxy_proto::SetReply>>(PrepareAsyncuplrcLpComputePartialAndPushRaw(context, request, cq));
     }
-    ::grpc::Status cordLpApplyParityDelta(::grpc::ClientContext* context, const ::proxy_proto::CordLpParityApplyDelta& request, ::proxy_proto::SetReply* response) override;
-    std::unique_ptr< ::grpc::ClientAsyncResponseReader< ::proxy_proto::SetReply>> AsynccordLpApplyParityDelta(::grpc::ClientContext* context, const ::proxy_proto::CordLpParityApplyDelta& request, ::grpc::CompletionQueue* cq) {
-      return std::unique_ptr< ::grpc::ClientAsyncResponseReader< ::proxy_proto::SetReply>>(AsynccordLpApplyParityDeltaRaw(context, request, cq));
+    ::grpc::Status uplrcLpApplyParityDelta(::grpc::ClientContext* context, const ::proxy_proto::UpLRCLpParityApplyDelta& request, ::proxy_proto::SetReply* response) override;
+    std::unique_ptr< ::grpc::ClientAsyncResponseReader< ::proxy_proto::SetReply>> AsyncuplrcLpApplyParityDelta(::grpc::ClientContext* context, const ::proxy_proto::UpLRCLpParityApplyDelta& request, ::grpc::CompletionQueue* cq) {
+      return std::unique_ptr< ::grpc::ClientAsyncResponseReader< ::proxy_proto::SetReply>>(AsyncuplrcLpApplyParityDeltaRaw(context, request, cq));
     }
-    std::unique_ptr< ::grpc::ClientAsyncResponseReader< ::proxy_proto::SetReply>> PrepareAsynccordLpApplyParityDelta(::grpc::ClientContext* context, const ::proxy_proto::CordLpParityApplyDelta& request, ::grpc::CompletionQueue* cq) {
-      return std::unique_ptr< ::grpc::ClientAsyncResponseReader< ::proxy_proto::SetReply>>(PrepareAsynccordLpApplyParityDeltaRaw(context, request, cq));
+    std::unique_ptr< ::grpc::ClientAsyncResponseReader< ::proxy_proto::SetReply>> PrepareAsyncuplrcLpApplyParityDelta(::grpc::ClientContext* context, const ::proxy_proto::UpLRCLpParityApplyDelta& request, ::grpc::CompletionQueue* cq) {
+      return std::unique_ptr< ::grpc::ClientAsyncResponseReader< ::proxy_proto::SetReply>>(PrepareAsyncuplrcLpApplyParityDeltaRaw(context, request, cq));
     }
-    ::grpc::Status scheduleCordTransferPlan(::grpc::ClientContext* context, const ::proxy_proto::CordTransferPlan& request, ::proxy_proto::SetReply* response) override;
-    std::unique_ptr< ::grpc::ClientAsyncResponseReader< ::proxy_proto::SetReply>> AsyncscheduleCordTransferPlan(::grpc::ClientContext* context, const ::proxy_proto::CordTransferPlan& request, ::grpc::CompletionQueue* cq) {
-      return std::unique_ptr< ::grpc::ClientAsyncResponseReader< ::proxy_proto::SetReply>>(AsyncscheduleCordTransferPlanRaw(context, request, cq));
+    ::grpc::Status scheduleUpLRCTransferPlan(::grpc::ClientContext* context, const ::proxy_proto::UpLRCTransferPlan& request, ::proxy_proto::SetReply* response) override;
+    std::unique_ptr< ::grpc::ClientAsyncResponseReader< ::proxy_proto::SetReply>> AsyncscheduleUpLRCTransferPlan(::grpc::ClientContext* context, const ::proxy_proto::UpLRCTransferPlan& request, ::grpc::CompletionQueue* cq) {
+      return std::unique_ptr< ::grpc::ClientAsyncResponseReader< ::proxy_proto::SetReply>>(AsyncscheduleUpLRCTransferPlanRaw(context, request, cq));
     }
-    std::unique_ptr< ::grpc::ClientAsyncResponseReader< ::proxy_proto::SetReply>> PrepareAsyncscheduleCordTransferPlan(::grpc::ClientContext* context, const ::proxy_proto::CordTransferPlan& request, ::grpc::CompletionQueue* cq) {
-      return std::unique_ptr< ::grpc::ClientAsyncResponseReader< ::proxy_proto::SetReply>>(PrepareAsyncscheduleCordTransferPlanRaw(context, request, cq));
+    std::unique_ptr< ::grpc::ClientAsyncResponseReader< ::proxy_proto::SetReply>> PrepareAsyncscheduleUpLRCTransferPlan(::grpc::ClientContext* context, const ::proxy_proto::UpLRCTransferPlan& request, ::grpc::CompletionQueue* cq) {
+      return std::unique_ptr< ::grpc::ClientAsyncResponseReader< ::proxy_proto::SetReply>>(PrepareAsyncscheduleUpLRCTransferPlanRaw(context, request, cq));
     }
-    ::grpc::Status cordPlanStartExecution(::grpc::ClientContext* context, const ::proxy_proto::CordPlanKeyMsg& request, ::proxy_proto::SetReply* response) override;
-    std::unique_ptr< ::grpc::ClientAsyncResponseReader< ::proxy_proto::SetReply>> AsynccordPlanStartExecution(::grpc::ClientContext* context, const ::proxy_proto::CordPlanKeyMsg& request, ::grpc::CompletionQueue* cq) {
-      return std::unique_ptr< ::grpc::ClientAsyncResponseReader< ::proxy_proto::SetReply>>(AsynccordPlanStartExecutionRaw(context, request, cq));
+    ::grpc::Status uplrcPlanStartExecution(::grpc::ClientContext* context, const ::proxy_proto::UpLRCPlanKeyMsg& request, ::proxy_proto::SetReply* response) override;
+    std::unique_ptr< ::grpc::ClientAsyncResponseReader< ::proxy_proto::SetReply>> AsyncuplrcPlanStartExecution(::grpc::ClientContext* context, const ::proxy_proto::UpLRCPlanKeyMsg& request, ::grpc::CompletionQueue* cq) {
+      return std::unique_ptr< ::grpc::ClientAsyncResponseReader< ::proxy_proto::SetReply>>(AsyncuplrcPlanStartExecutionRaw(context, request, cq));
     }
-    std::unique_ptr< ::grpc::ClientAsyncResponseReader< ::proxy_proto::SetReply>> PrepareAsynccordPlanStartExecution(::grpc::ClientContext* context, const ::proxy_proto::CordPlanKeyMsg& request, ::grpc::CompletionQueue* cq) {
-      return std::unique_ptr< ::grpc::ClientAsyncResponseReader< ::proxy_proto::SetReply>>(PrepareAsynccordPlanStartExecutionRaw(context, request, cq));
+    std::unique_ptr< ::grpc::ClientAsyncResponseReader< ::proxy_proto::SetReply>> PrepareAsyncuplrcPlanStartExecution(::grpc::ClientContext* context, const ::proxy_proto::UpLRCPlanKeyMsg& request, ::grpc::CompletionQueue* cq) {
+      return std::unique_ptr< ::grpc::ClientAsyncResponseReader< ::proxy_proto::SetReply>>(PrepareAsyncuplrcPlanStartExecutionRaw(context, request, cq));
     }
-    ::grpc::Status cordPlanJoinExecution(::grpc::ClientContext* context, const ::proxy_proto::CordPlanKeyMsg& request, ::proxy_proto::SetReply* response) override;
-    std::unique_ptr< ::grpc::ClientAsyncResponseReader< ::proxy_proto::SetReply>> AsynccordPlanJoinExecution(::grpc::ClientContext* context, const ::proxy_proto::CordPlanKeyMsg& request, ::grpc::CompletionQueue* cq) {
-      return std::unique_ptr< ::grpc::ClientAsyncResponseReader< ::proxy_proto::SetReply>>(AsynccordPlanJoinExecutionRaw(context, request, cq));
+    ::grpc::Status uplrcPlanJoinExecution(::grpc::ClientContext* context, const ::proxy_proto::UpLRCPlanKeyMsg& request, ::proxy_proto::SetReply* response) override;
+    std::unique_ptr< ::grpc::ClientAsyncResponseReader< ::proxy_proto::SetReply>> AsyncuplrcPlanJoinExecution(::grpc::ClientContext* context, const ::proxy_proto::UpLRCPlanKeyMsg& request, ::grpc::CompletionQueue* cq) {
+      return std::unique_ptr< ::grpc::ClientAsyncResponseReader< ::proxy_proto::SetReply>>(AsyncuplrcPlanJoinExecutionRaw(context, request, cq));
     }
-    std::unique_ptr< ::grpc::ClientAsyncResponseReader< ::proxy_proto::SetReply>> PrepareAsynccordPlanJoinExecution(::grpc::ClientContext* context, const ::proxy_proto::CordPlanKeyMsg& request, ::grpc::CompletionQueue* cq) {
-      return std::unique_ptr< ::grpc::ClientAsyncResponseReader< ::proxy_proto::SetReply>>(PrepareAsynccordPlanJoinExecutionRaw(context, request, cq));
+    std::unique_ptr< ::grpc::ClientAsyncResponseReader< ::proxy_proto::SetReply>> PrepareAsyncuplrcPlanJoinExecution(::grpc::ClientContext* context, const ::proxy_proto::UpLRCPlanKeyMsg& request, ::grpc::CompletionQueue* cq) {
+      return std::unique_ptr< ::grpc::ClientAsyncResponseReader< ::proxy_proto::SetReply>>(PrepareAsyncuplrcPlanJoinExecutionRaw(context, request, cq));
     }
-    ::grpc::Status cordPlanCollectorIngestDataDelta(::grpc::ClientContext* context, const ::proxy_proto::CordPlanCollectorIngestReq& request, ::proxy_proto::SetReply* response) override;
-    std::unique_ptr< ::grpc::ClientAsyncResponseReader< ::proxy_proto::SetReply>> AsynccordPlanCollectorIngestDataDelta(::grpc::ClientContext* context, const ::proxy_proto::CordPlanCollectorIngestReq& request, ::grpc::CompletionQueue* cq) {
-      return std::unique_ptr< ::grpc::ClientAsyncResponseReader< ::proxy_proto::SetReply>>(AsynccordPlanCollectorIngestDataDeltaRaw(context, request, cq));
+    ::grpc::Status uplrcPlanCollectorIngestDataDelta(::grpc::ClientContext* context, const ::proxy_proto::UpLRCPlanCollectorIngestReq& request, ::proxy_proto::SetReply* response) override;
+    std::unique_ptr< ::grpc::ClientAsyncResponseReader< ::proxy_proto::SetReply>> AsyncuplrcPlanCollectorIngestDataDelta(::grpc::ClientContext* context, const ::proxy_proto::UpLRCPlanCollectorIngestReq& request, ::grpc::CompletionQueue* cq) {
+      return std::unique_ptr< ::grpc::ClientAsyncResponseReader< ::proxy_proto::SetReply>>(AsyncuplrcPlanCollectorIngestDataDeltaRaw(context, request, cq));
     }
-    std::unique_ptr< ::grpc::ClientAsyncResponseReader< ::proxy_proto::SetReply>> PrepareAsynccordPlanCollectorIngestDataDelta(::grpc::ClientContext* context, const ::proxy_proto::CordPlanCollectorIngestReq& request, ::grpc::CompletionQueue* cq) {
-      return std::unique_ptr< ::grpc::ClientAsyncResponseReader< ::proxy_proto::SetReply>>(PrepareAsynccordPlanCollectorIngestDataDeltaRaw(context, request, cq));
+    std::unique_ptr< ::grpc::ClientAsyncResponseReader< ::proxy_proto::SetReply>> PrepareAsyncuplrcPlanCollectorIngestDataDelta(::grpc::ClientContext* context, const ::proxy_proto::UpLRCPlanCollectorIngestReq& request, ::grpc::CompletionQueue* cq) {
+      return std::unique_ptr< ::grpc::ClientAsyncResponseReader< ::proxy_proto::SetReply>>(PrepareAsyncuplrcPlanCollectorIngestDataDeltaRaw(context, request, cq));
     }
-    ::grpc::Status cordPlanApplyParityXorDelta(::grpc::ClientContext* context, const ::proxy_proto::CordPlanApplyParityXorReq& request, ::proxy_proto::SetReply* response) override;
-    std::unique_ptr< ::grpc::ClientAsyncResponseReader< ::proxy_proto::SetReply>> AsynccordPlanApplyParityXorDelta(::grpc::ClientContext* context, const ::proxy_proto::CordPlanApplyParityXorReq& request, ::grpc::CompletionQueue* cq) {
-      return std::unique_ptr< ::grpc::ClientAsyncResponseReader< ::proxy_proto::SetReply>>(AsynccordPlanApplyParityXorDeltaRaw(context, request, cq));
+    ::grpc::Status uplrcPlanApplyParityXorDelta(::grpc::ClientContext* context, const ::proxy_proto::UpLRCPlanApplyParityXorReq& request, ::proxy_proto::SetReply* response) override;
+    std::unique_ptr< ::grpc::ClientAsyncResponseReader< ::proxy_proto::SetReply>> AsyncuplrcPlanApplyParityXorDelta(::grpc::ClientContext* context, const ::proxy_proto::UpLRCPlanApplyParityXorReq& request, ::grpc::CompletionQueue* cq) {
+      return std::unique_ptr< ::grpc::ClientAsyncResponseReader< ::proxy_proto::SetReply>>(AsyncuplrcPlanApplyParityXorDeltaRaw(context, request, cq));
     }
-    std::unique_ptr< ::grpc::ClientAsyncResponseReader< ::proxy_proto::SetReply>> PrepareAsynccordPlanApplyParityXorDelta(::grpc::ClientContext* context, const ::proxy_proto::CordPlanApplyParityXorReq& request, ::grpc::CompletionQueue* cq) {
-      return std::unique_ptr< ::grpc::ClientAsyncResponseReader< ::proxy_proto::SetReply>>(PrepareAsynccordPlanApplyParityXorDeltaRaw(context, request, cq));
+    std::unique_ptr< ::grpc::ClientAsyncResponseReader< ::proxy_proto::SetReply>> PrepareAsyncuplrcPlanApplyParityXorDelta(::grpc::ClientContext* context, const ::proxy_proto::UpLRCPlanApplyParityXorReq& request, ::grpc::CompletionQueue* cq) {
+      return std::unique_ptr< ::grpc::ClientAsyncResponseReader< ::proxy_proto::SetReply>>(PrepareAsyncuplrcPlanApplyParityXorDeltaRaw(context, request, cq));
     }
-    ::grpc::Status cordPlanMstDataDeltaChunk(::grpc::ClientContext* context, const ::proxy_proto::CordPlanMstDataDeltaReq& request, ::proxy_proto::SetReply* response) override;
-    std::unique_ptr< ::grpc::ClientAsyncResponseReader< ::proxy_proto::SetReply>> AsynccordPlanMstDataDeltaChunk(::grpc::ClientContext* context, const ::proxy_proto::CordPlanMstDataDeltaReq& request, ::grpc::CompletionQueue* cq) {
-      return std::unique_ptr< ::grpc::ClientAsyncResponseReader< ::proxy_proto::SetReply>>(AsynccordPlanMstDataDeltaChunkRaw(context, request, cq));
+    ::grpc::Status uplrcPlanMstDataDeltaChunk(::grpc::ClientContext* context, const ::proxy_proto::UpLRCPlanMstDataDeltaReq& request, ::proxy_proto::SetReply* response) override;
+    std::unique_ptr< ::grpc::ClientAsyncResponseReader< ::proxy_proto::SetReply>> AsyncuplrcPlanMstDataDeltaChunk(::grpc::ClientContext* context, const ::proxy_proto::UpLRCPlanMstDataDeltaReq& request, ::grpc::CompletionQueue* cq) {
+      return std::unique_ptr< ::grpc::ClientAsyncResponseReader< ::proxy_proto::SetReply>>(AsyncuplrcPlanMstDataDeltaChunkRaw(context, request, cq));
     }
-    std::unique_ptr< ::grpc::ClientAsyncResponseReader< ::proxy_proto::SetReply>> PrepareAsynccordPlanMstDataDeltaChunk(::grpc::ClientContext* context, const ::proxy_proto::CordPlanMstDataDeltaReq& request, ::grpc::CompletionQueue* cq) {
-      return std::unique_ptr< ::grpc::ClientAsyncResponseReader< ::proxy_proto::SetReply>>(PrepareAsynccordPlanMstDataDeltaChunkRaw(context, request, cq));
+    std::unique_ptr< ::grpc::ClientAsyncResponseReader< ::proxy_proto::SetReply>> PrepareAsyncuplrcPlanMstDataDeltaChunk(::grpc::ClientContext* context, const ::proxy_proto::UpLRCPlanMstDataDeltaReq& request, ::grpc::CompletionQueue* cq) {
+      return std::unique_ptr< ::grpc::ClientAsyncResponseReader< ::proxy_proto::SetReply>>(PrepareAsyncuplrcPlanMstDataDeltaChunkRaw(context, request, cq));
     }
     ::grpc::Status getBlocks(::grpc::ClientContext* context, const ::proxy_proto::StripeAndBlockIDs& request, ::proxy_proto::GetReply* response) override;
     std::unique_ptr< ::grpc::ClientAsyncResponseReader< ::proxy_proto::GetReply>> AsyncgetBlocks(::grpc::ClientContext* context, const ::proxy_proto::StripeAndBlockIDs& request, ::grpc::CompletionQueue* cq) {
@@ -602,30 +602,30 @@ class proxyService final {
       void deleteBlock(::grpc::ClientContext* context, const ::proxy_proto::NodeAndBlock* request, ::proxy_proto::DelReply* response, ::grpc::ClientUnaryReactor* reactor) override;
       void scheduleAppend2Datanode(::grpc::ClientContext* context, const ::proxy_proto::AppendStripeDataPlacement* request, ::proxy_proto::SetReply* response, std::function<void(::grpc::Status)>) override;
       void scheduleAppend2Datanode(::grpc::ClientContext* context, const ::proxy_proto::AppendStripeDataPlacement* request, ::proxy_proto::SetReply* response, ::grpc::ClientUnaryReactor* reactor) override;
-      void scheduleCordDataUpdate(::grpc::ClientContext* context, const ::proxy_proto::CordDataUpdatePlacement* request, ::proxy_proto::SetReply* response, std::function<void(::grpc::Status)>) override;
-      void scheduleCordDataUpdate(::grpc::ClientContext* context, const ::proxy_proto::CordDataUpdatePlacement* request, ::proxy_proto::SetReply* response, ::grpc::ClientUnaryReactor* reactor) override;
-      void scheduleCordLocalParityApply(::grpc::ClientContext* context, const ::proxy_proto::CordLocalParityBundle* request, ::proxy_proto::SetReply* response, std::function<void(::grpc::Status)>) override;
-      void scheduleCordLocalParityApply(::grpc::ClientContext* context, const ::proxy_proto::CordLocalParityBundle* request, ::proxy_proto::SetReply* response, ::grpc::ClientUnaryReactor* reactor) override;
-      void cordLpHubSessionBegin(::grpc::ClientContext* context, const ::proxy_proto::CordLpHubSessionBegin* request, ::proxy_proto::SetReply* response, std::function<void(::grpc::Status)>) override;
-      void cordLpHubSessionBegin(::grpc::ClientContext* context, const ::proxy_proto::CordLpHubSessionBegin* request, ::proxy_proto::SetReply* response, ::grpc::ClientUnaryReactor* reactor) override;
-      void cordLpHubPartialPush(::grpc::ClientContext* context, const ::proxy_proto::CordLpHubPartialPush* request, ::proxy_proto::SetReply* response, std::function<void(::grpc::Status)>) override;
-      void cordLpHubPartialPush(::grpc::ClientContext* context, const ::proxy_proto::CordLpHubPartialPush* request, ::proxy_proto::SetReply* response, ::grpc::ClientUnaryReactor* reactor) override;
-      void cordLpComputePartialAndPush(::grpc::ClientContext* context, const ::proxy_proto::CordLpComputePartialAndPush* request, ::proxy_proto::SetReply* response, std::function<void(::grpc::Status)>) override;
-      void cordLpComputePartialAndPush(::grpc::ClientContext* context, const ::proxy_proto::CordLpComputePartialAndPush* request, ::proxy_proto::SetReply* response, ::grpc::ClientUnaryReactor* reactor) override;
-      void cordLpApplyParityDelta(::grpc::ClientContext* context, const ::proxy_proto::CordLpParityApplyDelta* request, ::proxy_proto::SetReply* response, std::function<void(::grpc::Status)>) override;
-      void cordLpApplyParityDelta(::grpc::ClientContext* context, const ::proxy_proto::CordLpParityApplyDelta* request, ::proxy_proto::SetReply* response, ::grpc::ClientUnaryReactor* reactor) override;
-      void scheduleCordTransferPlan(::grpc::ClientContext* context, const ::proxy_proto::CordTransferPlan* request, ::proxy_proto::SetReply* response, std::function<void(::grpc::Status)>) override;
-      void scheduleCordTransferPlan(::grpc::ClientContext* context, const ::proxy_proto::CordTransferPlan* request, ::proxy_proto::SetReply* response, ::grpc::ClientUnaryReactor* reactor) override;
-      void cordPlanStartExecution(::grpc::ClientContext* context, const ::proxy_proto::CordPlanKeyMsg* request, ::proxy_proto::SetReply* response, std::function<void(::grpc::Status)>) override;
-      void cordPlanStartExecution(::grpc::ClientContext* context, const ::proxy_proto::CordPlanKeyMsg* request, ::proxy_proto::SetReply* response, ::grpc::ClientUnaryReactor* reactor) override;
-      void cordPlanJoinExecution(::grpc::ClientContext* context, const ::proxy_proto::CordPlanKeyMsg* request, ::proxy_proto::SetReply* response, std::function<void(::grpc::Status)>) override;
-      void cordPlanJoinExecution(::grpc::ClientContext* context, const ::proxy_proto::CordPlanKeyMsg* request, ::proxy_proto::SetReply* response, ::grpc::ClientUnaryReactor* reactor) override;
-      void cordPlanCollectorIngestDataDelta(::grpc::ClientContext* context, const ::proxy_proto::CordPlanCollectorIngestReq* request, ::proxy_proto::SetReply* response, std::function<void(::grpc::Status)>) override;
-      void cordPlanCollectorIngestDataDelta(::grpc::ClientContext* context, const ::proxy_proto::CordPlanCollectorIngestReq* request, ::proxy_proto::SetReply* response, ::grpc::ClientUnaryReactor* reactor) override;
-      void cordPlanApplyParityXorDelta(::grpc::ClientContext* context, const ::proxy_proto::CordPlanApplyParityXorReq* request, ::proxy_proto::SetReply* response, std::function<void(::grpc::Status)>) override;
-      void cordPlanApplyParityXorDelta(::grpc::ClientContext* context, const ::proxy_proto::CordPlanApplyParityXorReq* request, ::proxy_proto::SetReply* response, ::grpc::ClientUnaryReactor* reactor) override;
-      void cordPlanMstDataDeltaChunk(::grpc::ClientContext* context, const ::proxy_proto::CordPlanMstDataDeltaReq* request, ::proxy_proto::SetReply* response, std::function<void(::grpc::Status)>) override;
-      void cordPlanMstDataDeltaChunk(::grpc::ClientContext* context, const ::proxy_proto::CordPlanMstDataDeltaReq* request, ::proxy_proto::SetReply* response, ::grpc::ClientUnaryReactor* reactor) override;
+      void scheduleUpLRCDataUpdate(::grpc::ClientContext* context, const ::proxy_proto::UpLRCDataUpdatePlacement* request, ::proxy_proto::SetReply* response, std::function<void(::grpc::Status)>) override;
+      void scheduleUpLRCDataUpdate(::grpc::ClientContext* context, const ::proxy_proto::UpLRCDataUpdatePlacement* request, ::proxy_proto::SetReply* response, ::grpc::ClientUnaryReactor* reactor) override;
+      void scheduleUpLRCLocalParityApply(::grpc::ClientContext* context, const ::proxy_proto::UpLRCLocalParityBundle* request, ::proxy_proto::SetReply* response, std::function<void(::grpc::Status)>) override;
+      void scheduleUpLRCLocalParityApply(::grpc::ClientContext* context, const ::proxy_proto::UpLRCLocalParityBundle* request, ::proxy_proto::SetReply* response, ::grpc::ClientUnaryReactor* reactor) override;
+      void uplrcLpHubSessionBegin(::grpc::ClientContext* context, const ::proxy_proto::UpLRCLpHubSessionBegin* request, ::proxy_proto::SetReply* response, std::function<void(::grpc::Status)>) override;
+      void uplrcLpHubSessionBegin(::grpc::ClientContext* context, const ::proxy_proto::UpLRCLpHubSessionBegin* request, ::proxy_proto::SetReply* response, ::grpc::ClientUnaryReactor* reactor) override;
+      void uplrcLpHubPartialPush(::grpc::ClientContext* context, const ::proxy_proto::UpLRCLpHubPartialPush* request, ::proxy_proto::SetReply* response, std::function<void(::grpc::Status)>) override;
+      void uplrcLpHubPartialPush(::grpc::ClientContext* context, const ::proxy_proto::UpLRCLpHubPartialPush* request, ::proxy_proto::SetReply* response, ::grpc::ClientUnaryReactor* reactor) override;
+      void uplrcLpComputePartialAndPush(::grpc::ClientContext* context, const ::proxy_proto::UpLRCLpComputePartialAndPush* request, ::proxy_proto::SetReply* response, std::function<void(::grpc::Status)>) override;
+      void uplrcLpComputePartialAndPush(::grpc::ClientContext* context, const ::proxy_proto::UpLRCLpComputePartialAndPush* request, ::proxy_proto::SetReply* response, ::grpc::ClientUnaryReactor* reactor) override;
+      void uplrcLpApplyParityDelta(::grpc::ClientContext* context, const ::proxy_proto::UpLRCLpParityApplyDelta* request, ::proxy_proto::SetReply* response, std::function<void(::grpc::Status)>) override;
+      void uplrcLpApplyParityDelta(::grpc::ClientContext* context, const ::proxy_proto::UpLRCLpParityApplyDelta* request, ::proxy_proto::SetReply* response, ::grpc::ClientUnaryReactor* reactor) override;
+      void scheduleUpLRCTransferPlan(::grpc::ClientContext* context, const ::proxy_proto::UpLRCTransferPlan* request, ::proxy_proto::SetReply* response, std::function<void(::grpc::Status)>) override;
+      void scheduleUpLRCTransferPlan(::grpc::ClientContext* context, const ::proxy_proto::UpLRCTransferPlan* request, ::proxy_proto::SetReply* response, ::grpc::ClientUnaryReactor* reactor) override;
+      void uplrcPlanStartExecution(::grpc::ClientContext* context, const ::proxy_proto::UpLRCPlanKeyMsg* request, ::proxy_proto::SetReply* response, std::function<void(::grpc::Status)>) override;
+      void uplrcPlanStartExecution(::grpc::ClientContext* context, const ::proxy_proto::UpLRCPlanKeyMsg* request, ::proxy_proto::SetReply* response, ::grpc::ClientUnaryReactor* reactor) override;
+      void uplrcPlanJoinExecution(::grpc::ClientContext* context, const ::proxy_proto::UpLRCPlanKeyMsg* request, ::proxy_proto::SetReply* response, std::function<void(::grpc::Status)>) override;
+      void uplrcPlanJoinExecution(::grpc::ClientContext* context, const ::proxy_proto::UpLRCPlanKeyMsg* request, ::proxy_proto::SetReply* response, ::grpc::ClientUnaryReactor* reactor) override;
+      void uplrcPlanCollectorIngestDataDelta(::grpc::ClientContext* context, const ::proxy_proto::UpLRCPlanCollectorIngestReq* request, ::proxy_proto::SetReply* response, std::function<void(::grpc::Status)>) override;
+      void uplrcPlanCollectorIngestDataDelta(::grpc::ClientContext* context, const ::proxy_proto::UpLRCPlanCollectorIngestReq* request, ::proxy_proto::SetReply* response, ::grpc::ClientUnaryReactor* reactor) override;
+      void uplrcPlanApplyParityXorDelta(::grpc::ClientContext* context, const ::proxy_proto::UpLRCPlanApplyParityXorReq* request, ::proxy_proto::SetReply* response, std::function<void(::grpc::Status)>) override;
+      void uplrcPlanApplyParityXorDelta(::grpc::ClientContext* context, const ::proxy_proto::UpLRCPlanApplyParityXorReq* request, ::proxy_proto::SetReply* response, ::grpc::ClientUnaryReactor* reactor) override;
+      void uplrcPlanMstDataDeltaChunk(::grpc::ClientContext* context, const ::proxy_proto::UpLRCPlanMstDataDeltaReq* request, ::proxy_proto::SetReply* response, std::function<void(::grpc::Status)>) override;
+      void uplrcPlanMstDataDeltaChunk(::grpc::ClientContext* context, const ::proxy_proto::UpLRCPlanMstDataDeltaReq* request, ::proxy_proto::SetReply* response, ::grpc::ClientUnaryReactor* reactor) override;
       void getBlocks(::grpc::ClientContext* context, const ::proxy_proto::StripeAndBlockIDs* request, ::proxy_proto::GetReply* response, std::function<void(::grpc::Status)>) override;
       void getBlocks(::grpc::ClientContext* context, const ::proxy_proto::StripeAndBlockIDs* request, ::proxy_proto::GetReply* response, ::grpc::ClientUnaryReactor* reactor) override;
      private:
@@ -667,30 +667,30 @@ class proxyService final {
     ::grpc::ClientAsyncResponseReader< ::proxy_proto::DelReply>* PrepareAsyncdeleteBlockRaw(::grpc::ClientContext* context, const ::proxy_proto::NodeAndBlock& request, ::grpc::CompletionQueue* cq) override;
     ::grpc::ClientAsyncResponseReader< ::proxy_proto::SetReply>* AsyncscheduleAppend2DatanodeRaw(::grpc::ClientContext* context, const ::proxy_proto::AppendStripeDataPlacement& request, ::grpc::CompletionQueue* cq) override;
     ::grpc::ClientAsyncResponseReader< ::proxy_proto::SetReply>* PrepareAsyncscheduleAppend2DatanodeRaw(::grpc::ClientContext* context, const ::proxy_proto::AppendStripeDataPlacement& request, ::grpc::CompletionQueue* cq) override;
-    ::grpc::ClientAsyncResponseReader< ::proxy_proto::SetReply>* AsyncscheduleCordDataUpdateRaw(::grpc::ClientContext* context, const ::proxy_proto::CordDataUpdatePlacement& request, ::grpc::CompletionQueue* cq) override;
-    ::grpc::ClientAsyncResponseReader< ::proxy_proto::SetReply>* PrepareAsyncscheduleCordDataUpdateRaw(::grpc::ClientContext* context, const ::proxy_proto::CordDataUpdatePlacement& request, ::grpc::CompletionQueue* cq) override;
-    ::grpc::ClientAsyncResponseReader< ::proxy_proto::SetReply>* AsyncscheduleCordLocalParityApplyRaw(::grpc::ClientContext* context, const ::proxy_proto::CordLocalParityBundle& request, ::grpc::CompletionQueue* cq) override;
-    ::grpc::ClientAsyncResponseReader< ::proxy_proto::SetReply>* PrepareAsyncscheduleCordLocalParityApplyRaw(::grpc::ClientContext* context, const ::proxy_proto::CordLocalParityBundle& request, ::grpc::CompletionQueue* cq) override;
-    ::grpc::ClientAsyncResponseReader< ::proxy_proto::SetReply>* AsynccordLpHubSessionBeginRaw(::grpc::ClientContext* context, const ::proxy_proto::CordLpHubSessionBegin& request, ::grpc::CompletionQueue* cq) override;
-    ::grpc::ClientAsyncResponseReader< ::proxy_proto::SetReply>* PrepareAsynccordLpHubSessionBeginRaw(::grpc::ClientContext* context, const ::proxy_proto::CordLpHubSessionBegin& request, ::grpc::CompletionQueue* cq) override;
-    ::grpc::ClientAsyncResponseReader< ::proxy_proto::SetReply>* AsynccordLpHubPartialPushRaw(::grpc::ClientContext* context, const ::proxy_proto::CordLpHubPartialPush& request, ::grpc::CompletionQueue* cq) override;
-    ::grpc::ClientAsyncResponseReader< ::proxy_proto::SetReply>* PrepareAsynccordLpHubPartialPushRaw(::grpc::ClientContext* context, const ::proxy_proto::CordLpHubPartialPush& request, ::grpc::CompletionQueue* cq) override;
-    ::grpc::ClientAsyncResponseReader< ::proxy_proto::SetReply>* AsynccordLpComputePartialAndPushRaw(::grpc::ClientContext* context, const ::proxy_proto::CordLpComputePartialAndPush& request, ::grpc::CompletionQueue* cq) override;
-    ::grpc::ClientAsyncResponseReader< ::proxy_proto::SetReply>* PrepareAsynccordLpComputePartialAndPushRaw(::grpc::ClientContext* context, const ::proxy_proto::CordLpComputePartialAndPush& request, ::grpc::CompletionQueue* cq) override;
-    ::grpc::ClientAsyncResponseReader< ::proxy_proto::SetReply>* AsynccordLpApplyParityDeltaRaw(::grpc::ClientContext* context, const ::proxy_proto::CordLpParityApplyDelta& request, ::grpc::CompletionQueue* cq) override;
-    ::grpc::ClientAsyncResponseReader< ::proxy_proto::SetReply>* PrepareAsynccordLpApplyParityDeltaRaw(::grpc::ClientContext* context, const ::proxy_proto::CordLpParityApplyDelta& request, ::grpc::CompletionQueue* cq) override;
-    ::grpc::ClientAsyncResponseReader< ::proxy_proto::SetReply>* AsyncscheduleCordTransferPlanRaw(::grpc::ClientContext* context, const ::proxy_proto::CordTransferPlan& request, ::grpc::CompletionQueue* cq) override;
-    ::grpc::ClientAsyncResponseReader< ::proxy_proto::SetReply>* PrepareAsyncscheduleCordTransferPlanRaw(::grpc::ClientContext* context, const ::proxy_proto::CordTransferPlan& request, ::grpc::CompletionQueue* cq) override;
-    ::grpc::ClientAsyncResponseReader< ::proxy_proto::SetReply>* AsynccordPlanStartExecutionRaw(::grpc::ClientContext* context, const ::proxy_proto::CordPlanKeyMsg& request, ::grpc::CompletionQueue* cq) override;
-    ::grpc::ClientAsyncResponseReader< ::proxy_proto::SetReply>* PrepareAsynccordPlanStartExecutionRaw(::grpc::ClientContext* context, const ::proxy_proto::CordPlanKeyMsg& request, ::grpc::CompletionQueue* cq) override;
-    ::grpc::ClientAsyncResponseReader< ::proxy_proto::SetReply>* AsynccordPlanJoinExecutionRaw(::grpc::ClientContext* context, const ::proxy_proto::CordPlanKeyMsg& request, ::grpc::CompletionQueue* cq) override;
-    ::grpc::ClientAsyncResponseReader< ::proxy_proto::SetReply>* PrepareAsynccordPlanJoinExecutionRaw(::grpc::ClientContext* context, const ::proxy_proto::CordPlanKeyMsg& request, ::grpc::CompletionQueue* cq) override;
-    ::grpc::ClientAsyncResponseReader< ::proxy_proto::SetReply>* AsynccordPlanCollectorIngestDataDeltaRaw(::grpc::ClientContext* context, const ::proxy_proto::CordPlanCollectorIngestReq& request, ::grpc::CompletionQueue* cq) override;
-    ::grpc::ClientAsyncResponseReader< ::proxy_proto::SetReply>* PrepareAsynccordPlanCollectorIngestDataDeltaRaw(::grpc::ClientContext* context, const ::proxy_proto::CordPlanCollectorIngestReq& request, ::grpc::CompletionQueue* cq) override;
-    ::grpc::ClientAsyncResponseReader< ::proxy_proto::SetReply>* AsynccordPlanApplyParityXorDeltaRaw(::grpc::ClientContext* context, const ::proxy_proto::CordPlanApplyParityXorReq& request, ::grpc::CompletionQueue* cq) override;
-    ::grpc::ClientAsyncResponseReader< ::proxy_proto::SetReply>* PrepareAsynccordPlanApplyParityXorDeltaRaw(::grpc::ClientContext* context, const ::proxy_proto::CordPlanApplyParityXorReq& request, ::grpc::CompletionQueue* cq) override;
-    ::grpc::ClientAsyncResponseReader< ::proxy_proto::SetReply>* AsynccordPlanMstDataDeltaChunkRaw(::grpc::ClientContext* context, const ::proxy_proto::CordPlanMstDataDeltaReq& request, ::grpc::CompletionQueue* cq) override;
-    ::grpc::ClientAsyncResponseReader< ::proxy_proto::SetReply>* PrepareAsynccordPlanMstDataDeltaChunkRaw(::grpc::ClientContext* context, const ::proxy_proto::CordPlanMstDataDeltaReq& request, ::grpc::CompletionQueue* cq) override;
+    ::grpc::ClientAsyncResponseReader< ::proxy_proto::SetReply>* AsyncscheduleUpLRCDataUpdateRaw(::grpc::ClientContext* context, const ::proxy_proto::UpLRCDataUpdatePlacement& request, ::grpc::CompletionQueue* cq) override;
+    ::grpc::ClientAsyncResponseReader< ::proxy_proto::SetReply>* PrepareAsyncscheduleUpLRCDataUpdateRaw(::grpc::ClientContext* context, const ::proxy_proto::UpLRCDataUpdatePlacement& request, ::grpc::CompletionQueue* cq) override;
+    ::grpc::ClientAsyncResponseReader< ::proxy_proto::SetReply>* AsyncscheduleUpLRCLocalParityApplyRaw(::grpc::ClientContext* context, const ::proxy_proto::UpLRCLocalParityBundle& request, ::grpc::CompletionQueue* cq) override;
+    ::grpc::ClientAsyncResponseReader< ::proxy_proto::SetReply>* PrepareAsyncscheduleUpLRCLocalParityApplyRaw(::grpc::ClientContext* context, const ::proxy_proto::UpLRCLocalParityBundle& request, ::grpc::CompletionQueue* cq) override;
+    ::grpc::ClientAsyncResponseReader< ::proxy_proto::SetReply>* AsyncuplrcLpHubSessionBeginRaw(::grpc::ClientContext* context, const ::proxy_proto::UpLRCLpHubSessionBegin& request, ::grpc::CompletionQueue* cq) override;
+    ::grpc::ClientAsyncResponseReader< ::proxy_proto::SetReply>* PrepareAsyncuplrcLpHubSessionBeginRaw(::grpc::ClientContext* context, const ::proxy_proto::UpLRCLpHubSessionBegin& request, ::grpc::CompletionQueue* cq) override;
+    ::grpc::ClientAsyncResponseReader< ::proxy_proto::SetReply>* AsyncuplrcLpHubPartialPushRaw(::grpc::ClientContext* context, const ::proxy_proto::UpLRCLpHubPartialPush& request, ::grpc::CompletionQueue* cq) override;
+    ::grpc::ClientAsyncResponseReader< ::proxy_proto::SetReply>* PrepareAsyncuplrcLpHubPartialPushRaw(::grpc::ClientContext* context, const ::proxy_proto::UpLRCLpHubPartialPush& request, ::grpc::CompletionQueue* cq) override;
+    ::grpc::ClientAsyncResponseReader< ::proxy_proto::SetReply>* AsyncuplrcLpComputePartialAndPushRaw(::grpc::ClientContext* context, const ::proxy_proto::UpLRCLpComputePartialAndPush& request, ::grpc::CompletionQueue* cq) override;
+    ::grpc::ClientAsyncResponseReader< ::proxy_proto::SetReply>* PrepareAsyncuplrcLpComputePartialAndPushRaw(::grpc::ClientContext* context, const ::proxy_proto::UpLRCLpComputePartialAndPush& request, ::grpc::CompletionQueue* cq) override;
+    ::grpc::ClientAsyncResponseReader< ::proxy_proto::SetReply>* AsyncuplrcLpApplyParityDeltaRaw(::grpc::ClientContext* context, const ::proxy_proto::UpLRCLpParityApplyDelta& request, ::grpc::CompletionQueue* cq) override;
+    ::grpc::ClientAsyncResponseReader< ::proxy_proto::SetReply>* PrepareAsyncuplrcLpApplyParityDeltaRaw(::grpc::ClientContext* context, const ::proxy_proto::UpLRCLpParityApplyDelta& request, ::grpc::CompletionQueue* cq) override;
+    ::grpc::ClientAsyncResponseReader< ::proxy_proto::SetReply>* AsyncscheduleUpLRCTransferPlanRaw(::grpc::ClientContext* context, const ::proxy_proto::UpLRCTransferPlan& request, ::grpc::CompletionQueue* cq) override;
+    ::grpc::ClientAsyncResponseReader< ::proxy_proto::SetReply>* PrepareAsyncscheduleUpLRCTransferPlanRaw(::grpc::ClientContext* context, const ::proxy_proto::UpLRCTransferPlan& request, ::grpc::CompletionQueue* cq) override;
+    ::grpc::ClientAsyncResponseReader< ::proxy_proto::SetReply>* AsyncuplrcPlanStartExecutionRaw(::grpc::ClientContext* context, const ::proxy_proto::UpLRCPlanKeyMsg& request, ::grpc::CompletionQueue* cq) override;
+    ::grpc::ClientAsyncResponseReader< ::proxy_proto::SetReply>* PrepareAsyncuplrcPlanStartExecutionRaw(::grpc::ClientContext* context, const ::proxy_proto::UpLRCPlanKeyMsg& request, ::grpc::CompletionQueue* cq) override;
+    ::grpc::ClientAsyncResponseReader< ::proxy_proto::SetReply>* AsyncuplrcPlanJoinExecutionRaw(::grpc::ClientContext* context, const ::proxy_proto::UpLRCPlanKeyMsg& request, ::grpc::CompletionQueue* cq) override;
+    ::grpc::ClientAsyncResponseReader< ::proxy_proto::SetReply>* PrepareAsyncuplrcPlanJoinExecutionRaw(::grpc::ClientContext* context, const ::proxy_proto::UpLRCPlanKeyMsg& request, ::grpc::CompletionQueue* cq) override;
+    ::grpc::ClientAsyncResponseReader< ::proxy_proto::SetReply>* AsyncuplrcPlanCollectorIngestDataDeltaRaw(::grpc::ClientContext* context, const ::proxy_proto::UpLRCPlanCollectorIngestReq& request, ::grpc::CompletionQueue* cq) override;
+    ::grpc::ClientAsyncResponseReader< ::proxy_proto::SetReply>* PrepareAsyncuplrcPlanCollectorIngestDataDeltaRaw(::grpc::ClientContext* context, const ::proxy_proto::UpLRCPlanCollectorIngestReq& request, ::grpc::CompletionQueue* cq) override;
+    ::grpc::ClientAsyncResponseReader< ::proxy_proto::SetReply>* AsyncuplrcPlanApplyParityXorDeltaRaw(::grpc::ClientContext* context, const ::proxy_proto::UpLRCPlanApplyParityXorReq& request, ::grpc::CompletionQueue* cq) override;
+    ::grpc::ClientAsyncResponseReader< ::proxy_proto::SetReply>* PrepareAsyncuplrcPlanApplyParityXorDeltaRaw(::grpc::ClientContext* context, const ::proxy_proto::UpLRCPlanApplyParityXorReq& request, ::grpc::CompletionQueue* cq) override;
+    ::grpc::ClientAsyncResponseReader< ::proxy_proto::SetReply>* AsyncuplrcPlanMstDataDeltaChunkRaw(::grpc::ClientContext* context, const ::proxy_proto::UpLRCPlanMstDataDeltaReq& request, ::grpc::CompletionQueue* cq) override;
+    ::grpc::ClientAsyncResponseReader< ::proxy_proto::SetReply>* PrepareAsyncuplrcPlanMstDataDeltaChunkRaw(::grpc::ClientContext* context, const ::proxy_proto::UpLRCPlanMstDataDeltaReq& request, ::grpc::CompletionQueue* cq) override;
     ::grpc::ClientAsyncResponseReader< ::proxy_proto::GetReply>* AsyncgetBlocksRaw(::grpc::ClientContext* context, const ::proxy_proto::StripeAndBlockIDs& request, ::grpc::CompletionQueue* cq) override;
     ::grpc::ClientAsyncResponseReader< ::proxy_proto::GetReply>* PrepareAsyncgetBlocksRaw(::grpc::ClientContext* context, const ::proxy_proto::StripeAndBlockIDs& request, ::grpc::CompletionQueue* cq) override;
     const ::grpc::internal::RpcMethod rpcmethod_checkalive_;
@@ -707,18 +707,18 @@ class proxyService final {
     const ::grpc::internal::RpcMethod rpcmethod_multipleRecovery_;
     const ::grpc::internal::RpcMethod rpcmethod_deleteBlock_;
     const ::grpc::internal::RpcMethod rpcmethod_scheduleAppend2Datanode_;
-    const ::grpc::internal::RpcMethod rpcmethod_scheduleCordDataUpdate_;
-    const ::grpc::internal::RpcMethod rpcmethod_scheduleCordLocalParityApply_;
-    const ::grpc::internal::RpcMethod rpcmethod_cordLpHubSessionBegin_;
-    const ::grpc::internal::RpcMethod rpcmethod_cordLpHubPartialPush_;
-    const ::grpc::internal::RpcMethod rpcmethod_cordLpComputePartialAndPush_;
-    const ::grpc::internal::RpcMethod rpcmethod_cordLpApplyParityDelta_;
-    const ::grpc::internal::RpcMethod rpcmethod_scheduleCordTransferPlan_;
-    const ::grpc::internal::RpcMethod rpcmethod_cordPlanStartExecution_;
-    const ::grpc::internal::RpcMethod rpcmethod_cordPlanJoinExecution_;
-    const ::grpc::internal::RpcMethod rpcmethod_cordPlanCollectorIngestDataDelta_;
-    const ::grpc::internal::RpcMethod rpcmethod_cordPlanApplyParityXorDelta_;
-    const ::grpc::internal::RpcMethod rpcmethod_cordPlanMstDataDeltaChunk_;
+    const ::grpc::internal::RpcMethod rpcmethod_scheduleUpLRCDataUpdate_;
+    const ::grpc::internal::RpcMethod rpcmethod_scheduleUpLRCLocalParityApply_;
+    const ::grpc::internal::RpcMethod rpcmethod_uplrcLpHubSessionBegin_;
+    const ::grpc::internal::RpcMethod rpcmethod_uplrcLpHubPartialPush_;
+    const ::grpc::internal::RpcMethod rpcmethod_uplrcLpComputePartialAndPush_;
+    const ::grpc::internal::RpcMethod rpcmethod_uplrcLpApplyParityDelta_;
+    const ::grpc::internal::RpcMethod rpcmethod_scheduleUpLRCTransferPlan_;
+    const ::grpc::internal::RpcMethod rpcmethod_uplrcPlanStartExecution_;
+    const ::grpc::internal::RpcMethod rpcmethod_uplrcPlanJoinExecution_;
+    const ::grpc::internal::RpcMethod rpcmethod_uplrcPlanCollectorIngestDataDelta_;
+    const ::grpc::internal::RpcMethod rpcmethod_uplrcPlanApplyParityXorDelta_;
+    const ::grpc::internal::RpcMethod rpcmethod_uplrcPlanMstDataDeltaChunk_;
     const ::grpc::internal::RpcMethod rpcmethod_getBlocks_;
   };
   static std::unique_ptr<Stub> NewStub(const std::shared_ptr< ::grpc::ChannelInterface>& channel, const ::grpc::StubOptions& options = ::grpc::StubOptions());
@@ -748,21 +748,21 @@ class proxyService final {
     virtual ::grpc::Status deleteBlock(::grpc::ServerContext* context, const ::proxy_proto::NodeAndBlock* request, ::proxy_proto::DelReply* response);
     // append
     virtual ::grpc::Status scheduleAppend2Datanode(::grpc::ServerContext* context, const ::proxy_proto::AppendStripeDataPlacement* request, ::proxy_proto::SetReply* response);
-    // CoRD：客户端下发新数据；proxy 读旧、异或得 Δ、写新数据，Δ 暂存于本 cluster 的 datanode
-    virtual ::grpc::Status scheduleCordDataUpdate(::grpc::ServerContext* context, const ::proxy_proto::CordDataUpdatePlacement* request, ::proxy_proto::SetReply* response);
-    virtual ::grpc::Status scheduleCordLocalParityApply(::grpc::ServerContext* context, const ::proxy_proto::CordLocalParityBundle* request, ::proxy_proto::SetReply* response);
-    virtual ::grpc::Status cordLpHubSessionBegin(::grpc::ServerContext* context, const ::proxy_proto::CordLpHubSessionBegin* request, ::proxy_proto::SetReply* response);
-    virtual ::grpc::Status cordLpHubPartialPush(::grpc::ServerContext* context, const ::proxy_proto::CordLpHubPartialPush* request, ::proxy_proto::SetReply* response);
-    virtual ::grpc::Status cordLpComputePartialAndPush(::grpc::ServerContext* context, const ::proxy_proto::CordLpComputePartialAndPush* request, ::proxy_proto::SetReply* response);
-    virtual ::grpc::Status cordLpApplyParityDelta(::grpc::ServerContext* context, const ::proxy_proto::CordLpParityApplyDelta* request, ::proxy_proto::SetReply* response);
-    // CoRD：下发算法二生成的跨 proxy 传输计划（train_route + timeslot_schedule 的可序列化形式）
-    virtual ::grpc::Status scheduleCordTransferPlan(::grpc::ServerContext* context, const ::proxy_proto::CordTransferPlan* request, ::proxy_proto::SetReply* response);
-    virtual ::grpc::Status cordPlanStartExecution(::grpc::ServerContext* context, const ::proxy_proto::CordPlanKeyMsg* request, ::proxy_proto::SetReply* response);
-    virtual ::grpc::Status cordPlanJoinExecution(::grpc::ServerContext* context, const ::proxy_proto::CordPlanKeyMsg* request, ::proxy_proto::SetReply* response);
-    // CoRD 跨 proxy：收集器聚合数据增量 / 校验块 XOR 落盘 / MST 转发数据增量
-    virtual ::grpc::Status cordPlanCollectorIngestDataDelta(::grpc::ServerContext* context, const ::proxy_proto::CordPlanCollectorIngestReq* request, ::proxy_proto::SetReply* response);
-    virtual ::grpc::Status cordPlanApplyParityXorDelta(::grpc::ServerContext* context, const ::proxy_proto::CordPlanApplyParityXorReq* request, ::proxy_proto::SetReply* response);
-    virtual ::grpc::Status cordPlanMstDataDeltaChunk(::grpc::ServerContext* context, const ::proxy_proto::CordPlanMstDataDeltaReq* request, ::proxy_proto::SetReply* response);
+    // UpLRC：客户端下发新数据；proxy 读旧、异或得 Δ、写新数据，Δ 暂存于本 cluster 的 datanode
+    virtual ::grpc::Status scheduleUpLRCDataUpdate(::grpc::ServerContext* context, const ::proxy_proto::UpLRCDataUpdatePlacement* request, ::proxy_proto::SetReply* response);
+    virtual ::grpc::Status scheduleUpLRCLocalParityApply(::grpc::ServerContext* context, const ::proxy_proto::UpLRCLocalParityBundle* request, ::proxy_proto::SetReply* response);
+    virtual ::grpc::Status uplrcLpHubSessionBegin(::grpc::ServerContext* context, const ::proxy_proto::UpLRCLpHubSessionBegin* request, ::proxy_proto::SetReply* response);
+    virtual ::grpc::Status uplrcLpHubPartialPush(::grpc::ServerContext* context, const ::proxy_proto::UpLRCLpHubPartialPush* request, ::proxy_proto::SetReply* response);
+    virtual ::grpc::Status uplrcLpComputePartialAndPush(::grpc::ServerContext* context, const ::proxy_proto::UpLRCLpComputePartialAndPush* request, ::proxy_proto::SetReply* response);
+    virtual ::grpc::Status uplrcLpApplyParityDelta(::grpc::ServerContext* context, const ::proxy_proto::UpLRCLpParityApplyDelta* request, ::proxy_proto::SetReply* response);
+    // UpLRC：下发算法二生成的跨 proxy 传输计划（train_route + timeslot_schedule 的可序列化形式）
+    virtual ::grpc::Status scheduleUpLRCTransferPlan(::grpc::ServerContext* context, const ::proxy_proto::UpLRCTransferPlan* request, ::proxy_proto::SetReply* response);
+    virtual ::grpc::Status uplrcPlanStartExecution(::grpc::ServerContext* context, const ::proxy_proto::UpLRCPlanKeyMsg* request, ::proxy_proto::SetReply* response);
+    virtual ::grpc::Status uplrcPlanJoinExecution(::grpc::ServerContext* context, const ::proxy_proto::UpLRCPlanKeyMsg* request, ::proxy_proto::SetReply* response);
+    // UpLRC 跨 proxy：收集器聚合数据增量 / 校验块 XOR 落盘 / MST 转发数据增量
+    virtual ::grpc::Status uplrcPlanCollectorIngestDataDelta(::grpc::ServerContext* context, const ::proxy_proto::UpLRCPlanCollectorIngestReq* request, ::proxy_proto::SetReply* response);
+    virtual ::grpc::Status uplrcPlanApplyParityXorDelta(::grpc::ServerContext* context, const ::proxy_proto::UpLRCPlanApplyParityXorReq* request, ::proxy_proto::SetReply* response);
+    virtual ::grpc::Status uplrcPlanMstDataDeltaChunk(::grpc::ServerContext* context, const ::proxy_proto::UpLRCPlanMstDataDeltaReq* request, ::proxy_proto::SetReply* response);
     // get stripe
     virtual ::grpc::Status getBlocks(::grpc::ServerContext* context, const ::proxy_proto::StripeAndBlockIDs* request, ::proxy_proto::GetReply* response);
   };
@@ -1047,242 +1047,242 @@ class proxyService final {
     }
   };
   template <class BaseClass>
-  class WithAsyncMethod_scheduleCordDataUpdate : public BaseClass {
+  class WithAsyncMethod_scheduleUpLRCDataUpdate : public BaseClass {
    private:
     void BaseClassMustBeDerivedFromService(const Service* /*service*/) {}
    public:
-    WithAsyncMethod_scheduleCordDataUpdate() {
+    WithAsyncMethod_scheduleUpLRCDataUpdate() {
       ::grpc::Service::MarkMethodAsync(14);
     }
-    ~WithAsyncMethod_scheduleCordDataUpdate() override {
+    ~WithAsyncMethod_scheduleUpLRCDataUpdate() override {
       BaseClassMustBeDerivedFromService(this);
     }
     // disable synchronous version of this method
-    ::grpc::Status scheduleCordDataUpdate(::grpc::ServerContext* /*context*/, const ::proxy_proto::CordDataUpdatePlacement* /*request*/, ::proxy_proto::SetReply* /*response*/) override {
+    ::grpc::Status scheduleUpLRCDataUpdate(::grpc::ServerContext* /*context*/, const ::proxy_proto::UpLRCDataUpdatePlacement* /*request*/, ::proxy_proto::SetReply* /*response*/) override {
       abort();
       return ::grpc::Status(::grpc::StatusCode::UNIMPLEMENTED, "");
     }
-    void RequestscheduleCordDataUpdate(::grpc::ServerContext* context, ::proxy_proto::CordDataUpdatePlacement* request, ::grpc::ServerAsyncResponseWriter< ::proxy_proto::SetReply>* response, ::grpc::CompletionQueue* new_call_cq, ::grpc::ServerCompletionQueue* notification_cq, void *tag) {
+    void RequestscheduleUpLRCDataUpdate(::grpc::ServerContext* context, ::proxy_proto::UpLRCDataUpdatePlacement* request, ::grpc::ServerAsyncResponseWriter< ::proxy_proto::SetReply>* response, ::grpc::CompletionQueue* new_call_cq, ::grpc::ServerCompletionQueue* notification_cq, void *tag) {
       ::grpc::Service::RequestAsyncUnary(14, context, request, response, new_call_cq, notification_cq, tag);
     }
   };
   template <class BaseClass>
-  class WithAsyncMethod_scheduleCordLocalParityApply : public BaseClass {
+  class WithAsyncMethod_scheduleUpLRCLocalParityApply : public BaseClass {
    private:
     void BaseClassMustBeDerivedFromService(const Service* /*service*/) {}
    public:
-    WithAsyncMethod_scheduleCordLocalParityApply() {
+    WithAsyncMethod_scheduleUpLRCLocalParityApply() {
       ::grpc::Service::MarkMethodAsync(15);
     }
-    ~WithAsyncMethod_scheduleCordLocalParityApply() override {
+    ~WithAsyncMethod_scheduleUpLRCLocalParityApply() override {
       BaseClassMustBeDerivedFromService(this);
     }
     // disable synchronous version of this method
-    ::grpc::Status scheduleCordLocalParityApply(::grpc::ServerContext* /*context*/, const ::proxy_proto::CordLocalParityBundle* /*request*/, ::proxy_proto::SetReply* /*response*/) override {
+    ::grpc::Status scheduleUpLRCLocalParityApply(::grpc::ServerContext* /*context*/, const ::proxy_proto::UpLRCLocalParityBundle* /*request*/, ::proxy_proto::SetReply* /*response*/) override {
       abort();
       return ::grpc::Status(::grpc::StatusCode::UNIMPLEMENTED, "");
     }
-    void RequestscheduleCordLocalParityApply(::grpc::ServerContext* context, ::proxy_proto::CordLocalParityBundle* request, ::grpc::ServerAsyncResponseWriter< ::proxy_proto::SetReply>* response, ::grpc::CompletionQueue* new_call_cq, ::grpc::ServerCompletionQueue* notification_cq, void *tag) {
+    void RequestscheduleUpLRCLocalParityApply(::grpc::ServerContext* context, ::proxy_proto::UpLRCLocalParityBundle* request, ::grpc::ServerAsyncResponseWriter< ::proxy_proto::SetReply>* response, ::grpc::CompletionQueue* new_call_cq, ::grpc::ServerCompletionQueue* notification_cq, void *tag) {
       ::grpc::Service::RequestAsyncUnary(15, context, request, response, new_call_cq, notification_cq, tag);
     }
   };
   template <class BaseClass>
-  class WithAsyncMethod_cordLpHubSessionBegin : public BaseClass {
+  class WithAsyncMethod_uplrcLpHubSessionBegin : public BaseClass {
    private:
     void BaseClassMustBeDerivedFromService(const Service* /*service*/) {}
    public:
-    WithAsyncMethod_cordLpHubSessionBegin() {
+    WithAsyncMethod_uplrcLpHubSessionBegin() {
       ::grpc::Service::MarkMethodAsync(16);
     }
-    ~WithAsyncMethod_cordLpHubSessionBegin() override {
+    ~WithAsyncMethod_uplrcLpHubSessionBegin() override {
       BaseClassMustBeDerivedFromService(this);
     }
     // disable synchronous version of this method
-    ::grpc::Status cordLpHubSessionBegin(::grpc::ServerContext* /*context*/, const ::proxy_proto::CordLpHubSessionBegin* /*request*/, ::proxy_proto::SetReply* /*response*/) override {
+    ::grpc::Status uplrcLpHubSessionBegin(::grpc::ServerContext* /*context*/, const ::proxy_proto::UpLRCLpHubSessionBegin* /*request*/, ::proxy_proto::SetReply* /*response*/) override {
       abort();
       return ::grpc::Status(::grpc::StatusCode::UNIMPLEMENTED, "");
     }
-    void RequestcordLpHubSessionBegin(::grpc::ServerContext* context, ::proxy_proto::CordLpHubSessionBegin* request, ::grpc::ServerAsyncResponseWriter< ::proxy_proto::SetReply>* response, ::grpc::CompletionQueue* new_call_cq, ::grpc::ServerCompletionQueue* notification_cq, void *tag) {
+    void RequestuplrcLpHubSessionBegin(::grpc::ServerContext* context, ::proxy_proto::UpLRCLpHubSessionBegin* request, ::grpc::ServerAsyncResponseWriter< ::proxy_proto::SetReply>* response, ::grpc::CompletionQueue* new_call_cq, ::grpc::ServerCompletionQueue* notification_cq, void *tag) {
       ::grpc::Service::RequestAsyncUnary(16, context, request, response, new_call_cq, notification_cq, tag);
     }
   };
   template <class BaseClass>
-  class WithAsyncMethod_cordLpHubPartialPush : public BaseClass {
+  class WithAsyncMethod_uplrcLpHubPartialPush : public BaseClass {
    private:
     void BaseClassMustBeDerivedFromService(const Service* /*service*/) {}
    public:
-    WithAsyncMethod_cordLpHubPartialPush() {
+    WithAsyncMethod_uplrcLpHubPartialPush() {
       ::grpc::Service::MarkMethodAsync(17);
     }
-    ~WithAsyncMethod_cordLpHubPartialPush() override {
+    ~WithAsyncMethod_uplrcLpHubPartialPush() override {
       BaseClassMustBeDerivedFromService(this);
     }
     // disable synchronous version of this method
-    ::grpc::Status cordLpHubPartialPush(::grpc::ServerContext* /*context*/, const ::proxy_proto::CordLpHubPartialPush* /*request*/, ::proxy_proto::SetReply* /*response*/) override {
+    ::grpc::Status uplrcLpHubPartialPush(::grpc::ServerContext* /*context*/, const ::proxy_proto::UpLRCLpHubPartialPush* /*request*/, ::proxy_proto::SetReply* /*response*/) override {
       abort();
       return ::grpc::Status(::grpc::StatusCode::UNIMPLEMENTED, "");
     }
-    void RequestcordLpHubPartialPush(::grpc::ServerContext* context, ::proxy_proto::CordLpHubPartialPush* request, ::grpc::ServerAsyncResponseWriter< ::proxy_proto::SetReply>* response, ::grpc::CompletionQueue* new_call_cq, ::grpc::ServerCompletionQueue* notification_cq, void *tag) {
+    void RequestuplrcLpHubPartialPush(::grpc::ServerContext* context, ::proxy_proto::UpLRCLpHubPartialPush* request, ::grpc::ServerAsyncResponseWriter< ::proxy_proto::SetReply>* response, ::grpc::CompletionQueue* new_call_cq, ::grpc::ServerCompletionQueue* notification_cq, void *tag) {
       ::grpc::Service::RequestAsyncUnary(17, context, request, response, new_call_cq, notification_cq, tag);
     }
   };
   template <class BaseClass>
-  class WithAsyncMethod_cordLpComputePartialAndPush : public BaseClass {
+  class WithAsyncMethod_uplrcLpComputePartialAndPush : public BaseClass {
    private:
     void BaseClassMustBeDerivedFromService(const Service* /*service*/) {}
    public:
-    WithAsyncMethod_cordLpComputePartialAndPush() {
+    WithAsyncMethod_uplrcLpComputePartialAndPush() {
       ::grpc::Service::MarkMethodAsync(18);
     }
-    ~WithAsyncMethod_cordLpComputePartialAndPush() override {
+    ~WithAsyncMethod_uplrcLpComputePartialAndPush() override {
       BaseClassMustBeDerivedFromService(this);
     }
     // disable synchronous version of this method
-    ::grpc::Status cordLpComputePartialAndPush(::grpc::ServerContext* /*context*/, const ::proxy_proto::CordLpComputePartialAndPush* /*request*/, ::proxy_proto::SetReply* /*response*/) override {
+    ::grpc::Status uplrcLpComputePartialAndPush(::grpc::ServerContext* /*context*/, const ::proxy_proto::UpLRCLpComputePartialAndPush* /*request*/, ::proxy_proto::SetReply* /*response*/) override {
       abort();
       return ::grpc::Status(::grpc::StatusCode::UNIMPLEMENTED, "");
     }
-    void RequestcordLpComputePartialAndPush(::grpc::ServerContext* context, ::proxy_proto::CordLpComputePartialAndPush* request, ::grpc::ServerAsyncResponseWriter< ::proxy_proto::SetReply>* response, ::grpc::CompletionQueue* new_call_cq, ::grpc::ServerCompletionQueue* notification_cq, void *tag) {
+    void RequestuplrcLpComputePartialAndPush(::grpc::ServerContext* context, ::proxy_proto::UpLRCLpComputePartialAndPush* request, ::grpc::ServerAsyncResponseWriter< ::proxy_proto::SetReply>* response, ::grpc::CompletionQueue* new_call_cq, ::grpc::ServerCompletionQueue* notification_cq, void *tag) {
       ::grpc::Service::RequestAsyncUnary(18, context, request, response, new_call_cq, notification_cq, tag);
     }
   };
   template <class BaseClass>
-  class WithAsyncMethod_cordLpApplyParityDelta : public BaseClass {
+  class WithAsyncMethod_uplrcLpApplyParityDelta : public BaseClass {
    private:
     void BaseClassMustBeDerivedFromService(const Service* /*service*/) {}
    public:
-    WithAsyncMethod_cordLpApplyParityDelta() {
+    WithAsyncMethod_uplrcLpApplyParityDelta() {
       ::grpc::Service::MarkMethodAsync(19);
     }
-    ~WithAsyncMethod_cordLpApplyParityDelta() override {
+    ~WithAsyncMethod_uplrcLpApplyParityDelta() override {
       BaseClassMustBeDerivedFromService(this);
     }
     // disable synchronous version of this method
-    ::grpc::Status cordLpApplyParityDelta(::grpc::ServerContext* /*context*/, const ::proxy_proto::CordLpParityApplyDelta* /*request*/, ::proxy_proto::SetReply* /*response*/) override {
+    ::grpc::Status uplrcLpApplyParityDelta(::grpc::ServerContext* /*context*/, const ::proxy_proto::UpLRCLpParityApplyDelta* /*request*/, ::proxy_proto::SetReply* /*response*/) override {
       abort();
       return ::grpc::Status(::grpc::StatusCode::UNIMPLEMENTED, "");
     }
-    void RequestcordLpApplyParityDelta(::grpc::ServerContext* context, ::proxy_proto::CordLpParityApplyDelta* request, ::grpc::ServerAsyncResponseWriter< ::proxy_proto::SetReply>* response, ::grpc::CompletionQueue* new_call_cq, ::grpc::ServerCompletionQueue* notification_cq, void *tag) {
+    void RequestuplrcLpApplyParityDelta(::grpc::ServerContext* context, ::proxy_proto::UpLRCLpParityApplyDelta* request, ::grpc::ServerAsyncResponseWriter< ::proxy_proto::SetReply>* response, ::grpc::CompletionQueue* new_call_cq, ::grpc::ServerCompletionQueue* notification_cq, void *tag) {
       ::grpc::Service::RequestAsyncUnary(19, context, request, response, new_call_cq, notification_cq, tag);
     }
   };
   template <class BaseClass>
-  class WithAsyncMethod_scheduleCordTransferPlan : public BaseClass {
+  class WithAsyncMethod_scheduleUpLRCTransferPlan : public BaseClass {
    private:
     void BaseClassMustBeDerivedFromService(const Service* /*service*/) {}
    public:
-    WithAsyncMethod_scheduleCordTransferPlan() {
+    WithAsyncMethod_scheduleUpLRCTransferPlan() {
       ::grpc::Service::MarkMethodAsync(20);
     }
-    ~WithAsyncMethod_scheduleCordTransferPlan() override {
+    ~WithAsyncMethod_scheduleUpLRCTransferPlan() override {
       BaseClassMustBeDerivedFromService(this);
     }
     // disable synchronous version of this method
-    ::grpc::Status scheduleCordTransferPlan(::grpc::ServerContext* /*context*/, const ::proxy_proto::CordTransferPlan* /*request*/, ::proxy_proto::SetReply* /*response*/) override {
+    ::grpc::Status scheduleUpLRCTransferPlan(::grpc::ServerContext* /*context*/, const ::proxy_proto::UpLRCTransferPlan* /*request*/, ::proxy_proto::SetReply* /*response*/) override {
       abort();
       return ::grpc::Status(::grpc::StatusCode::UNIMPLEMENTED, "");
     }
-    void RequestscheduleCordTransferPlan(::grpc::ServerContext* context, ::proxy_proto::CordTransferPlan* request, ::grpc::ServerAsyncResponseWriter< ::proxy_proto::SetReply>* response, ::grpc::CompletionQueue* new_call_cq, ::grpc::ServerCompletionQueue* notification_cq, void *tag) {
+    void RequestscheduleUpLRCTransferPlan(::grpc::ServerContext* context, ::proxy_proto::UpLRCTransferPlan* request, ::grpc::ServerAsyncResponseWriter< ::proxy_proto::SetReply>* response, ::grpc::CompletionQueue* new_call_cq, ::grpc::ServerCompletionQueue* notification_cq, void *tag) {
       ::grpc::Service::RequestAsyncUnary(20, context, request, response, new_call_cq, notification_cq, tag);
     }
   };
   template <class BaseClass>
-  class WithAsyncMethod_cordPlanStartExecution : public BaseClass {
+  class WithAsyncMethod_uplrcPlanStartExecution : public BaseClass {
    private:
     void BaseClassMustBeDerivedFromService(const Service* /*service*/) {}
    public:
-    WithAsyncMethod_cordPlanStartExecution() {
+    WithAsyncMethod_uplrcPlanStartExecution() {
       ::grpc::Service::MarkMethodAsync(21);
     }
-    ~WithAsyncMethod_cordPlanStartExecution() override {
+    ~WithAsyncMethod_uplrcPlanStartExecution() override {
       BaseClassMustBeDerivedFromService(this);
     }
     // disable synchronous version of this method
-    ::grpc::Status cordPlanStartExecution(::grpc::ServerContext* /*context*/, const ::proxy_proto::CordPlanKeyMsg* /*request*/, ::proxy_proto::SetReply* /*response*/) override {
+    ::grpc::Status uplrcPlanStartExecution(::grpc::ServerContext* /*context*/, const ::proxy_proto::UpLRCPlanKeyMsg* /*request*/, ::proxy_proto::SetReply* /*response*/) override {
       abort();
       return ::grpc::Status(::grpc::StatusCode::UNIMPLEMENTED, "");
     }
-    void RequestcordPlanStartExecution(::grpc::ServerContext* context, ::proxy_proto::CordPlanKeyMsg* request, ::grpc::ServerAsyncResponseWriter< ::proxy_proto::SetReply>* response, ::grpc::CompletionQueue* new_call_cq, ::grpc::ServerCompletionQueue* notification_cq, void *tag) {
+    void RequestuplrcPlanStartExecution(::grpc::ServerContext* context, ::proxy_proto::UpLRCPlanKeyMsg* request, ::grpc::ServerAsyncResponseWriter< ::proxy_proto::SetReply>* response, ::grpc::CompletionQueue* new_call_cq, ::grpc::ServerCompletionQueue* notification_cq, void *tag) {
       ::grpc::Service::RequestAsyncUnary(21, context, request, response, new_call_cq, notification_cq, tag);
     }
   };
   template <class BaseClass>
-  class WithAsyncMethod_cordPlanJoinExecution : public BaseClass {
+  class WithAsyncMethod_uplrcPlanJoinExecution : public BaseClass {
    private:
     void BaseClassMustBeDerivedFromService(const Service* /*service*/) {}
    public:
-    WithAsyncMethod_cordPlanJoinExecution() {
+    WithAsyncMethod_uplrcPlanJoinExecution() {
       ::grpc::Service::MarkMethodAsync(22);
     }
-    ~WithAsyncMethod_cordPlanJoinExecution() override {
+    ~WithAsyncMethod_uplrcPlanJoinExecution() override {
       BaseClassMustBeDerivedFromService(this);
     }
     // disable synchronous version of this method
-    ::grpc::Status cordPlanJoinExecution(::grpc::ServerContext* /*context*/, const ::proxy_proto::CordPlanKeyMsg* /*request*/, ::proxy_proto::SetReply* /*response*/) override {
+    ::grpc::Status uplrcPlanJoinExecution(::grpc::ServerContext* /*context*/, const ::proxy_proto::UpLRCPlanKeyMsg* /*request*/, ::proxy_proto::SetReply* /*response*/) override {
       abort();
       return ::grpc::Status(::grpc::StatusCode::UNIMPLEMENTED, "");
     }
-    void RequestcordPlanJoinExecution(::grpc::ServerContext* context, ::proxy_proto::CordPlanKeyMsg* request, ::grpc::ServerAsyncResponseWriter< ::proxy_proto::SetReply>* response, ::grpc::CompletionQueue* new_call_cq, ::grpc::ServerCompletionQueue* notification_cq, void *tag) {
+    void RequestuplrcPlanJoinExecution(::grpc::ServerContext* context, ::proxy_proto::UpLRCPlanKeyMsg* request, ::grpc::ServerAsyncResponseWriter< ::proxy_proto::SetReply>* response, ::grpc::CompletionQueue* new_call_cq, ::grpc::ServerCompletionQueue* notification_cq, void *tag) {
       ::grpc::Service::RequestAsyncUnary(22, context, request, response, new_call_cq, notification_cq, tag);
     }
   };
   template <class BaseClass>
-  class WithAsyncMethod_cordPlanCollectorIngestDataDelta : public BaseClass {
+  class WithAsyncMethod_uplrcPlanCollectorIngestDataDelta : public BaseClass {
    private:
     void BaseClassMustBeDerivedFromService(const Service* /*service*/) {}
    public:
-    WithAsyncMethod_cordPlanCollectorIngestDataDelta() {
+    WithAsyncMethod_uplrcPlanCollectorIngestDataDelta() {
       ::grpc::Service::MarkMethodAsync(23);
     }
-    ~WithAsyncMethod_cordPlanCollectorIngestDataDelta() override {
+    ~WithAsyncMethod_uplrcPlanCollectorIngestDataDelta() override {
       BaseClassMustBeDerivedFromService(this);
     }
     // disable synchronous version of this method
-    ::grpc::Status cordPlanCollectorIngestDataDelta(::grpc::ServerContext* /*context*/, const ::proxy_proto::CordPlanCollectorIngestReq* /*request*/, ::proxy_proto::SetReply* /*response*/) override {
+    ::grpc::Status uplrcPlanCollectorIngestDataDelta(::grpc::ServerContext* /*context*/, const ::proxy_proto::UpLRCPlanCollectorIngestReq* /*request*/, ::proxy_proto::SetReply* /*response*/) override {
       abort();
       return ::grpc::Status(::grpc::StatusCode::UNIMPLEMENTED, "");
     }
-    void RequestcordPlanCollectorIngestDataDelta(::grpc::ServerContext* context, ::proxy_proto::CordPlanCollectorIngestReq* request, ::grpc::ServerAsyncResponseWriter< ::proxy_proto::SetReply>* response, ::grpc::CompletionQueue* new_call_cq, ::grpc::ServerCompletionQueue* notification_cq, void *tag) {
+    void RequestuplrcPlanCollectorIngestDataDelta(::grpc::ServerContext* context, ::proxy_proto::UpLRCPlanCollectorIngestReq* request, ::grpc::ServerAsyncResponseWriter< ::proxy_proto::SetReply>* response, ::grpc::CompletionQueue* new_call_cq, ::grpc::ServerCompletionQueue* notification_cq, void *tag) {
       ::grpc::Service::RequestAsyncUnary(23, context, request, response, new_call_cq, notification_cq, tag);
     }
   };
   template <class BaseClass>
-  class WithAsyncMethod_cordPlanApplyParityXorDelta : public BaseClass {
+  class WithAsyncMethod_uplrcPlanApplyParityXorDelta : public BaseClass {
    private:
     void BaseClassMustBeDerivedFromService(const Service* /*service*/) {}
    public:
-    WithAsyncMethod_cordPlanApplyParityXorDelta() {
+    WithAsyncMethod_uplrcPlanApplyParityXorDelta() {
       ::grpc::Service::MarkMethodAsync(24);
     }
-    ~WithAsyncMethod_cordPlanApplyParityXorDelta() override {
+    ~WithAsyncMethod_uplrcPlanApplyParityXorDelta() override {
       BaseClassMustBeDerivedFromService(this);
     }
     // disable synchronous version of this method
-    ::grpc::Status cordPlanApplyParityXorDelta(::grpc::ServerContext* /*context*/, const ::proxy_proto::CordPlanApplyParityXorReq* /*request*/, ::proxy_proto::SetReply* /*response*/) override {
+    ::grpc::Status uplrcPlanApplyParityXorDelta(::grpc::ServerContext* /*context*/, const ::proxy_proto::UpLRCPlanApplyParityXorReq* /*request*/, ::proxy_proto::SetReply* /*response*/) override {
       abort();
       return ::grpc::Status(::grpc::StatusCode::UNIMPLEMENTED, "");
     }
-    void RequestcordPlanApplyParityXorDelta(::grpc::ServerContext* context, ::proxy_proto::CordPlanApplyParityXorReq* request, ::grpc::ServerAsyncResponseWriter< ::proxy_proto::SetReply>* response, ::grpc::CompletionQueue* new_call_cq, ::grpc::ServerCompletionQueue* notification_cq, void *tag) {
+    void RequestuplrcPlanApplyParityXorDelta(::grpc::ServerContext* context, ::proxy_proto::UpLRCPlanApplyParityXorReq* request, ::grpc::ServerAsyncResponseWriter< ::proxy_proto::SetReply>* response, ::grpc::CompletionQueue* new_call_cq, ::grpc::ServerCompletionQueue* notification_cq, void *tag) {
       ::grpc::Service::RequestAsyncUnary(24, context, request, response, new_call_cq, notification_cq, tag);
     }
   };
   template <class BaseClass>
-  class WithAsyncMethod_cordPlanMstDataDeltaChunk : public BaseClass {
+  class WithAsyncMethod_uplrcPlanMstDataDeltaChunk : public BaseClass {
    private:
     void BaseClassMustBeDerivedFromService(const Service* /*service*/) {}
    public:
-    WithAsyncMethod_cordPlanMstDataDeltaChunk() {
+    WithAsyncMethod_uplrcPlanMstDataDeltaChunk() {
       ::grpc::Service::MarkMethodAsync(25);
     }
-    ~WithAsyncMethod_cordPlanMstDataDeltaChunk() override {
+    ~WithAsyncMethod_uplrcPlanMstDataDeltaChunk() override {
       BaseClassMustBeDerivedFromService(this);
     }
     // disable synchronous version of this method
-    ::grpc::Status cordPlanMstDataDeltaChunk(::grpc::ServerContext* /*context*/, const ::proxy_proto::CordPlanMstDataDeltaReq* /*request*/, ::proxy_proto::SetReply* /*response*/) override {
+    ::grpc::Status uplrcPlanMstDataDeltaChunk(::grpc::ServerContext* /*context*/, const ::proxy_proto::UpLRCPlanMstDataDeltaReq* /*request*/, ::proxy_proto::SetReply* /*response*/) override {
       abort();
       return ::grpc::Status(::grpc::StatusCode::UNIMPLEMENTED, "");
     }
-    void RequestcordPlanMstDataDeltaChunk(::grpc::ServerContext* context, ::proxy_proto::CordPlanMstDataDeltaReq* request, ::grpc::ServerAsyncResponseWriter< ::proxy_proto::SetReply>* response, ::grpc::CompletionQueue* new_call_cq, ::grpc::ServerCompletionQueue* notification_cq, void *tag) {
+    void RequestuplrcPlanMstDataDeltaChunk(::grpc::ServerContext* context, ::proxy_proto::UpLRCPlanMstDataDeltaReq* request, ::grpc::ServerAsyncResponseWriter< ::proxy_proto::SetReply>* response, ::grpc::CompletionQueue* new_call_cq, ::grpc::ServerCompletionQueue* notification_cq, void *tag) {
       ::grpc::Service::RequestAsyncUnary(25, context, request, response, new_call_cq, notification_cq, tag);
     }
   };
@@ -1306,7 +1306,7 @@ class proxyService final {
       ::grpc::Service::RequestAsyncUnary(26, context, request, response, new_call_cq, notification_cq, tag);
     }
   };
-  typedef WithAsyncMethod_checkalive<WithAsyncMethod_encodeAndSetObject<WithAsyncMethod_decodeAndGetObject<WithAsyncMethod_degradedRead<WithAsyncMethod_degradedRead2Client<WithAsyncMethod_degradedReadBreakdown<WithAsyncMethod_degradedRead2ClientBreakdown<WithAsyncMethod_degradedReadWithBlockStripeID<WithAsyncMethod_partialDecoding<WithAsyncMethod_recovery<WithAsyncMethod_recoveryBreakdown<WithAsyncMethod_multipleRecovery<WithAsyncMethod_deleteBlock<WithAsyncMethod_scheduleAppend2Datanode<WithAsyncMethod_scheduleCordDataUpdate<WithAsyncMethod_scheduleCordLocalParityApply<WithAsyncMethod_cordLpHubSessionBegin<WithAsyncMethod_cordLpHubPartialPush<WithAsyncMethod_cordLpComputePartialAndPush<WithAsyncMethod_cordLpApplyParityDelta<WithAsyncMethod_scheduleCordTransferPlan<WithAsyncMethod_cordPlanStartExecution<WithAsyncMethod_cordPlanJoinExecution<WithAsyncMethod_cordPlanCollectorIngestDataDelta<WithAsyncMethod_cordPlanApplyParityXorDelta<WithAsyncMethod_cordPlanMstDataDeltaChunk<WithAsyncMethod_getBlocks<Service > > > > > > > > > > > > > > > > > > > > > > > > > > > AsyncService;
+  typedef WithAsyncMethod_checkalive<WithAsyncMethod_encodeAndSetObject<WithAsyncMethod_decodeAndGetObject<WithAsyncMethod_degradedRead<WithAsyncMethod_degradedRead2Client<WithAsyncMethod_degradedReadBreakdown<WithAsyncMethod_degradedRead2ClientBreakdown<WithAsyncMethod_degradedReadWithBlockStripeID<WithAsyncMethod_partialDecoding<WithAsyncMethod_recovery<WithAsyncMethod_recoveryBreakdown<WithAsyncMethod_multipleRecovery<WithAsyncMethod_deleteBlock<WithAsyncMethod_scheduleAppend2Datanode<WithAsyncMethod_scheduleUpLRCDataUpdate<WithAsyncMethod_scheduleUpLRCLocalParityApply<WithAsyncMethod_uplrcLpHubSessionBegin<WithAsyncMethod_uplrcLpHubPartialPush<WithAsyncMethod_uplrcLpComputePartialAndPush<WithAsyncMethod_uplrcLpApplyParityDelta<WithAsyncMethod_scheduleUpLRCTransferPlan<WithAsyncMethod_uplrcPlanStartExecution<WithAsyncMethod_uplrcPlanJoinExecution<WithAsyncMethod_uplrcPlanCollectorIngestDataDelta<WithAsyncMethod_uplrcPlanApplyParityXorDelta<WithAsyncMethod_uplrcPlanMstDataDeltaChunk<WithAsyncMethod_getBlocks<Service > > > > > > > > > > > > > > > > > > > > > > > > > > > AsyncService;
   template <class BaseClass>
   class WithCallbackMethod_checkalive : public BaseClass {
    private:
@@ -1686,328 +1686,328 @@ class proxyService final {
       ::grpc::CallbackServerContext* /*context*/, const ::proxy_proto::AppendStripeDataPlacement* /*request*/, ::proxy_proto::SetReply* /*response*/)  { return nullptr; }
   };
   template <class BaseClass>
-  class WithCallbackMethod_scheduleCordDataUpdate : public BaseClass {
+  class WithCallbackMethod_scheduleUpLRCDataUpdate : public BaseClass {
    private:
     void BaseClassMustBeDerivedFromService(const Service* /*service*/) {}
    public:
-    WithCallbackMethod_scheduleCordDataUpdate() {
+    WithCallbackMethod_scheduleUpLRCDataUpdate() {
       ::grpc::Service::MarkMethodCallback(14,
-          new ::grpc::internal::CallbackUnaryHandler< ::proxy_proto::CordDataUpdatePlacement, ::proxy_proto::SetReply>(
+          new ::grpc::internal::CallbackUnaryHandler< ::proxy_proto::UpLRCDataUpdatePlacement, ::proxy_proto::SetReply>(
             [this](
-                   ::grpc::CallbackServerContext* context, const ::proxy_proto::CordDataUpdatePlacement* request, ::proxy_proto::SetReply* response) { return this->scheduleCordDataUpdate(context, request, response); }));}
-    void SetMessageAllocatorFor_scheduleCordDataUpdate(
-        ::grpc::MessageAllocator< ::proxy_proto::CordDataUpdatePlacement, ::proxy_proto::SetReply>* allocator) {
+                   ::grpc::CallbackServerContext* context, const ::proxy_proto::UpLRCDataUpdatePlacement* request, ::proxy_proto::SetReply* response) { return this->scheduleUpLRCDataUpdate(context, request, response); }));}
+    void SetMessageAllocatorFor_scheduleUpLRCDataUpdate(
+        ::grpc::MessageAllocator< ::proxy_proto::UpLRCDataUpdatePlacement, ::proxy_proto::SetReply>* allocator) {
       ::grpc::internal::MethodHandler* const handler = ::grpc::Service::GetHandler(14);
-      static_cast<::grpc::internal::CallbackUnaryHandler< ::proxy_proto::CordDataUpdatePlacement, ::proxy_proto::SetReply>*>(handler)
+      static_cast<::grpc::internal::CallbackUnaryHandler< ::proxy_proto::UpLRCDataUpdatePlacement, ::proxy_proto::SetReply>*>(handler)
               ->SetMessageAllocator(allocator);
     }
-    ~WithCallbackMethod_scheduleCordDataUpdate() override {
+    ~WithCallbackMethod_scheduleUpLRCDataUpdate() override {
       BaseClassMustBeDerivedFromService(this);
     }
     // disable synchronous version of this method
-    ::grpc::Status scheduleCordDataUpdate(::grpc::ServerContext* /*context*/, const ::proxy_proto::CordDataUpdatePlacement* /*request*/, ::proxy_proto::SetReply* /*response*/) override {
+    ::grpc::Status scheduleUpLRCDataUpdate(::grpc::ServerContext* /*context*/, const ::proxy_proto::UpLRCDataUpdatePlacement* /*request*/, ::proxy_proto::SetReply* /*response*/) override {
       abort();
       return ::grpc::Status(::grpc::StatusCode::UNIMPLEMENTED, "");
     }
-    virtual ::grpc::ServerUnaryReactor* scheduleCordDataUpdate(
-      ::grpc::CallbackServerContext* /*context*/, const ::proxy_proto::CordDataUpdatePlacement* /*request*/, ::proxy_proto::SetReply* /*response*/)  { return nullptr; }
+    virtual ::grpc::ServerUnaryReactor* scheduleUpLRCDataUpdate(
+      ::grpc::CallbackServerContext* /*context*/, const ::proxy_proto::UpLRCDataUpdatePlacement* /*request*/, ::proxy_proto::SetReply* /*response*/)  { return nullptr; }
   };
   template <class BaseClass>
-  class WithCallbackMethod_scheduleCordLocalParityApply : public BaseClass {
+  class WithCallbackMethod_scheduleUpLRCLocalParityApply : public BaseClass {
    private:
     void BaseClassMustBeDerivedFromService(const Service* /*service*/) {}
    public:
-    WithCallbackMethod_scheduleCordLocalParityApply() {
+    WithCallbackMethod_scheduleUpLRCLocalParityApply() {
       ::grpc::Service::MarkMethodCallback(15,
-          new ::grpc::internal::CallbackUnaryHandler< ::proxy_proto::CordLocalParityBundle, ::proxy_proto::SetReply>(
+          new ::grpc::internal::CallbackUnaryHandler< ::proxy_proto::UpLRCLocalParityBundle, ::proxy_proto::SetReply>(
             [this](
-                   ::grpc::CallbackServerContext* context, const ::proxy_proto::CordLocalParityBundle* request, ::proxy_proto::SetReply* response) { return this->scheduleCordLocalParityApply(context, request, response); }));}
-    void SetMessageAllocatorFor_scheduleCordLocalParityApply(
-        ::grpc::MessageAllocator< ::proxy_proto::CordLocalParityBundle, ::proxy_proto::SetReply>* allocator) {
+                   ::grpc::CallbackServerContext* context, const ::proxy_proto::UpLRCLocalParityBundle* request, ::proxy_proto::SetReply* response) { return this->scheduleUpLRCLocalParityApply(context, request, response); }));}
+    void SetMessageAllocatorFor_scheduleUpLRCLocalParityApply(
+        ::grpc::MessageAllocator< ::proxy_proto::UpLRCLocalParityBundle, ::proxy_proto::SetReply>* allocator) {
       ::grpc::internal::MethodHandler* const handler = ::grpc::Service::GetHandler(15);
-      static_cast<::grpc::internal::CallbackUnaryHandler< ::proxy_proto::CordLocalParityBundle, ::proxy_proto::SetReply>*>(handler)
+      static_cast<::grpc::internal::CallbackUnaryHandler< ::proxy_proto::UpLRCLocalParityBundle, ::proxy_proto::SetReply>*>(handler)
               ->SetMessageAllocator(allocator);
     }
-    ~WithCallbackMethod_scheduleCordLocalParityApply() override {
+    ~WithCallbackMethod_scheduleUpLRCLocalParityApply() override {
       BaseClassMustBeDerivedFromService(this);
     }
     // disable synchronous version of this method
-    ::grpc::Status scheduleCordLocalParityApply(::grpc::ServerContext* /*context*/, const ::proxy_proto::CordLocalParityBundle* /*request*/, ::proxy_proto::SetReply* /*response*/) override {
+    ::grpc::Status scheduleUpLRCLocalParityApply(::grpc::ServerContext* /*context*/, const ::proxy_proto::UpLRCLocalParityBundle* /*request*/, ::proxy_proto::SetReply* /*response*/) override {
       abort();
       return ::grpc::Status(::grpc::StatusCode::UNIMPLEMENTED, "");
     }
-    virtual ::grpc::ServerUnaryReactor* scheduleCordLocalParityApply(
-      ::grpc::CallbackServerContext* /*context*/, const ::proxy_proto::CordLocalParityBundle* /*request*/, ::proxy_proto::SetReply* /*response*/)  { return nullptr; }
+    virtual ::grpc::ServerUnaryReactor* scheduleUpLRCLocalParityApply(
+      ::grpc::CallbackServerContext* /*context*/, const ::proxy_proto::UpLRCLocalParityBundle* /*request*/, ::proxy_proto::SetReply* /*response*/)  { return nullptr; }
   };
   template <class BaseClass>
-  class WithCallbackMethod_cordLpHubSessionBegin : public BaseClass {
+  class WithCallbackMethod_uplrcLpHubSessionBegin : public BaseClass {
    private:
     void BaseClassMustBeDerivedFromService(const Service* /*service*/) {}
    public:
-    WithCallbackMethod_cordLpHubSessionBegin() {
+    WithCallbackMethod_uplrcLpHubSessionBegin() {
       ::grpc::Service::MarkMethodCallback(16,
-          new ::grpc::internal::CallbackUnaryHandler< ::proxy_proto::CordLpHubSessionBegin, ::proxy_proto::SetReply>(
+          new ::grpc::internal::CallbackUnaryHandler< ::proxy_proto::UpLRCLpHubSessionBegin, ::proxy_proto::SetReply>(
             [this](
-                   ::grpc::CallbackServerContext* context, const ::proxy_proto::CordLpHubSessionBegin* request, ::proxy_proto::SetReply* response) { return this->cordLpHubSessionBegin(context, request, response); }));}
-    void SetMessageAllocatorFor_cordLpHubSessionBegin(
-        ::grpc::MessageAllocator< ::proxy_proto::CordLpHubSessionBegin, ::proxy_proto::SetReply>* allocator) {
+                   ::grpc::CallbackServerContext* context, const ::proxy_proto::UpLRCLpHubSessionBegin* request, ::proxy_proto::SetReply* response) { return this->uplrcLpHubSessionBegin(context, request, response); }));}
+    void SetMessageAllocatorFor_uplrcLpHubSessionBegin(
+        ::grpc::MessageAllocator< ::proxy_proto::UpLRCLpHubSessionBegin, ::proxy_proto::SetReply>* allocator) {
       ::grpc::internal::MethodHandler* const handler = ::grpc::Service::GetHandler(16);
-      static_cast<::grpc::internal::CallbackUnaryHandler< ::proxy_proto::CordLpHubSessionBegin, ::proxy_proto::SetReply>*>(handler)
+      static_cast<::grpc::internal::CallbackUnaryHandler< ::proxy_proto::UpLRCLpHubSessionBegin, ::proxy_proto::SetReply>*>(handler)
               ->SetMessageAllocator(allocator);
     }
-    ~WithCallbackMethod_cordLpHubSessionBegin() override {
+    ~WithCallbackMethod_uplrcLpHubSessionBegin() override {
       BaseClassMustBeDerivedFromService(this);
     }
     // disable synchronous version of this method
-    ::grpc::Status cordLpHubSessionBegin(::grpc::ServerContext* /*context*/, const ::proxy_proto::CordLpHubSessionBegin* /*request*/, ::proxy_proto::SetReply* /*response*/) override {
+    ::grpc::Status uplrcLpHubSessionBegin(::grpc::ServerContext* /*context*/, const ::proxy_proto::UpLRCLpHubSessionBegin* /*request*/, ::proxy_proto::SetReply* /*response*/) override {
       abort();
       return ::grpc::Status(::grpc::StatusCode::UNIMPLEMENTED, "");
     }
-    virtual ::grpc::ServerUnaryReactor* cordLpHubSessionBegin(
-      ::grpc::CallbackServerContext* /*context*/, const ::proxy_proto::CordLpHubSessionBegin* /*request*/, ::proxy_proto::SetReply* /*response*/)  { return nullptr; }
+    virtual ::grpc::ServerUnaryReactor* uplrcLpHubSessionBegin(
+      ::grpc::CallbackServerContext* /*context*/, const ::proxy_proto::UpLRCLpHubSessionBegin* /*request*/, ::proxy_proto::SetReply* /*response*/)  { return nullptr; }
   };
   template <class BaseClass>
-  class WithCallbackMethod_cordLpHubPartialPush : public BaseClass {
+  class WithCallbackMethod_uplrcLpHubPartialPush : public BaseClass {
    private:
     void BaseClassMustBeDerivedFromService(const Service* /*service*/) {}
    public:
-    WithCallbackMethod_cordLpHubPartialPush() {
+    WithCallbackMethod_uplrcLpHubPartialPush() {
       ::grpc::Service::MarkMethodCallback(17,
-          new ::grpc::internal::CallbackUnaryHandler< ::proxy_proto::CordLpHubPartialPush, ::proxy_proto::SetReply>(
+          new ::grpc::internal::CallbackUnaryHandler< ::proxy_proto::UpLRCLpHubPartialPush, ::proxy_proto::SetReply>(
             [this](
-                   ::grpc::CallbackServerContext* context, const ::proxy_proto::CordLpHubPartialPush* request, ::proxy_proto::SetReply* response) { return this->cordLpHubPartialPush(context, request, response); }));}
-    void SetMessageAllocatorFor_cordLpHubPartialPush(
-        ::grpc::MessageAllocator< ::proxy_proto::CordLpHubPartialPush, ::proxy_proto::SetReply>* allocator) {
+                   ::grpc::CallbackServerContext* context, const ::proxy_proto::UpLRCLpHubPartialPush* request, ::proxy_proto::SetReply* response) { return this->uplrcLpHubPartialPush(context, request, response); }));}
+    void SetMessageAllocatorFor_uplrcLpHubPartialPush(
+        ::grpc::MessageAllocator< ::proxy_proto::UpLRCLpHubPartialPush, ::proxy_proto::SetReply>* allocator) {
       ::grpc::internal::MethodHandler* const handler = ::grpc::Service::GetHandler(17);
-      static_cast<::grpc::internal::CallbackUnaryHandler< ::proxy_proto::CordLpHubPartialPush, ::proxy_proto::SetReply>*>(handler)
+      static_cast<::grpc::internal::CallbackUnaryHandler< ::proxy_proto::UpLRCLpHubPartialPush, ::proxy_proto::SetReply>*>(handler)
               ->SetMessageAllocator(allocator);
     }
-    ~WithCallbackMethod_cordLpHubPartialPush() override {
+    ~WithCallbackMethod_uplrcLpHubPartialPush() override {
       BaseClassMustBeDerivedFromService(this);
     }
     // disable synchronous version of this method
-    ::grpc::Status cordLpHubPartialPush(::grpc::ServerContext* /*context*/, const ::proxy_proto::CordLpHubPartialPush* /*request*/, ::proxy_proto::SetReply* /*response*/) override {
+    ::grpc::Status uplrcLpHubPartialPush(::grpc::ServerContext* /*context*/, const ::proxy_proto::UpLRCLpHubPartialPush* /*request*/, ::proxy_proto::SetReply* /*response*/) override {
       abort();
       return ::grpc::Status(::grpc::StatusCode::UNIMPLEMENTED, "");
     }
-    virtual ::grpc::ServerUnaryReactor* cordLpHubPartialPush(
-      ::grpc::CallbackServerContext* /*context*/, const ::proxy_proto::CordLpHubPartialPush* /*request*/, ::proxy_proto::SetReply* /*response*/)  { return nullptr; }
+    virtual ::grpc::ServerUnaryReactor* uplrcLpHubPartialPush(
+      ::grpc::CallbackServerContext* /*context*/, const ::proxy_proto::UpLRCLpHubPartialPush* /*request*/, ::proxy_proto::SetReply* /*response*/)  { return nullptr; }
   };
   template <class BaseClass>
-  class WithCallbackMethod_cordLpComputePartialAndPush : public BaseClass {
+  class WithCallbackMethod_uplrcLpComputePartialAndPush : public BaseClass {
    private:
     void BaseClassMustBeDerivedFromService(const Service* /*service*/) {}
    public:
-    WithCallbackMethod_cordLpComputePartialAndPush() {
+    WithCallbackMethod_uplrcLpComputePartialAndPush() {
       ::grpc::Service::MarkMethodCallback(18,
-          new ::grpc::internal::CallbackUnaryHandler< ::proxy_proto::CordLpComputePartialAndPush, ::proxy_proto::SetReply>(
+          new ::grpc::internal::CallbackUnaryHandler< ::proxy_proto::UpLRCLpComputePartialAndPush, ::proxy_proto::SetReply>(
             [this](
-                   ::grpc::CallbackServerContext* context, const ::proxy_proto::CordLpComputePartialAndPush* request, ::proxy_proto::SetReply* response) { return this->cordLpComputePartialAndPush(context, request, response); }));}
-    void SetMessageAllocatorFor_cordLpComputePartialAndPush(
-        ::grpc::MessageAllocator< ::proxy_proto::CordLpComputePartialAndPush, ::proxy_proto::SetReply>* allocator) {
+                   ::grpc::CallbackServerContext* context, const ::proxy_proto::UpLRCLpComputePartialAndPush* request, ::proxy_proto::SetReply* response) { return this->uplrcLpComputePartialAndPush(context, request, response); }));}
+    void SetMessageAllocatorFor_uplrcLpComputePartialAndPush(
+        ::grpc::MessageAllocator< ::proxy_proto::UpLRCLpComputePartialAndPush, ::proxy_proto::SetReply>* allocator) {
       ::grpc::internal::MethodHandler* const handler = ::grpc::Service::GetHandler(18);
-      static_cast<::grpc::internal::CallbackUnaryHandler< ::proxy_proto::CordLpComputePartialAndPush, ::proxy_proto::SetReply>*>(handler)
+      static_cast<::grpc::internal::CallbackUnaryHandler< ::proxy_proto::UpLRCLpComputePartialAndPush, ::proxy_proto::SetReply>*>(handler)
               ->SetMessageAllocator(allocator);
     }
-    ~WithCallbackMethod_cordLpComputePartialAndPush() override {
+    ~WithCallbackMethod_uplrcLpComputePartialAndPush() override {
       BaseClassMustBeDerivedFromService(this);
     }
     // disable synchronous version of this method
-    ::grpc::Status cordLpComputePartialAndPush(::grpc::ServerContext* /*context*/, const ::proxy_proto::CordLpComputePartialAndPush* /*request*/, ::proxy_proto::SetReply* /*response*/) override {
+    ::grpc::Status uplrcLpComputePartialAndPush(::grpc::ServerContext* /*context*/, const ::proxy_proto::UpLRCLpComputePartialAndPush* /*request*/, ::proxy_proto::SetReply* /*response*/) override {
       abort();
       return ::grpc::Status(::grpc::StatusCode::UNIMPLEMENTED, "");
     }
-    virtual ::grpc::ServerUnaryReactor* cordLpComputePartialAndPush(
-      ::grpc::CallbackServerContext* /*context*/, const ::proxy_proto::CordLpComputePartialAndPush* /*request*/, ::proxy_proto::SetReply* /*response*/)  { return nullptr; }
+    virtual ::grpc::ServerUnaryReactor* uplrcLpComputePartialAndPush(
+      ::grpc::CallbackServerContext* /*context*/, const ::proxy_proto::UpLRCLpComputePartialAndPush* /*request*/, ::proxy_proto::SetReply* /*response*/)  { return nullptr; }
   };
   template <class BaseClass>
-  class WithCallbackMethod_cordLpApplyParityDelta : public BaseClass {
+  class WithCallbackMethod_uplrcLpApplyParityDelta : public BaseClass {
    private:
     void BaseClassMustBeDerivedFromService(const Service* /*service*/) {}
    public:
-    WithCallbackMethod_cordLpApplyParityDelta() {
+    WithCallbackMethod_uplrcLpApplyParityDelta() {
       ::grpc::Service::MarkMethodCallback(19,
-          new ::grpc::internal::CallbackUnaryHandler< ::proxy_proto::CordLpParityApplyDelta, ::proxy_proto::SetReply>(
+          new ::grpc::internal::CallbackUnaryHandler< ::proxy_proto::UpLRCLpParityApplyDelta, ::proxy_proto::SetReply>(
             [this](
-                   ::grpc::CallbackServerContext* context, const ::proxy_proto::CordLpParityApplyDelta* request, ::proxy_proto::SetReply* response) { return this->cordLpApplyParityDelta(context, request, response); }));}
-    void SetMessageAllocatorFor_cordLpApplyParityDelta(
-        ::grpc::MessageAllocator< ::proxy_proto::CordLpParityApplyDelta, ::proxy_proto::SetReply>* allocator) {
+                   ::grpc::CallbackServerContext* context, const ::proxy_proto::UpLRCLpParityApplyDelta* request, ::proxy_proto::SetReply* response) { return this->uplrcLpApplyParityDelta(context, request, response); }));}
+    void SetMessageAllocatorFor_uplrcLpApplyParityDelta(
+        ::grpc::MessageAllocator< ::proxy_proto::UpLRCLpParityApplyDelta, ::proxy_proto::SetReply>* allocator) {
       ::grpc::internal::MethodHandler* const handler = ::grpc::Service::GetHandler(19);
-      static_cast<::grpc::internal::CallbackUnaryHandler< ::proxy_proto::CordLpParityApplyDelta, ::proxy_proto::SetReply>*>(handler)
+      static_cast<::grpc::internal::CallbackUnaryHandler< ::proxy_proto::UpLRCLpParityApplyDelta, ::proxy_proto::SetReply>*>(handler)
               ->SetMessageAllocator(allocator);
     }
-    ~WithCallbackMethod_cordLpApplyParityDelta() override {
+    ~WithCallbackMethod_uplrcLpApplyParityDelta() override {
       BaseClassMustBeDerivedFromService(this);
     }
     // disable synchronous version of this method
-    ::grpc::Status cordLpApplyParityDelta(::grpc::ServerContext* /*context*/, const ::proxy_proto::CordLpParityApplyDelta* /*request*/, ::proxy_proto::SetReply* /*response*/) override {
+    ::grpc::Status uplrcLpApplyParityDelta(::grpc::ServerContext* /*context*/, const ::proxy_proto::UpLRCLpParityApplyDelta* /*request*/, ::proxy_proto::SetReply* /*response*/) override {
       abort();
       return ::grpc::Status(::grpc::StatusCode::UNIMPLEMENTED, "");
     }
-    virtual ::grpc::ServerUnaryReactor* cordLpApplyParityDelta(
-      ::grpc::CallbackServerContext* /*context*/, const ::proxy_proto::CordLpParityApplyDelta* /*request*/, ::proxy_proto::SetReply* /*response*/)  { return nullptr; }
+    virtual ::grpc::ServerUnaryReactor* uplrcLpApplyParityDelta(
+      ::grpc::CallbackServerContext* /*context*/, const ::proxy_proto::UpLRCLpParityApplyDelta* /*request*/, ::proxy_proto::SetReply* /*response*/)  { return nullptr; }
   };
   template <class BaseClass>
-  class WithCallbackMethod_scheduleCordTransferPlan : public BaseClass {
+  class WithCallbackMethod_scheduleUpLRCTransferPlan : public BaseClass {
    private:
     void BaseClassMustBeDerivedFromService(const Service* /*service*/) {}
    public:
-    WithCallbackMethod_scheduleCordTransferPlan() {
+    WithCallbackMethod_scheduleUpLRCTransferPlan() {
       ::grpc::Service::MarkMethodCallback(20,
-          new ::grpc::internal::CallbackUnaryHandler< ::proxy_proto::CordTransferPlan, ::proxy_proto::SetReply>(
+          new ::grpc::internal::CallbackUnaryHandler< ::proxy_proto::UpLRCTransferPlan, ::proxy_proto::SetReply>(
             [this](
-                   ::grpc::CallbackServerContext* context, const ::proxy_proto::CordTransferPlan* request, ::proxy_proto::SetReply* response) { return this->scheduleCordTransferPlan(context, request, response); }));}
-    void SetMessageAllocatorFor_scheduleCordTransferPlan(
-        ::grpc::MessageAllocator< ::proxy_proto::CordTransferPlan, ::proxy_proto::SetReply>* allocator) {
+                   ::grpc::CallbackServerContext* context, const ::proxy_proto::UpLRCTransferPlan* request, ::proxy_proto::SetReply* response) { return this->scheduleUpLRCTransferPlan(context, request, response); }));}
+    void SetMessageAllocatorFor_scheduleUpLRCTransferPlan(
+        ::grpc::MessageAllocator< ::proxy_proto::UpLRCTransferPlan, ::proxy_proto::SetReply>* allocator) {
       ::grpc::internal::MethodHandler* const handler = ::grpc::Service::GetHandler(20);
-      static_cast<::grpc::internal::CallbackUnaryHandler< ::proxy_proto::CordTransferPlan, ::proxy_proto::SetReply>*>(handler)
+      static_cast<::grpc::internal::CallbackUnaryHandler< ::proxy_proto::UpLRCTransferPlan, ::proxy_proto::SetReply>*>(handler)
               ->SetMessageAllocator(allocator);
     }
-    ~WithCallbackMethod_scheduleCordTransferPlan() override {
+    ~WithCallbackMethod_scheduleUpLRCTransferPlan() override {
       BaseClassMustBeDerivedFromService(this);
     }
     // disable synchronous version of this method
-    ::grpc::Status scheduleCordTransferPlan(::grpc::ServerContext* /*context*/, const ::proxy_proto::CordTransferPlan* /*request*/, ::proxy_proto::SetReply* /*response*/) override {
+    ::grpc::Status scheduleUpLRCTransferPlan(::grpc::ServerContext* /*context*/, const ::proxy_proto::UpLRCTransferPlan* /*request*/, ::proxy_proto::SetReply* /*response*/) override {
       abort();
       return ::grpc::Status(::grpc::StatusCode::UNIMPLEMENTED, "");
     }
-    virtual ::grpc::ServerUnaryReactor* scheduleCordTransferPlan(
-      ::grpc::CallbackServerContext* /*context*/, const ::proxy_proto::CordTransferPlan* /*request*/, ::proxy_proto::SetReply* /*response*/)  { return nullptr; }
+    virtual ::grpc::ServerUnaryReactor* scheduleUpLRCTransferPlan(
+      ::grpc::CallbackServerContext* /*context*/, const ::proxy_proto::UpLRCTransferPlan* /*request*/, ::proxy_proto::SetReply* /*response*/)  { return nullptr; }
   };
   template <class BaseClass>
-  class WithCallbackMethod_cordPlanStartExecution : public BaseClass {
+  class WithCallbackMethod_uplrcPlanStartExecution : public BaseClass {
    private:
     void BaseClassMustBeDerivedFromService(const Service* /*service*/) {}
    public:
-    WithCallbackMethod_cordPlanStartExecution() {
+    WithCallbackMethod_uplrcPlanStartExecution() {
       ::grpc::Service::MarkMethodCallback(21,
-          new ::grpc::internal::CallbackUnaryHandler< ::proxy_proto::CordPlanKeyMsg, ::proxy_proto::SetReply>(
+          new ::grpc::internal::CallbackUnaryHandler< ::proxy_proto::UpLRCPlanKeyMsg, ::proxy_proto::SetReply>(
             [this](
-                   ::grpc::CallbackServerContext* context, const ::proxy_proto::CordPlanKeyMsg* request, ::proxy_proto::SetReply* response) { return this->cordPlanStartExecution(context, request, response); }));}
-    void SetMessageAllocatorFor_cordPlanStartExecution(
-        ::grpc::MessageAllocator< ::proxy_proto::CordPlanKeyMsg, ::proxy_proto::SetReply>* allocator) {
+                   ::grpc::CallbackServerContext* context, const ::proxy_proto::UpLRCPlanKeyMsg* request, ::proxy_proto::SetReply* response) { return this->uplrcPlanStartExecution(context, request, response); }));}
+    void SetMessageAllocatorFor_uplrcPlanStartExecution(
+        ::grpc::MessageAllocator< ::proxy_proto::UpLRCPlanKeyMsg, ::proxy_proto::SetReply>* allocator) {
       ::grpc::internal::MethodHandler* const handler = ::grpc::Service::GetHandler(21);
-      static_cast<::grpc::internal::CallbackUnaryHandler< ::proxy_proto::CordPlanKeyMsg, ::proxy_proto::SetReply>*>(handler)
+      static_cast<::grpc::internal::CallbackUnaryHandler< ::proxy_proto::UpLRCPlanKeyMsg, ::proxy_proto::SetReply>*>(handler)
               ->SetMessageAllocator(allocator);
     }
-    ~WithCallbackMethod_cordPlanStartExecution() override {
+    ~WithCallbackMethod_uplrcPlanStartExecution() override {
       BaseClassMustBeDerivedFromService(this);
     }
     // disable synchronous version of this method
-    ::grpc::Status cordPlanStartExecution(::grpc::ServerContext* /*context*/, const ::proxy_proto::CordPlanKeyMsg* /*request*/, ::proxy_proto::SetReply* /*response*/) override {
+    ::grpc::Status uplrcPlanStartExecution(::grpc::ServerContext* /*context*/, const ::proxy_proto::UpLRCPlanKeyMsg* /*request*/, ::proxy_proto::SetReply* /*response*/) override {
       abort();
       return ::grpc::Status(::grpc::StatusCode::UNIMPLEMENTED, "");
     }
-    virtual ::grpc::ServerUnaryReactor* cordPlanStartExecution(
-      ::grpc::CallbackServerContext* /*context*/, const ::proxy_proto::CordPlanKeyMsg* /*request*/, ::proxy_proto::SetReply* /*response*/)  { return nullptr; }
+    virtual ::grpc::ServerUnaryReactor* uplrcPlanStartExecution(
+      ::grpc::CallbackServerContext* /*context*/, const ::proxy_proto::UpLRCPlanKeyMsg* /*request*/, ::proxy_proto::SetReply* /*response*/)  { return nullptr; }
   };
   template <class BaseClass>
-  class WithCallbackMethod_cordPlanJoinExecution : public BaseClass {
+  class WithCallbackMethod_uplrcPlanJoinExecution : public BaseClass {
    private:
     void BaseClassMustBeDerivedFromService(const Service* /*service*/) {}
    public:
-    WithCallbackMethod_cordPlanJoinExecution() {
+    WithCallbackMethod_uplrcPlanJoinExecution() {
       ::grpc::Service::MarkMethodCallback(22,
-          new ::grpc::internal::CallbackUnaryHandler< ::proxy_proto::CordPlanKeyMsg, ::proxy_proto::SetReply>(
+          new ::grpc::internal::CallbackUnaryHandler< ::proxy_proto::UpLRCPlanKeyMsg, ::proxy_proto::SetReply>(
             [this](
-                   ::grpc::CallbackServerContext* context, const ::proxy_proto::CordPlanKeyMsg* request, ::proxy_proto::SetReply* response) { return this->cordPlanJoinExecution(context, request, response); }));}
-    void SetMessageAllocatorFor_cordPlanJoinExecution(
-        ::grpc::MessageAllocator< ::proxy_proto::CordPlanKeyMsg, ::proxy_proto::SetReply>* allocator) {
+                   ::grpc::CallbackServerContext* context, const ::proxy_proto::UpLRCPlanKeyMsg* request, ::proxy_proto::SetReply* response) { return this->uplrcPlanJoinExecution(context, request, response); }));}
+    void SetMessageAllocatorFor_uplrcPlanJoinExecution(
+        ::grpc::MessageAllocator< ::proxy_proto::UpLRCPlanKeyMsg, ::proxy_proto::SetReply>* allocator) {
       ::grpc::internal::MethodHandler* const handler = ::grpc::Service::GetHandler(22);
-      static_cast<::grpc::internal::CallbackUnaryHandler< ::proxy_proto::CordPlanKeyMsg, ::proxy_proto::SetReply>*>(handler)
+      static_cast<::grpc::internal::CallbackUnaryHandler< ::proxy_proto::UpLRCPlanKeyMsg, ::proxy_proto::SetReply>*>(handler)
               ->SetMessageAllocator(allocator);
     }
-    ~WithCallbackMethod_cordPlanJoinExecution() override {
+    ~WithCallbackMethod_uplrcPlanJoinExecution() override {
       BaseClassMustBeDerivedFromService(this);
     }
     // disable synchronous version of this method
-    ::grpc::Status cordPlanJoinExecution(::grpc::ServerContext* /*context*/, const ::proxy_proto::CordPlanKeyMsg* /*request*/, ::proxy_proto::SetReply* /*response*/) override {
+    ::grpc::Status uplrcPlanJoinExecution(::grpc::ServerContext* /*context*/, const ::proxy_proto::UpLRCPlanKeyMsg* /*request*/, ::proxy_proto::SetReply* /*response*/) override {
       abort();
       return ::grpc::Status(::grpc::StatusCode::UNIMPLEMENTED, "");
     }
-    virtual ::grpc::ServerUnaryReactor* cordPlanJoinExecution(
-      ::grpc::CallbackServerContext* /*context*/, const ::proxy_proto::CordPlanKeyMsg* /*request*/, ::proxy_proto::SetReply* /*response*/)  { return nullptr; }
+    virtual ::grpc::ServerUnaryReactor* uplrcPlanJoinExecution(
+      ::grpc::CallbackServerContext* /*context*/, const ::proxy_proto::UpLRCPlanKeyMsg* /*request*/, ::proxy_proto::SetReply* /*response*/)  { return nullptr; }
   };
   template <class BaseClass>
-  class WithCallbackMethod_cordPlanCollectorIngestDataDelta : public BaseClass {
+  class WithCallbackMethod_uplrcPlanCollectorIngestDataDelta : public BaseClass {
    private:
     void BaseClassMustBeDerivedFromService(const Service* /*service*/) {}
    public:
-    WithCallbackMethod_cordPlanCollectorIngestDataDelta() {
+    WithCallbackMethod_uplrcPlanCollectorIngestDataDelta() {
       ::grpc::Service::MarkMethodCallback(23,
-          new ::grpc::internal::CallbackUnaryHandler< ::proxy_proto::CordPlanCollectorIngestReq, ::proxy_proto::SetReply>(
+          new ::grpc::internal::CallbackUnaryHandler< ::proxy_proto::UpLRCPlanCollectorIngestReq, ::proxy_proto::SetReply>(
             [this](
-                   ::grpc::CallbackServerContext* context, const ::proxy_proto::CordPlanCollectorIngestReq* request, ::proxy_proto::SetReply* response) { return this->cordPlanCollectorIngestDataDelta(context, request, response); }));}
-    void SetMessageAllocatorFor_cordPlanCollectorIngestDataDelta(
-        ::grpc::MessageAllocator< ::proxy_proto::CordPlanCollectorIngestReq, ::proxy_proto::SetReply>* allocator) {
+                   ::grpc::CallbackServerContext* context, const ::proxy_proto::UpLRCPlanCollectorIngestReq* request, ::proxy_proto::SetReply* response) { return this->uplrcPlanCollectorIngestDataDelta(context, request, response); }));}
+    void SetMessageAllocatorFor_uplrcPlanCollectorIngestDataDelta(
+        ::grpc::MessageAllocator< ::proxy_proto::UpLRCPlanCollectorIngestReq, ::proxy_proto::SetReply>* allocator) {
       ::grpc::internal::MethodHandler* const handler = ::grpc::Service::GetHandler(23);
-      static_cast<::grpc::internal::CallbackUnaryHandler< ::proxy_proto::CordPlanCollectorIngestReq, ::proxy_proto::SetReply>*>(handler)
+      static_cast<::grpc::internal::CallbackUnaryHandler< ::proxy_proto::UpLRCPlanCollectorIngestReq, ::proxy_proto::SetReply>*>(handler)
               ->SetMessageAllocator(allocator);
     }
-    ~WithCallbackMethod_cordPlanCollectorIngestDataDelta() override {
+    ~WithCallbackMethod_uplrcPlanCollectorIngestDataDelta() override {
       BaseClassMustBeDerivedFromService(this);
     }
     // disable synchronous version of this method
-    ::grpc::Status cordPlanCollectorIngestDataDelta(::grpc::ServerContext* /*context*/, const ::proxy_proto::CordPlanCollectorIngestReq* /*request*/, ::proxy_proto::SetReply* /*response*/) override {
+    ::grpc::Status uplrcPlanCollectorIngestDataDelta(::grpc::ServerContext* /*context*/, const ::proxy_proto::UpLRCPlanCollectorIngestReq* /*request*/, ::proxy_proto::SetReply* /*response*/) override {
       abort();
       return ::grpc::Status(::grpc::StatusCode::UNIMPLEMENTED, "");
     }
-    virtual ::grpc::ServerUnaryReactor* cordPlanCollectorIngestDataDelta(
-      ::grpc::CallbackServerContext* /*context*/, const ::proxy_proto::CordPlanCollectorIngestReq* /*request*/, ::proxy_proto::SetReply* /*response*/)  { return nullptr; }
+    virtual ::grpc::ServerUnaryReactor* uplrcPlanCollectorIngestDataDelta(
+      ::grpc::CallbackServerContext* /*context*/, const ::proxy_proto::UpLRCPlanCollectorIngestReq* /*request*/, ::proxy_proto::SetReply* /*response*/)  { return nullptr; }
   };
   template <class BaseClass>
-  class WithCallbackMethod_cordPlanApplyParityXorDelta : public BaseClass {
+  class WithCallbackMethod_uplrcPlanApplyParityXorDelta : public BaseClass {
    private:
     void BaseClassMustBeDerivedFromService(const Service* /*service*/) {}
    public:
-    WithCallbackMethod_cordPlanApplyParityXorDelta() {
+    WithCallbackMethod_uplrcPlanApplyParityXorDelta() {
       ::grpc::Service::MarkMethodCallback(24,
-          new ::grpc::internal::CallbackUnaryHandler< ::proxy_proto::CordPlanApplyParityXorReq, ::proxy_proto::SetReply>(
+          new ::grpc::internal::CallbackUnaryHandler< ::proxy_proto::UpLRCPlanApplyParityXorReq, ::proxy_proto::SetReply>(
             [this](
-                   ::grpc::CallbackServerContext* context, const ::proxy_proto::CordPlanApplyParityXorReq* request, ::proxy_proto::SetReply* response) { return this->cordPlanApplyParityXorDelta(context, request, response); }));}
-    void SetMessageAllocatorFor_cordPlanApplyParityXorDelta(
-        ::grpc::MessageAllocator< ::proxy_proto::CordPlanApplyParityXorReq, ::proxy_proto::SetReply>* allocator) {
+                   ::grpc::CallbackServerContext* context, const ::proxy_proto::UpLRCPlanApplyParityXorReq* request, ::proxy_proto::SetReply* response) { return this->uplrcPlanApplyParityXorDelta(context, request, response); }));}
+    void SetMessageAllocatorFor_uplrcPlanApplyParityXorDelta(
+        ::grpc::MessageAllocator< ::proxy_proto::UpLRCPlanApplyParityXorReq, ::proxy_proto::SetReply>* allocator) {
       ::grpc::internal::MethodHandler* const handler = ::grpc::Service::GetHandler(24);
-      static_cast<::grpc::internal::CallbackUnaryHandler< ::proxy_proto::CordPlanApplyParityXorReq, ::proxy_proto::SetReply>*>(handler)
+      static_cast<::grpc::internal::CallbackUnaryHandler< ::proxy_proto::UpLRCPlanApplyParityXorReq, ::proxy_proto::SetReply>*>(handler)
               ->SetMessageAllocator(allocator);
     }
-    ~WithCallbackMethod_cordPlanApplyParityXorDelta() override {
+    ~WithCallbackMethod_uplrcPlanApplyParityXorDelta() override {
       BaseClassMustBeDerivedFromService(this);
     }
     // disable synchronous version of this method
-    ::grpc::Status cordPlanApplyParityXorDelta(::grpc::ServerContext* /*context*/, const ::proxy_proto::CordPlanApplyParityXorReq* /*request*/, ::proxy_proto::SetReply* /*response*/) override {
+    ::grpc::Status uplrcPlanApplyParityXorDelta(::grpc::ServerContext* /*context*/, const ::proxy_proto::UpLRCPlanApplyParityXorReq* /*request*/, ::proxy_proto::SetReply* /*response*/) override {
       abort();
       return ::grpc::Status(::grpc::StatusCode::UNIMPLEMENTED, "");
     }
-    virtual ::grpc::ServerUnaryReactor* cordPlanApplyParityXorDelta(
-      ::grpc::CallbackServerContext* /*context*/, const ::proxy_proto::CordPlanApplyParityXorReq* /*request*/, ::proxy_proto::SetReply* /*response*/)  { return nullptr; }
+    virtual ::grpc::ServerUnaryReactor* uplrcPlanApplyParityXorDelta(
+      ::grpc::CallbackServerContext* /*context*/, const ::proxy_proto::UpLRCPlanApplyParityXorReq* /*request*/, ::proxy_proto::SetReply* /*response*/)  { return nullptr; }
   };
   template <class BaseClass>
-  class WithCallbackMethod_cordPlanMstDataDeltaChunk : public BaseClass {
+  class WithCallbackMethod_uplrcPlanMstDataDeltaChunk : public BaseClass {
    private:
     void BaseClassMustBeDerivedFromService(const Service* /*service*/) {}
    public:
-    WithCallbackMethod_cordPlanMstDataDeltaChunk() {
+    WithCallbackMethod_uplrcPlanMstDataDeltaChunk() {
       ::grpc::Service::MarkMethodCallback(25,
-          new ::grpc::internal::CallbackUnaryHandler< ::proxy_proto::CordPlanMstDataDeltaReq, ::proxy_proto::SetReply>(
+          new ::grpc::internal::CallbackUnaryHandler< ::proxy_proto::UpLRCPlanMstDataDeltaReq, ::proxy_proto::SetReply>(
             [this](
-                   ::grpc::CallbackServerContext* context, const ::proxy_proto::CordPlanMstDataDeltaReq* request, ::proxy_proto::SetReply* response) { return this->cordPlanMstDataDeltaChunk(context, request, response); }));}
-    void SetMessageAllocatorFor_cordPlanMstDataDeltaChunk(
-        ::grpc::MessageAllocator< ::proxy_proto::CordPlanMstDataDeltaReq, ::proxy_proto::SetReply>* allocator) {
+                   ::grpc::CallbackServerContext* context, const ::proxy_proto::UpLRCPlanMstDataDeltaReq* request, ::proxy_proto::SetReply* response) { return this->uplrcPlanMstDataDeltaChunk(context, request, response); }));}
+    void SetMessageAllocatorFor_uplrcPlanMstDataDeltaChunk(
+        ::grpc::MessageAllocator< ::proxy_proto::UpLRCPlanMstDataDeltaReq, ::proxy_proto::SetReply>* allocator) {
       ::grpc::internal::MethodHandler* const handler = ::grpc::Service::GetHandler(25);
-      static_cast<::grpc::internal::CallbackUnaryHandler< ::proxy_proto::CordPlanMstDataDeltaReq, ::proxy_proto::SetReply>*>(handler)
+      static_cast<::grpc::internal::CallbackUnaryHandler< ::proxy_proto::UpLRCPlanMstDataDeltaReq, ::proxy_proto::SetReply>*>(handler)
               ->SetMessageAllocator(allocator);
     }
-    ~WithCallbackMethod_cordPlanMstDataDeltaChunk() override {
+    ~WithCallbackMethod_uplrcPlanMstDataDeltaChunk() override {
       BaseClassMustBeDerivedFromService(this);
     }
     // disable synchronous version of this method
-    ::grpc::Status cordPlanMstDataDeltaChunk(::grpc::ServerContext* /*context*/, const ::proxy_proto::CordPlanMstDataDeltaReq* /*request*/, ::proxy_proto::SetReply* /*response*/) override {
+    ::grpc::Status uplrcPlanMstDataDeltaChunk(::grpc::ServerContext* /*context*/, const ::proxy_proto::UpLRCPlanMstDataDeltaReq* /*request*/, ::proxy_proto::SetReply* /*response*/) override {
       abort();
       return ::grpc::Status(::grpc::StatusCode::UNIMPLEMENTED, "");
     }
-    virtual ::grpc::ServerUnaryReactor* cordPlanMstDataDeltaChunk(
-      ::grpc::CallbackServerContext* /*context*/, const ::proxy_proto::CordPlanMstDataDeltaReq* /*request*/, ::proxy_proto::SetReply* /*response*/)  { return nullptr; }
+    virtual ::grpc::ServerUnaryReactor* uplrcPlanMstDataDeltaChunk(
+      ::grpc::CallbackServerContext* /*context*/, const ::proxy_proto::UpLRCPlanMstDataDeltaReq* /*request*/, ::proxy_proto::SetReply* /*response*/)  { return nullptr; }
   };
   template <class BaseClass>
   class WithCallbackMethod_getBlocks : public BaseClass {
@@ -2036,7 +2036,7 @@ class proxyService final {
     virtual ::grpc::ServerUnaryReactor* getBlocks(
       ::grpc::CallbackServerContext* /*context*/, const ::proxy_proto::StripeAndBlockIDs* /*request*/, ::proxy_proto::GetReply* /*response*/)  { return nullptr; }
   };
-  typedef WithCallbackMethod_checkalive<WithCallbackMethod_encodeAndSetObject<WithCallbackMethod_decodeAndGetObject<WithCallbackMethod_degradedRead<WithCallbackMethod_degradedRead2Client<WithCallbackMethod_degradedReadBreakdown<WithCallbackMethod_degradedRead2ClientBreakdown<WithCallbackMethod_degradedReadWithBlockStripeID<WithCallbackMethod_partialDecoding<WithCallbackMethod_recovery<WithCallbackMethod_recoveryBreakdown<WithCallbackMethod_multipleRecovery<WithCallbackMethod_deleteBlock<WithCallbackMethod_scheduleAppend2Datanode<WithCallbackMethod_scheduleCordDataUpdate<WithCallbackMethod_scheduleCordLocalParityApply<WithCallbackMethod_cordLpHubSessionBegin<WithCallbackMethod_cordLpHubPartialPush<WithCallbackMethod_cordLpComputePartialAndPush<WithCallbackMethod_cordLpApplyParityDelta<WithCallbackMethod_scheduleCordTransferPlan<WithCallbackMethod_cordPlanStartExecution<WithCallbackMethod_cordPlanJoinExecution<WithCallbackMethod_cordPlanCollectorIngestDataDelta<WithCallbackMethod_cordPlanApplyParityXorDelta<WithCallbackMethod_cordPlanMstDataDeltaChunk<WithCallbackMethod_getBlocks<Service > > > > > > > > > > > > > > > > > > > > > > > > > > > CallbackService;
+  typedef WithCallbackMethod_checkalive<WithCallbackMethod_encodeAndSetObject<WithCallbackMethod_decodeAndGetObject<WithCallbackMethod_degradedRead<WithCallbackMethod_degradedRead2Client<WithCallbackMethod_degradedReadBreakdown<WithCallbackMethod_degradedRead2ClientBreakdown<WithCallbackMethod_degradedReadWithBlockStripeID<WithCallbackMethod_partialDecoding<WithCallbackMethod_recovery<WithCallbackMethod_recoveryBreakdown<WithCallbackMethod_multipleRecovery<WithCallbackMethod_deleteBlock<WithCallbackMethod_scheduleAppend2Datanode<WithCallbackMethod_scheduleUpLRCDataUpdate<WithCallbackMethod_scheduleUpLRCLocalParityApply<WithCallbackMethod_uplrcLpHubSessionBegin<WithCallbackMethod_uplrcLpHubPartialPush<WithCallbackMethod_uplrcLpComputePartialAndPush<WithCallbackMethod_uplrcLpApplyParityDelta<WithCallbackMethod_scheduleUpLRCTransferPlan<WithCallbackMethod_uplrcPlanStartExecution<WithCallbackMethod_uplrcPlanJoinExecution<WithCallbackMethod_uplrcPlanCollectorIngestDataDelta<WithCallbackMethod_uplrcPlanApplyParityXorDelta<WithCallbackMethod_uplrcPlanMstDataDeltaChunk<WithCallbackMethod_getBlocks<Service > > > > > > > > > > > > > > > > > > > > > > > > > > > CallbackService;
   typedef CallbackService ExperimentalCallbackService;
   template <class BaseClass>
   class WithGenericMethod_checkalive : public BaseClass {
@@ -2277,205 +2277,205 @@ class proxyService final {
     }
   };
   template <class BaseClass>
-  class WithGenericMethod_scheduleCordDataUpdate : public BaseClass {
+  class WithGenericMethod_scheduleUpLRCDataUpdate : public BaseClass {
    private:
     void BaseClassMustBeDerivedFromService(const Service* /*service*/) {}
    public:
-    WithGenericMethod_scheduleCordDataUpdate() {
+    WithGenericMethod_scheduleUpLRCDataUpdate() {
       ::grpc::Service::MarkMethodGeneric(14);
     }
-    ~WithGenericMethod_scheduleCordDataUpdate() override {
+    ~WithGenericMethod_scheduleUpLRCDataUpdate() override {
       BaseClassMustBeDerivedFromService(this);
     }
     // disable synchronous version of this method
-    ::grpc::Status scheduleCordDataUpdate(::grpc::ServerContext* /*context*/, const ::proxy_proto::CordDataUpdatePlacement* /*request*/, ::proxy_proto::SetReply* /*response*/) override {
+    ::grpc::Status scheduleUpLRCDataUpdate(::grpc::ServerContext* /*context*/, const ::proxy_proto::UpLRCDataUpdatePlacement* /*request*/, ::proxy_proto::SetReply* /*response*/) override {
       abort();
       return ::grpc::Status(::grpc::StatusCode::UNIMPLEMENTED, "");
     }
   };
   template <class BaseClass>
-  class WithGenericMethod_scheduleCordLocalParityApply : public BaseClass {
+  class WithGenericMethod_scheduleUpLRCLocalParityApply : public BaseClass {
    private:
     void BaseClassMustBeDerivedFromService(const Service* /*service*/) {}
    public:
-    WithGenericMethod_scheduleCordLocalParityApply() {
+    WithGenericMethod_scheduleUpLRCLocalParityApply() {
       ::grpc::Service::MarkMethodGeneric(15);
     }
-    ~WithGenericMethod_scheduleCordLocalParityApply() override {
+    ~WithGenericMethod_scheduleUpLRCLocalParityApply() override {
       BaseClassMustBeDerivedFromService(this);
     }
     // disable synchronous version of this method
-    ::grpc::Status scheduleCordLocalParityApply(::grpc::ServerContext* /*context*/, const ::proxy_proto::CordLocalParityBundle* /*request*/, ::proxy_proto::SetReply* /*response*/) override {
+    ::grpc::Status scheduleUpLRCLocalParityApply(::grpc::ServerContext* /*context*/, const ::proxy_proto::UpLRCLocalParityBundle* /*request*/, ::proxy_proto::SetReply* /*response*/) override {
       abort();
       return ::grpc::Status(::grpc::StatusCode::UNIMPLEMENTED, "");
     }
   };
   template <class BaseClass>
-  class WithGenericMethod_cordLpHubSessionBegin : public BaseClass {
+  class WithGenericMethod_uplrcLpHubSessionBegin : public BaseClass {
    private:
     void BaseClassMustBeDerivedFromService(const Service* /*service*/) {}
    public:
-    WithGenericMethod_cordLpHubSessionBegin() {
+    WithGenericMethod_uplrcLpHubSessionBegin() {
       ::grpc::Service::MarkMethodGeneric(16);
     }
-    ~WithGenericMethod_cordLpHubSessionBegin() override {
+    ~WithGenericMethod_uplrcLpHubSessionBegin() override {
       BaseClassMustBeDerivedFromService(this);
     }
     // disable synchronous version of this method
-    ::grpc::Status cordLpHubSessionBegin(::grpc::ServerContext* /*context*/, const ::proxy_proto::CordLpHubSessionBegin* /*request*/, ::proxy_proto::SetReply* /*response*/) override {
+    ::grpc::Status uplrcLpHubSessionBegin(::grpc::ServerContext* /*context*/, const ::proxy_proto::UpLRCLpHubSessionBegin* /*request*/, ::proxy_proto::SetReply* /*response*/) override {
       abort();
       return ::grpc::Status(::grpc::StatusCode::UNIMPLEMENTED, "");
     }
   };
   template <class BaseClass>
-  class WithGenericMethod_cordLpHubPartialPush : public BaseClass {
+  class WithGenericMethod_uplrcLpHubPartialPush : public BaseClass {
    private:
     void BaseClassMustBeDerivedFromService(const Service* /*service*/) {}
    public:
-    WithGenericMethod_cordLpHubPartialPush() {
+    WithGenericMethod_uplrcLpHubPartialPush() {
       ::grpc::Service::MarkMethodGeneric(17);
     }
-    ~WithGenericMethod_cordLpHubPartialPush() override {
+    ~WithGenericMethod_uplrcLpHubPartialPush() override {
       BaseClassMustBeDerivedFromService(this);
     }
     // disable synchronous version of this method
-    ::grpc::Status cordLpHubPartialPush(::grpc::ServerContext* /*context*/, const ::proxy_proto::CordLpHubPartialPush* /*request*/, ::proxy_proto::SetReply* /*response*/) override {
+    ::grpc::Status uplrcLpHubPartialPush(::grpc::ServerContext* /*context*/, const ::proxy_proto::UpLRCLpHubPartialPush* /*request*/, ::proxy_proto::SetReply* /*response*/) override {
       abort();
       return ::grpc::Status(::grpc::StatusCode::UNIMPLEMENTED, "");
     }
   };
   template <class BaseClass>
-  class WithGenericMethod_cordLpComputePartialAndPush : public BaseClass {
+  class WithGenericMethod_uplrcLpComputePartialAndPush : public BaseClass {
    private:
     void BaseClassMustBeDerivedFromService(const Service* /*service*/) {}
    public:
-    WithGenericMethod_cordLpComputePartialAndPush() {
+    WithGenericMethod_uplrcLpComputePartialAndPush() {
       ::grpc::Service::MarkMethodGeneric(18);
     }
-    ~WithGenericMethod_cordLpComputePartialAndPush() override {
+    ~WithGenericMethod_uplrcLpComputePartialAndPush() override {
       BaseClassMustBeDerivedFromService(this);
     }
     // disable synchronous version of this method
-    ::grpc::Status cordLpComputePartialAndPush(::grpc::ServerContext* /*context*/, const ::proxy_proto::CordLpComputePartialAndPush* /*request*/, ::proxy_proto::SetReply* /*response*/) override {
+    ::grpc::Status uplrcLpComputePartialAndPush(::grpc::ServerContext* /*context*/, const ::proxy_proto::UpLRCLpComputePartialAndPush* /*request*/, ::proxy_proto::SetReply* /*response*/) override {
       abort();
       return ::grpc::Status(::grpc::StatusCode::UNIMPLEMENTED, "");
     }
   };
   template <class BaseClass>
-  class WithGenericMethod_cordLpApplyParityDelta : public BaseClass {
+  class WithGenericMethod_uplrcLpApplyParityDelta : public BaseClass {
    private:
     void BaseClassMustBeDerivedFromService(const Service* /*service*/) {}
    public:
-    WithGenericMethod_cordLpApplyParityDelta() {
+    WithGenericMethod_uplrcLpApplyParityDelta() {
       ::grpc::Service::MarkMethodGeneric(19);
     }
-    ~WithGenericMethod_cordLpApplyParityDelta() override {
+    ~WithGenericMethod_uplrcLpApplyParityDelta() override {
       BaseClassMustBeDerivedFromService(this);
     }
     // disable synchronous version of this method
-    ::grpc::Status cordLpApplyParityDelta(::grpc::ServerContext* /*context*/, const ::proxy_proto::CordLpParityApplyDelta* /*request*/, ::proxy_proto::SetReply* /*response*/) override {
+    ::grpc::Status uplrcLpApplyParityDelta(::grpc::ServerContext* /*context*/, const ::proxy_proto::UpLRCLpParityApplyDelta* /*request*/, ::proxy_proto::SetReply* /*response*/) override {
       abort();
       return ::grpc::Status(::grpc::StatusCode::UNIMPLEMENTED, "");
     }
   };
   template <class BaseClass>
-  class WithGenericMethod_scheduleCordTransferPlan : public BaseClass {
+  class WithGenericMethod_scheduleUpLRCTransferPlan : public BaseClass {
    private:
     void BaseClassMustBeDerivedFromService(const Service* /*service*/) {}
    public:
-    WithGenericMethod_scheduleCordTransferPlan() {
+    WithGenericMethod_scheduleUpLRCTransferPlan() {
       ::grpc::Service::MarkMethodGeneric(20);
     }
-    ~WithGenericMethod_scheduleCordTransferPlan() override {
+    ~WithGenericMethod_scheduleUpLRCTransferPlan() override {
       BaseClassMustBeDerivedFromService(this);
     }
     // disable synchronous version of this method
-    ::grpc::Status scheduleCordTransferPlan(::grpc::ServerContext* /*context*/, const ::proxy_proto::CordTransferPlan* /*request*/, ::proxy_proto::SetReply* /*response*/) override {
+    ::grpc::Status scheduleUpLRCTransferPlan(::grpc::ServerContext* /*context*/, const ::proxy_proto::UpLRCTransferPlan* /*request*/, ::proxy_proto::SetReply* /*response*/) override {
       abort();
       return ::grpc::Status(::grpc::StatusCode::UNIMPLEMENTED, "");
     }
   };
   template <class BaseClass>
-  class WithGenericMethod_cordPlanStartExecution : public BaseClass {
+  class WithGenericMethod_uplrcPlanStartExecution : public BaseClass {
    private:
     void BaseClassMustBeDerivedFromService(const Service* /*service*/) {}
    public:
-    WithGenericMethod_cordPlanStartExecution() {
+    WithGenericMethod_uplrcPlanStartExecution() {
       ::grpc::Service::MarkMethodGeneric(21);
     }
-    ~WithGenericMethod_cordPlanStartExecution() override {
+    ~WithGenericMethod_uplrcPlanStartExecution() override {
       BaseClassMustBeDerivedFromService(this);
     }
     // disable synchronous version of this method
-    ::grpc::Status cordPlanStartExecution(::grpc::ServerContext* /*context*/, const ::proxy_proto::CordPlanKeyMsg* /*request*/, ::proxy_proto::SetReply* /*response*/) override {
+    ::grpc::Status uplrcPlanStartExecution(::grpc::ServerContext* /*context*/, const ::proxy_proto::UpLRCPlanKeyMsg* /*request*/, ::proxy_proto::SetReply* /*response*/) override {
       abort();
       return ::grpc::Status(::grpc::StatusCode::UNIMPLEMENTED, "");
     }
   };
   template <class BaseClass>
-  class WithGenericMethod_cordPlanJoinExecution : public BaseClass {
+  class WithGenericMethod_uplrcPlanJoinExecution : public BaseClass {
    private:
     void BaseClassMustBeDerivedFromService(const Service* /*service*/) {}
    public:
-    WithGenericMethod_cordPlanJoinExecution() {
+    WithGenericMethod_uplrcPlanJoinExecution() {
       ::grpc::Service::MarkMethodGeneric(22);
     }
-    ~WithGenericMethod_cordPlanJoinExecution() override {
+    ~WithGenericMethod_uplrcPlanJoinExecution() override {
       BaseClassMustBeDerivedFromService(this);
     }
     // disable synchronous version of this method
-    ::grpc::Status cordPlanJoinExecution(::grpc::ServerContext* /*context*/, const ::proxy_proto::CordPlanKeyMsg* /*request*/, ::proxy_proto::SetReply* /*response*/) override {
+    ::grpc::Status uplrcPlanJoinExecution(::grpc::ServerContext* /*context*/, const ::proxy_proto::UpLRCPlanKeyMsg* /*request*/, ::proxy_proto::SetReply* /*response*/) override {
       abort();
       return ::grpc::Status(::grpc::StatusCode::UNIMPLEMENTED, "");
     }
   };
   template <class BaseClass>
-  class WithGenericMethod_cordPlanCollectorIngestDataDelta : public BaseClass {
+  class WithGenericMethod_uplrcPlanCollectorIngestDataDelta : public BaseClass {
    private:
     void BaseClassMustBeDerivedFromService(const Service* /*service*/) {}
    public:
-    WithGenericMethod_cordPlanCollectorIngestDataDelta() {
+    WithGenericMethod_uplrcPlanCollectorIngestDataDelta() {
       ::grpc::Service::MarkMethodGeneric(23);
     }
-    ~WithGenericMethod_cordPlanCollectorIngestDataDelta() override {
+    ~WithGenericMethod_uplrcPlanCollectorIngestDataDelta() override {
       BaseClassMustBeDerivedFromService(this);
     }
     // disable synchronous version of this method
-    ::grpc::Status cordPlanCollectorIngestDataDelta(::grpc::ServerContext* /*context*/, const ::proxy_proto::CordPlanCollectorIngestReq* /*request*/, ::proxy_proto::SetReply* /*response*/) override {
+    ::grpc::Status uplrcPlanCollectorIngestDataDelta(::grpc::ServerContext* /*context*/, const ::proxy_proto::UpLRCPlanCollectorIngestReq* /*request*/, ::proxy_proto::SetReply* /*response*/) override {
       abort();
       return ::grpc::Status(::grpc::StatusCode::UNIMPLEMENTED, "");
     }
   };
   template <class BaseClass>
-  class WithGenericMethod_cordPlanApplyParityXorDelta : public BaseClass {
+  class WithGenericMethod_uplrcPlanApplyParityXorDelta : public BaseClass {
    private:
     void BaseClassMustBeDerivedFromService(const Service* /*service*/) {}
    public:
-    WithGenericMethod_cordPlanApplyParityXorDelta() {
+    WithGenericMethod_uplrcPlanApplyParityXorDelta() {
       ::grpc::Service::MarkMethodGeneric(24);
     }
-    ~WithGenericMethod_cordPlanApplyParityXorDelta() override {
+    ~WithGenericMethod_uplrcPlanApplyParityXorDelta() override {
       BaseClassMustBeDerivedFromService(this);
     }
     // disable synchronous version of this method
-    ::grpc::Status cordPlanApplyParityXorDelta(::grpc::ServerContext* /*context*/, const ::proxy_proto::CordPlanApplyParityXorReq* /*request*/, ::proxy_proto::SetReply* /*response*/) override {
+    ::grpc::Status uplrcPlanApplyParityXorDelta(::grpc::ServerContext* /*context*/, const ::proxy_proto::UpLRCPlanApplyParityXorReq* /*request*/, ::proxy_proto::SetReply* /*response*/) override {
       abort();
       return ::grpc::Status(::grpc::StatusCode::UNIMPLEMENTED, "");
     }
   };
   template <class BaseClass>
-  class WithGenericMethod_cordPlanMstDataDeltaChunk : public BaseClass {
+  class WithGenericMethod_uplrcPlanMstDataDeltaChunk : public BaseClass {
    private:
     void BaseClassMustBeDerivedFromService(const Service* /*service*/) {}
    public:
-    WithGenericMethod_cordPlanMstDataDeltaChunk() {
+    WithGenericMethod_uplrcPlanMstDataDeltaChunk() {
       ::grpc::Service::MarkMethodGeneric(25);
     }
-    ~WithGenericMethod_cordPlanMstDataDeltaChunk() override {
+    ~WithGenericMethod_uplrcPlanMstDataDeltaChunk() override {
       BaseClassMustBeDerivedFromService(this);
     }
     // disable synchronous version of this method
-    ::grpc::Status cordPlanMstDataDeltaChunk(::grpc::ServerContext* /*context*/, const ::proxy_proto::CordPlanMstDataDeltaReq* /*request*/, ::proxy_proto::SetReply* /*response*/) override {
+    ::grpc::Status uplrcPlanMstDataDeltaChunk(::grpc::ServerContext* /*context*/, const ::proxy_proto::UpLRCPlanMstDataDeltaReq* /*request*/, ::proxy_proto::SetReply* /*response*/) override {
       abort();
       return ::grpc::Status(::grpc::StatusCode::UNIMPLEMENTED, "");
     }
@@ -2778,242 +2778,242 @@ class proxyService final {
     }
   };
   template <class BaseClass>
-  class WithRawMethod_scheduleCordDataUpdate : public BaseClass {
+  class WithRawMethod_scheduleUpLRCDataUpdate : public BaseClass {
    private:
     void BaseClassMustBeDerivedFromService(const Service* /*service*/) {}
    public:
-    WithRawMethod_scheduleCordDataUpdate() {
+    WithRawMethod_scheduleUpLRCDataUpdate() {
       ::grpc::Service::MarkMethodRaw(14);
     }
-    ~WithRawMethod_scheduleCordDataUpdate() override {
+    ~WithRawMethod_scheduleUpLRCDataUpdate() override {
       BaseClassMustBeDerivedFromService(this);
     }
     // disable synchronous version of this method
-    ::grpc::Status scheduleCordDataUpdate(::grpc::ServerContext* /*context*/, const ::proxy_proto::CordDataUpdatePlacement* /*request*/, ::proxy_proto::SetReply* /*response*/) override {
+    ::grpc::Status scheduleUpLRCDataUpdate(::grpc::ServerContext* /*context*/, const ::proxy_proto::UpLRCDataUpdatePlacement* /*request*/, ::proxy_proto::SetReply* /*response*/) override {
       abort();
       return ::grpc::Status(::grpc::StatusCode::UNIMPLEMENTED, "");
     }
-    void RequestscheduleCordDataUpdate(::grpc::ServerContext* context, ::grpc::ByteBuffer* request, ::grpc::ServerAsyncResponseWriter< ::grpc::ByteBuffer>* response, ::grpc::CompletionQueue* new_call_cq, ::grpc::ServerCompletionQueue* notification_cq, void *tag) {
+    void RequestscheduleUpLRCDataUpdate(::grpc::ServerContext* context, ::grpc::ByteBuffer* request, ::grpc::ServerAsyncResponseWriter< ::grpc::ByteBuffer>* response, ::grpc::CompletionQueue* new_call_cq, ::grpc::ServerCompletionQueue* notification_cq, void *tag) {
       ::grpc::Service::RequestAsyncUnary(14, context, request, response, new_call_cq, notification_cq, tag);
     }
   };
   template <class BaseClass>
-  class WithRawMethod_scheduleCordLocalParityApply : public BaseClass {
+  class WithRawMethod_scheduleUpLRCLocalParityApply : public BaseClass {
    private:
     void BaseClassMustBeDerivedFromService(const Service* /*service*/) {}
    public:
-    WithRawMethod_scheduleCordLocalParityApply() {
+    WithRawMethod_scheduleUpLRCLocalParityApply() {
       ::grpc::Service::MarkMethodRaw(15);
     }
-    ~WithRawMethod_scheduleCordLocalParityApply() override {
+    ~WithRawMethod_scheduleUpLRCLocalParityApply() override {
       BaseClassMustBeDerivedFromService(this);
     }
     // disable synchronous version of this method
-    ::grpc::Status scheduleCordLocalParityApply(::grpc::ServerContext* /*context*/, const ::proxy_proto::CordLocalParityBundle* /*request*/, ::proxy_proto::SetReply* /*response*/) override {
+    ::grpc::Status scheduleUpLRCLocalParityApply(::grpc::ServerContext* /*context*/, const ::proxy_proto::UpLRCLocalParityBundle* /*request*/, ::proxy_proto::SetReply* /*response*/) override {
       abort();
       return ::grpc::Status(::grpc::StatusCode::UNIMPLEMENTED, "");
     }
-    void RequestscheduleCordLocalParityApply(::grpc::ServerContext* context, ::grpc::ByteBuffer* request, ::grpc::ServerAsyncResponseWriter< ::grpc::ByteBuffer>* response, ::grpc::CompletionQueue* new_call_cq, ::grpc::ServerCompletionQueue* notification_cq, void *tag) {
+    void RequestscheduleUpLRCLocalParityApply(::grpc::ServerContext* context, ::grpc::ByteBuffer* request, ::grpc::ServerAsyncResponseWriter< ::grpc::ByteBuffer>* response, ::grpc::CompletionQueue* new_call_cq, ::grpc::ServerCompletionQueue* notification_cq, void *tag) {
       ::grpc::Service::RequestAsyncUnary(15, context, request, response, new_call_cq, notification_cq, tag);
     }
   };
   template <class BaseClass>
-  class WithRawMethod_cordLpHubSessionBegin : public BaseClass {
+  class WithRawMethod_uplrcLpHubSessionBegin : public BaseClass {
    private:
     void BaseClassMustBeDerivedFromService(const Service* /*service*/) {}
    public:
-    WithRawMethod_cordLpHubSessionBegin() {
+    WithRawMethod_uplrcLpHubSessionBegin() {
       ::grpc::Service::MarkMethodRaw(16);
     }
-    ~WithRawMethod_cordLpHubSessionBegin() override {
+    ~WithRawMethod_uplrcLpHubSessionBegin() override {
       BaseClassMustBeDerivedFromService(this);
     }
     // disable synchronous version of this method
-    ::grpc::Status cordLpHubSessionBegin(::grpc::ServerContext* /*context*/, const ::proxy_proto::CordLpHubSessionBegin* /*request*/, ::proxy_proto::SetReply* /*response*/) override {
+    ::grpc::Status uplrcLpHubSessionBegin(::grpc::ServerContext* /*context*/, const ::proxy_proto::UpLRCLpHubSessionBegin* /*request*/, ::proxy_proto::SetReply* /*response*/) override {
       abort();
       return ::grpc::Status(::grpc::StatusCode::UNIMPLEMENTED, "");
     }
-    void RequestcordLpHubSessionBegin(::grpc::ServerContext* context, ::grpc::ByteBuffer* request, ::grpc::ServerAsyncResponseWriter< ::grpc::ByteBuffer>* response, ::grpc::CompletionQueue* new_call_cq, ::grpc::ServerCompletionQueue* notification_cq, void *tag) {
+    void RequestuplrcLpHubSessionBegin(::grpc::ServerContext* context, ::grpc::ByteBuffer* request, ::grpc::ServerAsyncResponseWriter< ::grpc::ByteBuffer>* response, ::grpc::CompletionQueue* new_call_cq, ::grpc::ServerCompletionQueue* notification_cq, void *tag) {
       ::grpc::Service::RequestAsyncUnary(16, context, request, response, new_call_cq, notification_cq, tag);
     }
   };
   template <class BaseClass>
-  class WithRawMethod_cordLpHubPartialPush : public BaseClass {
+  class WithRawMethod_uplrcLpHubPartialPush : public BaseClass {
    private:
     void BaseClassMustBeDerivedFromService(const Service* /*service*/) {}
    public:
-    WithRawMethod_cordLpHubPartialPush() {
+    WithRawMethod_uplrcLpHubPartialPush() {
       ::grpc::Service::MarkMethodRaw(17);
     }
-    ~WithRawMethod_cordLpHubPartialPush() override {
+    ~WithRawMethod_uplrcLpHubPartialPush() override {
       BaseClassMustBeDerivedFromService(this);
     }
     // disable synchronous version of this method
-    ::grpc::Status cordLpHubPartialPush(::grpc::ServerContext* /*context*/, const ::proxy_proto::CordLpHubPartialPush* /*request*/, ::proxy_proto::SetReply* /*response*/) override {
+    ::grpc::Status uplrcLpHubPartialPush(::grpc::ServerContext* /*context*/, const ::proxy_proto::UpLRCLpHubPartialPush* /*request*/, ::proxy_proto::SetReply* /*response*/) override {
       abort();
       return ::grpc::Status(::grpc::StatusCode::UNIMPLEMENTED, "");
     }
-    void RequestcordLpHubPartialPush(::grpc::ServerContext* context, ::grpc::ByteBuffer* request, ::grpc::ServerAsyncResponseWriter< ::grpc::ByteBuffer>* response, ::grpc::CompletionQueue* new_call_cq, ::grpc::ServerCompletionQueue* notification_cq, void *tag) {
+    void RequestuplrcLpHubPartialPush(::grpc::ServerContext* context, ::grpc::ByteBuffer* request, ::grpc::ServerAsyncResponseWriter< ::grpc::ByteBuffer>* response, ::grpc::CompletionQueue* new_call_cq, ::grpc::ServerCompletionQueue* notification_cq, void *tag) {
       ::grpc::Service::RequestAsyncUnary(17, context, request, response, new_call_cq, notification_cq, tag);
     }
   };
   template <class BaseClass>
-  class WithRawMethod_cordLpComputePartialAndPush : public BaseClass {
+  class WithRawMethod_uplrcLpComputePartialAndPush : public BaseClass {
    private:
     void BaseClassMustBeDerivedFromService(const Service* /*service*/) {}
    public:
-    WithRawMethod_cordLpComputePartialAndPush() {
+    WithRawMethod_uplrcLpComputePartialAndPush() {
       ::grpc::Service::MarkMethodRaw(18);
     }
-    ~WithRawMethod_cordLpComputePartialAndPush() override {
+    ~WithRawMethod_uplrcLpComputePartialAndPush() override {
       BaseClassMustBeDerivedFromService(this);
     }
     // disable synchronous version of this method
-    ::grpc::Status cordLpComputePartialAndPush(::grpc::ServerContext* /*context*/, const ::proxy_proto::CordLpComputePartialAndPush* /*request*/, ::proxy_proto::SetReply* /*response*/) override {
+    ::grpc::Status uplrcLpComputePartialAndPush(::grpc::ServerContext* /*context*/, const ::proxy_proto::UpLRCLpComputePartialAndPush* /*request*/, ::proxy_proto::SetReply* /*response*/) override {
       abort();
       return ::grpc::Status(::grpc::StatusCode::UNIMPLEMENTED, "");
     }
-    void RequestcordLpComputePartialAndPush(::grpc::ServerContext* context, ::grpc::ByteBuffer* request, ::grpc::ServerAsyncResponseWriter< ::grpc::ByteBuffer>* response, ::grpc::CompletionQueue* new_call_cq, ::grpc::ServerCompletionQueue* notification_cq, void *tag) {
+    void RequestuplrcLpComputePartialAndPush(::grpc::ServerContext* context, ::grpc::ByteBuffer* request, ::grpc::ServerAsyncResponseWriter< ::grpc::ByteBuffer>* response, ::grpc::CompletionQueue* new_call_cq, ::grpc::ServerCompletionQueue* notification_cq, void *tag) {
       ::grpc::Service::RequestAsyncUnary(18, context, request, response, new_call_cq, notification_cq, tag);
     }
   };
   template <class BaseClass>
-  class WithRawMethod_cordLpApplyParityDelta : public BaseClass {
+  class WithRawMethod_uplrcLpApplyParityDelta : public BaseClass {
    private:
     void BaseClassMustBeDerivedFromService(const Service* /*service*/) {}
    public:
-    WithRawMethod_cordLpApplyParityDelta() {
+    WithRawMethod_uplrcLpApplyParityDelta() {
       ::grpc::Service::MarkMethodRaw(19);
     }
-    ~WithRawMethod_cordLpApplyParityDelta() override {
+    ~WithRawMethod_uplrcLpApplyParityDelta() override {
       BaseClassMustBeDerivedFromService(this);
     }
     // disable synchronous version of this method
-    ::grpc::Status cordLpApplyParityDelta(::grpc::ServerContext* /*context*/, const ::proxy_proto::CordLpParityApplyDelta* /*request*/, ::proxy_proto::SetReply* /*response*/) override {
+    ::grpc::Status uplrcLpApplyParityDelta(::grpc::ServerContext* /*context*/, const ::proxy_proto::UpLRCLpParityApplyDelta* /*request*/, ::proxy_proto::SetReply* /*response*/) override {
       abort();
       return ::grpc::Status(::grpc::StatusCode::UNIMPLEMENTED, "");
     }
-    void RequestcordLpApplyParityDelta(::grpc::ServerContext* context, ::grpc::ByteBuffer* request, ::grpc::ServerAsyncResponseWriter< ::grpc::ByteBuffer>* response, ::grpc::CompletionQueue* new_call_cq, ::grpc::ServerCompletionQueue* notification_cq, void *tag) {
+    void RequestuplrcLpApplyParityDelta(::grpc::ServerContext* context, ::grpc::ByteBuffer* request, ::grpc::ServerAsyncResponseWriter< ::grpc::ByteBuffer>* response, ::grpc::CompletionQueue* new_call_cq, ::grpc::ServerCompletionQueue* notification_cq, void *tag) {
       ::grpc::Service::RequestAsyncUnary(19, context, request, response, new_call_cq, notification_cq, tag);
     }
   };
   template <class BaseClass>
-  class WithRawMethod_scheduleCordTransferPlan : public BaseClass {
+  class WithRawMethod_scheduleUpLRCTransferPlan : public BaseClass {
    private:
     void BaseClassMustBeDerivedFromService(const Service* /*service*/) {}
    public:
-    WithRawMethod_scheduleCordTransferPlan() {
+    WithRawMethod_scheduleUpLRCTransferPlan() {
       ::grpc::Service::MarkMethodRaw(20);
     }
-    ~WithRawMethod_scheduleCordTransferPlan() override {
+    ~WithRawMethod_scheduleUpLRCTransferPlan() override {
       BaseClassMustBeDerivedFromService(this);
     }
     // disable synchronous version of this method
-    ::grpc::Status scheduleCordTransferPlan(::grpc::ServerContext* /*context*/, const ::proxy_proto::CordTransferPlan* /*request*/, ::proxy_proto::SetReply* /*response*/) override {
+    ::grpc::Status scheduleUpLRCTransferPlan(::grpc::ServerContext* /*context*/, const ::proxy_proto::UpLRCTransferPlan* /*request*/, ::proxy_proto::SetReply* /*response*/) override {
       abort();
       return ::grpc::Status(::grpc::StatusCode::UNIMPLEMENTED, "");
     }
-    void RequestscheduleCordTransferPlan(::grpc::ServerContext* context, ::grpc::ByteBuffer* request, ::grpc::ServerAsyncResponseWriter< ::grpc::ByteBuffer>* response, ::grpc::CompletionQueue* new_call_cq, ::grpc::ServerCompletionQueue* notification_cq, void *tag) {
+    void RequestscheduleUpLRCTransferPlan(::grpc::ServerContext* context, ::grpc::ByteBuffer* request, ::grpc::ServerAsyncResponseWriter< ::grpc::ByteBuffer>* response, ::grpc::CompletionQueue* new_call_cq, ::grpc::ServerCompletionQueue* notification_cq, void *tag) {
       ::grpc::Service::RequestAsyncUnary(20, context, request, response, new_call_cq, notification_cq, tag);
     }
   };
   template <class BaseClass>
-  class WithRawMethod_cordPlanStartExecution : public BaseClass {
+  class WithRawMethod_uplrcPlanStartExecution : public BaseClass {
    private:
     void BaseClassMustBeDerivedFromService(const Service* /*service*/) {}
    public:
-    WithRawMethod_cordPlanStartExecution() {
+    WithRawMethod_uplrcPlanStartExecution() {
       ::grpc::Service::MarkMethodRaw(21);
     }
-    ~WithRawMethod_cordPlanStartExecution() override {
+    ~WithRawMethod_uplrcPlanStartExecution() override {
       BaseClassMustBeDerivedFromService(this);
     }
     // disable synchronous version of this method
-    ::grpc::Status cordPlanStartExecution(::grpc::ServerContext* /*context*/, const ::proxy_proto::CordPlanKeyMsg* /*request*/, ::proxy_proto::SetReply* /*response*/) override {
+    ::grpc::Status uplrcPlanStartExecution(::grpc::ServerContext* /*context*/, const ::proxy_proto::UpLRCPlanKeyMsg* /*request*/, ::proxy_proto::SetReply* /*response*/) override {
       abort();
       return ::grpc::Status(::grpc::StatusCode::UNIMPLEMENTED, "");
     }
-    void RequestcordPlanStartExecution(::grpc::ServerContext* context, ::grpc::ByteBuffer* request, ::grpc::ServerAsyncResponseWriter< ::grpc::ByteBuffer>* response, ::grpc::CompletionQueue* new_call_cq, ::grpc::ServerCompletionQueue* notification_cq, void *tag) {
+    void RequestuplrcPlanStartExecution(::grpc::ServerContext* context, ::grpc::ByteBuffer* request, ::grpc::ServerAsyncResponseWriter< ::grpc::ByteBuffer>* response, ::grpc::CompletionQueue* new_call_cq, ::grpc::ServerCompletionQueue* notification_cq, void *tag) {
       ::grpc::Service::RequestAsyncUnary(21, context, request, response, new_call_cq, notification_cq, tag);
     }
   };
   template <class BaseClass>
-  class WithRawMethod_cordPlanJoinExecution : public BaseClass {
+  class WithRawMethod_uplrcPlanJoinExecution : public BaseClass {
    private:
     void BaseClassMustBeDerivedFromService(const Service* /*service*/) {}
    public:
-    WithRawMethod_cordPlanJoinExecution() {
+    WithRawMethod_uplrcPlanJoinExecution() {
       ::grpc::Service::MarkMethodRaw(22);
     }
-    ~WithRawMethod_cordPlanJoinExecution() override {
+    ~WithRawMethod_uplrcPlanJoinExecution() override {
       BaseClassMustBeDerivedFromService(this);
     }
     // disable synchronous version of this method
-    ::grpc::Status cordPlanJoinExecution(::grpc::ServerContext* /*context*/, const ::proxy_proto::CordPlanKeyMsg* /*request*/, ::proxy_proto::SetReply* /*response*/) override {
+    ::grpc::Status uplrcPlanJoinExecution(::grpc::ServerContext* /*context*/, const ::proxy_proto::UpLRCPlanKeyMsg* /*request*/, ::proxy_proto::SetReply* /*response*/) override {
       abort();
       return ::grpc::Status(::grpc::StatusCode::UNIMPLEMENTED, "");
     }
-    void RequestcordPlanJoinExecution(::grpc::ServerContext* context, ::grpc::ByteBuffer* request, ::grpc::ServerAsyncResponseWriter< ::grpc::ByteBuffer>* response, ::grpc::CompletionQueue* new_call_cq, ::grpc::ServerCompletionQueue* notification_cq, void *tag) {
+    void RequestuplrcPlanJoinExecution(::grpc::ServerContext* context, ::grpc::ByteBuffer* request, ::grpc::ServerAsyncResponseWriter< ::grpc::ByteBuffer>* response, ::grpc::CompletionQueue* new_call_cq, ::grpc::ServerCompletionQueue* notification_cq, void *tag) {
       ::grpc::Service::RequestAsyncUnary(22, context, request, response, new_call_cq, notification_cq, tag);
     }
   };
   template <class BaseClass>
-  class WithRawMethod_cordPlanCollectorIngestDataDelta : public BaseClass {
+  class WithRawMethod_uplrcPlanCollectorIngestDataDelta : public BaseClass {
    private:
     void BaseClassMustBeDerivedFromService(const Service* /*service*/) {}
    public:
-    WithRawMethod_cordPlanCollectorIngestDataDelta() {
+    WithRawMethod_uplrcPlanCollectorIngestDataDelta() {
       ::grpc::Service::MarkMethodRaw(23);
     }
-    ~WithRawMethod_cordPlanCollectorIngestDataDelta() override {
+    ~WithRawMethod_uplrcPlanCollectorIngestDataDelta() override {
       BaseClassMustBeDerivedFromService(this);
     }
     // disable synchronous version of this method
-    ::grpc::Status cordPlanCollectorIngestDataDelta(::grpc::ServerContext* /*context*/, const ::proxy_proto::CordPlanCollectorIngestReq* /*request*/, ::proxy_proto::SetReply* /*response*/) override {
+    ::grpc::Status uplrcPlanCollectorIngestDataDelta(::grpc::ServerContext* /*context*/, const ::proxy_proto::UpLRCPlanCollectorIngestReq* /*request*/, ::proxy_proto::SetReply* /*response*/) override {
       abort();
       return ::grpc::Status(::grpc::StatusCode::UNIMPLEMENTED, "");
     }
-    void RequestcordPlanCollectorIngestDataDelta(::grpc::ServerContext* context, ::grpc::ByteBuffer* request, ::grpc::ServerAsyncResponseWriter< ::grpc::ByteBuffer>* response, ::grpc::CompletionQueue* new_call_cq, ::grpc::ServerCompletionQueue* notification_cq, void *tag) {
+    void RequestuplrcPlanCollectorIngestDataDelta(::grpc::ServerContext* context, ::grpc::ByteBuffer* request, ::grpc::ServerAsyncResponseWriter< ::grpc::ByteBuffer>* response, ::grpc::CompletionQueue* new_call_cq, ::grpc::ServerCompletionQueue* notification_cq, void *tag) {
       ::grpc::Service::RequestAsyncUnary(23, context, request, response, new_call_cq, notification_cq, tag);
     }
   };
   template <class BaseClass>
-  class WithRawMethod_cordPlanApplyParityXorDelta : public BaseClass {
+  class WithRawMethod_uplrcPlanApplyParityXorDelta : public BaseClass {
    private:
     void BaseClassMustBeDerivedFromService(const Service* /*service*/) {}
    public:
-    WithRawMethod_cordPlanApplyParityXorDelta() {
+    WithRawMethod_uplrcPlanApplyParityXorDelta() {
       ::grpc::Service::MarkMethodRaw(24);
     }
-    ~WithRawMethod_cordPlanApplyParityXorDelta() override {
+    ~WithRawMethod_uplrcPlanApplyParityXorDelta() override {
       BaseClassMustBeDerivedFromService(this);
     }
     // disable synchronous version of this method
-    ::grpc::Status cordPlanApplyParityXorDelta(::grpc::ServerContext* /*context*/, const ::proxy_proto::CordPlanApplyParityXorReq* /*request*/, ::proxy_proto::SetReply* /*response*/) override {
+    ::grpc::Status uplrcPlanApplyParityXorDelta(::grpc::ServerContext* /*context*/, const ::proxy_proto::UpLRCPlanApplyParityXorReq* /*request*/, ::proxy_proto::SetReply* /*response*/) override {
       abort();
       return ::grpc::Status(::grpc::StatusCode::UNIMPLEMENTED, "");
     }
-    void RequestcordPlanApplyParityXorDelta(::grpc::ServerContext* context, ::grpc::ByteBuffer* request, ::grpc::ServerAsyncResponseWriter< ::grpc::ByteBuffer>* response, ::grpc::CompletionQueue* new_call_cq, ::grpc::ServerCompletionQueue* notification_cq, void *tag) {
+    void RequestuplrcPlanApplyParityXorDelta(::grpc::ServerContext* context, ::grpc::ByteBuffer* request, ::grpc::ServerAsyncResponseWriter< ::grpc::ByteBuffer>* response, ::grpc::CompletionQueue* new_call_cq, ::grpc::ServerCompletionQueue* notification_cq, void *tag) {
       ::grpc::Service::RequestAsyncUnary(24, context, request, response, new_call_cq, notification_cq, tag);
     }
   };
   template <class BaseClass>
-  class WithRawMethod_cordPlanMstDataDeltaChunk : public BaseClass {
+  class WithRawMethod_uplrcPlanMstDataDeltaChunk : public BaseClass {
    private:
     void BaseClassMustBeDerivedFromService(const Service* /*service*/) {}
    public:
-    WithRawMethod_cordPlanMstDataDeltaChunk() {
+    WithRawMethod_uplrcPlanMstDataDeltaChunk() {
       ::grpc::Service::MarkMethodRaw(25);
     }
-    ~WithRawMethod_cordPlanMstDataDeltaChunk() override {
+    ~WithRawMethod_uplrcPlanMstDataDeltaChunk() override {
       BaseClassMustBeDerivedFromService(this);
     }
     // disable synchronous version of this method
-    ::grpc::Status cordPlanMstDataDeltaChunk(::grpc::ServerContext* /*context*/, const ::proxy_proto::CordPlanMstDataDeltaReq* /*request*/, ::proxy_proto::SetReply* /*response*/) override {
+    ::grpc::Status uplrcPlanMstDataDeltaChunk(::grpc::ServerContext* /*context*/, const ::proxy_proto::UpLRCPlanMstDataDeltaReq* /*request*/, ::proxy_proto::SetReply* /*response*/) override {
       abort();
       return ::grpc::Status(::grpc::StatusCode::UNIMPLEMENTED, "");
     }
-    void RequestcordPlanMstDataDeltaChunk(::grpc::ServerContext* context, ::grpc::ByteBuffer* request, ::grpc::ServerAsyncResponseWriter< ::grpc::ByteBuffer>* response, ::grpc::CompletionQueue* new_call_cq, ::grpc::ServerCompletionQueue* notification_cq, void *tag) {
+    void RequestuplrcPlanMstDataDeltaChunk(::grpc::ServerContext* context, ::grpc::ByteBuffer* request, ::grpc::ServerAsyncResponseWriter< ::grpc::ByteBuffer>* response, ::grpc::CompletionQueue* new_call_cq, ::grpc::ServerCompletionQueue* notification_cq, void *tag) {
       ::grpc::Service::RequestAsyncUnary(25, context, request, response, new_call_cq, notification_cq, tag);
     }
   };
@@ -3346,267 +3346,267 @@ class proxyService final {
       ::grpc::CallbackServerContext* /*context*/, const ::grpc::ByteBuffer* /*request*/, ::grpc::ByteBuffer* /*response*/)  { return nullptr; }
   };
   template <class BaseClass>
-  class WithRawCallbackMethod_scheduleCordDataUpdate : public BaseClass {
+  class WithRawCallbackMethod_scheduleUpLRCDataUpdate : public BaseClass {
    private:
     void BaseClassMustBeDerivedFromService(const Service* /*service*/) {}
    public:
-    WithRawCallbackMethod_scheduleCordDataUpdate() {
+    WithRawCallbackMethod_scheduleUpLRCDataUpdate() {
       ::grpc::Service::MarkMethodRawCallback(14,
           new ::grpc::internal::CallbackUnaryHandler< ::grpc::ByteBuffer, ::grpc::ByteBuffer>(
             [this](
-                   ::grpc::CallbackServerContext* context, const ::grpc::ByteBuffer* request, ::grpc::ByteBuffer* response) { return this->scheduleCordDataUpdate(context, request, response); }));
+                   ::grpc::CallbackServerContext* context, const ::grpc::ByteBuffer* request, ::grpc::ByteBuffer* response) { return this->scheduleUpLRCDataUpdate(context, request, response); }));
     }
-    ~WithRawCallbackMethod_scheduleCordDataUpdate() override {
+    ~WithRawCallbackMethod_scheduleUpLRCDataUpdate() override {
       BaseClassMustBeDerivedFromService(this);
     }
     // disable synchronous version of this method
-    ::grpc::Status scheduleCordDataUpdate(::grpc::ServerContext* /*context*/, const ::proxy_proto::CordDataUpdatePlacement* /*request*/, ::proxy_proto::SetReply* /*response*/) override {
+    ::grpc::Status scheduleUpLRCDataUpdate(::grpc::ServerContext* /*context*/, const ::proxy_proto::UpLRCDataUpdatePlacement* /*request*/, ::proxy_proto::SetReply* /*response*/) override {
       abort();
       return ::grpc::Status(::grpc::StatusCode::UNIMPLEMENTED, "");
     }
-    virtual ::grpc::ServerUnaryReactor* scheduleCordDataUpdate(
+    virtual ::grpc::ServerUnaryReactor* scheduleUpLRCDataUpdate(
       ::grpc::CallbackServerContext* /*context*/, const ::grpc::ByteBuffer* /*request*/, ::grpc::ByteBuffer* /*response*/)  { return nullptr; }
   };
   template <class BaseClass>
-  class WithRawCallbackMethod_scheduleCordLocalParityApply : public BaseClass {
+  class WithRawCallbackMethod_scheduleUpLRCLocalParityApply : public BaseClass {
    private:
     void BaseClassMustBeDerivedFromService(const Service* /*service*/) {}
    public:
-    WithRawCallbackMethod_scheduleCordLocalParityApply() {
+    WithRawCallbackMethod_scheduleUpLRCLocalParityApply() {
       ::grpc::Service::MarkMethodRawCallback(15,
           new ::grpc::internal::CallbackUnaryHandler< ::grpc::ByteBuffer, ::grpc::ByteBuffer>(
             [this](
-                   ::grpc::CallbackServerContext* context, const ::grpc::ByteBuffer* request, ::grpc::ByteBuffer* response) { return this->scheduleCordLocalParityApply(context, request, response); }));
+                   ::grpc::CallbackServerContext* context, const ::grpc::ByteBuffer* request, ::grpc::ByteBuffer* response) { return this->scheduleUpLRCLocalParityApply(context, request, response); }));
     }
-    ~WithRawCallbackMethod_scheduleCordLocalParityApply() override {
+    ~WithRawCallbackMethod_scheduleUpLRCLocalParityApply() override {
       BaseClassMustBeDerivedFromService(this);
     }
     // disable synchronous version of this method
-    ::grpc::Status scheduleCordLocalParityApply(::grpc::ServerContext* /*context*/, const ::proxy_proto::CordLocalParityBundle* /*request*/, ::proxy_proto::SetReply* /*response*/) override {
+    ::grpc::Status scheduleUpLRCLocalParityApply(::grpc::ServerContext* /*context*/, const ::proxy_proto::UpLRCLocalParityBundle* /*request*/, ::proxy_proto::SetReply* /*response*/) override {
       abort();
       return ::grpc::Status(::grpc::StatusCode::UNIMPLEMENTED, "");
     }
-    virtual ::grpc::ServerUnaryReactor* scheduleCordLocalParityApply(
+    virtual ::grpc::ServerUnaryReactor* scheduleUpLRCLocalParityApply(
       ::grpc::CallbackServerContext* /*context*/, const ::grpc::ByteBuffer* /*request*/, ::grpc::ByteBuffer* /*response*/)  { return nullptr; }
   };
   template <class BaseClass>
-  class WithRawCallbackMethod_cordLpHubSessionBegin : public BaseClass {
+  class WithRawCallbackMethod_uplrcLpHubSessionBegin : public BaseClass {
    private:
     void BaseClassMustBeDerivedFromService(const Service* /*service*/) {}
    public:
-    WithRawCallbackMethod_cordLpHubSessionBegin() {
+    WithRawCallbackMethod_uplrcLpHubSessionBegin() {
       ::grpc::Service::MarkMethodRawCallback(16,
           new ::grpc::internal::CallbackUnaryHandler< ::grpc::ByteBuffer, ::grpc::ByteBuffer>(
             [this](
-                   ::grpc::CallbackServerContext* context, const ::grpc::ByteBuffer* request, ::grpc::ByteBuffer* response) { return this->cordLpHubSessionBegin(context, request, response); }));
+                   ::grpc::CallbackServerContext* context, const ::grpc::ByteBuffer* request, ::grpc::ByteBuffer* response) { return this->uplrcLpHubSessionBegin(context, request, response); }));
     }
-    ~WithRawCallbackMethod_cordLpHubSessionBegin() override {
+    ~WithRawCallbackMethod_uplrcLpHubSessionBegin() override {
       BaseClassMustBeDerivedFromService(this);
     }
     // disable synchronous version of this method
-    ::grpc::Status cordLpHubSessionBegin(::grpc::ServerContext* /*context*/, const ::proxy_proto::CordLpHubSessionBegin* /*request*/, ::proxy_proto::SetReply* /*response*/) override {
+    ::grpc::Status uplrcLpHubSessionBegin(::grpc::ServerContext* /*context*/, const ::proxy_proto::UpLRCLpHubSessionBegin* /*request*/, ::proxy_proto::SetReply* /*response*/) override {
       abort();
       return ::grpc::Status(::grpc::StatusCode::UNIMPLEMENTED, "");
     }
-    virtual ::grpc::ServerUnaryReactor* cordLpHubSessionBegin(
+    virtual ::grpc::ServerUnaryReactor* uplrcLpHubSessionBegin(
       ::grpc::CallbackServerContext* /*context*/, const ::grpc::ByteBuffer* /*request*/, ::grpc::ByteBuffer* /*response*/)  { return nullptr; }
   };
   template <class BaseClass>
-  class WithRawCallbackMethod_cordLpHubPartialPush : public BaseClass {
+  class WithRawCallbackMethod_uplrcLpHubPartialPush : public BaseClass {
    private:
     void BaseClassMustBeDerivedFromService(const Service* /*service*/) {}
    public:
-    WithRawCallbackMethod_cordLpHubPartialPush() {
+    WithRawCallbackMethod_uplrcLpHubPartialPush() {
       ::grpc::Service::MarkMethodRawCallback(17,
           new ::grpc::internal::CallbackUnaryHandler< ::grpc::ByteBuffer, ::grpc::ByteBuffer>(
             [this](
-                   ::grpc::CallbackServerContext* context, const ::grpc::ByteBuffer* request, ::grpc::ByteBuffer* response) { return this->cordLpHubPartialPush(context, request, response); }));
+                   ::grpc::CallbackServerContext* context, const ::grpc::ByteBuffer* request, ::grpc::ByteBuffer* response) { return this->uplrcLpHubPartialPush(context, request, response); }));
     }
-    ~WithRawCallbackMethod_cordLpHubPartialPush() override {
+    ~WithRawCallbackMethod_uplrcLpHubPartialPush() override {
       BaseClassMustBeDerivedFromService(this);
     }
     // disable synchronous version of this method
-    ::grpc::Status cordLpHubPartialPush(::grpc::ServerContext* /*context*/, const ::proxy_proto::CordLpHubPartialPush* /*request*/, ::proxy_proto::SetReply* /*response*/) override {
+    ::grpc::Status uplrcLpHubPartialPush(::grpc::ServerContext* /*context*/, const ::proxy_proto::UpLRCLpHubPartialPush* /*request*/, ::proxy_proto::SetReply* /*response*/) override {
       abort();
       return ::grpc::Status(::grpc::StatusCode::UNIMPLEMENTED, "");
     }
-    virtual ::grpc::ServerUnaryReactor* cordLpHubPartialPush(
+    virtual ::grpc::ServerUnaryReactor* uplrcLpHubPartialPush(
       ::grpc::CallbackServerContext* /*context*/, const ::grpc::ByteBuffer* /*request*/, ::grpc::ByteBuffer* /*response*/)  { return nullptr; }
   };
   template <class BaseClass>
-  class WithRawCallbackMethod_cordLpComputePartialAndPush : public BaseClass {
+  class WithRawCallbackMethod_uplrcLpComputePartialAndPush : public BaseClass {
    private:
     void BaseClassMustBeDerivedFromService(const Service* /*service*/) {}
    public:
-    WithRawCallbackMethod_cordLpComputePartialAndPush() {
+    WithRawCallbackMethod_uplrcLpComputePartialAndPush() {
       ::grpc::Service::MarkMethodRawCallback(18,
           new ::grpc::internal::CallbackUnaryHandler< ::grpc::ByteBuffer, ::grpc::ByteBuffer>(
             [this](
-                   ::grpc::CallbackServerContext* context, const ::grpc::ByteBuffer* request, ::grpc::ByteBuffer* response) { return this->cordLpComputePartialAndPush(context, request, response); }));
+                   ::grpc::CallbackServerContext* context, const ::grpc::ByteBuffer* request, ::grpc::ByteBuffer* response) { return this->uplrcLpComputePartialAndPush(context, request, response); }));
     }
-    ~WithRawCallbackMethod_cordLpComputePartialAndPush() override {
+    ~WithRawCallbackMethod_uplrcLpComputePartialAndPush() override {
       BaseClassMustBeDerivedFromService(this);
     }
     // disable synchronous version of this method
-    ::grpc::Status cordLpComputePartialAndPush(::grpc::ServerContext* /*context*/, const ::proxy_proto::CordLpComputePartialAndPush* /*request*/, ::proxy_proto::SetReply* /*response*/) override {
+    ::grpc::Status uplrcLpComputePartialAndPush(::grpc::ServerContext* /*context*/, const ::proxy_proto::UpLRCLpComputePartialAndPush* /*request*/, ::proxy_proto::SetReply* /*response*/) override {
       abort();
       return ::grpc::Status(::grpc::StatusCode::UNIMPLEMENTED, "");
     }
-    virtual ::grpc::ServerUnaryReactor* cordLpComputePartialAndPush(
+    virtual ::grpc::ServerUnaryReactor* uplrcLpComputePartialAndPush(
       ::grpc::CallbackServerContext* /*context*/, const ::grpc::ByteBuffer* /*request*/, ::grpc::ByteBuffer* /*response*/)  { return nullptr; }
   };
   template <class BaseClass>
-  class WithRawCallbackMethod_cordLpApplyParityDelta : public BaseClass {
+  class WithRawCallbackMethod_uplrcLpApplyParityDelta : public BaseClass {
    private:
     void BaseClassMustBeDerivedFromService(const Service* /*service*/) {}
    public:
-    WithRawCallbackMethod_cordLpApplyParityDelta() {
+    WithRawCallbackMethod_uplrcLpApplyParityDelta() {
       ::grpc::Service::MarkMethodRawCallback(19,
           new ::grpc::internal::CallbackUnaryHandler< ::grpc::ByteBuffer, ::grpc::ByteBuffer>(
             [this](
-                   ::grpc::CallbackServerContext* context, const ::grpc::ByteBuffer* request, ::grpc::ByteBuffer* response) { return this->cordLpApplyParityDelta(context, request, response); }));
+                   ::grpc::CallbackServerContext* context, const ::grpc::ByteBuffer* request, ::grpc::ByteBuffer* response) { return this->uplrcLpApplyParityDelta(context, request, response); }));
     }
-    ~WithRawCallbackMethod_cordLpApplyParityDelta() override {
+    ~WithRawCallbackMethod_uplrcLpApplyParityDelta() override {
       BaseClassMustBeDerivedFromService(this);
     }
     // disable synchronous version of this method
-    ::grpc::Status cordLpApplyParityDelta(::grpc::ServerContext* /*context*/, const ::proxy_proto::CordLpParityApplyDelta* /*request*/, ::proxy_proto::SetReply* /*response*/) override {
+    ::grpc::Status uplrcLpApplyParityDelta(::grpc::ServerContext* /*context*/, const ::proxy_proto::UpLRCLpParityApplyDelta* /*request*/, ::proxy_proto::SetReply* /*response*/) override {
       abort();
       return ::grpc::Status(::grpc::StatusCode::UNIMPLEMENTED, "");
     }
-    virtual ::grpc::ServerUnaryReactor* cordLpApplyParityDelta(
+    virtual ::grpc::ServerUnaryReactor* uplrcLpApplyParityDelta(
       ::grpc::CallbackServerContext* /*context*/, const ::grpc::ByteBuffer* /*request*/, ::grpc::ByteBuffer* /*response*/)  { return nullptr; }
   };
   template <class BaseClass>
-  class WithRawCallbackMethod_scheduleCordTransferPlan : public BaseClass {
+  class WithRawCallbackMethod_scheduleUpLRCTransferPlan : public BaseClass {
    private:
     void BaseClassMustBeDerivedFromService(const Service* /*service*/) {}
    public:
-    WithRawCallbackMethod_scheduleCordTransferPlan() {
+    WithRawCallbackMethod_scheduleUpLRCTransferPlan() {
       ::grpc::Service::MarkMethodRawCallback(20,
           new ::grpc::internal::CallbackUnaryHandler< ::grpc::ByteBuffer, ::grpc::ByteBuffer>(
             [this](
-                   ::grpc::CallbackServerContext* context, const ::grpc::ByteBuffer* request, ::grpc::ByteBuffer* response) { return this->scheduleCordTransferPlan(context, request, response); }));
+                   ::grpc::CallbackServerContext* context, const ::grpc::ByteBuffer* request, ::grpc::ByteBuffer* response) { return this->scheduleUpLRCTransferPlan(context, request, response); }));
     }
-    ~WithRawCallbackMethod_scheduleCordTransferPlan() override {
+    ~WithRawCallbackMethod_scheduleUpLRCTransferPlan() override {
       BaseClassMustBeDerivedFromService(this);
     }
     // disable synchronous version of this method
-    ::grpc::Status scheduleCordTransferPlan(::grpc::ServerContext* /*context*/, const ::proxy_proto::CordTransferPlan* /*request*/, ::proxy_proto::SetReply* /*response*/) override {
+    ::grpc::Status scheduleUpLRCTransferPlan(::grpc::ServerContext* /*context*/, const ::proxy_proto::UpLRCTransferPlan* /*request*/, ::proxy_proto::SetReply* /*response*/) override {
       abort();
       return ::grpc::Status(::grpc::StatusCode::UNIMPLEMENTED, "");
     }
-    virtual ::grpc::ServerUnaryReactor* scheduleCordTransferPlan(
+    virtual ::grpc::ServerUnaryReactor* scheduleUpLRCTransferPlan(
       ::grpc::CallbackServerContext* /*context*/, const ::grpc::ByteBuffer* /*request*/, ::grpc::ByteBuffer* /*response*/)  { return nullptr; }
   };
   template <class BaseClass>
-  class WithRawCallbackMethod_cordPlanStartExecution : public BaseClass {
+  class WithRawCallbackMethod_uplrcPlanStartExecution : public BaseClass {
    private:
     void BaseClassMustBeDerivedFromService(const Service* /*service*/) {}
    public:
-    WithRawCallbackMethod_cordPlanStartExecution() {
+    WithRawCallbackMethod_uplrcPlanStartExecution() {
       ::grpc::Service::MarkMethodRawCallback(21,
           new ::grpc::internal::CallbackUnaryHandler< ::grpc::ByteBuffer, ::grpc::ByteBuffer>(
             [this](
-                   ::grpc::CallbackServerContext* context, const ::grpc::ByteBuffer* request, ::grpc::ByteBuffer* response) { return this->cordPlanStartExecution(context, request, response); }));
+                   ::grpc::CallbackServerContext* context, const ::grpc::ByteBuffer* request, ::grpc::ByteBuffer* response) { return this->uplrcPlanStartExecution(context, request, response); }));
     }
-    ~WithRawCallbackMethod_cordPlanStartExecution() override {
+    ~WithRawCallbackMethod_uplrcPlanStartExecution() override {
       BaseClassMustBeDerivedFromService(this);
     }
     // disable synchronous version of this method
-    ::grpc::Status cordPlanStartExecution(::grpc::ServerContext* /*context*/, const ::proxy_proto::CordPlanKeyMsg* /*request*/, ::proxy_proto::SetReply* /*response*/) override {
+    ::grpc::Status uplrcPlanStartExecution(::grpc::ServerContext* /*context*/, const ::proxy_proto::UpLRCPlanKeyMsg* /*request*/, ::proxy_proto::SetReply* /*response*/) override {
       abort();
       return ::grpc::Status(::grpc::StatusCode::UNIMPLEMENTED, "");
     }
-    virtual ::grpc::ServerUnaryReactor* cordPlanStartExecution(
+    virtual ::grpc::ServerUnaryReactor* uplrcPlanStartExecution(
       ::grpc::CallbackServerContext* /*context*/, const ::grpc::ByteBuffer* /*request*/, ::grpc::ByteBuffer* /*response*/)  { return nullptr; }
   };
   template <class BaseClass>
-  class WithRawCallbackMethod_cordPlanJoinExecution : public BaseClass {
+  class WithRawCallbackMethod_uplrcPlanJoinExecution : public BaseClass {
    private:
     void BaseClassMustBeDerivedFromService(const Service* /*service*/) {}
    public:
-    WithRawCallbackMethod_cordPlanJoinExecution() {
+    WithRawCallbackMethod_uplrcPlanJoinExecution() {
       ::grpc::Service::MarkMethodRawCallback(22,
           new ::grpc::internal::CallbackUnaryHandler< ::grpc::ByteBuffer, ::grpc::ByteBuffer>(
             [this](
-                   ::grpc::CallbackServerContext* context, const ::grpc::ByteBuffer* request, ::grpc::ByteBuffer* response) { return this->cordPlanJoinExecution(context, request, response); }));
+                   ::grpc::CallbackServerContext* context, const ::grpc::ByteBuffer* request, ::grpc::ByteBuffer* response) { return this->uplrcPlanJoinExecution(context, request, response); }));
     }
-    ~WithRawCallbackMethod_cordPlanJoinExecution() override {
+    ~WithRawCallbackMethod_uplrcPlanJoinExecution() override {
       BaseClassMustBeDerivedFromService(this);
     }
     // disable synchronous version of this method
-    ::grpc::Status cordPlanJoinExecution(::grpc::ServerContext* /*context*/, const ::proxy_proto::CordPlanKeyMsg* /*request*/, ::proxy_proto::SetReply* /*response*/) override {
+    ::grpc::Status uplrcPlanJoinExecution(::grpc::ServerContext* /*context*/, const ::proxy_proto::UpLRCPlanKeyMsg* /*request*/, ::proxy_proto::SetReply* /*response*/) override {
       abort();
       return ::grpc::Status(::grpc::StatusCode::UNIMPLEMENTED, "");
     }
-    virtual ::grpc::ServerUnaryReactor* cordPlanJoinExecution(
+    virtual ::grpc::ServerUnaryReactor* uplrcPlanJoinExecution(
       ::grpc::CallbackServerContext* /*context*/, const ::grpc::ByteBuffer* /*request*/, ::grpc::ByteBuffer* /*response*/)  { return nullptr; }
   };
   template <class BaseClass>
-  class WithRawCallbackMethod_cordPlanCollectorIngestDataDelta : public BaseClass {
+  class WithRawCallbackMethod_uplrcPlanCollectorIngestDataDelta : public BaseClass {
    private:
     void BaseClassMustBeDerivedFromService(const Service* /*service*/) {}
    public:
-    WithRawCallbackMethod_cordPlanCollectorIngestDataDelta() {
+    WithRawCallbackMethod_uplrcPlanCollectorIngestDataDelta() {
       ::grpc::Service::MarkMethodRawCallback(23,
           new ::grpc::internal::CallbackUnaryHandler< ::grpc::ByteBuffer, ::grpc::ByteBuffer>(
             [this](
-                   ::grpc::CallbackServerContext* context, const ::grpc::ByteBuffer* request, ::grpc::ByteBuffer* response) { return this->cordPlanCollectorIngestDataDelta(context, request, response); }));
+                   ::grpc::CallbackServerContext* context, const ::grpc::ByteBuffer* request, ::grpc::ByteBuffer* response) { return this->uplrcPlanCollectorIngestDataDelta(context, request, response); }));
     }
-    ~WithRawCallbackMethod_cordPlanCollectorIngestDataDelta() override {
+    ~WithRawCallbackMethod_uplrcPlanCollectorIngestDataDelta() override {
       BaseClassMustBeDerivedFromService(this);
     }
     // disable synchronous version of this method
-    ::grpc::Status cordPlanCollectorIngestDataDelta(::grpc::ServerContext* /*context*/, const ::proxy_proto::CordPlanCollectorIngestReq* /*request*/, ::proxy_proto::SetReply* /*response*/) override {
+    ::grpc::Status uplrcPlanCollectorIngestDataDelta(::grpc::ServerContext* /*context*/, const ::proxy_proto::UpLRCPlanCollectorIngestReq* /*request*/, ::proxy_proto::SetReply* /*response*/) override {
       abort();
       return ::grpc::Status(::grpc::StatusCode::UNIMPLEMENTED, "");
     }
-    virtual ::grpc::ServerUnaryReactor* cordPlanCollectorIngestDataDelta(
+    virtual ::grpc::ServerUnaryReactor* uplrcPlanCollectorIngestDataDelta(
       ::grpc::CallbackServerContext* /*context*/, const ::grpc::ByteBuffer* /*request*/, ::grpc::ByteBuffer* /*response*/)  { return nullptr; }
   };
   template <class BaseClass>
-  class WithRawCallbackMethod_cordPlanApplyParityXorDelta : public BaseClass {
+  class WithRawCallbackMethod_uplrcPlanApplyParityXorDelta : public BaseClass {
    private:
     void BaseClassMustBeDerivedFromService(const Service* /*service*/) {}
    public:
-    WithRawCallbackMethod_cordPlanApplyParityXorDelta() {
+    WithRawCallbackMethod_uplrcPlanApplyParityXorDelta() {
       ::grpc::Service::MarkMethodRawCallback(24,
           new ::grpc::internal::CallbackUnaryHandler< ::grpc::ByteBuffer, ::grpc::ByteBuffer>(
             [this](
-                   ::grpc::CallbackServerContext* context, const ::grpc::ByteBuffer* request, ::grpc::ByteBuffer* response) { return this->cordPlanApplyParityXorDelta(context, request, response); }));
+                   ::grpc::CallbackServerContext* context, const ::grpc::ByteBuffer* request, ::grpc::ByteBuffer* response) { return this->uplrcPlanApplyParityXorDelta(context, request, response); }));
     }
-    ~WithRawCallbackMethod_cordPlanApplyParityXorDelta() override {
+    ~WithRawCallbackMethod_uplrcPlanApplyParityXorDelta() override {
       BaseClassMustBeDerivedFromService(this);
     }
     // disable synchronous version of this method
-    ::grpc::Status cordPlanApplyParityXorDelta(::grpc::ServerContext* /*context*/, const ::proxy_proto::CordPlanApplyParityXorReq* /*request*/, ::proxy_proto::SetReply* /*response*/) override {
+    ::grpc::Status uplrcPlanApplyParityXorDelta(::grpc::ServerContext* /*context*/, const ::proxy_proto::UpLRCPlanApplyParityXorReq* /*request*/, ::proxy_proto::SetReply* /*response*/) override {
       abort();
       return ::grpc::Status(::grpc::StatusCode::UNIMPLEMENTED, "");
     }
-    virtual ::grpc::ServerUnaryReactor* cordPlanApplyParityXorDelta(
+    virtual ::grpc::ServerUnaryReactor* uplrcPlanApplyParityXorDelta(
       ::grpc::CallbackServerContext* /*context*/, const ::grpc::ByteBuffer* /*request*/, ::grpc::ByteBuffer* /*response*/)  { return nullptr; }
   };
   template <class BaseClass>
-  class WithRawCallbackMethod_cordPlanMstDataDeltaChunk : public BaseClass {
+  class WithRawCallbackMethod_uplrcPlanMstDataDeltaChunk : public BaseClass {
    private:
     void BaseClassMustBeDerivedFromService(const Service* /*service*/) {}
    public:
-    WithRawCallbackMethod_cordPlanMstDataDeltaChunk() {
+    WithRawCallbackMethod_uplrcPlanMstDataDeltaChunk() {
       ::grpc::Service::MarkMethodRawCallback(25,
           new ::grpc::internal::CallbackUnaryHandler< ::grpc::ByteBuffer, ::grpc::ByteBuffer>(
             [this](
-                   ::grpc::CallbackServerContext* context, const ::grpc::ByteBuffer* request, ::grpc::ByteBuffer* response) { return this->cordPlanMstDataDeltaChunk(context, request, response); }));
+                   ::grpc::CallbackServerContext* context, const ::grpc::ByteBuffer* request, ::grpc::ByteBuffer* response) { return this->uplrcPlanMstDataDeltaChunk(context, request, response); }));
     }
-    ~WithRawCallbackMethod_cordPlanMstDataDeltaChunk() override {
+    ~WithRawCallbackMethod_uplrcPlanMstDataDeltaChunk() override {
       BaseClassMustBeDerivedFromService(this);
     }
     // disable synchronous version of this method
-    ::grpc::Status cordPlanMstDataDeltaChunk(::grpc::ServerContext* /*context*/, const ::proxy_proto::CordPlanMstDataDeltaReq* /*request*/, ::proxy_proto::SetReply* /*response*/) override {
+    ::grpc::Status uplrcPlanMstDataDeltaChunk(::grpc::ServerContext* /*context*/, const ::proxy_proto::UpLRCPlanMstDataDeltaReq* /*request*/, ::proxy_proto::SetReply* /*response*/) override {
       abort();
       return ::grpc::Status(::grpc::StatusCode::UNIMPLEMENTED, "");
     }
-    virtual ::grpc::ServerUnaryReactor* cordPlanMstDataDeltaChunk(
+    virtual ::grpc::ServerUnaryReactor* uplrcPlanMstDataDeltaChunk(
       ::grpc::CallbackServerContext* /*context*/, const ::grpc::ByteBuffer* /*request*/, ::grpc::ByteBuffer* /*response*/)  { return nullptr; }
   };
   template <class BaseClass>
@@ -4010,328 +4010,328 @@ class proxyService final {
     virtual ::grpc::Status StreamedscheduleAppend2Datanode(::grpc::ServerContext* context, ::grpc::ServerUnaryStreamer< ::proxy_proto::AppendStripeDataPlacement,::proxy_proto::SetReply>* server_unary_streamer) = 0;
   };
   template <class BaseClass>
-  class WithStreamedUnaryMethod_scheduleCordDataUpdate : public BaseClass {
+  class WithStreamedUnaryMethod_scheduleUpLRCDataUpdate : public BaseClass {
    private:
     void BaseClassMustBeDerivedFromService(const Service* /*service*/) {}
    public:
-    WithStreamedUnaryMethod_scheduleCordDataUpdate() {
+    WithStreamedUnaryMethod_scheduleUpLRCDataUpdate() {
       ::grpc::Service::MarkMethodStreamed(14,
         new ::grpc::internal::StreamedUnaryHandler<
-          ::proxy_proto::CordDataUpdatePlacement, ::proxy_proto::SetReply>(
+          ::proxy_proto::UpLRCDataUpdatePlacement, ::proxy_proto::SetReply>(
             [this](::grpc::ServerContext* context,
                    ::grpc::ServerUnaryStreamer<
-                     ::proxy_proto::CordDataUpdatePlacement, ::proxy_proto::SetReply>* streamer) {
-                       return this->StreamedscheduleCordDataUpdate(context,
+                     ::proxy_proto::UpLRCDataUpdatePlacement, ::proxy_proto::SetReply>* streamer) {
+                       return this->StreamedscheduleUpLRCDataUpdate(context,
                          streamer);
                   }));
     }
-    ~WithStreamedUnaryMethod_scheduleCordDataUpdate() override {
+    ~WithStreamedUnaryMethod_scheduleUpLRCDataUpdate() override {
       BaseClassMustBeDerivedFromService(this);
     }
     // disable regular version of this method
-    ::grpc::Status scheduleCordDataUpdate(::grpc::ServerContext* /*context*/, const ::proxy_proto::CordDataUpdatePlacement* /*request*/, ::proxy_proto::SetReply* /*response*/) override {
+    ::grpc::Status scheduleUpLRCDataUpdate(::grpc::ServerContext* /*context*/, const ::proxy_proto::UpLRCDataUpdatePlacement* /*request*/, ::proxy_proto::SetReply* /*response*/) override {
       abort();
       return ::grpc::Status(::grpc::StatusCode::UNIMPLEMENTED, "");
     }
     // replace default version of method with streamed unary
-    virtual ::grpc::Status StreamedscheduleCordDataUpdate(::grpc::ServerContext* context, ::grpc::ServerUnaryStreamer< ::proxy_proto::CordDataUpdatePlacement,::proxy_proto::SetReply>* server_unary_streamer) = 0;
+    virtual ::grpc::Status StreamedscheduleUpLRCDataUpdate(::grpc::ServerContext* context, ::grpc::ServerUnaryStreamer< ::proxy_proto::UpLRCDataUpdatePlacement,::proxy_proto::SetReply>* server_unary_streamer) = 0;
   };
   template <class BaseClass>
-  class WithStreamedUnaryMethod_scheduleCordLocalParityApply : public BaseClass {
+  class WithStreamedUnaryMethod_scheduleUpLRCLocalParityApply : public BaseClass {
    private:
     void BaseClassMustBeDerivedFromService(const Service* /*service*/) {}
    public:
-    WithStreamedUnaryMethod_scheduleCordLocalParityApply() {
+    WithStreamedUnaryMethod_scheduleUpLRCLocalParityApply() {
       ::grpc::Service::MarkMethodStreamed(15,
         new ::grpc::internal::StreamedUnaryHandler<
-          ::proxy_proto::CordLocalParityBundle, ::proxy_proto::SetReply>(
+          ::proxy_proto::UpLRCLocalParityBundle, ::proxy_proto::SetReply>(
             [this](::grpc::ServerContext* context,
                    ::grpc::ServerUnaryStreamer<
-                     ::proxy_proto::CordLocalParityBundle, ::proxy_proto::SetReply>* streamer) {
-                       return this->StreamedscheduleCordLocalParityApply(context,
+                     ::proxy_proto::UpLRCLocalParityBundle, ::proxy_proto::SetReply>* streamer) {
+                       return this->StreamedscheduleUpLRCLocalParityApply(context,
                          streamer);
                   }));
     }
-    ~WithStreamedUnaryMethod_scheduleCordLocalParityApply() override {
+    ~WithStreamedUnaryMethod_scheduleUpLRCLocalParityApply() override {
       BaseClassMustBeDerivedFromService(this);
     }
     // disable regular version of this method
-    ::grpc::Status scheduleCordLocalParityApply(::grpc::ServerContext* /*context*/, const ::proxy_proto::CordLocalParityBundle* /*request*/, ::proxy_proto::SetReply* /*response*/) override {
+    ::grpc::Status scheduleUpLRCLocalParityApply(::grpc::ServerContext* /*context*/, const ::proxy_proto::UpLRCLocalParityBundle* /*request*/, ::proxy_proto::SetReply* /*response*/) override {
       abort();
       return ::grpc::Status(::grpc::StatusCode::UNIMPLEMENTED, "");
     }
     // replace default version of method with streamed unary
-    virtual ::grpc::Status StreamedscheduleCordLocalParityApply(::grpc::ServerContext* context, ::grpc::ServerUnaryStreamer< ::proxy_proto::CordLocalParityBundle,::proxy_proto::SetReply>* server_unary_streamer) = 0;
+    virtual ::grpc::Status StreamedscheduleUpLRCLocalParityApply(::grpc::ServerContext* context, ::grpc::ServerUnaryStreamer< ::proxy_proto::UpLRCLocalParityBundle,::proxy_proto::SetReply>* server_unary_streamer) = 0;
   };
   template <class BaseClass>
-  class WithStreamedUnaryMethod_cordLpHubSessionBegin : public BaseClass {
+  class WithStreamedUnaryMethod_uplrcLpHubSessionBegin : public BaseClass {
    private:
     void BaseClassMustBeDerivedFromService(const Service* /*service*/) {}
    public:
-    WithStreamedUnaryMethod_cordLpHubSessionBegin() {
+    WithStreamedUnaryMethod_uplrcLpHubSessionBegin() {
       ::grpc::Service::MarkMethodStreamed(16,
         new ::grpc::internal::StreamedUnaryHandler<
-          ::proxy_proto::CordLpHubSessionBegin, ::proxy_proto::SetReply>(
+          ::proxy_proto::UpLRCLpHubSessionBegin, ::proxy_proto::SetReply>(
             [this](::grpc::ServerContext* context,
                    ::grpc::ServerUnaryStreamer<
-                     ::proxy_proto::CordLpHubSessionBegin, ::proxy_proto::SetReply>* streamer) {
-                       return this->StreamedcordLpHubSessionBegin(context,
+                     ::proxy_proto::UpLRCLpHubSessionBegin, ::proxy_proto::SetReply>* streamer) {
+                       return this->StreameduplrcLpHubSessionBegin(context,
                          streamer);
                   }));
     }
-    ~WithStreamedUnaryMethod_cordLpHubSessionBegin() override {
+    ~WithStreamedUnaryMethod_uplrcLpHubSessionBegin() override {
       BaseClassMustBeDerivedFromService(this);
     }
     // disable regular version of this method
-    ::grpc::Status cordLpHubSessionBegin(::grpc::ServerContext* /*context*/, const ::proxy_proto::CordLpHubSessionBegin* /*request*/, ::proxy_proto::SetReply* /*response*/) override {
+    ::grpc::Status uplrcLpHubSessionBegin(::grpc::ServerContext* /*context*/, const ::proxy_proto::UpLRCLpHubSessionBegin* /*request*/, ::proxy_proto::SetReply* /*response*/) override {
       abort();
       return ::grpc::Status(::grpc::StatusCode::UNIMPLEMENTED, "");
     }
     // replace default version of method with streamed unary
-    virtual ::grpc::Status StreamedcordLpHubSessionBegin(::grpc::ServerContext* context, ::grpc::ServerUnaryStreamer< ::proxy_proto::CordLpHubSessionBegin,::proxy_proto::SetReply>* server_unary_streamer) = 0;
+    virtual ::grpc::Status StreameduplrcLpHubSessionBegin(::grpc::ServerContext* context, ::grpc::ServerUnaryStreamer< ::proxy_proto::UpLRCLpHubSessionBegin,::proxy_proto::SetReply>* server_unary_streamer) = 0;
   };
   template <class BaseClass>
-  class WithStreamedUnaryMethod_cordLpHubPartialPush : public BaseClass {
+  class WithStreamedUnaryMethod_uplrcLpHubPartialPush : public BaseClass {
    private:
     void BaseClassMustBeDerivedFromService(const Service* /*service*/) {}
    public:
-    WithStreamedUnaryMethod_cordLpHubPartialPush() {
+    WithStreamedUnaryMethod_uplrcLpHubPartialPush() {
       ::grpc::Service::MarkMethodStreamed(17,
         new ::grpc::internal::StreamedUnaryHandler<
-          ::proxy_proto::CordLpHubPartialPush, ::proxy_proto::SetReply>(
+          ::proxy_proto::UpLRCLpHubPartialPush, ::proxy_proto::SetReply>(
             [this](::grpc::ServerContext* context,
                    ::grpc::ServerUnaryStreamer<
-                     ::proxy_proto::CordLpHubPartialPush, ::proxy_proto::SetReply>* streamer) {
-                       return this->StreamedcordLpHubPartialPush(context,
+                     ::proxy_proto::UpLRCLpHubPartialPush, ::proxy_proto::SetReply>* streamer) {
+                       return this->StreameduplrcLpHubPartialPush(context,
                          streamer);
                   }));
     }
-    ~WithStreamedUnaryMethod_cordLpHubPartialPush() override {
+    ~WithStreamedUnaryMethod_uplrcLpHubPartialPush() override {
       BaseClassMustBeDerivedFromService(this);
     }
     // disable regular version of this method
-    ::grpc::Status cordLpHubPartialPush(::grpc::ServerContext* /*context*/, const ::proxy_proto::CordLpHubPartialPush* /*request*/, ::proxy_proto::SetReply* /*response*/) override {
+    ::grpc::Status uplrcLpHubPartialPush(::grpc::ServerContext* /*context*/, const ::proxy_proto::UpLRCLpHubPartialPush* /*request*/, ::proxy_proto::SetReply* /*response*/) override {
       abort();
       return ::grpc::Status(::grpc::StatusCode::UNIMPLEMENTED, "");
     }
     // replace default version of method with streamed unary
-    virtual ::grpc::Status StreamedcordLpHubPartialPush(::grpc::ServerContext* context, ::grpc::ServerUnaryStreamer< ::proxy_proto::CordLpHubPartialPush,::proxy_proto::SetReply>* server_unary_streamer) = 0;
+    virtual ::grpc::Status StreameduplrcLpHubPartialPush(::grpc::ServerContext* context, ::grpc::ServerUnaryStreamer< ::proxy_proto::UpLRCLpHubPartialPush,::proxy_proto::SetReply>* server_unary_streamer) = 0;
   };
   template <class BaseClass>
-  class WithStreamedUnaryMethod_cordLpComputePartialAndPush : public BaseClass {
+  class WithStreamedUnaryMethod_uplrcLpComputePartialAndPush : public BaseClass {
    private:
     void BaseClassMustBeDerivedFromService(const Service* /*service*/) {}
    public:
-    WithStreamedUnaryMethod_cordLpComputePartialAndPush() {
+    WithStreamedUnaryMethod_uplrcLpComputePartialAndPush() {
       ::grpc::Service::MarkMethodStreamed(18,
         new ::grpc::internal::StreamedUnaryHandler<
-          ::proxy_proto::CordLpComputePartialAndPush, ::proxy_proto::SetReply>(
+          ::proxy_proto::UpLRCLpComputePartialAndPush, ::proxy_proto::SetReply>(
             [this](::grpc::ServerContext* context,
                    ::grpc::ServerUnaryStreamer<
-                     ::proxy_proto::CordLpComputePartialAndPush, ::proxy_proto::SetReply>* streamer) {
-                       return this->StreamedcordLpComputePartialAndPush(context,
+                     ::proxy_proto::UpLRCLpComputePartialAndPush, ::proxy_proto::SetReply>* streamer) {
+                       return this->StreameduplrcLpComputePartialAndPush(context,
                          streamer);
                   }));
     }
-    ~WithStreamedUnaryMethod_cordLpComputePartialAndPush() override {
+    ~WithStreamedUnaryMethod_uplrcLpComputePartialAndPush() override {
       BaseClassMustBeDerivedFromService(this);
     }
     // disable regular version of this method
-    ::grpc::Status cordLpComputePartialAndPush(::grpc::ServerContext* /*context*/, const ::proxy_proto::CordLpComputePartialAndPush* /*request*/, ::proxy_proto::SetReply* /*response*/) override {
+    ::grpc::Status uplrcLpComputePartialAndPush(::grpc::ServerContext* /*context*/, const ::proxy_proto::UpLRCLpComputePartialAndPush* /*request*/, ::proxy_proto::SetReply* /*response*/) override {
       abort();
       return ::grpc::Status(::grpc::StatusCode::UNIMPLEMENTED, "");
     }
     // replace default version of method with streamed unary
-    virtual ::grpc::Status StreamedcordLpComputePartialAndPush(::grpc::ServerContext* context, ::grpc::ServerUnaryStreamer< ::proxy_proto::CordLpComputePartialAndPush,::proxy_proto::SetReply>* server_unary_streamer) = 0;
+    virtual ::grpc::Status StreameduplrcLpComputePartialAndPush(::grpc::ServerContext* context, ::grpc::ServerUnaryStreamer< ::proxy_proto::UpLRCLpComputePartialAndPush,::proxy_proto::SetReply>* server_unary_streamer) = 0;
   };
   template <class BaseClass>
-  class WithStreamedUnaryMethod_cordLpApplyParityDelta : public BaseClass {
+  class WithStreamedUnaryMethod_uplrcLpApplyParityDelta : public BaseClass {
    private:
     void BaseClassMustBeDerivedFromService(const Service* /*service*/) {}
    public:
-    WithStreamedUnaryMethod_cordLpApplyParityDelta() {
+    WithStreamedUnaryMethod_uplrcLpApplyParityDelta() {
       ::grpc::Service::MarkMethodStreamed(19,
         new ::grpc::internal::StreamedUnaryHandler<
-          ::proxy_proto::CordLpParityApplyDelta, ::proxy_proto::SetReply>(
+          ::proxy_proto::UpLRCLpParityApplyDelta, ::proxy_proto::SetReply>(
             [this](::grpc::ServerContext* context,
                    ::grpc::ServerUnaryStreamer<
-                     ::proxy_proto::CordLpParityApplyDelta, ::proxy_proto::SetReply>* streamer) {
-                       return this->StreamedcordLpApplyParityDelta(context,
+                     ::proxy_proto::UpLRCLpParityApplyDelta, ::proxy_proto::SetReply>* streamer) {
+                       return this->StreameduplrcLpApplyParityDelta(context,
                          streamer);
                   }));
     }
-    ~WithStreamedUnaryMethod_cordLpApplyParityDelta() override {
+    ~WithStreamedUnaryMethod_uplrcLpApplyParityDelta() override {
       BaseClassMustBeDerivedFromService(this);
     }
     // disable regular version of this method
-    ::grpc::Status cordLpApplyParityDelta(::grpc::ServerContext* /*context*/, const ::proxy_proto::CordLpParityApplyDelta* /*request*/, ::proxy_proto::SetReply* /*response*/) override {
+    ::grpc::Status uplrcLpApplyParityDelta(::grpc::ServerContext* /*context*/, const ::proxy_proto::UpLRCLpParityApplyDelta* /*request*/, ::proxy_proto::SetReply* /*response*/) override {
       abort();
       return ::grpc::Status(::grpc::StatusCode::UNIMPLEMENTED, "");
     }
     // replace default version of method with streamed unary
-    virtual ::grpc::Status StreamedcordLpApplyParityDelta(::grpc::ServerContext* context, ::grpc::ServerUnaryStreamer< ::proxy_proto::CordLpParityApplyDelta,::proxy_proto::SetReply>* server_unary_streamer) = 0;
+    virtual ::grpc::Status StreameduplrcLpApplyParityDelta(::grpc::ServerContext* context, ::grpc::ServerUnaryStreamer< ::proxy_proto::UpLRCLpParityApplyDelta,::proxy_proto::SetReply>* server_unary_streamer) = 0;
   };
   template <class BaseClass>
-  class WithStreamedUnaryMethod_scheduleCordTransferPlan : public BaseClass {
+  class WithStreamedUnaryMethod_scheduleUpLRCTransferPlan : public BaseClass {
    private:
     void BaseClassMustBeDerivedFromService(const Service* /*service*/) {}
    public:
-    WithStreamedUnaryMethod_scheduleCordTransferPlan() {
+    WithStreamedUnaryMethod_scheduleUpLRCTransferPlan() {
       ::grpc::Service::MarkMethodStreamed(20,
         new ::grpc::internal::StreamedUnaryHandler<
-          ::proxy_proto::CordTransferPlan, ::proxy_proto::SetReply>(
+          ::proxy_proto::UpLRCTransferPlan, ::proxy_proto::SetReply>(
             [this](::grpc::ServerContext* context,
                    ::grpc::ServerUnaryStreamer<
-                     ::proxy_proto::CordTransferPlan, ::proxy_proto::SetReply>* streamer) {
-                       return this->StreamedscheduleCordTransferPlan(context,
+                     ::proxy_proto::UpLRCTransferPlan, ::proxy_proto::SetReply>* streamer) {
+                       return this->StreamedscheduleUpLRCTransferPlan(context,
                          streamer);
                   }));
     }
-    ~WithStreamedUnaryMethod_scheduleCordTransferPlan() override {
+    ~WithStreamedUnaryMethod_scheduleUpLRCTransferPlan() override {
       BaseClassMustBeDerivedFromService(this);
     }
     // disable regular version of this method
-    ::grpc::Status scheduleCordTransferPlan(::grpc::ServerContext* /*context*/, const ::proxy_proto::CordTransferPlan* /*request*/, ::proxy_proto::SetReply* /*response*/) override {
+    ::grpc::Status scheduleUpLRCTransferPlan(::grpc::ServerContext* /*context*/, const ::proxy_proto::UpLRCTransferPlan* /*request*/, ::proxy_proto::SetReply* /*response*/) override {
       abort();
       return ::grpc::Status(::grpc::StatusCode::UNIMPLEMENTED, "");
     }
     // replace default version of method with streamed unary
-    virtual ::grpc::Status StreamedscheduleCordTransferPlan(::grpc::ServerContext* context, ::grpc::ServerUnaryStreamer< ::proxy_proto::CordTransferPlan,::proxy_proto::SetReply>* server_unary_streamer) = 0;
+    virtual ::grpc::Status StreamedscheduleUpLRCTransferPlan(::grpc::ServerContext* context, ::grpc::ServerUnaryStreamer< ::proxy_proto::UpLRCTransferPlan,::proxy_proto::SetReply>* server_unary_streamer) = 0;
   };
   template <class BaseClass>
-  class WithStreamedUnaryMethod_cordPlanStartExecution : public BaseClass {
+  class WithStreamedUnaryMethod_uplrcPlanStartExecution : public BaseClass {
    private:
     void BaseClassMustBeDerivedFromService(const Service* /*service*/) {}
    public:
-    WithStreamedUnaryMethod_cordPlanStartExecution() {
+    WithStreamedUnaryMethod_uplrcPlanStartExecution() {
       ::grpc::Service::MarkMethodStreamed(21,
         new ::grpc::internal::StreamedUnaryHandler<
-          ::proxy_proto::CordPlanKeyMsg, ::proxy_proto::SetReply>(
+          ::proxy_proto::UpLRCPlanKeyMsg, ::proxy_proto::SetReply>(
             [this](::grpc::ServerContext* context,
                    ::grpc::ServerUnaryStreamer<
-                     ::proxy_proto::CordPlanKeyMsg, ::proxy_proto::SetReply>* streamer) {
-                       return this->StreamedcordPlanStartExecution(context,
+                     ::proxy_proto::UpLRCPlanKeyMsg, ::proxy_proto::SetReply>* streamer) {
+                       return this->StreameduplrcPlanStartExecution(context,
                          streamer);
                   }));
     }
-    ~WithStreamedUnaryMethod_cordPlanStartExecution() override {
+    ~WithStreamedUnaryMethod_uplrcPlanStartExecution() override {
       BaseClassMustBeDerivedFromService(this);
     }
     // disable regular version of this method
-    ::grpc::Status cordPlanStartExecution(::grpc::ServerContext* /*context*/, const ::proxy_proto::CordPlanKeyMsg* /*request*/, ::proxy_proto::SetReply* /*response*/) override {
+    ::grpc::Status uplrcPlanStartExecution(::grpc::ServerContext* /*context*/, const ::proxy_proto::UpLRCPlanKeyMsg* /*request*/, ::proxy_proto::SetReply* /*response*/) override {
       abort();
       return ::grpc::Status(::grpc::StatusCode::UNIMPLEMENTED, "");
     }
     // replace default version of method with streamed unary
-    virtual ::grpc::Status StreamedcordPlanStartExecution(::grpc::ServerContext* context, ::grpc::ServerUnaryStreamer< ::proxy_proto::CordPlanKeyMsg,::proxy_proto::SetReply>* server_unary_streamer) = 0;
+    virtual ::grpc::Status StreameduplrcPlanStartExecution(::grpc::ServerContext* context, ::grpc::ServerUnaryStreamer< ::proxy_proto::UpLRCPlanKeyMsg,::proxy_proto::SetReply>* server_unary_streamer) = 0;
   };
   template <class BaseClass>
-  class WithStreamedUnaryMethod_cordPlanJoinExecution : public BaseClass {
+  class WithStreamedUnaryMethod_uplrcPlanJoinExecution : public BaseClass {
    private:
     void BaseClassMustBeDerivedFromService(const Service* /*service*/) {}
    public:
-    WithStreamedUnaryMethod_cordPlanJoinExecution() {
+    WithStreamedUnaryMethod_uplrcPlanJoinExecution() {
       ::grpc::Service::MarkMethodStreamed(22,
         new ::grpc::internal::StreamedUnaryHandler<
-          ::proxy_proto::CordPlanKeyMsg, ::proxy_proto::SetReply>(
+          ::proxy_proto::UpLRCPlanKeyMsg, ::proxy_proto::SetReply>(
             [this](::grpc::ServerContext* context,
                    ::grpc::ServerUnaryStreamer<
-                     ::proxy_proto::CordPlanKeyMsg, ::proxy_proto::SetReply>* streamer) {
-                       return this->StreamedcordPlanJoinExecution(context,
+                     ::proxy_proto::UpLRCPlanKeyMsg, ::proxy_proto::SetReply>* streamer) {
+                       return this->StreameduplrcPlanJoinExecution(context,
                          streamer);
                   }));
     }
-    ~WithStreamedUnaryMethod_cordPlanJoinExecution() override {
+    ~WithStreamedUnaryMethod_uplrcPlanJoinExecution() override {
       BaseClassMustBeDerivedFromService(this);
     }
     // disable regular version of this method
-    ::grpc::Status cordPlanJoinExecution(::grpc::ServerContext* /*context*/, const ::proxy_proto::CordPlanKeyMsg* /*request*/, ::proxy_proto::SetReply* /*response*/) override {
+    ::grpc::Status uplrcPlanJoinExecution(::grpc::ServerContext* /*context*/, const ::proxy_proto::UpLRCPlanKeyMsg* /*request*/, ::proxy_proto::SetReply* /*response*/) override {
       abort();
       return ::grpc::Status(::grpc::StatusCode::UNIMPLEMENTED, "");
     }
     // replace default version of method with streamed unary
-    virtual ::grpc::Status StreamedcordPlanJoinExecution(::grpc::ServerContext* context, ::grpc::ServerUnaryStreamer< ::proxy_proto::CordPlanKeyMsg,::proxy_proto::SetReply>* server_unary_streamer) = 0;
+    virtual ::grpc::Status StreameduplrcPlanJoinExecution(::grpc::ServerContext* context, ::grpc::ServerUnaryStreamer< ::proxy_proto::UpLRCPlanKeyMsg,::proxy_proto::SetReply>* server_unary_streamer) = 0;
   };
   template <class BaseClass>
-  class WithStreamedUnaryMethod_cordPlanCollectorIngestDataDelta : public BaseClass {
+  class WithStreamedUnaryMethod_uplrcPlanCollectorIngestDataDelta : public BaseClass {
    private:
     void BaseClassMustBeDerivedFromService(const Service* /*service*/) {}
    public:
-    WithStreamedUnaryMethod_cordPlanCollectorIngestDataDelta() {
+    WithStreamedUnaryMethod_uplrcPlanCollectorIngestDataDelta() {
       ::grpc::Service::MarkMethodStreamed(23,
         new ::grpc::internal::StreamedUnaryHandler<
-          ::proxy_proto::CordPlanCollectorIngestReq, ::proxy_proto::SetReply>(
+          ::proxy_proto::UpLRCPlanCollectorIngestReq, ::proxy_proto::SetReply>(
             [this](::grpc::ServerContext* context,
                    ::grpc::ServerUnaryStreamer<
-                     ::proxy_proto::CordPlanCollectorIngestReq, ::proxy_proto::SetReply>* streamer) {
-                       return this->StreamedcordPlanCollectorIngestDataDelta(context,
+                     ::proxy_proto::UpLRCPlanCollectorIngestReq, ::proxy_proto::SetReply>* streamer) {
+                       return this->StreameduplrcPlanCollectorIngestDataDelta(context,
                          streamer);
                   }));
     }
-    ~WithStreamedUnaryMethod_cordPlanCollectorIngestDataDelta() override {
+    ~WithStreamedUnaryMethod_uplrcPlanCollectorIngestDataDelta() override {
       BaseClassMustBeDerivedFromService(this);
     }
     // disable regular version of this method
-    ::grpc::Status cordPlanCollectorIngestDataDelta(::grpc::ServerContext* /*context*/, const ::proxy_proto::CordPlanCollectorIngestReq* /*request*/, ::proxy_proto::SetReply* /*response*/) override {
+    ::grpc::Status uplrcPlanCollectorIngestDataDelta(::grpc::ServerContext* /*context*/, const ::proxy_proto::UpLRCPlanCollectorIngestReq* /*request*/, ::proxy_proto::SetReply* /*response*/) override {
       abort();
       return ::grpc::Status(::grpc::StatusCode::UNIMPLEMENTED, "");
     }
     // replace default version of method with streamed unary
-    virtual ::grpc::Status StreamedcordPlanCollectorIngestDataDelta(::grpc::ServerContext* context, ::grpc::ServerUnaryStreamer< ::proxy_proto::CordPlanCollectorIngestReq,::proxy_proto::SetReply>* server_unary_streamer) = 0;
+    virtual ::grpc::Status StreameduplrcPlanCollectorIngestDataDelta(::grpc::ServerContext* context, ::grpc::ServerUnaryStreamer< ::proxy_proto::UpLRCPlanCollectorIngestReq,::proxy_proto::SetReply>* server_unary_streamer) = 0;
   };
   template <class BaseClass>
-  class WithStreamedUnaryMethod_cordPlanApplyParityXorDelta : public BaseClass {
+  class WithStreamedUnaryMethod_uplrcPlanApplyParityXorDelta : public BaseClass {
    private:
     void BaseClassMustBeDerivedFromService(const Service* /*service*/) {}
    public:
-    WithStreamedUnaryMethod_cordPlanApplyParityXorDelta() {
+    WithStreamedUnaryMethod_uplrcPlanApplyParityXorDelta() {
       ::grpc::Service::MarkMethodStreamed(24,
         new ::grpc::internal::StreamedUnaryHandler<
-          ::proxy_proto::CordPlanApplyParityXorReq, ::proxy_proto::SetReply>(
+          ::proxy_proto::UpLRCPlanApplyParityXorReq, ::proxy_proto::SetReply>(
             [this](::grpc::ServerContext* context,
                    ::grpc::ServerUnaryStreamer<
-                     ::proxy_proto::CordPlanApplyParityXorReq, ::proxy_proto::SetReply>* streamer) {
-                       return this->StreamedcordPlanApplyParityXorDelta(context,
+                     ::proxy_proto::UpLRCPlanApplyParityXorReq, ::proxy_proto::SetReply>* streamer) {
+                       return this->StreameduplrcPlanApplyParityXorDelta(context,
                          streamer);
                   }));
     }
-    ~WithStreamedUnaryMethod_cordPlanApplyParityXorDelta() override {
+    ~WithStreamedUnaryMethod_uplrcPlanApplyParityXorDelta() override {
       BaseClassMustBeDerivedFromService(this);
     }
     // disable regular version of this method
-    ::grpc::Status cordPlanApplyParityXorDelta(::grpc::ServerContext* /*context*/, const ::proxy_proto::CordPlanApplyParityXorReq* /*request*/, ::proxy_proto::SetReply* /*response*/) override {
+    ::grpc::Status uplrcPlanApplyParityXorDelta(::grpc::ServerContext* /*context*/, const ::proxy_proto::UpLRCPlanApplyParityXorReq* /*request*/, ::proxy_proto::SetReply* /*response*/) override {
       abort();
       return ::grpc::Status(::grpc::StatusCode::UNIMPLEMENTED, "");
     }
     // replace default version of method with streamed unary
-    virtual ::grpc::Status StreamedcordPlanApplyParityXorDelta(::grpc::ServerContext* context, ::grpc::ServerUnaryStreamer< ::proxy_proto::CordPlanApplyParityXorReq,::proxy_proto::SetReply>* server_unary_streamer) = 0;
+    virtual ::grpc::Status StreameduplrcPlanApplyParityXorDelta(::grpc::ServerContext* context, ::grpc::ServerUnaryStreamer< ::proxy_proto::UpLRCPlanApplyParityXorReq,::proxy_proto::SetReply>* server_unary_streamer) = 0;
   };
   template <class BaseClass>
-  class WithStreamedUnaryMethod_cordPlanMstDataDeltaChunk : public BaseClass {
+  class WithStreamedUnaryMethod_uplrcPlanMstDataDeltaChunk : public BaseClass {
    private:
     void BaseClassMustBeDerivedFromService(const Service* /*service*/) {}
    public:
-    WithStreamedUnaryMethod_cordPlanMstDataDeltaChunk() {
+    WithStreamedUnaryMethod_uplrcPlanMstDataDeltaChunk() {
       ::grpc::Service::MarkMethodStreamed(25,
         new ::grpc::internal::StreamedUnaryHandler<
-          ::proxy_proto::CordPlanMstDataDeltaReq, ::proxy_proto::SetReply>(
+          ::proxy_proto::UpLRCPlanMstDataDeltaReq, ::proxy_proto::SetReply>(
             [this](::grpc::ServerContext* context,
                    ::grpc::ServerUnaryStreamer<
-                     ::proxy_proto::CordPlanMstDataDeltaReq, ::proxy_proto::SetReply>* streamer) {
-                       return this->StreamedcordPlanMstDataDeltaChunk(context,
+                     ::proxy_proto::UpLRCPlanMstDataDeltaReq, ::proxy_proto::SetReply>* streamer) {
+                       return this->StreameduplrcPlanMstDataDeltaChunk(context,
                          streamer);
                   }));
     }
-    ~WithStreamedUnaryMethod_cordPlanMstDataDeltaChunk() override {
+    ~WithStreamedUnaryMethod_uplrcPlanMstDataDeltaChunk() override {
       BaseClassMustBeDerivedFromService(this);
     }
     // disable regular version of this method
-    ::grpc::Status cordPlanMstDataDeltaChunk(::grpc::ServerContext* /*context*/, const ::proxy_proto::CordPlanMstDataDeltaReq* /*request*/, ::proxy_proto::SetReply* /*response*/) override {
+    ::grpc::Status uplrcPlanMstDataDeltaChunk(::grpc::ServerContext* /*context*/, const ::proxy_proto::UpLRCPlanMstDataDeltaReq* /*request*/, ::proxy_proto::SetReply* /*response*/) override {
       abort();
       return ::grpc::Status(::grpc::StatusCode::UNIMPLEMENTED, "");
     }
     // replace default version of method with streamed unary
-    virtual ::grpc::Status StreamedcordPlanMstDataDeltaChunk(::grpc::ServerContext* context, ::grpc::ServerUnaryStreamer< ::proxy_proto::CordPlanMstDataDeltaReq,::proxy_proto::SetReply>* server_unary_streamer) = 0;
+    virtual ::grpc::Status StreameduplrcPlanMstDataDeltaChunk(::grpc::ServerContext* context, ::grpc::ServerUnaryStreamer< ::proxy_proto::UpLRCPlanMstDataDeltaReq,::proxy_proto::SetReply>* server_unary_streamer) = 0;
   };
   template <class BaseClass>
   class WithStreamedUnaryMethod_getBlocks : public BaseClass {
@@ -4360,9 +4360,9 @@ class proxyService final {
     // replace default version of method with streamed unary
     virtual ::grpc::Status StreamedgetBlocks(::grpc::ServerContext* context, ::grpc::ServerUnaryStreamer< ::proxy_proto::StripeAndBlockIDs,::proxy_proto::GetReply>* server_unary_streamer) = 0;
   };
-  typedef WithStreamedUnaryMethod_checkalive<WithStreamedUnaryMethod_encodeAndSetObject<WithStreamedUnaryMethod_decodeAndGetObject<WithStreamedUnaryMethod_degradedRead<WithStreamedUnaryMethod_degradedRead2Client<WithStreamedUnaryMethod_degradedReadBreakdown<WithStreamedUnaryMethod_degradedRead2ClientBreakdown<WithStreamedUnaryMethod_degradedReadWithBlockStripeID<WithStreamedUnaryMethod_partialDecoding<WithStreamedUnaryMethod_recovery<WithStreamedUnaryMethod_recoveryBreakdown<WithStreamedUnaryMethod_multipleRecovery<WithStreamedUnaryMethod_deleteBlock<WithStreamedUnaryMethod_scheduleAppend2Datanode<WithStreamedUnaryMethod_scheduleCordDataUpdate<WithStreamedUnaryMethod_scheduleCordLocalParityApply<WithStreamedUnaryMethod_cordLpHubSessionBegin<WithStreamedUnaryMethod_cordLpHubPartialPush<WithStreamedUnaryMethod_cordLpComputePartialAndPush<WithStreamedUnaryMethod_cordLpApplyParityDelta<WithStreamedUnaryMethod_scheduleCordTransferPlan<WithStreamedUnaryMethod_cordPlanStartExecution<WithStreamedUnaryMethod_cordPlanJoinExecution<WithStreamedUnaryMethod_cordPlanCollectorIngestDataDelta<WithStreamedUnaryMethod_cordPlanApplyParityXorDelta<WithStreamedUnaryMethod_cordPlanMstDataDeltaChunk<WithStreamedUnaryMethod_getBlocks<Service > > > > > > > > > > > > > > > > > > > > > > > > > > > StreamedUnaryService;
+  typedef WithStreamedUnaryMethod_checkalive<WithStreamedUnaryMethod_encodeAndSetObject<WithStreamedUnaryMethod_decodeAndGetObject<WithStreamedUnaryMethod_degradedRead<WithStreamedUnaryMethod_degradedRead2Client<WithStreamedUnaryMethod_degradedReadBreakdown<WithStreamedUnaryMethod_degradedRead2ClientBreakdown<WithStreamedUnaryMethod_degradedReadWithBlockStripeID<WithStreamedUnaryMethod_partialDecoding<WithStreamedUnaryMethod_recovery<WithStreamedUnaryMethod_recoveryBreakdown<WithStreamedUnaryMethod_multipleRecovery<WithStreamedUnaryMethod_deleteBlock<WithStreamedUnaryMethod_scheduleAppend2Datanode<WithStreamedUnaryMethod_scheduleUpLRCDataUpdate<WithStreamedUnaryMethod_scheduleUpLRCLocalParityApply<WithStreamedUnaryMethod_uplrcLpHubSessionBegin<WithStreamedUnaryMethod_uplrcLpHubPartialPush<WithStreamedUnaryMethod_uplrcLpComputePartialAndPush<WithStreamedUnaryMethod_uplrcLpApplyParityDelta<WithStreamedUnaryMethod_scheduleUpLRCTransferPlan<WithStreamedUnaryMethod_uplrcPlanStartExecution<WithStreamedUnaryMethod_uplrcPlanJoinExecution<WithStreamedUnaryMethod_uplrcPlanCollectorIngestDataDelta<WithStreamedUnaryMethod_uplrcPlanApplyParityXorDelta<WithStreamedUnaryMethod_uplrcPlanMstDataDeltaChunk<WithStreamedUnaryMethod_getBlocks<Service > > > > > > > > > > > > > > > > > > > > > > > > > > > StreamedUnaryService;
   typedef Service SplitStreamedService;
-  typedef WithStreamedUnaryMethod_checkalive<WithStreamedUnaryMethod_encodeAndSetObject<WithStreamedUnaryMethod_decodeAndGetObject<WithStreamedUnaryMethod_degradedRead<WithStreamedUnaryMethod_degradedRead2Client<WithStreamedUnaryMethod_degradedReadBreakdown<WithStreamedUnaryMethod_degradedRead2ClientBreakdown<WithStreamedUnaryMethod_degradedReadWithBlockStripeID<WithStreamedUnaryMethod_partialDecoding<WithStreamedUnaryMethod_recovery<WithStreamedUnaryMethod_recoveryBreakdown<WithStreamedUnaryMethod_multipleRecovery<WithStreamedUnaryMethod_deleteBlock<WithStreamedUnaryMethod_scheduleAppend2Datanode<WithStreamedUnaryMethod_scheduleCordDataUpdate<WithStreamedUnaryMethod_scheduleCordLocalParityApply<WithStreamedUnaryMethod_cordLpHubSessionBegin<WithStreamedUnaryMethod_cordLpHubPartialPush<WithStreamedUnaryMethod_cordLpComputePartialAndPush<WithStreamedUnaryMethod_cordLpApplyParityDelta<WithStreamedUnaryMethod_scheduleCordTransferPlan<WithStreamedUnaryMethod_cordPlanStartExecution<WithStreamedUnaryMethod_cordPlanJoinExecution<WithStreamedUnaryMethod_cordPlanCollectorIngestDataDelta<WithStreamedUnaryMethod_cordPlanApplyParityXorDelta<WithStreamedUnaryMethod_cordPlanMstDataDeltaChunk<WithStreamedUnaryMethod_getBlocks<Service > > > > > > > > > > > > > > > > > > > > > > > > > > > StreamedService;
+  typedef WithStreamedUnaryMethod_checkalive<WithStreamedUnaryMethod_encodeAndSetObject<WithStreamedUnaryMethod_decodeAndGetObject<WithStreamedUnaryMethod_degradedRead<WithStreamedUnaryMethod_degradedRead2Client<WithStreamedUnaryMethod_degradedReadBreakdown<WithStreamedUnaryMethod_degradedRead2ClientBreakdown<WithStreamedUnaryMethod_degradedReadWithBlockStripeID<WithStreamedUnaryMethod_partialDecoding<WithStreamedUnaryMethod_recovery<WithStreamedUnaryMethod_recoveryBreakdown<WithStreamedUnaryMethod_multipleRecovery<WithStreamedUnaryMethod_deleteBlock<WithStreamedUnaryMethod_scheduleAppend2Datanode<WithStreamedUnaryMethod_scheduleUpLRCDataUpdate<WithStreamedUnaryMethod_scheduleUpLRCLocalParityApply<WithStreamedUnaryMethod_uplrcLpHubSessionBegin<WithStreamedUnaryMethod_uplrcLpHubPartialPush<WithStreamedUnaryMethod_uplrcLpComputePartialAndPush<WithStreamedUnaryMethod_uplrcLpApplyParityDelta<WithStreamedUnaryMethod_scheduleUpLRCTransferPlan<WithStreamedUnaryMethod_uplrcPlanStartExecution<WithStreamedUnaryMethod_uplrcPlanJoinExecution<WithStreamedUnaryMethod_uplrcPlanCollectorIngestDataDelta<WithStreamedUnaryMethod_uplrcPlanApplyParityXorDelta<WithStreamedUnaryMethod_uplrcPlanMstDataDeltaChunk<WithStreamedUnaryMethod_getBlocks<Service > > > > > > > > > > > > > > > > > > > > > > > > > > > StreamedService;
 };
 
 }  // namespace proxy_proto

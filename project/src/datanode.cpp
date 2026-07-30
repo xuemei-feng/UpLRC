@@ -16,26 +16,26 @@
 
 namespace
 {
-  std::atomic<uint64_t> g_cord_dn_next_xfer_tag{1};
+  std::atomic<uint64_t> g_uplrc_dn_next_xfer_tag{1};
 
   // 同一块文件的 read-xor-write 串行（XOR 可交换，仅需保证单次 RMW 原子）。
-  std::mutex g_cord_dn_file_mu_map_mu;
-  std::map<std::string, std::shared_ptr<std::mutex>> g_cord_dn_file_mu;
-  static std::shared_ptr<std::mutex> cord_dn_file_mu_for(const std::string &path)
+  std::mutex g_uplrc_dn_file_mu_map_mu;
+  std::map<std::string, std::shared_ptr<std::mutex>> g_uplrc_dn_file_mu;
+  static std::shared_ptr<std::mutex> uplrc_dn_file_mu_for(const std::string &path)
   {
-    std::lock_guard<std::mutex> lk(g_cord_dn_file_mu_map_mu);
-    auto &p = g_cord_dn_file_mu[path];
+    std::lock_guard<std::mutex> lk(g_uplrc_dn_file_mu_map_mu);
+    auto &p = g_uplrc_dn_file_mu[path];
     if (!p)
       p = std::make_shared<std::mutex>();
     return p;
   }
 
-  static uint64_t cord_dn_alloc_xfer_tag()
+  static uint64_t uplrc_dn_alloc_xfer_tag()
   {
-    return g_cord_dn_next_xfer_tag.fetch_add(1, std::memory_order_relaxed);
+    return g_uplrc_dn_next_xfer_tag.fetch_add(1, std::memory_order_relaxed);
   }
 
-  static uint64_t cord_dn_parse_u64_be(const uint8_t b[8])
+  static uint64_t uplrc_dn_parse_u64_be(const uint8_t b[8])
   {
     uint64_t v = 0;
     for (int i = 0; i < 8; ++i)
@@ -43,7 +43,7 @@ namespace
     return v;
   }
 
-  static bool cord_dn_socket_has_readable_data(asio::ip::tcp::socket &socket, int timeout_ms)
+  static bool uplrc_dn_socket_has_readable_data(asio::ip::tcp::socket &socket, int timeout_ms)
   {
     const int fd = socket.native_handle();
     if (fd < 0)
@@ -117,47 +117,47 @@ namespace ECProject
     return ec;
   }
 
-  bool DatanodeImpl::dn_take_cord_pending(uint64_t wire_tag, CordDnDispatchJob &job)
+  bool DatanodeImpl::dn_take_uplrc_pending(uint64_t wire_tag, UpLRCDnDispatchJob &job)
   {
-    std::lock_guard<std::mutex> lk(m_cord_pending_mu);
-    if (auto it = m_cord_pending_reads.find(wire_tag); it != m_cord_pending_reads.end())
+    std::lock_guard<std::mutex> lk(m_uplrc_pending_mu);
+    if (auto it = m_uplrc_pending_reads.find(wire_tag); it != m_uplrc_pending_reads.end())
     {
-      job.op = CordDnDispatchOp::Read;
+      job.op = UpLRCDnDispatchOp::Read;
       job.read = std::move(it->second);
-      m_cord_pending_reads.erase(it);
+      m_uplrc_pending_reads.erase(it);
       return true;
     }
-    if (auto it = m_cord_pending_writes.find(wire_tag); it != m_cord_pending_writes.end())
+    if (auto it = m_uplrc_pending_writes.find(wire_tag); it != m_uplrc_pending_writes.end())
     {
-      job.op = CordDnDispatchOp::Write;
+      job.op = UpLRCDnDispatchOp::Write;
       job.write = std::move(it->second);
-      m_cord_pending_writes.erase(it);
+      m_uplrc_pending_writes.erase(it);
       return true;
     }
-    if (auto it = m_cord_pending_xor_writes.find(wire_tag); it != m_cord_pending_xor_writes.end())
+    if (auto it = m_uplrc_pending_xor_writes.find(wire_tag); it != m_uplrc_pending_xor_writes.end())
     {
-      job.op = CordDnDispatchOp::XorWrite;
+      job.op = UpLRCDnDispatchOp::XorWrite;
       job.write = std::move(it->second);
-      m_cord_pending_xor_writes.erase(it);
+      m_uplrc_pending_xor_writes.erase(it);
       return true;
     }
-    if (auto it = m_cord_pending_blobs.find(wire_tag); it != m_cord_pending_blobs.end())
+    if (auto it = m_uplrc_pending_blobs.find(wire_tag); it != m_uplrc_pending_blobs.end())
     {
-      job.op = CordDnDispatchOp::Blob;
+      job.op = UpLRCDnDispatchOp::Blob;
       job.blob = std::move(it->second);
-      m_cord_pending_blobs.erase(it);
+      m_uplrc_pending_blobs.erase(it);
       return true;
     }
     return false;
   }
 
-  void DatanodeImpl::dn_run_cord_read_worker(asio::ip::tcp::socket socket, uint64_t wire_tag, CordDnPendingRead pending)
+  void DatanodeImpl::dn_run_uplrc_read_worker(asio::ip::tcp::socket socket, uint64_t wire_tag, UpLRCDnPendingRead pending)
   {
     try
     {
       if (pending.data.empty())
       {
-        std::cout << "[Datanode] cord range read empty payload tag=" << wire_tag << std::endl;
+        std::cout << "[Datanode] uplrc range read empty payload tag=" << wire_tag << std::endl;
         asio::error_code ignore_ec;
         socket.shutdown(asio::ip::tcp::socket::shutdown_both, ignore_ec);
         socket.close(ignore_ec);
@@ -171,11 +171,11 @@ namespace ECProject
     }
     catch (std::exception &e)
     {
-      std::cout << "handleCordRangeRead tcp exception: " << e.what() << std::endl;
+      std::cout << "handleUpLRCRangeRead tcp exception: " << e.what() << std::endl;
     }
   }
 
-  void DatanodeImpl::dn_run_cord_write_worker(asio::ip::tcp::socket socket, uint64_t wire_tag, CordDnPendingWrite pending)
+  void DatanodeImpl::dn_run_uplrc_write_worker(asio::ip::tcp::socket socket, uint64_t wire_tag, UpLRCDnPendingWrite pending)
   {
     (void)wire_tag;
     try
@@ -200,11 +200,11 @@ namespace ECProject
     }
     catch (std::exception &e)
     {
-      std::cout << "handleCordRangeWrite tcp exception: " << e.what() << std::endl;
+      std::cout << "handleUpLRCRangeWrite tcp exception: " << e.what() << std::endl;
     }
   }
 
-  void DatanodeImpl::dn_run_cord_xor_write_worker(asio::ip::tcp::socket socket, uint64_t wire_tag, CordDnPendingWrite pending)
+  void DatanodeImpl::dn_run_uplrc_xor_write_worker(asio::ip::tcp::socket socket, uint64_t wire_tag, UpLRCDnPendingWrite pending)
   {
     (void)wire_tag;
     try
@@ -218,7 +218,7 @@ namespace ECProject
       socket.close(ignore_ec);
       if (ec)
         return;
-      const auto file_mu = cord_dn_file_mu_for(pending.writepath);
+      const auto file_mu = uplrc_dn_file_mu_for(pending.writepath);
       std::lock_guard<std::mutex> file_lk(*file_mu);
       int fd = ::open(pending.writepath.c_str(), O_CREAT | O_RDWR, 0644);
       if (fd < 0)
@@ -237,11 +237,11 @@ namespace ECProject
     }
     catch (std::exception &e)
     {
-      std::cout << "handleCordRangeXorWrite tcp exception: " << e.what() << std::endl;
+      std::cout << "handleUpLRCRangeXorWrite tcp exception: " << e.what() << std::endl;
     }
   }
 
-  void DatanodeImpl::dn_run_cord_blob_worker(asio::ip::tcp::socket socket, uint64_t wire_tag, CordDnPendingBlob pending)
+  void DatanodeImpl::dn_run_uplrc_blob_worker(asio::ip::tcp::socket socket, uint64_t wire_tag, UpLRCDnPendingBlob pending)
   {
     (void)wire_tag;
     try
@@ -262,25 +262,25 @@ namespace ECProject
     }
     catch (std::exception &e)
     {
-      std::cout << "handleCordDeltaBlob tcp exception: " << e.what() << std::endl;
+      std::cout << "handleUpLRCDeltaBlob tcp exception: " << e.what() << std::endl;
     }
   }
 
-  void DatanodeImpl::dn_dispatch_cord_job(asio::ip::tcp::socket socket, uint64_t wire_tag, CordDnDispatchJob job)
+  void DatanodeImpl::dn_dispatch_uplrc_job(asio::ip::tcp::socket socket, uint64_t wire_tag, UpLRCDnDispatchJob job)
   {
     switch (job.op)
     {
-    case CordDnDispatchOp::Read:
-      dn_run_cord_read_worker(std::move(socket), wire_tag, std::move(job.read));
+    case UpLRCDnDispatchOp::Read:
+      dn_run_uplrc_read_worker(std::move(socket), wire_tag, std::move(job.read));
       break;
-    case CordDnDispatchOp::Write:
-      dn_run_cord_write_worker(std::move(socket), wire_tag, std::move(job.write));
+    case UpLRCDnDispatchOp::Write:
+      dn_run_uplrc_write_worker(std::move(socket), wire_tag, std::move(job.write));
       break;
-    case CordDnDispatchOp::XorWrite:
-      dn_run_cord_xor_write_worker(std::move(socket), wire_tag, std::move(job.write));
+    case UpLRCDnDispatchOp::XorWrite:
+      dn_run_uplrc_xor_write_worker(std::move(socket), wire_tag, std::move(job.write));
       break;
-    case CordDnDispatchOp::Blob:
-      dn_run_cord_blob_worker(std::move(socket), wire_tag, std::move(job.blob));
+    case UpLRCDnDispatchOp::Blob:
+      dn_run_uplrc_blob_worker(std::move(socket), wire_tag, std::move(job.blob));
       break;
     }
   }
@@ -298,7 +298,7 @@ namespace ECProject
         {
           std::lock_guard<std::mutex> lk(m_dn_conn_wait_mu);
           if (!m_dn_conn_waiters.empty() && m_dn_conn_waiters.front().first == DnConnWaitKind::PlainWrite &&
-              !cord_dn_socket_has_readable_data(delivered.socket, 100))
+              !uplrc_dn_socket_has_readable_data(delivered.socket, 100))
           {
             auto prom = std::move(m_dn_conn_waiters.front().second);
             m_dn_conn_waiters.pop_front();
@@ -320,11 +320,11 @@ namespace ECProject
           continue;
         }
 
-        const uint64_t wire_tag = cord_dn_parse_u64_be(tag_buf);
-        CordDnDispatchJob job;
-        if (dn_take_cord_pending(wire_tag, job))
+        const uint64_t wire_tag = uplrc_dn_parse_u64_be(tag_buf);
+        UpLRCDnDispatchJob job;
+        if (dn_take_uplrc_pending(wire_tag, job))
         {
-          std::thread worker(&DatanodeImpl::dn_dispatch_cord_job, this, std::move(delivered.socket), wire_tag,
+          std::thread worker(&DatanodeImpl::dn_dispatch_uplrc_job, this, std::move(delivered.socket), wire_tag,
                              std::move(job));
           worker.detach();
           continue;
@@ -346,7 +346,7 @@ namespace ECProject
         if (delivered_plain_read)
           continue;
 
-        std::cout << "[Datanode] cord tcp unknown tag=" << wire_tag << std::endl;
+        std::cout << "[Datanode] uplrc tcp unknown tag=" << wire_tag << std::endl;
         asio::error_code ignore_ec;
         delivered.socket.shutdown(asio::ip::tcp::socket::shutdown_both, ignore_ec);
         delivered.socket.close(ignore_ec);
@@ -523,7 +523,7 @@ namespace ECProject
                 std::ofstream append_file(writepath, std::ios::binary | std::ios::out | std::ios::app);
                 // Append data from buffer to end of file
                 append_file.write(buf.data(), append_size);
-                if (cord_trace_log(IF_DEBUG))
+                if (uplrc_trace_log(IF_DEBUG))
                 {
                     std::cout << "[Datanode" << m_port << "][Append120] successfully append data block " << block_key << " with " << append_size << " bytes" << std::endl;
                 }
@@ -580,7 +580,7 @@ namespace ECProject
                     append_file.close();
                 }
 
-                if (cord_trace_log(IF_DEBUG))
+                if (uplrc_trace_log(IF_DEBUG))
                 {
                     std::cout << "[Datanode" << m_port << "][Append167] successfully append parity block " << block_key << " with " << append_size << " bytes" << std::endl;
                 }
@@ -593,7 +593,7 @@ namespace ECProject
 
         try
         {
-            if (cord_trace_log(IF_DEBUG))
+            if (uplrc_trace_log(IF_DEBUG))
             {
                 // std::cout << "[Datanode" << m_port << "][Append109] block_key: " << block_key << ", block_id: " << block_id << ", append_size: " << append_size << ", append_offset: " << append_offset << " is_serialized: " << is_serialized << std::endl;
             }
@@ -654,7 +654,7 @@ namespace ECProject
                 ofs.flush();
                 ofs.close();
 
-                if (cord_trace_log(IF_DEBUG))
+                if (uplrc_trace_log(IF_DEBUG))
                 {
                     std::cout << "[Datanode" << m_port << "][Recovery] successfully recovery block " << block_key << " with " << m_sys_config->BlockSize << " bytes" << std::endl;
                 }
@@ -723,7 +723,7 @@ namespace ECProject
                 response->set_disk_io_start_time(std::chrono::duration_cast<std::chrono::duration<double>>(begin.time_since_epoch()).count());
                 response->set_disk_io_end_time(std::chrono::duration_cast<std::chrono::duration<double>>(end.time_since_epoch()).count());
 
-                if (cord_trace_log(IF_DEBUG))
+                if (uplrc_trace_log(IF_DEBUG))
                 {
                     std::cout << "[Datanode" << m_port << "][Recovery] successfully recovery block " << block_key << " with " << m_sys_config->BlockSize << " bytes" << std::endl;
                 }
@@ -893,7 +893,7 @@ namespace ECProject
                 // write the data to the disk using pagecache
                 std::ofstream ofs(writepath, std::ios::binary | std::ios::out | std::ios::trunc);
                 ofs.write(buf.data(), block_size);
-                if (cord_trace_log(IF_DEBUG))
+                if (uplrc_trace_log(IF_DEBUG))
                 {
                     std::cout << "[Datanode" << m_port << "][Write] successfully write " << block_key << " with " << ofs.tellp() << "bytes" << std::endl;
                 }
@@ -916,7 +916,7 @@ namespace ECProject
                 asio::error_code con_error;
                 asio::connect(socket, resolver.resolve({std::string(proxy_ip), std::to_string(proxy_port)}), con_error);
                 asio::error_code ec;
-                if (!con_error && cord_trace_log(IF_DEBUG))
+                if (!con_error && uplrc_trace_log(IF_DEBUG))
                 {
                     std::cout << "[Datanode" << m_port << "] Connect to " << proxy_ip << ":" << proxy_port << " success!" << std::endl;
                 }
@@ -936,7 +936,7 @@ namespace ECProject
 
                 std::ofstream ofs(writepath, std::ios::binary | std::ios::out | std::ios::trunc);
                 ofs.write(buf.data(), block_size);
-                if (cord_trace_log(IF_DEBUG))
+                if (uplrc_trace_log(IF_DEBUG))
                 {
                     std::cout << "[Datanode" << m_port << "][Write] successfully write " << block_key << " with " << ofs.tellp() << "bytes" << std::endl;
                 }
@@ -950,7 +950,7 @@ namespace ECProject
         };
         try
         {
-            if (cord_trace_log(IF_DEBUG))
+            if (uplrc_trace_log(IF_DEBUG))
             {
                 std::cout << "[Datanode" << m_port << "][SET] ready to handle set!" << std::endl;
             }
@@ -996,7 +996,7 @@ namespace ECProject
         }
         else
         {
-            if (cord_trace_log(IF_DEBUG))
+            if (uplrc_trace_log(IF_DEBUG))
             {
                 std::cout << "[Datanode" << m_port << "][GET] read from the disk and write to socket with port " << m_port + ECProject::DATANODE_PORT_SHIFT << std::endl;
             }
@@ -1017,7 +1017,7 @@ namespace ECProject
             asio::error_code ignore_ec;
             delivered.socket.shutdown(asio::ip::tcp::socket::shutdown_both, ignore_ec);
             delivered.socket.close(ignore_ec);
-            if (cord_trace_log(IF_DEBUG))
+            if (uplrc_trace_log(IF_DEBUG))
             {
                 std::cout << "[Datanode" << m_port << "][GET] write to socket!" << std::endl;
             }
@@ -1025,7 +1025,7 @@ namespace ECProject
         };
         try
         {
-            if (cord_trace_log(IF_DEBUG))
+            if (uplrc_trace_log(IF_DEBUG))
             {
                 std::cout << "[Datanode" << m_port << "][GET] ready to handle get!" << std::endl;
             }
@@ -1059,7 +1059,7 @@ namespace ECProject
         }
         else
         {
-            if (cord_trace_log(IF_DEBUG))
+            if (uplrc_trace_log(IF_DEBUG))
             {
                 std::cout << "[Datanode" << m_port << "][GET] read from the disk and write to socket with port " << m_port + ECProject::DATANODE_PORT_SHIFT << std::endl;
             }
@@ -1075,7 +1075,7 @@ namespace ECProject
             asio::error_code ignore_ec;
             delivered.socket.shutdown(asio::ip::tcp::socket::shutdown_both, ignore_ec);
             delivered.socket.close(ignore_ec);
-            if (cord_trace_log(IF_DEBUG))
+            if (uplrc_trace_log(IF_DEBUG))
             {
                 std::cout << "[Datanode" << m_port << "][GET] write to socket!" << std::endl;
             }
@@ -1083,7 +1083,7 @@ namespace ECProject
         };
         try
         {
-            if (cord_trace_log(IF_DEBUG))
+            if (uplrc_trace_log(IF_DEBUG))
             {
                 std::cout << "[Datanode" << m_port << "][GET] ready to handle get!" << std::endl;
             }
@@ -1101,9 +1101,9 @@ namespace ECProject
 
 
 
-  grpc::Status DatanodeImpl::handleCordRangeRead(
+  grpc::Status DatanodeImpl::handleUpLRCRangeRead(
       grpc::ServerContext *context,
-      const datanode_proto::CordRangeRWInfo *info,
+      const datanode_proto::UpLRCRangeRWInfo *info,
       datanode_proto::RequestResult *response)
   {
     (void)context;
@@ -1112,7 +1112,7 @@ namespace ECProject
     int range_length = info->range_length();
     std::string targetdir = "./storage/" + std::to_string(m_port) + "/";
     std::string readpath = targetdir + block_key;
-    const uint64_t xfer_tag = cord_dn_alloc_xfer_tag();
+    const uint64_t xfer_tag = uplrc_dn_alloc_xfer_tag();
     std::vector<char> data(static_cast<size_t>(range_length), 0);
     if (access(readpath.c_str(), 0) != -1)
     {
@@ -1124,17 +1124,17 @@ namespace ECProject
       }
     }
     {
-      std::lock_guard<std::mutex> lk(m_cord_pending_mu);
-      m_cord_pending_reads[xfer_tag] = CordDnPendingRead{std::move(data), range_length};
+      std::lock_guard<std::mutex> lk(m_uplrc_pending_mu);
+      m_uplrc_pending_reads[xfer_tag] = UpLRCDnPendingRead{std::move(data), range_length};
     }
     response->set_message(true);
-    response->set_cord_tcp_xfer_tag(xfer_tag);
+    response->set_uplrc_tcp_xfer_tag(xfer_tag);
     return grpc::Status::OK;
   }
 
-  grpc::Status DatanodeImpl::handleCordRangeWrite(
+  grpc::Status DatanodeImpl::handleUpLRCRangeWrite(
       grpc::ServerContext *context,
-      const datanode_proto::CordRangeRWInfo *info,
+      const datanode_proto::UpLRCRangeRWInfo *info,
       datanode_proto::RequestResult *response)
   {
     (void)context;
@@ -1146,19 +1146,19 @@ namespace ECProject
     if (access(targetdir.c_str(), 0) == -1)
       createDirectories(targetdir);
 
-    const uint64_t xfer_tag = cord_dn_alloc_xfer_tag();
+    const uint64_t xfer_tag = uplrc_dn_alloc_xfer_tag();
     {
-      std::lock_guard<std::mutex> lk(m_cord_pending_mu);
-      m_cord_pending_writes[xfer_tag] = CordDnPendingWrite{writepath, range_offset, range_length};
+      std::lock_guard<std::mutex> lk(m_uplrc_pending_mu);
+      m_uplrc_pending_writes[xfer_tag] = UpLRCDnPendingWrite{writepath, range_offset, range_length};
     }
     response->set_message(true);
-    response->set_cord_tcp_xfer_tag(xfer_tag);
+    response->set_uplrc_tcp_xfer_tag(xfer_tag);
     return grpc::Status::OK;
   }
 
-  grpc::Status DatanodeImpl::handleCordRangeXorWrite(
+  grpc::Status DatanodeImpl::handleUpLRCRangeXorWrite(
       grpc::ServerContext *context,
-      const datanode_proto::CordRangeRWInfo *info,
+      const datanode_proto::UpLRCRangeRWInfo *info,
       datanode_proto::RequestResult *response)
   {
     (void)context;
@@ -1170,19 +1170,19 @@ namespace ECProject
     if (access(targetdir.c_str(), 0) == -1)
       createDirectories(targetdir);
 
-    const uint64_t xfer_tag = cord_dn_alloc_xfer_tag();
+    const uint64_t xfer_tag = uplrc_dn_alloc_xfer_tag();
     {
-      std::lock_guard<std::mutex> lk(m_cord_pending_mu);
-      m_cord_pending_xor_writes[xfer_tag] = CordDnPendingWrite{writepath, range_offset, range_length};
+      std::lock_guard<std::mutex> lk(m_uplrc_pending_mu);
+      m_uplrc_pending_xor_writes[xfer_tag] = UpLRCDnPendingWrite{writepath, range_offset, range_length};
     }
     response->set_message(true);
-    response->set_cord_tcp_xfer_tag(xfer_tag);
+    response->set_uplrc_tcp_xfer_tag(xfer_tag);
     return grpc::Status::OK;
   }
 
-  grpc::Status DatanodeImpl::handleCordDeltaBlob(
+  grpc::Status DatanodeImpl::handleUpLRCDeltaBlob(
       grpc::ServerContext *context,
-      const datanode_proto::CordDeltaBlobInfo *info,
+      const datanode_proto::UpLRCDeltaBlobInfo *info,
       datanode_proto::RequestResult *response)
   {
     (void)context;
@@ -1193,13 +1193,13 @@ namespace ECProject
     if (access(targetdir.c_str(), 0) == -1)
       createDirectories(targetdir);
 
-    const uint64_t xfer_tag = cord_dn_alloc_xfer_tag();
+    const uint64_t xfer_tag = uplrc_dn_alloc_xfer_tag();
     {
-      std::lock_guard<std::mutex> lk(m_cord_pending_mu);
-      m_cord_pending_blobs[xfer_tag] = CordDnPendingBlob{writepath, byte_length};
+      std::lock_guard<std::mutex> lk(m_uplrc_pending_mu);
+      m_uplrc_pending_blobs[xfer_tag] = UpLRCDnPendingBlob{writepath, byte_length};
     }
     response->set_message(true);
-    response->set_cord_tcp_xfer_tag(xfer_tag);
+    response->set_uplrc_tcp_xfer_tag(xfer_tag);
     return grpc::Status::OK;
   }
 
@@ -1210,7 +1210,7 @@ namespace ECProject
     {
         std::string block_key = del_info->block_key();
         std::string file_path = "./storage/" + std::to_string(m_port) + "/" + block_key;
-        if (cord_trace_log(IF_DEBUG))
+        if (uplrc_trace_log(IF_DEBUG))
         {
             std::cout << "[Datanode" << m_port << "] File path:" << file_path << std::endl;
         }

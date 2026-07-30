@@ -1,7 +1,7 @@
-#ifndef ECPROJECT_CORD_ALGORITHM3_H
-#define ECPROJECT_CORD_ALGORITHM3_H
+#ifndef ECPROJECT_UPLRC_ALGORITHM3_H
+#define ECPROJECT_UPLRC_ALGORITHM3_H
 
-#include "cord_algorithm2.h"
+#include "uplrc_algorithm2.h"
 #include <cstdint>
 #include <map>
 #include <utility>
@@ -14,7 +14,7 @@ namespace ECProject
 
 namespace ECProject
 {
-  namespace cord_alg3
+  namespace uplrc_alg3
   {
     /** PDP 输出的一组：条带内逻辑地址尽量连续 */
     struct PdpGroup
@@ -54,8 +54,8 @@ namespace ECProject
         const std::map<int, std::vector<std::pair<int, int>>> &block_intervals,
         const std::vector<int> &N_intersection,
         int cluster_num,
-        const cord_alg2::TransferParams &tp);
-  } // namespace cord_alg3
+        const uplrc_alg2::TransferParams &tp);
+  } // namespace uplrc_alg3
 } // namespace ECProject
 
 #endif

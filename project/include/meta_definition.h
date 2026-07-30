@@ -11,7 +11,7 @@ namespace ECProject
     REPAIR,
     MERGE,
     APPEND,
-    CORD_UPDATE
+    UPLRC_UPDATE
   };
   enum EncodeType
   {

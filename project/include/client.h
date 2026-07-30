@@ -26,21 +26,21 @@
 #define IF_DEBUG false
 namespace ECProject
 {
-  /** CoRD 单次 cord_update 各阶段耗时（秒），由 cord_update 填充。 */
-  struct CordUpdateTiming
+  /** UpLRC 单次 uplrc_update 各阶段耗时（秒），由 uplrc_update 填充。 */
+  struct UpLRCUpdateTiming
   {
     double wall_sec = 0.0;
-    double plan_sec = 0.0;         // uploadCordUpdate（coordinator 规划）
+    double plan_sec = 0.0;         // uploadUpLRCUpdate（coordinator 规划）
     double payload_prep_sec = 0.0; // 随机负载生成等
     double upload_sec = 0.0;         // TCP 上传各 cluster slice + checkCommitAbort
     double xfer_begin_sec = 0.0;     // 保留字段；auto-start 模式下恒为 0
-    double xfer_wait_sec = 0.0;      // cordPlanWaitTransferComplete 总 wall time
+    double xfer_wait_sec = 0.0;      // uplrcPlanWaitTransferComplete 总 wall time
     double xfer_pure_sec = 0.0;      // 跨 cluster 真实传输（proxy 上报 wall span）
     double xfer_grpc_sec = 0.0;      // xfer_wait 中非 pure 部分（gRPC + 编排 + Client↔Coordinator RTT）
   };
 
   /** upload 完成后、xfer wait 之前的状态；用于流水线 batch（defer xfer wait）。 */
-  struct CordUpdatePending
+  struct UpLRCUpdatePending
   {
     int stripe_id = -1;
     std::string transfer_plan_key;
@@ -106,20 +106,20 @@ namespace ECProject
     bool set();
     bool sub_set(int block_num);
     /** 同一条带内多个不连续逻辑区间 [start, end] */
-    bool xue_update(int stripe_id, const std::vector<std::pair<int, int>> &logical_ranges);
-    /** CoRD：半开区间列表；全局校验由 uploadCordUpdate 下发的传输计划在 proxy 侧完成，
-     * 本地校验由随后的 uploadCordLocalParityApply 完成（无需二选一）。
+    bool uplrc_legacy_update(int stripe_id, const std::vector<std::pair<int, int>> &logical_ranges);
+    /** UpLRC：半开区间列表；全局校验由 uploadUpLRCUpdate 下发的传输计划在 proxy 侧完成，
+     * 本地校验由随后的 uploadUpLRCLocalParityApply 完成（无需二选一）。
      * interval_count 由客户端按区间条数自动填充。
      * 若 update_payload==nullptr 且 update_payload_bytes==0，则在 coordinator 返回长度后用随机字节填充负载。 */
-    bool cord_update(int stripe_id, const std::vector<std::pair<int, int>> &logical_ranges,
+    bool uplrc_update(int stripe_id, const std::vector<std::pair<int, int>> &logical_ranges,
                      const char *update_payload, size_t update_payload_bytes,
-                     CordUpdateTiming *out_timing = nullptr);
+                     UpLRCUpdateTiming *out_timing = nullptr);
     /** plan + upload；若有跨 cluster 传输则写入 pending->transfer_plan_key，不阻塞 wait。 */
-    bool cord_update_start(int stripe_id, const std::vector<std::pair<int, int>> &logical_ranges,
+    bool uplrc_update_start(int stripe_id, const std::vector<std::pair<int, int>> &logical_ranges,
                            const char *update_payload, size_t update_payload_bytes,
-                           CordUpdatePending *pending, CordUpdateTiming *partial_timing = nullptr);
+                           UpLRCUpdatePending *pending, UpLRCUpdateTiming *partial_timing = nullptr);
     /** 等待 pending 中 transfer plan 完成并填充 xfer_* / wall_sec。plan_key 为空则 no-op。 */
-    bool cord_update_wait_xfer(CordUpdatePending *pending, CordUpdateTiming *out_timing = nullptr);
+    bool uplrc_update_wait_xfer(UpLRCUpdatePending *pending, UpLRCUpdateTiming *out_timing = nullptr);
     std::shared_ptr<char[]> get_degraded_read_block(int stripe_id, int failed_block_id);
     std::shared_ptr<char[]> get_degraded_read_block_breakdown(int stripe_id, int failed_block_id, double &total_time, double &disk_io_time, double &network_time, double &encode_time);
     bool recovery_breakdown(int stripe_id, int failed_block_id, double &disk_read_time, double &network_time, double &decode_time, double &disk_write_time);
@@ -152,7 +152,7 @@ namespace ECProject
                                        int index,
                                        bool *if_commit_arr,
                                        std::shared_ptr<std::atomic<int>> pending_counter);
-    void async_cord_update_to_proxies(char *cluster_slice_data, std::string cord_key, int cluster_slice_size, std::string proxy_ip, int proxy_port, int index, bool *if_commit_arr);
+    void async_uplrc_update_to_proxies(char *cluster_slice_data, std::string uplrc_key, int cluster_slice_size, std::string proxy_ip, int proxy_port, int index, bool *if_commit_arr);
     void get_cached_parity_slices(std::vector<char *> &global_parity_ptr_array, std::vector<char *> &local_parity_ptr_array, const int parity_slice_size, const int parity_slice_offset);
     void cache_latest_parity_slices(std::vector<char *> &global_parity_ptr_array, std::vector<char *> &local_parity_ptr_array, const int parity_slice_size, const int parity_slice_offset);
     std::vector<int> get_parameters();

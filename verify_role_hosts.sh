@@ -3,7 +3,7 @@
 [ -n "${BASH_VERSION:-}" ] || exec bash "$0" "$@"
 set -euo pipefail
 
-ROOT_DIR="/root/xue"
+ROOT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]:-$0}")" && pwd)"
 HOSTS_FILE="${HOSTS_FILE:-${ROOT_DIR}/hosts}"
 CLUSTER_XML="${ROOT_DIR}/project/config/clusterInformation.xml"
 USER="${VERIFY_USER:-root}"

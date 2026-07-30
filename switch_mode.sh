@@ -1,10 +1,11 @@
 #!/bin/bash
 
 # 定义配置文件目录
-CONFIG_DIR="/root/xue/project/config"
+ROOT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]:-$0}")" && pwd)"
+CONFIG_DIR="${CONFIG_DIR:-$ROOT_DIR/project/config}"
 
 # 定义 hosts 文件路径
-HOSTS_FILE="hosts"
+HOSTS_FILE="${HOSTS_FILE:-$ROOT_DIR/hosts}"
 
 # 检查 hosts 文件是否存在
 if [[ ! -f "$HOSTS_FILE" ]]; then

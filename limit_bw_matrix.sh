@@ -4,15 +4,17 @@ if [ -z "${BASH_VERSION:-}" ]; then
 fi
 set -euo pipefail
 
+ROOT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]:-$0}")" && pwd)"
+
 # Real bandwidth shaping by tc/htb (egress + ingress via IFB redirect).
-# Matrix: /root/xue/project/config/BW_limit same — TABLE II MB/s (symmetric from upper triangle + diagonal),
+# Matrix: project/config/BW_limitsame — TABLE II MB/s (symmetric from upper triangle + diagonal),
 #   converted to Mbit/s for tc via BW_MATRIX_MB_PER_SEC_TO_TC_MBIT (default ×8).
 # get_bw_mbps(src,dst) is a legacy name: it returns tc rate in Mbit/s (see get_bw_tc_mbit_rate in BW_limit same).
 # Egress: HTB on iface root, match ip dst per remote cluster.
 # Ingress: ingress qdisc mirrors to IFB; HTB on IFB root, match ip src per remote cluster.
 # 输出：默认一行摘要；BW_MATRIX_VERBOSE=1 打印每条 peer；=2 再 dump tc。
 
-BW_FILE="/root/xue/project/config/BW_limitsame"
+BW_FILE="${BW_FILE:-$ROOT_DIR/project/config/BW_limitsame}"
 if [[ ! -f "$BW_FILE" ]]; then
   echo "Error: bandwidth file not found: $BW_FILE" >&2
   exit 1

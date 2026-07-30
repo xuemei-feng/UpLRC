@@ -11,7 +11,9 @@ USER="root"
 PARALLEL=5
 
 V="${BW_MATRIX_VERBOSE:-0}"
-REMOTE_COMMAND="cd /root/xue && BW_MATRIX_VERBOSE=${V} /bin/bash unlimit_bw_matrix.sh"
+ROOT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]:-$0}")" && pwd)"
+REMOTE_ROOT="${REMOTE_ROOT:-$ROOT_DIR}"
+REMOTE_COMMAND="cd ${REMOTE_ROOT} && BW_MATRIX_VERBOSE=${V} /bin/bash unlimit_bw_matrix.sh"
 
 echo "Removing matrix bandwidth limit on all nodes in ${HOSTS_FILE} (BW_MATRIX_VERBOSE=${V})..."
 if sudo pdsh -R ssh -w ^"${HOSTS_FILE}" -l "${USER}" -f "${PARALLEL}" "${REMOTE_COMMAND}"; then

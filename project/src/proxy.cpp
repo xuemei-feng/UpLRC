@@ -37,7 +37,7 @@ inline T ceil(T const &A, T const &B)
 };
 namespace ECProject
 {
-  static std::string cord_dbg_hex_preview(const void *data, size_t len, size_t max_show = 48)
+  static std::string uplrc_dbg_hex_preview(const void *data, size_t len, size_t max_show = 48)
   {
     if (!data || len == 0)
       return "";
@@ -53,7 +53,7 @@ namespace ECProject
   }
 
   /** 校验增量缓冲区中非零字节的最紧外包 [poff, poff+plen)；全零则 plen=0（可跳过传输/磁盘 XOR）。 */
-  static std::pair<size_t, size_t> cord_parity_delta_nonzero_span(const char *buf, size_t n)
+  static std::pair<size_t, size_t> uplrc_parity_delta_nonzero_span(const char *buf, size_t n)
   {
     if (buf == nullptr || n == 0)
       return {0, 0};
@@ -68,11 +68,11 @@ namespace ECProject
     return {lo, hi - lo};
   }
 
-  /** 单次 vector 扩容上限（默认 32MiB）；可用 CORD_XFER_MAX_RESIZE_BYTES 覆盖。 */
-  static uint64_t cord_xfer_max_resize_bytes()
+  /** 单次 vector 扩容上限（默认 32MiB）；可用 UPLRC_XFER_MAX_RESIZE_BYTES 覆盖。 */
+  static uint64_t uplrc_xfer_max_resize_bytes()
   {
     static const uint64_t kDefault = 32ull * 1024ull * 1024ull;
-    const char *env = std::getenv("CORD_XFER_MAX_RESIZE_BYTES");
+    const char *env = std::getenv("UPLRC_XFER_MAX_RESIZE_BYTES");
     if (env == nullptr || env[0] == '\0')
       return kDefault;
     char *end = nullptr;
@@ -83,42 +83,42 @@ namespace ECProject
   }
 
   /**
-   * CoRD 传输执行器 / 矩阵编码的详细日志开关（默认关闭）。
-   * 置 CORD_XFER_VERBOSE=1 时才输出 plan_log 与矩阵编码相关 stdout/stderr。
+   * UpLRC 传输执行器 / 矩阵编码的详细日志开关（默认关闭）。
+   * 置 UPLRC_XFER_VERBOSE=1 时才输出 plan_log 与矩阵编码相关 stdout/stderr。
    */
-  static bool cord_xfer_log_enabled()
+  static bool uplrc_xfer_log_enabled()
   {
     static const bool enabled = []() {
-      const char *env = std::getenv("CORD_XFER_VERBOSE");
+      const char *env = std::getenv("UPLRC_XFER_VERBOSE");
       return env != nullptr && env[0] != '\0' && env[0] != '0';
     }();
     return enabled;
   }
 
-  static void cord_plan_log_out(const std::string &msg)
+  static void uplrc_plan_log_out(const std::string &msg)
   {
-    if (cord_xfer_log_enabled())
+    if (uplrc_xfer_log_enabled())
       std::cout << msg << '\n';
   }
 
-  static void cord_plan_log_err(const std::string &msg)
+  static void uplrc_plan_log_err(const std::string &msg)
   {
-    if (cord_xfer_log_enabled())
+    if (uplrc_xfer_log_enabled())
       std::cerr << msg << '\n';
   }
 
-  static bool cord_xfer_safe_resize(std::vector<uint8_t> &v, size_t new_size, const char *what,
+  static bool uplrc_xfer_safe_resize(std::vector<uint8_t> &v, size_t new_size, const char *what,
                                     const std::string &ctx, bool zero_fill = true)
   {
-    const uint64_t cap = cord_xfer_max_resize_bytes();
+    const uint64_t cap = uplrc_xfer_max_resize_bytes();
     if (static_cast<uint64_t>(new_size) > cap)
     {
-      std::cerr << "[CoRD-PLAN][RESIZE_REJECT] " << what << " need=" << new_size << " cap=" << cap << " " << ctx
+      std::cerr << "[UpLRC-PLAN][RESIZE_REJECT] " << what << " need=" << new_size << " cap=" << cap << " " << ctx
                 << std::endl;
       return false;
     }
-    if (new_size > static_cast<size_t>(1024 * 1024) && cord_trace_log(IF_DEBUG))
-      std::cout << "[CoRD-PLAN][RESIZE_LARGE] " << what << " need=" << new_size << " cur=" << v.size() << " " << ctx
+    if (new_size > static_cast<size_t>(1024 * 1024) && uplrc_trace_log(IF_DEBUG))
+      std::cout << "[UpLRC-PLAN][RESIZE_LARGE] " << what << " need=" << new_size << " cur=" << v.size() << " " << ctx
                 << '\n';
     try
     {
@@ -129,24 +129,24 @@ namespace ECProject
     }
     catch (const std::bad_alloc &e)
     {
-      std::cerr << "[CoRD-PLAN][BAD_ALLOC] " << what << " need=" << new_size << " cur=" << v.size() << " " << ctx
+      std::cerr << "[UpLRC-PLAN][BAD_ALLOC] " << what << " need=" << new_size << " cur=" << v.size() << " " << ctx
                 << " err=" << e.what() << std::endl;
       return false;
     }
     return true;
   }
 
-  static bool cord_xfer_safe_resize(std::vector<char> &v, size_t new_size, const char *what, const std::string &ctx)
+  static bool uplrc_xfer_safe_resize(std::vector<char> &v, size_t new_size, const char *what, const std::string &ctx)
   {
-    const uint64_t cap = cord_xfer_max_resize_bytes();
+    const uint64_t cap = uplrc_xfer_max_resize_bytes();
     if (static_cast<uint64_t>(new_size) > cap)
     {
-      std::cerr << "[CoRD-PLAN][RESIZE_REJECT] " << what << " need=" << new_size << " cap=" << cap << " " << ctx
+      std::cerr << "[UpLRC-PLAN][RESIZE_REJECT] " << what << " need=" << new_size << " cap=" << cap << " " << ctx
                 << std::endl;
       return false;
     }
-    if (new_size > static_cast<size_t>(1024 * 1024) && cord_trace_log(IF_DEBUG))
-      std::cout << "[CoRD-PLAN][RESIZE_LARGE] " << what << " need=" << new_size << " cur=" << v.size() << " " << ctx
+    if (new_size > static_cast<size_t>(1024 * 1024) && uplrc_trace_log(IF_DEBUG))
+      std::cout << "[UpLRC-PLAN][RESIZE_LARGE] " << what << " need=" << new_size << " cur=" << v.size() << " " << ctx
                 << '\n';
     try
     {
@@ -154,40 +154,40 @@ namespace ECProject
     }
     catch (const std::bad_alloc &e)
     {
-      std::cerr << "[CoRD-PLAN][BAD_ALLOC] " << what << " need=" << new_size << " cur=" << v.size() << " " << ctx
+      std::cerr << "[UpLRC-PLAN][BAD_ALLOC] " << what << " need=" << new_size << " cur=" << v.size() << " " << ctx
                 << " err=" << e.what() << std::endl;
       return false;
     }
     return true;
   }
 
-  static std::mutex g_cord_xfer_mu;
-  static std::map<std::string, std::vector<uint8_t>> g_cord_collector_xor_acc;
-  static std::map<std::string, std::vector<uint8_t>> g_cord_mst_stream;
+  static std::mutex g_uplrc_xfer_mu;
+  static std::map<std::string, std::vector<uint8_t>> g_uplrc_collector_xor_acc;
+  static std::map<std::string, std::vector<uint8_t>> g_uplrc_mst_stream;
   /** class2/class3 并发：ingress 预计算的 local parity ΔP，key=append_key:lp:stripe_group */
-  static std::map<std::string, std::vector<uint8_t>> g_cord_ingress_lp_cache;
-  static std::map<std::string, std::vector<uint8_t>> g_cord_collector_block_delta;
-  static std::map<std::string, std::vector<std::vector<uint8_t>>> g_cord_collector_parity_coded;
-  static std::mutex g_cord_plan_reg_mu;
-  static std::map<std::string, std::shared_ptr<const proxy_proto::CordTransferPlan>> g_cord_plans_by_key;
-  static std::mutex g_cord_plan_exec_mu;
-  static std::unordered_map<std::string, std::thread> g_cord_plan_exec_threads;
+  static std::map<std::string, std::vector<uint8_t>> g_uplrc_ingress_lp_cache;
+  static std::map<std::string, std::vector<uint8_t>> g_uplrc_collector_block_delta;
+  static std::map<std::string, std::vector<std::vector<uint8_t>>> g_uplrc_collector_parity_coded;
+  static std::mutex g_uplrc_plan_reg_mu;
+  static std::map<std::string, std::shared_ptr<const proxy_proto::UpLRCTransferPlan>> g_uplrc_plans_by_key;
+  static std::mutex g_uplrc_plan_exec_mu;
+  static std::unordered_map<std::string, std::thread> g_uplrc_plan_exec_threads;
 
-  /** CoRD local update：同一 datanode endpoint 上 range read/write 串行，不同 endpoint 可并行。 */
-  static std::mutex g_cord_dn_endpoint_map_mu;
-  static std::map<std::string, std::shared_ptr<std::mutex>> g_cord_dn_endpoint_mu;
+  /** UpLRC local update：同一 datanode endpoint 上 range read/write 串行，不同 endpoint 可并行。 */
+  static std::mutex g_uplrc_dn_endpoint_map_mu;
+  static std::map<std::string, std::shared_ptr<std::mutex>> g_uplrc_dn_endpoint_mu;
 
-  static std::string cord_mst_stream_key(const std::string &plan_key, int origin_data_block)
+  static std::string uplrc_mst_stream_key(const std::string &plan_key, int origin_data_block)
   {
     return plan_key + ":mst:" + std::to_string(origin_data_block);
   }
 
-  static std::string cord_ingress_lp_cache_key(const std::string &append_key, int stripe_group)
+  static std::string uplrc_ingress_lp_cache_key(const std::string &append_key, int stripe_group)
   {
     return append_key + ":lp:" + std::to_string(stripe_group);
   }
 
-  static bool cord_lookup_ingress_append_key(const proxy_proto::CordTransferPlan &plan, int cluster_id,
+  static bool uplrc_lookup_ingress_append_key(const proxy_proto::UpLRCTransferPlan &plan, int cluster_id,
                                              std::string *out_key)
   {
     for (int i = 0; i < plan.ingress_cache_refs_size(); ++i)
@@ -201,27 +201,27 @@ namespace ECProject
     return false;
   }
 
-  static std::shared_ptr<std::mutex> cord_dn_endpoint_mu_for(const std::string &endpoint)
+  static std::shared_ptr<std::mutex> uplrc_dn_endpoint_mu_for(const std::string &endpoint)
   {
-    std::lock_guard<std::mutex> lk(g_cord_dn_endpoint_map_mu);
-    auto &p = g_cord_dn_endpoint_mu[endpoint];
+    std::lock_guard<std::mutex> lk(g_uplrc_dn_endpoint_map_mu);
+    auto &p = g_uplrc_dn_endpoint_mu[endpoint];
     if (!p)
       p = std::make_shared<std::mutex>();
     return p;
   }
 
-  static bool cord_update_slice_parallel_enabled()
+  static bool uplrc_update_slice_parallel_enabled()
   {
-    const char *env = std::getenv("CORD_UPDATE_SLICE_PARALLEL");
+    const char *env = std::getenv("UPLRC_UPDATE_SLICE_PARALLEL");
     if (env == nullptr || env[0] == '\0')
       return true;
     return std::strcmp(env, "0") != 0 && std::strcmp(env, "false") != 0 && std::strcmp(env, "FALSE") != 0;
   }
 
-  static std::string cord_plan_wall_ts_ms();
+  static std::string uplrc_plan_wall_ts_ms();
 
   /** 单 plan_key：纯传输窗口（peer stub 预热后步骤循环起点 → 本 proxy 发送步骤结束且入站 parity 写盘+校验读完成）。 */
-  struct CordPureXferTracker {
+  struct UpLRCPureXferTracker {
     std::mutex mu;
     bool pure_xfer_loop_started = false;
     std::chrono::steady_clock::time_point pure_xfer_t0{};
@@ -233,41 +233,41 @@ namespace ECProject
     bool have_last_parity_wall_verified = false;
     std::chrono::system_clock::time_point last_parity_wall_verified{};
   };
-  static std::mutex g_cord_pure_xfer_mu;
-  static std::unordered_map<std::string, std::shared_ptr<CordPureXferTracker>> g_cord_pure_xfer_trackers;
+  static std::mutex g_uplrc_pure_xfer_mu;
+  static std::unordered_map<std::string, std::shared_ptr<UpLRCPureXferTracker>> g_uplrc_pure_xfer_trackers;
 
-  struct CordJoinXferTimingSample {
+  struct UpLRCJoinXferTimingSample {
     double pure_xfer_sec = 0.;
     int64_t wall_start_unix_ms = 0;
     int64_t wall_end_unix_ms = 0;
   };
-  static std::mutex g_cord_join_xfer_timing_mu;
-  static std::unordered_map<std::string, CordJoinXferTimingSample> g_cord_join_xfer_timing_by_plan;
+  static std::mutex g_uplrc_join_xfer_timing_mu;
+  static std::unordered_map<std::string, UpLRCJoinXferTimingSample> g_uplrc_join_xfer_timing_by_plan;
 
-  static int64_t cord_sys_clock_to_unix_ms(std::chrono::system_clock::time_point tp)
+  static int64_t uplrc_sys_clock_to_unix_ms(std::chrono::system_clock::time_point tp)
   {
     return std::chrono::duration_cast<std::chrono::milliseconds>(tp.time_since_epoch()).count();
   }
 
 
-  static std::shared_ptr<CordPureXferTracker> cord_pure_xfer_tracker_ptr(const std::string &pk)
+  static std::shared_ptr<UpLRCPureXferTracker> uplrc_pure_xfer_tracker_ptr(const std::string &pk)
   {
-    std::lock_guard<std::mutex> lk(g_cord_pure_xfer_mu);
-    auto &p = g_cord_pure_xfer_trackers[pk];
+    std::lock_guard<std::mutex> lk(g_uplrc_pure_xfer_mu);
+    auto &p = g_uplrc_pure_xfer_trackers[pk];
     if (!p)
-      p = std::make_shared<CordPureXferTracker>();
+      p = std::make_shared<UpLRCPureXferTracker>();
     return p;
   }
 
-  static void cord_pure_xfer_erase_tracker(const std::string &pk)
+  static void uplrc_pure_xfer_erase_tracker(const std::string &pk)
   {
-    std::lock_guard<std::mutex> lk(g_cord_pure_xfer_mu);
-    g_cord_pure_xfer_trackers.erase(pk);
+    std::lock_guard<std::mutex> lk(g_uplrc_pure_xfer_mu);
+    g_uplrc_pure_xfer_trackers.erase(pk);
   }
 
-  static void cord_pure_xfer_note_loop_start(const std::string &pk)
+  static void uplrc_pure_xfer_note_loop_start(const std::string &pk)
   {
-    auto tr = cord_pure_xfer_tracker_ptr(pk);
+    auto tr = uplrc_pure_xfer_tracker_ptr(pk);
     const auto now = std::chrono::steady_clock::now();
     const auto wall_now = std::chrono::system_clock::now();
     std::lock_guard<std::mutex> lk(tr->mu);
@@ -280,24 +280,24 @@ namespace ECProject
     }
   }
 
-  static void cord_pure_xfer_parity_dn_begin(const std::string &pk)
+  static void uplrc_pure_xfer_parity_dn_begin(const std::string &pk)
   {
-    auto tr = cord_pure_xfer_tracker_ptr(pk);
+    auto tr = uplrc_pure_xfer_tracker_ptr(pk);
     std::lock_guard<std::mutex> lk(tr->mu);
     ++tr->parity_dn_write_inflight;
   }
 
-  static void cord_pure_xfer_parity_dn_abort(const std::string &pk)
+  static void uplrc_pure_xfer_parity_dn_abort(const std::string &pk)
   {
-    auto tr = cord_pure_xfer_tracker_ptr(pk);
+    auto tr = uplrc_pure_xfer_tracker_ptr(pk);
     std::lock_guard<std::mutex> lk(tr->mu);
     if (tr->parity_dn_write_inflight > 0)
       --tr->parity_dn_write_inflight;
   }
 
-  static void cord_pure_xfer_parity_dn_done_verified(const std::string &pk)
+  static void uplrc_pure_xfer_parity_dn_done_verified(const std::string &pk)
   {
-    auto tr = cord_pure_xfer_tracker_ptr(pk);
+    auto tr = uplrc_pure_xfer_tracker_ptr(pk);
     const auto now = std::chrono::steady_clock::now();
     const auto wall_now = std::chrono::system_clock::now();
     std::lock_guard<std::mutex> lk(tr->mu);
@@ -310,11 +310,11 @@ namespace ECProject
   }
 
   /** 步骤循环结束后调用：等待本机入站 parity 写盘收尾，再打 pure_xfer 日志，并发布 join 回报样本。 */
-  static void cord_pure_xfer_log_after_sender_loop(const std::string &pk, const std::string &proxy_tag,
+  static void uplrc_pure_xfer_log_after_sender_loop(const std::string &pk, const std::string &proxy_tag,
                                                    std::chrono::steady_clock::time_point sender_loop_done,
                                                    std::chrono::system_clock::time_point sender_wall_done)
   {
-    auto tr = cord_pure_xfer_tracker_ptr(pk);
+    auto tr = uplrc_pure_xfer_tracker_ptr(pk);
     const auto deadline = std::chrono::steady_clock::now() + std::chrono::minutes(30);
     for (;;)
     {
@@ -350,7 +350,7 @@ namespace ECProject
       }
     }
     std::ostringstream ob;
-    ob << "[CoRD-PLAN][" << cord_plan_wall_ts_ms() << "][" << proxy_tag
+    ob << "[UpLRC-PLAN][" << uplrc_plan_wall_ts_ms() << "][" << proxy_tag
        << "] pure_xfer_wall_sec="; // 本机：stub 预热后进入步骤循环 → 步骤循环结束且本机 parity DN 写+校验读收尾
     if (loop_started && pure_sec >= 0.)
       ob << pure_sec;
@@ -359,55 +359,55 @@ namespace ECProject
     ob << " plan_key=" << pk << " parity_dn_inflight_left=" << inflight_left;
     if (inflight_left > 0)
       ob << " WARN_timeout_waiting_inflight";
-    // std::cout << ob.str() << std::endl;  // [CoRD-PLAN] pure_xfer timing (muted)
+    // std::cout << ob.str() << std::endl;  // [UpLRC-PLAN] pure_xfer timing (muted)
 
     if (loop_started && pure_sec >= 0.)
     {
-      CordJoinXferTimingSample samp;
+      UpLRCJoinXferTimingSample samp;
       samp.pure_xfer_sec = pure_sec;
-      samp.wall_start_unix_ms = cord_sys_clock_to_unix_ms(wall_start);
-      samp.wall_end_unix_ms = cord_sys_clock_to_unix_ms(wall_end);
-      std::lock_guard<std::mutex> lk(g_cord_join_xfer_timing_mu);
-      g_cord_join_xfer_timing_by_plan[pk] = samp;
+      samp.wall_start_unix_ms = uplrc_sys_clock_to_unix_ms(wall_start);
+      samp.wall_end_unix_ms = uplrc_sys_clock_to_unix_ms(wall_end);
+      std::lock_guard<std::mutex> lk(g_uplrc_join_xfer_timing_mu);
+      g_uplrc_join_xfer_timing_by_plan[pk] = samp;
     }
   }
 
-  static std::string cord_collector_acc_key(const std::string &plan_key, int group_index, int collector_block_id)
+  static std::string uplrc_collector_acc_key(const std::string &plan_key, int group_index, int collector_block_id)
   {
     return plan_key + ":" + std::to_string(group_index) + ":" + std::to_string(collector_block_id);
   }
 
-  static std::string cord_collector_block_buf_key(const std::string &plan_key, int group_index, int collector_block_id,
+  static std::string uplrc_collector_block_buf_key(const std::string &plan_key, int group_index, int collector_block_id,
                                                    int src_data_block_id)
   {
     return plan_key + ":" + std::to_string(group_index) + ":" + std::to_string(collector_block_id) + ":db:" +
            std::to_string(src_data_block_id);
   }
 
-  static std::string cord_collector_parity_cache_key(const std::string &plan_key, int group_index,
+  static std::string uplrc_collector_parity_cache_key(const std::string &plan_key, int group_index,
                                                      int collector_block_id, int parity_ingest_stripe_group)
   {
     return plan_key + ":" + std::to_string(group_index) + ":" + std::to_string(collector_block_id) + ":pig:" +
            std::to_string(parity_ingest_stripe_group);
   }
 
-  static int cord_plan_data_block_stripe_group(const proxy_proto::CordTransferPlan &plan, int data_block_id)
+  static int uplrc_plan_data_block_stripe_group(const proxy_proto::UpLRCTransferPlan &plan, int data_block_id)
   {
-    for (int i = 0; i < plan.cord_block_stripe_groups_size(); ++i)
+    for (int i = 0; i < plan.uplrc_block_stripe_groups_size(); ++i)
     {
-      if (plan.cord_block_stripe_groups(i).block_id() == data_block_id)
-        return plan.cord_block_stripe_groups(i).stripe_group();
+      if (plan.uplrc_block_stripe_groups(i).block_id() == data_block_id)
+        return plan.uplrc_block_stripe_groups(i).stripe_group();
     }
     return -999999;
   }
 
-  static std::vector<std::pair<int, int>> cord_plan_sorted_segs_for_block(const proxy_proto::CordTransferPlan &plan,
+  static std::vector<std::pair<int, int>> uplrc_plan_sorted_segs_for_block(const proxy_proto::UpLRCTransferPlan &plan,
                                                                           int bid)
   {
     std::vector<std::pair<int, int>> out;
-    for (int i = 0; i < plan.cord_block_delta_segs_size(); ++i)
+    for (int i = 0; i < plan.uplrc_block_delta_segs_size(); ++i)
     {
-      const auto &s = plan.cord_block_delta_segs(i);
+      const auto &s = plan.uplrc_block_delta_segs(i);
       if (s.block_id() != bid)
         continue;
       if (s.hi_excl() <= s.lo())
@@ -418,10 +418,10 @@ namespace ECProject
     return out;
   }
 
-  /** 与 coordinator cord_block_delta_ingress_buffer_end / STAR_DATA ingest 布局一致。 */
-  static uint64_t cord_plan_block_ingress_buffer_end(const proxy_proto::CordTransferPlan &plan, int block_id)
+  /** 与 coordinator uplrc_block_delta_ingress_buffer_end / STAR_DATA ingest 布局一致。 */
+  static uint64_t uplrc_plan_block_ingress_buffer_end(const proxy_proto::UpLRCTransferPlan &plan, int block_id)
   {
-    const std::vector<std::pair<int, int>> segs = cord_plan_sorted_segs_for_block(plan, block_id);
+    const std::vector<std::pair<int, int>> segs = uplrc_plan_sorted_segs_for_block(plan, block_id);
     if (segs.empty())
       return 0;
     int64_t packed = 0;
@@ -431,7 +431,7 @@ namespace ECProject
   }
 
   /** strip 轴上的逻辑字节是否在块更新区间内；若在则返回 ingest 缓冲区内 packed 下标，否则 -1。 */
-  static int cord_logical_strip_to_packed_delta_idx(const std::vector<std::pair<int, int>> &segs_sorted,
+  static int uplrc_logical_strip_to_packed_delta_idx(const std::vector<std::pair<int, int>> &segs_sorted,
                                                     int strip_logical)
   {
     int packed = 0;
@@ -446,14 +446,14 @@ namespace ECProject
     return -1;
   }
 
-  static int cord_plan_parity_group_hull_lo(const proxy_proto::CordTransferPlan &plan,
+  static int uplrc_plan_parity_group_hull_lo(const proxy_proto::UpLRCTransferPlan &plan,
                                             int parity_ingest_stripe_group)
   {
     int lo = std::numeric_limits<int>::max();
-    for (int i = 0; i < plan.cord_block_delta_segs_size(); ++i)
+    for (int i = 0; i < plan.uplrc_block_delta_segs_size(); ++i)
     {
-      const auto &s = plan.cord_block_delta_segs(i);
-      if (cord_plan_data_block_stripe_group(plan, s.block_id()) != parity_ingest_stripe_group)
+      const auto &s = plan.uplrc_block_delta_segs(i);
+      if (uplrc_plan_data_block_stripe_group(plan, s.block_id()) != parity_ingest_stripe_group)
         continue;
       lo = std::min(lo, s.lo());
     }
@@ -461,31 +461,31 @@ namespace ECProject
   }
 
   /** 仅针对 parity_merge_data_block_ids 子集取 hull_lo（与 coordinator 合并校验跨度一致）。 */
-  static int cord_plan_merge_subset_hull_lo(const proxy_proto::CordTransferPlan &plan,
-                                            const proxy_proto::CordTransferStep &parity_st)
+  static int uplrc_plan_merge_subset_hull_lo(const proxy_proto::UpLRCTransferPlan &plan,
+                                            const proxy_proto::UpLRCTransferStep &parity_st)
   {
     int lo = std::numeric_limits<int>::max();
     for (int i = 0; i < parity_st.parity_merge_data_block_ids_size(); ++i)
     {
       const int bid = parity_st.parity_merge_data_block_ids(i);
-      const std::vector<std::pair<int, int>> segs = cord_plan_sorted_segs_for_block(plan, bid);
+      const std::vector<std::pair<int, int>> segs = uplrc_plan_sorted_segs_for_block(plan, bid);
       for (const auto &pr : segs)
         lo = std::min(lo, pr.first);
     }
     return lo == std::numeric_limits<int>::max() ? 0 : lo;
   }
 
-  /** 收集器 ingress expect 中源块在 cord_block_delta_segs 上的最小 lo（与 STAR_DATA XOR 下标一致）。 */
-  static int cord_plan_collector_expect_src_hull_lo(const proxy_proto::CordTransferPlan &plan, int group_index,
+  /** 收集器 ingress expect 中源块在 uplrc_block_delta_segs 上的最小 lo（与 STAR_DATA XOR 下标一致）。 */
+  static int uplrc_plan_collector_expect_src_hull_lo(const proxy_proto::UpLRCTransferPlan &plan, int group_index,
                                                      int collector_block_id)
   {
-    const proxy_proto::CordCollectorIngressExpect *ex = nullptr;
-    for (int i = 0; i < plan.cord_collector_expects_size(); ++i)
+    const proxy_proto::UpLRCCollectorIngressExpect *ex = nullptr;
+    for (int i = 0; i < plan.uplrc_collector_expects_size(); ++i)
     {
-      if (plan.cord_collector_expects(i).group_index() == group_index &&
-          plan.cord_collector_expects(i).collector_block_id() == collector_block_id)
+      if (plan.uplrc_collector_expects(i).group_index() == group_index &&
+          plan.uplrc_collector_expects(i).collector_block_id() == collector_block_id)
       {
-        ex = &plan.cord_collector_expects(i);
+        ex = &plan.uplrc_collector_expects(i);
         break;
       }
     }
@@ -494,7 +494,7 @@ namespace ECProject
     int lo = std::numeric_limits<int>::max();
     for (int i = 0; i < ex->src_data_block_ids_size(); ++i)
     {
-      const std::vector<std::pair<int, int>> segs = cord_plan_sorted_segs_for_block(plan, ex->src_data_block_ids(i));
+      const std::vector<std::pair<int, int>> segs = uplrc_plan_sorted_segs_for_block(plan, ex->src_data_block_ids(i));
       for (const auto &pr : segs)
         lo = std::min(lo, pr.first);
     }
@@ -503,51 +503,51 @@ namespace ECProject
 
   /**
    * 本步 parity 链路 payload 中 offset=0 对应的块内逻辑条带起点（与 coordinator merged_delta_hull / XOR acc 对齐）。
-   * - 有 parity_ingest：与 cord_filtered_xor_parity_chunk 的 group_hull_lo 一致。
+   * - 有 parity_ingest：与 uplrc_filtered_xor_parity_chunk 的 group_hull_lo 一致。
    * - 无 parity_ingest（collector_xor_acc）：优先 merge 子集；否则用 collector expect 源块的 hull lo（避免 parity_merge 字段缺失时误用 0）。
    */
-  static int cord_plan_parity_payload_abs_lo(const proxy_proto::CordTransferPlan &plan,
-                                              const proxy_proto::CordTransferStep &st)
+  static int uplrc_plan_parity_payload_abs_lo(const proxy_proto::UpLRCTransferPlan &plan,
+                                              const proxy_proto::UpLRCTransferStep &st)
   {
-    const bool have_segs = plan.cord_block_delta_segs_size() > 0;
+    const bool have_segs = plan.uplrc_block_delta_segs_size() > 0;
     const bool use_merge = st.parity_merge_data_block_ids_size() > 0;
     if (st.has_parity_ingest_stripe_group())
     {
       if (!have_segs)
         return 0;
-      return use_merge ? cord_plan_merge_subset_hull_lo(plan, st)
-                       : cord_plan_parity_group_hull_lo(plan, st.parity_ingest_stripe_group());
+      return use_merge ? uplrc_plan_merge_subset_hull_lo(plan, st)
+                       : uplrc_plan_parity_group_hull_lo(plan, st.parity_ingest_stripe_group());
     }
     if (use_merge && have_segs)
-      return cord_plan_merge_subset_hull_lo(plan, st);
-    return cord_plan_collector_expect_src_hull_lo(plan, st.group_index(), st.src_block_id());
+      return uplrc_plan_merge_subset_hull_lo(plan, st);
+    return uplrc_plan_collector_expect_src_hull_lo(plan, st.group_index(), st.src_block_id());
   }
 
-  static bool cord_filtered_xor_parity_chunk(const proxy_proto::CordTransferPlan &plan, int alg2_group,
+  static bool uplrc_filtered_xor_parity_chunk(const proxy_proto::UpLRCTransferPlan &plan, int alg2_group,
                                              int collector_block_id, int parity_ingest_stripe_group,
-                                             const proxy_proto::CordTransferStep &parity_st,
+                                             const proxy_proto::UpLRCTransferStep &parity_st,
                                              uint64_t chunk_off, size_t chunk_len, char *buf_out)
   {
-    std::lock_guard<std::mutex> lk(g_cord_xfer_mu);
+    std::lock_guard<std::mutex> lk(g_uplrc_xfer_mu);
     std::memset(buf_out, 0, chunk_len);
     const int kblk = plan.k_datablock();
-    const bool have_segs = plan.cord_block_delta_segs_size() > 0;
+    const bool have_segs = plan.uplrc_block_delta_segs_size() > 0;
     const bool use_merge_subset = parity_st.parity_merge_data_block_ids_size() > 0;
     const int group_hull_lo =
-        have_segs ? (use_merge_subset ? cord_plan_merge_subset_hull_lo(plan, parity_st)
-                                      : cord_plan_parity_group_hull_lo(plan, parity_ingest_stripe_group))
+        have_segs ? (use_merge_subset ? uplrc_plan_merge_subset_hull_lo(plan, parity_st)
+                                      : uplrc_plan_parity_group_hull_lo(plan, parity_ingest_stripe_group))
                   : 0;
 
     auto xor_one_block = [&](int bid) {
-      if (!use_merge_subset && cord_plan_data_block_stripe_group(plan, bid) != parity_ingest_stripe_group)
+      if (!use_merge_subset && uplrc_plan_data_block_stripe_group(plan, bid) != parity_ingest_stripe_group)
         return;
       const std::string bk =
-          cord_collector_block_buf_key(plan.plan_key(), alg2_group, collector_block_id, bid);
-      auto it = g_cord_collector_block_delta.find(bk);
-      if (it == g_cord_collector_block_delta.end())
+          uplrc_collector_block_buf_key(plan.plan_key(), alg2_group, collector_block_id, bid);
+      auto it = g_uplrc_collector_block_delta.find(bk);
+      if (it == g_uplrc_collector_block_delta.end())
         return;
       const std::vector<uint8_t> &delta = it->second;
-      const std::vector<std::pair<int, int>> segs = cord_plan_sorted_segs_for_block(plan, bid);
+      const std::vector<std::pair<int, int>> segs = uplrc_plan_sorted_segs_for_block(plan, bid);
       for (size_t u = 0; u < chunk_len; ++u)
       {
         if (!have_segs || segs.empty())
@@ -561,7 +561,7 @@ namespace ECProject
         }
         const int strip_logical =
             group_hull_lo + static_cast<int>(static_cast<int64_t>(chunk_off) + static_cast<int64_t>(u));
-        const int pidx = cord_logical_strip_to_packed_delta_idx(segs, strip_logical);
+        const int pidx = uplrc_logical_strip_to_packed_delta_idx(segs, strip_logical);
         if (pidx < 0 || static_cast<size_t>(pidx) >= delta.size())
           continue;
         buf_out[u] = static_cast<char>(static_cast<unsigned char>(buf_out[u]) ^
@@ -582,74 +582,74 @@ namespace ECProject
     return true;
   }
 
-  static std::shared_ptr<const proxy_proto::CordTransferPlan> cord_lookup_registered_plan(const std::string &pk)
+  static std::shared_ptr<const proxy_proto::UpLRCTransferPlan> uplrc_lookup_registered_plan(const std::string &pk)
   {
-    std::lock_guard<std::mutex> lk(g_cord_plan_reg_mu);
-    auto it = g_cord_plans_by_key.find(pk);
-    if (it == g_cord_plans_by_key.end())
+    std::lock_guard<std::mutex> lk(g_uplrc_plan_reg_mu);
+    auto it = g_uplrc_plans_by_key.find(pk);
+    if (it == g_uplrc_plans_by_key.end())
       return nullptr;
     return it->second;
   }
 
-  static bool cord_uses_matrix_encode(const proxy_proto::CordTransferPlan &plan)
+  static bool uplrc_uses_matrix_encode(const proxy_proto::UpLRCTransferPlan &plan)
   {
-    if (!plan.has_cord_encode_meta() || plan.cord_encode_meta().parity_slice_size() <= 0)
+    if (!plan.has_uplrc_encode_meta() || plan.uplrc_encode_meta().parity_slice_size() <= 0)
       return false;
-    const int et = plan.cord_encode_meta().encode_type();
+    const int et = plan.uplrc_encode_meta().encode_type();
     return et == static_cast<int>(Azure_LRC) || et == static_cast<int>(Optimal_Cauchy_LRC);
   }
 
   /**
    * plan 线程结束时清理 MST、收集器 XOR、矩阵路径缓冲。
-   * 注意：不得在此处 erase g_cord_plans_by_key。收集器上的本地步骤往往先跑完，若删掉注册表，
-   * 其它集群发来的 cordPlanCollectorIngestDataDelta 仍会到达并依赖 cord_lookup_registered_plan；
-   * 注册项保留至本进程内下一次 scheduleCordTransferPlan 覆盖同 plan_key（一般为新传输）。
+   * 注意：不得在此处 erase g_uplrc_plans_by_key。收集器上的本地步骤往往先跑完，若删掉注册表，
+   * 其它集群发来的 uplrcPlanCollectorIngestDataDelta 仍会到达并依赖 uplrc_lookup_registered_plan；
+   * 注册项保留至本进程内下一次 scheduleUpLRCTransferPlan 覆盖同 plan_key（一般为新传输）。
    */
-  static void cord_xfer_cleanup_xfer_plan(const std::string &plan_key)
+  static void uplrc_xfer_cleanup_xfer_plan(const std::string &plan_key)
   {
     {
-      std::lock_guard<std::mutex> lk(g_cord_xfer_mu);
-      for (auto it = g_cord_mst_stream.begin(); it != g_cord_mst_stream.end();)
+      std::lock_guard<std::mutex> lk(g_uplrc_xfer_mu);
+      for (auto it = g_uplrc_mst_stream.begin(); it != g_uplrc_mst_stream.end();)
       {
         if (it->first.size() >= plan_key.size() && it->first.compare(0, plan_key.size(), plan_key) == 0)
-          it = g_cord_mst_stream.erase(it);
+          it = g_uplrc_mst_stream.erase(it);
         else
           ++it;
       }
-      for (auto it = g_cord_collector_xor_acc.begin(); it != g_cord_collector_xor_acc.end();)
+      for (auto it = g_uplrc_collector_xor_acc.begin(); it != g_uplrc_collector_xor_acc.end();)
       {
         if (it->first.size() >= plan_key.size() && it->first.compare(0, plan_key.size(), plan_key) == 0)
-          it = g_cord_collector_xor_acc.erase(it);
+          it = g_uplrc_collector_xor_acc.erase(it);
         else
           ++it;
       }
-      for (auto it = g_cord_collector_block_delta.begin(); it != g_cord_collector_block_delta.end();)
+      for (auto it = g_uplrc_collector_block_delta.begin(); it != g_uplrc_collector_block_delta.end();)
       {
         if (it->first.size() >= plan_key.size() && it->first.compare(0, plan_key.size(), plan_key) == 0)
-          it = g_cord_collector_block_delta.erase(it);
+          it = g_uplrc_collector_block_delta.erase(it);
         else
           ++it;
       }
-      for (auto it = g_cord_collector_parity_coded.begin(); it != g_cord_collector_parity_coded.end();)
+      for (auto it = g_uplrc_collector_parity_coded.begin(); it != g_uplrc_collector_parity_coded.end();)
       {
         if (it->first.size() >= plan_key.size() && it->first.compare(0, plan_key.size(), plan_key) == 0)
-          it = g_cord_collector_parity_coded.erase(it);
+          it = g_uplrc_collector_parity_coded.erase(it);
         else
           ++it;
       }
     }
-    cord_pure_xfer_erase_tracker(plan_key);
+    uplrc_pure_xfer_erase_tracker(plan_key);
   }
 
   namespace
   {
     inline bool is_azure_like_code(const std::string &code_type)
     {
-      return code_type == "AzureLRC" || code_type == "RandomLRC" || code_type == "SplitParityLRC" || code_type == "CordXueLRC";
+      return code_type == "AzureLRC" || code_type == "RandomLRC" || code_type == "SplitParityLRC" || code_type == "UpLRC";
     }
   }
 
-  static std::string cord_plan_wall_ts_ms()
+  static std::string uplrc_plan_wall_ts_ms()
   {
     using clock = std::chrono::system_clock;
     const auto now = clock::now();
@@ -665,39 +665,39 @@ namespace ECProject
     return oss.str();
   }
 
-  static const char *cord_plan_delta_kind_name(proxy_proto::CordDeltaPayloadKind k)
+  static const char *uplrc_plan_delta_kind_name(proxy_proto::UpLRCDeltaPayloadKind k)
   {
     switch (k)
     {
-    case proxy_proto::CORD_DELTA_DATA:
+    case proxy_proto::UPLRC_DELTA_DATA:
       return "DATA_DELTA";
-    case proxy_proto::CORD_DELTA_PARITY:
+    case proxy_proto::UPLRC_DELTA_PARITY:
       return "PARITY_DELTA";
     default:
       return "UNKNOWN_DELTA";
     }
   }
 
-  static const char *cord_transfer_link_kind_name(proxy_proto::CordTransferLinkKind k)
+  static const char *uplrc_transfer_link_kind_name(proxy_proto::UpLRCTransferLinkKind k)
   {
     switch (k)
     {
-    case proxy_proto::CORD_TRANSFER_STAR_DATA_TO_CENTER:
+    case proxy_proto::UPLRC_TRANSFER_STAR_DATA_TO_CENTER:
       return "STAR_DATA_TO_CENTER";
-    case proxy_proto::CORD_TRANSFER_STAR_CENTER_TO_GLOBAL:
+    case proxy_proto::UPLRC_TRANSFER_STAR_CENTER_TO_GLOBAL:
       return "STAR_CENTER_TO_GLOBAL";
-    case proxy_proto::CORD_TRANSFER_STAR_CENTER_TO_LOCAL:
+    case proxy_proto::UPLRC_TRANSFER_STAR_CENTER_TO_LOCAL:
       return "STAR_CENTER_TO_LOCAL";
-    case proxy_proto::CORD_TRANSFER_MST_FORWARD:
+    case proxy_proto::UPLRC_TRANSFER_MST_FORWARD:
       return "MST_FORWARD";
-    case proxy_proto::CORD_TRANSFER_STAR_DATA_TO_LOCAL:
+    case proxy_proto::UPLRC_TRANSFER_STAR_DATA_TO_LOCAL:
       return "STAR_DATA_TO_LOCAL";
     default:
       return "UNKNOWN";
     }
   }
 
-  static bool cord_lookup_cluster_endpoint(const proxy_proto::CordTransferPlan &plan, int cluster_id,
+  static bool uplrc_lookup_cluster_endpoint(const proxy_proto::UpLRCTransferPlan &plan, int cluster_id,
                                            std::string *out_ip, int *out_port)
   {
     for (int i = 0; i < plan.cluster_endpoints_size(); ++i)
@@ -714,18 +714,18 @@ namespace ECProject
 
 
   /** 对本 proxy 作为 src 的所有步骤，预先创建 peer gRPC channel/stub（与步骤循环内 stub_for_peer_proxy 一致）。 */
-  static void cord_pure_xfer_peer_stub_preheat(const proxy_proto::CordTransferPlan &plan, int self_cluster_id,
+  static void uplrc_pure_xfer_peer_stub_preheat(const proxy_proto::UpLRCTransferPlan &plan, int self_cluster_id,
                                                ProxyImpl *proxy)
   {
     std::unordered_set<std::string> endpoints;
     for (int si = 0; si < plan.steps_size(); ++si)
     {
-      const proxy_proto::CordTransferStep &st = plan.steps(si);
+      const proxy_proto::UpLRCTransferStep &st = plan.steps(si);
       if (st.src_proxy_cluster_id() != self_cluster_id)
         continue;
       std::string dst_ip;
       int dst_port = 0;
-      if (!cord_lookup_cluster_endpoint(plan, st.dst_proxy_cluster_id(), &dst_ip, &dst_port))
+      if (!uplrc_lookup_cluster_endpoint(plan, st.dst_proxy_cluster_id(), &dst_ip, &dst_port))
         continue;
       endpoints.insert(dst_ip + ":" + std::to_string(dst_port));
     }
@@ -734,7 +734,7 @@ namespace ECProject
   }
 
 
-  static bool cord_lookup_block_placement(const proxy_proto::CordTransferPlan &plan, int block_id,
+  static bool uplrc_lookup_block_placement(const proxy_proto::UpLRCTransferPlan &plan, int block_id,
                                           std::string *bk, std::string *dip, int *dport)
   {
     for (int i = 0; i < plan.block_placements_size(); ++i)
@@ -750,7 +750,7 @@ namespace ECProject
     return false;
   }
 
-  static bool cord_lookup_delta_blob(const proxy_proto::CordTransferPlan &plan, int cluster_id,
+  static bool uplrc_lookup_delta_blob(const proxy_proto::UpLRCTransferPlan &plan, int cluster_id,
                                      std::string *blob_key, std::string *dip, int *dport)
   {
     for (int i = 0; i < plan.delta_blob_refs_size(); ++i)
@@ -766,7 +766,7 @@ namespace ECProject
     return false;
   }
 
-  static bool cord_lookup_cluster_delta_layout(const proxy_proto::CordTransferPlan &plan, int cluster_id,
+  static bool uplrc_lookup_cluster_delta_layout(const proxy_proto::UpLRCTransferPlan &plan, int cluster_id,
                                                 int data_block_id, uint64_t *base_off, uint64_t *block_delta_len)
   {
     for (int i = 0; i < plan.cluster_delta_layouts_size(); ++i)
@@ -787,7 +787,7 @@ namespace ECProject
     return false;
   }
 
-  static uint64_t cord_xor_hint_for_group(const proxy_proto::CordTransferPlan &plan, int group_index)
+  static uint64_t uplrc_xor_hint_for_group(const proxy_proto::UpLRCTransferPlan &plan, int group_index)
   {
     for (int i = 0; i < plan.group_xor_hints_size(); ++i)
     {
@@ -797,16 +797,16 @@ namespace ECProject
     return 0;
   }
 
-  static bool cord_collector_ingress_ready_locked(const proxy_proto::CordTransferPlan &plan, int group,
+  static bool uplrc_collector_ingress_ready_locked(const proxy_proto::UpLRCTransferPlan &plan, int group,
                                                   int collector_block_id, int parity_ingest_stripe_group)
   {
-    const proxy_proto::CordCollectorIngressExpect *ex = nullptr;
-    for (int i = 0; i < plan.cord_collector_expects_size(); ++i)
+    const proxy_proto::UpLRCCollectorIngressExpect *ex = nullptr;
+    for (int i = 0; i < plan.uplrc_collector_expects_size(); ++i)
     {
-      if (plan.cord_collector_expects(i).group_index() == group &&
-          plan.cord_collector_expects(i).collector_block_id() == collector_block_id)
+      if (plan.uplrc_collector_expects(i).group_index() == group &&
+          plan.uplrc_collector_expects(i).collector_block_id() == collector_block_id)
       {
-        ex = &plan.cord_collector_expects(i);
+        ex = &plan.uplrc_collector_expects(i);
         break;
       }
     }
@@ -817,19 +817,19 @@ namespace ECProject
     {
       const int sid = ex->src_data_block_ids(i);
       if (parity_ingest_stripe_group >= 0 &&
-          cord_plan_data_block_stripe_group(plan, sid) != parity_ingest_stripe_group)
+          uplrc_plan_data_block_stripe_group(plan, sid) != parity_ingest_stripe_group)
         continue;
       any_required = true;
       uint64_t required = ex->src_delta_total_bytes(i);
-      if (plan.cord_block_delta_segs_size() > 0)
+      if (plan.uplrc_block_delta_segs_size() > 0)
       {
-        const uint64_t computed = cord_plan_block_ingress_buffer_end(plan, sid);
+        const uint64_t computed = uplrc_plan_block_ingress_buffer_end(plan, sid);
         if (computed > 0)
           required = computed;
       }
-      const std::string bk = cord_collector_block_buf_key(plan.plan_key(), group, collector_block_id, sid);
-      auto it = g_cord_collector_block_delta.find(bk);
-      if (it == g_cord_collector_block_delta.end() ||
+      const std::string bk = uplrc_collector_block_buf_key(plan.plan_key(), group, collector_block_id, sid);
+      auto it = g_uplrc_collector_block_delta.find(bk);
+      if (it == g_uplrc_collector_block_delta.end() ||
           it->second.size() < static_cast<size_t>(required))
         return false;
     }
@@ -838,7 +838,7 @@ namespace ECProject
     return true;
   }
 
-  static bool cord_matrix_encode_strips(int k, int g_m, int l, ECProject::EncodeType et, int strip_size,
+  static bool uplrc_matrix_encode_strips(int k, int g_m, int l, ECProject::EncodeType et, int strip_size,
                                         const std::vector<std::vector<char>> &data_strips,
                                         std::vector<std::vector<uint8_t>> *coding_out)
   {
@@ -847,23 +847,23 @@ namespace ECProject
     const int coding_rows = g_m + l;
     if (k <= 0 || k > 64 || coding_rows <= 0 || coding_rows > 64 || strip_size <= 0)
     {
-      cord_plan_log_err("[CoRD-PLAN][MATRIX_ENCODE_REJECT] invalid_dims k=" + std::to_string(k) +
+      uplrc_plan_log_err("[UpLRC-PLAN][MATRIX_ENCODE_REJECT] invalid_dims k=" + std::to_string(k) +
                         " g_m=" + std::to_string(g_m) + " l=" + std::to_string(l) +
                         " strip_size=" + std::to_string(strip_size));
       return false;
     }
-    const uint64_t cap = cord_xfer_max_resize_bytes();
+    const uint64_t cap = uplrc_xfer_max_resize_bytes();
     const uint64_t coding_bytes = static_cast<uint64_t>(coding_rows) * static_cast<uint64_t>(strip_size);
     const uint64_t data_bytes = static_cast<uint64_t>(k) * static_cast<uint64_t>(strip_size);
     if (coding_bytes > cap || data_bytes > cap)
     {
-      cord_plan_log_err("[CoRD-PLAN][MATRIX_ENCODE_REJECT] too_large k=" + std::to_string(k) +
+      uplrc_plan_log_err("[UpLRC-PLAN][MATRIX_ENCODE_REJECT] too_large k=" + std::to_string(k) +
                         " rows=" + std::to_string(coding_rows) + " strip_size=" + std::to_string(strip_size) +
                         " data_bytes=" + std::to_string(data_bytes) + " coding_bytes=" + std::to_string(coding_bytes) +
                         " cap=" + std::to_string(cap));
       return false;
     }
-    cord_plan_log_out("[CoRD-PLAN][MATRIX_ENCODE] k=" + std::to_string(k) + " rows=" + std::to_string(coding_rows) +
+    uplrc_plan_log_out("[UpLRC-PLAN][MATRIX_ENCODE] k=" + std::to_string(k) + " rows=" + std::to_string(coding_rows) +
                       " strip_size=" + std::to_string(strip_size) + " data_bytes=" + std::to_string(data_bytes) +
                       " coding_bytes=" + std::to_string(coding_bytes));
     try
@@ -884,7 +884,7 @@ namespace ECProject
     }
     catch (const std::bad_alloc &e)
     {
-      cord_plan_log_err("[CoRD-PLAN][BAD_ALLOC] matrix_encode k=" + std::to_string(k) +
+      uplrc_plan_log_err("[UpLRC-PLAN][BAD_ALLOC] matrix_encode k=" + std::to_string(k) +
                         " rows=" + std::to_string(coding_rows) + " strip_size=" + std::to_string(strip_size) +
                         " err=" + e.what());
       return false;
@@ -892,43 +892,43 @@ namespace ECProject
     return true;
   }
 
-  static bool cord_plan_has_collector_ingress_expect(const proxy_proto::CordTransferPlan &plan, int group,
+  static bool uplrc_plan_has_collector_ingress_expect(const proxy_proto::UpLRCTransferPlan &plan, int group,
                                                      int collector_block_id)
   {
-    for (int i = 0; i < plan.cord_collector_expects_size(); ++i)
+    for (int i = 0; i < plan.uplrc_collector_expects_size(); ++i)
     {
-      if (plan.cord_collector_expects(i).group_index() == group &&
-          plan.cord_collector_expects(i).collector_block_id() == collector_block_id)
+      if (plan.uplrc_collector_expects(i).group_index() == group &&
+          plan.uplrc_collector_expects(i).collector_block_id() == collector_block_id)
         return true;
     }
     return false;
   }
 
-  static bool cord_ingress_lp_cache_ready_locked(const std::string &append_key, int stripe_group,
+  static bool uplrc_ingress_lp_cache_ready_locked(const std::string &append_key, int stripe_group,
                                                  uint64_t chunk_off, uint64_t chunk_len)
   {
-    const std::string ck = cord_ingress_lp_cache_key(append_key, stripe_group);
-    auto it = g_cord_ingress_lp_cache.find(ck);
-    return it != g_cord_ingress_lp_cache.end() &&
+    const std::string ck = uplrc_ingress_lp_cache_key(append_key, stripe_group);
+    auto it = g_uplrc_ingress_lp_cache.find(ck);
+    return it != g_uplrc_ingress_lp_cache.end() &&
            it->second.size() >= static_cast<size_t>(chunk_off) + chunk_len;
   }
 
   /** 等待 ingress 阶段预缓存的 local parity ΔP（class2/class3 并发路径）。 */
-  static bool cord_spin_until_ingress_lp_cache_ready(const std::string &append_key, int stripe_group,
+  static bool uplrc_spin_until_ingress_lp_cache_ready(const std::string &append_key, int stripe_group,
                                                      uint64_t chunk_off, uint64_t chunk_len)
   {
     int spins = 0;
     while (true)
     {
       {
-        std::lock_guard<std::mutex> lk(g_cord_xfer_mu);
-        if (cord_ingress_lp_cache_ready_locked(append_key, stripe_group, chunk_off, chunk_len))
+        std::lock_guard<std::mutex> lk(g_uplrc_xfer_mu);
+        if (uplrc_ingress_lp_cache_ready_locked(append_key, stripe_group, chunk_off, chunk_len))
           return true;
       }
       std::this_thread::sleep_for(std::chrono::milliseconds(1));
       if (++spins > 120000)
       {
-        std::cout << "[CoRD-PLAN] ingress_lp_cache timeout key=" << append_key << ":lp:" << stripe_group
+        std::cout << "[UpLRC-PLAN] ingress_lp_cache timeout key=" << append_key << ":lp:" << stripe_group
                   << std::endl;
         return false;
       }
@@ -936,23 +936,23 @@ namespace ECProject
   }
 
   /** 等待收集器上 plan 期望的数据增量（可按 parity_ingest_stripe_group 过滤）到齐。 */
-  static bool cord_spin_until_collector_ingress_ready(const proxy_proto::CordTransferPlan &plan, int group,
+  static bool uplrc_spin_until_collector_ingress_ready(const proxy_proto::UpLRCTransferPlan &plan, int group,
                                                       int collector_block_id, int parity_ingest_stripe_group)
   {
-    if (!cord_plan_has_collector_ingress_expect(plan, group, collector_block_id))
+    if (!uplrc_plan_has_collector_ingress_expect(plan, group, collector_block_id))
       return false;
     int spins = 0;
     while (true)
     {
       {
-        std::lock_guard<std::mutex> lk(g_cord_xfer_mu);
-        if (cord_collector_ingress_ready_locked(plan, group, collector_block_id, parity_ingest_stripe_group))
+        std::lock_guard<std::mutex> lk(g_uplrc_xfer_mu);
+        if (uplrc_collector_ingress_ready_locked(plan, group, collector_block_id, parity_ingest_stripe_group))
           return true;
       }
       std::this_thread::sleep_for(std::chrono::milliseconds(1));
       if (++spins > 120000)
       {
-        std::cout << "[CoRD-PLAN] collector ingress timeout group=" << group << " col=" << collector_block_id
+        std::cout << "[UpLRC-PLAN] collector ingress timeout group=" << group << " col=" << collector_block_id
                   << " pig=" << parity_ingest_stripe_group << std::endl;
         return false;
       }
@@ -960,56 +960,56 @@ namespace ECProject
   }
 
 
-  static bool cord_mst_relay_buffer_ready_locked(const std::string &stream_key, uint64_t chunk_off,
+  static bool uplrc_mst_relay_buffer_ready_locked(const std::string &stream_key, uint64_t chunk_off,
                                                  size_t chunk_len)
   {
-    auto it = g_cord_mst_stream.find(stream_key);
-    if (it == g_cord_mst_stream.end())
+    auto it = g_uplrc_mst_stream.find(stream_key);
+    if (it == g_uplrc_mst_stream.end())
       return false;
     return it->second.size() >= static_cast<size_t>(chunk_off) + chunk_len;
   }
 
-  /** 等待 MST 中继 hop：前继 cluster 经 cordPlanMstDataDeltaChunk 写入 g_cord_mst_stream 后再读。 */
-  static bool cord_spin_until_mst_relay_ready(const std::string &stream_key, uint64_t chunk_off, size_t chunk_len)
+  /** 等待 MST 中继 hop：前继 cluster 经 uplrcPlanMstDataDeltaChunk 写入 g_uplrc_mst_stream 后再读。 */
+  static bool uplrc_spin_until_mst_relay_ready(const std::string &stream_key, uint64_t chunk_off, size_t chunk_len)
   {
     int spins = 0;
     while (true)
     {
       {
-        std::lock_guard<std::mutex> lk(g_cord_xfer_mu);
-        if (cord_mst_relay_buffer_ready_locked(stream_key, chunk_off, chunk_len))
+        std::lock_guard<std::mutex> lk(g_uplrc_xfer_mu);
+        if (uplrc_mst_relay_buffer_ready_locked(stream_key, chunk_off, chunk_len))
           return true;
       }
       std::this_thread::sleep_for(std::chrono::milliseconds(1));
       if (++spins > 120000)
       {
-        std::cout << "[CoRD-PLAN] mst relay buffer timeout stream_key=" << stream_key << " off=" << chunk_off
+        std::cout << "[UpLRC-PLAN] mst relay buffer timeout stream_key=" << stream_key << " off=" << chunk_off
                   << " len=" << chunk_len << std::endl;
         return false;
       }
     }
   }
 
-  static bool cord_ensure_collector_parity_coded(const proxy_proto::CordTransferPlan &plan, int group,
+  static bool uplrc_ensure_collector_parity_coded(const proxy_proto::UpLRCTransferPlan &plan, int group,
                                                int collector_block_id, int parity_ingest_stripe_group)
   {
     const std::string ck =
-        cord_collector_parity_cache_key(plan.plan_key(), group, collector_block_id, parity_ingest_stripe_group);
+        uplrc_collector_parity_cache_key(plan.plan_key(), group, collector_block_id, parity_ingest_stripe_group);
     {
-      std::lock_guard<std::mutex> lk(g_cord_xfer_mu);
-      if (g_cord_collector_parity_coded.count(ck))
+      std::lock_guard<std::mutex> lk(g_uplrc_xfer_mu);
+      if (g_uplrc_collector_parity_coded.count(ck))
         return true;
     }
-    if (!cord_spin_until_collector_ingress_ready(plan, group, collector_block_id, parity_ingest_stripe_group))
+    if (!uplrc_spin_until_collector_ingress_ready(plan, group, collector_block_id, parity_ingest_stripe_group))
       return false;
-    std::lock_guard<std::mutex> lk(g_cord_xfer_mu);
-    if (g_cord_collector_parity_coded.count(ck))
+    std::lock_guard<std::mutex> lk(g_uplrc_xfer_mu);
+    if (g_uplrc_collector_parity_coded.count(ck))
       return true;
-    const auto &meta = plan.cord_encode_meta();
+    const auto &meta = plan.uplrc_encode_meta();
     const int k = meta.k();
     const int ps = meta.parity_slice_size();
     const int po = meta.parity_slice_offset();
-    cord_plan_log_out("[CoRD-PLAN][COLLECTOR_ENCODE_BEGIN] plan=" + plan.plan_key() + " grp=" + std::to_string(group) +
+    uplrc_plan_log_out("[UpLRC-PLAN][COLLECTOR_ENCODE_BEGIN] plan=" + plan.plan_key() + " grp=" + std::to_string(group) +
                       " col_blk=" + std::to_string(collector_block_id) +
                       " pig=" + std::to_string(parity_ingest_stripe_group) + " k=" + std::to_string(k) +
                       " ps=" + std::to_string(ps) + " po=" + std::to_string(po));
@@ -1020,22 +1020,22 @@ namespace ECProject
     }
     catch (const std::bad_alloc &e)
     {
-      cord_plan_log_err("[CoRD-PLAN][BAD_ALLOC] collector_strips k=" + std::to_string(k) +
+      uplrc_plan_log_err("[UpLRC-PLAN][BAD_ALLOC] collector_strips k=" + std::to_string(k) +
                         " ps=" + std::to_string(ps) + " err=" + e.what());
       return false;
     }
-    for (int didx = 0; didx < plan.cord_data_strip_descs_size(); ++didx)
+    for (int didx = 0; didx < plan.uplrc_data_strip_descs_size(); ++didx)
     {
-      const auto &desc = plan.cord_data_strip_descs(didx);
+      const auto &desc = plan.uplrc_data_strip_descs(didx);
       const int bid = desc.block_id();
       if (bid < 0 || bid >= k)
         continue;
       if (parity_ingest_stripe_group >= 0 &&
-          cord_plan_data_block_stripe_group(plan, bid) != parity_ingest_stripe_group)
+          uplrc_plan_data_block_stripe_group(plan, bid) != parity_ingest_stripe_group)
         continue;
-      const std::string bk = cord_collector_block_buf_key(plan.plan_key(), group, collector_block_id, bid);
-      auto it = g_cord_collector_block_delta.find(bk);
-      if (it == g_cord_collector_block_delta.end())
+      const std::string bk = uplrc_collector_block_buf_key(plan.plan_key(), group, collector_block_id, bid);
+      auto it = g_uplrc_collector_block_delta.find(bk);
+      if (it == g_uplrc_collector_block_delta.end())
         continue;
       const std::vector<uint8_t> &delta = it->second;
       const int so = desc.slice_offset();
@@ -1052,47 +1052,47 @@ namespace ECProject
     }
     std::vector<std::vector<uint8_t>> coded;
     const ECProject::EncodeType et = static_cast<ECProject::EncodeType>(meta.encode_type());
-    if (!cord_matrix_encode_strips(k, meta.g_m(), meta.l(), et, ps, strips, &coded))
+    if (!uplrc_matrix_encode_strips(k, meta.g_m(), meta.l(), et, ps, strips, &coded))
     {
-      cord_plan_log_out("[CoRD-PLAN] matrix encode failed");
+      uplrc_plan_log_out("[UpLRC-PLAN] matrix encode failed");
       return false;
     }
-    g_cord_collector_parity_coded[ck] = std::move(coded);
+    g_uplrc_collector_parity_coded[ck] = std::move(coded);
     return true;
   }
 
   // =========================================================================
-  // CoRD proxy↔proxy delta TCP side channel (payload); gRPC reserved for control/metadata.
+  // UpLRC proxy↔proxy delta TCP side channel (payload); gRPC reserved for control/metadata.
   // Frame: magic "CRDX" | xfer_tag u64 BE | kind u32 BE | meta_len u32 BE | meta bytes | payload_len u64 BE | payload | ack u8
   // 每连接一帧；xfer_tag 用于并发连接日志关联与调试（meta 内 plan_key/step 仍作业务校验）。
-  static std::atomic<uint64_t> g_cord_crdx_next_tag{1};
+  static std::atomic<uint64_t> g_uplrc_crdx_next_tag{1};
   // =========================================================================
-  enum CordXferTcpKind : uint32_t
+  enum UpLRCXferTcpKind : uint32_t
   {
-    CORD_XFER_TCP_COLLECTOR_INGEST = 1,
-    CORD_XFER_TCP_PARITY_XOR = 2,
-    CORD_XFER_TCP_MST_CHUNK = 3,
+    UPLRC_XFER_TCP_COLLECTOR_INGEST = 1,
+    UPLRC_XFER_TCP_PARITY_XOR = 2,
+    UPLRC_XFER_TCP_MST_CHUNK = 3,
   };
 
-  static int cord_peer_xfer_tcp_port(int grpc_proxy_port)
+  static int uplrc_peer_xfer_tcp_port(int grpc_proxy_port)
   {
     return grpc_proxy_port + ECProject::PROXY_PORT_SHIFT + ECProject::PROXY_XFER_PORT_SUB_OFFSET;
   }
 
-  static void cord_write_u32_be(asio::ip::tcp::socket &sock, uint32_t v)
+  static void uplrc_write_u32_be(asio::ip::tcp::socket &sock, uint32_t v)
   {
     const uint32_t be = htonl(v);
     asio::write(sock, asio::buffer(&be, 4));
   }
 
-  static uint32_t cord_read_u32_be(asio::ip::tcp::socket &sock)
+  static uint32_t uplrc_read_u32_be(asio::ip::tcp::socket &sock)
   {
     uint32_t be = 0;
     asio::read(sock, asio::buffer(&be, 4));
     return ntohl(be);
   }
 
-  static void cord_write_u64_be(asio::ip::tcp::socket &sock, uint64_t v)
+  static void uplrc_write_u64_be(asio::ip::tcp::socket &sock, uint64_t v)
   {
     uint8_t b[8];
     for (int i = 0; i < 8; ++i)
@@ -1100,7 +1100,7 @@ namespace ECProject
     asio::write(sock, asio::buffer(b, 8));
   }
 
-  static uint64_t cord_read_u64_be(asio::ip::tcp::socket &sock)
+  static uint64_t uplrc_read_u64_be(asio::ip::tcp::socket &sock)
   {
     uint8_t b[8];
     asio::read(sock, asio::buffer(b, 8));
@@ -1110,7 +1110,7 @@ namespace ECProject
     return v;
   }
 
-  static void cord_apply_datanode_tcp_timeout(asio::ip::tcp::socket &sock, int timeout_sec)
+  static void uplrc_apply_datanode_tcp_timeout(asio::ip::tcp::socket &sock, int timeout_sec)
   {
     if (timeout_sec <= 0)
       timeout_sec = 120;
@@ -1125,13 +1125,13 @@ namespace ECProject
     }
   }
 
-  static bool cord_apply_collector_ingest(ProxyImpl *proxy, const proxy_proto::CordPlanCollectorIngestReq &request,
+  static bool uplrc_apply_collector_ingest(ProxyImpl *proxy, const proxy_proto::UpLRCPlanCollectorIngestReq &request,
                                           const char *payload, size_t payload_len)
   {
-    auto pl = cord_lookup_registered_plan(request.plan_key());
+    auto pl = uplrc_lookup_registered_plan(request.plan_key());
     if (!pl)
       return false;
-    if (cord_uses_matrix_encode(*pl) && request.src_data_block_id() < 0)
+    if (uplrc_uses_matrix_encode(*pl) && request.src_data_block_id() < 0)
       return false;
     const uint64_t off = request.chunk_byte_offset();
     const uint64_t need = off + static_cast<uint64_t>(payload_len);
@@ -1141,34 +1141,34 @@ namespace ECProject
         << " payload_len=" << payload_len << " need=" << need
         << " xor_hint=" << request.xor_accum_byte_length();
     const std::string ctx_s = ctx.str();
-    std::lock_guard<std::mutex> lk(g_cord_xfer_mu);
+    std::lock_guard<std::mutex> lk(g_uplrc_xfer_mu);
     if (request.src_data_block_id() >= 0)
     {
       const std::string bkey =
-          cord_collector_block_buf_key(request.plan_key(), request.group_index(), request.collector_block_id(),
+          uplrc_collector_block_buf_key(request.plan_key(), request.group_index(), request.collector_block_id(),
                                        request.src_data_block_id());
-      auto &bd = g_cord_collector_block_delta[bkey];
+      auto &bd = g_uplrc_collector_block_delta[bkey];
       if (bd.size() < static_cast<size_t>(need))
       {
-        if (!cord_xfer_safe_resize(bd, static_cast<size_t>(need), "collector_block_delta", ctx_s))
+        if (!uplrc_xfer_safe_resize(bd, static_cast<size_t>(need), "collector_block_delta", ctx_s))
           return false;
       }
       std::memcpy(bd.data() + static_cast<size_t>(off), payload, payload_len);
     }
-    if (!cord_uses_matrix_encode(*pl))
+    if (!uplrc_uses_matrix_encode(*pl))
     {
       const std::string key =
-          cord_collector_acc_key(request.plan_key(), request.group_index(), request.collector_block_id());
-      auto &acc = g_cord_collector_xor_acc[key];
+          uplrc_collector_acc_key(request.plan_key(), request.group_index(), request.collector_block_id());
+      auto &acc = g_uplrc_collector_xor_acc[key];
       const uint64_t hint = request.xor_accum_byte_length();
       if (hint > 0u && acc.size() < static_cast<size_t>(hint))
       {
-        if (!cord_xfer_safe_resize(acc, static_cast<size_t>(hint), "collector_xor_acc_hint", ctx_s))
+        if (!uplrc_xfer_safe_resize(acc, static_cast<size_t>(hint), "collector_xor_acc_hint", ctx_s))
           return false;
       }
       if (acc.size() < static_cast<size_t>(need))
       {
-        if (!cord_xfer_safe_resize(acc, static_cast<size_t>(need), "collector_xor_acc_need", ctx_s))
+        if (!uplrc_xfer_safe_resize(acc, static_cast<size_t>(need), "collector_xor_acc_need", ctx_s))
           return false;
       }
       for (size_t i = 0; i < payload_len; ++i)
@@ -1179,26 +1179,26 @@ namespace ECProject
     return true;
   }
 
-  static bool cord_apply_parity_xor_delta(ProxyImpl *proxy, const proxy_proto::CordPlanApplyParityXorReq &request,
+  static bool uplrc_apply_parity_xor_delta(ProxyImpl *proxy, const proxy_proto::UpLRCPlanApplyParityXorReq &request,
                                           const char *payload, size_t payload_len)
   {
     const int psz = request.parity_slice_length();
     if (psz <= 0 || static_cast<size_t>(psz) != payload_len)
       return false;
     // ΔP 下推 datanode 本地 read-xor-write：省掉读回 proxy 的往返，datanode 按文件串行保证原子。
-    cord_pure_xfer_parity_dn_begin(request.plan_key());
-    if (!proxy->CordRangeXorWriteToDatanode(request.block_key(), request.dst_block_id(),
+    uplrc_pure_xfer_parity_dn_begin(request.plan_key());
+    if (!proxy->UpLRCRangeXorWriteToDatanode(request.block_key(), request.dst_block_id(),
                                             request.parity_slice_offset(), payload, static_cast<size_t>(psz),
                                             request.datanode_ip().c_str(), request.datanode_port()))
     {
-      cord_pure_xfer_parity_dn_abort(request.plan_key());
+      uplrc_pure_xfer_parity_dn_abort(request.plan_key());
       return false;
     }
-    cord_pure_xfer_parity_dn_done_verified(request.plan_key());
+    uplrc_pure_xfer_parity_dn_done_verified(request.plan_key());
     return true;
   }
 
-  static bool cord_apply_mst_data_delta(ProxyImpl *proxy, const proxy_proto::CordPlanMstDataDeltaReq &request,
+  static bool uplrc_apply_mst_data_delta(ProxyImpl *proxy, const proxy_proto::UpLRCPlanMstDataDeltaReq &request,
                                           const char *chunk_data, size_t chunk_size)
   {
     if (chunk_size == 0)
@@ -1206,17 +1206,17 @@ namespace ECProject
     const std::string &pk = request.plan_key();
     const int origin_blk =
         request.src_data_block_id() >= 0 ? request.src_data_block_id() : request.dst_block_id();
-    const std::string stream_key = cord_mst_stream_key(pk, origin_blk);
+    const std::string stream_key = uplrc_mst_stream_key(pk, origin_blk);
     const uint64_t off = request.chunk_byte_offset();
     {
-      std::lock_guard<std::mutex> lk(g_cord_xfer_mu);
-      auto &stream = g_cord_mst_stream[stream_key];
+      std::lock_guard<std::mutex> lk(g_uplrc_xfer_mu);
+      auto &stream = g_uplrc_mst_stream[stream_key];
       const uint64_t need = off + static_cast<uint64_t>(chunk_size);
       if (stream.size() < static_cast<size_t>(need))
       {
         const std::string ctx = "plan=" + pk + " off=" + std::to_string(off) + " chunk_size=" +
                                 std::to_string(chunk_size) + " need=" + std::to_string(need);
-        if (!cord_xfer_safe_resize(stream, static_cast<size_t>(need), "mst_stream", ctx))
+        if (!uplrc_xfer_safe_resize(stream, static_cast<size_t>(need), "mst_stream", ctx))
           return false;
       }
       for (size_t i = 0; i < chunk_size; ++i)
@@ -1227,20 +1227,20 @@ namespace ECProject
         request.dst_block_id() >= request.k_datablock())
     {
       bool applied_matrix = false;
-      auto pl = cord_lookup_registered_plan(pk);
-      if (pl && cord_uses_matrix_encode(*pl) && request.src_data_block_id() >= 0)
+      auto pl = uplrc_lookup_registered_plan(pk);
+      if (pl && uplrc_uses_matrix_encode(*pl) && request.src_data_block_id() >= 0)
       {
-        const auto &meta = pl->cord_encode_meta();
+        const auto &meta = pl->uplrc_encode_meta();
         const int kblk = meta.k();
         const int ps = meta.parity_slice_size();
         const int po = meta.parity_slice_offset();
         const int src_bid = request.src_data_block_id();
-        const proxy_proto::CordDataStripDesc *sdesc = nullptr;
-        for (int di = 0; di < pl->cord_data_strip_descs_size(); ++di)
+        const proxy_proto::UpLRCDataStripDesc *sdesc = nullptr;
+        for (int di = 0; di < pl->uplrc_data_strip_descs_size(); ++di)
         {
-          if (pl->cord_data_strip_descs(di).block_id() == src_bid)
+          if (pl->uplrc_data_strip_descs(di).block_id() == src_bid)
           {
-            sdesc = &pl->cord_data_strip_descs(di);
+            sdesc = &pl->uplrc_data_strip_descs(di);
             break;
           }
         }
@@ -1257,75 +1257,75 @@ namespace ECProject
           }
           std::vector<std::vector<uint8_t>> coded;
           const ECProject::EncodeType et = static_cast<ECProject::EncodeType>(meta.encode_type());
-          if (!cord_matrix_encode_strips(kblk, meta.g_m(), meta.l(), et, ps, strips, &coded))
+          if (!uplrc_matrix_encode_strips(kblk, meta.g_m(), meta.l(), et, ps, strips, &coded))
             return false;
           const int row = request.dst_block_id() - kblk;
           if (row < 0 || row >= static_cast<int>(coded.size()))
             return false;
           const auto &pdelta = coded[static_cast<size_t>(row)];
           const auto nz =
-              cord_parity_delta_nonzero_span(reinterpret_cast<const char *>(pdelta.data()), pdelta.size());
+              uplrc_parity_delta_nonzero_span(reinterpret_cast<const char *>(pdelta.data()), pdelta.size());
           if (nz.second > 0)
           {
             const int poff = static_cast<int>(nz.first);
             const int plen = static_cast<int>(nz.second);
-            cord_pure_xfer_parity_dn_begin(pk);
-            if (!proxy->CordRangeXorWriteToDatanode(
+            uplrc_pure_xfer_parity_dn_begin(pk);
+            if (!proxy->UpLRCRangeXorWriteToDatanode(
                     request.parity_block_key(), request.dst_block_id(), po + poff,
                     reinterpret_cast<const char *>(pdelta.data()) + poff, static_cast<size_t>(plen),
                     request.parity_datanode_ip().c_str(), request.parity_datanode_port()))
             {
-              cord_pure_xfer_parity_dn_abort(pk);
+              uplrc_pure_xfer_parity_dn_abort(pk);
               return false;
             }
-            cord_pure_xfer_parity_dn_done_verified(pk);
+            uplrc_pure_xfer_parity_dn_done_verified(pk);
           }
           applied_matrix = true;
         }
       }
       if (!applied_matrix)
       {
-        const auto nz = cord_parity_delta_nonzero_span(chunk_data, chunk_size);
+        const auto nz = uplrc_parity_delta_nonzero_span(chunk_data, chunk_size);
         if (nz.second > 0)
         {
           const int psz = static_cast<int>(nz.second);
           const int slice_off = static_cast<int>(off) + static_cast<int>(nz.first);
-          cord_pure_xfer_parity_dn_begin(pk);
-          if (!proxy->CordRangeXorWriteToDatanode(request.parity_block_key(), request.dst_block_id(), slice_off,
+          uplrc_pure_xfer_parity_dn_begin(pk);
+          if (!proxy->UpLRCRangeXorWriteToDatanode(request.parity_block_key(), request.dst_block_id(), slice_off,
                                                   chunk_data + nz.first, static_cast<size_t>(psz),
                                                   request.parity_datanode_ip().c_str(),
                                                   request.parity_datanode_port()))
           {
-            cord_pure_xfer_parity_dn_abort(pk);
+            uplrc_pure_xfer_parity_dn_abort(pk);
             return false;
           }
-          cord_pure_xfer_parity_dn_done_verified(pk);
+          uplrc_pure_xfer_parity_dn_done_verified(pk);
         }
       }
     }
     return true;
   }
 
-  static bool cord_tcp_xfer_send(const std::string &dst_ip, int dst_grpc_port, uint32_t kind,
+  static bool uplrc_tcp_xfer_send(const std::string &dst_ip, int dst_grpc_port, uint32_t kind,
                                  const std::string &meta, const void *payload, size_t payload_len,
                                  uint64_t xfer_tag = 0)
   {
     if (xfer_tag == 0)
-      xfer_tag = g_cord_crdx_next_tag.fetch_add(1, std::memory_order_relaxed);
+      xfer_tag = g_uplrc_crdx_next_tag.fetch_add(1, std::memory_order_relaxed);
     try
     {
       asio::io_context io;
       asio::ip::tcp::socket sock(io);
-      const int tcp_port = cord_peer_xfer_tcp_port(dst_grpc_port);
+      const int tcp_port = uplrc_peer_xfer_tcp_port(dst_grpc_port);
       asio::connect(sock, asio::ip::tcp::resolver(io).resolve(dst_ip, std::to_string(tcp_port)));
       const char magic[4] = {'C', 'R', 'D', 'X'};
       asio::write(sock, asio::buffer(magic, 4));
-      cord_write_u64_be(sock, xfer_tag);
-      cord_write_u32_be(sock, kind);
-      cord_write_u32_be(sock, static_cast<uint32_t>(meta.size()));
+      uplrc_write_u64_be(sock, xfer_tag);
+      uplrc_write_u32_be(sock, kind);
+      uplrc_write_u32_be(sock, static_cast<uint32_t>(meta.size()));
       if (!meta.empty())
         asio::write(sock, asio::buffer(meta.data(), meta.size()));
-      cord_write_u64_be(sock, static_cast<uint64_t>(payload_len));
+      uplrc_write_u64_be(sock, static_cast<uint64_t>(payload_len));
       if (payload_len > 0)
         asio::write(sock, asio::buffer(payload, payload_len));
       uint8_t ack = 0xff;
@@ -1345,12 +1345,12 @@ namespace ECProject
    * N=1 MST：全程数据增量 TCP CRDX mst chunk（校验侧矩阵编码或 XOR）。
    * MST 中继读 relay_buffer 前 spin-wait 前继 hop 写入（与 STAR collector ingress 同理）。
    */
-  static void cord_transfer_plan_execute_async(const proxy_proto::CordTransferPlan &plan, int self_cluster_id,
+  static void uplrc_transfer_plan_execute_async(const proxy_proto::UpLRCTransferPlan &plan, int self_cluster_id,
                                                ProxyImpl *proxy, const std::string &proxy_tag)
   {
-      // 打开日志文件: /tmp/cord_transfer_<plan_key>.log（仅 verbose 时打开，避免热路径开销）
-      const bool xfer_log_on = cord_xfer_log_enabled();
-      const std::string log_path = "/tmp/cord_transfer_" + plan.plan_key() + ".log";
+      // 打开日志文件: /tmp/uplrc_transfer_<plan_key>.log（仅 verbose 时打开，避免热路径开销）
+      const bool xfer_log_on = uplrc_xfer_log_enabled();
+      const std::string log_path = "/tmp/uplrc_transfer_" + plan.plan_key() + ".log";
       std::ofstream log_ofs;
       if (xfer_log_on)
         log_ofs.open(log_path, std::ios::out | std::ios::app);
@@ -1375,10 +1375,10 @@ namespace ECProject
           return;
         const std::string line = "[" + wall_ts_ms_str() + "][" + proxy_tag + "] " + msg;
         log_ofs << line << '\n';
-        std::cout << "[CoRD-XFER] " << line << '\n';
+        std::cout << "[UpLRC-XFER] " << line << '\n';
       };
 
-      plan_log_both("══════ CordTransferPlan EXECUTION START ══════");
+      plan_log_both("══════ UpLRCTransferPlan EXECUTION START ══════");
       plan_log_both("stripe_id=" + std::to_string(plan.stripe_id()) +
                     " plan_key=" + plan.plan_key() +
                     " total_rounds=" + std::to_string(plan.total_rounds()) +
@@ -1398,7 +1398,7 @@ namespace ECProject
         std::ostringstream os;
         os << "Plan overview: rounds=" << plan.total_rounds()
            << " slot_unit=" << plan.slot_unit_bytes() << "B k=" << plan.k_datablock()
-           << " encode=" << (cord_uses_matrix_encode(plan) ? "matrix" : "xor");
+           << " encode=" << (uplrc_uses_matrix_encode(plan) ? "matrix" : "xor");
         plan_log(os.str());
         for (int si = 0; si < plan.steps_size(); ++si) {
           const auto &s = plan.steps(si);
@@ -1407,8 +1407,8 @@ namespace ECProject
              << " c" << s.src_proxy_cluster_id() << "→c" << s.dst_proxy_cluster_id()
              << " blk" << s.src_block_id() << "→blk" << s.dst_block_id()
              << " chunk=[" << s.chunk_byte_offset() << "+" << s.chunk_byte_length() << "B]"
-             << " link=" << cord_transfer_link_kind_name(s.link_kind())
-             << " delta=" << cord_plan_delta_kind_name(s.delta_payload_kind())
+             << " link=" << uplrc_transfer_link_kind_name(s.link_kind())
+             << " delta=" << uplrc_plan_delta_kind_name(s.delta_payload_kind())
              << " grp=" << s.group_index();
           if (s.has_mst_origin_data_block_id())
             ss << " mst_origin=" << s.mst_origin_data_block_id();
@@ -1423,8 +1423,8 @@ namespace ECProject
           plan_log(ss.str());
         }
       }
-      cord_pure_xfer_peer_stub_preheat(plan, self_cluster_id, proxy);
-      cord_pure_xfer_note_loop_start(plan.plan_key());
+      uplrc_pure_xfer_peer_stub_preheat(plan, self_cluster_id, proxy);
+      uplrc_pure_xfer_note_loop_start(plan.plan_key());
       const auto wall_t0 = std::chrono::steady_clock::now();
 
       int executed_steps = 0;
@@ -1432,7 +1432,7 @@ namespace ECProject
       int failed_steps = 0;
 
       const int k = plan.k_datablock();
-      struct CordStepRunStats {
+      struct UpLRCStepRunStats {
         int executed = 0;
         int skipped = 0;
         int failed = 0;
@@ -1447,15 +1447,15 @@ namespace ECProject
         plan_log_both(msg);
       };
 
-      auto cord_run_one_local_step = [&](int si) -> CordStepRunStats {
-        CordStepRunStats stats{};
+      auto uplrc_run_one_local_step = [&](int si) -> UpLRCStepRunStats {
+        UpLRCStepRunStats stats{};
         const auto t_step0 = std::chrono::steady_clock::now();
-        const proxy_proto::CordTransferStep &st = plan.steps(si);
+        const proxy_proto::UpLRCTransferStep &st = plan.steps(si);
         if (st.src_proxy_cluster_id() != self_cluster_id)
           return stats;
         std::string dst_ip;
         int dst_port = 0;
-        if (!cord_lookup_cluster_endpoint(plan, st.dst_proxy_cluster_id(), &dst_ip, &dst_port))
+        if (!uplrc_lookup_cluster_endpoint(plan, st.dst_proxy_cluster_id(), &dst_ip, &dst_port))
         {
           plan_log_sync("abort_step missing_cluster_endpoint dst_cluster_id=" +
                    std::to_string(st.dst_proxy_cluster_id()) + " step_index=" + std::to_string(st.step_index()));
@@ -1467,25 +1467,25 @@ namespace ECProject
         {
           plan_log_sync(std::string("SKIP zero_chunk step_index=") + std::to_string(st.step_index()) +
                    " scheduled_slot=" + std::to_string(st.scheduled_slot()) + " link=" +
-                   cord_transfer_link_kind_name(st.link_kind()) + " payload=" +
-                   cord_plan_delta_kind_name(st.delta_payload_kind()));
+                   uplrc_transfer_link_kind_name(st.link_kind()) + " payload=" +
+                   uplrc_plan_delta_kind_name(st.delta_payload_kind()));
           stats.skipped = 1;
           return stats;        }
 
         // ---------- N>1：数据增量 -> 收集器 ----------
-        if (st.link_kind() == proxy_proto::CORD_TRANSFER_STAR_DATA_TO_CENTER &&
-            st.delta_payload_kind() == proxy_proto::CORD_DELTA_DATA)
+        if (st.link_kind() == proxy_proto::UPLRC_TRANSFER_STAR_DATA_TO_CENTER &&
+            st.delta_payload_kind() == proxy_proto::UPLRC_DELTA_DATA)
         {
           std::string blob_key, dn_ip;
           int dn_port = 0;
-          if (!cord_lookup_delta_blob(plan, self_cluster_id, &blob_key, &dn_ip, &dn_port))
+          if (!uplrc_lookup_delta_blob(plan, self_cluster_id, &blob_key, &dn_ip, &dn_port))
           {
             plan_log_both_sync("FAIL STAR_DATA_TO_CENTER no_delta_blob step=" + std::to_string(st.step_index()) +
                          " cluster=c" + std::to_string(self_cluster_id));
             stats.failed = 1;
           return stats;          }
           uint64_t base_off = 0, blk_tot = 0;
-          if (!cord_lookup_cluster_delta_layout(plan, self_cluster_id, st.src_block_id(), &base_off, &blk_tot))
+          if (!uplrc_lookup_cluster_delta_layout(plan, self_cluster_id, st.src_block_id(), &base_off, &blk_tot))
           {
             plan_log_both_sync("FAIL STAR_DATA_TO_CENTER no_cluster_delta_layout step=" + std::to_string(st.step_index()) +
                          " cluster=c" + std::to_string(self_cluster_id) + " data_blk=" + std::to_string(st.src_block_id()));
@@ -1499,7 +1499,7 @@ namespace ECProject
           {
             const std::string buf_ctx = "step=" + std::to_string(st.step_index()) + " STAR_DATA chunk_len=" +
                                         std::to_string(chunk_len) + " abs_off=" + std::to_string(abs_off);
-            if (!cord_xfer_safe_resize(buf, chunk_len, "step_star_data_buf", buf_ctx))
+            if (!uplrc_xfer_safe_resize(buf, chunk_len, "step_star_data_buf", buf_ctx))
             {
               plan_log_both_sync("FAIL STAR_DATA_TO_CENTER buf_alloc step=" + std::to_string(st.step_index()) +
                            " chunk_len=" + std::to_string(chunk_len));
@@ -1507,7 +1507,7 @@ namespace ECProject
               return stats;
             }
           }
-          if (!proxy->CordRangeReadFromDatanode(blob_key, 0, static_cast<int>(abs_off), buf.data(), chunk_len,
+          if (!proxy->UpLRCRangeReadFromDatanode(blob_key, 0, static_cast<int>(abs_off), buf.data(), chunk_len,
                                                 dn_ip.c_str(), dn_port))
           {
             plan_log_both_sync("FAIL STAR_DATA_TO_CENTER datanode_read_failed step=" + std::to_string(st.step_index()) +
@@ -1520,16 +1520,16 @@ namespace ECProject
 
           // 2) TCP 发送 delta 到 collector proxy（元数据 protobuf，payload 走 side channel）
           const auto t_tcp0 = std::chrono::steady_clock::now();
-          proxy_proto::CordPlanCollectorIngestReq req;
+          proxy_proto::UpLRCPlanCollectorIngestReq req;
           req.set_plan_key(plan.plan_key());
           req.set_group_index(st.group_index());
           req.set_collector_block_id(st.dst_block_id());
           req.set_chunk_byte_offset(st.chunk_byte_offset());
-          req.set_xor_accum_byte_length(cord_xor_hint_for_group(plan, st.group_index()));
+          req.set_xor_accum_byte_length(uplrc_xor_hint_for_group(plan, st.group_index()));
           req.set_src_data_block_id(st.src_block_id());
           std::string meta;
           req.SerializeToString(&meta);
-          const bool ok_xfer = cord_tcp_xfer_send(dst_ip, dst_port, CORD_XFER_TCP_COLLECTOR_INGEST, meta, buf.data(),
+          const bool ok_xfer = uplrc_tcp_xfer_send(dst_ip, dst_port, UPLRC_XFER_TCP_COLLECTOR_INGEST, meta, buf.data(),
                                                   chunk_len);
           const auto t_tcp1 = std::chrono::steady_clock::now();
           const double tcp_ms = std::chrono::duration<double, std::milli>(t_tcp1 - t_tcp0).count();
@@ -1555,16 +1555,16 @@ namespace ECProject
           return stats;        }
 
         // ---------- N>1：收集器扇出校验增量（矩阵编码 / 退化为 XOR 缓冲） ----------
-        if (st.delta_payload_kind() == proxy_proto::CORD_DELTA_PARITY &&
-            (st.link_kind() == proxy_proto::CORD_TRANSFER_STAR_CENTER_TO_GLOBAL ||
-             st.link_kind() == proxy_proto::CORD_TRANSFER_STAR_CENTER_TO_LOCAL))
+        if (st.delta_payload_kind() == proxy_proto::UPLRC_DELTA_PARITY &&
+            (st.link_kind() == proxy_proto::UPLRC_TRANSFER_STAR_CENTER_TO_GLOBAL ||
+             st.link_kind() == proxy_proto::UPLRC_TRANSFER_STAR_CENTER_TO_LOCAL))
         {
           const auto t_compute0 = std::chrono::steady_clock::now();
           std::vector<char> buf;
           {
             const std::string buf_ctx = "step=" + std::to_string(st.step_index()) + " PARITY_FANOUT chunk_len=" +
                                         std::to_string(chunk_len);
-            if (!cord_xfer_safe_resize(buf, chunk_len, "step_parity_fanout_buf", buf_ctx))
+            if (!uplrc_xfer_safe_resize(buf, chunk_len, "step_parity_fanout_buf", buf_ctx))
             {
               plan_log_both_sync("FAIL PARITY_FANOUT buf_alloc step=" + std::to_string(st.step_index()) +
                            " chunk_len=" + std::to_string(chunk_len));
@@ -1574,7 +1574,7 @@ namespace ECProject
           }
           bool filled = false;
           std::string parity_compute_src;
-          const int parity_payload_abs_lo = cord_plan_parity_payload_abs_lo(plan, st);
+          const int parity_payload_abs_lo = uplrc_plan_parity_payload_abs_lo(plan, st);
           int32_t non_matrix_slice_base = static_cast<int32_t>(
               static_cast<int64_t>(parity_payload_abs_lo) + static_cast<int64_t>(st.chunk_byte_offset()));
           const int parity_ingest =
@@ -1582,13 +1582,13 @@ namespace ECProject
           if (parity_ingest >= 0)
           {
             std::string append_key;
-            if (cord_lookup_ingress_append_key(plan, self_cluster_id, &append_key))
+            if (uplrc_lookup_ingress_append_key(plan, self_cluster_id, &append_key))
             {
-              const std::string ck = cord_ingress_lp_cache_key(append_key, parity_ingest);
-              if (!cord_ingress_lp_cache_ready_locked(append_key, parity_ingest, st.chunk_byte_offset(),
+              const std::string ck = uplrc_ingress_lp_cache_key(append_key, parity_ingest);
+              if (!uplrc_ingress_lp_cache_ready_locked(append_key, parity_ingest, st.chunk_byte_offset(),
                                                       chunk_len))
               {
-                if (!cord_spin_until_ingress_lp_cache_ready(append_key, parity_ingest, st.chunk_byte_offset(),
+                if (!uplrc_spin_until_ingress_lp_cache_ready(append_key, parity_ingest, st.chunk_byte_offset(),
                                                             chunk_len))
                 {
                   plan_log_both_sync("FAIL PARITY_FANOUT ingress_lp_cache_timeout key=" + ck + " step=" +
@@ -1597,9 +1597,9 @@ namespace ECProject
                   return stats;
                 }
               }
-              std::lock_guard<std::mutex> lk(g_cord_xfer_mu);
-              auto iit = g_cord_ingress_lp_cache.find(ck);
-              if (iit != g_cord_ingress_lp_cache.end() &&
+              std::lock_guard<std::mutex> lk(g_uplrc_xfer_mu);
+              auto iit = g_uplrc_ingress_lp_cache.find(ck);
+              if (iit != g_uplrc_ingress_lp_cache.end() &&
                   iit->second.size() >= static_cast<size_t>(st.chunk_byte_offset()) + chunk_len)
               {
                 std::memcpy(buf.data(), iit->second.data() + static_cast<size_t>(st.chunk_byte_offset()), chunk_len);
@@ -1615,16 +1615,16 @@ namespace ECProject
               return stats;
             }
           }
-          if (!filled && cord_uses_matrix_encode(plan))
+          if (!filled && uplrc_uses_matrix_encode(plan))
           {
-            if (!cord_ensure_collector_parity_coded(plan, st.group_index(), st.src_block_id(), parity_ingest))
+            if (!uplrc_ensure_collector_parity_coded(plan, st.group_index(), st.src_block_id(), parity_ingest))
             {
-              plan_log_both_sync("FAIL PARITY_FANOUT cord_ensure_collector_parity_coded_failed step=" +
+              plan_log_both_sync("FAIL PARITY_FANOUT uplrc_ensure_collector_parity_coded_failed step=" +
                            std::to_string(st.step_index()) + " collector_blk=" + std::to_string(st.src_block_id()));
               stats.failed = 1;
           return stats;            }
             const int row = st.dst_block_id() - plan.k_datablock();
-            const auto &meta = plan.cord_encode_meta();
+            const auto &meta = plan.uplrc_encode_meta();
             if (row < 0 || row >= meta.g_m() + meta.l())
             {
               plan_log_both_sync("FAIL PARITY_FANOUT bad_row dst_blk=" + std::to_string(st.dst_block_id()) +
@@ -1632,10 +1632,10 @@ namespace ECProject
               stats.failed = 1;
           return stats;            }
             const std::string pck =
-                cord_collector_parity_cache_key(plan.plan_key(), st.group_index(), st.src_block_id(), parity_ingest);
-            std::lock_guard<std::mutex> lk(g_cord_xfer_mu);
-            auto pit = g_cord_collector_parity_coded.find(pck);
-            if (pit == g_cord_collector_parity_coded.end() ||
+                uplrc_collector_parity_cache_key(plan.plan_key(), st.group_index(), st.src_block_id(), parity_ingest);
+            std::lock_guard<std::mutex> lk(g_uplrc_xfer_mu);
+            auto pit = g_uplrc_collector_parity_coded.find(pck);
+            if (pit == g_uplrc_collector_parity_coded.end() ||
                 static_cast<int>(pit->second.size()) <= row ||
                 pit->second[static_cast<size_t>(row)].size() <
                     static_cast<size_t>(st.chunk_byte_offset()) + chunk_len)
@@ -1652,9 +1652,9 @@ namespace ECProject
           {
             if (st.has_parity_ingest_stripe_group())
             {
-              if (!cord_uses_matrix_encode(plan))
+              if (!uplrc_uses_matrix_encode(plan))
               {
-                if (!cord_spin_until_collector_ingress_ready(plan, st.group_index(), st.src_block_id(),
+                if (!uplrc_spin_until_collector_ingress_ready(plan, st.group_index(), st.src_block_id(),
                                                              st.parity_ingest_stripe_group()))
                 {
                   plan_log_both_sync("FAIL PARITY_FANOUT filtered_xor ingress_timeout collector_blk=" +
@@ -1662,7 +1662,7 @@ namespace ECProject
                   stats.failed = 1;
           return stats;                }
               }
-              cord_filtered_xor_parity_chunk(plan, st.group_index(), st.src_block_id(),
+              uplrc_filtered_xor_parity_chunk(plan, st.group_index(), st.src_block_id(),
                                              st.parity_ingest_stripe_group(), st, st.chunk_byte_offset(), chunk_len,
                                              buf.data());
               filled = true;
@@ -1670,7 +1670,7 @@ namespace ECProject
             }
             else
             {
-              if (!cord_spin_until_collector_ingress_ready(plan, st.group_index(), st.src_block_id(), -1))
+              if (!uplrc_spin_until_collector_ingress_ready(plan, st.group_index(), st.src_block_id(), -1))
               {
                 plan_log_both_sync("FAIL PARITY_FANOUT collector_xor_acc ingress_timeout collector_blk=" +
                              std::to_string(st.src_block_id()) + " step=" + std::to_string(st.step_index()));
@@ -1678,11 +1678,11 @@ namespace ECProject
           return stats;              }
               const uint64_t acc_off =
                   static_cast<uint64_t>(parity_payload_abs_lo) + static_cast<uint64_t>(st.chunk_byte_offset());
-              std::lock_guard<std::mutex> lk(g_cord_xfer_mu);
+              std::lock_guard<std::mutex> lk(g_uplrc_xfer_mu);
               const std::string acc_key =
-                  cord_collector_acc_key(plan.plan_key(), st.group_index(), st.src_block_id());
-              auto it = g_cord_collector_xor_acc.find(acc_key);
-              if (it == g_cord_collector_xor_acc.end() || it->second.size() < static_cast<size_t>(acc_off) + chunk_len)
+                  uplrc_collector_acc_key(plan.plan_key(), st.group_index(), st.src_block_id());
+              auto it = g_uplrc_collector_xor_acc.find(acc_key);
+              if (it == g_uplrc_collector_xor_acc.end() || it->second.size() < static_cast<size_t>(acc_off) + chunk_len)
               {
                 plan_log_both_sync("FAIL PARITY_FANOUT collector_xor_acc_missing key=" + acc_key +
                              " step=" + std::to_string(st.step_index()));
@@ -1694,7 +1694,7 @@ namespace ECProject
           }
           std::string pbk, pip;
           int pp = 0;
-          if (!cord_lookup_block_placement(plan, st.dst_block_id(), &pbk, &pip, &pp))
+          if (!uplrc_lookup_block_placement(plan, st.dst_block_id(), &pbk, &pip, &pp))
           {
             plan_log_both_sync("FAIL PARITY_FANOUT block_placement_missing dst_blk=" + std::to_string(st.dst_block_id()) +
                          " step=" + std::to_string(st.step_index()));
@@ -1704,16 +1704,16 @@ namespace ECProject
           const double compute_ms = std::chrono::duration<double, std::milli>(t_compute1 - t_compute0).count();
 
           const int32_t slice_base =
-              cord_uses_matrix_encode(plan)
-                  ? static_cast<int32_t>(plan.cord_encode_meta().parity_slice_offset() + st.chunk_byte_offset())
+              uplrc_uses_matrix_encode(plan)
+                  ? static_cast<int32_t>(plan.uplrc_encode_meta().parity_slice_offset() + st.chunk_byte_offset())
                   : non_matrix_slice_base;
-          const auto nz = cord_parity_delta_nonzero_span(buf.data(), chunk_len);
+          const auto nz = uplrc_parity_delta_nonzero_span(buf.data(), chunk_len);
           if (nz.second == 0)
           {
             plan_log_sync("SKIP zero_delta step=" + std::to_string(st.step_index())
                      + " slot=" + std::to_string(st.scheduled_slot()) + " link="
-                     + cord_transfer_link_kind_name(st.link_kind()) + " payload="
-                     + cord_plan_delta_kind_name(st.delta_payload_kind()) + " collector_blk=" + std::to_string(st.src_block_id())
+                     + uplrc_transfer_link_kind_name(st.link_kind()) + " payload="
+                     + uplrc_plan_delta_kind_name(st.delta_payload_kind()) + " collector_blk=" + std::to_string(st.src_block_id())
                      + " dst_blk=" + std::to_string(st.dst_block_id())
                      + " compute_src=" + parity_compute_src + " compute=" + std::to_string(compute_ms) + "ms");
             stats.skipped = 1;
@@ -1721,7 +1721,7 @@ namespace ECProject
           const int32_t slice_off = slice_base + static_cast<int32_t>(nz.first);
           const int32_t send_len = static_cast<int32_t>(nz.second);
           const auto t_tcp0 = std::chrono::steady_clock::now();
-          proxy_proto::CordPlanApplyParityXorReq req;
+          proxy_proto::UpLRCPlanApplyParityXorReq req;
           req.set_plan_key(plan.plan_key());
           req.set_dst_block_id(st.dst_block_id());
           req.set_block_key(pbk);
@@ -1731,21 +1731,21 @@ namespace ECProject
           req.set_parity_slice_length(send_len);
           std::string meta;
           req.SerializeToString(&meta);
-          const bool ok_xfer = cord_tcp_xfer_send(dst_ip, dst_port, CORD_XFER_TCP_PARITY_XOR, meta,
+          const bool ok_xfer = uplrc_tcp_xfer_send(dst_ip, dst_port, UPLRC_XFER_TCP_PARITY_XOR, meta,
                                                   buf.data() + nz.first, static_cast<size_t>(send_len));
           const auto t_tcp1 = std::chrono::steady_clock::now();
           const double tcp_ms = std::chrono::duration<double, std::milli>(t_tcp1 - t_tcp0).count();
           const bool ok = ok_xfer;
           const double step_ms = std::chrono::duration<double, std::milli>(t_tcp1 - t_step0).count();
           {
-            const char *tag = (st.link_kind() == proxy_proto::CORD_TRANSFER_STAR_CENTER_TO_GLOBAL)
+            const char *tag = (st.link_kind() == proxy_proto::UPLRC_TRANSFER_STAR_CENTER_TO_GLOBAL)
                                   ? "CTR_TO_GLOBAL" : "CTR_TO_LOCAL";
             std::ostringstream ob;
             ob << (ok ? "OK" : "FAIL")
                << " " << tag << " step=" << st.step_index()
                << " slot=" << st.scheduled_slot()
                << " ΔP collector_blk" << st.src_block_id() << "(c" << st.src_proxy_cluster_id()
-               << ") → " << (st.link_kind() == proxy_proto::CORD_TRANSFER_STAR_CENTER_TO_GLOBAL ? "global_blk" : "local_blk")
+               << ") → " << (st.link_kind() == proxy_proto::UPLRC_TRANSFER_STAR_CENTER_TO_GLOBAL ? "global_blk" : "local_blk")
                << st.dst_block_id() << "(c" << st.dst_proxy_cluster_id() << ")"
                << " chunk=[" << st.chunk_byte_offset() << "+" << chunk_len
                << "B→wire[" << slice_off << "+" << send_len << "B]]"
@@ -1761,8 +1761,8 @@ namespace ECProject
           return stats;        }
 
         // ---------- class3 并发：data 机架 → local parity（ingress 预缓存 ΔP） ----------
-        if (st.link_kind() == proxy_proto::CORD_TRANSFER_STAR_DATA_TO_LOCAL &&
-            st.delta_payload_kind() == proxy_proto::CORD_DELTA_PARITY)
+        if (st.link_kind() == proxy_proto::UPLRC_TRANSFER_STAR_DATA_TO_LOCAL &&
+            st.delta_payload_kind() == proxy_proto::UPLRC_DELTA_PARITY)
         {
           const int pig =
               st.has_parity_ingest_stripe_group() ? st.parity_ingest_stripe_group() : -1;
@@ -1773,27 +1773,27 @@ namespace ECProject
             return stats;
           }
           std::string append_key;
-          if (!cord_lookup_ingress_append_key(plan, self_cluster_id, &append_key))
+          if (!uplrc_lookup_ingress_append_key(plan, self_cluster_id, &append_key))
           {
             plan_log_both_sync("FAIL STAR_DATA_TO_LOCAL no append_key cluster=c" + std::to_string(self_cluster_id));
             stats.failed = 1;
             return stats;
           }
-          const std::string ck = cord_ingress_lp_cache_key(append_key, pig);
+          const std::string ck = uplrc_ingress_lp_cache_key(append_key, pig);
           std::vector<char> buf;
           {
             const std::string buf_ctx = "step=" + std::to_string(st.step_index()) + " STAR_DATA_TO_LOCAL chunk_len=" +
                                         std::to_string(chunk_len);
-            if (!cord_xfer_safe_resize(buf, chunk_len, "step_data_to_local_buf", buf_ctx))
+            if (!uplrc_xfer_safe_resize(buf, chunk_len, "step_data_to_local_buf", buf_ctx))
             {
               stats.failed = 1;
               return stats;
             }
           }
           {
-            std::lock_guard<std::mutex> lk(g_cord_xfer_mu);
-            auto cit = g_cord_ingress_lp_cache.find(ck);
-            if (cit == g_cord_ingress_lp_cache.end() ||
+            std::lock_guard<std::mutex> lk(g_uplrc_xfer_mu);
+            auto cit = g_uplrc_ingress_lp_cache.find(ck);
+            if (cit == g_uplrc_ingress_lp_cache.end() ||
                 cit->second.size() < static_cast<size_t>(st.chunk_byte_offset()) + chunk_len)
             {
               plan_log_both_sync("FAIL STAR_DATA_TO_LOCAL cache_missing key=" + ck + " step=" +
@@ -1805,18 +1805,18 @@ namespace ECProject
           }
           std::string pbk, pip;
           int pp = 0;
-          if (!cord_lookup_block_placement(plan, st.dst_block_id(), &pbk, &pip, &pp))
+          if (!uplrc_lookup_block_placement(plan, st.dst_block_id(), &pbk, &pip, &pp))
           {
             stats.failed = 1;
             return stats;
           }
-          const auto nz = cord_parity_delta_nonzero_span(buf.data(), chunk_len);
+          const auto nz = uplrc_parity_delta_nonzero_span(buf.data(), chunk_len);
           if (nz.second == 0)
           {
             stats.skipped = 1;
             return stats;
           }
-          proxy_proto::CordPlanApplyParityXorReq req;
+          proxy_proto::UpLRCPlanApplyParityXorReq req;
           req.set_plan_key(plan.plan_key());
           req.set_dst_block_id(st.dst_block_id());
           req.set_block_key(pbk);
@@ -1827,7 +1827,7 @@ namespace ECProject
           std::string meta;
           req.SerializeToString(&meta);
           const bool ok =
-              cord_tcp_xfer_send(dst_ip, dst_port, CORD_XFER_TCP_PARITY_XOR, meta, buf.data() + nz.first,
+              uplrc_tcp_xfer_send(dst_ip, dst_port, UPLRC_XFER_TCP_PARITY_XOR, meta, buf.data() + nz.first,
                                  static_cast<size_t>(nz.second));
           if (ok)
             stats.executed = 1;
@@ -1837,13 +1837,13 @@ namespace ECProject
         }
 
         // ---------- N=1：MST 上全程传输数据增量 ----------
-        if (st.link_kind() == proxy_proto::CORD_TRANSFER_MST_FORWARD)
+        if (st.link_kind() == proxy_proto::UPLRC_TRANSFER_MST_FORWARD)
         {
           std::vector<char> buf;
           {
             const std::string buf_ctx =
                 "step=" + std::to_string(st.step_index()) + " MST_FORWARD chunk_len=" + std::to_string(chunk_len);
-            if (!cord_xfer_safe_resize(buf, chunk_len, "step_mst_forward_buf", buf_ctx))
+            if (!uplrc_xfer_safe_resize(buf, chunk_len, "step_mst_forward_buf", buf_ctx))
             {
               plan_log_both_sync("FAIL MST_FORWARD buf_alloc step=" + std::to_string(st.step_index()) +
                            " chunk_len=" + std::to_string(chunk_len));
@@ -1857,21 +1857,21 @@ namespace ECProject
           {
             std::string blob_key, dn_ip;
             int dn_port = 0;
-            if (!cord_lookup_delta_blob(plan, self_cluster_id, &blob_key, &dn_ip, &dn_port))
+            if (!uplrc_lookup_delta_blob(plan, self_cluster_id, &blob_key, &dn_ip, &dn_port))
             {
               plan_log_both_sync("FAIL MST_FORWARD no_delta_blob step=" + std::to_string(st.step_index()) +
                            " cluster=c" + std::to_string(self_cluster_id));
               stats.failed = 1;
           return stats;            }
             uint64_t base_off = 0, blk_tot = 0;
-            if (!cord_lookup_cluster_delta_layout(plan, self_cluster_id, st.src_block_id(), &base_off, &blk_tot))
+            if (!uplrc_lookup_cluster_delta_layout(plan, self_cluster_id, st.src_block_id(), &base_off, &blk_tot))
             {
               plan_log_both_sync("FAIL MST_FORWARD no_delta_layout step=" + std::to_string(st.step_index()));
               stats.failed = 1;
           return stats;            }
             const auto t_read0 = std::chrono::steady_clock::now();
             const uint64_t abs_off = base_off + st.chunk_byte_offset();
-            if (!proxy->CordRangeReadFromDatanode(blob_key, 0, static_cast<int>(abs_off), buf.data(), chunk_len,
+            if (!proxy->UpLRCRangeReadFromDatanode(blob_key, 0, static_cast<int>(abs_off), buf.data(), chunk_len,
                                                   dn_ip.c_str(), dn_port))
             {
               plan_log_both_sync("FAIL MST_FORWARD datanode_read_failed step=" + std::to_string(st.step_index()));
@@ -1886,28 +1886,28 @@ namespace ECProject
             const uint64_t relay_off = st.chunk_byte_offset();
             const int origin_blk =
                 st.has_mst_origin_data_block_id() ? st.mst_origin_data_block_id() : st.src_block_id();
-            const std::string stream_key = cord_mst_stream_key(plan.plan_key(), origin_blk);
-            if (!cord_spin_until_mst_relay_ready(stream_key, relay_off, chunk_len))
+            const std::string stream_key = uplrc_mst_stream_key(plan.plan_key(), origin_blk);
+            if (!uplrc_spin_until_mst_relay_ready(stream_key, relay_off, chunk_len))
             {
               plan_log_both_sync("FAIL MST_FORWARD relay_buffer_timeout step=" + std::to_string(st.step_index()) +
                            " off=" + std::to_string(relay_off) + " len=" + std::to_string(chunk_len));
               stats.failed = 1;
           return stats;            }
-            std::lock_guard<std::mutex> lk(g_cord_xfer_mu);
-            auto it = g_cord_mst_stream.find(stream_key);
+            std::lock_guard<std::mutex> lk(g_uplrc_xfer_mu);
+            auto it = g_uplrc_mst_stream.find(stream_key);
             std::memcpy(buf.data(), it->second.data() + static_cast<size_t>(relay_off), chunk_len);
             mst_buf_src = "relay_buffer";
           }
           std::string pbk, pip;
           int pp = 0;
-          if (!cord_lookup_block_placement(plan, st.dst_block_id(), &pbk, &pip, &pp))
+          if (!uplrc_lookup_block_placement(plan, st.dst_block_id(), &pbk, &pip, &pp))
           {
             plan_log_both_sync("FAIL MST_FORWARD block_placement_missing dst_blk=" + std::to_string(st.dst_block_id()) +
                          " step=" + std::to_string(st.step_index()));
             stats.failed = 1;
           return stats;          }
           const auto t_tcp0 = std::chrono::steady_clock::now();
-          proxy_proto::CordPlanMstDataDeltaReq req;
+          proxy_proto::UpLRCPlanMstDataDeltaReq req;
           req.set_plan_key(plan.plan_key());
           req.set_dst_proxy_cluster_id(st.dst_proxy_cluster_id());
           req.set_dst_block_id(st.dst_block_id());
@@ -1922,7 +1922,7 @@ namespace ECProject
           std::string meta;
           req.SerializeToString(&meta);
           const bool ok_xfer =
-              cord_tcp_xfer_send(dst_ip, dst_port, CORD_XFER_TCP_MST_CHUNK, meta, buf.data(), chunk_len);
+              uplrc_tcp_xfer_send(dst_ip, dst_port, UPLRC_XFER_TCP_MST_CHUNK, meta, buf.data(), chunk_len);
           const auto t_tcp1 = std::chrono::steady_clock::now();
           const double tcp_ms = std::chrono::duration<double, std::milli>(t_tcp1 - t_tcp0).count();
           const bool ok = ok_xfer;
@@ -1949,8 +1949,8 @@ namespace ECProject
           return stats;        }
 
         plan_log_both_sync("SKIP unhandled_link step=" + std::to_string(st.step_index()) + " link=" +
-                     cord_transfer_link_kind_name(st.link_kind()) + " payload=" +
-                     cord_plan_delta_kind_name(st.delta_payload_kind()));
+                     uplrc_transfer_link_kind_name(st.link_kind()) + " payload=" +
+                     uplrc_plan_delta_kind_name(st.delta_payload_kind()));
         stats.skipped = 1;
         return stats;
       };
@@ -1972,7 +1972,7 @@ namespace ECProject
         }
       }
 
-      auto merge_step_stats = [&](const CordStepRunStats &s) {
+      auto merge_step_stats = [&](const UpLRCStepRunStats &s) {
         executed_steps += s.executed;
         skipped_steps += s.skipped;
         failed_steps += s.failed;
@@ -1984,16 +1984,16 @@ namespace ECProject
         if (!parallel || indices.size() == 1u)
         {
           for (int si : indices)
-            merge_step_stats(cord_run_one_local_step(si));
+            merge_step_stats(uplrc_run_one_local_step(si));
           return;
         }
         std::vector<std::thread> workers;
-        std::vector<CordStepRunStats> results(indices.size());
+        std::vector<UpLRCStepRunStats> results(indices.size());
         workers.reserve(indices.size());
         for (size_t wi = 0; wi < indices.size(); ++wi)
         {
           const int si = indices[static_cast<size_t>(wi)];
-          workers.emplace_back([&, wi, si]() { results[wi] = cord_run_one_local_step(si); });
+          workers.emplace_back([&, wi, si]() { results[wi] = uplrc_run_one_local_step(si); });
         }
         for (auto &th : workers)
           th.join();
@@ -2010,7 +2010,7 @@ namespace ECProject
           const auto &st = plan.steps(si);
           // STAR_CENTER_TO_GLOBAL 不再整体串行：parity 落盘已由按物理块的 RMW 锁保证不丢更新，
           // 写不同物理块的步骤可并行，仅写同块时由块锁串行。
-          if (st.link_kind() == proxy_proto::CORD_TRANSFER_MST_FORWARD && st.src_block_id() >= k)
+          if (st.link_kind() == proxy_proto::UPLRC_TRANSFER_MST_FORWARD && st.src_block_id() >= k)
             serial_steps.push_back(si);
           else
             parallel_steps.push_back(si);
@@ -2028,11 +2028,11 @@ namespace ECProject
 
       const auto sender_loop_done = std::chrono::steady_clock::now();
       const auto sender_wall_done = std::chrono::system_clock::now();
-      cord_pure_xfer_log_after_sender_loop(plan.plan_key(), proxy_tag, sender_loop_done, sender_wall_done);
-      cord_xfer_cleanup_xfer_plan(plan.plan_key());
+      uplrc_pure_xfer_log_after_sender_loop(plan.plan_key(), proxy_tag, sender_loop_done, sender_wall_done);
+      uplrc_xfer_cleanup_xfer_plan(plan.plan_key());
       const auto wall_t1 = std::chrono::steady_clock::now();
       const double wall_sec = std::chrono::duration<double>(wall_t1 - wall_t0).count();
-      plan_log_both("══════ CordTransferPlan EXECUTION DONE ══════");
+      plan_log_both("══════ UpLRCTransferPlan EXECUTION DONE ══════");
       plan_log_both("plan_key=" + plan.plan_key()
                     + " wall_sec=" + std::to_string(wall_sec)
                     + " executed=" + std::to_string(executed_steps)
@@ -2043,31 +2043,31 @@ namespace ECProject
         log_ofs.close();
   }
 
-  void ProxyImpl::start_cord_xfer_tcp_acceptor()
+  void ProxyImpl::start_uplrc_xfer_tcp_acceptor()
   {
-    const int xfer_port = cord_peer_xfer_tcp_port(m_port);
-    if (cord_trace_log(IF_DEBUG))
-      std::cout << "[CoRD-PLAN][" << proxy_ip_port << "] cord xfer TCP acceptor listening port=" << xfer_port << '\n';
+    const int xfer_port = uplrc_peer_xfer_tcp_port(m_port);
+    if (uplrc_trace_log(IF_DEBUG))
+      std::cout << "[UpLRC-PLAN][" << proxy_ip_port << "] uplrc xfer TCP acceptor listening port=" << xfer_port << '\n';
     std::thread([this]() {
       for (;;)
       {
         try
         {
           asio::ip::tcp::socket sock(this->io_context);
-          this->m_cord_xfer_acceptor.accept(sock);
+          this->m_uplrc_xfer_acceptor.accept(sock);
           std::thread([this, s = std::move(sock)]() mutable {
-            this->cord_handle_xfer_tcp_connection(std::move(s));
+            this->uplrc_handle_xfer_tcp_connection(std::move(s));
           }).detach();
         }
         catch (const std::exception &e)
         {
-          std::cerr << "[CoRD-PLAN][" << this->proxy_ip_port << "] cord xfer accept error: " << e.what() << std::endl;
+          std::cerr << "[UpLRC-PLAN][" << this->proxy_ip_port << "] uplrc xfer accept error: " << e.what() << std::endl;
         }
       }
     }).detach();
   }
 
-  void ProxyImpl::cord_handle_xfer_tcp_connection(asio::ip::tcp::socket socket)
+  void ProxyImpl::uplrc_handle_xfer_tcp_connection(asio::ip::tcp::socket socket)
   {
     uint8_t ack = 1;
     try
@@ -2079,9 +2079,9 @@ namespace ECProject
         asio::write(socket, asio::buffer(&ack, 1));
         return;
       }
-      const uint64_t xfer_tag = cord_read_u64_be(socket);
-      const uint32_t kind = cord_read_u32_be(socket);
-      const uint32_t meta_len = cord_read_u32_be(socket);
+      const uint64_t xfer_tag = uplrc_read_u64_be(socket);
+      const uint32_t kind = uplrc_read_u32_be(socket);
+      const uint32_t meta_len = uplrc_read_u32_be(socket);
       constexpr uint32_t kMaxMeta = 4u * 1024u * 1024u;
       if (meta_len > kMaxMeta)
       {
@@ -2094,7 +2094,7 @@ namespace ECProject
         meta.resize(meta_len);
         asio::read(socket, asio::buffer(meta.data(), meta_len));
       }
-      const uint64_t payload_len = cord_read_u64_be(socket);
+      const uint64_t payload_len = uplrc_read_u64_be(socket);
       constexpr uint64_t kMaxPayload = 256ull * 1024ull * 1024ull;
       if (payload_len > kMaxPayload)
       {
@@ -2107,7 +2107,7 @@ namespace ECProject
         const std::string ctx = "xfer_tag=" + std::to_string(xfer_tag) + " kind=" + std::to_string(kind) +
                                 " meta_len=" + std::to_string(meta_len) + " payload_len=" +
                                 std::to_string(payload_len);
-        if (!cord_xfer_safe_resize(payload, static_cast<size_t>(payload_len), "crdx_tcp_payload", ctx))
+        if (!uplrc_xfer_safe_resize(payload, static_cast<size_t>(payload_len), "crdx_tcp_payload", ctx))
         {
           asio::write(socket, asio::buffer(&ack, 1));
           return;
@@ -2117,25 +2117,25 @@ namespace ECProject
       bool ok = false;
       switch (kind)
       {
-      case CORD_XFER_TCP_COLLECTOR_INGEST:
+      case UPLRC_XFER_TCP_COLLECTOR_INGEST:
       {
-        proxy_proto::CordPlanCollectorIngestReq req;
+        proxy_proto::UpLRCPlanCollectorIngestReq req;
         if (req.ParseFromString(meta))
-          ok = cord_apply_collector_ingest(this, req, payload.data(), payload.size());
+          ok = uplrc_apply_collector_ingest(this, req, payload.data(), payload.size());
         break;
       }
-      case CORD_XFER_TCP_PARITY_XOR:
+      case UPLRC_XFER_TCP_PARITY_XOR:
       {
-        proxy_proto::CordPlanApplyParityXorReq req;
+        proxy_proto::UpLRCPlanApplyParityXorReq req;
         if (req.ParseFromString(meta))
-          ok = cord_apply_parity_xor_delta(this, req, payload.data(), payload.size());
+          ok = uplrc_apply_parity_xor_delta(this, req, payload.data(), payload.size());
         break;
       }
-      case CORD_XFER_TCP_MST_CHUNK:
+      case UPLRC_XFER_TCP_MST_CHUNK:
       {
-        proxy_proto::CordPlanMstDataDeltaReq req;
+        proxy_proto::UpLRCPlanMstDataDeltaReq req;
         if (req.ParseFromString(meta))
-          ok = cord_apply_mst_data_delta(this, req, payload.data(), payload.size());
+          ok = uplrc_apply_mst_data_delta(this, req, payload.data(), payload.size());
         break;
       }
       default:
@@ -2147,7 +2147,7 @@ namespace ECProject
     }
     catch (const std::bad_alloc &e)
     {
-      std::cerr << "[CoRD-PLAN][BAD_ALLOC] cord_handle_xfer_tcp_connection err=" << e.what() << std::endl;
+      std::cerr << "[UpLRC-PLAN][BAD_ALLOC] uplrc_handle_xfer_tcp_connection err=" << e.what() << std::endl;
       try
       {
         ack = 1;
@@ -2248,7 +2248,7 @@ namespace ECProject
                                      proxy_proto::RequestResult *response)
   {
 
-    if (cord_trace_log(IF_DEBUG))
+    if (uplrc_trace_log(IF_DEBUG))
       std::cout << "[Proxy] checkalive" << request->name() << std::endl;
     response->set_message(false);
     init_coordinator();
@@ -2317,11 +2317,11 @@ namespace ECProject
       asio::ip::tcp::resolver resolver(io_context);
       asio::error_code con_error;
       asio::connect(socket, resolver.resolve({std::string(ip), std::to_string(port + ECProject::DATANODE_PORT_SHIFT)}), con_error);
-      if (!con_error && cord_trace_log(IF_DEBUG))
+      if (!con_error && uplrc_trace_log(IF_DEBUG))
       {
         std::cout << "Connect to " << ip << ":" << port + ECProject::DATANODE_PORT_SHIFT << " success! block_key: " << block_key << " block_id: " << block_id << " slice_size: " << slice_size << " slice_offset: " << slice_offset << " is_serialized: " << is_serialized << std::endl;
       }
-      else if (cord_trace_log(IF_DEBUG))
+      else if (uplrc_trace_log(IF_DEBUG))
       {
         std::cout << "Connect to " << ip << ":" << port + ECProject::DATANODE_PORT_SHIFT << " failed! block_key: " << block_key << " block_id: " << block_id << " slice_size: " << slice_size << " slice_offset: " << slice_offset << " is_serialized: " << is_serialized << std::endl;
         exit(-1);
@@ -2331,7 +2331,7 @@ namespace ECProject
       socket.shutdown(asio::ip::tcp::socket::shutdown_both, ignore_ec);
       socket.close(ignore_ec);
       notify_datanode_thread.join();
-      if (cord_trace_log(IF_DEBUG))
+      if (uplrc_trace_log(IF_DEBUG))
       {
         std::cout << "[Proxy" << m_self_cluster_id << "][Append139]"
                   << "Append to " << block_key << " with length of " << slice_size << std::endl;
@@ -2372,7 +2372,7 @@ namespace ECProject
       asio::ip::tcp::resolver resolver(io_context);
       asio::error_code con_error;
       asio::connect(socket, resolver.resolve({std::string(ip), std::to_string(port + ECProject::DATANODE_PORT_SHIFT)}), con_error);
-      if (!con_error && cord_trace_log(IF_DEBUG))
+      if (!con_error && uplrc_trace_log(IF_DEBUG))
       {
         std::cout << "[RecoveryToDatanode] Connect to " << ip << ":" << port + ECProject::DATANODE_PORT_SHIFT << " success! block_key: " << block_key << " block_id: " << block_id << std::endl;
       }
@@ -2424,7 +2424,7 @@ namespace ECProject
       asio::error_code con_error;
       asio::connect(socket, resolver.resolve({std::string(ip), std::to_string(port + ECProject::DATANODE_PORT_SHIFT)}), con_error);
       std::chrono::high_resolution_clock::time_point begin = std::chrono::high_resolution_clock::now(); // start time for network
-      if (!con_error && cord_trace_log(IF_DEBUG))
+      if (!con_error && uplrc_trace_log(IF_DEBUG))
       {
         std::cout << "[RecoveryToDatanode] Connect to " << ip << ":" << port + ECProject::DATANODE_PORT_SHIFT << " success! block_key: " << block_key << " block_id: " << block_id << std::endl;
       }
@@ -2473,7 +2473,7 @@ namespace ECProject
       asio::ip::tcp::resolver resolver(io_context);
       asio::error_code con_error;
       asio::connect(socket, resolver.resolve({std::string(ip), std::to_string(port + ECProject::DATANODE_PORT_SHIFT)}), con_error);
-      if (!con_error && cord_trace_log(IF_DEBUG))
+      if (!con_error && uplrc_trace_log(IF_DEBUG))
       {
         std::cout << "Connect to " << ip << ":" << port + ECProject::DATANODE_PORT_SHIFT << " success!" << std::endl;
       }
@@ -2483,7 +2483,7 @@ namespace ECProject
       asio::error_code ignore_ec;
       socket.shutdown(asio::ip::tcp::socket::shutdown_both, ignore_ec);
       socket.close(ignore_ec);
-      if (cord_trace_log(IF_DEBUG))
+      if (uplrc_trace_log(IF_DEBUG))
       {
         std::cout << "[Proxy" << m_self_cluster_id << "][SET]"
                   << "Write " << key << " to socket finish! With length of " << strlen(value) << std::endl;
@@ -2502,7 +2502,7 @@ namespace ECProject
     try
     {
 
-      if (cord_trace_log(IF_DEBUG))
+      if (uplrc_trace_log(IF_DEBUG))
       {
         std::cout << "[Proxy" << m_self_cluster_id << "][GET]"
                   << " Ready to recieve data from datanode " << std::endl;
@@ -2519,12 +2519,12 @@ namespace ECProject
       std::string node_ip_port = std::string(ip) + ":" + std::to_string(port);
       std::chrono::high_resolution_clock::time_point grpc_notify = std::chrono::high_resolution_clock::now();
       grpc::Status stat = m_datanode_ptrs[node_ip_port]->handleGetBreakdown(&context, get_info, &result);
-      if (stat.ok() && cord_trace_log(IF_DEBUG))
+      if (stat.ok() && uplrc_trace_log(IF_DEBUG))
       {
         std::cout << "[Proxy" << m_self_cluster_id << "][GET]"
                   << " Call datanode to handle get " << key << std::endl;
       }
-      else if (cord_trace_log(IF_DEBUG))
+      else if (uplrc_trace_log(IF_DEBUG))
       {
         std::cout << "[Proxy" << m_self_cluster_id << "][GET]"
                   << " Call datanode to handle get " << key << " failed!" << std::endl;
@@ -2549,7 +2549,7 @@ namespace ECProject
       std::chrono::high_resolution_clock::time_point end = std::chrono::high_resolution_clock::now(); // end time for network
       *network_start_time = std::chrono::duration_cast<std::chrono::duration<double>>(begin.time_since_epoch()).count();
       *network_end_time = std::chrono::duration_cast<std::chrono::duration<double>>(end.time_since_epoch()).count();
-      if (cord_trace_log(IF_DEBUG))
+      if (uplrc_trace_log(IF_DEBUG))
       {
         std::cout << "[Proxy" << m_self_cluster_id << "][GET]"
                   << " Read data from socket with length of " << value_length << std::endl;
@@ -2568,7 +2568,7 @@ namespace ECProject
     {
       // ready to recieve
       char *buf = new char[value_length];
-      if (cord_trace_log(IF_DEBUG))
+      if (uplrc_trace_log(IF_DEBUG))
       {
         std::cout << "[Proxy" << m_self_cluster_id << "][GET]"
                   << " Ready to recieve data from datanode " << std::endl;
@@ -2583,7 +2583,7 @@ namespace ECProject
       get_info.set_proxy_port(m_port + offset);
       std::string node_ip_port = std::string(ip) + ":" + std::to_string(port);
       grpc::Status stat = m_datanode_ptrs[node_ip_port]->handleGet(&context, get_info, &result);
-      if (cord_trace_log(IF_DEBUG))
+      if (uplrc_trace_log(IF_DEBUG))
       {
         std::cout << "[Proxy" << m_self_cluster_id << "][GET]"
                   << " Call datanode to handle get " << key << std::endl;
@@ -2598,7 +2598,7 @@ namespace ECProject
       asio::error_code ignore_ec;
       socket.shutdown(asio::ip::tcp::socket::shutdown_both, ignore_ec);
       socket.close(ignore_ec);
-      if (cord_trace_log(IF_DEBUG))
+      if (uplrc_trace_log(IF_DEBUG))
       {
         std::cout << "[Proxy" << m_self_cluster_id << "][GET]"
                   << " Read data from socket with length of " << value_length << std::endl;
@@ -2619,7 +2619,7 @@ namespace ECProject
     try
     {
 
-      if (cord_trace_log(IF_DEBUG))
+      if (uplrc_trace_log(IF_DEBUG))
       {
         std::cout << "[Proxy" << m_self_cluster_id << "][GET]"
                   << " Ready to recieve data from datanode " << std::endl;
@@ -2635,12 +2635,12 @@ namespace ECProject
       get_info.set_proxy_port(m_port);
       std::string node_ip_port = std::string(ip) + ":" + std::to_string(port);
       grpc::Status stat = m_datanode_ptrs[node_ip_port]->handleGet(&context, get_info, &result);
-      if (stat.ok() && cord_trace_log(IF_DEBUG))
+      if (stat.ok() && uplrc_trace_log(IF_DEBUG))
       {
         std::cout << "[Proxy" << m_self_cluster_id << "][GET]"
                   << " Call datanode to handle get " << key << std::endl;
       }
-      else if (cord_trace_log(IF_DEBUG))
+      else if (uplrc_trace_log(IF_DEBUG))
       {
         std::cout << "[Proxy" << m_self_cluster_id << "][GET]"
                   << " Call datanode to handle get " << key << " failed!" << std::endl;
@@ -2656,7 +2656,7 @@ namespace ECProject
       asio::error_code ignore_ec;
       socket.shutdown(asio::ip::tcp::socket::shutdown_both, ignore_ec);
       socket.close(ignore_ec);
-      if (cord_trace_log(IF_DEBUG))
+      if (uplrc_trace_log(IF_DEBUG))
       {
         std::cout << "[Proxy" << m_self_cluster_id << "][GET]"
                   << " Read data from socket with length of " << value_length << std::endl;
@@ -2679,7 +2679,7 @@ namespace ECProject
       datanode_proto::RequestResult response;
       delinfo.set_block_key(key);
       grpc::Status status = m_datanode_ptrs[node_ip_port]->handleDelete(&context, delinfo, &response);
-      if (status.ok() && cord_trace_log(IF_DEBUG))
+      if (status.ok() && uplrc_trace_log(IF_DEBUG))
       {
         std::cout << "[Proxy" << m_self_cluster_id << "][DEL] delete block " << key << " success!" << std::endl;
       }
@@ -2727,13 +2727,13 @@ namespace ECProject
   }
 
 
-  bool ProxyImpl::CordRangeReadFromDatanode(const std::string &block_key, int block_id, int range_offset, char *out,
+  bool ProxyImpl::UpLRCRangeReadFromDatanode(const std::string &block_key, int block_id, int range_offset, char *out,
                                             size_t length, const char *ip, int port)
   {
     try
     {
       grpc::ClientContext context;
-      datanode_proto::CordRangeRWInfo info;
+      datanode_proto::UpLRCRangeRWInfo info;
       datanode_proto::RequestResult result;
       info.set_block_key(block_key);
       info.set_block_id(block_id);
@@ -2742,18 +2742,18 @@ namespace ECProject
       info.set_proxy_ip(m_ip);
       info.set_proxy_port(m_port);
       std::string node_ip_port = std::string(ip) + ":" + std::to_string(port);
-      grpc::Status stat = m_datanode_ptrs[node_ip_port]->handleCordRangeRead(&context, info, &result);
+      grpc::Status stat = m_datanode_ptrs[node_ip_port]->handleUpLRCRangeRead(&context, info, &result);
       if (!stat.ok() || !result.message())
     return false;
-      const uint64_t xfer_tag = result.cord_tcp_xfer_tag();
+      const uint64_t xfer_tag = result.uplrc_tcp_xfer_tag();
       if (xfer_tag == 0)
         return false;
       asio::io_context io_context;
       asio::ip::tcp::resolver resolver(io_context);
       asio::ip::tcp::socket socket(io_context);
       asio::connect(socket, resolver.resolve({std::string(ip), std::to_string(port + ECProject::DATANODE_PORT_SHIFT)}));
-      cord_apply_datanode_tcp_timeout(socket, m_sys_config->CordRequestTimeoutSec);
-      cord_write_u64_be(socket, xfer_tag);
+      uplrc_apply_datanode_tcp_timeout(socket, m_sys_config->UpLRCRequestTimeoutSec);
+      uplrc_write_u64_be(socket, xfer_tag);
       asio::error_code ec;
       asio::read(socket, asio::buffer(out, length), ec);
       asio::error_code ignore_ec;
@@ -2768,13 +2768,13 @@ namespace ECProject
     }
   }
 
-  bool ProxyImpl::CordRangeWriteToDatanode(const std::string &block_key, int block_id, int range_offset, const char *data,
+  bool ProxyImpl::UpLRCRangeWriteToDatanode(const std::string &block_key, int block_id, int range_offset, const char *data,
                                            size_t length, const char *ip, int port)
   {
     try
     {
       grpc::ClientContext context;
-      datanode_proto::CordRangeRWInfo info;
+      datanode_proto::UpLRCRangeRWInfo info;
       datanode_proto::RequestResult result;
       info.set_block_key(block_key);
       info.set_block_id(block_id);
@@ -2783,18 +2783,18 @@ namespace ECProject
       info.set_proxy_ip(m_ip);
       info.set_proxy_port(m_port);
       std::string node_ip_port = std::string(ip) + ":" + std::to_string(port);
-      grpc::Status stat = m_datanode_ptrs[node_ip_port]->handleCordRangeWrite(&context, info, &result);
+      grpc::Status stat = m_datanode_ptrs[node_ip_port]->handleUpLRCRangeWrite(&context, info, &result);
       if (!stat.ok() || !result.message())
     return false;
-      const uint64_t xfer_tag = result.cord_tcp_xfer_tag();
+      const uint64_t xfer_tag = result.uplrc_tcp_xfer_tag();
       if (xfer_tag == 0)
         return false;
       asio::io_context io_context;
       asio::ip::tcp::resolver resolver(io_context);
       asio::ip::tcp::socket socket(io_context);
       asio::connect(socket, resolver.resolve({std::string(ip), std::to_string(port + ECProject::DATANODE_PORT_SHIFT)}));
-      cord_apply_datanode_tcp_timeout(socket, m_sys_config->CordRequestTimeoutSec);
-      cord_write_u64_be(socket, xfer_tag);
+      uplrc_apply_datanode_tcp_timeout(socket, m_sys_config->UpLRCRequestTimeoutSec);
+      uplrc_write_u64_be(socket, xfer_tag);
       asio::error_code error;
       asio::write(socket, asio::buffer(data, length), error);
       asio::error_code ignore_ec;
@@ -2810,13 +2810,13 @@ namespace ECProject
   }
 
   /** parity ΔP 下推：proxy 只发增量，datanode 本地完成 read-xor-write，省掉读回 proxy 的整条往返。 */
-  bool ProxyImpl::CordRangeXorWriteToDatanode(const std::string &block_key, int block_id, int range_offset,
+  bool ProxyImpl::UpLRCRangeXorWriteToDatanode(const std::string &block_key, int block_id, int range_offset,
                                               const char *delta, size_t length, const char *ip, int port)
   {
     try
     {
       grpc::ClientContext context;
-      datanode_proto::CordRangeRWInfo info;
+      datanode_proto::UpLRCRangeRWInfo info;
       datanode_proto::RequestResult result;
       info.set_block_key(block_key);
       info.set_block_id(block_id);
@@ -2825,18 +2825,18 @@ namespace ECProject
       info.set_proxy_ip(m_ip);
       info.set_proxy_port(m_port);
       std::string node_ip_port = std::string(ip) + ":" + std::to_string(port);
-      grpc::Status stat = m_datanode_ptrs[node_ip_port]->handleCordRangeXorWrite(&context, info, &result);
+      grpc::Status stat = m_datanode_ptrs[node_ip_port]->handleUpLRCRangeXorWrite(&context, info, &result);
       if (!stat.ok() || !result.message())
         return false;
-      const uint64_t xfer_tag = result.cord_tcp_xfer_tag();
+      const uint64_t xfer_tag = result.uplrc_tcp_xfer_tag();
       if (xfer_tag == 0)
         return false;
       asio::io_context io_context;
       asio::ip::tcp::resolver resolver(io_context);
       asio::ip::tcp::socket socket(io_context);
       asio::connect(socket, resolver.resolve({std::string(ip), std::to_string(port + ECProject::DATANODE_PORT_SHIFT)}));
-      cord_apply_datanode_tcp_timeout(socket, m_sys_config->CordRequestTimeoutSec);
-      cord_write_u64_be(socket, xfer_tag);
+      uplrc_apply_datanode_tcp_timeout(socket, m_sys_config->UpLRCRequestTimeoutSec);
+      uplrc_write_u64_be(socket, xfer_tag);
       asio::error_code error;
       asio::write(socket, asio::buffer(delta, length), error);
       asio::error_code ignore_ec;
@@ -2851,31 +2851,31 @@ namespace ECProject
     }
   }
 
-  bool ProxyImpl::CordDeltaBlobToDatanode(const std::string &blob_key, const char *data, size_t length, const char *ip,
+  bool ProxyImpl::UpLRCDeltaBlobToDatanode(const std::string &blob_key, const char *data, size_t length, const char *ip,
                                           int port)
   {
     try
     {
       grpc::ClientContext context;
-      datanode_proto::CordDeltaBlobInfo info;
+      datanode_proto::UpLRCDeltaBlobInfo info;
       datanode_proto::RequestResult result;
       info.set_blob_key(blob_key);
       info.set_byte_length(static_cast<int>(length));
       info.set_proxy_ip(m_ip);
       info.set_proxy_port(m_port);
       std::string node_ip_port = std::string(ip) + ":" + std::to_string(port);
-      grpc::Status stat = m_datanode_ptrs[node_ip_port]->handleCordDeltaBlob(&context, info, &result);
+      grpc::Status stat = m_datanode_ptrs[node_ip_port]->handleUpLRCDeltaBlob(&context, info, &result);
       if (!stat.ok() || !result.message())
     return false;
-      const uint64_t xfer_tag = result.cord_tcp_xfer_tag();
+      const uint64_t xfer_tag = result.uplrc_tcp_xfer_tag();
       if (xfer_tag == 0)
         return false;
       asio::io_context io_context;
       asio::ip::tcp::resolver resolver(io_context);
       asio::ip::tcp::socket socket(io_context);
       asio::connect(socket, resolver.resolve({std::string(ip), std::to_string(port + ECProject::DATANODE_PORT_SHIFT)}));
-      cord_apply_datanode_tcp_timeout(socket, m_sys_config->CordRequestTimeoutSec);
-      cord_write_u64_be(socket, xfer_tag);
+      uplrc_apply_datanode_tcp_timeout(socket, m_sys_config->UpLRCRequestTimeoutSec);
+      uplrc_write_u64_be(socket, xfer_tag);
       asio::error_code error;
       asio::write(socket, asio::buffer(data, length), error);
       asio::error_code ignore_ec;
@@ -2890,29 +2890,29 @@ namespace ECProject
     }
   }
 
-  static bool cord_xor_write_parity_range(ProxyImpl *proxy, const std::string &block_key, int block_id,
+  static bool uplrc_xor_write_parity_range(ProxyImpl *proxy, const std::string &block_key, int block_id,
                                           const std::string &dn_ip, int dn_port, int slice_off, const char *delta,
                                           size_t delta_len)
   {
     if (delta_len == 0)
       return true;
     // ΔP 下推 datanode 本地 read-xor-write（datanode 按文件串行保证原子）。
-    return proxy->CordRangeXorWriteToDatanode(block_key, block_id, slice_off, delta, delta_len, dn_ip.c_str(),
+    return proxy->UpLRCRangeXorWriteToDatanode(block_key, block_id, slice_off, delta, delta_len, dn_ip.c_str(),
                                               dn_port);
   }
 
-  static bool cord_ingress_apply_after_delta(
+  static bool uplrc_ingress_apply_after_delta(
       ProxyImpl *proxy,
-      const std::shared_ptr<proxy_proto::CordDataUpdatePlacement> &placement,
+      const std::shared_ptr<proxy_proto::UpLRCDataUpdatePlacement> &placement,
       const std::vector<char> &delta_concat,
       const std::vector<size_t> &sizes)
   {
     const int slice_num = placement->blockids_size();
     if (slice_num <= 0 || delta_concat.empty())
       return true;
-    if (placement->cord_ingress_local_parity_writes_size() == 0 &&
-        placement->cord_ingress_global_parity_writes_size() == 0 &&
-        placement->cord_ingress_cache_lp_stripe_groups_size() == 0)
+    if (placement->uplrc_ingress_local_parity_writes_size() == 0 &&
+        placement->uplrc_ingress_global_parity_writes_size() == 0 &&
+        placement->uplrc_ingress_cache_lp_stripe_groups_size() == 0)
       return true;
 
     const int k = proxy->m_sys_config->k;
@@ -2958,16 +2958,16 @@ namespace ECProject
 
     std::vector<std::vector<uint8_t>> coded;
     const ECProject::EncodeType et = Azure_LRC;
-    if (!cord_matrix_encode_strips(k, r, z, et, ps, strips, &coded))
+    if (!uplrc_matrix_encode_strips(k, r, z, et, ps, strips, &coded))
     {
-      cord_plan_log_out("[CoRD][Proxy] ingress matrix encode failed key=" + placement->key());
+      uplrc_plan_log_out("[UpLRC][Proxy] ingress matrix encode failed key=" + placement->key());
       return false;
     }
 
     std::set<int> written_globals;
-    for (int wi = 0; wi < placement->cord_ingress_global_parity_writes_size(); ++wi)
+    for (int wi = 0; wi < placement->uplrc_ingress_global_parity_writes_size(); ++wi)
     {
-      const auto &pw = placement->cord_ingress_global_parity_writes(wi);
+      const auto &pw = placement->uplrc_ingress_global_parity_writes(wi);
       const int bid = pw.block_id();
       if (bid < k || bid >= k + r)
         continue;
@@ -2977,22 +2977,22 @@ namespace ECProject
       if (row < 0 || row >= static_cast<int>(coded.size()))
         continue;
       const auto &pd = coded[static_cast<size_t>(row)];
-      const auto nz = cord_parity_delta_nonzero_span(reinterpret_cast<const char *>(pd.data()), pd.size());
+      const auto nz = uplrc_parity_delta_nonzero_span(reinterpret_cast<const char *>(pd.data()), pd.size());
       if (nz.second <= 0)
         continue;
-      if (!cord_xor_write_parity_range(proxy, pw.block_key(), bid, pw.datanode_ip(), pw.datanode_port(), po + nz.first,
+      if (!uplrc_xor_write_parity_range(proxy, pw.block_key(), bid, pw.datanode_ip(), pw.datanode_port(), po + nz.first,
                                        reinterpret_cast<const char *>(pd.data()) + nz.first,
                                        static_cast<size_t>(nz.second)))
       {
-        std::cout << "[CoRD][Proxy] ingress global parity write failed blk=" << bid << std::endl;
+        std::cout << "[UpLRC][Proxy] ingress global parity write failed blk=" << bid << std::endl;
         return false;
       }
     }
 
     std::set<int> written_locals;
-    for (int wi = 0; wi < placement->cord_ingress_local_parity_writes_size(); ++wi)
+    for (int wi = 0; wi < placement->uplrc_ingress_local_parity_writes_size(); ++wi)
     {
-      const auto &pw = placement->cord_ingress_local_parity_writes(wi);
+      const auto &pw = placement->uplrc_ingress_local_parity_writes(wi);
       const int bid = pw.block_id();
       if (bid < k + r)
         continue;
@@ -3002,14 +3002,14 @@ namespace ECProject
       if (row < 0 || row >= static_cast<int>(coded.size()))
         continue;
       const auto &pd = coded[static_cast<size_t>(row)];
-      const auto nz = cord_parity_delta_nonzero_span(reinterpret_cast<const char *>(pd.data()), pd.size());
+      const auto nz = uplrc_parity_delta_nonzero_span(reinterpret_cast<const char *>(pd.data()), pd.size());
       if (nz.second <= 0)
         continue;
-      if (!cord_xor_write_parity_range(proxy, pw.block_key(), bid, pw.datanode_ip(), pw.datanode_port(), po + nz.first,
+      if (!uplrc_xor_write_parity_range(proxy, pw.block_key(), bid, pw.datanode_ip(), pw.datanode_port(), po + nz.first,
                                        reinterpret_cast<const char *>(pd.data()) + nz.first,
                                        static_cast<size_t>(nz.second)))
       {
-        std::cout << "[CoRD][Proxy] ingress local parity write failed blk=" << bid << std::endl;
+        std::cout << "[UpLRC][Proxy] ingress local parity write failed blk=" << bid << std::endl;
         return false;
       }
     }
@@ -3017,7 +3017,7 @@ namespace ECProject
     auto store_lp_cache_abs = [&](int sg, const std::vector<uint8_t> &row_data) {
       if (sg < 0 || sg >= z || block_size <= 0)
         return;
-      const std::string ck = cord_ingress_lp_cache_key(placement->key(), sg);
+      const std::string ck = uplrc_ingress_lp_cache_key(placement->key(), sg);
       std::vector<uint8_t> abs(static_cast<size_t>(block_size), 0);
       if (po >= 0 && po < block_size && ps > 0)
       {
@@ -3026,13 +3026,13 @@ namespace ECProject
         if (copy_n > 0)
           std::memcpy(abs.data() + static_cast<size_t>(po), row_data.data(), copy_n);
       }
-      std::lock_guard<std::mutex> lk(g_cord_xfer_mu);
-      g_cord_ingress_lp_cache[ck] = std::move(abs);
+      std::lock_guard<std::mutex> lk(g_uplrc_xfer_mu);
+      g_uplrc_ingress_lp_cache[ck] = std::move(abs);
     };
 
-    for (int ci = 0; ci < placement->cord_ingress_cache_lp_stripe_groups_size(); ++ci)
+    for (int ci = 0; ci < placement->uplrc_ingress_cache_lp_stripe_groups_size(); ++ci)
     {
-      const int sg = placement->cord_ingress_cache_lp_stripe_groups(ci);
+      const int sg = placement->uplrc_ingress_cache_lp_stripe_groups(ci);
       if (sg < 0 || sg >= z)
         continue;
       const int lb = k + r + sg;
@@ -3044,9 +3044,9 @@ namespace ECProject
       store_lp_cache_abs(sg, coded[static_cast<size_t>(row)]);
     }
 
-    for (int wi = 0; wi < placement->cord_ingress_global_parity_writes_size(); ++wi)
+    for (int wi = 0; wi < placement->uplrc_ingress_global_parity_writes_size(); ++wi)
     {
-      const int sg = placement->cord_ingress_global_parity_writes(wi).stripe_group();
+      const int sg = placement->uplrc_ingress_global_parity_writes(wi).stripe_group();
       if (sg < 0 || sg >= z)
         continue;
       const int lb = k + r + sg;
@@ -3060,9 +3060,9 @@ namespace ECProject
     return true;
   }
 
-  grpc::Status ProxyImpl::scheduleCordDataUpdate(
+  grpc::Status ProxyImpl::scheduleUpLRCDataUpdate(
       grpc::ServerContext *context,
-      const proxy_proto::CordDataUpdatePlacement *placement,
+      const proxy_proto::UpLRCDataUpdatePlacement *placement,
       proxy_proto::SetReply *response)
   {
     (void)context;
@@ -3070,9 +3070,9 @@ namespace ECProject
     const int stripe_id = placement->stripe_id();
     const uint64_t payload_size = placement->update_payload_size();
     const int slice_num = placement->blockkeys_size();
-    auto placement_copy = std::make_shared<proxy_proto::CordDataUpdatePlacement>(*placement);
+    auto placement_copy = std::make_shared<proxy_proto::UpLRCDataUpdatePlacement>(*placement);
 
-    auto cord_job = [this, stripe_id, payload_size, slice_num, placement_copy]() mutable
+    auto uplrc_job = [this, stripe_id, payload_size, slice_num, placement_copy]() mutable
     {
       try
       {
@@ -3090,7 +3090,7 @@ namespace ECProject
         catch (...)
         {
         }
-        // std::cout << "[CoRD-DATA][" << proxy_ip_port << "] recv TCP from client peer=" << peer_ep
+        // std::cout << "[UpLRC-DATA][" << proxy_ip_port << "] recv TCP from client peer=" << peer_ep
         //           << " bytes=" << payload_size << " stripe_id=" << stripe_id << " cluster_id=" << placement_copy->cluster_id()
         //           << " key=" << placement_copy->key() << std::endl;
         asio::error_code ignore_ec;
@@ -3103,30 +3103,30 @@ namespace ECProject
         std::vector<char *> slices =
             m_toolbox->splitCharPointer(buf.data(), static_cast<size_t>(payload_size), sizes);
 
-        struct CordUpdateSliceResult {
+        struct UpLRCUpdateSliceResult {
           bool ok = false;
           std::vector<char> delta;
         };
 
-        auto build_delta_for_slice = [&](int j, CordUpdateSliceResult *out) -> bool {
+        auto build_delta_for_slice = [&](int j, UpLRCUpdateSliceResult *out) -> bool {
           const size_t slen = sizes[static_cast<size_t>(j)];
           std::vector<char> oldbuf(slen);
           const std::string ep = placement_copy->datanodeip(j) + ":" + std::to_string(placement_copy->datanodeport(j));
-          const auto endpoint_mu = cord_dn_endpoint_mu_for(ep);
+          const auto endpoint_mu = uplrc_dn_endpoint_mu_for(ep);
           {
             std::lock_guard<std::mutex> dn_lk(*endpoint_mu);
-            if (!CordRangeReadFromDatanode(placement_copy->blockkeys(j), placement_copy->blockids(j),
+            if (!UpLRCRangeReadFromDatanode(placement_copy->blockkeys(j), placement_copy->blockids(j),
                                            static_cast<int>(placement_copy->offsets(j)), oldbuf.data(), slen,
                                            placement_copy->datanodeip(j).c_str(), placement_copy->datanodeport(j)))
             {
-              std::cout << "[CoRD][Proxy] range read failed slice " << j << std::endl;
+              std::cout << "[UpLRC][Proxy] range read failed slice " << j << std::endl;
               return false;
             }
-            if (!CordRangeWriteToDatanode(placement_copy->blockkeys(j), placement_copy->blockids(j),
+            if (!UpLRCRangeWriteToDatanode(placement_copy->blockkeys(j), placement_copy->blockids(j),
                                           static_cast<int>(placement_copy->offsets(j)), slices[static_cast<size_t>(j)],
                                           slen, placement_copy->datanodeip(j).c_str(), placement_copy->datanodeport(j)))
             {
-              std::cout << "[CoRD][Proxy] range write failed slice " << j << std::endl;
+              std::cout << "[UpLRC][Proxy] range write failed slice " << j << std::endl;
               return false;
             }
           }
@@ -3140,12 +3140,12 @@ namespace ECProject
         std::vector<char> delta_concat;
         delta_concat.reserve(static_cast<size_t>(payload_size));
 
-        const bool use_slice_parallel = cord_update_slice_parallel_enabled() && slice_num > 1;
+        const bool use_slice_parallel = uplrc_update_slice_parallel_enabled() && slice_num > 1;
         if (!use_slice_parallel)
         {
           for (int j = 0; j < slice_num; ++j)
           {
-            CordUpdateSliceResult one{};
+            UpLRCUpdateSliceResult one{};
             if (!build_delta_for_slice(j, &one))
               return;
             delta_concat.insert(delta_concat.end(), one.delta.begin(), one.delta.end());
@@ -3160,13 +3160,13 @@ namespace ECProject
                 placement_copy->datanodeip(j) + ":" + std::to_string(placement_copy->datanodeport(j));
             slices_by_endpoint[ep].push_back(j);
           }
-          if (cord_trace_log(IF_DEBUG))
+          if (uplrc_trace_log(IF_DEBUG))
           {
-            std::cout << "[CoRD-DATA][" << proxy_ip_port << "] slice_parallel endpoints=" << slices_by_endpoint.size()
+            std::cout << "[UpLRC-DATA][" << proxy_ip_port << "] slice_parallel endpoints=" << slices_by_endpoint.size()
                       << " slices=" << slice_num << " stripe_id=" << stripe_id << std::endl;
           }
 
-          std::vector<CordUpdateSliceResult> slice_results(static_cast<size_t>(slice_num));
+          std::vector<UpLRCUpdateSliceResult> slice_results(static_cast<size_t>(slice_num));
           std::atomic<bool> update_failed{false};
           std::vector<std::thread> slice_workers;
           slice_workers.reserve(slices_by_endpoint.size());
@@ -3178,7 +3178,7 @@ namespace ECProject
               {
                 if (update_failed.load(std::memory_order_relaxed))
                   return;
-                CordUpdateSliceResult one{};
+                UpLRCUpdateSliceResult one{};
                 if (!build_delta_for_slice(j, &one))
                 {
                   update_failed.store(true, std::memory_order_relaxed);
@@ -3197,70 +3197,70 @@ namespace ECProject
             const auto &one = slice_results[static_cast<size_t>(j)];
             if (!one.ok)
             {
-              std::cout << "[CoRD][Proxy] slice result missing index " << j << std::endl;
+              std::cout << "[UpLRC][Proxy] slice result missing index " << j << std::endl;
               return;
             }
             delta_concat.insert(delta_concat.end(), one.delta.begin(), one.delta.end());
           }
         }
-        if (!CordDeltaBlobToDatanode(placement_copy->delta_blob_key(), delta_concat.data(), delta_concat.size(),
+        if (!UpLRCDeltaBlobToDatanode(placement_copy->delta_blob_key(), delta_concat.data(), delta_concat.size(),
                                      placement_copy->delta_datanode_ip().c_str(),
                                      placement_copy->delta_datanode_port()))
         {
-          std::cout << "[CoRD][Proxy] delta blob store failed" << std::endl;
+          std::cout << "[UpLRC][Proxy] delta blob store failed" << std::endl;
           return;
         }
 
-        if (!cord_ingress_apply_after_delta(this, placement_copy, delta_concat, sizes))
+        if (!uplrc_ingress_apply_after_delta(this, placement_copy, delta_concat, sizes))
         {
-          std::cout << "[CoRD][Proxy] ingress parity apply failed key=" << placement_copy->key() << std::endl;
+          std::cout << "[UpLRC][Proxy] ingress parity apply failed key=" << placement_copy->key() << std::endl;
           return;
         }
 
         coordinator_proto::CommitAbortKey commit_abort_key;
         coordinator_proto::ReplyFromCoordinator result;
         grpc::ClientContext ctx;
-        commit_abort_key.set_opp(ECProject::CORD_UPDATE);
+        commit_abort_key.set_opp(ECProject::UPLRC_UPDATE);
         commit_abort_key.set_key(placement_copy->key());
         commit_abort_key.set_stripe_id(stripe_id);
         commit_abort_key.set_ifcommitmetadata(true);
         grpc::Status st = m_coordinator_ptr->reportCommitAbort(&ctx, commit_abort_key, &result);
-        if (!st.ok() && cord_trace_log(IF_DEBUG))
-          std::cout << "[CoRD][Proxy] reportCommitAbort failed" << std::endl;
+        if (!st.ok() && uplrc_trace_log(IF_DEBUG))
+          std::cout << "[UpLRC][Proxy] reportCommitAbort failed" << std::endl;
       }
       catch (std::exception &e)
       {
-        std::cout << "[CoRD][Proxy] exception: " << e.what() << std::endl;
+        std::cout << "[UpLRC][Proxy] exception: " << e.what() << std::endl;
       }
     };
-    std::thread th(cord_job);
+    std::thread th(uplrc_job);
     th.detach();
     return grpc::Status::OK;
   }
 
-  grpc::Status ProxyImpl::scheduleCordTransferPlan(grpc::ServerContext *context,
-                                                   const proxy_proto::CordTransferPlan *plan,
+  grpc::Status ProxyImpl::scheduleUpLRCTransferPlan(grpc::ServerContext *context,
+                                                   const proxy_proto::UpLRCTransferPlan *plan,
                                                    proxy_proto::SetReply *response)
   {
     (void)context;
-    // std::cout << "[CoRD-PLAN][" << proxy_ip_port << "] RECV grpc scheduleCordTransferPlan peer=" << context->peer()
+    // std::cout << "[UpLRC-PLAN][" << proxy_ip_port << "] RECV grpc scheduleUpLRCTransferPlan peer=" << context->peer()
     //           << " plan_key=" << plan->plan_key() << " stripe_id=" << plan->stripe_id()
     //           << " steps=" << plan->steps_size() << std::endl;
     response->set_ifcommit(false);
     if (plan->plan_key().empty())
       return grpc::Status(grpc::StatusCode::INVALID_ARGUMENT, "empty plan_key");
-    auto plan_copy = std::make_shared<proxy_proto::CordTransferPlan>(*plan);
+    auto plan_copy = std::make_shared<proxy_proto::UpLRCTransferPlan>(*plan);
     {
-      std::lock_guard<std::mutex> lk(g_cord_plan_reg_mu);
-      g_cord_plans_by_key[plan_copy->plan_key()] =
-          std::shared_ptr<const proxy_proto::CordTransferPlan>(plan_copy);
+      std::lock_guard<std::mutex> lk(g_uplrc_plan_reg_mu);
+      g_uplrc_plans_by_key[plan_copy->plan_key()] =
+          std::shared_ptr<const proxy_proto::UpLRCTransferPlan>(plan_copy);
     }
     response->set_ifcommit(true);
     return grpc::Status::OK;
   }
 
-  grpc::Status ProxyImpl::cordPlanStartExecution(grpc::ServerContext *context,
-                                                 const proxy_proto::CordPlanKeyMsg *request,
+  grpc::Status ProxyImpl::uplrcPlanStartExecution(grpc::ServerContext *context,
+                                                 const proxy_proto::UpLRCPlanKeyMsg *request,
                                                  proxy_proto::SetReply *response)
   {
     (void)context;
@@ -3268,27 +3268,27 @@ namespace ECProject
     const std::string &pk = request->plan_key();
     if (pk.empty())
       return grpc::Status(grpc::StatusCode::INVALID_ARGUMENT, "empty plan_key");
-    auto plan_ptr = cord_lookup_registered_plan(pk);
+    auto plan_ptr = uplrc_lookup_registered_plan(pk);
     if (!plan_ptr)
-      return grpc::Status(grpc::StatusCode::NOT_FOUND, "cord plan_key not registered");
+      return grpc::Status(grpc::StatusCode::NOT_FOUND, "uplrc plan_key not registered");
     const int self_cid = m_self_cluster_id;
     const std::string tag = proxy_ip_port;
     std::thread th([plan_ptr, self_cid, tag, p = this]() {
-      cord_transfer_plan_execute_async(*plan_ptr, self_cid, p, tag);
+      uplrc_transfer_plan_execute_async(*plan_ptr, self_cid, p, tag);
     });
     {
-      std::lock_guard<std::mutex> lk(g_cord_plan_exec_mu);
-      auto it = g_cord_plan_exec_threads.find(pk);
-      if (it != g_cord_plan_exec_threads.end() && it->second.joinable())
+      std::lock_guard<std::mutex> lk(g_uplrc_plan_exec_mu);
+      auto it = g_uplrc_plan_exec_threads.find(pk);
+      if (it != g_uplrc_plan_exec_threads.end() && it->second.joinable())
         it->second.join();
-      g_cord_plan_exec_threads[pk] = std::move(th);
+      g_uplrc_plan_exec_threads[pk] = std::move(th);
     }
     response->set_ifcommit(true);
     return grpc::Status::OK;
   }
 
-  grpc::Status ProxyImpl::cordPlanJoinExecution(grpc::ServerContext *context,
-                                                const proxy_proto::CordPlanKeyMsg *request,
+  grpc::Status ProxyImpl::uplrcPlanJoinExecution(grpc::ServerContext *context,
+                                                const proxy_proto::UpLRCPlanKeyMsg *request,
                                                 proxy_proto::SetReply *response)
   {
     (void)context;
@@ -3298,38 +3298,38 @@ namespace ECProject
       return grpc::Status(grpc::StatusCode::INVALID_ARGUMENT, "empty plan_key");
     std::thread worker;
     {
-      std::lock_guard<std::mutex> lk(g_cord_plan_exec_mu);
-      auto it = g_cord_plan_exec_threads.find(pk);
-      if (it == g_cord_plan_exec_threads.end())
+      std::lock_guard<std::mutex> lk(g_uplrc_plan_exec_mu);
+      auto it = g_uplrc_plan_exec_threads.find(pk);
+      if (it == g_uplrc_plan_exec_threads.end())
       {
         response->set_ifcommit(true);
         return grpc::Status::OK;
       }
       worker = std::move(it->second);
-      g_cord_plan_exec_threads.erase(it);
+      g_uplrc_plan_exec_threads.erase(it);
     }
     if (worker.joinable())
       worker.join();
     {
-      std::lock_guard<std::mutex> lk(g_cord_join_xfer_timing_mu);
-      auto it = g_cord_join_xfer_timing_by_plan.find(pk);
-      if (it != g_cord_join_xfer_timing_by_plan.end())
+      std::lock_guard<std::mutex> lk(g_uplrc_join_xfer_timing_mu);
+      auto it = g_uplrc_join_xfer_timing_by_plan.find(pk);
+      if (it != g_uplrc_join_xfer_timing_by_plan.end())
       {
-        const CordJoinXferTimingSample &s = it->second;
-        response->set_cord_join_xfer_timing_present(true);
-        response->set_cord_join_pure_xfer_sec(s.pure_xfer_sec);
-        response->set_cord_join_pure_xfer_start_unix_ms(s.wall_start_unix_ms);
-        response->set_cord_join_pure_xfer_end_unix_ms(s.wall_end_unix_ms);
-        g_cord_join_xfer_timing_by_plan.erase(it);
+        const UpLRCJoinXferTimingSample &s = it->second;
+        response->set_uplrc_join_xfer_timing_present(true);
+        response->set_uplrc_join_pure_xfer_sec(s.pure_xfer_sec);
+        response->set_uplrc_join_pure_xfer_start_unix_ms(s.wall_start_unix_ms);
+        response->set_uplrc_join_pure_xfer_end_unix_ms(s.wall_end_unix_ms);
+        g_uplrc_join_xfer_timing_by_plan.erase(it);
       }
     }
     response->set_ifcommit(true);
     return grpc::Status::OK;
   }
 
-  grpc::Status ProxyImpl::cordPlanCollectorIngestDataDelta(
+  grpc::Status ProxyImpl::uplrcPlanCollectorIngestDataDelta(
       grpc::ServerContext *context,
-      const proxy_proto::CordPlanCollectorIngestReq *request,
+      const proxy_proto::UpLRCPlanCollectorIngestReq *request,
       proxy_proto::SetReply *response)
   {
     (void)context;
@@ -3337,19 +3337,19 @@ namespace ECProject
     const auto &chunk = request->chunk_payload();
     if (chunk.empty())
       return grpc::Status(grpc::StatusCode::INVALID_ARGUMENT, "empty chunk (use TCP CRDX side channel)");
-    if (!cord_apply_collector_ingest(this, *request, chunk.data(), chunk.size()))
+    if (!uplrc_apply_collector_ingest(this, *request, chunk.data(), chunk.size()))
     {
-      std::cout << "[CoRD-PLAN][" << proxy_ip_port << "] REJECT cordPlanCollectorIngestDataDelta plan_key="
+      std::cout << "[UpLRC-PLAN][" << proxy_ip_port << "] REJECT uplrcPlanCollectorIngestDataDelta plan_key="
                 << request->plan_key() << " reason=ingest_failed" << std::endl;
-      return grpc::Status(grpc::StatusCode::NOT_FOUND, "cord plan ingest failed");
+      return grpc::Status(grpc::StatusCode::NOT_FOUND, "uplrc plan ingest failed");
     }
     response->set_ifcommit(true);
     return grpc::Status::OK;
   }
 
-  grpc::Status ProxyImpl::cordPlanApplyParityXorDelta(
+  grpc::Status ProxyImpl::uplrcPlanApplyParityXorDelta(
       grpc::ServerContext *context,
-      const proxy_proto::CordPlanApplyParityXorReq *request,
+      const proxy_proto::UpLRCPlanApplyParityXorReq *request,
       proxy_proto::SetReply *response)
   {
     (void)context;
@@ -3357,15 +3357,15 @@ namespace ECProject
     const auto &delta = request->parity_delta_payload();
     if (delta.empty())
       return grpc::Status(grpc::StatusCode::INVALID_ARGUMENT, "empty delta (use TCP CRDX side channel)");
-    if (!cord_apply_parity_xor_delta(this, *request, delta.data(), delta.size()))
+    if (!uplrc_apply_parity_xor_delta(this, *request, delta.data(), delta.size()))
       return grpc::Status(grpc::StatusCode::INTERNAL, "parity xor apply failed");
     response->set_ifcommit(true);
     return grpc::Status::OK;
   }
 
-  grpc::Status ProxyImpl::cordPlanMstDataDeltaChunk(
+  grpc::Status ProxyImpl::uplrcPlanMstDataDeltaChunk(
       grpc::ServerContext *context,
-      const proxy_proto::CordPlanMstDataDeltaReq *request,
+      const proxy_proto::UpLRCPlanMstDataDeltaReq *request,
       proxy_proto::SetReply *response)
   {
     (void)context;
@@ -3373,21 +3373,21 @@ namespace ECProject
     const std::string &chunk = request->chunk_payload();
     if (chunk.empty())
       return grpc::Status(grpc::StatusCode::INVALID_ARGUMENT, "empty chunk (use TCP CRDX side channel)");
-    if (!cord_apply_mst_data_delta(this, *request, chunk.data(), chunk.size()))
+    if (!uplrc_apply_mst_data_delta(this, *request, chunk.data(), chunk.size()))
       return grpc::Status(grpc::StatusCode::INTERNAL, "mst chunk apply failed");
     response->set_ifcommit(true);
     return grpc::Status::OK;
   }
 
-  grpc::Status ProxyImpl::scheduleCordLocalParityApply(
+  grpc::Status ProxyImpl::scheduleUpLRCLocalParityApply(
       grpc::ServerContext *context,
-      const proxy_proto::CordLocalParityBundle *bundle,
+      const proxy_proto::UpLRCLocalParityBundle *bundle,
       proxy_proto::SetReply *response)
   {
     (void)response;
-    // std::cout << "[CoRD-LP][" << proxy_ip_port << "] RECV grpc scheduleCordLocalParityApply peer=" << context->peer()
+    // std::cout << "[UpLRC-LP][" << proxy_ip_port << "] RECV grpc scheduleUpLRCLocalParityApply peer=" << context->peer()
     //           << " bundle_key=" << bundle->key() << " items=" << bundle->items_size() << std::endl;
-    auto bundle_copy = std::make_shared<proxy_proto::CordLocalParityBundle>(*bundle);
+    auto bundle_copy = std::make_shared<proxy_proto::UpLRCLocalParityBundle>(*bundle);
     auto lp_job = [this, bundle_copy]() mutable
     {
       try
@@ -3399,16 +3399,16 @@ namespace ECProject
           if (psz <= 0)
             continue;
           std::vector<char> acc(static_cast<size_t>(psz));
-          if (!CordRangeReadFromDatanode(it.local_block_key(), it.local_block_id(), it.parity_slice_offset(),
+          if (!UpLRCRangeReadFromDatanode(it.local_block_key(), it.local_block_id(), it.parity_slice_offset(),
                                         acc.data(), static_cast<size_t>(psz), it.local_datanode_ip().c_str(),
                                         it.local_datanode_port()))
           {
-            std::cout << "[CoRD-LP][Proxy] read LP blk " << it.local_block_id() << " failed" << std::endl;
+            std::cout << "[UpLRC-LP][Proxy] read LP blk " << it.local_block_id() << " failed" << std::endl;
             continue;
           }
-          // std::cout << "[CoRD-LP][" << proxy_ip_port << "] BEFORE_local_parity_apply blk=" << it.local_block_id()
+          // std::cout << "[UpLRC-LP][" << proxy_ip_port << "] BEFORE_local_parity_apply blk=" << it.local_block_id()
           //           << " off=" << it.parity_slice_offset() << " len=" << psz
-          //           << " disk_hex=" << cord_dbg_hex_preview(acc.data(), acc.size()) << " bundle_key="
+          //           << " disk_hex=" << uplrc_dbg_hex_preview(acc.data(), acc.size()) << " bundle_key="
           //           << bundle_copy->key() << std::endl;
           for (int fi = 0; fi < it.fetches_size(); ++fi)
           {
@@ -3417,16 +3417,16 @@ namespace ECProject
             if (rlen == 0)
               continue;
             std::vector<char> chunk(rlen);
-            if (!CordRangeReadFromDatanode(f.blob_key(), 0, static_cast<int>(f.blob_offset()), chunk.data(), rlen,
+            if (!UpLRCRangeReadFromDatanode(f.blob_key(), 0, static_cast<int>(f.blob_offset()), chunk.data(), rlen,
                                           f.datanode_ip().c_str(), f.datanode_port()))
             {
-              std::cout << "[CoRD-LP][Proxy] read delta blob " << f.blob_key() << " failed" << std::endl;
+              std::cout << "[UpLRC-LP][Proxy] read delta blob " << f.blob_key() << " failed" << std::endl;
               continue;
             }
             const int acc_off = f.acc_offset();
             if (acc_off < 0 || static_cast<size_t>(acc_off) + rlen > acc.size())
             {
-              std::cout << "[CoRD-LP][Proxy] acc_offset/len out of range" << std::endl;
+              std::cout << "[UpLRC-LP][Proxy] acc_offset/len out of range" << std::endl;
               continue;
             }
             for (size_t u = 0; u < rlen; ++u)
@@ -3434,21 +3434,21 @@ namespace ECProject
                   static_cast<char>(static_cast<unsigned char>(acc[static_cast<size_t>(acc_off) + u]) ^
                                     static_cast<unsigned char>(chunk[u]));
           }
-          if (!CordRangeWriteToDatanode(it.local_block_key(), it.local_block_id(), it.parity_slice_offset(),
+          if (!UpLRCRangeWriteToDatanode(it.local_block_key(), it.local_block_id(), it.parity_slice_offset(),
                                         acc.data(), static_cast<size_t>(psz), it.local_datanode_ip().c_str(),
                                         it.local_datanode_port()))
           {
-            std::cout << "[CoRD-LP][Proxy] write LP blk " << it.local_block_id() << " failed" << std::endl;
+            std::cout << "[UpLRC-LP][Proxy] write LP blk " << it.local_block_id() << " failed" << std::endl;
             continue;
           }
-          if (cord_trace_log(IF_DEBUG))
-            std::cout << "[CoRD-LP][Proxy] LP blk " << it.local_block_id() << " off=" << it.parity_slice_offset()
+          if (uplrc_trace_log(IF_DEBUG))
+            std::cout << "[UpLRC-LP][Proxy] LP blk " << it.local_block_id() << " off=" << it.parity_slice_offset()
                       << " len=" << psz << " fetches=" << it.fetches_size() << std::endl;
         }
       }
       catch (const std::exception &e)
       {
-        std::cout << "[CoRD-LP][Proxy] exception: " << e.what() << std::endl;
+        std::cout << "[UpLRC-LP][Proxy] exception: " << e.what() << std::endl;
       }
     };
     std::thread th(lp_job);
@@ -3460,24 +3460,24 @@ namespace ECProject
 
   namespace
   {
-    struct CordLpHubSessionState
+    struct UpLRCLpHubSessionState
     {
       int expected_partials = 0;
       int received_partials = 0;
       std::vector<uint8_t> acc;
-      proxy_proto::CordLpHubSessionBegin meta;
+      proxy_proto::UpLRCLpHubSessionBegin meta;
       std::mutex mu;
       bool finished = false;
     };
-    std::mutex g_cord_lp_hub_mu;
-    std::unordered_map<std::string, std::shared_ptr<CordLpHubSessionState>> g_cord_lp_hub;
+    std::mutex g_uplrc_lp_hub_mu;
+    std::unordered_map<std::string, std::shared_ptr<UpLRCLpHubSessionState>> g_uplrc_lp_hub;
 
-    static void cord_lp_hub_forward_to_lp_proxy(ProxyImpl *proxy, const proxy_proto::CordLpHubSessionBegin &meta,
+    static void uplrc_lp_hub_forward_to_lp_proxy(ProxyImpl *proxy, const proxy_proto::UpLRCLpHubSessionBegin &meta,
                                                 const std::vector<uint8_t> &delta)
     {
       std::string dst = meta.dest_lp_proxy_ip() + ":" + std::to_string(meta.dest_lp_proxy_port());
       proxy_proto::proxyService::Stub *stub = proxy->stub_for_peer_proxy(dst);
-      proxy_proto::CordLpParityApplyDelta req;
+      proxy_proto::UpLRCLpParityApplyDelta req;
       req.set_stripe_id(meta.stripe_id());
       req.set_local_block_id(meta.local_block_id());
       req.set_local_block_key(meta.local_block_key());
@@ -3488,13 +3488,13 @@ namespace ECProject
       req.set_delta_payload(delta.data(), delta.size());
       grpc::ClientContext ctx;
       proxy_proto::SetReply rep;
-      grpc::Status st = stub->cordLpApplyParityDelta(&ctx, req, &rep);
+      grpc::Status st = stub->uplrcLpApplyParityDelta(&ctx, req, &rep);
       if (!st.ok())
-        std::cout << "[CoRD-LP-GH] forward to LP proxy " << dst << " failed: " << st.error_message() << std::endl;
+        std::cout << "[UpLRC-LP-GH] forward to LP proxy " << dst << " failed: " << st.error_message() << std::endl;
       // else
-      //   std::cout << "[CoRD-LP-GH] grpc SEND hub -> LP_proxy=" << dst << " stripe=" << meta.stripe_id()
+      //   std::cout << "[UpLRC-LP-GH] grpc SEND hub -> LP_proxy=" << dst << " stripe=" << meta.stripe_id()
       //             << " hub_G=" << meta.hub_global_block_id() << " lp_blk=" << meta.local_block_id()
-      //             << " delta_bytes=" << delta.size() << " delta_preview=" << cord_dbg_hex_preview(delta.data(), delta.size())
+      //             << " delta_bytes=" << delta.size() << " delta_preview=" << uplrc_dbg_hex_preview(delta.data(), delta.size())
       //             << std::endl;
       (void)dst;
       (void)meta;
@@ -3502,45 +3502,45 @@ namespace ECProject
     }
   } // namespace
 
-  grpc::Status ProxyImpl::cordLpHubSessionBegin(
+  grpc::Status ProxyImpl::uplrcLpHubSessionBegin(
       grpc::ServerContext *context,
-      const proxy_proto::CordLpHubSessionBegin *request,
+      const proxy_proto::UpLRCLpHubSessionBegin *request,
       proxy_proto::SetReply *response)
   {
     (void)context;
     response->set_ifcommit(false);
     if (request->session_key().empty() || request->expected_partials() <= 0 ||
         request->parity_slice_size() <= 0)
-      return grpc::Status(grpc::StatusCode::INVALID_ARGUMENT, "invalid CordLpHubSessionBegin");
-    std::lock_guard<std::mutex> lk(g_cord_lp_hub_mu);
-    if (g_cord_lp_hub.find(request->session_key()) != g_cord_lp_hub.end())
+      return grpc::Status(grpc::StatusCode::INVALID_ARGUMENT, "invalid UpLRCLpHubSessionBegin");
+    std::lock_guard<std::mutex> lk(g_uplrc_lp_hub_mu);
+    if (g_uplrc_lp_hub.find(request->session_key()) != g_uplrc_lp_hub.end())
       return grpc::Status(grpc::StatusCode::ALREADY_EXISTS, "duplicate session_key");
-    auto st = std::make_shared<CordLpHubSessionState>();
+    auto st = std::make_shared<UpLRCLpHubSessionState>();
     st->expected_partials = request->expected_partials();
     st->acc.assign(static_cast<size_t>(request->parity_slice_size()), 0);
     st->meta.CopyFrom(*request);
-    g_cord_lp_hub[request->session_key()] = st;
+    g_uplrc_lp_hub[request->session_key()] = st;
     response->set_ifcommit(true);
     return grpc::Status::OK;
   }
 
-  grpc::Status ProxyImpl::cordLpHubPartialPush(
+  grpc::Status ProxyImpl::uplrcLpHubPartialPush(
       grpc::ServerContext *context,
-      const proxy_proto::CordLpHubPartialPush *request,
+      const proxy_proto::UpLRCLpHubPartialPush *request,
       proxy_proto::SetReply *response)
   {
     (void)context;
     response->set_ifcommit(false);
     const std::string &sk = request->session_key();
-    std::shared_ptr<CordLpHubSessionState> st;
+    std::shared_ptr<UpLRCLpHubSessionState> st;
     {
-      std::lock_guard<std::mutex> lk(g_cord_lp_hub_mu);
-      auto it = g_cord_lp_hub.find(sk);
-      if (it == g_cord_lp_hub.end())
+      std::lock_guard<std::mutex> lk(g_uplrc_lp_hub_mu);
+      auto it = g_uplrc_lp_hub.find(sk);
+      if (it == g_uplrc_lp_hub.end())
         return grpc::Status(grpc::StatusCode::NOT_FOUND, "unknown session_key");
       st = it->second;
     }
-    proxy_proto::CordLpHubSessionBegin meta_copy;
+    proxy_proto::UpLRCLpHubSessionBegin meta_copy;
     std::vector<uint8_t> forward_delta;
     bool do_erase = false;
     {
@@ -3564,17 +3564,17 @@ namespace ECProject
     }
     if (do_erase)
     {
-      cord_lp_hub_forward_to_lp_proxy(this, meta_copy, forward_delta);
-      std::lock_guard<std::mutex> lk(g_cord_lp_hub_mu);
-      g_cord_lp_hub.erase(sk);
+      uplrc_lp_hub_forward_to_lp_proxy(this, meta_copy, forward_delta);
+      std::lock_guard<std::mutex> lk(g_uplrc_lp_hub_mu);
+      g_uplrc_lp_hub.erase(sk);
     }
     response->set_ifcommit(true);
     return grpc::Status::OK;
   }
 
-  grpc::Status ProxyImpl::cordLpComputePartialAndPush(
+  grpc::Status ProxyImpl::uplrcLpComputePartialAndPush(
       grpc::ServerContext *context,
-      const proxy_proto::CordLpComputePartialAndPush *request,
+      const proxy_proto::UpLRCLpComputePartialAndPush *request,
       proxy_proto::SetReply *response)
   {
     (void)context;
@@ -3593,10 +3593,10 @@ namespace ECProject
       const std::string &bk = f.blob_key().empty() ? request->delta_blob_key() : f.blob_key();
       const std::string &dip = f.datanode_ip().empty() ? request->delta_datanode_ip() : f.datanode_ip();
       const int dport = f.datanode_port() != 0 ? f.datanode_port() : request->delta_datanode_port();
-      if (!CordRangeReadFromDatanode(bk, 0, static_cast<int>(f.blob_offset()), chunk.data(), rlen,
+      if (!UpLRCRangeReadFromDatanode(bk, 0, static_cast<int>(f.blob_offset()), chunk.data(), rlen,
                                      dip.c_str(), dport))
       {
-        std::cout << "[CoRD-LP-GH] read delta blob " << bk << " failed" << std::endl;
+        std::cout << "[UpLRC-LP-GH] read delta blob " << bk << " failed" << std::endl;
         return grpc::Status(grpc::StatusCode::INTERNAL, "delta blob read failed");
       }
       const int acc_off = f.acc_offset();
@@ -3609,21 +3609,21 @@ namespace ECProject
     }
     std::string hub_addr = request->hub_proxy_ip() + ":" + std::to_string(request->hub_proxy_port());
     proxy_proto::proxyService::Stub *hub_stub = stub_for_peer_proxy(hub_addr);
-    proxy_proto::CordLpHubPartialPush push;
+    proxy_proto::UpLRCLpHubPartialPush push;
     push.set_session_key(request->session_key());
     push.set_partial_payload(acc.data(), acc.size());
     grpc::ClientContext ctx;
     proxy_proto::SetReply rep;
-    grpc::Status st = hub_stub->cordLpHubPartialPush(&ctx, push, &rep);
+    grpc::Status st = hub_stub->uplrcLpHubPartialPush(&ctx, push, &rep);
     if (!st.ok())
       return st;
     response->set_ifcommit(true);
     return grpc::Status::OK;
   }
 
-  grpc::Status ProxyImpl::cordLpApplyParityDelta(
+  grpc::Status ProxyImpl::uplrcLpApplyParityDelta(
       grpc::ServerContext *context,
-      const proxy_proto::CordLpParityApplyDelta *request,
+      const proxy_proto::UpLRCLpParityApplyDelta *request,
       proxy_proto::SetReply *response)
   {
     response->set_ifcommit(false);
@@ -3631,15 +3631,15 @@ namespace ECProject
     if (psz <= 0)
       return grpc::Status(grpc::StatusCode::INVALID_ARGUMENT, "bad parity slice");
     std::vector<char> cur(static_cast<size_t>(psz));
-    if (!CordRangeReadFromDatanode(request->local_block_key(), request->local_block_id(),
+    if (!UpLRCRangeReadFromDatanode(request->local_block_key(), request->local_block_id(),
                                    request->parity_slice_offset(), cur.data(), static_cast<size_t>(psz),
                                    request->local_datanode_ip().c_str(), request->local_datanode_port()))
       return grpc::Status(grpc::StatusCode::INTERNAL, "read local parity failed");
-    // std::cout << "[CoRD-LP-GH][" << proxy_ip_port << "] RECV cordLpApplyParityDelta peer=" << context->peer()
+    // std::cout << "[UpLRC-LP-GH][" << proxy_ip_port << "] RECV uplrcLpApplyParityDelta peer=" << context->peer()
     //           << " stripe=" << request->stripe_id() << " blk=" << request->local_block_id()
     //           << " off=" << request->parity_slice_offset() << " len=" << psz
-    //           << " BEFORE_hex=" << cord_dbg_hex_preview(cur.data(), cur.size())
-    //           << " delta_hex=" << cord_dbg_hex_preview(request->delta_payload().data(), request->delta_payload().size())
+    //           << " BEFORE_hex=" << uplrc_dbg_hex_preview(cur.data(), cur.size())
+    //           << " delta_hex=" << uplrc_dbg_hex_preview(request->delta_payload().data(), request->delta_payload().size())
     //           << std::endl;
     if (static_cast<int>(request->delta_payload().size()) != psz)
       return grpc::Status(grpc::StatusCode::INVALID_ARGUMENT, "delta size mismatch");
@@ -3647,17 +3647,17 @@ namespace ECProject
       cur[static_cast<size_t>(u)] =
           static_cast<char>(static_cast<unsigned char>(cur[static_cast<size_t>(u)]) ^
                             static_cast<unsigned char>(request->delta_payload()[u]));
-    if (!CordRangeWriteToDatanode(request->local_block_key(), request->local_block_id(),
+    if (!UpLRCRangeWriteToDatanode(request->local_block_key(), request->local_block_id(),
                                   request->parity_slice_offset(), cur.data(), static_cast<size_t>(psz),
                                   request->local_datanode_ip().c_str(), request->local_datanode_port()))
       return grpc::Status(grpc::StatusCode::INTERNAL, "write local parity failed");
     std::vector<char> ghv(static_cast<size_t>(psz));
-    if (CordRangeReadFromDatanode(request->local_block_key(), request->local_block_id(),
+    if (UpLRCRangeReadFromDatanode(request->local_block_key(), request->local_block_id(),
                                   request->parity_slice_offset(), ghv.data(), static_cast<size_t>(psz),
                                   request->local_datanode_ip().c_str(), request->local_datanode_port()))
     {
-      // std::cout << "[CoRD-LP-GH][" << proxy_ip_port << "] AFTER blk=" << request->local_block_id()
-      //           << " disk_hex=" << cord_dbg_hex_preview(ghv.data(), ghv.size()) << std::endl;
+      // std::cout << "[UpLRC-LP-GH][" << proxy_ip_port << "] AFTER blk=" << request->local_block_id()
+      //           << " disk_hex=" << uplrc_dbg_hex_preview(ghv.data(), ghv.size()) << std::endl;
     }
     response->set_ifcommit(true);
     return grpc::Status::OK;
@@ -3703,7 +3703,7 @@ namespace ECProject
           auto block_buf = std::make_shared<std::vector<char>>(this_size);
 
           asio::read(socket_data, asio::buffer(block_buf->data(), this_size), error);
-        if (error == asio::error::eof && cord_trace_log(IF_DEBUG))
+        if (error == asio::error::eof && uplrc_trace_log(IF_DEBUG))
         {
             std::cout << "error == asio::error::eof (block " << j << ")" << std::endl;
         }
@@ -3712,7 +3712,7 @@ namespace ECProject
           throw asio::system_error(error);
         }
 
-        if (cord_trace_log(IF_DEBUG))
+        if (uplrc_trace_log(IF_DEBUG))
         {
           std::cout << "[Proxy" << m_self_cluster_id << "][Append339]"
                       << " received block " << j << " size=" << this_size << std::endl;
@@ -3720,7 +3720,7 @@ namespace ECProject
 
           // 立即启动写线程，不等待后续 block
           senders.emplace_back([this, placement_copy, j, block_buf, is_serialized]() {
-          if (cord_trace_log(IF_DEBUG))
+          if (uplrc_trace_log(IF_DEBUG))
           {
             std::cout << "[Proxy" << m_self_cluster_id << "][Append353]"
                         << "Append to Block " << placement_copy->blockkeys(j)
@@ -3753,7 +3753,7 @@ namespace ECProject
         socket_data.shutdown(asio::ip::tcp::socket::shutdown_receive, ignore_ec);
         socket_data.close(ignore_ec);
 
-        if (cord_trace_log(IF_DEBUG))
+        if (uplrc_trace_log(IF_DEBUG))
         {
           std::cout << "[Proxy" << m_self_cluster_id << "][Append371]"
                     << "Finish appending to Stripe " << stripe_id << std::endl;
@@ -3769,7 +3769,7 @@ namespace ECProject
             }
           }
 
-          if (cord_trace_log(IF_DEBUG))
+          if (uplrc_trace_log(IF_DEBUG))
           {
             std::cout << "[Proxy" << m_self_cluster_id << "][Append387]"
                       << "Async merging parities of Stripe " << stripe_id << std::endl;
@@ -3787,12 +3787,12 @@ namespace ECProject
         commit_abort_key.set_ifcommitmetadata(true);
         grpc::Status status;
         status = m_coordinator_ptr->reportCommitAbort(&context, commit_abort_key, &result);
-        if (status.ok() && cord_trace_log(IF_DEBUG))
+        if (status.ok() && uplrc_trace_log(IF_DEBUG))
         {
           std::cout << "[Proxy" << m_self_cluster_id << "][APPEND405]"
                     << " report to coordinator success" << std::endl;
         }
-        else if (cord_trace_log(IF_DEBUG))
+        else if (uplrc_trace_log(IF_DEBUG))
         {
           std::cout << "[Proxy" << m_self_cluster_id << "][APPEND410]"
                     << " report to coordinator fail!" << std::endl;
@@ -3806,7 +3806,7 @@ namespace ECProject
     };
     try
     {
-      if (cord_trace_log(IF_DEBUG))
+      if (uplrc_trace_log(IF_DEBUG))
       {
         std::cout << "[Proxy][APPEND424] Handle append_and_save" << std::endl;
       }
@@ -3868,7 +3868,7 @@ namespace ECProject
         {
           throw asio::system_error(error);
         }
-        if (cord_trace_log(IF_DEBUG))
+        if (uplrc_trace_log(IF_DEBUG))
         {
           std::cout << "[Proxy" << m_self_cluster_id << "][SET]"
                     << "Check key " << buf_key.data() << std::endl;
@@ -3885,7 +3885,7 @@ namespace ECProject
         }
         if (flag)
         {
-          if (cord_trace_log(IF_DEBUG))
+          if (uplrc_trace_log(IF_DEBUG))
           {
             std::cout << "[Proxy" << m_self_cluster_id << "][SET]"
                       << "Read value of " << buf_key.data() << std::endl;
@@ -3902,7 +3902,7 @@ namespace ECProject
         // define a lambda function to send to datanode
         auto send_to_datanode = [this](int j, int k, std::string block_key, char **data, char **coding, int block_size, std::pair<std::string, int> ip_and_port)
         {
-          if (cord_trace_log(IF_DEBUG))
+          if (uplrc_trace_log(IF_DEBUG))
           {
             std::cout << "[Proxy" << m_self_cluster_id << "][SET]"
                       << "Thread " << j << " send " << block_key << " to Datanode" << ip_and_port.second << std::endl;
@@ -3935,7 +3935,7 @@ namespace ECProject
         {
           coding[j] = v_coding_area[j].data();
         }
-        if (cord_trace_log(IF_DEBUG))
+        if (uplrc_trace_log(IF_DEBUG))
         {
           std::cout << "[Proxy" << m_self_cluster_id << "][SET]"
                     << "Encode value with size of " << v_buf.size() << std::endl;
@@ -3946,7 +3946,7 @@ namespace ECProject
           encode(k, g_m, l, data, coding, block_size, encode_type);
           send_num = k + g_m + l;
         }
-        if (cord_trace_log(IF_DEBUG))
+        if (uplrc_trace_log(IF_DEBUG))
         {
           std::cout << "[Proxy" << m_self_cluster_id << "][SET]"
                     << "Distribute blocks to datanodes" << std::endl;
@@ -3964,7 +3964,7 @@ namespace ECProject
         {
           senders[j].join();
         }
-        if (cord_trace_log(IF_DEBUG))
+        if (uplrc_trace_log(IF_DEBUG))
         {
           std::cout << "[Proxy" << m_self_cluster_id << "][SET]"
                     << "Finish distributing blocks!" << std::endl;
@@ -3980,7 +3980,7 @@ namespace ECProject
         commit_abort_key.set_ifcommitmetadata(true);
         grpc::Status status;
         status = m_coordinator_ptr->reportCommitAbort(&context, commit_abort_key, &result);
-        if (status.ok() && cord_trace_log(IF_DEBUG))
+        if (status.ok() && uplrc_trace_log(IF_DEBUG))
         {
           std::cout << "[Proxy" << m_self_cluster_id << "][SET]"
                     << "[SET] report to coordinator success" << std::endl;
@@ -3999,7 +3999,7 @@ namespace ECProject
     };
     try
     {
-      if (cord_trace_log(IF_DEBUG))
+      if (uplrc_trace_log(IF_DEBUG))
       {
         std::cout << "[Proxy][SET] Handle encode and set" << std::endl;
       }
@@ -4059,7 +4059,7 @@ namespace ECProject
 
       auto getFromNode = [this, k, blocks_ptr, blocks_key_ptr, blocks_idx_ptr, myLock_ptr, cv_ptr](int expect_block_number, int block_idx, std::string block_key, int block_size, std::string ip, int port)
       {
-        if (cord_trace_log(IF_DEBUG))
+        if (uplrc_trace_log(IF_DEBUG))
         {
           std::cout << "[Proxy" << m_self_cluster_id << "][GET]"
                     << "Block " << block_idx << " with key " << block_key << " from Datanode" << ip << ":" << port << std::endl;
@@ -4102,7 +4102,7 @@ namespace ECProject
       {
         coding[j] = v_coding_area[j].data();
       }
-      if (cord_trace_log(IF_DEBUG))
+      if (uplrc_trace_log(IF_DEBUG))
       {
         std::cout << "[Proxy" << m_self_cluster_id << "][GET]"
                   << "ready to get blocks from datanodes!" << std::endl;
@@ -4132,7 +4132,7 @@ namespace ECProject
       {
         cv_ptr->wait(lck);
       }
-      if (cord_trace_log(IF_DEBUG))
+      if (uplrc_trace_log(IF_DEBUG))
       {
         std::cout << "[Proxy" << m_self_cluster_id << "][GET]"
                   << "ready to decode!" << std::endl;
@@ -4176,7 +4176,7 @@ namespace ECProject
         value += std::string(data[j]);
       }
 
-      if (cord_trace_log(IF_DEBUG))
+      if (uplrc_trace_log(IF_DEBUG))
       {
         std::cout << "\033[1;31m[Proxy" << m_self_cluster_id << "][GET]"
                   << "send " << key << " to client with length of " << value.size() << "\033[0m" << std::endl;
@@ -4206,7 +4206,7 @@ namespace ECProject
     try
     {
       // std::cerr << "decode_and_get_thread start" << std::endl;
-      if (cord_trace_log(IF_DEBUG))
+      if (uplrc_trace_log(IF_DEBUG))
       {
         std::cout << "[Proxy] Handle get and decode" << std::endl;
       }
@@ -4237,7 +4237,7 @@ namespace ECProject
 
   void ProxyImpl::get_from_node(const std::string &block_key, char *block_value, const size_t block_size, const char *datanode_ip, const int datanode_port, bool *status, int index)
   {
-    if (cord_trace_log(IF_DEBUG))
+    if (uplrc_trace_log(IF_DEBUG))
     {
       std::cout << "[Proxy" << m_self_cluster_id << "][GET]"
                 << "Block key " << block_key << " from Datanode" << datanode_ip << ":" << datanode_port << std::endl;
@@ -4248,7 +4248,7 @@ namespace ECProject
   void ProxyImpl::get_from_node_breakdown(const std::string &block_key, char *block_value, const size_t block_size, const char *datanode_ip, const int datanode_port, bool *status, int index, 
     double *disk_io_start_time, double *disk_io_end_time, double *network_start_time, double *network_end_time, double *grpc_notify_time, double *grpc_start_time)
   {
-    if (cord_trace_log(IF_DEBUG))
+    if (uplrc_trace_log(IF_DEBUG))
     {
       std::cout << "[Proxy" << m_self_cluster_id << "][GET]"
                 << "Block key " << block_key << " from Datanode" << datanode_ip << ":" << datanode_port << std::endl;
@@ -4378,7 +4378,7 @@ namespace ECProject
 
     try
     {
-      if (cord_trace_log(IF_DEBUG))
+      if (uplrc_trace_log(IF_DEBUG))
       {
         std::cout << "[Proxy" << m_self_cluster_id << "][Degrade read] Handle degraded read" << std::endl;
       }
@@ -4545,7 +4545,7 @@ namespace ECProject
 
     try
     {
-      if (cord_trace_log(IF_DEBUG))
+      if (uplrc_trace_log(IF_DEBUG))
       {
         std::cout << "[Proxy" << m_self_cluster_id << "][Degrade read] Handle degraded read" << std::endl;
       }
@@ -4679,7 +4679,7 @@ namespace ECProject
 
   try
   {
-    if (cord_trace_log(IF_DEBUG))
+    if (uplrc_trace_log(IF_DEBUG))
     {
       std::cout << "[Proxy" << m_self_cluster_id << "][Degrade read] Handle degraded read" << std::endl;
     }
@@ -4703,7 +4703,7 @@ namespace ECProject
 {
   try
   {
-    if (cord_trace_log(IF_DEBUG))
+    if (uplrc_trace_log(IF_DEBUG))
     {
       std::cout << "[Proxy" << m_self_cluster_id << "][Recovery] Handle Degraded Read" << std::endl;
     }
@@ -4879,7 +4879,7 @@ namespace ECProject
   response->set_grpc_start_time(std::chrono::duration_cast<std::chrono::duration<double>>(START.time_since_epoch()).count());
   try
   {
-    if (cord_trace_log(IF_DEBUG))
+    if (uplrc_trace_log(IF_DEBUG))
     {
       std::cout << "[Proxy" << m_self_cluster_id << "][Recovery] Handle Degraded Read" << std::endl;
     }
@@ -5085,7 +5085,7 @@ namespace ECProject
   {
     try
     {
-      if (cord_trace_log(IF_DEBUG))
+      if (uplrc_trace_log(IF_DEBUG))
       {
         std::cout << "[Proxy" << m_self_cluster_id << "][Recovery] Handle recovery" << std::endl;
       }
@@ -5257,7 +5257,7 @@ namespace ECProject
     response->set_grpc_start_time(std::chrono::duration_cast<std::chrono::duration<double>>(START.time_since_epoch()).count());
     try
     {
-      if (cord_trace_log(IF_DEBUG))
+      if (uplrc_trace_log(IF_DEBUG))
       {
         std::cout << "[Proxy" << m_self_cluster_id << "][Recovery] Handle recovery" << std::endl;
       }
@@ -5520,7 +5520,7 @@ namespace ECProject
   {
   try
     {
-      if (cord_trace_log(IF_DEBUG))
+      if (uplrc_trace_log(IF_DEBUG))
       {
         std::cout << "[Proxy" << m_self_cluster_id << "][MultipleRecovery] Handle multiple recovery" << std::endl;
       }
@@ -5574,7 +5574,7 @@ namespace ECProject
           asio::error_code ignore_ec;
           socket.shutdown(asio::ip::tcp::socket::shutdown_receive, ignore_ec);
           socket.close(ignore_ec);
-          if (cord_trace_log(IF_DEBUG))
+          if (uplrc_trace_log(IF_DEBUG))
             std::cout << "[MultipleRecovery] received " << read_bytes << " bytes from proxy #" << i << std::endl;
         }
         catch (const std::exception &e)
@@ -5619,7 +5619,7 @@ namespace ECProject
           // block id: here we don't have explicit id mapping in the request, use index b.
           // If your system needs specific block ids, adapt to include them in the request.
           RecoveryToDatanode(block_keys[b].c_str(), b, out_blocks[b], replacing_node_ip.c_str(), replacing_node_port);
-          if (cord_trace_log(IF_DEBUG))
+          if (uplrc_trace_log(IF_DEBUG))
             std::cout << "[MultipleRecovery] sent recovered block " << block_keys[b] << " (index " << b << ") to " << replacing_node_ip << ":" << replacing_node_port << std::endl;
         }
         catch (const std::exception &e)

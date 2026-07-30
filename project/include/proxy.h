@@ -36,7 +36,7 @@ namespace ECProject
                        asio::ip::address::from_string(proxy_ip_port.substr(0, proxy_ip_port.find(':')).c_str()),
                        ECProject::PROXY_PORT_SHIFT +
                            std::stoi(proxy_ip_port.substr(proxy_ip_port.find(':') + 1, proxy_ip_port.size())))),
-          m_cord_xfer_acceptor(
+          m_uplrc_xfer_acceptor(
               io_context,
               asio::ip::tcp::endpoint(
                   asio::ip::address::from_string(proxy_ip_port.substr(0, proxy_ip_port.find(':')).c_str()),
@@ -49,7 +49,7 @@ namespace ECProject
       m_ip = proxy_ip_port.substr(0, proxy_ip_port.find(':'));
       m_port = std::stoi(proxy_ip_port.substr(proxy_ip_port.find(':') + 1, proxy_ip_port.size()));
       std::cout << "Cluster id:" << m_self_cluster_id << std::endl;
-      start_cord_xfer_tcp_acceptor();
+      start_uplrc_xfer_tcp_acceptor();
     }
     ~ProxyImpl() {};
     grpc::Status checkalive(
@@ -66,53 +66,53 @@ namespace ECProject
         grpc::ServerContext *context,
         const proxy_proto::AppendStripeDataPlacement *append_stripe_data_placement,
         proxy_proto::SetReply *response) override;
-    grpc::Status scheduleCordDataUpdate(
+    grpc::Status scheduleUpLRCDataUpdate(
         grpc::ServerContext *context,
-        const proxy_proto::CordDataUpdatePlacement *placement,
+        const proxy_proto::UpLRCDataUpdatePlacement *placement,
         proxy_proto::SetReply *response) override;
-    grpc::Status scheduleCordLocalParityApply(
+    grpc::Status scheduleUpLRCLocalParityApply(
         grpc::ServerContext *context,
-        const proxy_proto::CordLocalParityBundle *bundle,
+        const proxy_proto::UpLRCLocalParityBundle *bundle,
         proxy_proto::SetReply *response) override;
-    grpc::Status cordLpHubSessionBegin(
+    grpc::Status uplrcLpHubSessionBegin(
         grpc::ServerContext *context,
-        const proxy_proto::CordLpHubSessionBegin *request,
+        const proxy_proto::UpLRCLpHubSessionBegin *request,
         proxy_proto::SetReply *response) override;
-    grpc::Status cordLpHubPartialPush(
+    grpc::Status uplrcLpHubPartialPush(
         grpc::ServerContext *context,
-        const proxy_proto::CordLpHubPartialPush *request,
+        const proxy_proto::UpLRCLpHubPartialPush *request,
         proxy_proto::SetReply *response) override;
-    grpc::Status cordLpComputePartialAndPush(
+    grpc::Status uplrcLpComputePartialAndPush(
         grpc::ServerContext *context,
-        const proxy_proto::CordLpComputePartialAndPush *request,
+        const proxy_proto::UpLRCLpComputePartialAndPush *request,
         proxy_proto::SetReply *response) override;
-    grpc::Status cordLpApplyParityDelta(
+    grpc::Status uplrcLpApplyParityDelta(
         grpc::ServerContext *context,
-        const proxy_proto::CordLpParityApplyDelta *request,
+        const proxy_proto::UpLRCLpParityApplyDelta *request,
         proxy_proto::SetReply *response) override;
-    grpc::Status scheduleCordTransferPlan(
+    grpc::Status scheduleUpLRCTransferPlan(
         grpc::ServerContext *context,
-        const proxy_proto::CordTransferPlan *plan,
+        const proxy_proto::UpLRCTransferPlan *plan,
         proxy_proto::SetReply *response) override;
-    grpc::Status cordPlanStartExecution(
+    grpc::Status uplrcPlanStartExecution(
         grpc::ServerContext *context,
-        const proxy_proto::CordPlanKeyMsg *request,
+        const proxy_proto::UpLRCPlanKeyMsg *request,
         proxy_proto::SetReply *response) override;
-    grpc::Status cordPlanJoinExecution(
+    grpc::Status uplrcPlanJoinExecution(
         grpc::ServerContext *context,
-        const proxy_proto::CordPlanKeyMsg *request,
+        const proxy_proto::UpLRCPlanKeyMsg *request,
         proxy_proto::SetReply *response) override;
-    grpc::Status cordPlanCollectorIngestDataDelta(
+    grpc::Status uplrcPlanCollectorIngestDataDelta(
         grpc::ServerContext *context,
-        const proxy_proto::CordPlanCollectorIngestReq *request,
+        const proxy_proto::UpLRCPlanCollectorIngestReq *request,
         proxy_proto::SetReply *response) override;
-    grpc::Status cordPlanApplyParityXorDelta(
+    grpc::Status uplrcPlanApplyParityXorDelta(
         grpc::ServerContext *context,
-        const proxy_proto::CordPlanApplyParityXorReq *request,
+        const proxy_proto::UpLRCPlanApplyParityXorReq *request,
         proxy_proto::SetReply *response) override;
-    grpc::Status cordPlanMstDataDeltaChunk(
+    grpc::Status uplrcPlanMstDataDeltaChunk(
         grpc::ServerContext *context,
-        const proxy_proto::CordPlanMstDataDeltaReq *request,
+        const proxy_proto::UpLRCPlanMstDataDeltaReq *request,
         proxy_proto::SetReply *response) override;
 
     // decode and get
@@ -184,11 +184,11 @@ namespace ECProject
     bool GetFromDatanode(const std::string &key, char *value, const size_t value_length, const char *ip, const int port);
     bool GetFromDatanode(const std::string &key, char *value, const size_t value_length, const char *ip, const int port, 
       double *disk_io_start_time, double *disk_io_end_time, double *network_start_time, double *network_end_time, double *grpc_notify_time, double *grpc_start_time);
-    bool CordRangeReadFromDatanode(const std::string &block_key, int block_id, int range_offset, char *out, size_t length, const char *ip, int port);
-    bool CordRangeWriteToDatanode(const std::string &block_key, int block_id, int range_offset, const char *data, size_t length, const char *ip, int port);
-    bool CordRangeXorWriteToDatanode(const std::string &block_key, int block_id, int range_offset, const char *delta, size_t length, const char *ip, int port);
-    bool CordDeltaBlobToDatanode(const std::string &blob_key, const char *data, size_t length, const char *ip, int port);
-    /** CoRD：与其它 proxy（ip:port）之间的长连接池，跨 RPC 调用复用 HTTP/2 channel。 */
+    bool UpLRCRangeReadFromDatanode(const std::string &block_key, int block_id, int range_offset, char *out, size_t length, const char *ip, int port);
+    bool UpLRCRangeWriteToDatanode(const std::string &block_key, int block_id, int range_offset, const char *data, size_t length, const char *ip, int port);
+    bool UpLRCRangeXorWriteToDatanode(const std::string &block_key, int block_id, int range_offset, const char *delta, size_t length, const char *ip, int port);
+    bool UpLRCDeltaBlobToDatanode(const std::string &blob_key, const char *data, size_t length, const char *ip, int port);
+    /** UpLRC：与其它 proxy（ip:port）之间的长连接池，跨 RPC 调用复用 HTTP/2 channel。 */
     proxy_proto::proxyService::Stub *stub_for_peer_proxy(const std::string &endpoint);
     int self_cluster_id() const { return m_self_cluster_id; }
     bool RecoveryToDatanode(const char *block_key, int block_id, const char *buf, const char *ip, int port);
@@ -209,8 +209,8 @@ namespace ECProject
     std::condition_variable cv;
     bool init_coordinator();
     bool init_datanodes(std::string datanodeinfo_path);
-    void start_cord_xfer_tcp_acceptor();
-    void cord_handle_xfer_tcp_connection(asio::ip::tcp::socket socket);
+    void start_uplrc_xfer_tcp_acceptor();
+    void uplrc_handle_xfer_tcp_connection(asio::ip::tcp::socket socket);
     std::unique_ptr<coordinator_proto::coordinatorService::Stub> m_coordinator_ptr;
     std::map<std::string, std::unique_ptr<datanode_proto::datanodeService::Stub>> m_datanode_ptrs;
     std::string config_path;
@@ -220,7 +220,7 @@ namespace ECProject
     int m_self_cluster_id;
     asio::io_context io_context;
     asio::ip::tcp::acceptor acceptor;
-    asio::ip::tcp::acceptor m_cord_xfer_acceptor;
+    asio::ip::tcp::acceptor m_uplrc_xfer_acceptor;
     sem_t sem;
     std::string m_coordinator_address;
   };

@@ -140,7 +140,7 @@ PROTOBUF_CONSTEXPR ReplyProxyIPsPorts::ReplyProxyIPsPorts(
   , /*decltype(_impl_._slice_block_ids_cached_byte_size_)*/{0}
   , /*decltype(_impl_.slice_block_counts_)*/{}
   , /*decltype(_impl_._slice_block_counts_cached_byte_size_)*/{0}
-  , /*decltype(_impl_.cord_transfer_plan_key_)*/{&::_pbi::fixed_address_empty_string, ::_pbi::ConstantInitialized{}}
+  , /*decltype(_impl_.uplrc_transfer_plan_key_)*/{&::_pbi::fixed_address_empty_string, ::_pbi::ConstantInitialized{}}
   , /*decltype(_impl_.sum_append_size_)*/uint64_t{0u}
   , /*decltype(_impl_._cached_size_)*/{}} {}
 struct ReplyProxyIPsPortsDefaultTypeInternal {
@@ -152,32 +152,32 @@ struct ReplyProxyIPsPortsDefaultTypeInternal {
   };
 };
 PROTOBUF_ATTRIBUTE_NO_DESTROY PROTOBUF_CONSTINIT PROTOBUF_ATTRIBUTE_INIT_PRIORITY1 ReplyProxyIPsPortsDefaultTypeInternal _ReplyProxyIPsPorts_default_instance_;
-PROTOBUF_CONSTEXPR CordPlanKeyOnly::CordPlanKeyOnly(
+PROTOBUF_CONSTEXPR UpLRCPlanKeyOnly::UpLRCPlanKeyOnly(
     ::_pbi::ConstantInitialized): _impl_{
     /*decltype(_impl_.plan_key_)*/{&::_pbi::fixed_address_empty_string, ::_pbi::ConstantInitialized{}}
   , /*decltype(_impl_._cached_size_)*/{}} {}
-struct CordPlanKeyOnlyDefaultTypeInternal {
-  PROTOBUF_CONSTEXPR CordPlanKeyOnlyDefaultTypeInternal()
+struct UpLRCPlanKeyOnlyDefaultTypeInternal {
+  PROTOBUF_CONSTEXPR UpLRCPlanKeyOnlyDefaultTypeInternal()
       : _instance(::_pbi::ConstantInitialized{}) {}
-  ~CordPlanKeyOnlyDefaultTypeInternal() {}
+  ~UpLRCPlanKeyOnlyDefaultTypeInternal() {}
   union {
-    CordPlanKeyOnly _instance;
+    UpLRCPlanKeyOnly _instance;
   };
 };
-PROTOBUF_ATTRIBUTE_NO_DESTROY PROTOBUF_CONSTINIT PROTOBUF_ATTRIBUTE_INIT_PRIORITY1 CordPlanKeyOnlyDefaultTypeInternal _CordPlanKeyOnly_default_instance_;
-PROTOBUF_CONSTEXPR CordPlanWaitRequest::CordPlanWaitRequest(
+PROTOBUF_ATTRIBUTE_NO_DESTROY PROTOBUF_CONSTINIT PROTOBUF_ATTRIBUTE_INIT_PRIORITY1 UpLRCPlanKeyOnlyDefaultTypeInternal _UpLRCPlanKeyOnly_default_instance_;
+PROTOBUF_CONSTEXPR UpLRCPlanWaitRequest::UpLRCPlanWaitRequest(
     ::_pbi::ConstantInitialized): _impl_{
     /*decltype(_impl_.plan_key_)*/{&::_pbi::fixed_address_empty_string, ::_pbi::ConstantInitialized{}}
   , /*decltype(_impl_._cached_size_)*/{}} {}
-struct CordPlanWaitRequestDefaultTypeInternal {
-  PROTOBUF_CONSTEXPR CordPlanWaitRequestDefaultTypeInternal()
+struct UpLRCPlanWaitRequestDefaultTypeInternal {
+  PROTOBUF_CONSTEXPR UpLRCPlanWaitRequestDefaultTypeInternal()
       : _instance(::_pbi::ConstantInitialized{}) {}
-  ~CordPlanWaitRequestDefaultTypeInternal() {}
+  ~UpLRCPlanWaitRequestDefaultTypeInternal() {}
   union {
-    CordPlanWaitRequest _instance;
+    UpLRCPlanWaitRequest _instance;
   };
 };
-PROTOBUF_ATTRIBUTE_NO_DESTROY PROTOBUF_CONSTINIT PROTOBUF_ATTRIBUTE_INIT_PRIORITY1 CordPlanWaitRequestDefaultTypeInternal _CordPlanWaitRequest_default_instance_;
+PROTOBUF_ATTRIBUTE_NO_DESTROY PROTOBUF_CONSTINIT PROTOBUF_ATTRIBUTE_INIT_PRIORITY1 UpLRCPlanWaitRequestDefaultTypeInternal _UpLRCPlanWaitRequest_default_instance_;
 PROTOBUF_CONSTEXPR AskIfSuccess::AskIfSuccess(
     ::_pbi::ConstantInitialized): _impl_{
     /*decltype(_impl_.key_)*/{&::_pbi::fixed_address_empty_string, ::_pbi::ConstantInitialized{}}
@@ -195,10 +195,10 @@ struct AskIfSuccessDefaultTypeInternal {
 PROTOBUF_ATTRIBUTE_NO_DESTROY PROTOBUF_CONSTINIT PROTOBUF_ATTRIBUTE_INIT_PRIORITY1 AskIfSuccessDefaultTypeInternal _AskIfSuccess_default_instance_;
 PROTOBUF_CONSTEXPR RepIfSuccess::RepIfSuccess(
     ::_pbi::ConstantInitialized): _impl_{
-    /*decltype(_impl_.cord_xfer_pure_sec_)*/0
-  , /*decltype(_impl_.cord_xfer_grpc_sec_)*/0
+    /*decltype(_impl_.uplrc_xfer_pure_sec_)*/0
+  , /*decltype(_impl_.uplrc_xfer_grpc_sec_)*/0
   , /*decltype(_impl_.ifcommit_)*/false
-  , /*decltype(_impl_.cord_xfer_timing_present_)*/false
+  , /*decltype(_impl_.uplrc_xfer_timing_present_)*/false
   , /*decltype(_impl_._cached_size_)*/{}} {}
 struct RepIfSuccessDefaultTypeInternal {
   PROTOBUF_CONSTEXPR RepIfSuccessDefaultTypeInternal()
@@ -269,38 +269,38 @@ struct LogicalRangeDefaultTypeInternal {
   };
 };
 PROTOBUF_ATTRIBUTE_NO_DESTROY PROTOBUF_CONSTINIT PROTOBUF_ATTRIBUTE_INIT_PRIORITY1 LogicalRangeDefaultTypeInternal _LogicalRange_default_instance_;
-PROTOBUF_CONSTEXPR XueUpdateRequest::XueUpdateRequest(
+PROTOBUF_CONSTEXPR UplrcLegacyUpdateRequest::UplrcLegacyUpdateRequest(
     ::_pbi::ConstantInitialized): _impl_{
     /*decltype(_impl_.ranges_)*/{}
   , /*decltype(_impl_.client_id_)*/{&::_pbi::fixed_address_empty_string, ::_pbi::ConstantInitialized{}}
   , /*decltype(_impl_.stripe_id_)*/0
   , /*decltype(_impl_._cached_size_)*/{}} {}
-struct XueUpdateRequestDefaultTypeInternal {
-  PROTOBUF_CONSTEXPR XueUpdateRequestDefaultTypeInternal()
+struct UplrcLegacyUpdateRequestDefaultTypeInternal {
+  PROTOBUF_CONSTEXPR UplrcLegacyUpdateRequestDefaultTypeInternal()
       : _instance(::_pbi::ConstantInitialized{}) {}
-  ~XueUpdateRequestDefaultTypeInternal() {}
+  ~UplrcLegacyUpdateRequestDefaultTypeInternal() {}
   union {
-    XueUpdateRequest _instance;
+    UplrcLegacyUpdateRequest _instance;
   };
 };
-PROTOBUF_ATTRIBUTE_NO_DESTROY PROTOBUF_CONSTINIT PROTOBUF_ATTRIBUTE_INIT_PRIORITY1 XueUpdateRequestDefaultTypeInternal _XueUpdateRequest_default_instance_;
-PROTOBUF_CONSTEXPR CordUpdateRequest::CordUpdateRequest(
+PROTOBUF_ATTRIBUTE_NO_DESTROY PROTOBUF_CONSTINIT PROTOBUF_ATTRIBUTE_INIT_PRIORITY1 UplrcLegacyUpdateRequestDefaultTypeInternal _UplrcLegacyUpdateRequest_default_instance_;
+PROTOBUF_CONSTEXPR UpLRCUpdateRequest::UpLRCUpdateRequest(
     ::_pbi::ConstantInitialized): _impl_{
     /*decltype(_impl_.update_intervals_)*/{}
   , /*decltype(_impl_.client_id_)*/{&::_pbi::fixed_address_empty_string, ::_pbi::ConstantInitialized{}}
   , /*decltype(_impl_.stripe_id_)*/0
   , /*decltype(_impl_.interval_count_)*/0
-  , /*decltype(_impl_.cord_lp_use_global_hub_)*/false
+  , /*decltype(_impl_.uplrc_lp_use_global_hub_)*/false
   , /*decltype(_impl_._cached_size_)*/{}} {}
-struct CordUpdateRequestDefaultTypeInternal {
-  PROTOBUF_CONSTEXPR CordUpdateRequestDefaultTypeInternal()
+struct UpLRCUpdateRequestDefaultTypeInternal {
+  PROTOBUF_CONSTEXPR UpLRCUpdateRequestDefaultTypeInternal()
       : _instance(::_pbi::ConstantInitialized{}) {}
-  ~CordUpdateRequestDefaultTypeInternal() {}
+  ~UpLRCUpdateRequestDefaultTypeInternal() {}
   union {
-    CordUpdateRequest _instance;
+    UpLRCUpdateRequest _instance;
   };
 };
-PROTOBUF_ATTRIBUTE_NO_DESTROY PROTOBUF_CONSTINIT PROTOBUF_ATTRIBUTE_INIT_PRIORITY1 CordUpdateRequestDefaultTypeInternal _CordUpdateRequest_default_instance_;
+PROTOBUF_ATTRIBUTE_NO_DESTROY PROTOBUF_CONSTINIT PROTOBUF_ATTRIBUTE_INIT_PRIORITY1 UpLRCUpdateRequestDefaultTypeInternal _UpLRCUpdateRequest_default_instance_;
 PROTOBUF_CONSTEXPR KeyFromClient::KeyFromClient(
     ::_pbi::ConstantInitialized): _impl_{
     /*decltype(_impl_.key_)*/{&::_pbi::fixed_address_empty_string, ::_pbi::ConstantInitialized{}}
@@ -509,23 +509,23 @@ const uint32_t TableStruct_coordinator_2eproto::offsets[] PROTOBUF_SECTION_VARIA
   PROTOBUF_FIELD_OFFSET(::coordinator_proto::ReplyProxyIPsPorts, _impl_.proxyports_),
   PROTOBUF_FIELD_OFFSET(::coordinator_proto::ReplyProxyIPsPorts, _impl_.cluster_slice_sizes_),
   PROTOBUF_FIELD_OFFSET(::coordinator_proto::ReplyProxyIPsPorts, _impl_.group_ids_),
-  PROTOBUF_FIELD_OFFSET(::coordinator_proto::ReplyProxyIPsPorts, _impl_.cord_transfer_plan_key_),
+  PROTOBUF_FIELD_OFFSET(::coordinator_proto::ReplyProxyIPsPorts, _impl_.uplrc_transfer_plan_key_),
   PROTOBUF_FIELD_OFFSET(::coordinator_proto::ReplyProxyIPsPorts, _impl_.slice_block_ids_),
   PROTOBUF_FIELD_OFFSET(::coordinator_proto::ReplyProxyIPsPorts, _impl_.slice_block_counts_),
   ~0u,  // no _has_bits_
-  PROTOBUF_FIELD_OFFSET(::coordinator_proto::CordPlanKeyOnly, _internal_metadata_),
+  PROTOBUF_FIELD_OFFSET(::coordinator_proto::UpLRCPlanKeyOnly, _internal_metadata_),
   ~0u,  // no _extensions_
   ~0u,  // no _oneof_case_
   ~0u,  // no _weak_field_map_
   ~0u,  // no _inlined_string_donated_
-  PROTOBUF_FIELD_OFFSET(::coordinator_proto::CordPlanKeyOnly, _impl_.plan_key_),
+  PROTOBUF_FIELD_OFFSET(::coordinator_proto::UpLRCPlanKeyOnly, _impl_.plan_key_),
   ~0u,  // no _has_bits_
-  PROTOBUF_FIELD_OFFSET(::coordinator_proto::CordPlanWaitRequest, _internal_metadata_),
+  PROTOBUF_FIELD_OFFSET(::coordinator_proto::UpLRCPlanWaitRequest, _internal_metadata_),
   ~0u,  // no _extensions_
   ~0u,  // no _oneof_case_
   ~0u,  // no _weak_field_map_
   ~0u,  // no _inlined_string_donated_
-  PROTOBUF_FIELD_OFFSET(::coordinator_proto::CordPlanWaitRequest, _impl_.plan_key_),
+  PROTOBUF_FIELD_OFFSET(::coordinator_proto::UpLRCPlanWaitRequest, _impl_.plan_key_),
   ~0u,  // no _has_bits_
   PROTOBUF_FIELD_OFFSET(::coordinator_proto::AskIfSuccess, _internal_metadata_),
   ~0u,  // no _extensions_
@@ -542,9 +542,9 @@ const uint32_t TableStruct_coordinator_2eproto::offsets[] PROTOBUF_SECTION_VARIA
   ~0u,  // no _weak_field_map_
   ~0u,  // no _inlined_string_donated_
   PROTOBUF_FIELD_OFFSET(::coordinator_proto::RepIfSuccess, _impl_.ifcommit_),
-  PROTOBUF_FIELD_OFFSET(::coordinator_proto::RepIfSuccess, _impl_.cord_xfer_timing_present_),
-  PROTOBUF_FIELD_OFFSET(::coordinator_proto::RepIfSuccess, _impl_.cord_xfer_pure_sec_),
-  PROTOBUF_FIELD_OFFSET(::coordinator_proto::RepIfSuccess, _impl_.cord_xfer_grpc_sec_),
+  PROTOBUF_FIELD_OFFSET(::coordinator_proto::RepIfSuccess, _impl_.uplrc_xfer_timing_present_),
+  PROTOBUF_FIELD_OFFSET(::coordinator_proto::RepIfSuccess, _impl_.uplrc_xfer_pure_sec_),
+  PROTOBUF_FIELD_OFFSET(::coordinator_proto::RepIfSuccess, _impl_.uplrc_xfer_grpc_sec_),
   ~0u,  // no _has_bits_
   PROTOBUF_FIELD_OFFSET(::coordinator_proto::KeyAndClientIP, _internal_metadata_),
   ~0u,  // no _extensions_
@@ -582,25 +582,25 @@ const uint32_t TableStruct_coordinator_2eproto::offsets[] PROTOBUF_SECTION_VARIA
   PROTOBUF_FIELD_OFFSET(::coordinator_proto::LogicalRange, _impl_.logical_offset_start_),
   PROTOBUF_FIELD_OFFSET(::coordinator_proto::LogicalRange, _impl_.logical_offset_end_),
   ~0u,  // no _has_bits_
-  PROTOBUF_FIELD_OFFSET(::coordinator_proto::XueUpdateRequest, _internal_metadata_),
+  PROTOBUF_FIELD_OFFSET(::coordinator_proto::UplrcLegacyUpdateRequest, _internal_metadata_),
   ~0u,  // no _extensions_
   ~0u,  // no _oneof_case_
   ~0u,  // no _weak_field_map_
   ~0u,  // no _inlined_string_donated_
-  PROTOBUF_FIELD_OFFSET(::coordinator_proto::XueUpdateRequest, _impl_.client_id_),
-  PROTOBUF_FIELD_OFFSET(::coordinator_proto::XueUpdateRequest, _impl_.stripe_id_),
-  PROTOBUF_FIELD_OFFSET(::coordinator_proto::XueUpdateRequest, _impl_.ranges_),
+  PROTOBUF_FIELD_OFFSET(::coordinator_proto::UplrcLegacyUpdateRequest, _impl_.client_id_),
+  PROTOBUF_FIELD_OFFSET(::coordinator_proto::UplrcLegacyUpdateRequest, _impl_.stripe_id_),
+  PROTOBUF_FIELD_OFFSET(::coordinator_proto::UplrcLegacyUpdateRequest, _impl_.ranges_),
   ~0u,  // no _has_bits_
-  PROTOBUF_FIELD_OFFSET(::coordinator_proto::CordUpdateRequest, _internal_metadata_),
+  PROTOBUF_FIELD_OFFSET(::coordinator_proto::UpLRCUpdateRequest, _internal_metadata_),
   ~0u,  // no _extensions_
   ~0u,  // no _oneof_case_
   ~0u,  // no _weak_field_map_
   ~0u,  // no _inlined_string_donated_
-  PROTOBUF_FIELD_OFFSET(::coordinator_proto::CordUpdateRequest, _impl_.client_id_),
-  PROTOBUF_FIELD_OFFSET(::coordinator_proto::CordUpdateRequest, _impl_.stripe_id_),
-  PROTOBUF_FIELD_OFFSET(::coordinator_proto::CordUpdateRequest, _impl_.update_intervals_),
-  PROTOBUF_FIELD_OFFSET(::coordinator_proto::CordUpdateRequest, _impl_.interval_count_),
-  PROTOBUF_FIELD_OFFSET(::coordinator_proto::CordUpdateRequest, _impl_.cord_lp_use_global_hub_),
+  PROTOBUF_FIELD_OFFSET(::coordinator_proto::UpLRCUpdateRequest, _impl_.client_id_),
+  PROTOBUF_FIELD_OFFSET(::coordinator_proto::UpLRCUpdateRequest, _impl_.stripe_id_),
+  PROTOBUF_FIELD_OFFSET(::coordinator_proto::UpLRCUpdateRequest, _impl_.update_intervals_),
+  PROTOBUF_FIELD_OFFSET(::coordinator_proto::UpLRCUpdateRequest, _impl_.interval_count_),
+  PROTOBUF_FIELD_OFFSET(::coordinator_proto::UpLRCUpdateRequest, _impl_.uplrc_lp_use_global_hub_),
   ~0u,  // no _has_bits_
   PROTOBUF_FIELD_OFFSET(::coordinator_proto::KeyFromClient, _internal_metadata_),
   ~0u,  // no _extensions_
@@ -682,16 +682,16 @@ static const ::_pbi::MigrationSchema schemas[] PROTOBUF_SECTION_VARIABLE(protode
   { 45, -1, -1, sizeof(::coordinator_proto::ReplyProxyIPPort)},
   { 53, -1, -1, sizeof(::coordinator_proto::CommitAbortKey)},
   { 63, -1, -1, sizeof(::coordinator_proto::ReplyProxyIPsPorts)},
-  { 78, -1, -1, sizeof(::coordinator_proto::CordPlanKeyOnly)},
-  { 85, -1, -1, sizeof(::coordinator_proto::CordPlanWaitRequest)},
+  { 78, -1, -1, sizeof(::coordinator_proto::UpLRCPlanKeyOnly)},
+  { 85, -1, -1, sizeof(::coordinator_proto::UpLRCPlanWaitRequest)},
   { 92, -1, -1, sizeof(::coordinator_proto::AskIfSuccess)},
   { 101, -1, -1, sizeof(::coordinator_proto::RepIfSuccess)},
   { 111, -1, -1, sizeof(::coordinator_proto::KeyAndClientIP)},
   { 120, -1, -1, sizeof(::coordinator_proto::RepIfGetSuccess)},
   { 128, -1, -1, sizeof(::coordinator_proto::BlockIDsAndClientIP)},
   { 139, -1, -1, sizeof(::coordinator_proto::LogicalRange)},
-  { 147, -1, -1, sizeof(::coordinator_proto::XueUpdateRequest)},
-  { 156, -1, -1, sizeof(::coordinator_proto::CordUpdateRequest)},
+  { 147, -1, -1, sizeof(::coordinator_proto::UplrcLegacyUpdateRequest)},
+  { 156, -1, -1, sizeof(::coordinator_proto::UpLRCUpdateRequest)},
   { 167, -1, -1, sizeof(::coordinator_proto::KeyFromClient)},
   { 174, -1, -1, sizeof(::coordinator_proto::StripeIdFromClient)},
   { 181, -1, -1, sizeof(::coordinator_proto::StripeIdAndBlockIDsFromClient)},
@@ -712,16 +712,16 @@ static const ::_pb::Message* const file_default_instances[] = {
   &::coordinator_proto::_ReplyProxyIPPort_default_instance_._instance,
   &::coordinator_proto::_CommitAbortKey_default_instance_._instance,
   &::coordinator_proto::_ReplyProxyIPsPorts_default_instance_._instance,
-  &::coordinator_proto::_CordPlanKeyOnly_default_instance_._instance,
-  &::coordinator_proto::_CordPlanWaitRequest_default_instance_._instance,
+  &::coordinator_proto::_UpLRCPlanKeyOnly_default_instance_._instance,
+  &::coordinator_proto::_UpLRCPlanWaitRequest_default_instance_._instance,
   &::coordinator_proto::_AskIfSuccess_default_instance_._instance,
   &::coordinator_proto::_RepIfSuccess_default_instance_._instance,
   &::coordinator_proto::_KeyAndClientIP_default_instance_._instance,
   &::coordinator_proto::_RepIfGetSuccess_default_instance_._instance,
   &::coordinator_proto::_BlockIDsAndClientIP_default_instance_._instance,
   &::coordinator_proto::_LogicalRange_default_instance_._instance,
-  &::coordinator_proto::_XueUpdateRequest_default_instance_._instance,
-  &::coordinator_proto::_CordUpdateRequest_default_instance_._instance,
+  &::coordinator_proto::_UplrcLegacyUpdateRequest_default_instance_._instance,
+  &::coordinator_proto::_UpLRCUpdateRequest_default_instance_._instance,
   &::coordinator_proto::_KeyFromClient_default_instance_._instance,
   &::coordinator_proto::_StripeIdFromClient_default_instance_._instance,
   &::coordinator_proto::_StripeIdAndBlockIDsFromClient_default_instance_._instance,
@@ -750,123 +750,124 @@ const char descriptor_table_protodef_coordinator_2eproto[] PROTOBUF_SECTION_VARI
   "ort\022\017\n\007proxyip\030\001 \001(\t\022\021\n\tproxyport\030\002 \001(\005\""
   "W\n\016CommitAbortKey\022\013\n\003key\030\001 \001(\t\022\030\n\020ifcomm"
   "itmetadata\030\002 \001(\010\022\013\n\003opp\030\003 \001(\005\022\021\n\tstripe_"
-  "id\030\004 \001(\005\"\355\001\n\022ReplyProxyIPsPorts\022\027\n\017sum_a"
+  "id\030\004 \001(\005\"\356\001\n\022ReplyProxyIPsPorts\022\027\n\017sum_a"
   "ppend_size\030\001 \001(\004\022\023\n\013append_keys\030\002 \003(\t\022\020\n"
   "\010proxyips\030\003 \003(\t\022\022\n\nproxyports\030\004 \003(\005\022\033\n\023c"
   "luster_slice_sizes\030\005 \003(\004\022\021\n\tgroup_ids\030\006 "
-  "\003(\005\022\036\n\026cord_transfer_plan_key\030\007 \001(\t\022\027\n\017s"
-  "lice_block_ids\030\010 \003(\005\022\032\n\022slice_block_coun"
-  "ts\030\t \003(\005\"#\n\017CordPlanKeyOnly\022\020\n\010plan_key\030"
-  "\001 \001(\t\"\'\n\023CordPlanWaitRequest\022\020\n\010plan_key"
-  "\030\001 \001(\t\";\n\014AskIfSuccess\022\013\n\003key\030\001 \001(\t\022\013\n\003o"
-  "pp\030\002 \001(\005\022\021\n\tstripe_id\030\003 \001(\005\"z\n\014RepIfSucc"
-  "ess\022\020\n\010ifcommit\030\001 \001(\010\022 \n\030cord_xfer_timin"
-  "g_present\030\002 \001(\010\022\032\n\022cord_xfer_pure_sec\030\003 "
-  "\001(\001\022\032\n\022cord_xfer_grpc_sec\030\004 \001(\001\"C\n\016KeyAn"
-  "dClientIP\022\013\n\003key\030\001 \001(\t\022\020\n\010clientip\030\002 \001(\t"
-  "\022\022\n\nclientport\030\003 \001(\005\"\?\n\017RepIfGetSuccess\022"
-  "\024\n\014ifgetsuccess\030\001 \001(\010\022\026\n\016valuesizebytes\030"
-  "\002 \001(\005\"\202\001\n\023BlockIDsAndClientIP\022\026\n\016start_b"
-  "lock_id\030\001 \001(\005\022\024\n\014end_block_id\030\002 \001(\005\022\020\n\010c"
-  "lientip\030\003 \001(\t\022\022\n\nclientport\030\004 \001(\005\022\027\n\017fai"
-  "led_block_id\030\005 \001(\005\"H\n\014LogicalRange\022\034\n\024lo"
-  "gical_offset_start\030\001 \001(\005\022\032\n\022logical_offs"
-  "et_end\030\002 \001(\005\"i\n\020XueUpdateRequest\022\021\n\tclie"
-  "nt_id\030\001 \001(\t\022\021\n\tstripe_id\030\002 \001(\005\022/\n\006ranges"
-  "\030\003 \003(\0132\037.coordinator_proto.LogicalRange\""
-  "\254\001\n\021CordUpdateRequest\022\021\n\tclient_id\030\001 \001(\t"
-  "\022\021\n\tstripe_id\030\002 \001(\005\0229\n\020update_intervals\030"
-  "\003 \003(\0132\037.coordinator_proto.LogicalRange\022\026"
-  "\n\016interval_count\030\004 \001(\005\022\036\n\026cord_lp_use_gl"
-  "obal_hub\030\005 \001(\010\"\034\n\rKeyFromClient\022\013\n\003key\030\001"
-  " \001(\t\"\'\n\022StripeIdFromClient\022\021\n\tstripe_id\030"
-  "\001 \001(\005\"E\n\035StripeIdAndBlockIDsFromClient\022\021"
-  "\n\tstripe_id\030\001 \001(\005\022\021\n\tblock_ids\030\002 \003(\005\"#\n\020"
-  "NodeIdFromClient\022\017\n\007node_id\030\001 \001(\005\"\037\n\013Rep"
-  "IfDeling\022\020\n\010ifdeling\030\001 \001(\010\"\"\n\014RepStripeI"
-  "ds\022\022\n\nstripe_ids\030\001 \003(\005\" \n\013RepBlockNum\022\021\n"
-  "\tblock_num\030\001 \001(\005\"m\n\021DegradedReadReply\022\024\n"
-  "\014disk_io_time\030\001 \001(\001\022\024\n\014network_time\030\002 \001("
-  "\001\022\023\n\013decode_time\030\003 \001(\001\022\027\n\017grpc_start_tim"
-  "e\030\004 \001(\001\"\204\001\n\rRecoveryReply\022\026\n\016disk_read_t"
-  "ime\030\001 \001(\001\022\024\n\014network_time\030\002 \001(\001\022\023\n\013decod"
-  "e_time\030\003 \001(\001\022\027\n\017disk_write_time\030\004 \001(\001\022\027\n"
-  "\017grpc_start_time\030\005 \001(\0012\211\026\n\022coordinatorSe"
-  "rvice\022k\n\025sayHelloToCoordinator\022\'.coordin"
-  "ator_proto.RequestToCoordinator\032\'.coordi"
-  "nator_proto.ReplyFromCoordinator\"\000\022`\n\nch"
-  "eckalive\022\'.coordinator_proto.RequestToCo"
-  "ordinator\032\'.coordinator_proto.ReplyFromC"
-  "oordinator\"\000\022V\n\014setParameter\022\034.coordinat"
-  "or_proto.Parameter\032&.coordinator_proto.R"
-  "epIfSetParaSuccess\"\000\022d\n\024uploadOriginKeyV"
+  "\003(\005\022\037\n\027uplrc_transfer_plan_key\030\007 \001(\t\022\027\n\017"
+  "slice_block_ids\030\010 \003(\005\022\032\n\022slice_block_cou"
+  "nts\030\t \003(\005\"$\n\020UpLRCPlanKeyOnly\022\020\n\010plan_ke"
+  "y\030\001 \001(\t\"(\n\024UpLRCPlanWaitRequest\022\020\n\010plan_"
+  "key\030\001 \001(\t\";\n\014AskIfSuccess\022\013\n\003key\030\001 \001(\t\022\013"
+  "\n\003opp\030\002 \001(\005\022\021\n\tstripe_id\030\003 \001(\005\"}\n\014RepIfS"
+  "uccess\022\020\n\010ifcommit\030\001 \001(\010\022!\n\031uplrc_xfer_t"
+  "iming_present\030\002 \001(\010\022\033\n\023uplrc_xfer_pure_s"
+  "ec\030\003 \001(\001\022\033\n\023uplrc_xfer_grpc_sec\030\004 \001(\001\"C\n"
+  "\016KeyAndClientIP\022\013\n\003key\030\001 \001(\t\022\020\n\010clientip"
+  "\030\002 \001(\t\022\022\n\nclientport\030\003 \001(\005\"\?\n\017RepIfGetSu"
+  "ccess\022\024\n\014ifgetsuccess\030\001 \001(\010\022\026\n\016valuesize"
+  "bytes\030\002 \001(\005\"\202\001\n\023BlockIDsAndClientIP\022\026\n\016s"
+  "tart_block_id\030\001 \001(\005\022\024\n\014end_block_id\030\002 \001("
+  "\005\022\020\n\010clientip\030\003 \001(\t\022\022\n\nclientport\030\004 \001(\005\022"
+  "\027\n\017failed_block_id\030\005 \001(\005\"H\n\014LogicalRange"
+  "\022\034\n\024logical_offset_start\030\001 \001(\005\022\032\n\022logica"
+  "l_offset_end\030\002 \001(\005\"q\n\030UplrcLegacyUpdateR"
+  "equest\022\021\n\tclient_id\030\001 \001(\t\022\021\n\tstripe_id\030\002"
+  " \001(\005\022/\n\006ranges\030\003 \003(\0132\037.coordinator_proto"
+  ".LogicalRange\"\256\001\n\022UpLRCUpdateRequest\022\021\n\t"
+  "client_id\030\001 \001(\t\022\021\n\tstripe_id\030\002 \001(\005\0229\n\020up"
+  "date_intervals\030\003 \003(\0132\037.coordinator_proto"
+  ".LogicalRange\022\026\n\016interval_count\030\004 \001(\005\022\037\n"
+  "\027uplrc_lp_use_global_hub\030\005 \001(\010\"\034\n\rKeyFro"
+  "mClient\022\013\n\003key\030\001 \001(\t\"\'\n\022StripeIdFromClie"
+  "nt\022\021\n\tstripe_id\030\001 \001(\005\"E\n\035StripeIdAndBloc"
+  "kIDsFromClient\022\021\n\tstripe_id\030\001 \001(\005\022\021\n\tblo"
+  "ck_ids\030\002 \003(\005\"#\n\020NodeIdFromClient\022\017\n\007node"
+  "_id\030\001 \001(\005\"\037\n\013RepIfDeling\022\020\n\010ifdeling\030\001 \001"
+  "(\010\"\"\n\014RepStripeIds\022\022\n\nstripe_ids\030\001 \003(\005\" "
+  "\n\013RepBlockNum\022\021\n\tblock_num\030\001 \001(\005\"m\n\021Degr"
+  "adedReadReply\022\024\n\014disk_io_time\030\001 \001(\001\022\024\n\014n"
+  "etwork_time\030\002 \001(\001\022\023\n\013decode_time\030\003 \001(\001\022\027"
+  "\n\017grpc_start_time\030\004 \001(\001\"\204\001\n\rRecoveryRepl"
+  "y\022\026\n\016disk_read_time\030\001 \001(\001\022\024\n\014network_tim"
+  "e\030\002 \001(\001\022\023\n\013decode_time\030\003 \001(\001\022\027\n\017disk_wri"
+  "te_time\030\004 \001(\001\022\027\n\017grpc_start_time\030\005 \001(\0012\243"
+  "\026\n\022coordinatorService\022k\n\025sayHelloToCoord"
+  "inator\022\'.coordinator_proto.RequestToCoor"
+  "dinator\032\'.coordinator_proto.ReplyFromCoo"
+  "rdinator\"\000\022`\n\ncheckalive\022\'.coordinator_p"
+  "roto.RequestToCoordinator\032\'.coordinator_"
+  "proto.ReplyFromCoordinator\"\000\022V\n\014setParam"
+  "eter\022\034.coordinator_proto.Parameter\032&.coo"
+  "rdinator_proto.RepIfSetParaSuccess\"\000\022d\n\024"
+  "uploadOriginKeyValue\022%.coordinator_proto"
+  ".RequestProxyIPPort\032#.coordinator_proto."
+  "ReplyProxyIPPort\"\000\022a\n\021reportCommitAbort\022"
+  "!.coordinator_proto.CommitAbortKey\032\'.coo"
+  "rdinator_proto.ReplyFromCoordinator\"\000\022V\n"
+  "\020checkCommitAbort\022\037.coordinator_proto.As"
+  "kIfSuccess\032\037.coordinator_proto.RepIfSucc"
+  "ess\"\000\022`\n\016uploadSetValue\022%.coordinator_pr"
+  "oto.RequestProxyIPPort\032%.coordinator_pro"
+  "to.ReplyProxyIPsPorts\"\000\022c\n\021uploadSubsetV"
   "alue\022%.coordinator_proto.RequestProxyIPP"
-  "ort\032#.coordinator_proto.ReplyProxyIPPort"
-  "\"\000\022a\n\021reportCommitAbort\022!.coordinator_pr"
-  "oto.CommitAbortKey\032\'.coordinator_proto.R"
-  "eplyFromCoordinator\"\000\022V\n\020checkCommitAbor"
-  "t\022\037.coordinator_proto.AskIfSuccess\032\037.coo"
-  "rdinator_proto.RepIfSuccess\"\000\022`\n\016uploadS"
-  "etValue\022%.coordinator_proto.RequestProxy"
-  "IPPort\032%.coordinator_proto.ReplyProxyIPs"
-  "Ports\"\000\022c\n\021uploadSubsetValue\022%.coordinat"
-  "or_proto.RequestProxyIPPort\032%.coordinato"
-  "r_proto.ReplyProxyIPsPorts\"\000\022c\n\021uploadAp"
-  "pendValue\022%.coordinator_proto.RequestPro"
-  "xyIPPort\032%.coordinator_proto.ReplyProxyI"
-  "PsPorts\"\000\022_\n\017uploadXueUpdate\022#.coordinat"
-  "or_proto.XueUpdateRequest\032%.coordinator_"
-  "proto.ReplyProxyIPsPorts\"\000\022a\n\020uploadCord"
-  "Update\022$.coordinator_proto.CordUpdateReq"
-  "uest\032%.coordinator_proto.ReplyProxyIPsPo"
-  "rts\"\000\022^\n\025cordPlanBeginTransfer\022\".coordin"
-  "ator_proto.CordPlanKeyOnly\032\037.coordinator"
-  "_proto.RepIfSuccess\"\000\022i\n\034cordPlanWaitTra"
-  "nsferComplete\022&.coordinator_proto.CordPl"
-  "anWaitRequest\032\037.coordinator_proto.RepIfS"
-  "uccess\"\000\022e\n\032uploadCordLocalParityApply\022$"
-  ".coordinator_proto.CordUpdateRequest\032\037.c"
-  "oordinator_proto.RepIfSuccess\"\000\022l\n!uploa"
-  "dCordLocalParityViaGlobalHub\022$.coordinat"
-  "or_proto.CordUpdateRequest\032\037.coordinator"
-  "_proto.RepIfSuccess\"\000\022S\n\010getValue\022!.coor"
-  "dinator_proto.KeyAndClientIP\032\".coordinat"
-  "or_proto.RepIfGetSuccess\"\000\022W\n\tgetStripe\022"
-  "!.coordinator_proto.KeyAndClientIP\032%.coo"
-  "rdinator_proto.ReplyProxyIPsPorts\"\000\022\\\n\tg"
-  "etBlocks\022&.coordinator_proto.BlockIDsAnd"
-  "ClientIP\032%.coordinator_proto.ReplyProxyI"
-  "PsPorts\"\000\022h\n\025getDegradedReadBlocks\022&.coo"
-  "rdinator_proto.BlockIDsAndClientIP\032%.coo"
-  "rdinator_proto.ReplyProxyIPsPorts\"\000\022a\n\024g"
-  "etDegradedReadBlock\022!.coordinator_proto."
-  "KeyAndClientIP\032$.coordinator_proto.Degra"
-  "dedReadReply\"\000\022j\n\035getDegradedReadBlockBr"
-  "eakdown\022!.coordinator_proto.KeyAndClient"
-  "IP\032$.coordinator_proto.DegradedReadReply"
-  "\"\000\022T\n\013getRecovery\022!.coordinator_proto.Ke"
-  "yAndClientIP\032 .coordinator_proto.Recover"
-  "yReply\"\000\022]\n\024getRecoveryBreakdown\022!.coord"
-  "inator_proto.KeyAndClientIP\032 .coordinato"
-  "r_proto.RecoveryReply\"\000\022Y\n\020fullNodeRecov"
-  "ery\022#.coordinator_proto.NodeIdFromClient"
-  "\032\036.coordinator_proto.RepBlockNum\"\000\022j\n\022mu"
-  "ltiBlockRecovery\0220.coordinator_proto.Str"
-  "ipeIdAndBlockIDsFromClient\032 .coordinator"
-  "_proto.RecoveryReply\"\000\022N\n\010delByKey\022 .coo"
-  "rdinator_proto.KeyFromClient\032\036.coordinat"
-  "or_proto.RepIfDeling\"\000\022V\n\013delByStripe\022%."
-  "coordinator_proto.StripeIdFromClient\032\036.c"
-  "oordinator_proto.RepIfDeling\"\000\022Y\n\013listSt"
-  "ripes\022\'.coordinator_proto.RequestToCoord"
-  "inator\032\037.coordinator_proto.RepStripeIds\""
-  "\000\022W\n\ndecodeTest\022!.coordinator_proto.KeyA"
-  "ndClientIP\032$.coordinator_proto.DegradedR"
-  "eadReply\"\000b\006proto3"
+  "ort\032%.coordinator_proto.ReplyProxyIPsPor"
+  "ts\"\000\022c\n\021uploadAppendValue\022%.coordinator_"
+  "proto.RequestProxyIPPort\032%.coordinator_p"
+  "roto.ReplyProxyIPsPorts\"\000\022o\n\027uploadUplrc"
+  "LegacyUpdate\022+.coordinator_proto.UplrcLe"
+  "gacyUpdateRequest\032%.coordinator_proto.Re"
+  "plyProxyIPsPorts\"\000\022c\n\021uploadUpLRCUpdate\022"
+  "%.coordinator_proto.UpLRCUpdateRequest\032%"
+  ".coordinator_proto.ReplyProxyIPsPorts\"\000\022"
+  "`\n\026uplrcPlanBeginTransfer\022#.coordinator_"
+  "proto.UpLRCPlanKeyOnly\032\037.coordinator_pro"
+  "to.RepIfSuccess\"\000\022k\n\035uplrcPlanWaitTransf"
+  "erComplete\022\'.coordinator_proto.UpLRCPlan"
+  "WaitRequest\032\037.coordinator_proto.RepIfSuc"
+  "cess\"\000\022g\n\033uploadUpLRCLocalParityApply\022%."
+  "coordinator_proto.UpLRCUpdateRequest\032\037.c"
+  "oordinator_proto.RepIfSuccess\"\000\022n\n\"uploa"
+  "dUpLRCLocalParityViaGlobalHub\022%.coordina"
+  "tor_proto.UpLRCUpdateRequest\032\037.coordinat"
+  "or_proto.RepIfSuccess\"\000\022S\n\010getValue\022!.co"
+  "ordinator_proto.KeyAndClientIP\032\".coordin"
+  "ator_proto.RepIfGetSuccess\"\000\022W\n\tgetStrip"
+  "e\022!.coordinator_proto.KeyAndClientIP\032%.c"
+  "oordinator_proto.ReplyProxyIPsPorts\"\000\022\\\n"
+  "\tgetBlocks\022&.coordinator_proto.BlockIDsA"
+  "ndClientIP\032%.coordinator_proto.ReplyProx"
+  "yIPsPorts\"\000\022h\n\025getDegradedReadBlocks\022&.c"
+  "oordinator_proto.BlockIDsAndClientIP\032%.c"
+  "oordinator_proto.ReplyProxyIPsPorts\"\000\022a\n"
+  "\024getDegradedReadBlock\022!.coordinator_prot"
+  "o.KeyAndClientIP\032$.coordinator_proto.Deg"
+  "radedReadReply\"\000\022j\n\035getDegradedReadBlock"
+  "Breakdown\022!.coordinator_proto.KeyAndClie"
+  "ntIP\032$.coordinator_proto.DegradedReadRep"
+  "ly\"\000\022T\n\013getRecovery\022!.coordinator_proto."
+  "KeyAndClientIP\032 .coordinator_proto.Recov"
+  "eryReply\"\000\022]\n\024getRecoveryBreakdown\022!.coo"
+  "rdinator_proto.KeyAndClientIP\032 .coordina"
+  "tor_proto.RecoveryReply\"\000\022Y\n\020fullNodeRec"
+  "overy\022#.coordinator_proto.NodeIdFromClie"
+  "nt\032\036.coordinator_proto.RepBlockNum\"\000\022j\n\022"
+  "multiBlockRecovery\0220.coordinator_proto.S"
+  "tripeIdAndBlockIDsFromClient\032 .coordinat"
+  "or_proto.RecoveryReply\"\000\022N\n\010delByKey\022 .c"
+  "oordinator_proto.KeyFromClient\032\036.coordin"
+  "ator_proto.RepIfDeling\"\000\022V\n\013delByStripe\022"
+  "%.coordinator_proto.StripeIdFromClient\032\036"
+  ".coordinator_proto.RepIfDeling\"\000\022Y\n\013list"
+  "Stripes\022\'.coordinator_proto.RequestToCoo"
+  "rdinator\032\037.coordinator_proto.RepStripeId"
+  "s\"\000\022W\n\ndecodeTest\022!.coordinator_proto.Ke"
+  "yAndClientIP\032$.coordinator_proto.Degrade"
+  "dReadReply\"\000b\006proto3"
   ;
 static ::_pbi::once_flag descriptor_table_coordinator_2eproto_once;
 const ::_pbi::DescriptorTable descriptor_table_coordinator_2eproto = {
-    false, false, 5138, descriptor_table_protodef_coordinator_2eproto,
+    false, false, 5180, descriptor_table_protodef_coordinator_2eproto,
     "coordinator.proto",
     &descriptor_table_coordinator_2eproto_once, nullptr, 0, 27,
     schemas, file_default_instances, TableStruct_coordinator_2eproto::offsets,
@@ -2669,17 +2670,17 @@ ReplyProxyIPsPorts::ReplyProxyIPsPorts(const ReplyProxyIPsPorts& from)
     , /*decltype(_impl_._slice_block_ids_cached_byte_size_)*/{0}
     , decltype(_impl_.slice_block_counts_){from._impl_.slice_block_counts_}
     , /*decltype(_impl_._slice_block_counts_cached_byte_size_)*/{0}
-    , decltype(_impl_.cord_transfer_plan_key_){}
+    , decltype(_impl_.uplrc_transfer_plan_key_){}
     , decltype(_impl_.sum_append_size_){}
     , /*decltype(_impl_._cached_size_)*/{}};
 
   _internal_metadata_.MergeFrom<::PROTOBUF_NAMESPACE_ID::UnknownFieldSet>(from._internal_metadata_);
-  _impl_.cord_transfer_plan_key_.InitDefault();
+  _impl_.uplrc_transfer_plan_key_.InitDefault();
   #ifdef PROTOBUF_FORCE_COPY_DEFAULT_STRING
-    _impl_.cord_transfer_plan_key_.Set("", GetArenaForAllocation());
+    _impl_.uplrc_transfer_plan_key_.Set("", GetArenaForAllocation());
   #endif // PROTOBUF_FORCE_COPY_DEFAULT_STRING
-  if (!from._internal_cord_transfer_plan_key().empty()) {
-    _this->_impl_.cord_transfer_plan_key_.Set(from._internal_cord_transfer_plan_key(), 
+  if (!from._internal_uplrc_transfer_plan_key().empty()) {
+    _this->_impl_.uplrc_transfer_plan_key_.Set(from._internal_uplrc_transfer_plan_key(), 
       _this->GetArenaForAllocation());
   }
   _this->_impl_.sum_append_size_ = from._impl_.sum_append_size_;
@@ -2703,13 +2704,13 @@ inline void ReplyProxyIPsPorts::SharedCtor(
     , /*decltype(_impl_._slice_block_ids_cached_byte_size_)*/{0}
     , decltype(_impl_.slice_block_counts_){arena}
     , /*decltype(_impl_._slice_block_counts_cached_byte_size_)*/{0}
-    , decltype(_impl_.cord_transfer_plan_key_){}
+    , decltype(_impl_.uplrc_transfer_plan_key_){}
     , decltype(_impl_.sum_append_size_){uint64_t{0u}}
     , /*decltype(_impl_._cached_size_)*/{}
   };
-  _impl_.cord_transfer_plan_key_.InitDefault();
+  _impl_.uplrc_transfer_plan_key_.InitDefault();
   #ifdef PROTOBUF_FORCE_COPY_DEFAULT_STRING
-    _impl_.cord_transfer_plan_key_.Set("", GetArenaForAllocation());
+    _impl_.uplrc_transfer_plan_key_.Set("", GetArenaForAllocation());
   #endif // PROTOBUF_FORCE_COPY_DEFAULT_STRING
 }
 
@@ -2731,7 +2732,7 @@ inline void ReplyProxyIPsPorts::SharedDtor() {
   _impl_.group_ids_.~RepeatedField();
   _impl_.slice_block_ids_.~RepeatedField();
   _impl_.slice_block_counts_.~RepeatedField();
-  _impl_.cord_transfer_plan_key_.Destroy();
+  _impl_.uplrc_transfer_plan_key_.Destroy();
 }
 
 void ReplyProxyIPsPorts::SetCachedSize(int size) const {
@@ -2751,7 +2752,7 @@ void ReplyProxyIPsPorts::Clear() {
   _impl_.group_ids_.Clear();
   _impl_.slice_block_ids_.Clear();
   _impl_.slice_block_counts_.Clear();
-  _impl_.cord_transfer_plan_key_.ClearToEmpty();
+  _impl_.uplrc_transfer_plan_key_.ClearToEmpty();
   _impl_.sum_append_size_ = uint64_t{0u};
   _internal_metadata_.Clear<::PROTOBUF_NAMESPACE_ID::UnknownFieldSet>();
 }
@@ -2833,13 +2834,13 @@ const char* ReplyProxyIPsPorts::_InternalParse(const char* ptr, ::_pbi::ParseCon
         } else
           goto handle_unusual;
         continue;
-      // string cord_transfer_plan_key = 7;
+      // string uplrc_transfer_plan_key = 7;
       case 7:
         if (PROTOBUF_PREDICT_TRUE(static_cast<uint8_t>(tag) == 58)) {
-          auto str = _internal_mutable_cord_transfer_plan_key();
+          auto str = _internal_mutable_uplrc_transfer_plan_key();
           ptr = ::_pbi::InlineGreedyStringParser(str, ptr, ctx);
           CHK_(ptr);
-          CHK_(::_pbi::VerifyUTF8(str, "coordinator_proto.ReplyProxyIPsPorts.cord_transfer_plan_key"));
+          CHK_(::_pbi::VerifyUTF8(str, "coordinator_proto.ReplyProxyIPsPorts.uplrc_transfer_plan_key"));
         } else
           goto handle_unusual;
         continue;
@@ -2947,14 +2948,14 @@ uint8_t* ReplyProxyIPsPorts::_InternalSerialize(
     }
   }
 
-  // string cord_transfer_plan_key = 7;
-  if (!this->_internal_cord_transfer_plan_key().empty()) {
+  // string uplrc_transfer_plan_key = 7;
+  if (!this->_internal_uplrc_transfer_plan_key().empty()) {
     ::PROTOBUF_NAMESPACE_ID::internal::WireFormatLite::VerifyUtf8String(
-      this->_internal_cord_transfer_plan_key().data(), static_cast<int>(this->_internal_cord_transfer_plan_key().length()),
+      this->_internal_uplrc_transfer_plan_key().data(), static_cast<int>(this->_internal_uplrc_transfer_plan_key().length()),
       ::PROTOBUF_NAMESPACE_ID::internal::WireFormatLite::SERIALIZE,
-      "coordinator_proto.ReplyProxyIPsPorts.cord_transfer_plan_key");
+      "coordinator_proto.ReplyProxyIPsPorts.uplrc_transfer_plan_key");
     target = stream->WriteStringMaybeAliased(
-        7, this->_internal_cord_transfer_plan_key(), target);
+        7, this->_internal_uplrc_transfer_plan_key(), target);
   }
 
   // repeated int32 slice_block_ids = 8;
@@ -3077,11 +3078,11 @@ size_t ReplyProxyIPsPorts::ByteSizeLong() const {
     total_size += data_size;
   }
 
-  // string cord_transfer_plan_key = 7;
-  if (!this->_internal_cord_transfer_plan_key().empty()) {
+  // string uplrc_transfer_plan_key = 7;
+  if (!this->_internal_uplrc_transfer_plan_key().empty()) {
     total_size += 1 +
       ::PROTOBUF_NAMESPACE_ID::internal::WireFormatLite::StringSize(
-        this->_internal_cord_transfer_plan_key());
+        this->_internal_uplrc_transfer_plan_key());
   }
 
   // uint64 sum_append_size = 1;
@@ -3114,8 +3115,8 @@ void ReplyProxyIPsPorts::MergeImpl(::PROTOBUF_NAMESPACE_ID::Message& to_msg, con
   _this->_impl_.group_ids_.MergeFrom(from._impl_.group_ids_);
   _this->_impl_.slice_block_ids_.MergeFrom(from._impl_.slice_block_ids_);
   _this->_impl_.slice_block_counts_.MergeFrom(from._impl_.slice_block_counts_);
-  if (!from._internal_cord_transfer_plan_key().empty()) {
-    _this->_internal_set_cord_transfer_plan_key(from._internal_cord_transfer_plan_key());
+  if (!from._internal_uplrc_transfer_plan_key().empty()) {
+    _this->_internal_set_uplrc_transfer_plan_key(from._internal_uplrc_transfer_plan_key());
   }
   if (from._internal_sum_append_size() != 0) {
     _this->_internal_set_sum_append_size(from._internal_sum_append_size());
@@ -3147,8 +3148,8 @@ void ReplyProxyIPsPorts::InternalSwap(ReplyProxyIPsPorts* other) {
   _impl_.slice_block_ids_.InternalSwap(&other->_impl_.slice_block_ids_);
   _impl_.slice_block_counts_.InternalSwap(&other->_impl_.slice_block_counts_);
   ::PROTOBUF_NAMESPACE_ID::internal::ArenaStringPtr::InternalSwap(
-      &_impl_.cord_transfer_plan_key_, lhs_arena,
-      &other->_impl_.cord_transfer_plan_key_, rhs_arena
+      &_impl_.uplrc_transfer_plan_key_, lhs_arena,
+      &other->_impl_.uplrc_transfer_plan_key_, rhs_arena
   );
   swap(_impl_.sum_append_size_, other->_impl_.sum_append_size_);
 }
@@ -3161,19 +3162,19 @@ void ReplyProxyIPsPorts::InternalSwap(ReplyProxyIPsPorts* other) {
 
 // ===================================================================
 
-class CordPlanKeyOnly::_Internal {
+class UpLRCPlanKeyOnly::_Internal {
  public:
 };
 
-CordPlanKeyOnly::CordPlanKeyOnly(::PROTOBUF_NAMESPACE_ID::Arena* arena,
+UpLRCPlanKeyOnly::UpLRCPlanKeyOnly(::PROTOBUF_NAMESPACE_ID::Arena* arena,
                          bool is_message_owned)
   : ::PROTOBUF_NAMESPACE_ID::Message(arena, is_message_owned) {
   SharedCtor(arena, is_message_owned);
-  // @@protoc_insertion_point(arena_constructor:coordinator_proto.CordPlanKeyOnly)
+  // @@protoc_insertion_point(arena_constructor:coordinator_proto.UpLRCPlanKeyOnly)
 }
-CordPlanKeyOnly::CordPlanKeyOnly(const CordPlanKeyOnly& from)
+UpLRCPlanKeyOnly::UpLRCPlanKeyOnly(const UpLRCPlanKeyOnly& from)
   : ::PROTOBUF_NAMESPACE_ID::Message() {
-  CordPlanKeyOnly* const _this = this; (void)_this;
+  UpLRCPlanKeyOnly* const _this = this; (void)_this;
   new (&_impl_) Impl_{
       decltype(_impl_.plan_key_){}
     , /*decltype(_impl_._cached_size_)*/{}};
@@ -3187,10 +3188,10 @@ CordPlanKeyOnly::CordPlanKeyOnly(const CordPlanKeyOnly& from)
     _this->_impl_.plan_key_.Set(from._internal_plan_key(), 
       _this->GetArenaForAllocation());
   }
-  // @@protoc_insertion_point(copy_constructor:coordinator_proto.CordPlanKeyOnly)
+  // @@protoc_insertion_point(copy_constructor:coordinator_proto.UpLRCPlanKeyOnly)
 }
 
-inline void CordPlanKeyOnly::SharedCtor(
+inline void UpLRCPlanKeyOnly::SharedCtor(
     ::_pb::Arena* arena, bool is_message_owned) {
   (void)arena;
   (void)is_message_owned;
@@ -3204,8 +3205,8 @@ inline void CordPlanKeyOnly::SharedCtor(
   #endif // PROTOBUF_FORCE_COPY_DEFAULT_STRING
 }
 
-CordPlanKeyOnly::~CordPlanKeyOnly() {
-  // @@protoc_insertion_point(destructor:coordinator_proto.CordPlanKeyOnly)
+UpLRCPlanKeyOnly::~UpLRCPlanKeyOnly() {
+  // @@protoc_insertion_point(destructor:coordinator_proto.UpLRCPlanKeyOnly)
   if (auto *arena = _internal_metadata_.DeleteReturnArena<::PROTOBUF_NAMESPACE_ID::UnknownFieldSet>()) {
   (void)arena;
     return;
@@ -3213,17 +3214,17 @@ CordPlanKeyOnly::~CordPlanKeyOnly() {
   SharedDtor();
 }
 
-inline void CordPlanKeyOnly::SharedDtor() {
+inline void UpLRCPlanKeyOnly::SharedDtor() {
   GOOGLE_DCHECK(GetArenaForAllocation() == nullptr);
   _impl_.plan_key_.Destroy();
 }
 
-void CordPlanKeyOnly::SetCachedSize(int size) const {
+void UpLRCPlanKeyOnly::SetCachedSize(int size) const {
   _impl_._cached_size_.Set(size);
 }
 
-void CordPlanKeyOnly::Clear() {
-// @@protoc_insertion_point(message_clear_start:coordinator_proto.CordPlanKeyOnly)
+void UpLRCPlanKeyOnly::Clear() {
+// @@protoc_insertion_point(message_clear_start:coordinator_proto.UpLRCPlanKeyOnly)
   uint32_t cached_has_bits = 0;
   // Prevent compiler warnings about cached_has_bits being unused
   (void) cached_has_bits;
@@ -3232,7 +3233,7 @@ void CordPlanKeyOnly::Clear() {
   _internal_metadata_.Clear<::PROTOBUF_NAMESPACE_ID::UnknownFieldSet>();
 }
 
-const char* CordPlanKeyOnly::_InternalParse(const char* ptr, ::_pbi::ParseContext* ctx) {
+const char* UpLRCPlanKeyOnly::_InternalParse(const char* ptr, ::_pbi::ParseContext* ctx) {
 #define CHK_(x) if (PROTOBUF_PREDICT_FALSE(!(x))) goto failure
   while (!ctx->Done(&ptr)) {
     uint32_t tag;
@@ -3244,7 +3245,7 @@ const char* CordPlanKeyOnly::_InternalParse(const char* ptr, ::_pbi::ParseContex
           auto str = _internal_mutable_plan_key();
           ptr = ::_pbi::InlineGreedyStringParser(str, ptr, ctx);
           CHK_(ptr);
-          CHK_(::_pbi::VerifyUTF8(str, "coordinator_proto.CordPlanKeyOnly.plan_key"));
+          CHK_(::_pbi::VerifyUTF8(str, "coordinator_proto.UpLRCPlanKeyOnly.plan_key"));
         } else
           goto handle_unusual;
         continue;
@@ -3271,9 +3272,9 @@ failure:
 #undef CHK_
 }
 
-uint8_t* CordPlanKeyOnly::_InternalSerialize(
+uint8_t* UpLRCPlanKeyOnly::_InternalSerialize(
     uint8_t* target, ::PROTOBUF_NAMESPACE_ID::io::EpsCopyOutputStream* stream) const {
-  // @@protoc_insertion_point(serialize_to_array_start:coordinator_proto.CordPlanKeyOnly)
+  // @@protoc_insertion_point(serialize_to_array_start:coordinator_proto.UpLRCPlanKeyOnly)
   uint32_t cached_has_bits = 0;
   (void) cached_has_bits;
 
@@ -3282,7 +3283,7 @@ uint8_t* CordPlanKeyOnly::_InternalSerialize(
     ::PROTOBUF_NAMESPACE_ID::internal::WireFormatLite::VerifyUtf8String(
       this->_internal_plan_key().data(), static_cast<int>(this->_internal_plan_key().length()),
       ::PROTOBUF_NAMESPACE_ID::internal::WireFormatLite::SERIALIZE,
-      "coordinator_proto.CordPlanKeyOnly.plan_key");
+      "coordinator_proto.UpLRCPlanKeyOnly.plan_key");
     target = stream->WriteStringMaybeAliased(
         1, this->_internal_plan_key(), target);
   }
@@ -3291,12 +3292,12 @@ uint8_t* CordPlanKeyOnly::_InternalSerialize(
     target = ::_pbi::WireFormat::InternalSerializeUnknownFieldsToArray(
         _internal_metadata_.unknown_fields<::PROTOBUF_NAMESPACE_ID::UnknownFieldSet>(::PROTOBUF_NAMESPACE_ID::UnknownFieldSet::default_instance), target, stream);
   }
-  // @@protoc_insertion_point(serialize_to_array_end:coordinator_proto.CordPlanKeyOnly)
+  // @@protoc_insertion_point(serialize_to_array_end:coordinator_proto.UpLRCPlanKeyOnly)
   return target;
 }
 
-size_t CordPlanKeyOnly::ByteSizeLong() const {
-// @@protoc_insertion_point(message_byte_size_start:coordinator_proto.CordPlanKeyOnly)
+size_t UpLRCPlanKeyOnly::ByteSizeLong() const {
+// @@protoc_insertion_point(message_byte_size_start:coordinator_proto.UpLRCPlanKeyOnly)
   size_t total_size = 0;
 
   uint32_t cached_has_bits = 0;
@@ -3313,17 +3314,17 @@ size_t CordPlanKeyOnly::ByteSizeLong() const {
   return MaybeComputeUnknownFieldsSize(total_size, &_impl_._cached_size_);
 }
 
-const ::PROTOBUF_NAMESPACE_ID::Message::ClassData CordPlanKeyOnly::_class_data_ = {
+const ::PROTOBUF_NAMESPACE_ID::Message::ClassData UpLRCPlanKeyOnly::_class_data_ = {
     ::PROTOBUF_NAMESPACE_ID::Message::CopyWithSourceCheck,
-    CordPlanKeyOnly::MergeImpl
+    UpLRCPlanKeyOnly::MergeImpl
 };
-const ::PROTOBUF_NAMESPACE_ID::Message::ClassData*CordPlanKeyOnly::GetClassData() const { return &_class_data_; }
+const ::PROTOBUF_NAMESPACE_ID::Message::ClassData*UpLRCPlanKeyOnly::GetClassData() const { return &_class_data_; }
 
 
-void CordPlanKeyOnly::MergeImpl(::PROTOBUF_NAMESPACE_ID::Message& to_msg, const ::PROTOBUF_NAMESPACE_ID::Message& from_msg) {
-  auto* const _this = static_cast<CordPlanKeyOnly*>(&to_msg);
-  auto& from = static_cast<const CordPlanKeyOnly&>(from_msg);
-  // @@protoc_insertion_point(class_specific_merge_from_start:coordinator_proto.CordPlanKeyOnly)
+void UpLRCPlanKeyOnly::MergeImpl(::PROTOBUF_NAMESPACE_ID::Message& to_msg, const ::PROTOBUF_NAMESPACE_ID::Message& from_msg) {
+  auto* const _this = static_cast<UpLRCPlanKeyOnly*>(&to_msg);
+  auto& from = static_cast<const UpLRCPlanKeyOnly&>(from_msg);
+  // @@protoc_insertion_point(class_specific_merge_from_start:coordinator_proto.UpLRCPlanKeyOnly)
   GOOGLE_DCHECK_NE(&from, _this);
   uint32_t cached_has_bits = 0;
   (void) cached_has_bits;
@@ -3334,18 +3335,18 @@ void CordPlanKeyOnly::MergeImpl(::PROTOBUF_NAMESPACE_ID::Message& to_msg, const 
   _this->_internal_metadata_.MergeFrom<::PROTOBUF_NAMESPACE_ID::UnknownFieldSet>(from._internal_metadata_);
 }
 
-void CordPlanKeyOnly::CopyFrom(const CordPlanKeyOnly& from) {
-// @@protoc_insertion_point(class_specific_copy_from_start:coordinator_proto.CordPlanKeyOnly)
+void UpLRCPlanKeyOnly::CopyFrom(const UpLRCPlanKeyOnly& from) {
+// @@protoc_insertion_point(class_specific_copy_from_start:coordinator_proto.UpLRCPlanKeyOnly)
   if (&from == this) return;
   Clear();
   MergeFrom(from);
 }
 
-bool CordPlanKeyOnly::IsInitialized() const {
+bool UpLRCPlanKeyOnly::IsInitialized() const {
   return true;
 }
 
-void CordPlanKeyOnly::InternalSwap(CordPlanKeyOnly* other) {
+void UpLRCPlanKeyOnly::InternalSwap(UpLRCPlanKeyOnly* other) {
   using std::swap;
   auto* lhs_arena = GetArenaForAllocation();
   auto* rhs_arena = other->GetArenaForAllocation();
@@ -3356,7 +3357,7 @@ void CordPlanKeyOnly::InternalSwap(CordPlanKeyOnly* other) {
   );
 }
 
-::PROTOBUF_NAMESPACE_ID::Metadata CordPlanKeyOnly::GetMetadata() const {
+::PROTOBUF_NAMESPACE_ID::Metadata UpLRCPlanKeyOnly::GetMetadata() const {
   return ::_pbi::AssignDescriptors(
       &descriptor_table_coordinator_2eproto_getter, &descriptor_table_coordinator_2eproto_once,
       file_level_metadata_coordinator_2eproto[8]);
@@ -3364,19 +3365,19 @@ void CordPlanKeyOnly::InternalSwap(CordPlanKeyOnly* other) {
 
 // ===================================================================
 
-class CordPlanWaitRequest::_Internal {
+class UpLRCPlanWaitRequest::_Internal {
  public:
 };
 
-CordPlanWaitRequest::CordPlanWaitRequest(::PROTOBUF_NAMESPACE_ID::Arena* arena,
+UpLRCPlanWaitRequest::UpLRCPlanWaitRequest(::PROTOBUF_NAMESPACE_ID::Arena* arena,
                          bool is_message_owned)
   : ::PROTOBUF_NAMESPACE_ID::Message(arena, is_message_owned) {
   SharedCtor(arena, is_message_owned);
-  // @@protoc_insertion_point(arena_constructor:coordinator_proto.CordPlanWaitRequest)
+  // @@protoc_insertion_point(arena_constructor:coordinator_proto.UpLRCPlanWaitRequest)
 }
-CordPlanWaitRequest::CordPlanWaitRequest(const CordPlanWaitRequest& from)
+UpLRCPlanWaitRequest::UpLRCPlanWaitRequest(const UpLRCPlanWaitRequest& from)
   : ::PROTOBUF_NAMESPACE_ID::Message() {
-  CordPlanWaitRequest* const _this = this; (void)_this;
+  UpLRCPlanWaitRequest* const _this = this; (void)_this;
   new (&_impl_) Impl_{
       decltype(_impl_.plan_key_){}
     , /*decltype(_impl_._cached_size_)*/{}};
@@ -3390,10 +3391,10 @@ CordPlanWaitRequest::CordPlanWaitRequest(const CordPlanWaitRequest& from)
     _this->_impl_.plan_key_.Set(from._internal_plan_key(), 
       _this->GetArenaForAllocation());
   }
-  // @@protoc_insertion_point(copy_constructor:coordinator_proto.CordPlanWaitRequest)
+  // @@protoc_insertion_point(copy_constructor:coordinator_proto.UpLRCPlanWaitRequest)
 }
 
-inline void CordPlanWaitRequest::SharedCtor(
+inline void UpLRCPlanWaitRequest::SharedCtor(
     ::_pb::Arena* arena, bool is_message_owned) {
   (void)arena;
   (void)is_message_owned;
@@ -3407,8 +3408,8 @@ inline void CordPlanWaitRequest::SharedCtor(
   #endif // PROTOBUF_FORCE_COPY_DEFAULT_STRING
 }
 
-CordPlanWaitRequest::~CordPlanWaitRequest() {
-  // @@protoc_insertion_point(destructor:coordinator_proto.CordPlanWaitRequest)
+UpLRCPlanWaitRequest::~UpLRCPlanWaitRequest() {
+  // @@protoc_insertion_point(destructor:coordinator_proto.UpLRCPlanWaitRequest)
   if (auto *arena = _internal_metadata_.DeleteReturnArena<::PROTOBUF_NAMESPACE_ID::UnknownFieldSet>()) {
   (void)arena;
     return;
@@ -3416,17 +3417,17 @@ CordPlanWaitRequest::~CordPlanWaitRequest() {
   SharedDtor();
 }
 
-inline void CordPlanWaitRequest::SharedDtor() {
+inline void UpLRCPlanWaitRequest::SharedDtor() {
   GOOGLE_DCHECK(GetArenaForAllocation() == nullptr);
   _impl_.plan_key_.Destroy();
 }
 
-void CordPlanWaitRequest::SetCachedSize(int size) const {
+void UpLRCPlanWaitRequest::SetCachedSize(int size) const {
   _impl_._cached_size_.Set(size);
 }
 
-void CordPlanWaitRequest::Clear() {
-// @@protoc_insertion_point(message_clear_start:coordinator_proto.CordPlanWaitRequest)
+void UpLRCPlanWaitRequest::Clear() {
+// @@protoc_insertion_point(message_clear_start:coordinator_proto.UpLRCPlanWaitRequest)
   uint32_t cached_has_bits = 0;
   // Prevent compiler warnings about cached_has_bits being unused
   (void) cached_has_bits;
@@ -3435,7 +3436,7 @@ void CordPlanWaitRequest::Clear() {
   _internal_metadata_.Clear<::PROTOBUF_NAMESPACE_ID::UnknownFieldSet>();
 }
 
-const char* CordPlanWaitRequest::_InternalParse(const char* ptr, ::_pbi::ParseContext* ctx) {
+const char* UpLRCPlanWaitRequest::_InternalParse(const char* ptr, ::_pbi::ParseContext* ctx) {
 #define CHK_(x) if (PROTOBUF_PREDICT_FALSE(!(x))) goto failure
   while (!ctx->Done(&ptr)) {
     uint32_t tag;
@@ -3447,7 +3448,7 @@ const char* CordPlanWaitRequest::_InternalParse(const char* ptr, ::_pbi::ParseCo
           auto str = _internal_mutable_plan_key();
           ptr = ::_pbi::InlineGreedyStringParser(str, ptr, ctx);
           CHK_(ptr);
-          CHK_(::_pbi::VerifyUTF8(str, "coordinator_proto.CordPlanWaitRequest.plan_key"));
+          CHK_(::_pbi::VerifyUTF8(str, "coordinator_proto.UpLRCPlanWaitRequest.plan_key"));
         } else
           goto handle_unusual;
         continue;
@@ -3474,9 +3475,9 @@ failure:
 #undef CHK_
 }
 
-uint8_t* CordPlanWaitRequest::_InternalSerialize(
+uint8_t* UpLRCPlanWaitRequest::_InternalSerialize(
     uint8_t* target, ::PROTOBUF_NAMESPACE_ID::io::EpsCopyOutputStream* stream) const {
-  // @@protoc_insertion_point(serialize_to_array_start:coordinator_proto.CordPlanWaitRequest)
+  // @@protoc_insertion_point(serialize_to_array_start:coordinator_proto.UpLRCPlanWaitRequest)
   uint32_t cached_has_bits = 0;
   (void) cached_has_bits;
 
@@ -3485,7 +3486,7 @@ uint8_t* CordPlanWaitRequest::_InternalSerialize(
     ::PROTOBUF_NAMESPACE_ID::internal::WireFormatLite::VerifyUtf8String(
       this->_internal_plan_key().data(), static_cast<int>(this->_internal_plan_key().length()),
       ::PROTOBUF_NAMESPACE_ID::internal::WireFormatLite::SERIALIZE,
-      "coordinator_proto.CordPlanWaitRequest.plan_key");
+      "coordinator_proto.UpLRCPlanWaitRequest.plan_key");
     target = stream->WriteStringMaybeAliased(
         1, this->_internal_plan_key(), target);
   }
@@ -3494,12 +3495,12 @@ uint8_t* CordPlanWaitRequest::_InternalSerialize(
     target = ::_pbi::WireFormat::InternalSerializeUnknownFieldsToArray(
         _internal_metadata_.unknown_fields<::PROTOBUF_NAMESPACE_ID::UnknownFieldSet>(::PROTOBUF_NAMESPACE_ID::UnknownFieldSet::default_instance), target, stream);
   }
-  // @@protoc_insertion_point(serialize_to_array_end:coordinator_proto.CordPlanWaitRequest)
+  // @@protoc_insertion_point(serialize_to_array_end:coordinator_proto.UpLRCPlanWaitRequest)
   return target;
 }
 
-size_t CordPlanWaitRequest::ByteSizeLong() const {
-// @@protoc_insertion_point(message_byte_size_start:coordinator_proto.CordPlanWaitRequest)
+size_t UpLRCPlanWaitRequest::ByteSizeLong() const {
+// @@protoc_insertion_point(message_byte_size_start:coordinator_proto.UpLRCPlanWaitRequest)
   size_t total_size = 0;
 
   uint32_t cached_has_bits = 0;
@@ -3516,17 +3517,17 @@ size_t CordPlanWaitRequest::ByteSizeLong() const {
   return MaybeComputeUnknownFieldsSize(total_size, &_impl_._cached_size_);
 }
 
-const ::PROTOBUF_NAMESPACE_ID::Message::ClassData CordPlanWaitRequest::_class_data_ = {
+const ::PROTOBUF_NAMESPACE_ID::Message::ClassData UpLRCPlanWaitRequest::_class_data_ = {
     ::PROTOBUF_NAMESPACE_ID::Message::CopyWithSourceCheck,
-    CordPlanWaitRequest::MergeImpl
+    UpLRCPlanWaitRequest::MergeImpl
 };
-const ::PROTOBUF_NAMESPACE_ID::Message::ClassData*CordPlanWaitRequest::GetClassData() const { return &_class_data_; }
+const ::PROTOBUF_NAMESPACE_ID::Message::ClassData*UpLRCPlanWaitRequest::GetClassData() const { return &_class_data_; }
 
 
-void CordPlanWaitRequest::MergeImpl(::PROTOBUF_NAMESPACE_ID::Message& to_msg, const ::PROTOBUF_NAMESPACE_ID::Message& from_msg) {
-  auto* const _this = static_cast<CordPlanWaitRequest*>(&to_msg);
-  auto& from = static_cast<const CordPlanWaitRequest&>(from_msg);
-  // @@protoc_insertion_point(class_specific_merge_from_start:coordinator_proto.CordPlanWaitRequest)
+void UpLRCPlanWaitRequest::MergeImpl(::PROTOBUF_NAMESPACE_ID::Message& to_msg, const ::PROTOBUF_NAMESPACE_ID::Message& from_msg) {
+  auto* const _this = static_cast<UpLRCPlanWaitRequest*>(&to_msg);
+  auto& from = static_cast<const UpLRCPlanWaitRequest&>(from_msg);
+  // @@protoc_insertion_point(class_specific_merge_from_start:coordinator_proto.UpLRCPlanWaitRequest)
   GOOGLE_DCHECK_NE(&from, _this);
   uint32_t cached_has_bits = 0;
   (void) cached_has_bits;
@@ -3537,18 +3538,18 @@ void CordPlanWaitRequest::MergeImpl(::PROTOBUF_NAMESPACE_ID::Message& to_msg, co
   _this->_internal_metadata_.MergeFrom<::PROTOBUF_NAMESPACE_ID::UnknownFieldSet>(from._internal_metadata_);
 }
 
-void CordPlanWaitRequest::CopyFrom(const CordPlanWaitRequest& from) {
-// @@protoc_insertion_point(class_specific_copy_from_start:coordinator_proto.CordPlanWaitRequest)
+void UpLRCPlanWaitRequest::CopyFrom(const UpLRCPlanWaitRequest& from) {
+// @@protoc_insertion_point(class_specific_copy_from_start:coordinator_proto.UpLRCPlanWaitRequest)
   if (&from == this) return;
   Clear();
   MergeFrom(from);
 }
 
-bool CordPlanWaitRequest::IsInitialized() const {
+bool UpLRCPlanWaitRequest::IsInitialized() const {
   return true;
 }
 
-void CordPlanWaitRequest::InternalSwap(CordPlanWaitRequest* other) {
+void UpLRCPlanWaitRequest::InternalSwap(UpLRCPlanWaitRequest* other) {
   using std::swap;
   auto* lhs_arena = GetArenaForAllocation();
   auto* rhs_arena = other->GetArenaForAllocation();
@@ -3559,7 +3560,7 @@ void CordPlanWaitRequest::InternalSwap(CordPlanWaitRequest* other) {
   );
 }
 
-::PROTOBUF_NAMESPACE_ID::Metadata CordPlanWaitRequest::GetMetadata() const {
+::PROTOBUF_NAMESPACE_ID::Metadata UpLRCPlanWaitRequest::GetMetadata() const {
   return ::_pbi::AssignDescriptors(
       &descriptor_table_coordinator_2eproto_getter, &descriptor_table_coordinator_2eproto_once,
       file_level_metadata_coordinator_2eproto[9]);
@@ -3844,16 +3845,16 @@ RepIfSuccess::RepIfSuccess(const RepIfSuccess& from)
   : ::PROTOBUF_NAMESPACE_ID::Message() {
   RepIfSuccess* const _this = this; (void)_this;
   new (&_impl_) Impl_{
-      decltype(_impl_.cord_xfer_pure_sec_){}
-    , decltype(_impl_.cord_xfer_grpc_sec_){}
+      decltype(_impl_.uplrc_xfer_pure_sec_){}
+    , decltype(_impl_.uplrc_xfer_grpc_sec_){}
     , decltype(_impl_.ifcommit_){}
-    , decltype(_impl_.cord_xfer_timing_present_){}
+    , decltype(_impl_.uplrc_xfer_timing_present_){}
     , /*decltype(_impl_._cached_size_)*/{}};
 
   _internal_metadata_.MergeFrom<::PROTOBUF_NAMESPACE_ID::UnknownFieldSet>(from._internal_metadata_);
-  ::memcpy(&_impl_.cord_xfer_pure_sec_, &from._impl_.cord_xfer_pure_sec_,
-    static_cast<size_t>(reinterpret_cast<char*>(&_impl_.cord_xfer_timing_present_) -
-    reinterpret_cast<char*>(&_impl_.cord_xfer_pure_sec_)) + sizeof(_impl_.cord_xfer_timing_present_));
+  ::memcpy(&_impl_.uplrc_xfer_pure_sec_, &from._impl_.uplrc_xfer_pure_sec_,
+    static_cast<size_t>(reinterpret_cast<char*>(&_impl_.uplrc_xfer_timing_present_) -
+    reinterpret_cast<char*>(&_impl_.uplrc_xfer_pure_sec_)) + sizeof(_impl_.uplrc_xfer_timing_present_));
   // @@protoc_insertion_point(copy_constructor:coordinator_proto.RepIfSuccess)
 }
 
@@ -3862,10 +3863,10 @@ inline void RepIfSuccess::SharedCtor(
   (void)arena;
   (void)is_message_owned;
   new (&_impl_) Impl_{
-      decltype(_impl_.cord_xfer_pure_sec_){0}
-    , decltype(_impl_.cord_xfer_grpc_sec_){0}
+      decltype(_impl_.uplrc_xfer_pure_sec_){0}
+    , decltype(_impl_.uplrc_xfer_grpc_sec_){0}
     , decltype(_impl_.ifcommit_){false}
-    , decltype(_impl_.cord_xfer_timing_present_){false}
+    , decltype(_impl_.uplrc_xfer_timing_present_){false}
     , /*decltype(_impl_._cached_size_)*/{}
   };
 }
@@ -3893,9 +3894,9 @@ void RepIfSuccess::Clear() {
   // Prevent compiler warnings about cached_has_bits being unused
   (void) cached_has_bits;
 
-  ::memset(&_impl_.cord_xfer_pure_sec_, 0, static_cast<size_t>(
-      reinterpret_cast<char*>(&_impl_.cord_xfer_timing_present_) -
-      reinterpret_cast<char*>(&_impl_.cord_xfer_pure_sec_)) + sizeof(_impl_.cord_xfer_timing_present_));
+  ::memset(&_impl_.uplrc_xfer_pure_sec_, 0, static_cast<size_t>(
+      reinterpret_cast<char*>(&_impl_.uplrc_xfer_timing_present_) -
+      reinterpret_cast<char*>(&_impl_.uplrc_xfer_pure_sec_)) + sizeof(_impl_.uplrc_xfer_timing_present_));
   _internal_metadata_.Clear<::PROTOBUF_NAMESPACE_ID::UnknownFieldSet>();
 }
 
@@ -3913,26 +3914,26 @@ const char* RepIfSuccess::_InternalParse(const char* ptr, ::_pbi::ParseContext* 
         } else
           goto handle_unusual;
         continue;
-      // bool cord_xfer_timing_present = 2;
+      // bool uplrc_xfer_timing_present = 2;
       case 2:
         if (PROTOBUF_PREDICT_TRUE(static_cast<uint8_t>(tag) == 16)) {
-          _impl_.cord_xfer_timing_present_ = ::PROTOBUF_NAMESPACE_ID::internal::ReadVarint64(&ptr);
+          _impl_.uplrc_xfer_timing_present_ = ::PROTOBUF_NAMESPACE_ID::internal::ReadVarint64(&ptr);
           CHK_(ptr);
         } else
           goto handle_unusual;
         continue;
-      // double cord_xfer_pure_sec = 3;
+      // double uplrc_xfer_pure_sec = 3;
       case 3:
         if (PROTOBUF_PREDICT_TRUE(static_cast<uint8_t>(tag) == 25)) {
-          _impl_.cord_xfer_pure_sec_ = ::PROTOBUF_NAMESPACE_ID::internal::UnalignedLoad<double>(ptr);
+          _impl_.uplrc_xfer_pure_sec_ = ::PROTOBUF_NAMESPACE_ID::internal::UnalignedLoad<double>(ptr);
           ptr += sizeof(double);
         } else
           goto handle_unusual;
         continue;
-      // double cord_xfer_grpc_sec = 4;
+      // double uplrc_xfer_grpc_sec = 4;
       case 4:
         if (PROTOBUF_PREDICT_TRUE(static_cast<uint8_t>(tag) == 33)) {
-          _impl_.cord_xfer_grpc_sec_ = ::PROTOBUF_NAMESPACE_ID::internal::UnalignedLoad<double>(ptr);
+          _impl_.uplrc_xfer_grpc_sec_ = ::PROTOBUF_NAMESPACE_ID::internal::UnalignedLoad<double>(ptr);
           ptr += sizeof(double);
         } else
           goto handle_unusual;
@@ -3972,30 +3973,30 @@ uint8_t* RepIfSuccess::_InternalSerialize(
     target = ::_pbi::WireFormatLite::WriteBoolToArray(1, this->_internal_ifcommit(), target);
   }
 
-  // bool cord_xfer_timing_present = 2;
-  if (this->_internal_cord_xfer_timing_present() != 0) {
+  // bool uplrc_xfer_timing_present = 2;
+  if (this->_internal_uplrc_xfer_timing_present() != 0) {
     target = stream->EnsureSpace(target);
-    target = ::_pbi::WireFormatLite::WriteBoolToArray(2, this->_internal_cord_xfer_timing_present(), target);
+    target = ::_pbi::WireFormatLite::WriteBoolToArray(2, this->_internal_uplrc_xfer_timing_present(), target);
   }
 
-  // double cord_xfer_pure_sec = 3;
+  // double uplrc_xfer_pure_sec = 3;
   static_assert(sizeof(uint64_t) == sizeof(double), "Code assumes uint64_t and double are the same size.");
-  double tmp_cord_xfer_pure_sec = this->_internal_cord_xfer_pure_sec();
-  uint64_t raw_cord_xfer_pure_sec;
-  memcpy(&raw_cord_xfer_pure_sec, &tmp_cord_xfer_pure_sec, sizeof(tmp_cord_xfer_pure_sec));
-  if (raw_cord_xfer_pure_sec != 0) {
+  double tmp_uplrc_xfer_pure_sec = this->_internal_uplrc_xfer_pure_sec();
+  uint64_t raw_uplrc_xfer_pure_sec;
+  memcpy(&raw_uplrc_xfer_pure_sec, &tmp_uplrc_xfer_pure_sec, sizeof(tmp_uplrc_xfer_pure_sec));
+  if (raw_uplrc_xfer_pure_sec != 0) {
     target = stream->EnsureSpace(target);
-    target = ::_pbi::WireFormatLite::WriteDoubleToArray(3, this->_internal_cord_xfer_pure_sec(), target);
+    target = ::_pbi::WireFormatLite::WriteDoubleToArray(3, this->_internal_uplrc_xfer_pure_sec(), target);
   }
 
-  // double cord_xfer_grpc_sec = 4;
+  // double uplrc_xfer_grpc_sec = 4;
   static_assert(sizeof(uint64_t) == sizeof(double), "Code assumes uint64_t and double are the same size.");
-  double tmp_cord_xfer_grpc_sec = this->_internal_cord_xfer_grpc_sec();
-  uint64_t raw_cord_xfer_grpc_sec;
-  memcpy(&raw_cord_xfer_grpc_sec, &tmp_cord_xfer_grpc_sec, sizeof(tmp_cord_xfer_grpc_sec));
-  if (raw_cord_xfer_grpc_sec != 0) {
+  double tmp_uplrc_xfer_grpc_sec = this->_internal_uplrc_xfer_grpc_sec();
+  uint64_t raw_uplrc_xfer_grpc_sec;
+  memcpy(&raw_uplrc_xfer_grpc_sec, &tmp_uplrc_xfer_grpc_sec, sizeof(tmp_uplrc_xfer_grpc_sec));
+  if (raw_uplrc_xfer_grpc_sec != 0) {
     target = stream->EnsureSpace(target);
-    target = ::_pbi::WireFormatLite::WriteDoubleToArray(4, this->_internal_cord_xfer_grpc_sec(), target);
+    target = ::_pbi::WireFormatLite::WriteDoubleToArray(4, this->_internal_uplrc_xfer_grpc_sec(), target);
   }
 
   if (PROTOBUF_PREDICT_FALSE(_internal_metadata_.have_unknown_fields())) {
@@ -4014,21 +4015,21 @@ size_t RepIfSuccess::ByteSizeLong() const {
   // Prevent compiler warnings about cached_has_bits being unused
   (void) cached_has_bits;
 
-  // double cord_xfer_pure_sec = 3;
+  // double uplrc_xfer_pure_sec = 3;
   static_assert(sizeof(uint64_t) == sizeof(double), "Code assumes uint64_t and double are the same size.");
-  double tmp_cord_xfer_pure_sec = this->_internal_cord_xfer_pure_sec();
-  uint64_t raw_cord_xfer_pure_sec;
-  memcpy(&raw_cord_xfer_pure_sec, &tmp_cord_xfer_pure_sec, sizeof(tmp_cord_xfer_pure_sec));
-  if (raw_cord_xfer_pure_sec != 0) {
+  double tmp_uplrc_xfer_pure_sec = this->_internal_uplrc_xfer_pure_sec();
+  uint64_t raw_uplrc_xfer_pure_sec;
+  memcpy(&raw_uplrc_xfer_pure_sec, &tmp_uplrc_xfer_pure_sec, sizeof(tmp_uplrc_xfer_pure_sec));
+  if (raw_uplrc_xfer_pure_sec != 0) {
     total_size += 1 + 8;
   }
 
-  // double cord_xfer_grpc_sec = 4;
+  // double uplrc_xfer_grpc_sec = 4;
   static_assert(sizeof(uint64_t) == sizeof(double), "Code assumes uint64_t and double are the same size.");
-  double tmp_cord_xfer_grpc_sec = this->_internal_cord_xfer_grpc_sec();
-  uint64_t raw_cord_xfer_grpc_sec;
-  memcpy(&raw_cord_xfer_grpc_sec, &tmp_cord_xfer_grpc_sec, sizeof(tmp_cord_xfer_grpc_sec));
-  if (raw_cord_xfer_grpc_sec != 0) {
+  double tmp_uplrc_xfer_grpc_sec = this->_internal_uplrc_xfer_grpc_sec();
+  uint64_t raw_uplrc_xfer_grpc_sec;
+  memcpy(&raw_uplrc_xfer_grpc_sec, &tmp_uplrc_xfer_grpc_sec, sizeof(tmp_uplrc_xfer_grpc_sec));
+  if (raw_uplrc_xfer_grpc_sec != 0) {
     total_size += 1 + 8;
   }
 
@@ -4037,8 +4038,8 @@ size_t RepIfSuccess::ByteSizeLong() const {
     total_size += 1 + 1;
   }
 
-  // bool cord_xfer_timing_present = 2;
-  if (this->_internal_cord_xfer_timing_present() != 0) {
+  // bool uplrc_xfer_timing_present = 2;
+  if (this->_internal_uplrc_xfer_timing_present() != 0) {
     total_size += 1 + 1;
   }
 
@@ -4061,24 +4062,24 @@ void RepIfSuccess::MergeImpl(::PROTOBUF_NAMESPACE_ID::Message& to_msg, const ::P
   (void) cached_has_bits;
 
   static_assert(sizeof(uint64_t) == sizeof(double), "Code assumes uint64_t and double are the same size.");
-  double tmp_cord_xfer_pure_sec = from._internal_cord_xfer_pure_sec();
-  uint64_t raw_cord_xfer_pure_sec;
-  memcpy(&raw_cord_xfer_pure_sec, &tmp_cord_xfer_pure_sec, sizeof(tmp_cord_xfer_pure_sec));
-  if (raw_cord_xfer_pure_sec != 0) {
-    _this->_internal_set_cord_xfer_pure_sec(from._internal_cord_xfer_pure_sec());
+  double tmp_uplrc_xfer_pure_sec = from._internal_uplrc_xfer_pure_sec();
+  uint64_t raw_uplrc_xfer_pure_sec;
+  memcpy(&raw_uplrc_xfer_pure_sec, &tmp_uplrc_xfer_pure_sec, sizeof(tmp_uplrc_xfer_pure_sec));
+  if (raw_uplrc_xfer_pure_sec != 0) {
+    _this->_internal_set_uplrc_xfer_pure_sec(from._internal_uplrc_xfer_pure_sec());
   }
   static_assert(sizeof(uint64_t) == sizeof(double), "Code assumes uint64_t and double are the same size.");
-  double tmp_cord_xfer_grpc_sec = from._internal_cord_xfer_grpc_sec();
-  uint64_t raw_cord_xfer_grpc_sec;
-  memcpy(&raw_cord_xfer_grpc_sec, &tmp_cord_xfer_grpc_sec, sizeof(tmp_cord_xfer_grpc_sec));
-  if (raw_cord_xfer_grpc_sec != 0) {
-    _this->_internal_set_cord_xfer_grpc_sec(from._internal_cord_xfer_grpc_sec());
+  double tmp_uplrc_xfer_grpc_sec = from._internal_uplrc_xfer_grpc_sec();
+  uint64_t raw_uplrc_xfer_grpc_sec;
+  memcpy(&raw_uplrc_xfer_grpc_sec, &tmp_uplrc_xfer_grpc_sec, sizeof(tmp_uplrc_xfer_grpc_sec));
+  if (raw_uplrc_xfer_grpc_sec != 0) {
+    _this->_internal_set_uplrc_xfer_grpc_sec(from._internal_uplrc_xfer_grpc_sec());
   }
   if (from._internal_ifcommit() != 0) {
     _this->_internal_set_ifcommit(from._internal_ifcommit());
   }
-  if (from._internal_cord_xfer_timing_present() != 0) {
-    _this->_internal_set_cord_xfer_timing_present(from._internal_cord_xfer_timing_present());
+  if (from._internal_uplrc_xfer_timing_present() != 0) {
+    _this->_internal_set_uplrc_xfer_timing_present(from._internal_uplrc_xfer_timing_present());
   }
   _this->_internal_metadata_.MergeFrom<::PROTOBUF_NAMESPACE_ID::UnknownFieldSet>(from._internal_metadata_);
 }
@@ -4098,11 +4099,11 @@ void RepIfSuccess::InternalSwap(RepIfSuccess* other) {
   using std::swap;
   _internal_metadata_.InternalSwap(&other->_internal_metadata_);
   ::PROTOBUF_NAMESPACE_ID::internal::memswap<
-      PROTOBUF_FIELD_OFFSET(RepIfSuccess, _impl_.cord_xfer_timing_present_)
-      + sizeof(RepIfSuccess::_impl_.cord_xfer_timing_present_)
-      - PROTOBUF_FIELD_OFFSET(RepIfSuccess, _impl_.cord_xfer_pure_sec_)>(
-          reinterpret_cast<char*>(&_impl_.cord_xfer_pure_sec_),
-          reinterpret_cast<char*>(&other->_impl_.cord_xfer_pure_sec_));
+      PROTOBUF_FIELD_OFFSET(RepIfSuccess, _impl_.uplrc_xfer_timing_present_)
+      + sizeof(RepIfSuccess::_impl_.uplrc_xfer_timing_present_)
+      - PROTOBUF_FIELD_OFFSET(RepIfSuccess, _impl_.uplrc_xfer_pure_sec_)>(
+          reinterpret_cast<char*>(&_impl_.uplrc_xfer_pure_sec_),
+          reinterpret_cast<char*>(&other->_impl_.uplrc_xfer_pure_sec_));
 }
 
 ::PROTOBUF_NAMESPACE_ID::Metadata RepIfSuccess::GetMetadata() const {
@@ -5126,19 +5127,19 @@ void LogicalRange::InternalSwap(LogicalRange* other) {
 
 // ===================================================================
 
-class XueUpdateRequest::_Internal {
+class UplrcLegacyUpdateRequest::_Internal {
  public:
 };
 
-XueUpdateRequest::XueUpdateRequest(::PROTOBUF_NAMESPACE_ID::Arena* arena,
+UplrcLegacyUpdateRequest::UplrcLegacyUpdateRequest(::PROTOBUF_NAMESPACE_ID::Arena* arena,
                          bool is_message_owned)
   : ::PROTOBUF_NAMESPACE_ID::Message(arena, is_message_owned) {
   SharedCtor(arena, is_message_owned);
-  // @@protoc_insertion_point(arena_constructor:coordinator_proto.XueUpdateRequest)
+  // @@protoc_insertion_point(arena_constructor:coordinator_proto.UplrcLegacyUpdateRequest)
 }
-XueUpdateRequest::XueUpdateRequest(const XueUpdateRequest& from)
+UplrcLegacyUpdateRequest::UplrcLegacyUpdateRequest(const UplrcLegacyUpdateRequest& from)
   : ::PROTOBUF_NAMESPACE_ID::Message() {
-  XueUpdateRequest* const _this = this; (void)_this;
+  UplrcLegacyUpdateRequest* const _this = this; (void)_this;
   new (&_impl_) Impl_{
       decltype(_impl_.ranges_){from._impl_.ranges_}
     , decltype(_impl_.client_id_){}
@@ -5155,10 +5156,10 @@ XueUpdateRequest::XueUpdateRequest(const XueUpdateRequest& from)
       _this->GetArenaForAllocation());
   }
   _this->_impl_.stripe_id_ = from._impl_.stripe_id_;
-  // @@protoc_insertion_point(copy_constructor:coordinator_proto.XueUpdateRequest)
+  // @@protoc_insertion_point(copy_constructor:coordinator_proto.UplrcLegacyUpdateRequest)
 }
 
-inline void XueUpdateRequest::SharedCtor(
+inline void UplrcLegacyUpdateRequest::SharedCtor(
     ::_pb::Arena* arena, bool is_message_owned) {
   (void)arena;
   (void)is_message_owned;
@@ -5174,8 +5175,8 @@ inline void XueUpdateRequest::SharedCtor(
   #endif // PROTOBUF_FORCE_COPY_DEFAULT_STRING
 }
 
-XueUpdateRequest::~XueUpdateRequest() {
-  // @@protoc_insertion_point(destructor:coordinator_proto.XueUpdateRequest)
+UplrcLegacyUpdateRequest::~UplrcLegacyUpdateRequest() {
+  // @@protoc_insertion_point(destructor:coordinator_proto.UplrcLegacyUpdateRequest)
   if (auto *arena = _internal_metadata_.DeleteReturnArena<::PROTOBUF_NAMESPACE_ID::UnknownFieldSet>()) {
   (void)arena;
     return;
@@ -5183,18 +5184,18 @@ XueUpdateRequest::~XueUpdateRequest() {
   SharedDtor();
 }
 
-inline void XueUpdateRequest::SharedDtor() {
+inline void UplrcLegacyUpdateRequest::SharedDtor() {
   GOOGLE_DCHECK(GetArenaForAllocation() == nullptr);
   _impl_.ranges_.~RepeatedPtrField();
   _impl_.client_id_.Destroy();
 }
 
-void XueUpdateRequest::SetCachedSize(int size) const {
+void UplrcLegacyUpdateRequest::SetCachedSize(int size) const {
   _impl_._cached_size_.Set(size);
 }
 
-void XueUpdateRequest::Clear() {
-// @@protoc_insertion_point(message_clear_start:coordinator_proto.XueUpdateRequest)
+void UplrcLegacyUpdateRequest::Clear() {
+// @@protoc_insertion_point(message_clear_start:coordinator_proto.UplrcLegacyUpdateRequest)
   uint32_t cached_has_bits = 0;
   // Prevent compiler warnings about cached_has_bits being unused
   (void) cached_has_bits;
@@ -5205,7 +5206,7 @@ void XueUpdateRequest::Clear() {
   _internal_metadata_.Clear<::PROTOBUF_NAMESPACE_ID::UnknownFieldSet>();
 }
 
-const char* XueUpdateRequest::_InternalParse(const char* ptr, ::_pbi::ParseContext* ctx) {
+const char* UplrcLegacyUpdateRequest::_InternalParse(const char* ptr, ::_pbi::ParseContext* ctx) {
 #define CHK_(x) if (PROTOBUF_PREDICT_FALSE(!(x))) goto failure
   while (!ctx->Done(&ptr)) {
     uint32_t tag;
@@ -5217,7 +5218,7 @@ const char* XueUpdateRequest::_InternalParse(const char* ptr, ::_pbi::ParseConte
           auto str = _internal_mutable_client_id();
           ptr = ::_pbi::InlineGreedyStringParser(str, ptr, ctx);
           CHK_(ptr);
-          CHK_(::_pbi::VerifyUTF8(str, "coordinator_proto.XueUpdateRequest.client_id"));
+          CHK_(::_pbi::VerifyUTF8(str, "coordinator_proto.UplrcLegacyUpdateRequest.client_id"));
         } else
           goto handle_unusual;
         continue;
@@ -5265,9 +5266,9 @@ failure:
 #undef CHK_
 }
 
-uint8_t* XueUpdateRequest::_InternalSerialize(
+uint8_t* UplrcLegacyUpdateRequest::_InternalSerialize(
     uint8_t* target, ::PROTOBUF_NAMESPACE_ID::io::EpsCopyOutputStream* stream) const {
-  // @@protoc_insertion_point(serialize_to_array_start:coordinator_proto.XueUpdateRequest)
+  // @@protoc_insertion_point(serialize_to_array_start:coordinator_proto.UplrcLegacyUpdateRequest)
   uint32_t cached_has_bits = 0;
   (void) cached_has_bits;
 
@@ -5276,7 +5277,7 @@ uint8_t* XueUpdateRequest::_InternalSerialize(
     ::PROTOBUF_NAMESPACE_ID::internal::WireFormatLite::VerifyUtf8String(
       this->_internal_client_id().data(), static_cast<int>(this->_internal_client_id().length()),
       ::PROTOBUF_NAMESPACE_ID::internal::WireFormatLite::SERIALIZE,
-      "coordinator_proto.XueUpdateRequest.client_id");
+      "coordinator_proto.UplrcLegacyUpdateRequest.client_id");
     target = stream->WriteStringMaybeAliased(
         1, this->_internal_client_id(), target);
   }
@@ -5299,12 +5300,12 @@ uint8_t* XueUpdateRequest::_InternalSerialize(
     target = ::_pbi::WireFormat::InternalSerializeUnknownFieldsToArray(
         _internal_metadata_.unknown_fields<::PROTOBUF_NAMESPACE_ID::UnknownFieldSet>(::PROTOBUF_NAMESPACE_ID::UnknownFieldSet::default_instance), target, stream);
   }
-  // @@protoc_insertion_point(serialize_to_array_end:coordinator_proto.XueUpdateRequest)
+  // @@protoc_insertion_point(serialize_to_array_end:coordinator_proto.UplrcLegacyUpdateRequest)
   return target;
 }
 
-size_t XueUpdateRequest::ByteSizeLong() const {
-// @@protoc_insertion_point(message_byte_size_start:coordinator_proto.XueUpdateRequest)
+size_t UplrcLegacyUpdateRequest::ByteSizeLong() const {
+// @@protoc_insertion_point(message_byte_size_start:coordinator_proto.UplrcLegacyUpdateRequest)
   size_t total_size = 0;
 
   uint32_t cached_has_bits = 0;
@@ -5333,17 +5334,17 @@ size_t XueUpdateRequest::ByteSizeLong() const {
   return MaybeComputeUnknownFieldsSize(total_size, &_impl_._cached_size_);
 }
 
-const ::PROTOBUF_NAMESPACE_ID::Message::ClassData XueUpdateRequest::_class_data_ = {
+const ::PROTOBUF_NAMESPACE_ID::Message::ClassData UplrcLegacyUpdateRequest::_class_data_ = {
     ::PROTOBUF_NAMESPACE_ID::Message::CopyWithSourceCheck,
-    XueUpdateRequest::MergeImpl
+    UplrcLegacyUpdateRequest::MergeImpl
 };
-const ::PROTOBUF_NAMESPACE_ID::Message::ClassData*XueUpdateRequest::GetClassData() const { return &_class_data_; }
+const ::PROTOBUF_NAMESPACE_ID::Message::ClassData*UplrcLegacyUpdateRequest::GetClassData() const { return &_class_data_; }
 
 
-void XueUpdateRequest::MergeImpl(::PROTOBUF_NAMESPACE_ID::Message& to_msg, const ::PROTOBUF_NAMESPACE_ID::Message& from_msg) {
-  auto* const _this = static_cast<XueUpdateRequest*>(&to_msg);
-  auto& from = static_cast<const XueUpdateRequest&>(from_msg);
-  // @@protoc_insertion_point(class_specific_merge_from_start:coordinator_proto.XueUpdateRequest)
+void UplrcLegacyUpdateRequest::MergeImpl(::PROTOBUF_NAMESPACE_ID::Message& to_msg, const ::PROTOBUF_NAMESPACE_ID::Message& from_msg) {
+  auto* const _this = static_cast<UplrcLegacyUpdateRequest*>(&to_msg);
+  auto& from = static_cast<const UplrcLegacyUpdateRequest&>(from_msg);
+  // @@protoc_insertion_point(class_specific_merge_from_start:coordinator_proto.UplrcLegacyUpdateRequest)
   GOOGLE_DCHECK_NE(&from, _this);
   uint32_t cached_has_bits = 0;
   (void) cached_has_bits;
@@ -5358,18 +5359,18 @@ void XueUpdateRequest::MergeImpl(::PROTOBUF_NAMESPACE_ID::Message& to_msg, const
   _this->_internal_metadata_.MergeFrom<::PROTOBUF_NAMESPACE_ID::UnknownFieldSet>(from._internal_metadata_);
 }
 
-void XueUpdateRequest::CopyFrom(const XueUpdateRequest& from) {
-// @@protoc_insertion_point(class_specific_copy_from_start:coordinator_proto.XueUpdateRequest)
+void UplrcLegacyUpdateRequest::CopyFrom(const UplrcLegacyUpdateRequest& from) {
+// @@protoc_insertion_point(class_specific_copy_from_start:coordinator_proto.UplrcLegacyUpdateRequest)
   if (&from == this) return;
   Clear();
   MergeFrom(from);
 }
 
-bool XueUpdateRequest::IsInitialized() const {
+bool UplrcLegacyUpdateRequest::IsInitialized() const {
   return true;
 }
 
-void XueUpdateRequest::InternalSwap(XueUpdateRequest* other) {
+void UplrcLegacyUpdateRequest::InternalSwap(UplrcLegacyUpdateRequest* other) {
   using std::swap;
   auto* lhs_arena = GetArenaForAllocation();
   auto* rhs_arena = other->GetArenaForAllocation();
@@ -5382,7 +5383,7 @@ void XueUpdateRequest::InternalSwap(XueUpdateRequest* other) {
   swap(_impl_.stripe_id_, other->_impl_.stripe_id_);
 }
 
-::PROTOBUF_NAMESPACE_ID::Metadata XueUpdateRequest::GetMetadata() const {
+::PROTOBUF_NAMESPACE_ID::Metadata UplrcLegacyUpdateRequest::GetMetadata() const {
   return ::_pbi::AssignDescriptors(
       &descriptor_table_coordinator_2eproto_getter, &descriptor_table_coordinator_2eproto_once,
       file_level_metadata_coordinator_2eproto[16]);
@@ -5390,25 +5391,25 @@ void XueUpdateRequest::InternalSwap(XueUpdateRequest* other) {
 
 // ===================================================================
 
-class CordUpdateRequest::_Internal {
+class UpLRCUpdateRequest::_Internal {
  public:
 };
 
-CordUpdateRequest::CordUpdateRequest(::PROTOBUF_NAMESPACE_ID::Arena* arena,
+UpLRCUpdateRequest::UpLRCUpdateRequest(::PROTOBUF_NAMESPACE_ID::Arena* arena,
                          bool is_message_owned)
   : ::PROTOBUF_NAMESPACE_ID::Message(arena, is_message_owned) {
   SharedCtor(arena, is_message_owned);
-  // @@protoc_insertion_point(arena_constructor:coordinator_proto.CordUpdateRequest)
+  // @@protoc_insertion_point(arena_constructor:coordinator_proto.UpLRCUpdateRequest)
 }
-CordUpdateRequest::CordUpdateRequest(const CordUpdateRequest& from)
+UpLRCUpdateRequest::UpLRCUpdateRequest(const UpLRCUpdateRequest& from)
   : ::PROTOBUF_NAMESPACE_ID::Message() {
-  CordUpdateRequest* const _this = this; (void)_this;
+  UpLRCUpdateRequest* const _this = this; (void)_this;
   new (&_impl_) Impl_{
       decltype(_impl_.update_intervals_){from._impl_.update_intervals_}
     , decltype(_impl_.client_id_){}
     , decltype(_impl_.stripe_id_){}
     , decltype(_impl_.interval_count_){}
-    , decltype(_impl_.cord_lp_use_global_hub_){}
+    , decltype(_impl_.uplrc_lp_use_global_hub_){}
     , /*decltype(_impl_._cached_size_)*/{}};
 
   _internal_metadata_.MergeFrom<::PROTOBUF_NAMESPACE_ID::UnknownFieldSet>(from._internal_metadata_);
@@ -5421,12 +5422,12 @@ CordUpdateRequest::CordUpdateRequest(const CordUpdateRequest& from)
       _this->GetArenaForAllocation());
   }
   ::memcpy(&_impl_.stripe_id_, &from._impl_.stripe_id_,
-    static_cast<size_t>(reinterpret_cast<char*>(&_impl_.cord_lp_use_global_hub_) -
-    reinterpret_cast<char*>(&_impl_.stripe_id_)) + sizeof(_impl_.cord_lp_use_global_hub_));
-  // @@protoc_insertion_point(copy_constructor:coordinator_proto.CordUpdateRequest)
+    static_cast<size_t>(reinterpret_cast<char*>(&_impl_.uplrc_lp_use_global_hub_) -
+    reinterpret_cast<char*>(&_impl_.stripe_id_)) + sizeof(_impl_.uplrc_lp_use_global_hub_));
+  // @@protoc_insertion_point(copy_constructor:coordinator_proto.UpLRCUpdateRequest)
 }
 
-inline void CordUpdateRequest::SharedCtor(
+inline void UpLRCUpdateRequest::SharedCtor(
     ::_pb::Arena* arena, bool is_message_owned) {
   (void)arena;
   (void)is_message_owned;
@@ -5435,7 +5436,7 @@ inline void CordUpdateRequest::SharedCtor(
     , decltype(_impl_.client_id_){}
     , decltype(_impl_.stripe_id_){0}
     , decltype(_impl_.interval_count_){0}
-    , decltype(_impl_.cord_lp_use_global_hub_){false}
+    , decltype(_impl_.uplrc_lp_use_global_hub_){false}
     , /*decltype(_impl_._cached_size_)*/{}
   };
   _impl_.client_id_.InitDefault();
@@ -5444,8 +5445,8 @@ inline void CordUpdateRequest::SharedCtor(
   #endif // PROTOBUF_FORCE_COPY_DEFAULT_STRING
 }
 
-CordUpdateRequest::~CordUpdateRequest() {
-  // @@protoc_insertion_point(destructor:coordinator_proto.CordUpdateRequest)
+UpLRCUpdateRequest::~UpLRCUpdateRequest() {
+  // @@protoc_insertion_point(destructor:coordinator_proto.UpLRCUpdateRequest)
   if (auto *arena = _internal_metadata_.DeleteReturnArena<::PROTOBUF_NAMESPACE_ID::UnknownFieldSet>()) {
   (void)arena;
     return;
@@ -5453,18 +5454,18 @@ CordUpdateRequest::~CordUpdateRequest() {
   SharedDtor();
 }
 
-inline void CordUpdateRequest::SharedDtor() {
+inline void UpLRCUpdateRequest::SharedDtor() {
   GOOGLE_DCHECK(GetArenaForAllocation() == nullptr);
   _impl_.update_intervals_.~RepeatedPtrField();
   _impl_.client_id_.Destroy();
 }
 
-void CordUpdateRequest::SetCachedSize(int size) const {
+void UpLRCUpdateRequest::SetCachedSize(int size) const {
   _impl_._cached_size_.Set(size);
 }
 
-void CordUpdateRequest::Clear() {
-// @@protoc_insertion_point(message_clear_start:coordinator_proto.CordUpdateRequest)
+void UpLRCUpdateRequest::Clear() {
+// @@protoc_insertion_point(message_clear_start:coordinator_proto.UpLRCUpdateRequest)
   uint32_t cached_has_bits = 0;
   // Prevent compiler warnings about cached_has_bits being unused
   (void) cached_has_bits;
@@ -5472,12 +5473,12 @@ void CordUpdateRequest::Clear() {
   _impl_.update_intervals_.Clear();
   _impl_.client_id_.ClearToEmpty();
   ::memset(&_impl_.stripe_id_, 0, static_cast<size_t>(
-      reinterpret_cast<char*>(&_impl_.cord_lp_use_global_hub_) -
-      reinterpret_cast<char*>(&_impl_.stripe_id_)) + sizeof(_impl_.cord_lp_use_global_hub_));
+      reinterpret_cast<char*>(&_impl_.uplrc_lp_use_global_hub_) -
+      reinterpret_cast<char*>(&_impl_.stripe_id_)) + sizeof(_impl_.uplrc_lp_use_global_hub_));
   _internal_metadata_.Clear<::PROTOBUF_NAMESPACE_ID::UnknownFieldSet>();
 }
 
-const char* CordUpdateRequest::_InternalParse(const char* ptr, ::_pbi::ParseContext* ctx) {
+const char* UpLRCUpdateRequest::_InternalParse(const char* ptr, ::_pbi::ParseContext* ctx) {
 #define CHK_(x) if (PROTOBUF_PREDICT_FALSE(!(x))) goto failure
   while (!ctx->Done(&ptr)) {
     uint32_t tag;
@@ -5489,7 +5490,7 @@ const char* CordUpdateRequest::_InternalParse(const char* ptr, ::_pbi::ParseCont
           auto str = _internal_mutable_client_id();
           ptr = ::_pbi::InlineGreedyStringParser(str, ptr, ctx);
           CHK_(ptr);
-          CHK_(::_pbi::VerifyUTF8(str, "coordinator_proto.CordUpdateRequest.client_id"));
+          CHK_(::_pbi::VerifyUTF8(str, "coordinator_proto.UpLRCUpdateRequest.client_id"));
         } else
           goto handle_unusual;
         continue;
@@ -5522,10 +5523,10 @@ const char* CordUpdateRequest::_InternalParse(const char* ptr, ::_pbi::ParseCont
         } else
           goto handle_unusual;
         continue;
-      // bool cord_lp_use_global_hub = 5;
+      // bool uplrc_lp_use_global_hub = 5;
       case 5:
         if (PROTOBUF_PREDICT_TRUE(static_cast<uint8_t>(tag) == 40)) {
-          _impl_.cord_lp_use_global_hub_ = ::PROTOBUF_NAMESPACE_ID::internal::ReadVarint64(&ptr);
+          _impl_.uplrc_lp_use_global_hub_ = ::PROTOBUF_NAMESPACE_ID::internal::ReadVarint64(&ptr);
           CHK_(ptr);
         } else
           goto handle_unusual;
@@ -5553,9 +5554,9 @@ failure:
 #undef CHK_
 }
 
-uint8_t* CordUpdateRequest::_InternalSerialize(
+uint8_t* UpLRCUpdateRequest::_InternalSerialize(
     uint8_t* target, ::PROTOBUF_NAMESPACE_ID::io::EpsCopyOutputStream* stream) const {
-  // @@protoc_insertion_point(serialize_to_array_start:coordinator_proto.CordUpdateRequest)
+  // @@protoc_insertion_point(serialize_to_array_start:coordinator_proto.UpLRCUpdateRequest)
   uint32_t cached_has_bits = 0;
   (void) cached_has_bits;
 
@@ -5564,7 +5565,7 @@ uint8_t* CordUpdateRequest::_InternalSerialize(
     ::PROTOBUF_NAMESPACE_ID::internal::WireFormatLite::VerifyUtf8String(
       this->_internal_client_id().data(), static_cast<int>(this->_internal_client_id().length()),
       ::PROTOBUF_NAMESPACE_ID::internal::WireFormatLite::SERIALIZE,
-      "coordinator_proto.CordUpdateRequest.client_id");
+      "coordinator_proto.UpLRCUpdateRequest.client_id");
     target = stream->WriteStringMaybeAliased(
         1, this->_internal_client_id(), target);
   }
@@ -5589,22 +5590,22 @@ uint8_t* CordUpdateRequest::_InternalSerialize(
     target = ::_pbi::WireFormatLite::WriteInt32ToArray(4, this->_internal_interval_count(), target);
   }
 
-  // bool cord_lp_use_global_hub = 5;
-  if (this->_internal_cord_lp_use_global_hub() != 0) {
+  // bool uplrc_lp_use_global_hub = 5;
+  if (this->_internal_uplrc_lp_use_global_hub() != 0) {
     target = stream->EnsureSpace(target);
-    target = ::_pbi::WireFormatLite::WriteBoolToArray(5, this->_internal_cord_lp_use_global_hub(), target);
+    target = ::_pbi::WireFormatLite::WriteBoolToArray(5, this->_internal_uplrc_lp_use_global_hub(), target);
   }
 
   if (PROTOBUF_PREDICT_FALSE(_internal_metadata_.have_unknown_fields())) {
     target = ::_pbi::WireFormat::InternalSerializeUnknownFieldsToArray(
         _internal_metadata_.unknown_fields<::PROTOBUF_NAMESPACE_ID::UnknownFieldSet>(::PROTOBUF_NAMESPACE_ID::UnknownFieldSet::default_instance), target, stream);
   }
-  // @@protoc_insertion_point(serialize_to_array_end:coordinator_proto.CordUpdateRequest)
+  // @@protoc_insertion_point(serialize_to_array_end:coordinator_proto.UpLRCUpdateRequest)
   return target;
 }
 
-size_t CordUpdateRequest::ByteSizeLong() const {
-// @@protoc_insertion_point(message_byte_size_start:coordinator_proto.CordUpdateRequest)
+size_t UpLRCUpdateRequest::ByteSizeLong() const {
+// @@protoc_insertion_point(message_byte_size_start:coordinator_proto.UpLRCUpdateRequest)
   size_t total_size = 0;
 
   uint32_t cached_has_bits = 0;
@@ -5635,25 +5636,25 @@ size_t CordUpdateRequest::ByteSizeLong() const {
     total_size += ::_pbi::WireFormatLite::Int32SizePlusOne(this->_internal_interval_count());
   }
 
-  // bool cord_lp_use_global_hub = 5;
-  if (this->_internal_cord_lp_use_global_hub() != 0) {
+  // bool uplrc_lp_use_global_hub = 5;
+  if (this->_internal_uplrc_lp_use_global_hub() != 0) {
     total_size += 1 + 1;
   }
 
   return MaybeComputeUnknownFieldsSize(total_size, &_impl_._cached_size_);
 }
 
-const ::PROTOBUF_NAMESPACE_ID::Message::ClassData CordUpdateRequest::_class_data_ = {
+const ::PROTOBUF_NAMESPACE_ID::Message::ClassData UpLRCUpdateRequest::_class_data_ = {
     ::PROTOBUF_NAMESPACE_ID::Message::CopyWithSourceCheck,
-    CordUpdateRequest::MergeImpl
+    UpLRCUpdateRequest::MergeImpl
 };
-const ::PROTOBUF_NAMESPACE_ID::Message::ClassData*CordUpdateRequest::GetClassData() const { return &_class_data_; }
+const ::PROTOBUF_NAMESPACE_ID::Message::ClassData*UpLRCUpdateRequest::GetClassData() const { return &_class_data_; }
 
 
-void CordUpdateRequest::MergeImpl(::PROTOBUF_NAMESPACE_ID::Message& to_msg, const ::PROTOBUF_NAMESPACE_ID::Message& from_msg) {
-  auto* const _this = static_cast<CordUpdateRequest*>(&to_msg);
-  auto& from = static_cast<const CordUpdateRequest&>(from_msg);
-  // @@protoc_insertion_point(class_specific_merge_from_start:coordinator_proto.CordUpdateRequest)
+void UpLRCUpdateRequest::MergeImpl(::PROTOBUF_NAMESPACE_ID::Message& to_msg, const ::PROTOBUF_NAMESPACE_ID::Message& from_msg) {
+  auto* const _this = static_cast<UpLRCUpdateRequest*>(&to_msg);
+  auto& from = static_cast<const UpLRCUpdateRequest&>(from_msg);
+  // @@protoc_insertion_point(class_specific_merge_from_start:coordinator_proto.UpLRCUpdateRequest)
   GOOGLE_DCHECK_NE(&from, _this);
   uint32_t cached_has_bits = 0;
   (void) cached_has_bits;
@@ -5668,24 +5669,24 @@ void CordUpdateRequest::MergeImpl(::PROTOBUF_NAMESPACE_ID::Message& to_msg, cons
   if (from._internal_interval_count() != 0) {
     _this->_internal_set_interval_count(from._internal_interval_count());
   }
-  if (from._internal_cord_lp_use_global_hub() != 0) {
-    _this->_internal_set_cord_lp_use_global_hub(from._internal_cord_lp_use_global_hub());
+  if (from._internal_uplrc_lp_use_global_hub() != 0) {
+    _this->_internal_set_uplrc_lp_use_global_hub(from._internal_uplrc_lp_use_global_hub());
   }
   _this->_internal_metadata_.MergeFrom<::PROTOBUF_NAMESPACE_ID::UnknownFieldSet>(from._internal_metadata_);
 }
 
-void CordUpdateRequest::CopyFrom(const CordUpdateRequest& from) {
-// @@protoc_insertion_point(class_specific_copy_from_start:coordinator_proto.CordUpdateRequest)
+void UpLRCUpdateRequest::CopyFrom(const UpLRCUpdateRequest& from) {
+// @@protoc_insertion_point(class_specific_copy_from_start:coordinator_proto.UpLRCUpdateRequest)
   if (&from == this) return;
   Clear();
   MergeFrom(from);
 }
 
-bool CordUpdateRequest::IsInitialized() const {
+bool UpLRCUpdateRequest::IsInitialized() const {
   return true;
 }
 
-void CordUpdateRequest::InternalSwap(CordUpdateRequest* other) {
+void UpLRCUpdateRequest::InternalSwap(UpLRCUpdateRequest* other) {
   using std::swap;
   auto* lhs_arena = GetArenaForAllocation();
   auto* rhs_arena = other->GetArenaForAllocation();
@@ -5696,14 +5697,14 @@ void CordUpdateRequest::InternalSwap(CordUpdateRequest* other) {
       &other->_impl_.client_id_, rhs_arena
   );
   ::PROTOBUF_NAMESPACE_ID::internal::memswap<
-      PROTOBUF_FIELD_OFFSET(CordUpdateRequest, _impl_.cord_lp_use_global_hub_)
-      + sizeof(CordUpdateRequest::_impl_.cord_lp_use_global_hub_)
-      - PROTOBUF_FIELD_OFFSET(CordUpdateRequest, _impl_.stripe_id_)>(
+      PROTOBUF_FIELD_OFFSET(UpLRCUpdateRequest, _impl_.uplrc_lp_use_global_hub_)
+      + sizeof(UpLRCUpdateRequest::_impl_.uplrc_lp_use_global_hub_)
+      - PROTOBUF_FIELD_OFFSET(UpLRCUpdateRequest, _impl_.stripe_id_)>(
           reinterpret_cast<char*>(&_impl_.stripe_id_),
           reinterpret_cast<char*>(&other->_impl_.stripe_id_));
 }
 
-::PROTOBUF_NAMESPACE_ID::Metadata CordUpdateRequest::GetMetadata() const {
+::PROTOBUF_NAMESPACE_ID::Metadata UpLRCUpdateRequest::GetMetadata() const {
   return ::_pbi::AssignDescriptors(
       &descriptor_table_coordinator_2eproto_getter, &descriptor_table_coordinator_2eproto_once,
       file_level_metadata_coordinator_2eproto[17]);
@@ -7722,13 +7723,13 @@ template<> PROTOBUF_NOINLINE ::coordinator_proto::ReplyProxyIPsPorts*
 Arena::CreateMaybeMessage< ::coordinator_proto::ReplyProxyIPsPorts >(Arena* arena) {
   return Arena::CreateMessageInternal< ::coordinator_proto::ReplyProxyIPsPorts >(arena);
 }
-template<> PROTOBUF_NOINLINE ::coordinator_proto::CordPlanKeyOnly*
-Arena::CreateMaybeMessage< ::coordinator_proto::CordPlanKeyOnly >(Arena* arena) {
-  return Arena::CreateMessageInternal< ::coordinator_proto::CordPlanKeyOnly >(arena);
+template<> PROTOBUF_NOINLINE ::coordinator_proto::UpLRCPlanKeyOnly*
+Arena::CreateMaybeMessage< ::coordinator_proto::UpLRCPlanKeyOnly >(Arena* arena) {
+  return Arena::CreateMessageInternal< ::coordinator_proto::UpLRCPlanKeyOnly >(arena);
 }
-template<> PROTOBUF_NOINLINE ::coordinator_proto::CordPlanWaitRequest*
-Arena::CreateMaybeMessage< ::coordinator_proto::CordPlanWaitRequest >(Arena* arena) {
-  return Arena::CreateMessageInternal< ::coordinator_proto::CordPlanWaitRequest >(arena);
+template<> PROTOBUF_NOINLINE ::coordinator_proto::UpLRCPlanWaitRequest*
+Arena::CreateMaybeMessage< ::coordinator_proto::UpLRCPlanWaitRequest >(Arena* arena) {
+  return Arena::CreateMessageInternal< ::coordinator_proto::UpLRCPlanWaitRequest >(arena);
 }
 template<> PROTOBUF_NOINLINE ::coordinator_proto::AskIfSuccess*
 Arena::CreateMaybeMessage< ::coordinator_proto::AskIfSuccess >(Arena* arena) {
@@ -7754,13 +7755,13 @@ template<> PROTOBUF_NOINLINE ::coordinator_proto::LogicalRange*
 Arena::CreateMaybeMessage< ::coordinator_proto::LogicalRange >(Arena* arena) {
   return Arena::CreateMessageInternal< ::coordinator_proto::LogicalRange >(arena);
 }
-template<> PROTOBUF_NOINLINE ::coordinator_proto::XueUpdateRequest*
-Arena::CreateMaybeMessage< ::coordinator_proto::XueUpdateRequest >(Arena* arena) {
-  return Arena::CreateMessageInternal< ::coordinator_proto::XueUpdateRequest >(arena);
+template<> PROTOBUF_NOINLINE ::coordinator_proto::UplrcLegacyUpdateRequest*
+Arena::CreateMaybeMessage< ::coordinator_proto::UplrcLegacyUpdateRequest >(Arena* arena) {
+  return Arena::CreateMessageInternal< ::coordinator_proto::UplrcLegacyUpdateRequest >(arena);
 }
-template<> PROTOBUF_NOINLINE ::coordinator_proto::CordUpdateRequest*
-Arena::CreateMaybeMessage< ::coordinator_proto::CordUpdateRequest >(Arena* arena) {
-  return Arena::CreateMessageInternal< ::coordinator_proto::CordUpdateRequest >(arena);
+template<> PROTOBUF_NOINLINE ::coordinator_proto::UpLRCUpdateRequest*
+Arena::CreateMaybeMessage< ::coordinator_proto::UpLRCUpdateRequest >(Arena* arena) {
+  return Arena::CreateMessageInternal< ::coordinator_proto::UpLRCUpdateRequest >(arena);
 }
 template<> PROTOBUF_NOINLINE ::coordinator_proto::KeyFromClient*
 Arena::CreateMaybeMessage< ::coordinator_proto::KeyFromClient >(Arena* arena) {

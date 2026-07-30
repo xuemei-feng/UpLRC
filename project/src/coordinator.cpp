@@ -1,8 +1,8 @@
 #include "coordinator.h"
 #include "devcommon.h"
 #include <cstdint>
-#include "cord_algorithm2.h"
-#include "cord_class_algorithm.h"
+#include "uplrc_algorithm2.h"
+#include "uplrc_class_algorithm.h"
 #include "tinyxml2.h"
 #include <random>
 #include <unistd.h>
@@ -51,7 +51,7 @@ namespace ECProject  //定义一个名为 ECProject 的命名空间，防止命�
   {
     bool is_azure_like_code(const std::string &code_type) // 辅助函数：判断是否为 Azure 系列分组规则编码
     {
-      return code_type == "AzureLRC" || code_type == "RandomLRC" || code_type == "SplitParityLRC" || code_type == "CordXueLRC";
+      return code_type == "AzureLRC" || code_type == "RandomLRC" || code_type == "SplitParityLRC" || code_type == "UpLRC";
     }
 
     /** Deterministic seed for placement RNG: same placement_seed + stripe_id -> same sequence (shuffle / cluster / node). */
@@ -68,14 +68,14 @@ namespace ECProject  //定义一个名为 ECProject 的命名空间，防止命�
       gen.seed(ss);
     }
 
-    // CoRD：半开区间 [a0,a1) 与 [b0,b1) 是否有非空交集
-    bool cord_half_open_overlap(int a0, int a1, int b0, int b1)
+    // UpLRC：半开区间 [a0,a1) 与 [b0,b1) 是否有非空交集
+    bool uplrc_half_open_overlap(int a0, int a1, int b0, int b1)
     {
       return std::max(a0, b0) < std::min(a1, b1);
     }
 
     // 将条带逻辑地址 [logical_start, logical_end_exclusive) 映射为各数据块内半开区间并追加到 out
-    void cord_add_logical_range_to_data_blocks(
+    void uplrc_add_logical_range_to_data_blocks(
         int block_size,
         int k,
         int logical_start,
@@ -97,7 +97,7 @@ namespace ECProject  //定义一个名为 ECProject 的命名空间，防止命�
       }
     }
 
-    bool cord_two_blocks_intersect(
+    bool uplrc_two_blocks_intersect(
         const std::map<int, std::vector<std::pair<int, int>>> &block_intervals,
         int bid_a,
         int bid_b)
@@ -106,13 +106,13 @@ namespace ECProject  //定义一个名为 ECProject 的命名空间，防止命�
       const auto &ib = block_intervals.at(bid_b);
       for (const auto &pa : ia)
         for (const auto &pb : ib)
-          if (cord_half_open_overlap(pa.first, pa.second, pb.first, pb.second))
+          if (uplrc_half_open_overlap(pa.first, pa.second, pb.first, pb.second))
             return true;
       return false;
     }
 
-    // CoRD 算法一：按「块内更新区间是否与其它块相交」做传递闭包分组
-    std::vector<std::vector<int>> cord_partition_groups_algorithm1(
+    // UpLRC 算法一：按「块内更新区间是否与其它块相交」做传递闭包分组
+    std::vector<std::vector<int>> uplrc_partition_groups_algorithm1(
         const std::map<int, std::vector<std::pair<int, int>>> &block_intervals)
     {
       std::vector<int> D;
@@ -136,7 +136,7 @@ namespace ECProject  //定义一个名为 ECProject 的命名空间，防止命�
             bool intersects_n = false;
             for (int bi : N)
             {
-              if (cord_two_blocks_intersect(block_intervals, bi, d_j))
+              if (uplrc_two_blocks_intersect(block_intervals, bi, d_j))
               {
                 intersects_n = true;
                 break;
@@ -159,14 +159,14 @@ namespace ECProject  //定义一个名为 ECProject 的命名空间，防止命�
       return U;
     }
 
-    struct CordSliceRec
+    struct UpLRCSliceRec
     {
       int block_id;
       int block_offset;
       int len;
     };
 
-    int64_t cord_lp_delta_bytes(const std::map<int, std::vector<std::pair<int, int>>> &block_intervals, int block_id)
+    int64_t uplrc_lp_delta_bytes(const std::map<int, std::vector<std::pair<int, int>>> &block_intervals, int block_id)
     {
       auto it = block_intervals.find(block_id);
       if (it == block_intervals.end())
@@ -177,7 +177,7 @@ namespace ECProject  //定义一个名为 ECProject 的命名空间，防止命�
       return sum;
     }
 
-    double cord_lp_transfer_sec(int src_c, int dst_c, int64_t bytes, const cord_alg2::TransferParams &tp)
+    double uplrc_lp_transfer_sec(int src_c, int dst_c, int64_t bytes, const uplrc_alg2::TransferParams &tp)
     {
       if (bytes <= 0)
         return 0.0;
@@ -185,10 +185,10 @@ namespace ECProject  //定义一个名为 ECProject 的命名空间，防止命�
       return lat + static_cast<double>(bytes) * tp.inv_bw_sec_per_byte;
     }
 
-    int cord_lp_pick_hub_global(const Stripe &stripe,
+    int uplrc_lp_pick_hub_global(const Stripe &stripe,
                                 const std::map<int, std::vector<std::pair<int, int>>> &block_intervals,
                                 const std::vector<int> &data_blocks_in_group,
-                                const cord_alg2::TransferParams &tp)
+                                const uplrc_alg2::TransferParams &tp)
     {
       const int k = stripe.k;
       const int r = stripe.r;
@@ -202,11 +202,11 @@ namespace ECProject  //定义一个名为 ECProject 的命名空间，防止命�
         double sum = 0.0;
         for (int d : data_blocks_in_group)
         {
-          int64_t b = cord_lp_delta_bytes(block_intervals, d);
+          int64_t b = uplrc_lp_delta_bytes(block_intervals, d);
           if (b <= 0)
             continue;
           int dc = stripe.blocks[d]->map2cluster;
-          sum += cord_lp_transfer_sec(dc, cc, b, tp);
+          sum += uplrc_lp_transfer_sec(dc, cc, b, tp);
         }
         if (sum < best_cost)
         {
@@ -217,7 +217,7 @@ namespace ECProject  //定义一个名为 ECProject 的命名空间，防止命�
       return best_c;
     }
 
-    int cord_lp_find_local_parity_block(const Stripe &stripe, int gnum)
+    int uplrc_lp_find_local_parity_block(const Stripe &stripe, int gnum)
     {
       for (int i = stripe.k + stripe.r; i < stripe.n; ++i)
       {
@@ -227,7 +227,7 @@ namespace ECProject  //定义一个名为 ECProject 的命名空间，防止命�
       return -1;
     }
 
-    bool cord_lp_find_delta_blob_offset(const std::vector<CordSliceRec> &slices, int bid, int block_off, int seg_len,
+    bool uplrc_lp_find_delta_blob_offset(const std::vector<UpLRCSliceRec> &slices, int bid, int block_off, int seg_len,
                                         uint64_t *out_off)
     {
       uint64_t running = 0;
@@ -266,7 +266,7 @@ namespace ECProject  //定义一个名为 ECProject 的命名空间，防止命�
       std::vector<LpFetchSpec> fetches;
     };
 
-    bool run_cord_lp_global_hub_aggregation(
+    bool run_uplrc_lp_global_hub_aggregation(
         const std::map<int, Cluster> &cluster_table,
         const std::map<std::string, std::unique_ptr<proxy_proto::proxyService::Stub>> &proxy_ptrs,
         int stripe_id,
@@ -275,7 +275,7 @@ namespace ECProject  //定义一个名为 ECProject 的命名空间，防止命�
         std::map<std::tuple<int, int, int>, LpWorkAgg> &agg)
     {
       const int k = stripe->k;
-      cord_alg2::TransferParams tp;
+      uplrc_alg2::TransferParams tp;
       for (auto &kv : agg)
       {
         LpWorkAgg &w = kv.second;
@@ -288,7 +288,7 @@ namespace ECProject  //定义一个名为 ECProject 的命名空间，防止命�
         }
         if (data_only_bi.empty())
             continue;
-        const auto components = cord_partition_groups_algorithm1(data_only_bi);
+        const auto components = uplrc_partition_groups_algorithm1(data_only_bi);
         size_t comp_idx = 0;
         for (const auto &N : components)
         {
@@ -323,7 +323,7 @@ namespace ECProject  //定义一个名为 ECProject 的命名空间，防止命�
           std::set<int> src_clusters;
           for (const auto &f : comp_fetches)
             src_clusters.insert(f.source_cluster_id);
-          const int hub_blk = cord_lp_pick_hub_global(*stripe, block_intervals, N_data, tp);
+          const int hub_blk = uplrc_lp_pick_hub_global(*stripe, block_intervals, N_data, tp);
           const int hub_c = stripe->blocks[hub_blk]->map2cluster;
           const int lp_c = stripe->blocks[w.local_block_id]->map2cluster;
 
@@ -335,19 +335,19 @@ namespace ECProject  //定义一个名为 ECProject 的命名空间，防止命�
           auto cit_lp = cluster_table.find(lp_c);
           if (cit_hub == cluster_table.end() || cit_lp == cluster_table.end())
           {
-            std::cout << "[CoRD-LP-GH] invalid cluster id hub=" << hub_c << " lp=" << lp_c << std::endl;
+            std::cout << "[UpLRC-LP-GH] invalid cluster id hub=" << hub_c << " lp=" << lp_c << std::endl;
             return false;
           }
           std::string hub_proxy_key = cit_hub->second.proxy_ip + ":" + std::to_string(cit_hub->second.proxy_port);
           auto hub_stub_it = proxy_ptrs.find(hub_proxy_key);
           if (hub_stub_it == proxy_ptrs.end() || !hub_stub_it->second)
           {
-            std::cout << "[CoRD-LP-GH] no stub for hub proxy " << hub_proxy_key << std::endl;
+            std::cout << "[UpLRC-LP-GH] no stub for hub proxy " << hub_proxy_key << std::endl;
             return false;
           }
 
           grpc::ClientContext ctx_begin;
-          proxy_proto::CordLpHubSessionBegin begin;
+          proxy_proto::UpLRCLpHubSessionBegin begin;
           begin.set_session_key(sess);
           begin.set_expected_partials(static_cast<int>(src_clusters.size()));
           begin.set_parity_slice_size(w.parity_slice_size);
@@ -361,10 +361,10 @@ namespace ECProject  //定义一个名为 ECProject 的命名空间，防止命�
           begin.set_stripe_id(stripe_id);
           begin.set_hub_global_block_id(hub_blk);
           proxy_proto::SetReply rep_begin;
-          grpc::Status stb = hub_stub_it->second->cordLpHubSessionBegin(&ctx_begin, begin, &rep_begin);
+          grpc::Status stb = hub_stub_it->second->uplrcLpHubSessionBegin(&ctx_begin, begin, &rep_begin);
           if (!stb.ok() || !rep_begin.ifcommit())
           {
-            std::cout << "[CoRD-LP-GH] session begin failed: " << stb.error_message() << std::endl;
+            std::cout << "[UpLRC-LP-GH] session begin failed: " << stb.error_message() << std::endl;
             return false;
           }
 
@@ -373,17 +373,17 @@ namespace ECProject  //定义一个名为 ECProject 的命名空间，防止命�
             auto cit_sc = cluster_table.find(sc);
             if (cit_sc == cluster_table.end())
             {
-              std::cout << "[CoRD-LP-GH] invalid source cluster " << sc << std::endl;
+              std::cout << "[UpLRC-LP-GH] invalid source cluster " << sc << std::endl;
               return false;
             }
             std::string sc_key = cit_sc->second.proxy_ip + ":" + std::to_string(cit_sc->second.proxy_port);
             auto sc_stub_it = proxy_ptrs.find(sc_key);
             if (sc_stub_it == proxy_ptrs.end() || !sc_stub_it->second)
             {
-              std::cout << "[CoRD-LP-GH] no stub for source proxy " << sc_key << std::endl;
+              std::cout << "[UpLRC-LP-GH] no stub for source proxy " << sc_key << std::endl;
               return false;
             }
-            proxy_proto::CordLpComputePartialAndPush cp;
+            proxy_proto::UpLRCLpComputePartialAndPush cp;
             cp.set_session_key(sess);
             cp.set_hub_proxy_ip(cit_hub->second.proxy_ip);
             cp.set_hub_proxy_port(cit_hub->second.proxy_port);
@@ -410,10 +410,10 @@ namespace ECProject  //定义一个名为 ECProject 的命名空间，防止命�
             }
             grpc::ClientContext ctx_cp;
             proxy_proto::SetReply rep_cp;
-            grpc::Status stc = sc_stub_it->second->cordLpComputePartialAndPush(&ctx_cp, cp, &rep_cp);
+            grpc::Status stc = sc_stub_it->second->uplrcLpComputePartialAndPush(&ctx_cp, cp, &rep_cp);
             if (!stc.ok() || !rep_cp.ifcommit())
             {
-              std::cout << "[CoRD-LP-GH] compute/push from cluster " << sc << " failed: " << stc.error_message()
+              std::cout << "[UpLRC-LP-GH] compute/push from cluster " << sc << " failed: " << stc.error_message()
                         << std::endl;
               return false;
             }
@@ -425,20 +425,20 @@ namespace ECProject  //定义一个名为 ECProject 的命名空间，防止命�
     }
 
     void fill_group_xor_hints_from_alg2(
-        const cord_alg2::Algorithm2Result &alg2,
+        const uplrc_alg2::Algorithm2Result &alg2,
         const std::map<int, std::vector<std::pair<int, int>>> &block_intervals,
-        proxy_proto::CordTransferPlan *plan)
+        proxy_proto::UpLRCTransferPlan *plan)
     {
       plan->clear_group_xor_hints();
       std::map<int, std::set<int>> blocks_by_group;
       for (const auto &L : alg2.train_route)
       {
-        if (L.delta_kind != cord_alg2::CordDeltaPayloadKind::DATA_DELTA)
+        if (L.delta_kind != uplrc_alg2::UpLRCDeltaPayloadKind::DATA_DELTA)
           continue;
         int bid = -1;
-        if (L.kind == cord_alg2::TrainLinkKind::STAR_DATA_TO_CENTER)
+        if (L.kind == uplrc_alg2::TrainLinkKind::STAR_DATA_TO_CENTER)
           bid = L.src_block_id;
-        else if (L.kind == cord_alg2::TrainLinkKind::MST_FORWARD && L.mst_origin_data_block >= 0)
+        else if (L.kind == uplrc_alg2::TrainLinkKind::MST_FORWARD && L.mst_origin_data_block >= 0)
           bid = L.mst_origin_data_block;
         if (bid < 0)
           continue;
@@ -447,39 +447,39 @@ namespace ECProject  //定义一个名为 ECProject 的命名空间，防止命�
       for (const auto &kv : blocks_by_group)
       {
         std::vector<int> ids(kv.second.begin(), kv.second.end());
-        const int64_t m = cord_alg2::merged_delta_hull_span_bytes(block_intervals, ids);
+        const int64_t m = uplrc_alg2::merged_delta_hull_span_bytes(block_intervals, ids);
         if (m <= 0)
           continue;
-        proxy_proto::CordTransferGroupXorHint *h = plan->add_group_xor_hints();
+        proxy_proto::UpLRCTransferGroupXorHint *h = plan->add_group_xor_hints();
         h->set_group_index(kv.first);
         h->set_xor_accum_byte_length(static_cast<uint64_t>(m));
       }
     }
 
-    void enrich_cord_transfer_plan_block_stripe_groups(Stripe *stripe, proxy_proto::CordTransferPlan *plan)
+    void enrich_uplrc_transfer_plan_block_stripe_groups(Stripe *stripe, proxy_proto::UpLRCTransferPlan *plan)
     {
-      plan->clear_cord_block_stripe_groups();
+      plan->clear_uplrc_block_stripe_groups();
       if (stripe == nullptr || plan == nullptr)
         return;
       for (int bid = 0; bid < stripe->k; ++bid)
       {
-        proxy_proto::CordBlockStripeGroup *g = plan->add_cord_block_stripe_groups();
+        proxy_proto::UpLRCBlockStripeGroup *g = plan->add_uplrc_block_stripe_groups();
         g->set_block_id(bid);
         g->set_stripe_group(stripe->blocks[bid]->map2group);
       }
     }
 
-    void enrich_cord_transfer_plan_step_parity_filters(Stripe *stripe, proxy_proto::CordTransferPlan *plan)
+    void enrich_uplrc_transfer_plan_step_parity_filters(Stripe *stripe, proxy_proto::UpLRCTransferPlan *plan)
     {
       if (stripe == nullptr || plan == nullptr)
         return;
       for (int i = 0; i < plan->steps_size(); ++i)
       {
-        proxy_proto::CordTransferStep *st = plan->mutable_steps(i);
+        proxy_proto::UpLRCTransferStep *st = plan->mutable_steps(i);
         st->clear_parity_ingest_stripe_group();
-        if ((st->link_kind() != proxy_proto::CORD_TRANSFER_STAR_CENTER_TO_LOCAL &&
-             st->link_kind() != proxy_proto::CORD_TRANSFER_STAR_DATA_TO_LOCAL) ||
-            st->delta_payload_kind() != proxy_proto::CORD_DELTA_PARITY)
+        if ((st->link_kind() != proxy_proto::UPLRC_TRANSFER_STAR_CENTER_TO_LOCAL &&
+             st->link_kind() != proxy_proto::UPLRC_TRANSFER_STAR_DATA_TO_LOCAL) ||
+            st->delta_payload_kind() != proxy_proto::UPLRC_DELTA_PARITY)
           continue;
         const int dst = st->dst_block_id();
         if (dst < 0 || dst >= static_cast<int>(stripe->blocks.size()))
@@ -491,7 +491,7 @@ namespace ECProject  //定义一个名为 ECProject 的命名空间，防止命�
       }
     }
 
-    void reorder_cord_plan_steps_execution(proxy_proto::CordTransferPlan *plan)
+    void reorder_uplrc_plan_steps_execution(proxy_proto::UpLRCTransferPlan *plan)
     {
       const int n = plan->steps_size();
       if (n <= 0)
@@ -528,25 +528,25 @@ namespace ECProject  //定义一个名为 ECProject 的命名空间，防止命�
           return sa.chunk_byte_offset() < sb.chunk_byte_offset();
         return a < b;
       });
-      google::protobuf::RepeatedPtrField<proxy_proto::CordTransferStep> tmp;
+      google::protobuf::RepeatedPtrField<proxy_proto::UpLRCTransferStep> tmp;
       tmp.CopyFrom(plan->steps());
       plan->clear_steps();
       int new_idx = 0;
       for (int oi : order)
       {
-        proxy_proto::CordTransferStep *st = plan->add_steps();
+        proxy_proto::UpLRCTransferStep *st = plan->add_steps();
         st->CopyFrom(tmp.Get(oi));
         st->set_step_index(new_idx++);
       }
     }
 
-    void enrich_cord_transfer_plan_topology(
+    void enrich_uplrc_transfer_plan_topology(
         Stripe *stripe,
         const std::map<int, Cluster> &cluster_table,
         const std::map<int, Node> &node_table,
         ToolBox *toolbox,
-        proxy_proto::CordTransferPlan *plan,
-        const std::vector<std::pair<int, std::vector<CordSliceRec>>> &sorted_clusters)
+        proxy_proto::UpLRCTransferPlan *plan,
+        const std::vector<std::pair<int, std::vector<UpLRCSliceRec>>> &sorted_clusters)
     {
       plan->clear_cluster_endpoints();
       plan->clear_block_placements();
@@ -555,7 +555,7 @@ namespace ECProject  //定义一个名为 ECProject 的命名空间，防止命�
       plan->clear_ingress_cache_refs();
       for (const auto &cit : cluster_table)
       {
-        proxy_proto::CordTransferClusterEndpoint *ep = plan->add_cluster_endpoints();
+        proxy_proto::UpLRCTransferClusterEndpoint *ep = plan->add_cluster_endpoints();
         ep->set_cluster_id(cit.first);
         ep->set_proxy_ip(cit.second.proxy_ip);
         ep->set_proxy_port(cit.second.proxy_port);
@@ -568,7 +568,7 @@ namespace ECProject  //定义一个名为 ECProject 的命名空间，防止命�
           return;
         Block *bp = stripe->blocks[bid];
         const Node &n = node_table.at(bp->map2node);
-        proxy_proto::CordTransferBlockPlacement *p = plan->add_block_placements();
+        proxy_proto::UpLRCTransferBlockPlacement *p = plan->add_block_placements();
         p->set_block_id(bid);
         p->set_block_key(bp->block_key);
         p->set_datanode_ip(n.node_ip);
@@ -583,16 +583,16 @@ namespace ECProject  //定义一个名为 ECProject 的命名空间，防止命�
       {
         const int cid = sc.first;
         const auto &slices = sc.second;
-        std::string cord_key = toolbox->gen_cord_key(plan->stripe_id(), cid);
-        proxy_proto::CordTransferDeltaBlobRef *r = plan->add_delta_blob_refs();
+        std::string uplrc_key = toolbox->gen_uplrc_key(plan->stripe_id(), cid);
+        proxy_proto::UpLRCTransferDeltaBlobRef *r = plan->add_delta_blob_refs();
         r->set_cluster_id(cid);
-        r->set_cord_plan_key(cord_key);
-        r->set_delta_blob_key(cord_key + "_delta");
+        r->set_uplrc_plan_key(uplrc_key);
+        r->set_delta_blob_key(uplrc_key + "_delta");
         const Node &dn = node_table.at(cluster_table.at(cid).nodes.front());
         r->set_delta_datanode_ip(dn.node_ip);
         r->set_delta_datanode_port(dn.node_port);
 
-        proxy_proto::CordTransferClusterDeltaLayout *lay = plan->add_cluster_delta_layouts();
+        proxy_proto::UpLRCTransferClusterDeltaLayout *lay = plan->add_cluster_delta_layouts();
         lay->set_cluster_id(cid);
         uint64_t run = 0;
         for (const auto &sl : slices)
@@ -605,14 +605,14 @@ namespace ECProject  //定义一个名为 ECProject 的命名空间，防止命�
       }
       for (const auto &sc : sorted_clusters)
       {
-        proxy_proto::CordIngressCacheRef *cr = plan->add_ingress_cache_refs();
+        proxy_proto::UpLRCIngressCacheRef *cr = plan->add_ingress_cache_refs();
         cr->set_cluster_id(sc.first);
-        cr->set_append_key(toolbox->gen_cord_key(plan->stripe_id(), sc.first));
+        cr->set_append_key(toolbox->gen_uplrc_key(plan->stripe_id(), sc.first));
       }
     }
 
     /** packed 顺序遍历块内区间时，将链路内 packed offset 映射为块内逻辑字节偏移（与 ingest memcpy 对齐）。 */
-    static int64_t cord_packed_offset_to_logical_in_block(const std::vector<std::pair<int, int>> &segs,
+    static int64_t uplrc_packed_offset_to_logical_in_block(const std::vector<std::pair<int, int>> &segs,
                                                          int64_t packed_off)
     {
       if (packed_off < 0)
@@ -630,11 +630,11 @@ namespace ECProject  //定义一个名为 ECProject 的命名空间，防止命�
       return static_cast<int64_t>(segs.empty() ? 0 : segs.back().second);
     }
 
-    static void enrich_cord_transfer_plan_delta_segs(
+    static void enrich_uplrc_transfer_plan_delta_segs(
         const std::map<int, std::vector<std::pair<int, int>>> &block_intervals, int k_datablock,
-        proxy_proto::CordTransferPlan *plan)
+        proxy_proto::UpLRCTransferPlan *plan)
     {
-      plan->clear_cord_block_delta_segs();
+      plan->clear_uplrc_block_delta_segs();
       for (const auto &kv : block_intervals)
       {
         const int bid = kv.first;
@@ -644,7 +644,7 @@ namespace ECProject  //定义一个名为 ECProject 的命名空间，防止命�
         {
           if (seg.second <= seg.first)
             continue;
-          proxy_proto::CordBlockHalfOpenSeg *s = plan->add_cord_block_delta_segs();
+          proxy_proto::UpLRCBlockHalfOpenSeg *s = plan->add_uplrc_block_delta_segs();
           s->set_block_id(bid);
           s->set_lo(seg.first);
           s->set_hi_excl(seg.second);
@@ -653,7 +653,7 @@ namespace ECProject  //定义一个名为 ECProject 的命名空间，防止命�
     }
 
     /** STAR_DATA 一次传 packed ΔD：ingest 从首段 lo 起连续写入 sum(seg.len)；ready 判定须用 lo+packed 而非 max(hi)。 */
-    static uint64_t cord_block_delta_ingress_buffer_end(
+    static uint64_t uplrc_block_delta_ingress_buffer_end(
         const std::map<int, std::vector<std::pair<int, int>>> &block_intervals, int block_id)
     {
       auto it = block_intervals.find(block_id);
@@ -662,16 +662,16 @@ namespace ECProject  //定义一个名为 ECProject 的命名空间，防止命�
       int64_t packed = 0;
       for (const auto &seg : it->second)
         packed += static_cast<int64_t>(seg.second - seg.first);
-      const int64_t lo = cord_packed_offset_to_logical_in_block(it->second, 0);
+      const int64_t lo = uplrc_packed_offset_to_logical_in_block(it->second, 0);
       return static_cast<uint64_t>(lo + packed);
     }
 
-    /** 将算法二的 train_route + timeslot_schedule 压平为 CordTransferPlan；每条链路一步传完 payload。 */
-    proxy_proto::CordTransferPlan cord_transfer_plan_from_algorithm2(
-        int stripe_id, const std::string &plan_key, const cord_alg2::Algorithm2Result &alg2, int k_datablock,
+    /** 将算法二的 train_route + timeslot_schedule 压平为 UpLRCTransferPlan；每条链路一步传完 payload。 */
+    proxy_proto::UpLRCTransferPlan uplrc_transfer_plan_from_algorithm2(
+        int stripe_id, const std::string &plan_key, const uplrc_alg2::Algorithm2Result &alg2, int k_datablock,
         const std::map<int, std::vector<std::pair<int, int>>> &block_intervals)
     {
-      proxy_proto::CordTransferPlan plan;
+      proxy_proto::UpLRCTransferPlan plan;
       plan.set_stripe_id(stripe_id);
       plan.set_plan_key(plan_key);
       plan.set_slot_unit_bytes(0);
@@ -686,42 +686,42 @@ namespace ECProject  //定义一个名为 ECProject 的命名空间，防止命�
         {
           if (li < 0 || li >= static_cast<int>(alg2.train_route.size()))
             continue;
-          const cord_alg2::TrainLink &L = alg2.train_route[static_cast<size_t>(li)];
+          const uplrc_alg2::TrainLink &L = alg2.train_route[static_cast<size_t>(li)];
           const int64_t full = std::max<int64_t>(0, L.payload_bytes);
           if (full <= 0)
             continue;
 
-          proxy_proto::CordTransferStep *st = plan.add_steps();
+          proxy_proto::UpLRCTransferStep *st = plan.add_steps();
           st->set_step_index(step_idx++);
           st->set_src_proxy_cluster_id(L.src_cluster);
           st->set_dst_proxy_cluster_id(L.dst_cluster);
           st->set_src_block_id(L.src_block_id);
           st->set_dst_block_id(L.dst_block_id);
           st->set_payload_bytes(static_cast<uint64_t>(full));
-          st->set_link_kind(static_cast<proxy_proto::CordTransferLinkKind>(static_cast<int>(L.kind)));
+          st->set_link_kind(static_cast<proxy_proto::UpLRCTransferLinkKind>(static_cast<int>(L.kind)));
           st->set_scheduled_slot(sched_step);
           st->set_depends_on_step_index(-1);
           st->set_estimated_transfer_sec(L.est_transfer_sec);
           st->set_group_index(L.group_index);
-          st->set_delta_payload_kind(L.delta_kind == cord_alg2::CordDeltaPayloadKind::PARITY_DELTA
-                                         ? proxy_proto::CORD_DELTA_PARITY
-                                         : proxy_proto::CORD_DELTA_DATA);
+          st->set_delta_payload_kind(L.delta_kind == uplrc_alg2::UpLRCDeltaPayloadKind::PARITY_DELTA
+                                         ? proxy_proto::UPLRC_DELTA_PARITY
+                                         : proxy_proto::UPLRC_DELTA_DATA);
           uint64_t chunk_off = 0;
-          if (L.kind == cord_alg2::TrainLinkKind::STAR_DATA_TO_CENTER &&
-              L.delta_kind == cord_alg2::CordDeltaPayloadKind::DATA_DELTA)
+          if (L.kind == uplrc_alg2::TrainLinkKind::STAR_DATA_TO_CENTER &&
+              L.delta_kind == uplrc_alg2::UpLRCDeltaPayloadKind::DATA_DELTA)
           {
             auto bit = block_intervals.find(L.src_block_id);
             if (bit != block_intervals.end())
               chunk_off = static_cast<uint64_t>(
-                  cord_packed_offset_to_logical_in_block(bit->second, 0));
+                  uplrc_packed_offset_to_logical_in_block(bit->second, 0));
           }
-          else if (L.kind == cord_alg2::TrainLinkKind::MST_FORWARD &&
+          else if (L.kind == uplrc_alg2::TrainLinkKind::MST_FORWARD &&
                    L.mst_origin_data_block >= 0)
           {
             auto bit = block_intervals.find(L.mst_origin_data_block);
             if (bit != block_intervals.end())
               chunk_off = static_cast<uint64_t>(
-                  cord_packed_offset_to_logical_in_block(bit->second, 0));
+                  uplrc_packed_offset_to_logical_in_block(bit->second, 0));
           }
           st->set_chunk_byte_offset(chunk_off);
           st->set_chunk_byte_length(static_cast<uint64_t>(full));
@@ -1075,10 +1075,10 @@ namespace ECProject  //定义一个名为 ECProject 的命名空间，防止命�
     stripe->num_groups = stripe->group_to_blocks.size();
   }
 
-  void CoordinatorImpl::initialize_xue_tripe_placement(Stripe *stripe)
+  void CoordinatorImpl::initialize_uplrc_legacy_stripe_placement(Stripe *stripe)
   {
     (void)stripe;
-    throw std::runtime_error("XueLRC placement strategy has been removed");
+    throw std::runtime_error("UplrcLegacyLRC placement strategy has been removed");
   }
 
   void CoordinatorImpl::initialize_random_lrc_stripe_placement(Stripe *stripe)
@@ -1378,7 +1378,7 @@ namespace ECProject  //定义一个名为 ECProject 的命名空间，防止命�
   }
 
 
-  void CoordinatorImpl::initialize_cord_xue_lrc_stripe_placement(Stripe *stripe)
+  void CoordinatorImpl::initialize_uplrc_stripe_placement(Stripe *stripe)
   {
     // Azure-style placement (cluster = rack):
     // 1) all global parity -> global_cluster
@@ -1392,11 +1392,11 @@ namespace ECProject  //定义一个名为 ECProject 的命名空间，防止命�
     const int cluster_num = m_sys_config->ClusterNum;
     if (cluster_num < 3)
     {
-      throw std::runtime_error("ClusterNum must be >= 3 for CordXueLRC placement");
+      throw std::runtime_error("ClusterNum must be >= 3 for UpLRC placement");
     }
     if (stripe->k % stripe->z != 0)
     {
-      throw std::runtime_error("CordXueLRC requires k divisible by z");
+      throw std::runtime_error("UpLRC requires k divisible by z");
     }
 
     const int h = stripe->k / stripe->z;
@@ -1592,7 +1592,7 @@ namespace ECProject  //定义一个名为 ECProject 的命名空间，防止命�
     {
       if (assigned_cluster[i] < 0)
       {
-        throw std::runtime_error("CordXueLRC placement failed: unassigned block");
+        throw std::runtime_error("UpLRC placement failed: unassigned block");
       }
     }
 
@@ -1792,14 +1792,14 @@ namespace ECProject  //定义一个名为 ECProject 的命名空间，防止命�
     return append_plans;
   }
 
-  bool CoordinatorImpl::notify_proxies_cord_ready(const proxy_proto::CordDataUpdatePlacement &plan)
+  bool CoordinatorImpl::notify_proxies_uplrc_ready(const proxy_proto::UpLRCDataUpdatePlacement &plan)
   {
     grpc::ClientContext cont;
     proxy_proto::SetReply set_reply;
     const int cid = plan.cluster_id();
     std::string chosen_proxy =
         m_cluster_table[cid].proxy_ip + ":" + std::to_string(m_cluster_table[cid].proxy_port);
-    grpc::Status status = m_proxy_ptrs[chosen_proxy]->scheduleCordDataUpdate(&cont, plan, &set_reply);
+    grpc::Status status = m_proxy_ptrs[chosen_proxy]->scheduleUpLRCDataUpdate(&cont, plan, &set_reply);
     if (status.ok())
     {
       m_mutex.lock();
@@ -1808,12 +1808,12 @@ namespace ECProject  //定义一个名为 ECProject 的命名空间，防止命�
       m_mutex.unlock();
       return true;
     }
-    std::cout << "[CoRD] scheduleCordDataUpdate key=" << plan.key() << " failed: " << status.error_message()
+    std::cout << "[UpLRC] scheduleUpLRCDataUpdate key=" << plan.key() << " failed: " << status.error_message()
               << std::endl;
     return false;
   }
 
-  void CoordinatorImpl::notify_proxies_cord_transfer_plan(const proxy_proto::CordTransferPlan &plan)
+  void CoordinatorImpl::notify_proxies_uplrc_transfer_plan(const proxy_proto::UpLRCTransferPlan &plan)
   {
     if (plan.steps_size() <= 0)
     {
@@ -1837,7 +1837,7 @@ namespace ECProject  //定义一个名为 ECProject 的命名空间，防止命�
       auto pit = m_proxy_ptrs.find(pkey);
       if (pit == m_proxy_ptrs.end() || !pit->second)
       {
-        std::cout << "[CoRD-PLAN] no proxy stub for cluster " << cid << " (" << pkey << ")" << std::endl;
+        std::cout << "[UpLRC-PLAN] no proxy stub for cluster " << cid << " (" << pkey << ")" << std::endl;
         return;
       }
       grpc::ClientContext ctx;
@@ -1845,7 +1845,7 @@ namespace ECProject  //定义一个名为 ECProject 的命名空间，防止命�
       grpc::Status st = rpc_fn(pit->second.get(), &ctx, &rep);
       if (!st.ok() || !rep.ifcommit())
       {
-        std::cout << "[CoRD-PLAN] transfer plan notify failed cluster " << cid << " st=" << st.error_message()
+        std::cout << "[UpLRC-PLAN] transfer plan notify failed cluster " << cid << " st=" << st.error_message()
                   << std::endl;
       }
     };
@@ -1856,7 +1856,7 @@ namespace ECProject  //定义一个名为 ECProject 的命名空间，防止命�
     {
       notify_threads.emplace_back([this, &plan, cid, &notify_one_cluster]() {
         notify_one_cluster(cid, [&](auto *stub, grpc::ClientContext *ctx, proxy_proto::SetReply *rep) {
-          return stub->scheduleCordTransferPlan(ctx, plan, rep);
+          return stub->scheduleUpLRCTransferPlan(ctx, plan, rep);
         });
       });
     }
@@ -1864,7 +1864,7 @@ namespace ECProject  //定义一个名为 ECProject 的命名空间，防止命�
       th.join();
 
   // Phase 2: start execution on all proxies (all plan_key registrations are visible).
-    proxy_proto::CordPlanKeyMsg start_msg;
+    proxy_proto::UpLRCPlanKeyMsg start_msg;
     start_msg.set_plan_key(plan.plan_key());
     notify_threads.clear();
     notify_threads.reserve(cluster_list.size());
@@ -1872,7 +1872,7 @@ namespace ECProject  //定义一个名为 ECProject 的命名空间，防止命�
     {
       notify_threads.emplace_back([this, &start_msg, cid, &notify_one_cluster]() {
         notify_one_cluster(cid, [&](auto *stub, grpc::ClientContext *ctx, proxy_proto::SetReply *rep) {
-          return stub->cordPlanStartExecution(ctx, start_msg, rep);
+          return stub->uplrcPlanStartExecution(ctx, start_msg, rep);
         });
       });
     }
@@ -1881,85 +1881,85 @@ namespace ECProject  //定义一个名为 ECProject 的命名空间，防止命�
   }
 
 
-  bool CoordinatorImpl::cord_start_pending_transfer_plan(const std::string &plan_key)
+  bool CoordinatorImpl::uplrc_start_pending_transfer_plan(const std::string &plan_key)
   {
-    proxy_proto::CordTransferPlan plan;
+    proxy_proto::UpLRCTransferPlan plan;
     {
-      std::lock_guard<std::mutex> lk(m_cord_pending_mu);
-      auto it = m_cord_pending_plans.find(plan_key);
-      if (it == m_cord_pending_plans.end())
+      std::lock_guard<std::mutex> lk(m_uplrc_pending_mu);
+      auto it = m_uplrc_pending_plans.find(plan_key);
+      if (it == m_uplrc_pending_plans.end())
         return false;
       plan = it->second;
-      m_cord_pending_plans.erase(it);
+      m_uplrc_pending_plans.erase(it);
     }
-    if (cord_trace_log(IF_DEBUG))
-      std::cout << "[CoRD] start CordTransferPlan: plan_key=" << plan_key
+    if (uplrc_trace_log(IF_DEBUG))
+      std::cout << "[UpLRC] start UpLRCTransferPlan: plan_key=" << plan_key
                 << " steps=" << plan.steps_size() << " rounds=" << plan.total_rounds() << "\n";
-    notify_proxies_cord_transfer_plan(plan);
+    notify_proxies_uplrc_transfer_plan(plan);
     return true;
   }
 
-  void CoordinatorImpl::cord_register_auto_begin_session(const std::string &plan_key,
+  void CoordinatorImpl::uplrc_register_auto_begin_session(const std::string &plan_key,
                                                          const std::vector<std::string> &delta_append_keys)
   {
-    std::lock_guard<std::mutex> lk(m_cord_pending_mu);
-    CordAutoBeginSession session;
+    std::lock_guard<std::mutex> lk(m_uplrc_pending_mu);
+    UpLRCAutoBeginSession session;
     session.transfer_started = false;
     for (const auto &k : delta_append_keys)
     {
       session.pending_delta_keys.insert(k);
-      m_cord_append_key_to_plan_key[k] = plan_key;
+      m_uplrc_append_key_to_plan_key[k] = plan_key;
     }
-    m_cord_auto_begin_sessions[plan_key] = std::move(session);
+    m_uplrc_auto_begin_sessions[plan_key] = std::move(session);
   }
 
-  void CoordinatorImpl::cord_on_delta_key_committed(const std::string &delta_append_key)
+  void CoordinatorImpl::uplrc_on_delta_key_committed(const std::string &delta_append_key)
   {
     std::string plan_key;
     bool should_start = false;
     {
-      std::lock_guard<std::mutex> lk(m_cord_pending_mu);
-      auto kit = m_cord_append_key_to_plan_key.find(delta_append_key);
-      if (kit == m_cord_append_key_to_plan_key.end())
+      std::lock_guard<std::mutex> lk(m_uplrc_pending_mu);
+      auto kit = m_uplrc_append_key_to_plan_key.find(delta_append_key);
+      if (kit == m_uplrc_append_key_to_plan_key.end())
         return;
       plan_key = kit->second;
-      auto sit = m_cord_auto_begin_sessions.find(plan_key);
-      if (sit == m_cord_auto_begin_sessions.end())
+      auto sit = m_uplrc_auto_begin_sessions.find(plan_key);
+      if (sit == m_uplrc_auto_begin_sessions.end())
         return;
       sit->second.pending_delta_keys.erase(delta_append_key);
       if (!sit->second.pending_delta_keys.empty() || sit->second.transfer_started)
         return;
       sit->second.transfer_started = true;
-      should_start = m_cord_pending_plans.find(plan_key) != m_cord_pending_plans.end();
+      should_start = m_uplrc_pending_plans.find(plan_key) != m_uplrc_pending_plans.end();
     }
     if (should_start)
     {
-      if (cord_trace_log(IF_DEBUG))
-        std::cout << "[CoRD] all delta uploads committed, auto-start transfer plan_key=" << plan_key << "\n";
-      cord_start_pending_transfer_plan(plan_key);
+      if (uplrc_trace_log(IF_DEBUG))
+        std::cout << "[UpLRC] all delta uploads committed, auto-start transfer plan_key=" << plan_key << "\n";
+      uplrc_start_pending_transfer_plan(plan_key);
     }
   }
 
-  void CoordinatorImpl::cord_clear_auto_begin_session(const std::string &plan_key)
+  void CoordinatorImpl::uplrc_clear_auto_begin_session(const std::string &plan_key)
   {
-    std::lock_guard<std::mutex> lk(m_cord_pending_mu);
-    auto sit = m_cord_auto_begin_sessions.find(plan_key);
-    if (sit == m_cord_auto_begin_sessions.end())
+    std::lock_guard<std::mutex> lk(m_uplrc_pending_mu);
+    auto sit = m_uplrc_auto_begin_sessions.find(plan_key);
+    if (sit == m_uplrc_auto_begin_sessions.end())
       return;
     for (const auto &k : sit->second.pending_delta_keys)
-      m_cord_append_key_to_plan_key.erase(k);
-    m_cord_auto_begin_sessions.erase(sit);
+      m_uplrc_append_key_to_plan_key.erase(k);
+    m_uplrc_auto_begin_sessions.erase(sit);
   }
 
-  void CoordinatorImpl::enrich_cord_transfer_plan_encoding(
+  void CoordinatorImpl::enrich_uplrc_transfer_plan_encoding(
       Stripe *stripe,
       const std::map<int, std::vector<std::pair<int, int>>> &block_intervals,
-      const cord_alg2::Algorithm2Result &alg2,
-      proxy_proto::CordTransferPlan *plan)
+      const uplrc_alg2::Algorithm2Result &alg2,
+      proxy_proto::UpLRCTransferPlan *plan)
   {
-    plan->clear_cord_encode_meta();
-    plan->clear_cord_collector_expects();
-    plan->clear_cord_data_strip_descs();
+    plan->clear_uplrc_encode_meta();
+    plan->clear_uplrc_collector_expects();
+    plan->clear_uplrc_data_strip_descs();
     if (stripe == nullptr || plan == nullptr)
       return;
     const int k = stripe->k;
@@ -1988,13 +1988,13 @@ namespace ECProject  //定义一个名为 ECProject 的命名空间，防止命�
     std::string err;
     if (!build_slice_plan_for_logical_range(stripe, global_lo, append_size, &b2s, &ps, &po, &merge, &err))
     {
-      std::cout << "[CoRD] enrich_cord_transfer_plan_encoding build_slice failed: " << err << std::endl;
+      std::cout << "[UpLRC] enrich_uplrc_transfer_plan_encoding build_slice failed: " << err << std::endl;
       return;
     }
-    proxy_proto::CordTransferEncodeMeta *meta = plan->mutable_cord_encode_meta();
+    proxy_proto::UpLRCTransferEncodeMeta *meta = plan->mutable_uplrc_encode_meta();
     meta->set_encode_type(static_cast<int32_t>(m_encode_parameters.encodetype));
     meta->set_k(stripe->k);
-    // CoRD SET 路径只初始化 stripe->r/z，g_m/l 可能未赋值；与 proxy ingress 矩阵编码一致用 r/z
+    // UpLRC SET 路径只初始化 stripe->r/z，g_m/l 可能未赋值；与 proxy ingress 矩阵编码一致用 r/z
     meta->set_g_m(m_sys_config->r);
     meta->set_l(m_sys_config->z);
     meta->set_parity_slice_offset(po);
@@ -2005,7 +2005,7 @@ namespace ECProject  //定义一个名为 ECProject 的命名空间，防止命�
       const int bid = kv.first;
       if (bid < 0 || bid >= k)
         continue;
-      proxy_proto::CordDataStripDesc *d = plan->add_cord_data_strip_descs();
+      proxy_proto::UpLRCDataStripDesc *d = plan->add_uplrc_data_strip_descs();
       d->set_block_id(bid);
       d->set_slice_offset(kv.second.second);
       d->set_slice_len(kv.second.first);
@@ -2014,12 +2014,12 @@ namespace ECProject  //定义一个名为 ECProject 的命名空间，防止命�
     std::map<std::pair<int, int>, std::map<int, uint64_t>> coll_agg;
     for (const auto &L : alg2.train_route)
     {
-      if (L.kind != cord_alg2::TrainLinkKind::STAR_DATA_TO_CENTER)
+      if (L.kind != uplrc_alg2::TrainLinkKind::STAR_DATA_TO_CENTER)
         continue;
-      if (L.delta_kind != cord_alg2::CordDeltaPayloadKind::DATA_DELTA)
+      if (L.delta_kind != uplrc_alg2::UpLRCDeltaPayloadKind::DATA_DELTA)
         continue;
       const std::pair<int, int> key(L.group_index, L.dst_block_id);
-      const uint64_t ext = cord_block_delta_ingress_buffer_end(block_intervals, L.src_block_id);
+      const uint64_t ext = uplrc_block_delta_ingress_buffer_end(block_intervals, L.src_block_id);
       auto &m = coll_agg[key];
       auto it = m.find(L.src_block_id);
       if (it == m.end() || ext > it->second)
@@ -2027,7 +2027,7 @@ namespace ECProject  //定义一个名为 ECProject 的命名空间，防止命�
     }
     for (const auto &kv : coll_agg)
     {
-      proxy_proto::CordCollectorIngressExpect *ex = plan->add_cord_collector_expects();
+      proxy_proto::UpLRCCollectorIngressExpect *ex = plan->add_uplrc_collector_expects();
       ex->set_group_index(kv.first.first);
       ex->set_collector_block_id(kv.first.second);
       for (const auto &src_kv : kv.second)
@@ -2112,9 +2112,9 @@ namespace ECProject  //定义一个名为 ECProject 的命名空间，防止命�
       {
         initialize_split_parity_lrc_stripe_placement(&t_stripe);
       }
-      else if (code_type == "CordXueLRC")
+      else if (code_type == "UpLRC")
       {
-        initialize_cord_xue_lrc_stripe_placement(&t_stripe);
+        initialize_uplrc_stripe_placement(&t_stripe);
       }
       else
       {
@@ -2180,20 +2180,20 @@ namespace ECProject  //定义一个名为 ECProject 的命名空间，防止命�
     return grpc::Status::OK;
   }
 
-  grpc::Status CoordinatorImpl::uploadXueUpdate(
+  grpc::Status CoordinatorImpl::uploadUplrcLegacyUpdate(
       grpc::ServerContext *context,
-      const coordinator_proto::XueUpdateRequest *request,
+      const coordinator_proto::UplrcLegacyUpdateRequest *request,
       coordinator_proto::ReplyProxyIPsPorts *proxyIPPort)
   {
     (void)context;
     (void)request;
     (void)proxyIPPort;
-    return grpc::Status(grpc::StatusCode::INVALID_ARGUMENT, "XueLRC update strategy has been removed");
+    return grpc::Status(grpc::StatusCode::INVALID_ARGUMENT, "UplrcLegacyLRC update strategy has been removed");
   }
 
-  grpc::Status CoordinatorImpl::uploadCordUpdate(
+  grpc::Status CoordinatorImpl::uploadUpLRCUpdate(
       grpc::ServerContext *context,
-      const coordinator_proto::CordUpdateRequest *request,
+      const coordinator_proto::UpLRCUpdateRequest *request,
       coordinator_proto::ReplyProxyIPsPorts *proxyIPPort)
   {
     (void)context;
@@ -2238,7 +2238,7 @@ namespace ECProject  //定义一个名为 ECProject 的命名空间，防止命�
         return grpc::Status(grpc::StatusCode::INVALID_ARGUMENT,
                             "logical interval out of stripe data range");
       }
-      cord_add_logical_range_to_data_blocks(block_size, k, s, e, &block_intervals);
+      uplrc_add_logical_range_to_data_blocks(block_size, k, s, e, &block_intervals);
     }
 
     // Flip offsets for even-numbered data blocks: mirror the update range within the block.
@@ -2260,15 +2260,15 @@ namespace ECProject  //定义一个名为 ECProject 的命名空间，防止命�
       }
     }
 
-    // --- CoRD uploadCordUpdate verbose debug (IF_DEBUG or CORD_VERBOSE=1) ---
-    const bool cord_trace = cord_trace_log(IF_DEBUG);
-    if (cord_trace)
+    // --- UpLRC uploadUpLRCUpdate verbose debug (IF_DEBUG or UPLRC_VERBOSE=1) ---
+    const bool uplrc_trace = uplrc_trace_log(IF_DEBUG);
+    if (uplrc_trace)
     {
-      std::cout << "[CoRD] ===== uploadCordUpdate stripe_id=" << stripe_id
+      std::cout << "[UpLRC] ===== uploadUpLRCUpdate stripe_id=" << stripe_id
                 << " k=" << k << " r=" << stripe->r << " z=" << stripe->z
                 << " n=" << stripe->n << " block_size=" << block_size
                 << " n_intervals=" << request->update_intervals_size() << " =====\n";
-      std::cout << "[CoRD] stripe_id=" << stripe_id
+      std::cout << "[UpLRC] stripe_id=" << stripe_id
                 << " updated data blocks (block_id -> in-block intervals [off,end)):\n";
       for (const auto &kv : block_intervals)
       {
@@ -2281,33 +2281,47 @@ namespace ECProject  //定义一个名为 ECProject 的命名空间，防止命�
       }
     }
 
-    std::map<int, cord_class::CordIngressClusterHints> ingress_hints_by_cluster;
+    std::map<int, uplrc_class::UpLRCIngressClusterHints> ingress_hints_by_cluster;
 
-    cord_alg2::Algorithm2Result alg2_result;
+    uplrc_alg2::Algorithm2Result alg2_result;
     {
-      cord_alg2::TransferParams tp;
+      uplrc_alg2::TransferParams tp;
       tp.enforce_one_send_one_recv_per_cluster = false;
-      const std::vector<std::string> bw_paths = {
-          "/root/xue/project/config/BW_limitsame",
+      // Prefer paths relative to cwd / common launch layouts (no hard-coded install prefix).
+      std::vector<std::string> bw_paths = {
           "project/config/BW_limitsame",
           "../project/config/BW_limitsame",
+          "../../config/BW_limitsame",
+          "config/BW_limitsame",
       };
+      {
+        char cwd_buf[4096];
+        if (getcwd(cwd_buf, sizeof(cwd_buf)) != nullptr)
+        {
+          const std::string cwd(cwd_buf);
+          bw_paths.insert(bw_paths.begin(),
+                          {cwd + "/project/config/BW_limitsame",
+                           cwd + "/config/BW_limitsame",
+                           cwd + "/../config/BW_limitsame",
+                           cwd + "/../../config/BW_limitsame"});
+        }
+      }
       bool bw_ok = false;
       for (const auto &p : bw_paths)
       {
-        if (cord_alg2::load_bw_matrix_from_limitsame_file(p, m_sys_config->ClusterNum, &tp))
+        if (uplrc_alg2::load_bw_matrix_from_limitsame_file(p, m_sys_config->ClusterNum, &tp))
         {
           bw_ok = true;
           break;
         }
       }
-      if (!bw_ok && cord_trace)
-        std::cout << "[CoRD-Class] BW matrix load failed, using fallback inv_bw\n";
-      alg2_result = cord_class::build_class_update_plan(*stripe, block_intervals, m_sys_config->ClusterNum, tp,
+      if (!bw_ok && uplrc_trace)
+        std::cout << "[UpLRC-Class] BW matrix load failed, using fallback inv_bw\n";
+      alg2_result = uplrc_class::build_class_update_plan(*stripe, block_intervals, m_sys_config->ClusterNum, tp,
                                                         &ingress_hints_by_cluster);
-      if (cord_trace)
+      if (uplrc_trace)
       {
-        std::cout << "[CoRD-Class] train_route links=" << alg2_result.train_route.size()
+        std::cout << "[UpLRC-Class] train_route links=" << alg2_result.train_route.size()
                   << " schedule_steps=" << alg2_result.timeslot_schedule.size();
         if (alg2_result.center_global_block_id >= 0)
           std::cout << " collector_blk=" << alg2_result.center_global_block_id;
@@ -2315,10 +2329,10 @@ namespace ECProject  //定义一个名为 ECProject 的命名空间，防止命�
         for (size_t i = 0; i < alg2_result.train_route.size(); ++i)
         {
           const auto &L = alg2_result.train_route[i];
-          std::cout << "  [" << i << "] " << cord_alg2::train_link_kind_name(L.kind)
+          std::cout << "  [" << i << "] " << uplrc_alg2::train_link_kind_name(L.kind)
                     << " blk" << L.src_block_id << "->blk" << L.dst_block_id << " c" << L.src_cluster << "->c"
                     << L.dst_cluster << " bytes=" << L.payload_bytes << " grp=" << L.group_index
-                    << " delta=" << (L.delta_kind == cord_alg2::CordDeltaPayloadKind::PARITY_DELTA ? "ΔP" : "ΔD")
+                    << " delta=" << (L.delta_kind == uplrc_alg2::UpLRCDeltaPayloadKind::PARITY_DELTA ? "ΔP" : "ΔD")
                     << "\n";
         }
         for (const auto &ts : alg2_result.timeslot_schedule)
@@ -2335,28 +2349,28 @@ namespace ECProject  //定义一个名为 ECProject 的命名空间，防止命�
       }
     }
 
-    proxy_proto::CordTransferPlan cord_xfer_plan;
-    std::string cord_xfer_plan_key;
+    proxy_proto::UpLRCTransferPlan uplrc_xfer_plan;
+    std::string uplrc_xfer_plan_key;
     {
-      cord_xfer_plan_key = std::string("cord_xfer_") + std::to_string(stripe_id) + "_" +
+      uplrc_xfer_plan_key = std::string("uplrc_xfer_") + std::to_string(stripe_id) + "_" +
                            std::to_string(std::chrono::duration_cast<std::chrono::nanoseconds>(
                                               std::chrono::steady_clock::now().time_since_epoch())
                                               .count());
-      cord_xfer_plan = cord_transfer_plan_from_algorithm2(stripe_id, cord_xfer_plan_key, alg2_result, stripe->k,
+      uplrc_xfer_plan = uplrc_transfer_plan_from_algorithm2(stripe_id, uplrc_xfer_plan_key, alg2_result, stripe->k,
                                                             block_intervals);
-      if (cord_trace)
+      if (uplrc_trace)
       {
-        std::cout << "[CoRD] CordTransferPlan: steps=" << cord_xfer_plan.steps_size()
-                  << " schedule_steps=" << cord_xfer_plan.total_rounds() << "\n";
+        std::cout << "[UpLRC] UpLRCTransferPlan: steps=" << uplrc_xfer_plan.steps_size()
+                  << " schedule_steps=" << uplrc_xfer_plan.total_rounds() << "\n";
       }
-      enrich_cord_transfer_plan_delta_segs(block_intervals, stripe->k, &cord_xfer_plan);
-      fill_group_xor_hints_from_alg2(alg2_result, block_intervals, &cord_xfer_plan);
-      enrich_cord_transfer_plan_encoding(stripe, block_intervals, alg2_result, &cord_xfer_plan);
-      enrich_cord_transfer_plan_block_stripe_groups(stripe, &cord_xfer_plan);
-      enrich_cord_transfer_plan_step_parity_filters(stripe, &cord_xfer_plan);
+      enrich_uplrc_transfer_plan_delta_segs(block_intervals, stripe->k, &uplrc_xfer_plan);
+      fill_group_xor_hints_from_alg2(alg2_result, block_intervals, &uplrc_xfer_plan);
+      enrich_uplrc_transfer_plan_encoding(stripe, block_intervals, alg2_result, &uplrc_xfer_plan);
+      enrich_uplrc_transfer_plan_block_stripe_groups(stripe, &uplrc_xfer_plan);
+      enrich_uplrc_transfer_plan_step_parity_filters(stripe, &uplrc_xfer_plan);
     }
 
-    std::map<int, std::vector<CordSliceRec>> cluster_slices;
+    std::map<int, std::vector<UpLRCSliceRec>> cluster_slices;
     for (const auto &kv : block_intervals)
     {
       const int bid = kv.first;
@@ -2365,7 +2379,7 @@ namespace ECProject  //定义一个名为 ECProject 的命名空间，防止命�
       Block *bp = stripe->blocks[bid];
       for (const auto &seg : kv.second)
       {
-        CordSliceRec r;
+        UpLRCSliceRec r;
         r.block_id = bid;
         r.block_offset = seg.first;
         r.len = seg.second - seg.first;
@@ -2377,7 +2391,7 @@ namespace ECProject  //定义一个名为 ECProject 的命名空间，防止命�
     for (auto &cs : cluster_slices)
     {
       std::sort(cs.second.begin(), cs.second.end(),
-                [](const CordSliceRec &a, const CordSliceRec &b)
+                [](const UpLRCSliceRec &a, const UpLRCSliceRec &b)
                 {
                   if (a.block_id != b.block_id)
                     return a.block_id < b.block_id;
@@ -2396,43 +2410,43 @@ namespace ECProject  //定义一个名为 ECProject 的命名空间，防止命�
       return grpc::Status::OK;
     }
 
-    std::vector<std::pair<int, std::vector<CordSliceRec>>> sorted_clusters(cluster_slices.begin(),
+    std::vector<std::pair<int, std::vector<UpLRCSliceRec>>> sorted_clusters(cluster_slices.begin(),
                                                                              cluster_slices.end());
     std::sort(sorted_clusters.begin(), sorted_clusters.end(),
-              [](const std::pair<int, std::vector<CordSliceRec>> &a,
-                 const std::pair<int, std::vector<CordSliceRec>> &b)
+              [](const std::pair<int, std::vector<UpLRCSliceRec>> &a,
+                 const std::pair<int, std::vector<UpLRCSliceRec>> &b)
               { return a.first < b.first; });
 
-    enrich_cord_transfer_plan_topology(stripe, m_cluster_table, m_node_table, m_toolbox, &cord_xfer_plan,
+    enrich_uplrc_transfer_plan_topology(stripe, m_cluster_table, m_node_table, m_toolbox, &uplrc_xfer_plan,
                                        sorted_clusters);
-    reorder_cord_plan_steps_execution(&cord_xfer_plan);
+    reorder_uplrc_plan_steps_execution(&uplrc_xfer_plan);
 
-    if (cord_trace && cord_xfer_plan.steps_size() > 0) {
-      std::cout << "[CoRD] CordTransferPlan final execution order (" << cord_xfer_plan.steps_size() << " steps):\n";
-      for (int si = 0; si < cord_xfer_plan.steps_size(); ++si) {
-        const auto &st = cord_xfer_plan.steps(si);
+    if (uplrc_trace && uplrc_xfer_plan.steps_size() > 0) {
+      std::cout << "[UpLRC] UpLRCTransferPlan final execution order (" << uplrc_xfer_plan.steps_size() << " steps):\n";
+      for (int si = 0; si < uplrc_xfer_plan.steps_size(); ++si) {
+        const auto &st = uplrc_xfer_plan.steps(si);
         std::cout << "  step[" << si << "] slot=" << st.scheduled_slot()
                   << " c" << st.src_proxy_cluster_id() << "→c" << st.dst_proxy_cluster_id()
                   << " blk" << st.src_block_id() << "→blk" << st.dst_block_id()
                   << " chunk[" << st.chunk_byte_offset() << "+" << st.chunk_byte_length() << "B]"
                   << " link=" << static_cast<int>(st.link_kind())
-                  << " delta=" << (st.delta_payload_kind() == proxy_proto::CORD_DELTA_PARITY ? "ΔP" : "ΔD")
+                  << " delta=" << (st.delta_payload_kind() == proxy_proto::UPLRC_DELTA_PARITY ? "ΔP" : "ΔD")
                   << " grp=" << st.group_index()
                   << " dep=" << st.depends_on_step_index() << "\n";
       }
     }
 
-    if (cord_trace)
+    if (uplrc_trace)
     {
-      std::cout << "[CoRD] Delta store dispatch: " << sorted_clusters.size() << " clusters (parallel notify)\n";
+      std::cout << "[UpLRC] Delta store dispatch: " << sorted_clusters.size() << " clusters (parallel notify)\n";
     }
-    struct CordDeltaNotifyJob {
-      proxy_proto::CordDataUpdatePlacement plan;
+    struct UpLRCDeltaNotifyJob {
+      proxy_proto::UpLRCDataUpdatePlacement plan;
       int cid = -1;
       uint64_t cluster_payload = 0;
       bool ok = false;
     };
-    std::vector<CordDeltaNotifyJob> notify_jobs;
+    std::vector<UpLRCDeltaNotifyJob> notify_jobs;
     notify_jobs.reserve(sorted_clusters.size());
     for (const auto &plan_entry : sorted_clusters)
     {
@@ -2441,12 +2455,12 @@ namespace ECProject  //定义一个名为 ECProject 的命名空间，防止命�
       if (m_cluster_table.find(cid) == m_cluster_table.end() ||
           m_cluster_table[cid].nodes.empty())
       {
-        return grpc::Status(grpc::StatusCode::INTERNAL, "cluster has no datanode for CoRD delta store");
+        return grpc::Status(grpc::StatusCode::INTERNAL, "cluster has no datanode for UpLRC delta store");
       }
-      CordDeltaNotifyJob job;
+      UpLRCDeltaNotifyJob job;
       job.cid = cid;
-      proxy_proto::CordDataUpdatePlacement &plan = job.plan;
-      plan.set_key(m_toolbox->gen_cord_key(stripe_id, cid));
+      proxy_proto::UpLRCDataUpdatePlacement &plan = job.plan;
+      plan.set_key(m_toolbox->gen_uplrc_key(stripe_id, cid));
       plan.set_cluster_id(cid);
       plan.set_stripe_id(stripe_id);
       for (const auto &s : slices)
@@ -2478,7 +2492,7 @@ namespace ECProject  //定义一个名为 ECProject 的命名空间，防止命�
             continue;
           Block *bp = stripe->blocks[wr.block_id];
           const Node &n = m_node_table[bp->map2node];
-          proxy_proto::CordIngressParityWrite *pw = plan.add_cord_ingress_local_parity_writes();
+          proxy_proto::UpLRCIngressParityWrite *pw = plan.add_uplrc_ingress_local_parity_writes();
           pw->set_block_id(wr.block_id);
           pw->set_block_key(bp->block_key);
           pw->set_datanode_ip(n.node_ip);
@@ -2491,7 +2505,7 @@ namespace ECProject  //定义一个名为 ECProject 的命名空间，防止命�
             continue;
           Block *bp = stripe->blocks[wr.block_id];
           const Node &n = m_node_table[bp->map2node];
-          proxy_proto::CordIngressParityWrite *pw = plan.add_cord_ingress_global_parity_writes();
+          proxy_proto::UpLRCIngressParityWrite *pw = plan.add_uplrc_ingress_global_parity_writes();
           pw->set_block_id(wr.block_id);
           pw->set_block_key(bp->block_key);
           pw->set_datanode_ip(n.node_ip);
@@ -2499,7 +2513,7 @@ namespace ECProject  //定义一个名为 ECProject 的命名空间，防止命�
           pw->set_stripe_group(wr.stripe_group);
         }
         for (int32_t sg : ihit->second.cache_lp_stripe_groups)
-          plan.add_cord_ingress_cache_lp_stripe_groups(sg);
+          plan.add_uplrc_ingress_cache_lp_stripe_groups(sg);
       }
 
       m_mutex.lock();
@@ -2514,20 +2528,20 @@ namespace ECProject  //定义一个名为 ECProject 的命名空间，防止命�
     for (auto &job : notify_jobs)
     {
       notify_threads.emplace_back([this, &job]() {
-        job.ok = notify_proxies_cord_ready(job.plan);
+        job.ok = notify_proxies_uplrc_ready(job.plan);
       });
     }
     for (auto &th : notify_threads)
       th.join();
 
-    std::vector<std::string> cord_delta_append_keys;
-    cord_delta_append_keys.reserve(notify_jobs.size());
+    std::vector<std::string> uplrc_delta_append_keys;
+    uplrc_delta_append_keys.reserve(notify_jobs.size());
     for (const auto &job : notify_jobs)
     {
       if (!job.ok)
       {
         return grpc::Status(grpc::StatusCode::INTERNAL,
-                            "scheduleCordDataUpdate failed for cluster " + std::to_string(job.cid) +
+                            "scheduleUpLRCDataUpdate failed for cluster " + std::to_string(job.cid) +
                                 " key=" + job.plan.key());
       }
       proxyIPPort->add_append_keys(job.plan.key());
@@ -2535,51 +2549,51 @@ namespace ECProject  //定义一个名为 ECProject 的命名空间，防止命�
       proxyIPPort->add_proxyports(m_cluster_table[job.cid].proxy_port + ECProject::PROXY_PORT_SHIFT);
       proxyIPPort->add_cluster_slice_sizes(job.cluster_payload);
       proxyIPPort->add_group_ids(job.cid);
-      cord_delta_append_keys.push_back(job.plan.key());
+      uplrc_delta_append_keys.push_back(job.plan.key());
     }
     proxyIPPort->set_sum_append_size(sum_update_bytes);
-    if (cord_xfer_plan.steps_size() > 0)
+    if (uplrc_xfer_plan.steps_size() > 0)
     {
       std::set<int> plan_clusters;
-      for (int si = 0; si < cord_xfer_plan.steps_size(); ++si)
+      for (int si = 0; si < uplrc_xfer_plan.steps_size(); ++si)
       {
-        const auto &st = cord_xfer_plan.steps(si);
+        const auto &st = uplrc_xfer_plan.steps(si);
         if (st.src_proxy_cluster_id() >= 0)
           plan_clusters.insert(st.src_proxy_cluster_id());
         if (st.dst_proxy_cluster_id() >= 0)
           plan_clusters.insert(st.dst_proxy_cluster_id());
       }
       {
-        std::lock_guard<std::mutex> lk(m_cord_pending_mu);
-        m_cord_pending_plans[cord_xfer_plan_key] = cord_xfer_plan;
-        m_cord_pending_plan_clusters[cord_xfer_plan_key].assign(plan_clusters.begin(), plan_clusters.end());
+        std::lock_guard<std::mutex> lk(m_uplrc_pending_mu);
+        m_uplrc_pending_plans[uplrc_xfer_plan_key] = uplrc_xfer_plan;
+        m_uplrc_pending_plan_clusters[uplrc_xfer_plan_key].assign(plan_clusters.begin(), plan_clusters.end());
       }
-      proxyIPPort->set_cord_transfer_plan_key(cord_xfer_plan_key);
-      if (cord_trace)
+      proxyIPPort->set_uplrc_transfer_plan_key(uplrc_xfer_plan_key);
+      if (uplrc_trace)
       {
-        std::cout << "[CoRD] CordTransferPlan registered: key=" << cord_xfer_plan_key
-                  << " steps=" << cord_xfer_plan.steps_size()
-                  << " rounds=" << cord_xfer_plan.total_rounds()
+        std::cout << "[UpLRC] UpLRCTransferPlan registered: key=" << uplrc_xfer_plan_key
+                  << " steps=" << uplrc_xfer_plan.steps_size()
+                  << " rounds=" << uplrc_xfer_plan.total_rounds()
                   << " plan_clusters=" << plan_clusters.size() << "\n";
       }
     }
     else
     {
-      proxyIPPort->clear_cord_transfer_plan_key();
-      if (cord_trace)
-        std::cout << "[CoRD] No cross-cluster transfer needed (0 plan steps)\n";
+      proxyIPPort->clear_uplrc_transfer_plan_key();
+      if (uplrc_trace)
+        std::cout << "[UpLRC] No cross-cluster transfer needed (0 plan steps)\n";
     }
-    if (cord_trace)
+    if (uplrc_trace)
     {
-      std::cout << "[CoRD] ===== uploadCordUpdate done: stripe_id=" << stripe_id
+      std::cout << "[UpLRC] ===== uploadUpLRCUpdate done: stripe_id=" << stripe_id
                 << " sum_update_bytes=" << sum_update_bytes
                 << " clusters=" << sorted_clusters.size() << " =====\n";
     }
     return grpc::Status::OK;
   }
 
-  grpc::Status CoordinatorImpl::cordPlanBeginTransfer(grpc::ServerContext *context,
-                                                      const coordinator_proto::CordPlanKeyOnly *request,
+  grpc::Status CoordinatorImpl::uplrcPlanBeginTransfer(grpc::ServerContext *context,
+                                                      const coordinator_proto::UpLRCPlanKeyOnly *request,
                                                       coordinator_proto::RepIfSuccess *reply)
   {
     (void)context;
@@ -2587,44 +2601,44 @@ namespace ECProject  //定义一个名为 ECProject 的命名空间，防止命�
     const std::string &pk = request->plan_key();
     if (pk.empty())
       return grpc::Status(grpc::StatusCode::INVALID_ARGUMENT, "empty plan_key");
-    if (!cord_start_pending_transfer_plan(pk))
-      return grpc::Status(grpc::StatusCode::NOT_FOUND, "unknown or already started cord plan_key");
+    if (!uplrc_start_pending_transfer_plan(pk))
+      return grpc::Status(grpc::StatusCode::NOT_FOUND, "unknown or already started uplrc plan_key");
     reply->set_ifcommit(true);
     return grpc::Status::OK;
   }
 
-  grpc::Status CoordinatorImpl::cordPlanWaitTransferComplete(grpc::ServerContext *context,
-                                                               const coordinator_proto::CordPlanWaitRequest *request,
+  grpc::Status CoordinatorImpl::uplrcPlanWaitTransferComplete(grpc::ServerContext *context,
+                                                               const coordinator_proto::UpLRCPlanWaitRequest *request,
                                                                coordinator_proto::RepIfSuccess *reply)
   {
     (void)context;
     reply->set_ifcommit(false);
-    reply->set_cord_xfer_timing_present(false);
-    reply->set_cord_xfer_pure_sec(0.);
-    reply->set_cord_xfer_grpc_sec(0.);
+    reply->set_uplrc_xfer_timing_present(false);
+    reply->set_uplrc_xfer_pure_sec(0.);
+    reply->set_uplrc_xfer_grpc_sec(0.);
     const auto handler_t0 = std::chrono::steady_clock::now();
     const std::string &pk = request->plan_key();
     if (pk.empty())
       return grpc::Status(grpc::StatusCode::INVALID_ARGUMENT, "empty plan_key");
     // upload 后应已 auto-start；若 Client 仍调用 wait 而 plan 尚未启动，在此兜底启动。
-    (void)cord_start_pending_transfer_plan(pk);
+    (void)uplrc_start_pending_transfer_plan(pk);
     std::vector<int> clusters;
     {
-      std::lock_guard<std::mutex> lk(m_cord_pending_mu);
-      auto it = m_cord_pending_plan_clusters.find(pk);
-      if (it == m_cord_pending_plan_clusters.end())
+      std::lock_guard<std::mutex> lk(m_uplrc_pending_mu);
+      auto it = m_uplrc_pending_plan_clusters.find(pk);
+      if (it == m_uplrc_pending_plan_clusters.end())
         return grpc::Status(grpc::StatusCode::NOT_FOUND, "unknown plan_key for wait (wrong order?)");
       clusters = it->second;
     }
-    proxy_proto::CordPlanKeyMsg msg;
+    proxy_proto::UpLRCPlanKeyMsg msg;
     msg.set_plan_key(pk);
-    struct CordJoinJob {
+    struct UpLRCJoinJob {
       int cid = -1;
       bool ok = false;
       proxy_proto::SetReply rep;
       grpc::Status st;
     };
-    std::vector<CordJoinJob> join_jobs;
+    std::vector<UpLRCJoinJob> join_jobs;
     join_jobs.reserve(clusters.size());
     for (int cid : clusters)
     {
@@ -2637,10 +2651,10 @@ namespace ECProject  //定义一个名为 ECProject 的命名空间，防止命�
       auto pit = m_proxy_ptrs.find(pkey);
       if (pit == m_proxy_ptrs.end() || !pit->second)
       {
-        std::cout << "[CoRD-PLAN] cordPlanWaitTransferComplete: no stub cluster=" << cid << std::endl;
+        std::cout << "[UpLRC-PLAN] uplrcPlanWaitTransferComplete: no stub cluster=" << cid << std::endl;
         return grpc::Status(grpc::StatusCode::INTERNAL, "proxy stub missing");
       }
-      CordJoinJob job;
+      UpLRCJoinJob job;
       job.cid = cid;
       join_jobs.push_back(std::move(job));
     }
@@ -2650,7 +2664,7 @@ namespace ECProject  //定义一个名为 ECProject 的命名空间，防止命�
     for (size_t ji = 0; ji < join_jobs.size(); ++ji)
     {
       join_threads.emplace_back([this, &msg, &join_jobs, ji]() {
-        CordJoinJob &job = join_jobs[ji];
+        UpLRCJoinJob &job = join_jobs[ji];
         auto cit = m_cluster_table.find(job.cid);
         if (cit == m_cluster_table.end())
           return;
@@ -2659,11 +2673,11 @@ namespace ECProject  //定义一个名为 ECProject 的命名空间，防止命�
         if (pit == m_proxy_ptrs.end() || !pit->second)
           return;
         grpc::ClientContext ctx;
-        job.st = pit->second->cordPlanJoinExecution(&ctx, msg, &job.rep);
+        job.st = pit->second->uplrcPlanJoinExecution(&ctx, msg, &job.rep);
         job.ok = job.st.ok() && job.rep.ifcommit();
         if (!job.ok)
         {
-          std::cout << "[CoRD-PLAN] cordPlanJoinExecution failed cluster=" << job.cid << " "
+          std::cout << "[UpLRC-PLAN] uplrcPlanJoinExecution failed cluster=" << job.cid << " "
                     << job.st.error_message() << std::endl;
         }
       });
@@ -2680,14 +2694,14 @@ namespace ECProject  //定义一个名为 ECProject 的命名空间，防止命�
     for (const auto &job : join_jobs)
     {
       if (!job.ok)
-        return grpc::Status(grpc::StatusCode::INTERNAL, "cordPlanJoinExecution failed");
+        return grpc::Status(grpc::StatusCode::INTERNAL, "uplrcPlanJoinExecution failed");
       ++joined_proxies;
       const proxy_proto::SetReply &rep = job.rep;
-      if (rep.cord_join_xfer_timing_present())
+      if (rep.uplrc_join_xfer_timing_present())
       {
-        const int64_t sm = rep.cord_join_pure_xfer_start_unix_ms();
-        const int64_t em = rep.cord_join_pure_xfer_end_unix_ms();
-        max_proxy_pure_xfer_sec = std::max(max_proxy_pure_xfer_sec, rep.cord_join_pure_xfer_sec());
+        const int64_t sm = rep.uplrc_join_pure_xfer_start_unix_ms();
+        const int64_t em = rep.uplrc_join_pure_xfer_end_unix_ms();
+        max_proxy_pure_xfer_sec = std::max(max_proxy_pure_xfer_sec, rep.uplrc_join_pure_xfer_sec());
         if (!span_have)
         {
           span_min_start_ms = sm;
@@ -2704,10 +2718,10 @@ namespace ECProject  //定义一个名为 ECProject 的命名空间，防止命�
       }
     }
     {
-      std::lock_guard<std::mutex> lk(m_cord_pending_mu);
-      m_cord_pending_plan_clusters.erase(pk);
+      std::lock_guard<std::mutex> lk(m_uplrc_pending_mu);
+      m_uplrc_pending_plan_clusters.erase(pk);
     }
-    cord_clear_auto_begin_session(pk);
+    uplrc_clear_auto_begin_session(pk);
     const double handler_sec =
         std::chrono::duration<double>(std::chrono::steady_clock::now() - handler_t0).count();
     double pure_xfer_sec = 0.;
@@ -2722,22 +2736,22 @@ namespace ECProject  //定义一个名为 ECProject 的命名空间，防止命�
     if (pure_xfer_sec > 0.)
     {
       const double grpc_sec = std::max(0., handler_sec - pure_xfer_sec);
-      reply->set_cord_xfer_timing_present(true);
-      reply->set_cord_xfer_pure_sec(pure_xfer_sec);
-      reply->set_cord_xfer_grpc_sec(grpc_sec);
-      if (cord_trace_log(IF_DEBUG))
-        std::cout << "[CoRD-PLAN][Coordinator] xfer_wait breakdown plan_key=" << pk
+      reply->set_uplrc_xfer_timing_present(true);
+      reply->set_uplrc_xfer_pure_sec(pure_xfer_sec);
+      reply->set_uplrc_xfer_grpc_sec(grpc_sec);
+      if (uplrc_trace_log(IF_DEBUG))
+        std::cout << "[UpLRC-PLAN][Coordinator] xfer_wait breakdown plan_key=" << pk
                   << " handler_sec=" << handler_sec << " pure_xfer_sec=" << pure_xfer_sec
                   << " grpc_sec=" << grpc_sec << " joined_proxies=" << joined_proxies
                   << " timing_samples=" << timing_samples << '\n';
     }
     else if (joined_proxies > 0)
     {
-      reply->set_cord_xfer_timing_present(true);
-      reply->set_cord_xfer_pure_sec(0.);
-      reply->set_cord_xfer_grpc_sec(handler_sec);
-      if (cord_trace_log(IF_DEBUG))
-        std::cout << "[CoRD-PLAN][Coordinator] xfer_wait breakdown plan_key=" << pk
+      reply->set_uplrc_xfer_timing_present(true);
+      reply->set_uplrc_xfer_pure_sec(0.);
+      reply->set_uplrc_xfer_grpc_sec(handler_sec);
+      if (uplrc_trace_log(IF_DEBUG))
+        std::cout << "[UpLRC-PLAN][Coordinator] xfer_wait breakdown plan_key=" << pk
                   << " handler_sec=" << handler_sec << " pure_xfer_sec=n/a grpc_sec=" << handler_sec
                   << '\n';
     }
@@ -2746,14 +2760,14 @@ namespace ECProject  //定义一个名为 ECProject 的命名空间，防止命�
     return grpc::Status::OK;
   }
 
-  void CoordinatorImpl::notify_proxy_cord_local_parity_bundle(int target_cluster_id,
-                                                              const proxy_proto::CordLocalParityBundle &bundle)
+  void CoordinatorImpl::notify_proxy_uplrc_local_parity_bundle(int target_cluster_id,
+                                                              const proxy_proto::UpLRCLocalParityBundle &bundle)
   {
     grpc::ClientContext cont;
     proxy_proto::SetReply set_reply;
     if (m_cluster_table.find(target_cluster_id) == m_cluster_table.end())
     {
-      std::cout << "[CoRD-LP] invalid target cluster " << target_cluster_id << std::endl;
+      std::cout << "[UpLRC-LP] invalid target cluster " << target_cluster_id << std::endl;
       return;
     }
     std::string chosen_proxy =
@@ -2762,18 +2776,18 @@ namespace ECProject  //定义一个名为 ECProject 的命名空间，防止命�
     auto pit = m_proxy_ptrs.find(chosen_proxy);
     if (pit == m_proxy_ptrs.end())
     {
-      std::cout << "[CoRD-LP] no proxy stub for " << chosen_proxy << std::endl;
+      std::cout << "[UpLRC-LP] no proxy stub for " << chosen_proxy << std::endl;
       return;
     }
-    grpc::Status status = pit->second->scheduleCordLocalParityApply(&cont, bundle, &set_reply);
+    grpc::Status status = pit->second->scheduleUpLRCLocalParityApply(&cont, bundle, &set_reply);
     if (!status.ok())
-      std::cout << "[CoRD-LP] scheduleCordLocalParityApply key=" << bundle.key()
+      std::cout << "[UpLRC-LP] scheduleUpLRCLocalParityApply key=" << bundle.key()
                 << " failed: " << status.error_message() << std::endl;
   }
 
-  grpc::Status CoordinatorImpl::uploadCordLocalParityApply(
+  grpc::Status CoordinatorImpl::uploadUpLRCLocalParityApply(
       grpc::ServerContext *context,
-      const coordinator_proto::CordUpdateRequest *request,
+      const coordinator_proto::UpLRCUpdateRequest *request,
       coordinator_proto::RepIfSuccess *reply)
   {
     (void)context;
@@ -2803,10 +2817,10 @@ namespace ECProject  //定义一个名为 ECProject 的命名空间，防止命�
       const int stripe_data_bytes = k * block_size;
       if (s < 0 || s > stripe_data_bytes || e > stripe_data_bytes)
         return grpc::Status(grpc::StatusCode::INVALID_ARGUMENT, "logical interval out of stripe data range");
-      cord_add_logical_range_to_data_blocks(block_size, k, s, e, &block_intervals);
+      uplrc_add_logical_range_to_data_blocks(block_size, k, s, e, &block_intervals);
     }
 
-    std::map<int, std::vector<CordSliceRec>> cluster_slices;
+    std::map<int, std::vector<UpLRCSliceRec>> cluster_slices;
     for (const auto &kv : block_intervals)
     {
       const int bid = kv.first;
@@ -2815,7 +2829,7 @@ namespace ECProject  //定义一个名为 ECProject 的命名空间，防止命�
       Block *bp = stripe->blocks[bid];
       for (const auto &seg : kv.second)
       {
-        CordSliceRec rec;
+        UpLRCSliceRec rec;
         rec.block_id = bid;
         rec.block_offset = seg.first;
         rec.len = seg.second - seg.first;
@@ -2827,7 +2841,7 @@ namespace ECProject  //定义一个名为 ECProject 的命名空间，防止命�
     for (auto &cs : cluster_slices)
     {
       std::sort(cs.second.begin(), cs.second.end(),
-                [](const CordSliceRec &a, const CordSliceRec &b)
+                [](const UpLRCSliceRec &a, const UpLRCSliceRec &b)
                 {
                   if (a.block_id != b.block_id)
                     return a.block_id < b.block_id;
@@ -2842,7 +2856,7 @@ namespace ECProject  //定义一个名为 ECProject 的命名空间，防止命�
     }
 
     std::map<std::tuple<int, int, int>, LpWorkAgg> agg;
-    cord_alg2::TransferParams tp;
+    uplrc_alg2::TransferParams tp;
 
     for (const auto &kv : block_intervals)
     {
@@ -2850,7 +2864,7 @@ namespace ECProject  //定义一个名为 ECProject 的命名空间，防止命�
       if (bid < 0 || bid >= k)
         continue;
       const int gnum = stripe->blocks[bid]->map2group;
-      const int lb = cord_lp_find_local_parity_block(*stripe, gnum);
+      const int lb = uplrc_lp_find_local_parity_block(*stripe, gnum);
       if (lb < 0)
         continue;
 
@@ -2862,7 +2876,7 @@ namespace ECProject  //定义一个名为 ECProject 的命名空间，防止命�
       }
       std::sort(dblocks.begin(), dblocks.end());
       dblocks.erase(std::unique(dblocks.begin(), dblocks.end()), dblocks.end());
-      const int hub_blk = cord_lp_pick_hub_global(*stripe, block_intervals, dblocks, tp);
+      const int hub_blk = uplrc_lp_pick_hub_global(*stripe, block_intervals, dblocks, tp);
       const int hub_c = stripe->blocks[hub_blk]->map2cluster;
       (void)hub_c;
 
@@ -2880,7 +2894,7 @@ namespace ECProject  //定义一个名为 ECProject 的命名空间，防止命�
         std::string err;
         if (!build_slice_plan_for_logical_range(stripe, lo, seg_len, &b2s, &ps, &po, &merge, &err))
         {
-          std::cout << "[CoRD-LP] build_slice failed: " << err << std::endl;
+          std::cout << "[UpLRC-LP] build_slice failed: " << err << std::endl;
           continue;
         }
         const auto pit = b2s.find(lb);
@@ -2894,16 +2908,16 @@ namespace ECProject  //定义一个名为 ECProject 的命名空间，防止命�
         if (csit == cluster_slices.end())
           continue;
         uint64_t blob_off = 0;
-        if (!cord_lp_find_delta_blob_offset(csit->second, bid, a, seg_len, &blob_off))
+        if (!uplrc_lp_find_delta_blob_offset(csit->second, bid, a, seg_len, &blob_off))
         {
-          std::cout << "[CoRD-LP] missing delta layout for stripe=" << stripe_id << " cluster=" << cid
+          std::cout << "[UpLRC-LP] missing delta layout for stripe=" << stripe_id << " cluster=" << cid
                     << " block=" << bid << std::endl;
           continue;
         }
         const int delta_node_id = m_cluster_table[cid].nodes.front();
         const Node &delta_node = m_node_table[delta_node_id];
-        const std::string cord_key = m_toolbox->gen_cord_key(stripe_id, cid);
-        const std::string blob_key = cord_key + "_delta";
+        const std::string uplrc_key = m_toolbox->gen_uplrc_key(stripe_id, cid);
+        const std::string blob_key = uplrc_key + "_delta";
 
         const auto lk = std::make_tuple(lb, poff, psz);
         LpWorkAgg &w = agg[lk];
@@ -2928,7 +2942,7 @@ namespace ECProject  //定义一个名为 ECProject 的命名空间，防止命�
         fs.source_cluster_id = cid;
         w.fetches.push_back(std::move(fs));
 
-        // std::cout << "[CoRD-LP] map2group=" << gnum << " hub_global_blk=" << hub_blk
+        // std::cout << "[UpLRC-LP] map2group=" << gnum << " hub_global_blk=" << hub_blk
         //           << " data_blk=" << bid << " seg=[" << a << "," << b << ") -> LP blk " << lb
         //           << " parity_off=" << poff << " len=" << psz << " fetch " << blob_key << "@" << blob_off
         //           << " len=" << seg_len << std::endl;
@@ -2941,14 +2955,14 @@ namespace ECProject  //定义一个名为 ECProject 的命名空间，防止命�
       return grpc::Status::OK;
     }
 
-    std::map<int, proxy_proto::CordLocalParityBundle> by_cluster;
+    std::map<int, proxy_proto::UpLRCLocalParityBundle> by_cluster;
     for (auto &kv : agg)
     {
       LpWorkAgg &w = kv.second;
       const int target_c = stripe->blocks[w.local_block_id]->map2cluster;
-      proxy_proto::CordLocalParityBundle &bd = by_cluster[target_c];
+      proxy_proto::UpLRCLocalParityBundle &bd = by_cluster[target_c];
       if (bd.key().empty())
-        bd.set_key(m_toolbox->gen_cord_key(stripe_id, target_c) + "_lp");
+        bd.set_key(m_toolbox->gen_uplrc_key(stripe_id, target_c) + "_lp");
       bd.set_stripe_id(stripe_id);
       auto *itm = bd.add_items();
       itm->set_local_block_id(w.local_block_id);
@@ -2971,7 +2985,7 @@ namespace ECProject  //定义一个名为 ECProject 的命名空间，防止命�
 
     for (auto &bc : by_cluster)
     {
-      std::thread th(&CoordinatorImpl::notify_proxy_cord_local_parity_bundle, this, bc.first, bc.second);
+      std::thread th(&CoordinatorImpl::notify_proxy_uplrc_local_parity_bundle, this, bc.first, bc.second);
       th.join();
     }
 
@@ -2980,9 +2994,9 @@ namespace ECProject  //定义一个名为 ECProject 的命名空间，防止命�
   }
 
 
-  grpc::Status CoordinatorImpl::uploadCordLocalParityViaGlobalHub(
+  grpc::Status CoordinatorImpl::uploadUpLRCLocalParityViaGlobalHub(
       grpc::ServerContext *context,
-      const coordinator_proto::CordUpdateRequest *request,
+      const coordinator_proto::UpLRCUpdateRequest *request,
       coordinator_proto::RepIfSuccess *reply)
   {
     (void)context;
@@ -3012,10 +3026,10 @@ namespace ECProject  //定义一个名为 ECProject 的命名空间，防止命�
       const int stripe_data_bytes = k * block_size;
       if (s < 0 || s > stripe_data_bytes || e > stripe_data_bytes)
         return grpc::Status(grpc::StatusCode::INVALID_ARGUMENT, "logical interval out of stripe data range");
-      cord_add_logical_range_to_data_blocks(block_size, k, s, e, &block_intervals);
+      uplrc_add_logical_range_to_data_blocks(block_size, k, s, e, &block_intervals);
     }
 
-    std::map<int, std::vector<CordSliceRec>> cluster_slices;
+    std::map<int, std::vector<UpLRCSliceRec>> cluster_slices;
     for (const auto &kv : block_intervals)
     {
       const int bid = kv.first;
@@ -3024,7 +3038,7 @@ namespace ECProject  //定义一个名为 ECProject 的命名空间，防止命�
       Block *bp = stripe->blocks[bid];
       for (const auto &seg : kv.second)
       {
-        CordSliceRec rec;
+        UpLRCSliceRec rec;
         rec.block_id = bid;
         rec.block_offset = seg.first;
         rec.len = seg.second - seg.first;
@@ -3036,7 +3050,7 @@ namespace ECProject  //定义一个名为 ECProject 的命名空间，防止命�
     for (auto &cs : cluster_slices)
     {
       std::sort(cs.second.begin(), cs.second.end(),
-                [](const CordSliceRec &a, const CordSliceRec &b)
+                [](const UpLRCSliceRec &a, const UpLRCSliceRec &b)
                 {
                   if (a.block_id != b.block_id)
                     return a.block_id < b.block_id;
@@ -3051,7 +3065,7 @@ namespace ECProject  //定义一个名为 ECProject 的命名空间，防止命�
     }
 
     std::map<std::tuple<int, int, int>, LpWorkAgg> agg;
-    cord_alg2::TransferParams tp;
+    uplrc_alg2::TransferParams tp;
 
     for (const auto &kv : block_intervals)
     {
@@ -3059,7 +3073,7 @@ namespace ECProject  //定义一个名为 ECProject 的命名空间，防止命�
       if (bid < 0 || bid >= k)
         continue;
       const int gnum = stripe->blocks[bid]->map2group;
-      const int lb = cord_lp_find_local_parity_block(*stripe, gnum);
+      const int lb = uplrc_lp_find_local_parity_block(*stripe, gnum);
       if (lb < 0)
         continue;
 
@@ -3071,7 +3085,7 @@ namespace ECProject  //定义一个名为 ECProject 的命名空间，防止命�
       }
       std::sort(dblocks.begin(), dblocks.end());
       dblocks.erase(std::unique(dblocks.begin(), dblocks.end()), dblocks.end());
-      const int hub_blk = cord_lp_pick_hub_global(*stripe, block_intervals, dblocks, tp);
+      const int hub_blk = uplrc_lp_pick_hub_global(*stripe, block_intervals, dblocks, tp);
       const int hub_c = stripe->blocks[hub_blk]->map2cluster;
       (void)hub_c;
 
@@ -3089,7 +3103,7 @@ namespace ECProject  //定义一个名为 ECProject 的命名空间，防止命�
         std::string err;
         if (!build_slice_plan_for_logical_range(stripe, lo, seg_len, &b2s, &ps, &po, &merge, &err))
         {
-          std::cout << "[CoRD-LP-GH] build_slice failed: " << err << std::endl;
+          std::cout << "[UpLRC-LP-GH] build_slice failed: " << err << std::endl;
           continue;
         }
         const auto pit = b2s.find(lb);
@@ -3103,16 +3117,16 @@ namespace ECProject  //定义一个名为 ECProject 的命名空间，防止命�
         if (csit == cluster_slices.end())
           continue;
         uint64_t blob_off = 0;
-        if (!cord_lp_find_delta_blob_offset(csit->second, bid, a, seg_len, &blob_off))
+        if (!uplrc_lp_find_delta_blob_offset(csit->second, bid, a, seg_len, &blob_off))
         {
-          std::cout << "[CoRD-LP-GH] missing delta layout for stripe=" << stripe_id << " cluster=" << cid
+          std::cout << "[UpLRC-LP-GH] missing delta layout for stripe=" << stripe_id << " cluster=" << cid
                     << " block=" << bid << std::endl;
           continue;
         }
         const int delta_node_id = m_cluster_table[cid].nodes.front();
         const Node &delta_node = m_node_table[delta_node_id];
-        const std::string cord_key = m_toolbox->gen_cord_key(stripe_id, cid);
-        const std::string blob_key = cord_key + "_delta";
+        const std::string uplrc_key = m_toolbox->gen_uplrc_key(stripe_id, cid);
+        const std::string blob_key = uplrc_key + "_delta";
 
         const auto lk = std::make_tuple(lb, poff, psz);
         LpWorkAgg &w = agg[lk];
@@ -3145,10 +3159,10 @@ namespace ECProject  //定义一个名为 ECProject 的命名空间，防止命�
       return grpc::Status::OK;
     }
 
-    if (!run_cord_lp_global_hub_aggregation(m_cluster_table, m_proxy_ptrs, stripe_id, stripe, block_intervals, agg))
+    if (!run_uplrc_lp_global_hub_aggregation(m_cluster_table, m_proxy_ptrs, stripe_id, stripe, block_intervals, agg))
     {
       reply->set_ifcommit(false);
-      return grpc::Status(grpc::StatusCode::INTERNAL, "CoRD-LP global hub aggregation failed");
+      return grpc::Status(grpc::StatusCode::INTERNAL, "UpLRC-LP global hub aggregation failed");
     }
     reply->set_ifcommit(true);
     return grpc::Status::OK;
@@ -3323,7 +3337,7 @@ namespace ECProject  //定义一个名为 ECProject 的命名空间，防止命�
     size_t setSizeBytes = keyValueSize->valuesizebytes();
     std::string code_type = m_sys_config->CodeType;
     assert(setSizeBytes == static_cast<size_t>(m_sys_config->BlockSize) * static_cast<size_t>(m_sys_config->k) && "set size is not equal to the block stripe size!");
-    assert((code_type == "UniLRC" || code_type == "AzureLRC" || code_type == "OptimalLRC" || code_type == "UniformLRC" || code_type == "RandomLRC" || code_type == "SplitParityLRC" || code_type == "CordXueLRC") && "Error: code type must be UniLRC, AzureLRC, OptimalLRC, UniformLRC, RandomLRC, SplitParityLRC, or CordXueLRC!");
+    assert((code_type == "UniLRC" || code_type == "AzureLRC" || code_type == "OptimalLRC" || code_type == "UniformLRC" || code_type == "RandomLRC" || code_type == "SplitParityLRC" || code_type == "UpLRC") && "Error: code type must be UniLRC, AzureLRC, OptimalLRC, UniformLRC, RandomLRC, SplitParityLRC, or UpLRC!");
 
     Stripe t_stripe;
     t_stripe.stripe_id = m_cur_stripe_id++;
@@ -3354,15 +3368,15 @@ namespace ECProject  //定义一个名为 ECProject 的命名空间，防止命�
     {
       initialize_split_parity_lrc_stripe_placement(&t_stripe);
     }
-    else if (code_type == "CordXueLRC")
+    else if (code_type == "UpLRC")
     {
-      initialize_cord_xue_lrc_stripe_placement(&t_stripe);
+      initialize_uplrc_stripe_placement(&t_stripe);
     }
     print_stripe_data_placement(t_stripe);
 
-    // CordXueLRC：按物理机架下发 SET plan；其它码型仍按逻辑 group
+    // UpLRC：按物理机架下发 SET plan；其它码型仍按逻辑 group
     std::vector<proxy_proto::AppendStripeDataPlacement> add_plans =
-        (code_type == "CordXueLRC") ? generate_add_plans_by_cluster(&t_stripe)
+        (code_type == "UpLRC") ? generate_add_plans_by_cluster(&t_stripe)
                                     : generate_add_plans(&t_stripe);
 
     for (const auto &plan : add_plans)
@@ -3397,7 +3411,7 @@ namespace ECProject  //定义一个名为 ECProject 的命名空间，防止命�
       proxyIPPort->add_proxyports(m_cluster_table[plan.cluster_id()].proxy_port + ECProject::PROXY_PORT_SHIFT); // use another port to accept data
       proxyIPPort->add_cluster_slice_sizes(plan.append_size());
       proxyIPPort->add_group_ids(plan.cluster_id());
-      if (code_type == "CordXueLRC")
+      if (code_type == "UpLRC")
       {
         proxyIPPort->add_slice_block_counts(plan.blockids_size());
         for (int bi = 0; bi < plan.blockids_size(); ++bi)
@@ -3421,7 +3435,7 @@ namespace ECProject  //定义一个名为 ECProject 的命名空间，防止命�
     size_t setSizeBytes = keyValueSize->valuesizebytes();
     std::string code_type = m_sys_config->CodeType;
     assert(setSizeBytes <= static_cast<size_t>(m_sys_config->BlockSize) * static_cast<size_t>(m_sys_config->k) && "subset size is larger than the block size!");
-    assert((code_type == "UniLRC" || code_type == "AzureLRC" || code_type == "OptimalLRC" || code_type == "UniformLRC" || code_type == "RandomLRC" || code_type == "SplitParityLRC" || code_type == "CordXueLRC") && "Error: code type must be UniLRC, AzureLRC, OptimalLRC, UniformLRC, RandomLRC, SplitParityLRC, or CordXueLRC!");
+    assert((code_type == "UniLRC" || code_type == "AzureLRC" || code_type == "OptimalLRC" || code_type == "UniformLRC" || code_type == "RandomLRC" || code_type == "SplitParityLRC" || code_type == "UpLRC") && "Error: code type must be UniLRC, AzureLRC, OptimalLRC, UniformLRC, RandomLRC, SplitParityLRC, or UpLRC!");
 
     Stripe t_stripe;
     t_stripe.stripe_id = m_cur_stripe_id++;
@@ -3452,9 +3466,9 @@ namespace ECProject  //定义一个名为 ECProject 的命名空间，防止命�
     {
       initialize_split_parity_lrc_stripe_placement(&t_stripe);
     }
-    else if (code_type == "CordXueLRC")
+    else if (code_type == "UpLRC")
     {
-      initialize_cord_xue_lrc_stripe_placement(&t_stripe);
+      initialize_uplrc_stripe_placement(&t_stripe);
     }
     print_stripe_data_placement(t_stripe);
 
@@ -5304,17 +5318,17 @@ namespace ECProject  //定义一个名为 ECProject 的命名空间，防止命�
     {
       if (commit_abortkey->ifcommitmetadata())
       {
-        if (opp == SET || opp == APPEND || opp == CORD_UPDATE)
+        if (opp == SET || opp == APPEND || opp == UPLRC_UPDATE)
         {
           m_object_commit_table[key] = m_object_updating_table[key];
           cv.notify_all();
           m_object_updating_table.erase(key);
-          if (opp == CORD_UPDATE)
+          if (opp == UPLRC_UPDATE)
           {
             // Release m_mutex before auto-starting transfer plan so checkCommitAbort
             // can return immediately after commit without waiting for cross-cluster gRPC.
             lck.unlock();
-            cord_on_delta_key_committed(key);
+            uplrc_on_delta_key_committed(key);
           }
         }
         else if (opp == DEL) // delete the metadata
@@ -5461,7 +5475,7 @@ namespace ECProject  //定义一个名为 ECProject 的命名空间，防止命�
     std::string key = key_opp->key();
     ECProject::OpperateType opp = (ECProject::OpperateType)key_opp->opp();
     int stripe_id = key_opp->stripe_id();
-    if (opp == SET || opp == APPEND || opp == CORD_UPDATE)
+    if (opp == SET || opp == APPEND || opp == UPLRC_UPDATE)
     {
       while (m_object_commit_table.find(key) == m_object_commit_table.end())
       {

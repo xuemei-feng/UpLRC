@@ -1,5 +1,5 @@
-#include "cord_algorithm2.h"
-#include "cord_algorithm3.h"
+#include "uplrc_algorithm2.h"
+#include "uplrc_algorithm3.h"
 #include "devcommon.h"
 #include "meta_definition.h"
 #include <algorithm>
@@ -13,7 +13,7 @@
 
 namespace ECProject
 {
-  namespace cord_alg2
+  namespace uplrc_alg2
   {
     // 合并多个数据块的更新区间，输出最小外包区间 [lo, hi) 的长度（中间可能有空洞）
     int64_t merged_delta_hull_span_bytes(
@@ -296,7 +296,7 @@ namespace ECProject
         return out;
 
       int gi = 0;
-      std::cout << "[CoRD-Alg2] ===== build_algorithm2 start: |U|=" << U.size() << " r=" << r
+      std::cout << "[UpLRC-Alg2] ===== build_algorithm2 start: |U|=" << U.size() << " r=" << r
                 << " k=" << k << " cluster_num=" << cluster_num << " =====\n";
       for (const std::vector<int> &N : U)
       {
@@ -312,7 +312,7 @@ namespace ECProject
         }
 
         // 打印组内各 block 所属 cluster
-        std::cout << "[CoRD-Alg2] --- group gi=" << gi << " |N|=" << N.size() << " blocks=[";
+        std::cout << "[UpLRC-Alg2] --- group gi=" << gi << " |N|=" << N.size() << " blocks=[";
         for (size_t ni = 0; ni < N.size(); ++ni) {
           if (ni > 0) std::cout << " ";
           std::cout << N[ni] << "(c" << block_cluster(stripe, N[ni]) << ")";
@@ -324,7 +324,7 @@ namespace ECProject
           const int64_t parity_global_b = merged_delta_hull_span_bytes(block_intervals, N);
           if (parity_global_b <= 0)
           {
-            std::cout << "[CoRD-Alg2]   skip: parity_global_b=0\n";
+            std::cout << "[UpLRC-Alg2]   skip: parity_global_b=0\n";
             ++gi;
             continue;
           }
@@ -337,7 +337,7 @@ namespace ECProject
               groups_touched.push_back(gnum);
           }
 
-          std::cout << "[CoRD-Alg2]   parity_global_hull=" << parity_global_b
+          std::cout << "[UpLRC-Alg2]   parity_global_hull=" << parity_global_b
                     << " bytes, local_groups_touched=[";
           for (size_t ti = 0; ti < groups_touched.size(); ++ti) {
             if (ti > 0) std::cout << " ";
@@ -346,7 +346,7 @@ namespace ECProject
           std::cout << "]\n";
 
           auto emit_star_from_center = [&](int best_c, int cc_center) {
-            std::cout << "[CoRD-Alg2]   >>> STAR center=global_blk" << best_c << " cluster=c" << cc_center << "\n";
+            std::cout << "[UpLRC-Alg2]   >>> STAR center=global_blk" << best_c << " cluster=c" << cc_center << "\n";
             for (int d : N)
             {
               int64_t b = delta_bytes_for_block(block_intervals, d);
@@ -362,8 +362,8 @@ namespace ECProject
               L.est_transfer_sec = transfer_sec(dc, cc_center, b, tp);
               L.group_index = gi;
               L.kind = TrainLinkKind::STAR_DATA_TO_CENTER;
-              L.delta_kind = CordDeltaPayloadKind::DATA_DELTA;
-              std::cout << "[CoRD-Alg2]     DATA_TO_CENTER: blk" << d << "(c" << dc << ") --ΔD "
+              L.delta_kind = UpLRCDeltaPayloadKind::DATA_DELTA;
+              std::cout << "[UpLRC-Alg2]     DATA_TO_CENTER: blk" << d << "(c" << dc << ") --ΔD "
                         << b << "B --> global_blk" << best_c << "(c" << cc_center
                         << ") est=" << L.est_transfer_sec << "s\n";
               out.train_route.push_back(std::move(L));
@@ -382,9 +382,9 @@ namespace ECProject
               L.est_transfer_sec = transfer_sec(cc_center, gc, parity_global_b, tp);
               L.group_index = gi;
               L.kind = TrainLinkKind::STAR_CENTER_TO_GLOBAL;
-              L.delta_kind = CordDeltaPayloadKind::PARITY_DELTA;
+              L.delta_kind = UpLRCDeltaPayloadKind::PARITY_DELTA;
               L.parity_merge_data_block_ids.assign(N.begin(), N.end());
-              std::cout << "[CoRD-Alg2]     CTR_TO_GLOBAL:  global_blk" << best_c << "(c" << cc_center
+              std::cout << "[UpLRC-Alg2]     CTR_TO_GLOBAL:  global_blk" << best_c << "(c" << cc_center
                         << ") --ΔP " << parity_global_b << "B --> global_blk" << g << "(c" << gc
                         << ") est=" << L.est_transfer_sec << "s merge_src=" << N.size() << " blocks\n";
               out.train_route.push_back(std::move(L));
@@ -421,9 +421,9 @@ namespace ECProject
               L.est_transfer_sec = transfer_sec(cc_center, lc, parity_local_b, tp);
               L.group_index = gi;
               L.kind = TrainLinkKind::STAR_CENTER_TO_LOCAL;
-              L.delta_kind = CordDeltaPayloadKind::PARITY_DELTA;
+              L.delta_kind = UpLRCDeltaPayloadKind::PARITY_DELTA;
               L.parity_merge_data_block_ids = blocks_same_local_group;
-              std::cout << "[CoRD-Alg2]     CTR_TO_LOCAL:   global_blk" << best_c << "(c" << cc_center
+              std::cout << "[UpLRC-Alg2]     CTR_TO_LOCAL:   global_blk" << best_c << "(c" << cc_center
                         << ") --ΔP " << parity_local_b << "B --> local_blk" << Lb << "(c" << lc
                         << ") group=" << gnum << " est=" << L.est_transfer_sec
                         << "s merge_src=" << blocks_same_local_group.size() << " blocks\n";
@@ -434,9 +434,9 @@ namespace ECProject
           bool fused_alg3 = false;
           if (static_cast<int>(N.size()) >= 3)
           {
-            std::cout << "[CoRD-Alg2]   |N|=" << N.size() << " >= 3, attempting Algorithm3 PDP+DCP fusion...\n";
-            cord_alg3::Algorithm3Result alg3 =
-                cord_alg3::build_algorithm3(stripe, block_intervals, N, cluster_num, tp);
+            std::cout << "[UpLRC-Alg2]   |N|=" << N.size() << " >= 3, attempting Algorithm3 PDP+DCP fusion...\n";
+            uplrc_alg3::Algorithm3Result alg3 =
+                uplrc_alg3::build_algorithm3(stripe, block_intervals, N, cluster_num, tp);
             if (alg3.applied && alg3.G.size() == alg3.dcp.group_to_collector.size() && !alg3.G.empty())
             {
               std::set<int> used_collectors;
@@ -454,7 +454,7 @@ namespace ECProject
               if (assign_ok && !used_collectors.empty())
               {
                 fused_alg3 = true;
-                std::cout << "[CoRD] Algorithm 2+3 fused |N|=" << N.size() << " P=" << alg3.G.size()
+                std::cout << "[UpLRC] Algorithm 2+3 fused |N|=" << N.size() << " P=" << alg3.G.size()
                           << " g_col=" << alg3.g << " collectors:";
                 for (int col : used_collectors)
                   std::cout << " " << col;
@@ -463,7 +463,7 @@ namespace ECProject
                 for (size_t j = 0; j < alg3.G.size(); ++j) {
                   const auto &grp = alg3.G[j];
                   int cidx = alg3.dcp.group_to_collector[j];
-                  std::cout << "[CoRD-Alg2]   PDP group[" << j << "] → collector=global_blk" << (k + cidx)
+                  std::cout << "[UpLRC-Alg2]   PDP group[" << j << "] → collector=global_blk" << (k + cidx)
                             << " span=" << grp.span_bytes << " sumΔ=" << grp.sum_delta_bytes
                             << " blocks=[";
                   for (size_t bi = 0; bi < grp.block_ids.size(); ++bi) {
@@ -481,7 +481,7 @@ namespace ECProject
                   int cidx = alg3.dcp.group_to_collector[j];
                   int col = k + cidx;
                   int cc = block_cluster(stripe, col);
-                  std::cout << "[CoRD-Alg2]   >>> PDP group[" << j << "] → collector=global_blk" << col << " (c" << cc << ")\n";
+                  std::cout << "[UpLRC-Alg2]   >>> PDP group[" << j << "] → collector=global_blk" << col << " (c" << cc << ")\n";
                   for (int d : grp.block_ids)
                   {
                     int64_t b = delta_bytes_for_block(block_intervals, d);
@@ -497,8 +497,8 @@ namespace ECProject
                     L.est_transfer_sec = transfer_sec(dc, cc, b, tp);
                     L.group_index = gi;
                     L.kind = TrainLinkKind::STAR_DATA_TO_CENTER;
-                    L.delta_kind = CordDeltaPayloadKind::DATA_DELTA;
-                    std::cout << "[CoRD-Alg2]     DATA_TO_CENTER: blk" << d << "(c" << dc << ") --ΔD "
+                    L.delta_kind = UpLRCDeltaPayloadKind::DATA_DELTA;
+                    std::cout << "[UpLRC-Alg2]     DATA_TO_CENTER: blk" << d << "(c" << dc << ") --ΔD "
                               << b << "B --> global_blk" << col << "(c" << cc
                               << ") est=" << L.est_transfer_sec << "s\n";
                     out.train_route.push_back(std::move(L));
@@ -520,7 +520,7 @@ namespace ECProject
                       merged_delta_hull_span_bytes(block_intervals, blocks_to_col);
                   if (parity_at_col <= 0)
                     continue;
-                  std::cout << "[CoRD-Alg2]   >>> collector=global_blk" << col << " (c" << cc
+                  std::cout << "[UpLRC-Alg2]   >>> collector=global_blk" << col << " (c" << cc
                             << ") fan-out ΔP=" << parity_at_col << "B to other global + local parity blocks\n";
                   for (int gpar = k; gpar < k + r; ++gpar)
                   {
@@ -536,9 +536,9 @@ namespace ECProject
                     L.est_transfer_sec = transfer_sec(cc, gc, parity_at_col, tp);
                     L.group_index = gi;
                     L.kind = TrainLinkKind::STAR_CENTER_TO_GLOBAL;
-                    L.delta_kind = CordDeltaPayloadKind::PARITY_DELTA;
+                    L.delta_kind = UpLRCDeltaPayloadKind::PARITY_DELTA;
                     L.parity_merge_data_block_ids = blocks_to_col;
-                    std::cout << "[CoRD-Alg2]     CTR_TO_GLOBAL:  global_blk" << col << "(c" << cc
+                    std::cout << "[UpLRC-Alg2]     CTR_TO_GLOBAL:  global_blk" << col << "(c" << cc
                               << ") --ΔP " << parity_at_col << "B --> global_blk" << gpar << "(c" << gc
                               << ") est=" << L.est_transfer_sec << "s\n";
                     out.train_route.push_back(std::move(L));
@@ -581,9 +581,9 @@ namespace ECProject
                     L.est_transfer_sec = transfer_sec(cc, lc, parity_local_col, tp);
                     L.group_index = gi;
                     L.kind = TrainLinkKind::STAR_CENTER_TO_LOCAL;
-                    L.delta_kind = CordDeltaPayloadKind::PARITY_DELTA;
+                    L.delta_kind = UpLRCDeltaPayloadKind::PARITY_DELTA;
                     L.parity_merge_data_block_ids = blocks_local;
-                    std::cout << "[CoRD-Alg2]     CTR_TO_LOCAL:   global_blk" << col << "(c" << cc
+                    std::cout << "[UpLRC-Alg2]     CTR_TO_LOCAL:   global_blk" << col << "(c" << cc
                               << ") --ΔP " << parity_local_col << "B --> local_blk" << Lb << "(c" << lc
                               << ") group=" << gnum << " est=" << L.est_transfer_sec << "s\n";
                     out.train_route.push_back(std::move(L));
@@ -597,9 +597,9 @@ namespace ECProject
           if (!fused_alg3)
           {
             if (static_cast<int>(N.size()) >= 3)
-              std::cout << "[CoRD-Alg2]   Algorithm3 not applied, fallback to single-center STAR\n";
+              std::cout << "[UpLRC-Alg2]   Algorithm3 not applied, fallback to single-center STAR\n";
             else
-              std::cout << "[CoRD-Alg2]   |N|=2, using single-center STAR\n";
+              std::cout << "[UpLRC-Alg2]   |N|=2, using single-center STAR\n";
             int best_c = k;
             double best_cost = std::numeric_limits<double>::infinity();
             // 打印各候选中心的累计传输代价
@@ -619,7 +619,7 @@ namespace ECProject
                   continue;
                 sum += transfer_sec(dc, cc, b, tp);
               }
-              std::cout << "[CoRD-Alg2]   candidate center=global_blk" << cand << "(c" << cc
+              std::cout << "[UpLRC-Alg2]   candidate center=global_blk" << cand << "(c" << cc
                         << ") sum_cost=" << sum << "s\n";
               if (sum < best_cost)
               {
@@ -629,7 +629,7 @@ namespace ECProject
             }
             out.center_global_block_id = best_c;
             int best_cc = block_cluster(stripe, best_c);
-            std::cout << "[CoRD-Alg2]   chosen center=global_blk" << best_c << " c" << best_cc
+            std::cout << "[UpLRC-Alg2]   chosen center=global_blk" << best_c << " c" << best_cc
                       << " cost=" << best_cost << "s\n";
             emit_star_from_center(best_c, best_cc);
           }
@@ -641,7 +641,7 @@ namespace ECProject
           int64_t bd = delta_bytes_for_block(block_intervals, d);
           if (bd <= 0)
           {
-            std::cout << "[CoRD-Alg2]   skip MST: ΔD=0 for blk" << d << "\n";
+            std::cout << "[UpLRC-Alg2]   skip MST: ΔD=0 for blk" << d << "\n";
             ++gi;
             continue;
           }
@@ -655,7 +655,7 @@ namespace ECProject
           if (Lb >= 0)
             vid[static_cast<size_t>(1 + r)] = Lb;
 
-          std::cout << "[CoRD-Alg2]   MST |N|=1 data_blk" << d << "(c" << dc_src
+          std::cout << "[UpLRC-Alg2]   MST |N|=1 data_blk" << d << "(c" << dc_src
                     << ") ΔD=" << bd << "B  V={blk" << d;
           for (int j = 0; j < r; ++j)
             std::cout << ",G" << (k + j) << "(c" << block_cluster(stripe, k + j) << ")";
@@ -689,18 +689,18 @@ namespace ECProject
           std::sort(edges.begin(), edges.end());
           DSU dsu(numV);
           std::vector<std::pair<int, int>> mst;
-          std::cout << "[CoRD-Alg2]   MST Kruskal edges selected:\n";
+          std::cout << "[UpLRC-Alg2]   MST Kruskal edges selected:\n";
           for (const auto &e : edges)
           {
             if (dsu.unite(e.u, e.v)) {
               mst.push_back({e.u, e.v});
-              std::cout << "[CoRD-Alg2]     " << vid[e.u] << " -- " << vid[e.v]
+              std::cout << "[UpLRC-Alg2]     " << vid[e.u] << " -- " << vid[e.v]
                         << " (idx " << e.u << "-" << e.v << ") w=" << e.w << "s\n";
             }
           }
           std::vector<std::pair<int, int>> directed;
           orient_mst_from_root(mst, 0, numV, &directed);
-          std::cout << "[CoRD-Alg2]   MST directed (root=blk" << d << "):\n";
+          std::cout << "[UpLRC-Alg2]   MST directed (root=blk" << d << "):\n";
           for (auto pr : directed)
           {
             int sb = vid[pr.first];
@@ -717,9 +717,9 @@ namespace ECProject
             L.group_index = gi;
             L.kind = TrainLinkKind::MST_FORWARD;
             // |N|=1：最小生成树上每跳均传输同一数据块的数据增量 ΔD（非校验增量）
-            L.delta_kind = CordDeltaPayloadKind::DATA_DELTA;
+            L.delta_kind = UpLRCDeltaPayloadKind::DATA_DELTA;
             L.mst_origin_data_block = d;
-            std::cout << "[CoRD-Alg2]     MST_FORWARD: blk" << sb << "(c" << sc << ") --ΔD "
+            std::cout << "[UpLRC-Alg2]     MST_FORWARD: blk" << sb << "(c" << sc << ") --ΔD "
                       << bd << "B --> blk" << db << "(c" << dc
                       << ") est=" << L.est_transfer_sec << "s\n";
             out.train_route.push_back(std::move(L));
@@ -736,16 +736,16 @@ namespace ECProject
 
       std::vector<int> remaining;
       remaining.reserve(out.train_route.size());
-      std::cout << "[CoRD-Alg2] ===== Transfer scheduling: " << out.train_route.size()
+      std::cout << "[UpLRC-Alg2] ===== Transfer scheduling: " << out.train_route.size()
                 << " links (full payload per link) =====\n";
       for (size_t li = 0; li < out.train_route.size(); ++li) {
         const auto &L = out.train_route[li];
         remaining.push_back(L.payload_bytes > 0 ? 1 : 0);
-        std::cout << "[CoRD-Alg2]   link[" << li << "] " << train_link_kind_name(L.kind)
+        std::cout << "[UpLRC-Alg2]   link[" << li << "] " << train_link_kind_name(L.kind)
                   << " blk" << L.src_block_id << "(c" << L.src_cluster << ")->blk" << L.dst_block_id
                   << "(c" << L.dst_cluster << ") payload=" << L.payload_bytes
                   << "B grp=" << L.group_index;
-        if (L.delta_kind == CordDeltaPayloadKind::PARITY_DELTA)
+        if (L.delta_kind == UpLRCDeltaPayloadKind::PARITY_DELTA)
           std::cout << " [depends on DATA_TO_CENTER ingressing to blk" << L.src_block_id << "]";
         std::cout << "\n";
       }
@@ -817,14 +817,14 @@ namespace ECProject
           din.add_edge(1 + C + c, T, tp.enforce_one_send_one_recv_per_cluster ? 1 : C, -1);
 
         // 打印本时间步候选链路
-        std::cout << "[CoRD-Alg2] --- step " << ts << " candidates (pending & eligible):\n";
+        std::cout << "[UpLRC-Alg2] --- step " << ts << " candidates (pending & eligible):\n";
         for (size_t i = 0; i < out.train_route.size(); ++i)
         {
           if (remaining[i] <= 0)
             continue;
           bool eligible = link_eligible_for_step(i);
           const TrainLink &L = out.train_route[i];
-          std::cout << "[CoRD-Alg2]   link[" << i << "] blk" << L.src_block_id << "->blk" << L.dst_block_id
+          std::cout << "[UpLRC-Alg2]   link[" << i << "] blk" << L.src_block_id << "->blk" << L.dst_block_id
                     << " c" << L.src_cluster << "->c" << L.dst_cluster
                     << " pending=" << remaining[i] << " eligible=" << (eligible ? "Y" : "N") << "\n";
           if (!eligible)
@@ -847,13 +847,13 @@ namespace ECProject
           {
             if (remaining[i] > 0 && link_eligible_for_step(i))
             {
-              std::cout << "[CoRD-Alg2]   [deadlock-prevention] forcing link[" << i << "]\n";
+              std::cout << "[UpLRC-Alg2]   [deadlock-prevention] forcing link[" << i << "]\n";
               used.push_back(static_cast<int>(i));
               break;
             }
           }
         }
-        std::cout << "[CoRD-Alg2]   step " << ts << " selected " << used.size() << " link(s): [";
+        std::cout << "[UpLRC-Alg2]   step " << ts << " selected " << used.size() << " link(s): [";
         for (size_t ui = 0; ui < used.size(); ++ui) {
           if (ui > 0) std::cout << ", ";
           int li = used[ui];
@@ -874,7 +874,7 @@ namespace ECProject
         out.timeslot_schedule.push_back(std::move(te));
       }
 
-      std::cout << "[CoRD-Alg2] ===== Transfer scheduling done: total_steps=" << ts << " =====\n";
+      std::cout << "[UpLRC-Alg2] ===== Transfer scheduling done: total_steps=" << ts << " =====\n";
       return out;
     }
 
@@ -1031,16 +1031,16 @@ namespace ECProject
       }
       if (static_cast<int>(vals.size()) < cluster_num * cluster_num)
       {
-        std::cout << "[CoRD-Class] BW matrix parse failed: need " << (cluster_num * cluster_num) << " got "
+        std::cout << "[UpLRC-Class] BW matrix parse failed: need " << (cluster_num * cluster_num) << " got "
                   << vals.size() << " from " << path << "\n";
         return false;
       }
       for (int i = 0; i < cluster_num; ++i)
         for (int j = 0; j < cluster_num; ++j)
           tp->bw_matrix_mb_per_sec[i][j] = vals[static_cast<size_t>(i * cluster_num + j)];
-      if (cord_verbose_enabled())
-        std::cout << "[CoRD-Class] Loaded BW matrix " << cluster_num << "x" << cluster_num << " from " << path << "\n";
+      if (uplrc_verbose_enabled())
+        std::cout << "[UpLRC-Class] Loaded BW matrix " << cluster_num << "x" << cluster_num << " from " << path << "\n";
       return true;
     }
-  } // namespace cord_alg2
+  } // namespace uplrc_alg2
 } // namespace ECProject

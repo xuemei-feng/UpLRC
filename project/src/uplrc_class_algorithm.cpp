@@ -1,4 +1,4 @@
-#include "cord_class_algorithm.h"
+#include "uplrc_class_algorithm.h"
 #include "devcommon.h"
 #include "meta_definition.h"
 #include <algorithm>
@@ -10,7 +10,7 @@
 
 namespace ECProject
 {
-  namespace cord_class
+  namespace uplrc_class
   {
     namespace
     {
@@ -60,7 +60,7 @@ namespace ECProject
         return s;
       }
 
-      double bw_mbps(int src, int dst, int cluster_num, const cord_alg2::TransferParams &tp)
+      double bw_mbps(int src, int dst, int cluster_num, const uplrc_alg2::TransferParams &tp)
       {
         if (src >= 0 && dst >= 0 && src < cluster_num && dst < cluster_num)
         {
@@ -74,7 +74,7 @@ namespace ECProject
       }
 
       double transfer_sec_matrix(int src_c, int dst_c, int64_t bytes, int cluster_num,
-                                 const cord_alg2::TransferParams &tp)
+                                 const uplrc_alg2::TransferParams &tp)
       {
         if (bytes <= 0)
           return 0.0;
@@ -84,12 +84,12 @@ namespace ECProject
         return lat + static_cast<double>(bytes) / (mbps * 1024.0 * 1024.0);
       }
 
-      cord_alg2::TrainLink make_link(int src_b, int dst_b, int src_c, int dst_c, int64_t payload,
-                                     cord_alg2::TrainLinkKind kind, cord_alg2::CordDeltaPayloadKind dk,
-                                     int group_index, int cluster_num, const cord_alg2::TransferParams &tp,
+      uplrc_alg2::TrainLink make_link(int src_b, int dst_b, int src_c, int dst_c, int64_t payload,
+                                     uplrc_alg2::TrainLinkKind kind, uplrc_alg2::UpLRCDeltaPayloadKind dk,
+                                     int group_index, int cluster_num, const uplrc_alg2::TransferParams &tp,
                                      int mst_origin = -1)
       {
-        cord_alg2::TrainLink L;
+        uplrc_alg2::TrainLink L;
         L.src_block_id = src_b;
         L.dst_block_id = dst_b;
         L.src_cluster = src_c;
@@ -103,7 +103,7 @@ namespace ECProject
         return L;
       }
 
-      void push_parity_write(CordIngressClusterHints *hints, const CordIngressParityWriteRec &rec, bool global)
+      void push_parity_write(UpLRCIngressClusterHints *hints, const UpLRCIngressParityWriteRec &rec, bool global)
       {
         if (hints == nullptr)
           return;
@@ -113,16 +113,16 @@ namespace ECProject
           hints->local_parity_writes.push_back(rec);
       }
 
-      void add_global_fanout(cord_alg2::Algorithm2Result *out, const Stripe &stripe,
+      void add_global_fanout(uplrc_alg2::Algorithm2Result *out, const Stripe &stripe,
                              const std::map<int, std::vector<std::pair<int, int>>> &block_intervals,
                              int group_index, int collector, int gc,
                              const std::vector<int> &merge_blocks, int cluster_num,
-                             const cord_alg2::TransferParams &tp)
+                             const uplrc_alg2::TransferParams &tp)
       {
         const int k = stripe.k;
         const int r = stripe.r;
         const int64_t parity_global_b =
-            cord_alg2::merged_delta_hull_span_bytes(block_intervals, merge_blocks);
+            uplrc_alg2::merged_delta_hull_span_bytes(block_intervals, merge_blocks);
         if (parity_global_b <= 0)
           return;
         for (int g = k; g < k + r; ++g)
@@ -130,29 +130,29 @@ namespace ECProject
           if (g == collector)
             continue;
           auto L = make_link(collector, g, gc, block_cluster(stripe, g), parity_global_b,
-                             cord_alg2::TrainLinkKind::STAR_CENTER_TO_GLOBAL,
-                             cord_alg2::CordDeltaPayloadKind::PARITY_DELTA, group_index, cluster_num, tp);
+                             uplrc_alg2::TrainLinkKind::STAR_CENTER_TO_GLOBAL,
+                             uplrc_alg2::UpLRCDeltaPayloadKind::PARITY_DELTA, group_index, cluster_num, tp);
           L.parity_merge_data_block_ids = merge_blocks;
           out->train_route.push_back(std::move(L));
         }
       }
 
-      void add_center_to_local(cord_alg2::Algorithm2Result *out, const Stripe &stripe,
+      void add_center_to_local(uplrc_alg2::Algorithm2Result *out, const Stripe &stripe,
                                const std::map<int, std::vector<std::pair<int, int>>> &block_intervals,
                                int group_index, int collector, int gc, int stripe_group,
                                const std::vector<int> &merge_blocks, int cluster_num,
-                               const cord_alg2::TransferParams &tp)
+                               const uplrc_alg2::TransferParams &tp)
       {
         const int Lb = local_parity_block_for_group(stripe, stripe_group);
         if (Lb < 0)
           return;
         const int64_t pl =
-            cord_alg2::merged_delta_hull_span_bytes(block_intervals, merge_blocks);
+            uplrc_alg2::merged_delta_hull_span_bytes(block_intervals, merge_blocks);
         if (pl <= 0)
           return;
         const int lc = block_cluster(stripe, Lb);
-        auto L = make_link(collector, Lb, gc, lc, pl, cord_alg2::TrainLinkKind::STAR_CENTER_TO_LOCAL,
-                           cord_alg2::CordDeltaPayloadKind::PARITY_DELTA, group_index, cluster_num, tp);
+        auto L = make_link(collector, Lb, gc, lc, pl, uplrc_alg2::TrainLinkKind::STAR_CENTER_TO_LOCAL,
+                           uplrc_alg2::UpLRCDeltaPayloadKind::PARITY_DELTA, group_index, cluster_num, tp);
         L.parity_merge_data_block_ids = merge_blocks;
         out->train_route.push_back(std::move(L));
       }
@@ -161,7 +161,7 @@ namespace ECProject
       // （先收满 relay 再转发，见 MST_FORWARD 依赖），故总耗时 = transfer_sec(dc,relay) + transfer_sec(relay,gc)，
       // 两跳的 latency 与 payload 均计入；仅当严格快于直连 transfer_sec(dc,gc) 时才返回中继，否则返回 -1（直连）。
       int pick_relay_cluster(int dc, int gc, int64_t payload_bytes, int cluster_num,
-                             const cord_alg2::TransferParams &tp)
+                             const uplrc_alg2::TransferParams &tp)
       {
         const double direct = transfer_sec_matrix(dc, gc, payload_bytes, cluster_num, tp);
         int best = -1;
@@ -184,28 +184,28 @@ namespace ECProject
 
     } // namespace
 
-    CordDataBlockClass classify_data_block(const Stripe &stripe, int data_block_id)
+    UpLRCDataBlockClass classify_data_block(const Stripe &stripe, int data_block_id)
     {
       if (data_block_id < 0 || data_block_id >= stripe.k)
-        return CordDataBlockClass::CLASS3;
+        return UpLRCDataBlockClass::CLASS3;
       const int dc = block_cluster(stripe, data_block_id);
       const int gc = global_cluster_id(stripe);
       const int lb = local_parity_block_for_data(stripe, data_block_id);
       if (lb >= 0 && dc == block_cluster(stripe, lb))
-        return CordDataBlockClass::CLASS1;
+        return UpLRCDataBlockClass::CLASS1;
       if (dc == gc)
-        return CordDataBlockClass::CLASS2;
-      return CordDataBlockClass::CLASS3;
+        return UpLRCDataBlockClass::CLASS2;
+      return UpLRCDataBlockClass::CLASS3;
     }
 
-    cord_alg2::Algorithm2Result build_class_update_plan(
+    uplrc_alg2::Algorithm2Result build_class_update_plan(
         const Stripe &stripe,
         const std::map<int, std::vector<std::pair<int, int>>> &block_intervals,
         int cluster_num,
-        const cord_alg2::TransferParams &tp,
-        std::map<int, CordIngressClusterHints> *ingress_hints_by_cluster)
+        const uplrc_alg2::TransferParams &tp,
+        std::map<int, UpLRCIngressClusterHints> *ingress_hints_by_cluster)
     {
-      cord_alg2::Algorithm2Result out;
+      uplrc_alg2::Algorithm2Result out;
       const int k = stripe.k;
       const int gc = global_cluster_id(stripe);
       const int collector = collector_global_block(stripe);
@@ -226,10 +226,10 @@ namespace ECProject
           continue;
         if (delta_bytes_for_block(block_intervals, bid) <= 0)
           continue;
-        const CordDataBlockClass cls = classify_data_block(stripe, bid);
-        if (cls == CordDataBlockClass::CLASS1)
+        const UpLRCDataBlockClass cls = classify_data_block(stripe, bid);
+        if (cls == UpLRCDataBlockClass::CLASS1)
           class1_by_stripe_group[stripe.blocks[bid]->map2group].push_back(bid);
-        else if (cls == CordDataBlockClass::CLASS2)
+        else if (cls == UpLRCDataBlockClass::CLASS2)
           class2_blocks.push_back(bid);
         else
         {
@@ -254,18 +254,18 @@ namespace ECProject
           if (relay < 0)
           {
             out.train_route.push_back(make_link(d, collector, dc, gc, b,
-                                                cord_alg2::TrainLinkKind::STAR_DATA_TO_CENTER,
-                                                cord_alg2::CordDeltaPayloadKind::DATA_DELTA, gi, cluster_num, tp));
+                                                uplrc_alg2::TrainLinkKind::STAR_DATA_TO_CENTER,
+                                                uplrc_alg2::UpLRCDeltaPayloadKind::DATA_DELTA, gi, cluster_num, tp));
           }
           else
           {
             auto hop1 = make_link(d, k + stripe.r + stripe_group, dc, relay, b,
-                                  cord_alg2::TrainLinkKind::MST_FORWARD,
-                                  cord_alg2::CordDeltaPayloadKind::DATA_DELTA, gi, cluster_num, tp, d);
+                                  uplrc_alg2::TrainLinkKind::MST_FORWARD,
+                                  uplrc_alg2::UpLRCDeltaPayloadKind::DATA_DELTA, gi, cluster_num, tp, d);
             out.train_route.push_back(std::move(hop1));
             auto hop2 = make_link(k + stripe.r + stripe_group, collector, relay, gc, b,
-                                  cord_alg2::TrainLinkKind::MST_FORWARD,
-                                  cord_alg2::CordDeltaPayloadKind::DATA_DELTA, gi, cluster_num, tp, d);
+                                  uplrc_alg2::TrainLinkKind::MST_FORWARD,
+                                  uplrc_alg2::UpLRCDeltaPayloadKind::DATA_DELTA, gi, cluster_num, tp, d);
             out.train_route.push_back(std::move(hop2));
           }
 
@@ -274,7 +274,7 @@ namespace ECProject
             const int lb = local_parity_block_for_data(stripe, d);
             if (lb >= 0)
             {
-              CordIngressParityWriteRec wr;
+              UpLRCIngressParityWriteRec wr;
               wr.block_id = lb;
               wr.block_key = stripe.blocks[lb]->block_key;
               wr.stripe_group = stripe_group;
@@ -292,15 +292,15 @@ namespace ECProject
         const int stripe_group = stripe.blocks[d2]->map2group;
         if (ingress_hints_by_cluster)
         {
-          CordIngressClusterHints &gh = (*ingress_hints_by_cluster)[gc];
+          UpLRCIngressClusterHints &gh = (*ingress_hints_by_cluster)[gc];
           for (int g = k; g < k + stripe.r; ++g)
           {
-            CordIngressParityWriteRec wr;
+            UpLRCIngressParityWriteRec wr;
             wr.block_id = g;
             wr.block_key = stripe.blocks[g]->block_key;
             wr.stripe_group = stripe_group;
             if (std::find_if(gh.global_parity_writes.begin(), gh.global_parity_writes.end(),
-                             [&](const CordIngressParityWriteRec &x) { return x.block_id == g; }) ==
+                             [&](const UpLRCIngressParityWriteRec &x) { return x.block_id == g; }) ==
                 gh.global_parity_writes.end())
               push_parity_write(&gh, wr, true);
           }
@@ -325,7 +325,7 @@ namespace ECProject
           continue;
         const int lc = block_cluster(stripe, Lb);
         const int64_t total_bytes =
-            cord_alg2::merged_delta_hull_span_bytes(block_intervals, S);
+            uplrc_alg2::merged_delta_hull_span_bytes(block_intervals, S);
 
         const double t_dg = transfer_sec_matrix(dc, gc, total_bytes, cluster_num, tp);
         const double t_dl = transfer_sec_matrix(dc, lc, total_bytes, cluster_num, tp);
@@ -334,8 +334,8 @@ namespace ECProject
         const double concurrent_cost = std::max(t_dg, t_dl);
         const bool use_chain = chain_cost <= concurrent_cost;
 
-        if (cord_verbose_enabled())
-          std::cout << "[CoRD-Class] class3 dc=" << dc << " group=" << stripe_group << " |S|=" << S.size()
+        if (uplrc_verbose_enabled())
+          std::cout << "[UpLRC-Class] class3 dc=" << dc << " group=" << stripe_group << " |S|=" << S.size()
                     << " chain=" << chain_cost << "s concurrent=" << concurrent_cost << "s pick="
                     << (use_chain ? "chain" : "concurrent") << '\n';
 
@@ -343,8 +343,8 @@ namespace ECProject
         {
           const int64_t b = delta_bytes_for_block(block_intervals, d);
           out.train_route.push_back(make_link(d, collector, dc, gc, b,
-                                              cord_alg2::TrainLinkKind::STAR_DATA_TO_CENTER,
-                                              cord_alg2::CordDeltaPayloadKind::DATA_DELTA, gi, cluster_num, tp));
+                                              uplrc_alg2::TrainLinkKind::STAR_DATA_TO_CENTER,
+                                              uplrc_alg2::UpLRCDeltaPayloadKind::DATA_DELTA, gi, cluster_num, tp));
         }
 
         add_global_fanout(&out, stripe, block_intervals, gi, collector, gc, S, cluster_num, tp);
@@ -363,20 +363,20 @@ namespace ECProject
                           stripe_group) == hints.cache_lp_stripe_groups.end())
               hints.cache_lp_stripe_groups.push_back(static_cast<int32_t>(stripe_group));
           }
-          const int64_t pl = cord_alg2::merged_delta_hull_span_bytes(block_intervals, S);
-          auto L = make_link(S.front(), Lb, dc, lc, pl, cord_alg2::TrainLinkKind::STAR_DATA_TO_LOCAL,
-                             cord_alg2::CordDeltaPayloadKind::PARITY_DELTA, gi, cluster_num, tp);
+          const int64_t pl = uplrc_alg2::merged_delta_hull_span_bytes(block_intervals, S);
+          auto L = make_link(S.front(), Lb, dc, lc, pl, uplrc_alg2::TrainLinkKind::STAR_DATA_TO_LOCAL,
+                             uplrc_alg2::UpLRCDeltaPayloadKind::PARITY_DELTA, gi, cluster_num, tp);
           L.parity_merge_data_block_ids = S;
           out.train_route.push_back(std::move(L));
         }
       }
 
-      cord_alg2::schedule_train_route_timeslots(&out, cluster_num, tp);
+      uplrc_alg2::schedule_train_route_timeslots(&out, cluster_num, tp);
 
-      if (cord_verbose_enabled())
-        std::cout << "[CoRD-Class] train_route links=" << out.train_route.size()
+      if (uplrc_verbose_enabled())
+        std::cout << "[UpLRC-Class] train_route links=" << out.train_route.size()
                   << " slots=" << out.timeslot_schedule.size() << '\n';
       return out;
     }
-  } // namespace cord_class
+  } // namespace uplrc_class
 } // namespace ECProject

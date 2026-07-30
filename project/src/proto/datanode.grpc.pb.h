@@ -121,35 +121,35 @@ class datanodeService final {
     std::unique_ptr< ::grpc::ClientAsyncResponseReaderInterface< ::datanode_proto::RequestResult>> PrepareAsynchandleGetBreakdown(::grpc::ClientContext* context, const ::datanode_proto::GetInfo& request, ::grpc::CompletionQueue* cq) {
       return std::unique_ptr< ::grpc::ClientAsyncResponseReaderInterface< ::datanode_proto::RequestResult>>(PrepareAsynchandleGetBreakdownRaw(context, request, cq));
     }
-    // CoRD：块内区间读/写；Δ 暂存文件
-    virtual ::grpc::Status handleCordRangeRead(::grpc::ClientContext* context, const ::datanode_proto::CordRangeRWInfo& request, ::datanode_proto::RequestResult* response) = 0;
-    std::unique_ptr< ::grpc::ClientAsyncResponseReaderInterface< ::datanode_proto::RequestResult>> AsynchandleCordRangeRead(::grpc::ClientContext* context, const ::datanode_proto::CordRangeRWInfo& request, ::grpc::CompletionQueue* cq) {
-      return std::unique_ptr< ::grpc::ClientAsyncResponseReaderInterface< ::datanode_proto::RequestResult>>(AsynchandleCordRangeReadRaw(context, request, cq));
+    // UpLRC：块内区间读/写；Δ 暂存文件
+    virtual ::grpc::Status handleUpLRCRangeRead(::grpc::ClientContext* context, const ::datanode_proto::UpLRCRangeRWInfo& request, ::datanode_proto::RequestResult* response) = 0;
+    std::unique_ptr< ::grpc::ClientAsyncResponseReaderInterface< ::datanode_proto::RequestResult>> AsynchandleUpLRCRangeRead(::grpc::ClientContext* context, const ::datanode_proto::UpLRCRangeRWInfo& request, ::grpc::CompletionQueue* cq) {
+      return std::unique_ptr< ::grpc::ClientAsyncResponseReaderInterface< ::datanode_proto::RequestResult>>(AsynchandleUpLRCRangeReadRaw(context, request, cq));
     }
-    std::unique_ptr< ::grpc::ClientAsyncResponseReaderInterface< ::datanode_proto::RequestResult>> PrepareAsynchandleCordRangeRead(::grpc::ClientContext* context, const ::datanode_proto::CordRangeRWInfo& request, ::grpc::CompletionQueue* cq) {
-      return std::unique_ptr< ::grpc::ClientAsyncResponseReaderInterface< ::datanode_proto::RequestResult>>(PrepareAsynchandleCordRangeReadRaw(context, request, cq));
+    std::unique_ptr< ::grpc::ClientAsyncResponseReaderInterface< ::datanode_proto::RequestResult>> PrepareAsynchandleUpLRCRangeRead(::grpc::ClientContext* context, const ::datanode_proto::UpLRCRangeRWInfo& request, ::grpc::CompletionQueue* cq) {
+      return std::unique_ptr< ::grpc::ClientAsyncResponseReaderInterface< ::datanode_proto::RequestResult>>(PrepareAsynchandleUpLRCRangeReadRaw(context, request, cq));
     }
-    virtual ::grpc::Status handleCordRangeWrite(::grpc::ClientContext* context, const ::datanode_proto::CordRangeRWInfo& request, ::datanode_proto::RequestResult* response) = 0;
-    std::unique_ptr< ::grpc::ClientAsyncResponseReaderInterface< ::datanode_proto::RequestResult>> AsynchandleCordRangeWrite(::grpc::ClientContext* context, const ::datanode_proto::CordRangeRWInfo& request, ::grpc::CompletionQueue* cq) {
-      return std::unique_ptr< ::grpc::ClientAsyncResponseReaderInterface< ::datanode_proto::RequestResult>>(AsynchandleCordRangeWriteRaw(context, request, cq));
+    virtual ::grpc::Status handleUpLRCRangeWrite(::grpc::ClientContext* context, const ::datanode_proto::UpLRCRangeRWInfo& request, ::datanode_proto::RequestResult* response) = 0;
+    std::unique_ptr< ::grpc::ClientAsyncResponseReaderInterface< ::datanode_proto::RequestResult>> AsynchandleUpLRCRangeWrite(::grpc::ClientContext* context, const ::datanode_proto::UpLRCRangeRWInfo& request, ::grpc::CompletionQueue* cq) {
+      return std::unique_ptr< ::grpc::ClientAsyncResponseReaderInterface< ::datanode_proto::RequestResult>>(AsynchandleUpLRCRangeWriteRaw(context, request, cq));
     }
-    std::unique_ptr< ::grpc::ClientAsyncResponseReaderInterface< ::datanode_proto::RequestResult>> PrepareAsynchandleCordRangeWrite(::grpc::ClientContext* context, const ::datanode_proto::CordRangeRWInfo& request, ::grpc::CompletionQueue* cq) {
-      return std::unique_ptr< ::grpc::ClientAsyncResponseReaderInterface< ::datanode_proto::RequestResult>>(PrepareAsynchandleCordRangeWriteRaw(context, request, cq));
+    std::unique_ptr< ::grpc::ClientAsyncResponseReaderInterface< ::datanode_proto::RequestResult>> PrepareAsynchandleUpLRCRangeWrite(::grpc::ClientContext* context, const ::datanode_proto::UpLRCRangeRWInfo& request, ::grpc::CompletionQueue* cq) {
+      return std::unique_ptr< ::grpc::ClientAsyncResponseReaderInterface< ::datanode_proto::RequestResult>>(PrepareAsynchandleUpLRCRangeWriteRaw(context, request, cq));
     }
-    // CoRD：parity ΔP 直接下推 datanode 本地 read-xor-write，省掉读回 proxy 的整条往返
-    virtual ::grpc::Status handleCordRangeXorWrite(::grpc::ClientContext* context, const ::datanode_proto::CordRangeRWInfo& request, ::datanode_proto::RequestResult* response) = 0;
-    std::unique_ptr< ::grpc::ClientAsyncResponseReaderInterface< ::datanode_proto::RequestResult>> AsynchandleCordRangeXorWrite(::grpc::ClientContext* context, const ::datanode_proto::CordRangeRWInfo& request, ::grpc::CompletionQueue* cq) {
-      return std::unique_ptr< ::grpc::ClientAsyncResponseReaderInterface< ::datanode_proto::RequestResult>>(AsynchandleCordRangeXorWriteRaw(context, request, cq));
+    // UpLRC：parity ΔP 直接下推 datanode 本地 read-xor-write，省掉读回 proxy 的整条往返
+    virtual ::grpc::Status handleUpLRCRangeXorWrite(::grpc::ClientContext* context, const ::datanode_proto::UpLRCRangeRWInfo& request, ::datanode_proto::RequestResult* response) = 0;
+    std::unique_ptr< ::grpc::ClientAsyncResponseReaderInterface< ::datanode_proto::RequestResult>> AsynchandleUpLRCRangeXorWrite(::grpc::ClientContext* context, const ::datanode_proto::UpLRCRangeRWInfo& request, ::grpc::CompletionQueue* cq) {
+      return std::unique_ptr< ::grpc::ClientAsyncResponseReaderInterface< ::datanode_proto::RequestResult>>(AsynchandleUpLRCRangeXorWriteRaw(context, request, cq));
     }
-    std::unique_ptr< ::grpc::ClientAsyncResponseReaderInterface< ::datanode_proto::RequestResult>> PrepareAsynchandleCordRangeXorWrite(::grpc::ClientContext* context, const ::datanode_proto::CordRangeRWInfo& request, ::grpc::CompletionQueue* cq) {
-      return std::unique_ptr< ::grpc::ClientAsyncResponseReaderInterface< ::datanode_proto::RequestResult>>(PrepareAsynchandleCordRangeXorWriteRaw(context, request, cq));
+    std::unique_ptr< ::grpc::ClientAsyncResponseReaderInterface< ::datanode_proto::RequestResult>> PrepareAsynchandleUpLRCRangeXorWrite(::grpc::ClientContext* context, const ::datanode_proto::UpLRCRangeRWInfo& request, ::grpc::CompletionQueue* cq) {
+      return std::unique_ptr< ::grpc::ClientAsyncResponseReaderInterface< ::datanode_proto::RequestResult>>(PrepareAsynchandleUpLRCRangeXorWriteRaw(context, request, cq));
     }
-    virtual ::grpc::Status handleCordDeltaBlob(::grpc::ClientContext* context, const ::datanode_proto::CordDeltaBlobInfo& request, ::datanode_proto::RequestResult* response) = 0;
-    std::unique_ptr< ::grpc::ClientAsyncResponseReaderInterface< ::datanode_proto::RequestResult>> AsynchandleCordDeltaBlob(::grpc::ClientContext* context, const ::datanode_proto::CordDeltaBlobInfo& request, ::grpc::CompletionQueue* cq) {
-      return std::unique_ptr< ::grpc::ClientAsyncResponseReaderInterface< ::datanode_proto::RequestResult>>(AsynchandleCordDeltaBlobRaw(context, request, cq));
+    virtual ::grpc::Status handleUpLRCDeltaBlob(::grpc::ClientContext* context, const ::datanode_proto::UpLRCDeltaBlobInfo& request, ::datanode_proto::RequestResult* response) = 0;
+    std::unique_ptr< ::grpc::ClientAsyncResponseReaderInterface< ::datanode_proto::RequestResult>> AsynchandleUpLRCDeltaBlob(::grpc::ClientContext* context, const ::datanode_proto::UpLRCDeltaBlobInfo& request, ::grpc::CompletionQueue* cq) {
+      return std::unique_ptr< ::grpc::ClientAsyncResponseReaderInterface< ::datanode_proto::RequestResult>>(AsynchandleUpLRCDeltaBlobRaw(context, request, cq));
     }
-    std::unique_ptr< ::grpc::ClientAsyncResponseReaderInterface< ::datanode_proto::RequestResult>> PrepareAsynchandleCordDeltaBlob(::grpc::ClientContext* context, const ::datanode_proto::CordDeltaBlobInfo& request, ::grpc::CompletionQueue* cq) {
-      return std::unique_ptr< ::grpc::ClientAsyncResponseReaderInterface< ::datanode_proto::RequestResult>>(PrepareAsynchandleCordDeltaBlobRaw(context, request, cq));
+    std::unique_ptr< ::grpc::ClientAsyncResponseReaderInterface< ::datanode_proto::RequestResult>> PrepareAsynchandleUpLRCDeltaBlob(::grpc::ClientContext* context, const ::datanode_proto::UpLRCDeltaBlobInfo& request, ::grpc::CompletionQueue* cq) {
+      return std::unique_ptr< ::grpc::ClientAsyncResponseReaderInterface< ::datanode_proto::RequestResult>>(PrepareAsynchandleUpLRCDeltaBlobRaw(context, request, cq));
     }
     // delete
     virtual ::grpc::Status handleDelete(::grpc::ClientContext* context, const ::datanode_proto::DelInfo& request, ::datanode_proto::RequestResult* response) = 0;
@@ -187,16 +187,16 @@ class datanodeService final {
       virtual void handleGet(::grpc::ClientContext* context, const ::datanode_proto::GetInfo* request, ::datanode_proto::RequestResult* response, ::grpc::ClientUnaryReactor* reactor) = 0;
       virtual void handleGetBreakdown(::grpc::ClientContext* context, const ::datanode_proto::GetInfo* request, ::datanode_proto::RequestResult* response, std::function<void(::grpc::Status)>) = 0;
       virtual void handleGetBreakdown(::grpc::ClientContext* context, const ::datanode_proto::GetInfo* request, ::datanode_proto::RequestResult* response, ::grpc::ClientUnaryReactor* reactor) = 0;
-      // CoRD：块内区间读/写；Δ 暂存文件
-      virtual void handleCordRangeRead(::grpc::ClientContext* context, const ::datanode_proto::CordRangeRWInfo* request, ::datanode_proto::RequestResult* response, std::function<void(::grpc::Status)>) = 0;
-      virtual void handleCordRangeRead(::grpc::ClientContext* context, const ::datanode_proto::CordRangeRWInfo* request, ::datanode_proto::RequestResult* response, ::grpc::ClientUnaryReactor* reactor) = 0;
-      virtual void handleCordRangeWrite(::grpc::ClientContext* context, const ::datanode_proto::CordRangeRWInfo* request, ::datanode_proto::RequestResult* response, std::function<void(::grpc::Status)>) = 0;
-      virtual void handleCordRangeWrite(::grpc::ClientContext* context, const ::datanode_proto::CordRangeRWInfo* request, ::datanode_proto::RequestResult* response, ::grpc::ClientUnaryReactor* reactor) = 0;
-      // CoRD：parity ΔP 直接下推 datanode 本地 read-xor-write，省掉读回 proxy 的整条往返
-      virtual void handleCordRangeXorWrite(::grpc::ClientContext* context, const ::datanode_proto::CordRangeRWInfo* request, ::datanode_proto::RequestResult* response, std::function<void(::grpc::Status)>) = 0;
-      virtual void handleCordRangeXorWrite(::grpc::ClientContext* context, const ::datanode_proto::CordRangeRWInfo* request, ::datanode_proto::RequestResult* response, ::grpc::ClientUnaryReactor* reactor) = 0;
-      virtual void handleCordDeltaBlob(::grpc::ClientContext* context, const ::datanode_proto::CordDeltaBlobInfo* request, ::datanode_proto::RequestResult* response, std::function<void(::grpc::Status)>) = 0;
-      virtual void handleCordDeltaBlob(::grpc::ClientContext* context, const ::datanode_proto::CordDeltaBlobInfo* request, ::datanode_proto::RequestResult* response, ::grpc::ClientUnaryReactor* reactor) = 0;
+      // UpLRC：块内区间读/写；Δ 暂存文件
+      virtual void handleUpLRCRangeRead(::grpc::ClientContext* context, const ::datanode_proto::UpLRCRangeRWInfo* request, ::datanode_proto::RequestResult* response, std::function<void(::grpc::Status)>) = 0;
+      virtual void handleUpLRCRangeRead(::grpc::ClientContext* context, const ::datanode_proto::UpLRCRangeRWInfo* request, ::datanode_proto::RequestResult* response, ::grpc::ClientUnaryReactor* reactor) = 0;
+      virtual void handleUpLRCRangeWrite(::grpc::ClientContext* context, const ::datanode_proto::UpLRCRangeRWInfo* request, ::datanode_proto::RequestResult* response, std::function<void(::grpc::Status)>) = 0;
+      virtual void handleUpLRCRangeWrite(::grpc::ClientContext* context, const ::datanode_proto::UpLRCRangeRWInfo* request, ::datanode_proto::RequestResult* response, ::grpc::ClientUnaryReactor* reactor) = 0;
+      // UpLRC：parity ΔP 直接下推 datanode 本地 read-xor-write，省掉读回 proxy 的整条往返
+      virtual void handleUpLRCRangeXorWrite(::grpc::ClientContext* context, const ::datanode_proto::UpLRCRangeRWInfo* request, ::datanode_proto::RequestResult* response, std::function<void(::grpc::Status)>) = 0;
+      virtual void handleUpLRCRangeXorWrite(::grpc::ClientContext* context, const ::datanode_proto::UpLRCRangeRWInfo* request, ::datanode_proto::RequestResult* response, ::grpc::ClientUnaryReactor* reactor) = 0;
+      virtual void handleUpLRCDeltaBlob(::grpc::ClientContext* context, const ::datanode_proto::UpLRCDeltaBlobInfo* request, ::datanode_proto::RequestResult* response, std::function<void(::grpc::Status)>) = 0;
+      virtual void handleUpLRCDeltaBlob(::grpc::ClientContext* context, const ::datanode_proto::UpLRCDeltaBlobInfo* request, ::datanode_proto::RequestResult* response, ::grpc::ClientUnaryReactor* reactor) = 0;
       // delete
       virtual void handleDelete(::grpc::ClientContext* context, const ::datanode_proto::DelInfo* request, ::datanode_proto::RequestResult* response, std::function<void(::grpc::Status)>) = 0;
       virtual void handleDelete(::grpc::ClientContext* context, const ::datanode_proto::DelInfo* request, ::datanode_proto::RequestResult* response, ::grpc::ClientUnaryReactor* reactor) = 0;
@@ -223,14 +223,14 @@ class datanodeService final {
     virtual ::grpc::ClientAsyncResponseReaderInterface< ::datanode_proto::RequestResult>* PrepareAsynchandleGetRaw(::grpc::ClientContext* context, const ::datanode_proto::GetInfo& request, ::grpc::CompletionQueue* cq) = 0;
     virtual ::grpc::ClientAsyncResponseReaderInterface< ::datanode_proto::RequestResult>* AsynchandleGetBreakdownRaw(::grpc::ClientContext* context, const ::datanode_proto::GetInfo& request, ::grpc::CompletionQueue* cq) = 0;
     virtual ::grpc::ClientAsyncResponseReaderInterface< ::datanode_proto::RequestResult>* PrepareAsynchandleGetBreakdownRaw(::grpc::ClientContext* context, const ::datanode_proto::GetInfo& request, ::grpc::CompletionQueue* cq) = 0;
-    virtual ::grpc::ClientAsyncResponseReaderInterface< ::datanode_proto::RequestResult>* AsynchandleCordRangeReadRaw(::grpc::ClientContext* context, const ::datanode_proto::CordRangeRWInfo& request, ::grpc::CompletionQueue* cq) = 0;
-    virtual ::grpc::ClientAsyncResponseReaderInterface< ::datanode_proto::RequestResult>* PrepareAsynchandleCordRangeReadRaw(::grpc::ClientContext* context, const ::datanode_proto::CordRangeRWInfo& request, ::grpc::CompletionQueue* cq) = 0;
-    virtual ::grpc::ClientAsyncResponseReaderInterface< ::datanode_proto::RequestResult>* AsynchandleCordRangeWriteRaw(::grpc::ClientContext* context, const ::datanode_proto::CordRangeRWInfo& request, ::grpc::CompletionQueue* cq) = 0;
-    virtual ::grpc::ClientAsyncResponseReaderInterface< ::datanode_proto::RequestResult>* PrepareAsynchandleCordRangeWriteRaw(::grpc::ClientContext* context, const ::datanode_proto::CordRangeRWInfo& request, ::grpc::CompletionQueue* cq) = 0;
-    virtual ::grpc::ClientAsyncResponseReaderInterface< ::datanode_proto::RequestResult>* AsynchandleCordRangeXorWriteRaw(::grpc::ClientContext* context, const ::datanode_proto::CordRangeRWInfo& request, ::grpc::CompletionQueue* cq) = 0;
-    virtual ::grpc::ClientAsyncResponseReaderInterface< ::datanode_proto::RequestResult>* PrepareAsynchandleCordRangeXorWriteRaw(::grpc::ClientContext* context, const ::datanode_proto::CordRangeRWInfo& request, ::grpc::CompletionQueue* cq) = 0;
-    virtual ::grpc::ClientAsyncResponseReaderInterface< ::datanode_proto::RequestResult>* AsynchandleCordDeltaBlobRaw(::grpc::ClientContext* context, const ::datanode_proto::CordDeltaBlobInfo& request, ::grpc::CompletionQueue* cq) = 0;
-    virtual ::grpc::ClientAsyncResponseReaderInterface< ::datanode_proto::RequestResult>* PrepareAsynchandleCordDeltaBlobRaw(::grpc::ClientContext* context, const ::datanode_proto::CordDeltaBlobInfo& request, ::grpc::CompletionQueue* cq) = 0;
+    virtual ::grpc::ClientAsyncResponseReaderInterface< ::datanode_proto::RequestResult>* AsynchandleUpLRCRangeReadRaw(::grpc::ClientContext* context, const ::datanode_proto::UpLRCRangeRWInfo& request, ::grpc::CompletionQueue* cq) = 0;
+    virtual ::grpc::ClientAsyncResponseReaderInterface< ::datanode_proto::RequestResult>* PrepareAsynchandleUpLRCRangeReadRaw(::grpc::ClientContext* context, const ::datanode_proto::UpLRCRangeRWInfo& request, ::grpc::CompletionQueue* cq) = 0;
+    virtual ::grpc::ClientAsyncResponseReaderInterface< ::datanode_proto::RequestResult>* AsynchandleUpLRCRangeWriteRaw(::grpc::ClientContext* context, const ::datanode_proto::UpLRCRangeRWInfo& request, ::grpc::CompletionQueue* cq) = 0;
+    virtual ::grpc::ClientAsyncResponseReaderInterface< ::datanode_proto::RequestResult>* PrepareAsynchandleUpLRCRangeWriteRaw(::grpc::ClientContext* context, const ::datanode_proto::UpLRCRangeRWInfo& request, ::grpc::CompletionQueue* cq) = 0;
+    virtual ::grpc::ClientAsyncResponseReaderInterface< ::datanode_proto::RequestResult>* AsynchandleUpLRCRangeXorWriteRaw(::grpc::ClientContext* context, const ::datanode_proto::UpLRCRangeRWInfo& request, ::grpc::CompletionQueue* cq) = 0;
+    virtual ::grpc::ClientAsyncResponseReaderInterface< ::datanode_proto::RequestResult>* PrepareAsynchandleUpLRCRangeXorWriteRaw(::grpc::ClientContext* context, const ::datanode_proto::UpLRCRangeRWInfo& request, ::grpc::CompletionQueue* cq) = 0;
+    virtual ::grpc::ClientAsyncResponseReaderInterface< ::datanode_proto::RequestResult>* AsynchandleUpLRCDeltaBlobRaw(::grpc::ClientContext* context, const ::datanode_proto::UpLRCDeltaBlobInfo& request, ::grpc::CompletionQueue* cq) = 0;
+    virtual ::grpc::ClientAsyncResponseReaderInterface< ::datanode_proto::RequestResult>* PrepareAsynchandleUpLRCDeltaBlobRaw(::grpc::ClientContext* context, const ::datanode_proto::UpLRCDeltaBlobInfo& request, ::grpc::CompletionQueue* cq) = 0;
     virtual ::grpc::ClientAsyncResponseReaderInterface< ::datanode_proto::RequestResult>* AsynchandleDeleteRaw(::grpc::ClientContext* context, const ::datanode_proto::DelInfo& request, ::grpc::CompletionQueue* cq) = 0;
     virtual ::grpc::ClientAsyncResponseReaderInterface< ::datanode_proto::RequestResult>* PrepareAsynchandleDeleteRaw(::grpc::ClientContext* context, const ::datanode_proto::DelInfo& request, ::grpc::CompletionQueue* cq) = 0;
   };
@@ -300,33 +300,33 @@ class datanodeService final {
     std::unique_ptr< ::grpc::ClientAsyncResponseReader< ::datanode_proto::RequestResult>> PrepareAsynchandleGetBreakdown(::grpc::ClientContext* context, const ::datanode_proto::GetInfo& request, ::grpc::CompletionQueue* cq) {
       return std::unique_ptr< ::grpc::ClientAsyncResponseReader< ::datanode_proto::RequestResult>>(PrepareAsynchandleGetBreakdownRaw(context, request, cq));
     }
-    ::grpc::Status handleCordRangeRead(::grpc::ClientContext* context, const ::datanode_proto::CordRangeRWInfo& request, ::datanode_proto::RequestResult* response) override;
-    std::unique_ptr< ::grpc::ClientAsyncResponseReader< ::datanode_proto::RequestResult>> AsynchandleCordRangeRead(::grpc::ClientContext* context, const ::datanode_proto::CordRangeRWInfo& request, ::grpc::CompletionQueue* cq) {
-      return std::unique_ptr< ::grpc::ClientAsyncResponseReader< ::datanode_proto::RequestResult>>(AsynchandleCordRangeReadRaw(context, request, cq));
+    ::grpc::Status handleUpLRCRangeRead(::grpc::ClientContext* context, const ::datanode_proto::UpLRCRangeRWInfo& request, ::datanode_proto::RequestResult* response) override;
+    std::unique_ptr< ::grpc::ClientAsyncResponseReader< ::datanode_proto::RequestResult>> AsynchandleUpLRCRangeRead(::grpc::ClientContext* context, const ::datanode_proto::UpLRCRangeRWInfo& request, ::grpc::CompletionQueue* cq) {
+      return std::unique_ptr< ::grpc::ClientAsyncResponseReader< ::datanode_proto::RequestResult>>(AsynchandleUpLRCRangeReadRaw(context, request, cq));
     }
-    std::unique_ptr< ::grpc::ClientAsyncResponseReader< ::datanode_proto::RequestResult>> PrepareAsynchandleCordRangeRead(::grpc::ClientContext* context, const ::datanode_proto::CordRangeRWInfo& request, ::grpc::CompletionQueue* cq) {
-      return std::unique_ptr< ::grpc::ClientAsyncResponseReader< ::datanode_proto::RequestResult>>(PrepareAsynchandleCordRangeReadRaw(context, request, cq));
+    std::unique_ptr< ::grpc::ClientAsyncResponseReader< ::datanode_proto::RequestResult>> PrepareAsynchandleUpLRCRangeRead(::grpc::ClientContext* context, const ::datanode_proto::UpLRCRangeRWInfo& request, ::grpc::CompletionQueue* cq) {
+      return std::unique_ptr< ::grpc::ClientAsyncResponseReader< ::datanode_proto::RequestResult>>(PrepareAsynchandleUpLRCRangeReadRaw(context, request, cq));
     }
-    ::grpc::Status handleCordRangeWrite(::grpc::ClientContext* context, const ::datanode_proto::CordRangeRWInfo& request, ::datanode_proto::RequestResult* response) override;
-    std::unique_ptr< ::grpc::ClientAsyncResponseReader< ::datanode_proto::RequestResult>> AsynchandleCordRangeWrite(::grpc::ClientContext* context, const ::datanode_proto::CordRangeRWInfo& request, ::grpc::CompletionQueue* cq) {
-      return std::unique_ptr< ::grpc::ClientAsyncResponseReader< ::datanode_proto::RequestResult>>(AsynchandleCordRangeWriteRaw(context, request, cq));
+    ::grpc::Status handleUpLRCRangeWrite(::grpc::ClientContext* context, const ::datanode_proto::UpLRCRangeRWInfo& request, ::datanode_proto::RequestResult* response) override;
+    std::unique_ptr< ::grpc::ClientAsyncResponseReader< ::datanode_proto::RequestResult>> AsynchandleUpLRCRangeWrite(::grpc::ClientContext* context, const ::datanode_proto::UpLRCRangeRWInfo& request, ::grpc::CompletionQueue* cq) {
+      return std::unique_ptr< ::grpc::ClientAsyncResponseReader< ::datanode_proto::RequestResult>>(AsynchandleUpLRCRangeWriteRaw(context, request, cq));
     }
-    std::unique_ptr< ::grpc::ClientAsyncResponseReader< ::datanode_proto::RequestResult>> PrepareAsynchandleCordRangeWrite(::grpc::ClientContext* context, const ::datanode_proto::CordRangeRWInfo& request, ::grpc::CompletionQueue* cq) {
-      return std::unique_ptr< ::grpc::ClientAsyncResponseReader< ::datanode_proto::RequestResult>>(PrepareAsynchandleCordRangeWriteRaw(context, request, cq));
+    std::unique_ptr< ::grpc::ClientAsyncResponseReader< ::datanode_proto::RequestResult>> PrepareAsynchandleUpLRCRangeWrite(::grpc::ClientContext* context, const ::datanode_proto::UpLRCRangeRWInfo& request, ::grpc::CompletionQueue* cq) {
+      return std::unique_ptr< ::grpc::ClientAsyncResponseReader< ::datanode_proto::RequestResult>>(PrepareAsynchandleUpLRCRangeWriteRaw(context, request, cq));
     }
-    ::grpc::Status handleCordRangeXorWrite(::grpc::ClientContext* context, const ::datanode_proto::CordRangeRWInfo& request, ::datanode_proto::RequestResult* response) override;
-    std::unique_ptr< ::grpc::ClientAsyncResponseReader< ::datanode_proto::RequestResult>> AsynchandleCordRangeXorWrite(::grpc::ClientContext* context, const ::datanode_proto::CordRangeRWInfo& request, ::grpc::CompletionQueue* cq) {
-      return std::unique_ptr< ::grpc::ClientAsyncResponseReader< ::datanode_proto::RequestResult>>(AsynchandleCordRangeXorWriteRaw(context, request, cq));
+    ::grpc::Status handleUpLRCRangeXorWrite(::grpc::ClientContext* context, const ::datanode_proto::UpLRCRangeRWInfo& request, ::datanode_proto::RequestResult* response) override;
+    std::unique_ptr< ::grpc::ClientAsyncResponseReader< ::datanode_proto::RequestResult>> AsynchandleUpLRCRangeXorWrite(::grpc::ClientContext* context, const ::datanode_proto::UpLRCRangeRWInfo& request, ::grpc::CompletionQueue* cq) {
+      return std::unique_ptr< ::grpc::ClientAsyncResponseReader< ::datanode_proto::RequestResult>>(AsynchandleUpLRCRangeXorWriteRaw(context, request, cq));
     }
-    std::unique_ptr< ::grpc::ClientAsyncResponseReader< ::datanode_proto::RequestResult>> PrepareAsynchandleCordRangeXorWrite(::grpc::ClientContext* context, const ::datanode_proto::CordRangeRWInfo& request, ::grpc::CompletionQueue* cq) {
-      return std::unique_ptr< ::grpc::ClientAsyncResponseReader< ::datanode_proto::RequestResult>>(PrepareAsynchandleCordRangeXorWriteRaw(context, request, cq));
+    std::unique_ptr< ::grpc::ClientAsyncResponseReader< ::datanode_proto::RequestResult>> PrepareAsynchandleUpLRCRangeXorWrite(::grpc::ClientContext* context, const ::datanode_proto::UpLRCRangeRWInfo& request, ::grpc::CompletionQueue* cq) {
+      return std::unique_ptr< ::grpc::ClientAsyncResponseReader< ::datanode_proto::RequestResult>>(PrepareAsynchandleUpLRCRangeXorWriteRaw(context, request, cq));
     }
-    ::grpc::Status handleCordDeltaBlob(::grpc::ClientContext* context, const ::datanode_proto::CordDeltaBlobInfo& request, ::datanode_proto::RequestResult* response) override;
-    std::unique_ptr< ::grpc::ClientAsyncResponseReader< ::datanode_proto::RequestResult>> AsynchandleCordDeltaBlob(::grpc::ClientContext* context, const ::datanode_proto::CordDeltaBlobInfo& request, ::grpc::CompletionQueue* cq) {
-      return std::unique_ptr< ::grpc::ClientAsyncResponseReader< ::datanode_proto::RequestResult>>(AsynchandleCordDeltaBlobRaw(context, request, cq));
+    ::grpc::Status handleUpLRCDeltaBlob(::grpc::ClientContext* context, const ::datanode_proto::UpLRCDeltaBlobInfo& request, ::datanode_proto::RequestResult* response) override;
+    std::unique_ptr< ::grpc::ClientAsyncResponseReader< ::datanode_proto::RequestResult>> AsynchandleUpLRCDeltaBlob(::grpc::ClientContext* context, const ::datanode_proto::UpLRCDeltaBlobInfo& request, ::grpc::CompletionQueue* cq) {
+      return std::unique_ptr< ::grpc::ClientAsyncResponseReader< ::datanode_proto::RequestResult>>(AsynchandleUpLRCDeltaBlobRaw(context, request, cq));
     }
-    std::unique_ptr< ::grpc::ClientAsyncResponseReader< ::datanode_proto::RequestResult>> PrepareAsynchandleCordDeltaBlob(::grpc::ClientContext* context, const ::datanode_proto::CordDeltaBlobInfo& request, ::grpc::CompletionQueue* cq) {
-      return std::unique_ptr< ::grpc::ClientAsyncResponseReader< ::datanode_proto::RequestResult>>(PrepareAsynchandleCordDeltaBlobRaw(context, request, cq));
+    std::unique_ptr< ::grpc::ClientAsyncResponseReader< ::datanode_proto::RequestResult>> PrepareAsynchandleUpLRCDeltaBlob(::grpc::ClientContext* context, const ::datanode_proto::UpLRCDeltaBlobInfo& request, ::grpc::CompletionQueue* cq) {
+      return std::unique_ptr< ::grpc::ClientAsyncResponseReader< ::datanode_proto::RequestResult>>(PrepareAsynchandleUpLRCDeltaBlobRaw(context, request, cq));
     }
     ::grpc::Status handleDelete(::grpc::ClientContext* context, const ::datanode_proto::DelInfo& request, ::datanode_proto::RequestResult* response) override;
     std::unique_ptr< ::grpc::ClientAsyncResponseReader< ::datanode_proto::RequestResult>> AsynchandleDelete(::grpc::ClientContext* context, const ::datanode_proto::DelInfo& request, ::grpc::CompletionQueue* cq) {
@@ -356,14 +356,14 @@ class datanodeService final {
       void handleGet(::grpc::ClientContext* context, const ::datanode_proto::GetInfo* request, ::datanode_proto::RequestResult* response, ::grpc::ClientUnaryReactor* reactor) override;
       void handleGetBreakdown(::grpc::ClientContext* context, const ::datanode_proto::GetInfo* request, ::datanode_proto::RequestResult* response, std::function<void(::grpc::Status)>) override;
       void handleGetBreakdown(::grpc::ClientContext* context, const ::datanode_proto::GetInfo* request, ::datanode_proto::RequestResult* response, ::grpc::ClientUnaryReactor* reactor) override;
-      void handleCordRangeRead(::grpc::ClientContext* context, const ::datanode_proto::CordRangeRWInfo* request, ::datanode_proto::RequestResult* response, std::function<void(::grpc::Status)>) override;
-      void handleCordRangeRead(::grpc::ClientContext* context, const ::datanode_proto::CordRangeRWInfo* request, ::datanode_proto::RequestResult* response, ::grpc::ClientUnaryReactor* reactor) override;
-      void handleCordRangeWrite(::grpc::ClientContext* context, const ::datanode_proto::CordRangeRWInfo* request, ::datanode_proto::RequestResult* response, std::function<void(::grpc::Status)>) override;
-      void handleCordRangeWrite(::grpc::ClientContext* context, const ::datanode_proto::CordRangeRWInfo* request, ::datanode_proto::RequestResult* response, ::grpc::ClientUnaryReactor* reactor) override;
-      void handleCordRangeXorWrite(::grpc::ClientContext* context, const ::datanode_proto::CordRangeRWInfo* request, ::datanode_proto::RequestResult* response, std::function<void(::grpc::Status)>) override;
-      void handleCordRangeXorWrite(::grpc::ClientContext* context, const ::datanode_proto::CordRangeRWInfo* request, ::datanode_proto::RequestResult* response, ::grpc::ClientUnaryReactor* reactor) override;
-      void handleCordDeltaBlob(::grpc::ClientContext* context, const ::datanode_proto::CordDeltaBlobInfo* request, ::datanode_proto::RequestResult* response, std::function<void(::grpc::Status)>) override;
-      void handleCordDeltaBlob(::grpc::ClientContext* context, const ::datanode_proto::CordDeltaBlobInfo* request, ::datanode_proto::RequestResult* response, ::grpc::ClientUnaryReactor* reactor) override;
+      void handleUpLRCRangeRead(::grpc::ClientContext* context, const ::datanode_proto::UpLRCRangeRWInfo* request, ::datanode_proto::RequestResult* response, std::function<void(::grpc::Status)>) override;
+      void handleUpLRCRangeRead(::grpc::ClientContext* context, const ::datanode_proto::UpLRCRangeRWInfo* request, ::datanode_proto::RequestResult* response, ::grpc::ClientUnaryReactor* reactor) override;
+      void handleUpLRCRangeWrite(::grpc::ClientContext* context, const ::datanode_proto::UpLRCRangeRWInfo* request, ::datanode_proto::RequestResult* response, std::function<void(::grpc::Status)>) override;
+      void handleUpLRCRangeWrite(::grpc::ClientContext* context, const ::datanode_proto::UpLRCRangeRWInfo* request, ::datanode_proto::RequestResult* response, ::grpc::ClientUnaryReactor* reactor) override;
+      void handleUpLRCRangeXorWrite(::grpc::ClientContext* context, const ::datanode_proto::UpLRCRangeRWInfo* request, ::datanode_proto::RequestResult* response, std::function<void(::grpc::Status)>) override;
+      void handleUpLRCRangeXorWrite(::grpc::ClientContext* context, const ::datanode_proto::UpLRCRangeRWInfo* request, ::datanode_proto::RequestResult* response, ::grpc::ClientUnaryReactor* reactor) override;
+      void handleUpLRCDeltaBlob(::grpc::ClientContext* context, const ::datanode_proto::UpLRCDeltaBlobInfo* request, ::datanode_proto::RequestResult* response, std::function<void(::grpc::Status)>) override;
+      void handleUpLRCDeltaBlob(::grpc::ClientContext* context, const ::datanode_proto::UpLRCDeltaBlobInfo* request, ::datanode_proto::RequestResult* response, ::grpc::ClientUnaryReactor* reactor) override;
       void handleDelete(::grpc::ClientContext* context, const ::datanode_proto::DelInfo* request, ::datanode_proto::RequestResult* response, std::function<void(::grpc::Status)>) override;
       void handleDelete(::grpc::ClientContext* context, const ::datanode_proto::DelInfo* request, ::datanode_proto::RequestResult* response, ::grpc::ClientUnaryReactor* reactor) override;
      private:
@@ -395,14 +395,14 @@ class datanodeService final {
     ::grpc::ClientAsyncResponseReader< ::datanode_proto::RequestResult>* PrepareAsynchandleGetRaw(::grpc::ClientContext* context, const ::datanode_proto::GetInfo& request, ::grpc::CompletionQueue* cq) override;
     ::grpc::ClientAsyncResponseReader< ::datanode_proto::RequestResult>* AsynchandleGetBreakdownRaw(::grpc::ClientContext* context, const ::datanode_proto::GetInfo& request, ::grpc::CompletionQueue* cq) override;
     ::grpc::ClientAsyncResponseReader< ::datanode_proto::RequestResult>* PrepareAsynchandleGetBreakdownRaw(::grpc::ClientContext* context, const ::datanode_proto::GetInfo& request, ::grpc::CompletionQueue* cq) override;
-    ::grpc::ClientAsyncResponseReader< ::datanode_proto::RequestResult>* AsynchandleCordRangeReadRaw(::grpc::ClientContext* context, const ::datanode_proto::CordRangeRWInfo& request, ::grpc::CompletionQueue* cq) override;
-    ::grpc::ClientAsyncResponseReader< ::datanode_proto::RequestResult>* PrepareAsynchandleCordRangeReadRaw(::grpc::ClientContext* context, const ::datanode_proto::CordRangeRWInfo& request, ::grpc::CompletionQueue* cq) override;
-    ::grpc::ClientAsyncResponseReader< ::datanode_proto::RequestResult>* AsynchandleCordRangeWriteRaw(::grpc::ClientContext* context, const ::datanode_proto::CordRangeRWInfo& request, ::grpc::CompletionQueue* cq) override;
-    ::grpc::ClientAsyncResponseReader< ::datanode_proto::RequestResult>* PrepareAsynchandleCordRangeWriteRaw(::grpc::ClientContext* context, const ::datanode_proto::CordRangeRWInfo& request, ::grpc::CompletionQueue* cq) override;
-    ::grpc::ClientAsyncResponseReader< ::datanode_proto::RequestResult>* AsynchandleCordRangeXorWriteRaw(::grpc::ClientContext* context, const ::datanode_proto::CordRangeRWInfo& request, ::grpc::CompletionQueue* cq) override;
-    ::grpc::ClientAsyncResponseReader< ::datanode_proto::RequestResult>* PrepareAsynchandleCordRangeXorWriteRaw(::grpc::ClientContext* context, const ::datanode_proto::CordRangeRWInfo& request, ::grpc::CompletionQueue* cq) override;
-    ::grpc::ClientAsyncResponseReader< ::datanode_proto::RequestResult>* AsynchandleCordDeltaBlobRaw(::grpc::ClientContext* context, const ::datanode_proto::CordDeltaBlobInfo& request, ::grpc::CompletionQueue* cq) override;
-    ::grpc::ClientAsyncResponseReader< ::datanode_proto::RequestResult>* PrepareAsynchandleCordDeltaBlobRaw(::grpc::ClientContext* context, const ::datanode_proto::CordDeltaBlobInfo& request, ::grpc::CompletionQueue* cq) override;
+    ::grpc::ClientAsyncResponseReader< ::datanode_proto::RequestResult>* AsynchandleUpLRCRangeReadRaw(::grpc::ClientContext* context, const ::datanode_proto::UpLRCRangeRWInfo& request, ::grpc::CompletionQueue* cq) override;
+    ::grpc::ClientAsyncResponseReader< ::datanode_proto::RequestResult>* PrepareAsynchandleUpLRCRangeReadRaw(::grpc::ClientContext* context, const ::datanode_proto::UpLRCRangeRWInfo& request, ::grpc::CompletionQueue* cq) override;
+    ::grpc::ClientAsyncResponseReader< ::datanode_proto::RequestResult>* AsynchandleUpLRCRangeWriteRaw(::grpc::ClientContext* context, const ::datanode_proto::UpLRCRangeRWInfo& request, ::grpc::CompletionQueue* cq) override;
+    ::grpc::ClientAsyncResponseReader< ::datanode_proto::RequestResult>* PrepareAsynchandleUpLRCRangeWriteRaw(::grpc::ClientContext* context, const ::datanode_proto::UpLRCRangeRWInfo& request, ::grpc::CompletionQueue* cq) override;
+    ::grpc::ClientAsyncResponseReader< ::datanode_proto::RequestResult>* AsynchandleUpLRCRangeXorWriteRaw(::grpc::ClientContext* context, const ::datanode_proto::UpLRCRangeRWInfo& request, ::grpc::CompletionQueue* cq) override;
+    ::grpc::ClientAsyncResponseReader< ::datanode_proto::RequestResult>* PrepareAsynchandleUpLRCRangeXorWriteRaw(::grpc::ClientContext* context, const ::datanode_proto::UpLRCRangeRWInfo& request, ::grpc::CompletionQueue* cq) override;
+    ::grpc::ClientAsyncResponseReader< ::datanode_proto::RequestResult>* AsynchandleUpLRCDeltaBlobRaw(::grpc::ClientContext* context, const ::datanode_proto::UpLRCDeltaBlobInfo& request, ::grpc::CompletionQueue* cq) override;
+    ::grpc::ClientAsyncResponseReader< ::datanode_proto::RequestResult>* PrepareAsynchandleUpLRCDeltaBlobRaw(::grpc::ClientContext* context, const ::datanode_proto::UpLRCDeltaBlobInfo& request, ::grpc::CompletionQueue* cq) override;
     ::grpc::ClientAsyncResponseReader< ::datanode_proto::RequestResult>* AsynchandleDeleteRaw(::grpc::ClientContext* context, const ::datanode_proto::DelInfo& request, ::grpc::CompletionQueue* cq) override;
     ::grpc::ClientAsyncResponseReader< ::datanode_proto::RequestResult>* PrepareAsynchandleDeleteRaw(::grpc::ClientContext* context, const ::datanode_proto::DelInfo& request, ::grpc::CompletionQueue* cq) override;
     const ::grpc::internal::RpcMethod rpcmethod_checkalive_;
@@ -414,10 +414,10 @@ class datanodeService final {
     const ::grpc::internal::RpcMethod rpcmethod_handleRecoveryBreakdown_;
     const ::grpc::internal::RpcMethod rpcmethod_handleGet_;
     const ::grpc::internal::RpcMethod rpcmethod_handleGetBreakdown_;
-    const ::grpc::internal::RpcMethod rpcmethod_handleCordRangeRead_;
-    const ::grpc::internal::RpcMethod rpcmethod_handleCordRangeWrite_;
-    const ::grpc::internal::RpcMethod rpcmethod_handleCordRangeXorWrite_;
-    const ::grpc::internal::RpcMethod rpcmethod_handleCordDeltaBlob_;
+    const ::grpc::internal::RpcMethod rpcmethod_handleUpLRCRangeRead_;
+    const ::grpc::internal::RpcMethod rpcmethod_handleUpLRCRangeWrite_;
+    const ::grpc::internal::RpcMethod rpcmethod_handleUpLRCRangeXorWrite_;
+    const ::grpc::internal::RpcMethod rpcmethod_handleUpLRCDeltaBlob_;
     const ::grpc::internal::RpcMethod rpcmethod_handleDelete_;
   };
   static std::unique_ptr<Stub> NewStub(const std::shared_ptr< ::grpc::ChannelInterface>& channel, const ::grpc::StubOptions& options = ::grpc::StubOptions());
@@ -442,12 +442,12 @@ class datanodeService final {
     // get
     virtual ::grpc::Status handleGet(::grpc::ServerContext* context, const ::datanode_proto::GetInfo* request, ::datanode_proto::RequestResult* response);
     virtual ::grpc::Status handleGetBreakdown(::grpc::ServerContext* context, const ::datanode_proto::GetInfo* request, ::datanode_proto::RequestResult* response);
-    // CoRD：块内区间读/写；Δ 暂存文件
-    virtual ::grpc::Status handleCordRangeRead(::grpc::ServerContext* context, const ::datanode_proto::CordRangeRWInfo* request, ::datanode_proto::RequestResult* response);
-    virtual ::grpc::Status handleCordRangeWrite(::grpc::ServerContext* context, const ::datanode_proto::CordRangeRWInfo* request, ::datanode_proto::RequestResult* response);
-    // CoRD：parity ΔP 直接下推 datanode 本地 read-xor-write，省掉读回 proxy 的整条往返
-    virtual ::grpc::Status handleCordRangeXorWrite(::grpc::ServerContext* context, const ::datanode_proto::CordRangeRWInfo* request, ::datanode_proto::RequestResult* response);
-    virtual ::grpc::Status handleCordDeltaBlob(::grpc::ServerContext* context, const ::datanode_proto::CordDeltaBlobInfo* request, ::datanode_proto::RequestResult* response);
+    // UpLRC：块内区间读/写；Δ 暂存文件
+    virtual ::grpc::Status handleUpLRCRangeRead(::grpc::ServerContext* context, const ::datanode_proto::UpLRCRangeRWInfo* request, ::datanode_proto::RequestResult* response);
+    virtual ::grpc::Status handleUpLRCRangeWrite(::grpc::ServerContext* context, const ::datanode_proto::UpLRCRangeRWInfo* request, ::datanode_proto::RequestResult* response);
+    // UpLRC：parity ΔP 直接下推 datanode 本地 read-xor-write，省掉读回 proxy 的整条往返
+    virtual ::grpc::Status handleUpLRCRangeXorWrite(::grpc::ServerContext* context, const ::datanode_proto::UpLRCRangeRWInfo* request, ::datanode_proto::RequestResult* response);
+    virtual ::grpc::Status handleUpLRCDeltaBlob(::grpc::ServerContext* context, const ::datanode_proto::UpLRCDeltaBlobInfo* request, ::datanode_proto::RequestResult* response);
     // delete
     virtual ::grpc::Status handleDelete(::grpc::ServerContext* context, const ::datanode_proto::DelInfo* request, ::datanode_proto::RequestResult* response);
   };
@@ -632,82 +632,82 @@ class datanodeService final {
     }
   };
   template <class BaseClass>
-  class WithAsyncMethod_handleCordRangeRead : public BaseClass {
+  class WithAsyncMethod_handleUpLRCRangeRead : public BaseClass {
    private:
     void BaseClassMustBeDerivedFromService(const Service* /*service*/) {}
    public:
-    WithAsyncMethod_handleCordRangeRead() {
+    WithAsyncMethod_handleUpLRCRangeRead() {
       ::grpc::Service::MarkMethodAsync(9);
     }
-    ~WithAsyncMethod_handleCordRangeRead() override {
+    ~WithAsyncMethod_handleUpLRCRangeRead() override {
       BaseClassMustBeDerivedFromService(this);
     }
     // disable synchronous version of this method
-    ::grpc::Status handleCordRangeRead(::grpc::ServerContext* /*context*/, const ::datanode_proto::CordRangeRWInfo* /*request*/, ::datanode_proto::RequestResult* /*response*/) override {
+    ::grpc::Status handleUpLRCRangeRead(::grpc::ServerContext* /*context*/, const ::datanode_proto::UpLRCRangeRWInfo* /*request*/, ::datanode_proto::RequestResult* /*response*/) override {
       abort();
       return ::grpc::Status(::grpc::StatusCode::UNIMPLEMENTED, "");
     }
-    void RequesthandleCordRangeRead(::grpc::ServerContext* context, ::datanode_proto::CordRangeRWInfo* request, ::grpc::ServerAsyncResponseWriter< ::datanode_proto::RequestResult>* response, ::grpc::CompletionQueue* new_call_cq, ::grpc::ServerCompletionQueue* notification_cq, void *tag) {
+    void RequesthandleUpLRCRangeRead(::grpc::ServerContext* context, ::datanode_proto::UpLRCRangeRWInfo* request, ::grpc::ServerAsyncResponseWriter< ::datanode_proto::RequestResult>* response, ::grpc::CompletionQueue* new_call_cq, ::grpc::ServerCompletionQueue* notification_cq, void *tag) {
       ::grpc::Service::RequestAsyncUnary(9, context, request, response, new_call_cq, notification_cq, tag);
     }
   };
   template <class BaseClass>
-  class WithAsyncMethod_handleCordRangeWrite : public BaseClass {
+  class WithAsyncMethod_handleUpLRCRangeWrite : public BaseClass {
    private:
     void BaseClassMustBeDerivedFromService(const Service* /*service*/) {}
    public:
-    WithAsyncMethod_handleCordRangeWrite() {
+    WithAsyncMethod_handleUpLRCRangeWrite() {
       ::grpc::Service::MarkMethodAsync(10);
     }
-    ~WithAsyncMethod_handleCordRangeWrite() override {
+    ~WithAsyncMethod_handleUpLRCRangeWrite() override {
       BaseClassMustBeDerivedFromService(this);
     }
     // disable synchronous version of this method
-    ::grpc::Status handleCordRangeWrite(::grpc::ServerContext* /*context*/, const ::datanode_proto::CordRangeRWInfo* /*request*/, ::datanode_proto::RequestResult* /*response*/) override {
+    ::grpc::Status handleUpLRCRangeWrite(::grpc::ServerContext* /*context*/, const ::datanode_proto::UpLRCRangeRWInfo* /*request*/, ::datanode_proto::RequestResult* /*response*/) override {
       abort();
       return ::grpc::Status(::grpc::StatusCode::UNIMPLEMENTED, "");
     }
-    void RequesthandleCordRangeWrite(::grpc::ServerContext* context, ::datanode_proto::CordRangeRWInfo* request, ::grpc::ServerAsyncResponseWriter< ::datanode_proto::RequestResult>* response, ::grpc::CompletionQueue* new_call_cq, ::grpc::ServerCompletionQueue* notification_cq, void *tag) {
+    void RequesthandleUpLRCRangeWrite(::grpc::ServerContext* context, ::datanode_proto::UpLRCRangeRWInfo* request, ::grpc::ServerAsyncResponseWriter< ::datanode_proto::RequestResult>* response, ::grpc::CompletionQueue* new_call_cq, ::grpc::ServerCompletionQueue* notification_cq, void *tag) {
       ::grpc::Service::RequestAsyncUnary(10, context, request, response, new_call_cq, notification_cq, tag);
     }
   };
   template <class BaseClass>
-  class WithAsyncMethod_handleCordRangeXorWrite : public BaseClass {
+  class WithAsyncMethod_handleUpLRCRangeXorWrite : public BaseClass {
    private:
     void BaseClassMustBeDerivedFromService(const Service* /*service*/) {}
    public:
-    WithAsyncMethod_handleCordRangeXorWrite() {
+    WithAsyncMethod_handleUpLRCRangeXorWrite() {
       ::grpc::Service::MarkMethodAsync(11);
     }
-    ~WithAsyncMethod_handleCordRangeXorWrite() override {
+    ~WithAsyncMethod_handleUpLRCRangeXorWrite() override {
       BaseClassMustBeDerivedFromService(this);
     }
     // disable synchronous version of this method
-    ::grpc::Status handleCordRangeXorWrite(::grpc::ServerContext* /*context*/, const ::datanode_proto::CordRangeRWInfo* /*request*/, ::datanode_proto::RequestResult* /*response*/) override {
+    ::grpc::Status handleUpLRCRangeXorWrite(::grpc::ServerContext* /*context*/, const ::datanode_proto::UpLRCRangeRWInfo* /*request*/, ::datanode_proto::RequestResult* /*response*/) override {
       abort();
       return ::grpc::Status(::grpc::StatusCode::UNIMPLEMENTED, "");
     }
-    void RequesthandleCordRangeXorWrite(::grpc::ServerContext* context, ::datanode_proto::CordRangeRWInfo* request, ::grpc::ServerAsyncResponseWriter< ::datanode_proto::RequestResult>* response, ::grpc::CompletionQueue* new_call_cq, ::grpc::ServerCompletionQueue* notification_cq, void *tag) {
+    void RequesthandleUpLRCRangeXorWrite(::grpc::ServerContext* context, ::datanode_proto::UpLRCRangeRWInfo* request, ::grpc::ServerAsyncResponseWriter< ::datanode_proto::RequestResult>* response, ::grpc::CompletionQueue* new_call_cq, ::grpc::ServerCompletionQueue* notification_cq, void *tag) {
       ::grpc::Service::RequestAsyncUnary(11, context, request, response, new_call_cq, notification_cq, tag);
     }
   };
   template <class BaseClass>
-  class WithAsyncMethod_handleCordDeltaBlob : public BaseClass {
+  class WithAsyncMethod_handleUpLRCDeltaBlob : public BaseClass {
    private:
     void BaseClassMustBeDerivedFromService(const Service* /*service*/) {}
    public:
-    WithAsyncMethod_handleCordDeltaBlob() {
+    WithAsyncMethod_handleUpLRCDeltaBlob() {
       ::grpc::Service::MarkMethodAsync(12);
     }
-    ~WithAsyncMethod_handleCordDeltaBlob() override {
+    ~WithAsyncMethod_handleUpLRCDeltaBlob() override {
       BaseClassMustBeDerivedFromService(this);
     }
     // disable synchronous version of this method
-    ::grpc::Status handleCordDeltaBlob(::grpc::ServerContext* /*context*/, const ::datanode_proto::CordDeltaBlobInfo* /*request*/, ::datanode_proto::RequestResult* /*response*/) override {
+    ::grpc::Status handleUpLRCDeltaBlob(::grpc::ServerContext* /*context*/, const ::datanode_proto::UpLRCDeltaBlobInfo* /*request*/, ::datanode_proto::RequestResult* /*response*/) override {
       abort();
       return ::grpc::Status(::grpc::StatusCode::UNIMPLEMENTED, "");
     }
-    void RequesthandleCordDeltaBlob(::grpc::ServerContext* context, ::datanode_proto::CordDeltaBlobInfo* request, ::grpc::ServerAsyncResponseWriter< ::datanode_proto::RequestResult>* response, ::grpc::CompletionQueue* new_call_cq, ::grpc::ServerCompletionQueue* notification_cq, void *tag) {
+    void RequesthandleUpLRCDeltaBlob(::grpc::ServerContext* context, ::datanode_proto::UpLRCDeltaBlobInfo* request, ::grpc::ServerAsyncResponseWriter< ::datanode_proto::RequestResult>* response, ::grpc::CompletionQueue* new_call_cq, ::grpc::ServerCompletionQueue* notification_cq, void *tag) {
       ::grpc::Service::RequestAsyncUnary(12, context, request, response, new_call_cq, notification_cq, tag);
     }
   };
@@ -731,7 +731,7 @@ class datanodeService final {
       ::grpc::Service::RequestAsyncUnary(13, context, request, response, new_call_cq, notification_cq, tag);
     }
   };
-  typedef WithAsyncMethod_checkalive<WithAsyncMethod_handleSet<WithAsyncMethod_handleAppend<WithAsyncMethod_handleMergeParity<WithAsyncMethod_handleMergeParityWithRep<WithAsyncMethod_handleRecovery<WithAsyncMethod_handleRecoveryBreakdown<WithAsyncMethod_handleGet<WithAsyncMethod_handleGetBreakdown<WithAsyncMethod_handleCordRangeRead<WithAsyncMethod_handleCordRangeWrite<WithAsyncMethod_handleCordRangeXorWrite<WithAsyncMethod_handleCordDeltaBlob<WithAsyncMethod_handleDelete<Service > > > > > > > > > > > > > > AsyncService;
+  typedef WithAsyncMethod_checkalive<WithAsyncMethod_handleSet<WithAsyncMethod_handleAppend<WithAsyncMethod_handleMergeParity<WithAsyncMethod_handleMergeParityWithRep<WithAsyncMethod_handleRecovery<WithAsyncMethod_handleRecoveryBreakdown<WithAsyncMethod_handleGet<WithAsyncMethod_handleGetBreakdown<WithAsyncMethod_handleUpLRCRangeRead<WithAsyncMethod_handleUpLRCRangeWrite<WithAsyncMethod_handleUpLRCRangeXorWrite<WithAsyncMethod_handleUpLRCDeltaBlob<WithAsyncMethod_handleDelete<Service > > > > > > > > > > > > > > AsyncService;
   template <class BaseClass>
   class WithCallbackMethod_checkalive : public BaseClass {
    private:
@@ -976,112 +976,112 @@ class datanodeService final {
       ::grpc::CallbackServerContext* /*context*/, const ::datanode_proto::GetInfo* /*request*/, ::datanode_proto::RequestResult* /*response*/)  { return nullptr; }
   };
   template <class BaseClass>
-  class WithCallbackMethod_handleCordRangeRead : public BaseClass {
+  class WithCallbackMethod_handleUpLRCRangeRead : public BaseClass {
    private:
     void BaseClassMustBeDerivedFromService(const Service* /*service*/) {}
    public:
-    WithCallbackMethod_handleCordRangeRead() {
+    WithCallbackMethod_handleUpLRCRangeRead() {
       ::grpc::Service::MarkMethodCallback(9,
-          new ::grpc::internal::CallbackUnaryHandler< ::datanode_proto::CordRangeRWInfo, ::datanode_proto::RequestResult>(
+          new ::grpc::internal::CallbackUnaryHandler< ::datanode_proto::UpLRCRangeRWInfo, ::datanode_proto::RequestResult>(
             [this](
-                   ::grpc::CallbackServerContext* context, const ::datanode_proto::CordRangeRWInfo* request, ::datanode_proto::RequestResult* response) { return this->handleCordRangeRead(context, request, response); }));}
-    void SetMessageAllocatorFor_handleCordRangeRead(
-        ::grpc::MessageAllocator< ::datanode_proto::CordRangeRWInfo, ::datanode_proto::RequestResult>* allocator) {
+                   ::grpc::CallbackServerContext* context, const ::datanode_proto::UpLRCRangeRWInfo* request, ::datanode_proto::RequestResult* response) { return this->handleUpLRCRangeRead(context, request, response); }));}
+    void SetMessageAllocatorFor_handleUpLRCRangeRead(
+        ::grpc::MessageAllocator< ::datanode_proto::UpLRCRangeRWInfo, ::datanode_proto::RequestResult>* allocator) {
       ::grpc::internal::MethodHandler* const handler = ::grpc::Service::GetHandler(9);
-      static_cast<::grpc::internal::CallbackUnaryHandler< ::datanode_proto::CordRangeRWInfo, ::datanode_proto::RequestResult>*>(handler)
+      static_cast<::grpc::internal::CallbackUnaryHandler< ::datanode_proto::UpLRCRangeRWInfo, ::datanode_proto::RequestResult>*>(handler)
               ->SetMessageAllocator(allocator);
     }
-    ~WithCallbackMethod_handleCordRangeRead() override {
+    ~WithCallbackMethod_handleUpLRCRangeRead() override {
       BaseClassMustBeDerivedFromService(this);
     }
     // disable synchronous version of this method
-    ::grpc::Status handleCordRangeRead(::grpc::ServerContext* /*context*/, const ::datanode_proto::CordRangeRWInfo* /*request*/, ::datanode_proto::RequestResult* /*response*/) override {
+    ::grpc::Status handleUpLRCRangeRead(::grpc::ServerContext* /*context*/, const ::datanode_proto::UpLRCRangeRWInfo* /*request*/, ::datanode_proto::RequestResult* /*response*/) override {
       abort();
       return ::grpc::Status(::grpc::StatusCode::UNIMPLEMENTED, "");
     }
-    virtual ::grpc::ServerUnaryReactor* handleCordRangeRead(
-      ::grpc::CallbackServerContext* /*context*/, const ::datanode_proto::CordRangeRWInfo* /*request*/, ::datanode_proto::RequestResult* /*response*/)  { return nullptr; }
+    virtual ::grpc::ServerUnaryReactor* handleUpLRCRangeRead(
+      ::grpc::CallbackServerContext* /*context*/, const ::datanode_proto::UpLRCRangeRWInfo* /*request*/, ::datanode_proto::RequestResult* /*response*/)  { return nullptr; }
   };
   template <class BaseClass>
-  class WithCallbackMethod_handleCordRangeWrite : public BaseClass {
+  class WithCallbackMethod_handleUpLRCRangeWrite : public BaseClass {
    private:
     void BaseClassMustBeDerivedFromService(const Service* /*service*/) {}
    public:
-    WithCallbackMethod_handleCordRangeWrite() {
+    WithCallbackMethod_handleUpLRCRangeWrite() {
       ::grpc::Service::MarkMethodCallback(10,
-          new ::grpc::internal::CallbackUnaryHandler< ::datanode_proto::CordRangeRWInfo, ::datanode_proto::RequestResult>(
+          new ::grpc::internal::CallbackUnaryHandler< ::datanode_proto::UpLRCRangeRWInfo, ::datanode_proto::RequestResult>(
             [this](
-                   ::grpc::CallbackServerContext* context, const ::datanode_proto::CordRangeRWInfo* request, ::datanode_proto::RequestResult* response) { return this->handleCordRangeWrite(context, request, response); }));}
-    void SetMessageAllocatorFor_handleCordRangeWrite(
-        ::grpc::MessageAllocator< ::datanode_proto::CordRangeRWInfo, ::datanode_proto::RequestResult>* allocator) {
+                   ::grpc::CallbackServerContext* context, const ::datanode_proto::UpLRCRangeRWInfo* request, ::datanode_proto::RequestResult* response) { return this->handleUpLRCRangeWrite(context, request, response); }));}
+    void SetMessageAllocatorFor_handleUpLRCRangeWrite(
+        ::grpc::MessageAllocator< ::datanode_proto::UpLRCRangeRWInfo, ::datanode_proto::RequestResult>* allocator) {
       ::grpc::internal::MethodHandler* const handler = ::grpc::Service::GetHandler(10);
-      static_cast<::grpc::internal::CallbackUnaryHandler< ::datanode_proto::CordRangeRWInfo, ::datanode_proto::RequestResult>*>(handler)
+      static_cast<::grpc::internal::CallbackUnaryHandler< ::datanode_proto::UpLRCRangeRWInfo, ::datanode_proto::RequestResult>*>(handler)
               ->SetMessageAllocator(allocator);
     }
-    ~WithCallbackMethod_handleCordRangeWrite() override {
+    ~WithCallbackMethod_handleUpLRCRangeWrite() override {
       BaseClassMustBeDerivedFromService(this);
     }
     // disable synchronous version of this method
-    ::grpc::Status handleCordRangeWrite(::grpc::ServerContext* /*context*/, const ::datanode_proto::CordRangeRWInfo* /*request*/, ::datanode_proto::RequestResult* /*response*/) override {
+    ::grpc::Status handleUpLRCRangeWrite(::grpc::ServerContext* /*context*/, const ::datanode_proto::UpLRCRangeRWInfo* /*request*/, ::datanode_proto::RequestResult* /*response*/) override {
       abort();
       return ::grpc::Status(::grpc::StatusCode::UNIMPLEMENTED, "");
     }
-    virtual ::grpc::ServerUnaryReactor* handleCordRangeWrite(
-      ::grpc::CallbackServerContext* /*context*/, const ::datanode_proto::CordRangeRWInfo* /*request*/, ::datanode_proto::RequestResult* /*response*/)  { return nullptr; }
+    virtual ::grpc::ServerUnaryReactor* handleUpLRCRangeWrite(
+      ::grpc::CallbackServerContext* /*context*/, const ::datanode_proto::UpLRCRangeRWInfo* /*request*/, ::datanode_proto::RequestResult* /*response*/)  { return nullptr; }
   };
   template <class BaseClass>
-  class WithCallbackMethod_handleCordRangeXorWrite : public BaseClass {
+  class WithCallbackMethod_handleUpLRCRangeXorWrite : public BaseClass {
    private:
     void BaseClassMustBeDerivedFromService(const Service* /*service*/) {}
    public:
-    WithCallbackMethod_handleCordRangeXorWrite() {
+    WithCallbackMethod_handleUpLRCRangeXorWrite() {
       ::grpc::Service::MarkMethodCallback(11,
-          new ::grpc::internal::CallbackUnaryHandler< ::datanode_proto::CordRangeRWInfo, ::datanode_proto::RequestResult>(
+          new ::grpc::internal::CallbackUnaryHandler< ::datanode_proto::UpLRCRangeRWInfo, ::datanode_proto::RequestResult>(
             [this](
-                   ::grpc::CallbackServerContext* context, const ::datanode_proto::CordRangeRWInfo* request, ::datanode_proto::RequestResult* response) { return this->handleCordRangeXorWrite(context, request, response); }));}
-    void SetMessageAllocatorFor_handleCordRangeXorWrite(
-        ::grpc::MessageAllocator< ::datanode_proto::CordRangeRWInfo, ::datanode_proto::RequestResult>* allocator) {
+                   ::grpc::CallbackServerContext* context, const ::datanode_proto::UpLRCRangeRWInfo* request, ::datanode_proto::RequestResult* response) { return this->handleUpLRCRangeXorWrite(context, request, response); }));}
+    void SetMessageAllocatorFor_handleUpLRCRangeXorWrite(
+        ::grpc::MessageAllocator< ::datanode_proto::UpLRCRangeRWInfo, ::datanode_proto::RequestResult>* allocator) {
       ::grpc::internal::MethodHandler* const handler = ::grpc::Service::GetHandler(11);
-      static_cast<::grpc::internal::CallbackUnaryHandler< ::datanode_proto::CordRangeRWInfo, ::datanode_proto::RequestResult>*>(handler)
+      static_cast<::grpc::internal::CallbackUnaryHandler< ::datanode_proto::UpLRCRangeRWInfo, ::datanode_proto::RequestResult>*>(handler)
               ->SetMessageAllocator(allocator);
     }
-    ~WithCallbackMethod_handleCordRangeXorWrite() override {
+    ~WithCallbackMethod_handleUpLRCRangeXorWrite() override {
       BaseClassMustBeDerivedFromService(this);
     }
     // disable synchronous version of this method
-    ::grpc::Status handleCordRangeXorWrite(::grpc::ServerContext* /*context*/, const ::datanode_proto::CordRangeRWInfo* /*request*/, ::datanode_proto::RequestResult* /*response*/) override {
+    ::grpc::Status handleUpLRCRangeXorWrite(::grpc::ServerContext* /*context*/, const ::datanode_proto::UpLRCRangeRWInfo* /*request*/, ::datanode_proto::RequestResult* /*response*/) override {
       abort();
       return ::grpc::Status(::grpc::StatusCode::UNIMPLEMENTED, "");
     }
-    virtual ::grpc::ServerUnaryReactor* handleCordRangeXorWrite(
-      ::grpc::CallbackServerContext* /*context*/, const ::datanode_proto::CordRangeRWInfo* /*request*/, ::datanode_proto::RequestResult* /*response*/)  { return nullptr; }
+    virtual ::grpc::ServerUnaryReactor* handleUpLRCRangeXorWrite(
+      ::grpc::CallbackServerContext* /*context*/, const ::datanode_proto::UpLRCRangeRWInfo* /*request*/, ::datanode_proto::RequestResult* /*response*/)  { return nullptr; }
   };
   template <class BaseClass>
-  class WithCallbackMethod_handleCordDeltaBlob : public BaseClass {
+  class WithCallbackMethod_handleUpLRCDeltaBlob : public BaseClass {
    private:
     void BaseClassMustBeDerivedFromService(const Service* /*service*/) {}
    public:
-    WithCallbackMethod_handleCordDeltaBlob() {
+    WithCallbackMethod_handleUpLRCDeltaBlob() {
       ::grpc::Service::MarkMethodCallback(12,
-          new ::grpc::internal::CallbackUnaryHandler< ::datanode_proto::CordDeltaBlobInfo, ::datanode_proto::RequestResult>(
+          new ::grpc::internal::CallbackUnaryHandler< ::datanode_proto::UpLRCDeltaBlobInfo, ::datanode_proto::RequestResult>(
             [this](
-                   ::grpc::CallbackServerContext* context, const ::datanode_proto::CordDeltaBlobInfo* request, ::datanode_proto::RequestResult* response) { return this->handleCordDeltaBlob(context, request, response); }));}
-    void SetMessageAllocatorFor_handleCordDeltaBlob(
-        ::grpc::MessageAllocator< ::datanode_proto::CordDeltaBlobInfo, ::datanode_proto::RequestResult>* allocator) {
+                   ::grpc::CallbackServerContext* context, const ::datanode_proto::UpLRCDeltaBlobInfo* request, ::datanode_proto::RequestResult* response) { return this->handleUpLRCDeltaBlob(context, request, response); }));}
+    void SetMessageAllocatorFor_handleUpLRCDeltaBlob(
+        ::grpc::MessageAllocator< ::datanode_proto::UpLRCDeltaBlobInfo, ::datanode_proto::RequestResult>* allocator) {
       ::grpc::internal::MethodHandler* const handler = ::grpc::Service::GetHandler(12);
-      static_cast<::grpc::internal::CallbackUnaryHandler< ::datanode_proto::CordDeltaBlobInfo, ::datanode_proto::RequestResult>*>(handler)
+      static_cast<::grpc::internal::CallbackUnaryHandler< ::datanode_proto::UpLRCDeltaBlobInfo, ::datanode_proto::RequestResult>*>(handler)
               ->SetMessageAllocator(allocator);
     }
-    ~WithCallbackMethod_handleCordDeltaBlob() override {
+    ~WithCallbackMethod_handleUpLRCDeltaBlob() override {
       BaseClassMustBeDerivedFromService(this);
     }
     // disable synchronous version of this method
-    ::grpc::Status handleCordDeltaBlob(::grpc::ServerContext* /*context*/, const ::datanode_proto::CordDeltaBlobInfo* /*request*/, ::datanode_proto::RequestResult* /*response*/) override {
+    ::grpc::Status handleUpLRCDeltaBlob(::grpc::ServerContext* /*context*/, const ::datanode_proto::UpLRCDeltaBlobInfo* /*request*/, ::datanode_proto::RequestResult* /*response*/) override {
       abort();
       return ::grpc::Status(::grpc::StatusCode::UNIMPLEMENTED, "");
     }
-    virtual ::grpc::ServerUnaryReactor* handleCordDeltaBlob(
-      ::grpc::CallbackServerContext* /*context*/, const ::datanode_proto::CordDeltaBlobInfo* /*request*/, ::datanode_proto::RequestResult* /*response*/)  { return nullptr; }
+    virtual ::grpc::ServerUnaryReactor* handleUpLRCDeltaBlob(
+      ::grpc::CallbackServerContext* /*context*/, const ::datanode_proto::UpLRCDeltaBlobInfo* /*request*/, ::datanode_proto::RequestResult* /*response*/)  { return nullptr; }
   };
   template <class BaseClass>
   class WithCallbackMethod_handleDelete : public BaseClass {
@@ -1110,7 +1110,7 @@ class datanodeService final {
     virtual ::grpc::ServerUnaryReactor* handleDelete(
       ::grpc::CallbackServerContext* /*context*/, const ::datanode_proto::DelInfo* /*request*/, ::datanode_proto::RequestResult* /*response*/)  { return nullptr; }
   };
-  typedef WithCallbackMethod_checkalive<WithCallbackMethod_handleSet<WithCallbackMethod_handleAppend<WithCallbackMethod_handleMergeParity<WithCallbackMethod_handleMergeParityWithRep<WithCallbackMethod_handleRecovery<WithCallbackMethod_handleRecoveryBreakdown<WithCallbackMethod_handleGet<WithCallbackMethod_handleGetBreakdown<WithCallbackMethod_handleCordRangeRead<WithCallbackMethod_handleCordRangeWrite<WithCallbackMethod_handleCordRangeXorWrite<WithCallbackMethod_handleCordDeltaBlob<WithCallbackMethod_handleDelete<Service > > > > > > > > > > > > > > CallbackService;
+  typedef WithCallbackMethod_checkalive<WithCallbackMethod_handleSet<WithCallbackMethod_handleAppend<WithCallbackMethod_handleMergeParity<WithCallbackMethod_handleMergeParityWithRep<WithCallbackMethod_handleRecovery<WithCallbackMethod_handleRecoveryBreakdown<WithCallbackMethod_handleGet<WithCallbackMethod_handleGetBreakdown<WithCallbackMethod_handleUpLRCRangeRead<WithCallbackMethod_handleUpLRCRangeWrite<WithCallbackMethod_handleUpLRCRangeXorWrite<WithCallbackMethod_handleUpLRCDeltaBlob<WithCallbackMethod_handleDelete<Service > > > > > > > > > > > > > > CallbackService;
   typedef CallbackService ExperimentalCallbackService;
   template <class BaseClass>
   class WithGenericMethod_checkalive : public BaseClass {
@@ -1266,69 +1266,69 @@ class datanodeService final {
     }
   };
   template <class BaseClass>
-  class WithGenericMethod_handleCordRangeRead : public BaseClass {
+  class WithGenericMethod_handleUpLRCRangeRead : public BaseClass {
    private:
     void BaseClassMustBeDerivedFromService(const Service* /*service*/) {}
    public:
-    WithGenericMethod_handleCordRangeRead() {
+    WithGenericMethod_handleUpLRCRangeRead() {
       ::grpc::Service::MarkMethodGeneric(9);
     }
-    ~WithGenericMethod_handleCordRangeRead() override {
+    ~WithGenericMethod_handleUpLRCRangeRead() override {
       BaseClassMustBeDerivedFromService(this);
     }
     // disable synchronous version of this method
-    ::grpc::Status handleCordRangeRead(::grpc::ServerContext* /*context*/, const ::datanode_proto::CordRangeRWInfo* /*request*/, ::datanode_proto::RequestResult* /*response*/) override {
+    ::grpc::Status handleUpLRCRangeRead(::grpc::ServerContext* /*context*/, const ::datanode_proto::UpLRCRangeRWInfo* /*request*/, ::datanode_proto::RequestResult* /*response*/) override {
       abort();
       return ::grpc::Status(::grpc::StatusCode::UNIMPLEMENTED, "");
     }
   };
   template <class BaseClass>
-  class WithGenericMethod_handleCordRangeWrite : public BaseClass {
+  class WithGenericMethod_handleUpLRCRangeWrite : public BaseClass {
    private:
     void BaseClassMustBeDerivedFromService(const Service* /*service*/) {}
    public:
-    WithGenericMethod_handleCordRangeWrite() {
+    WithGenericMethod_handleUpLRCRangeWrite() {
       ::grpc::Service::MarkMethodGeneric(10);
     }
-    ~WithGenericMethod_handleCordRangeWrite() override {
+    ~WithGenericMethod_handleUpLRCRangeWrite() override {
       BaseClassMustBeDerivedFromService(this);
     }
     // disable synchronous version of this method
-    ::grpc::Status handleCordRangeWrite(::grpc::ServerContext* /*context*/, const ::datanode_proto::CordRangeRWInfo* /*request*/, ::datanode_proto::RequestResult* /*response*/) override {
+    ::grpc::Status handleUpLRCRangeWrite(::grpc::ServerContext* /*context*/, const ::datanode_proto::UpLRCRangeRWInfo* /*request*/, ::datanode_proto::RequestResult* /*response*/) override {
       abort();
       return ::grpc::Status(::grpc::StatusCode::UNIMPLEMENTED, "");
     }
   };
   template <class BaseClass>
-  class WithGenericMethod_handleCordRangeXorWrite : public BaseClass {
+  class WithGenericMethod_handleUpLRCRangeXorWrite : public BaseClass {
    private:
     void BaseClassMustBeDerivedFromService(const Service* /*service*/) {}
    public:
-    WithGenericMethod_handleCordRangeXorWrite() {
+    WithGenericMethod_handleUpLRCRangeXorWrite() {
       ::grpc::Service::MarkMethodGeneric(11);
     }
-    ~WithGenericMethod_handleCordRangeXorWrite() override {
+    ~WithGenericMethod_handleUpLRCRangeXorWrite() override {
       BaseClassMustBeDerivedFromService(this);
     }
     // disable synchronous version of this method
-    ::grpc::Status handleCordRangeXorWrite(::grpc::ServerContext* /*context*/, const ::datanode_proto::CordRangeRWInfo* /*request*/, ::datanode_proto::RequestResult* /*response*/) override {
+    ::grpc::Status handleUpLRCRangeXorWrite(::grpc::ServerContext* /*context*/, const ::datanode_proto::UpLRCRangeRWInfo* /*request*/, ::datanode_proto::RequestResult* /*response*/) override {
       abort();
       return ::grpc::Status(::grpc::StatusCode::UNIMPLEMENTED, "");
     }
   };
   template <class BaseClass>
-  class WithGenericMethod_handleCordDeltaBlob : public BaseClass {
+  class WithGenericMethod_handleUpLRCDeltaBlob : public BaseClass {
    private:
     void BaseClassMustBeDerivedFromService(const Service* /*service*/) {}
    public:
-    WithGenericMethod_handleCordDeltaBlob() {
+    WithGenericMethod_handleUpLRCDeltaBlob() {
       ::grpc::Service::MarkMethodGeneric(12);
     }
-    ~WithGenericMethod_handleCordDeltaBlob() override {
+    ~WithGenericMethod_handleUpLRCDeltaBlob() override {
       BaseClassMustBeDerivedFromService(this);
     }
     // disable synchronous version of this method
-    ::grpc::Status handleCordDeltaBlob(::grpc::ServerContext* /*context*/, const ::datanode_proto::CordDeltaBlobInfo* /*request*/, ::datanode_proto::RequestResult* /*response*/) override {
+    ::grpc::Status handleUpLRCDeltaBlob(::grpc::ServerContext* /*context*/, const ::datanode_proto::UpLRCDeltaBlobInfo* /*request*/, ::datanode_proto::RequestResult* /*response*/) override {
       abort();
       return ::grpc::Status(::grpc::StatusCode::UNIMPLEMENTED, "");
     }
@@ -1531,82 +1531,82 @@ class datanodeService final {
     }
   };
   template <class BaseClass>
-  class WithRawMethod_handleCordRangeRead : public BaseClass {
+  class WithRawMethod_handleUpLRCRangeRead : public BaseClass {
    private:
     void BaseClassMustBeDerivedFromService(const Service* /*service*/) {}
    public:
-    WithRawMethod_handleCordRangeRead() {
+    WithRawMethod_handleUpLRCRangeRead() {
       ::grpc::Service::MarkMethodRaw(9);
     }
-    ~WithRawMethod_handleCordRangeRead() override {
+    ~WithRawMethod_handleUpLRCRangeRead() override {
       BaseClassMustBeDerivedFromService(this);
     }
     // disable synchronous version of this method
-    ::grpc::Status handleCordRangeRead(::grpc::ServerContext* /*context*/, const ::datanode_proto::CordRangeRWInfo* /*request*/, ::datanode_proto::RequestResult* /*response*/) override {
+    ::grpc::Status handleUpLRCRangeRead(::grpc::ServerContext* /*context*/, const ::datanode_proto::UpLRCRangeRWInfo* /*request*/, ::datanode_proto::RequestResult* /*response*/) override {
       abort();
       return ::grpc::Status(::grpc::StatusCode::UNIMPLEMENTED, "");
     }
-    void RequesthandleCordRangeRead(::grpc::ServerContext* context, ::grpc::ByteBuffer* request, ::grpc::ServerAsyncResponseWriter< ::grpc::ByteBuffer>* response, ::grpc::CompletionQueue* new_call_cq, ::grpc::ServerCompletionQueue* notification_cq, void *tag) {
+    void RequesthandleUpLRCRangeRead(::grpc::ServerContext* context, ::grpc::ByteBuffer* request, ::grpc::ServerAsyncResponseWriter< ::grpc::ByteBuffer>* response, ::grpc::CompletionQueue* new_call_cq, ::grpc::ServerCompletionQueue* notification_cq, void *tag) {
       ::grpc::Service::RequestAsyncUnary(9, context, request, response, new_call_cq, notification_cq, tag);
     }
   };
   template <class BaseClass>
-  class WithRawMethod_handleCordRangeWrite : public BaseClass {
+  class WithRawMethod_handleUpLRCRangeWrite : public BaseClass {
    private:
     void BaseClassMustBeDerivedFromService(const Service* /*service*/) {}
    public:
-    WithRawMethod_handleCordRangeWrite() {
+    WithRawMethod_handleUpLRCRangeWrite() {
       ::grpc::Service::MarkMethodRaw(10);
     }
-    ~WithRawMethod_handleCordRangeWrite() override {
+    ~WithRawMethod_handleUpLRCRangeWrite() override {
       BaseClassMustBeDerivedFromService(this);
     }
     // disable synchronous version of this method
-    ::grpc::Status handleCordRangeWrite(::grpc::ServerContext* /*context*/, const ::datanode_proto::CordRangeRWInfo* /*request*/, ::datanode_proto::RequestResult* /*response*/) override {
+    ::grpc::Status handleUpLRCRangeWrite(::grpc::ServerContext* /*context*/, const ::datanode_proto::UpLRCRangeRWInfo* /*request*/, ::datanode_proto::RequestResult* /*response*/) override {
       abort();
       return ::grpc::Status(::grpc::StatusCode::UNIMPLEMENTED, "");
     }
-    void RequesthandleCordRangeWrite(::grpc::ServerContext* context, ::grpc::ByteBuffer* request, ::grpc::ServerAsyncResponseWriter< ::grpc::ByteBuffer>* response, ::grpc::CompletionQueue* new_call_cq, ::grpc::ServerCompletionQueue* notification_cq, void *tag) {
+    void RequesthandleUpLRCRangeWrite(::grpc::ServerContext* context, ::grpc::ByteBuffer* request, ::grpc::ServerAsyncResponseWriter< ::grpc::ByteBuffer>* response, ::grpc::CompletionQueue* new_call_cq, ::grpc::ServerCompletionQueue* notification_cq, void *tag) {
       ::grpc::Service::RequestAsyncUnary(10, context, request, response, new_call_cq, notification_cq, tag);
     }
   };
   template <class BaseClass>
-  class WithRawMethod_handleCordRangeXorWrite : public BaseClass {
+  class WithRawMethod_handleUpLRCRangeXorWrite : public BaseClass {
    private:
     void BaseClassMustBeDerivedFromService(const Service* /*service*/) {}
    public:
-    WithRawMethod_handleCordRangeXorWrite() {
+    WithRawMethod_handleUpLRCRangeXorWrite() {
       ::grpc::Service::MarkMethodRaw(11);
     }
-    ~WithRawMethod_handleCordRangeXorWrite() override {
+    ~WithRawMethod_handleUpLRCRangeXorWrite() override {
       BaseClassMustBeDerivedFromService(this);
     }
     // disable synchronous version of this method
-    ::grpc::Status handleCordRangeXorWrite(::grpc::ServerContext* /*context*/, const ::datanode_proto::CordRangeRWInfo* /*request*/, ::datanode_proto::RequestResult* /*response*/) override {
+    ::grpc::Status handleUpLRCRangeXorWrite(::grpc::ServerContext* /*context*/, const ::datanode_proto::UpLRCRangeRWInfo* /*request*/, ::datanode_proto::RequestResult* /*response*/) override {
       abort();
       return ::grpc::Status(::grpc::StatusCode::UNIMPLEMENTED, "");
     }
-    void RequesthandleCordRangeXorWrite(::grpc::ServerContext* context, ::grpc::ByteBuffer* request, ::grpc::ServerAsyncResponseWriter< ::grpc::ByteBuffer>* response, ::grpc::CompletionQueue* new_call_cq, ::grpc::ServerCompletionQueue* notification_cq, void *tag) {
+    void RequesthandleUpLRCRangeXorWrite(::grpc::ServerContext* context, ::grpc::ByteBuffer* request, ::grpc::ServerAsyncResponseWriter< ::grpc::ByteBuffer>* response, ::grpc::CompletionQueue* new_call_cq, ::grpc::ServerCompletionQueue* notification_cq, void *tag) {
       ::grpc::Service::RequestAsyncUnary(11, context, request, response, new_call_cq, notification_cq, tag);
     }
   };
   template <class BaseClass>
-  class WithRawMethod_handleCordDeltaBlob : public BaseClass {
+  class WithRawMethod_handleUpLRCDeltaBlob : public BaseClass {
    private:
     void BaseClassMustBeDerivedFromService(const Service* /*service*/) {}
    public:
-    WithRawMethod_handleCordDeltaBlob() {
+    WithRawMethod_handleUpLRCDeltaBlob() {
       ::grpc::Service::MarkMethodRaw(12);
     }
-    ~WithRawMethod_handleCordDeltaBlob() override {
+    ~WithRawMethod_handleUpLRCDeltaBlob() override {
       BaseClassMustBeDerivedFromService(this);
     }
     // disable synchronous version of this method
-    ::grpc::Status handleCordDeltaBlob(::grpc::ServerContext* /*context*/, const ::datanode_proto::CordDeltaBlobInfo* /*request*/, ::datanode_proto::RequestResult* /*response*/) override {
+    ::grpc::Status handleUpLRCDeltaBlob(::grpc::ServerContext* /*context*/, const ::datanode_proto::UpLRCDeltaBlobInfo* /*request*/, ::datanode_proto::RequestResult* /*response*/) override {
       abort();
       return ::grpc::Status(::grpc::StatusCode::UNIMPLEMENTED, "");
     }
-    void RequesthandleCordDeltaBlob(::grpc::ServerContext* context, ::grpc::ByteBuffer* request, ::grpc::ServerAsyncResponseWriter< ::grpc::ByteBuffer>* response, ::grpc::CompletionQueue* new_call_cq, ::grpc::ServerCompletionQueue* notification_cq, void *tag) {
+    void RequesthandleUpLRCDeltaBlob(::grpc::ServerContext* context, ::grpc::ByteBuffer* request, ::grpc::ServerAsyncResponseWriter< ::grpc::ByteBuffer>* response, ::grpc::CompletionQueue* new_call_cq, ::grpc::ServerCompletionQueue* notification_cq, void *tag) {
       ::grpc::Service::RequestAsyncUnary(12, context, request, response, new_call_cq, notification_cq, tag);
     }
   };
@@ -1829,91 +1829,91 @@ class datanodeService final {
       ::grpc::CallbackServerContext* /*context*/, const ::grpc::ByteBuffer* /*request*/, ::grpc::ByteBuffer* /*response*/)  { return nullptr; }
   };
   template <class BaseClass>
-  class WithRawCallbackMethod_handleCordRangeRead : public BaseClass {
+  class WithRawCallbackMethod_handleUpLRCRangeRead : public BaseClass {
    private:
     void BaseClassMustBeDerivedFromService(const Service* /*service*/) {}
    public:
-    WithRawCallbackMethod_handleCordRangeRead() {
+    WithRawCallbackMethod_handleUpLRCRangeRead() {
       ::grpc::Service::MarkMethodRawCallback(9,
           new ::grpc::internal::CallbackUnaryHandler< ::grpc::ByteBuffer, ::grpc::ByteBuffer>(
             [this](
-                   ::grpc::CallbackServerContext* context, const ::grpc::ByteBuffer* request, ::grpc::ByteBuffer* response) { return this->handleCordRangeRead(context, request, response); }));
+                   ::grpc::CallbackServerContext* context, const ::grpc::ByteBuffer* request, ::grpc::ByteBuffer* response) { return this->handleUpLRCRangeRead(context, request, response); }));
     }
-    ~WithRawCallbackMethod_handleCordRangeRead() override {
+    ~WithRawCallbackMethod_handleUpLRCRangeRead() override {
       BaseClassMustBeDerivedFromService(this);
     }
     // disable synchronous version of this method
-    ::grpc::Status handleCordRangeRead(::grpc::ServerContext* /*context*/, const ::datanode_proto::CordRangeRWInfo* /*request*/, ::datanode_proto::RequestResult* /*response*/) override {
+    ::grpc::Status handleUpLRCRangeRead(::grpc::ServerContext* /*context*/, const ::datanode_proto::UpLRCRangeRWInfo* /*request*/, ::datanode_proto::RequestResult* /*response*/) override {
       abort();
       return ::grpc::Status(::grpc::StatusCode::UNIMPLEMENTED, "");
     }
-    virtual ::grpc::ServerUnaryReactor* handleCordRangeRead(
+    virtual ::grpc::ServerUnaryReactor* handleUpLRCRangeRead(
       ::grpc::CallbackServerContext* /*context*/, const ::grpc::ByteBuffer* /*request*/, ::grpc::ByteBuffer* /*response*/)  { return nullptr; }
   };
   template <class BaseClass>
-  class WithRawCallbackMethod_handleCordRangeWrite : public BaseClass {
+  class WithRawCallbackMethod_handleUpLRCRangeWrite : public BaseClass {
    private:
     void BaseClassMustBeDerivedFromService(const Service* /*service*/) {}
    public:
-    WithRawCallbackMethod_handleCordRangeWrite() {
+    WithRawCallbackMethod_handleUpLRCRangeWrite() {
       ::grpc::Service::MarkMethodRawCallback(10,
           new ::grpc::internal::CallbackUnaryHandler< ::grpc::ByteBuffer, ::grpc::ByteBuffer>(
             [this](
-                   ::grpc::CallbackServerContext* context, const ::grpc::ByteBuffer* request, ::grpc::ByteBuffer* response) { return this->handleCordRangeWrite(context, request, response); }));
+                   ::grpc::CallbackServerContext* context, const ::grpc::ByteBuffer* request, ::grpc::ByteBuffer* response) { return this->handleUpLRCRangeWrite(context, request, response); }));
     }
-    ~WithRawCallbackMethod_handleCordRangeWrite() override {
+    ~WithRawCallbackMethod_handleUpLRCRangeWrite() override {
       BaseClassMustBeDerivedFromService(this);
     }
     // disable synchronous version of this method
-    ::grpc::Status handleCordRangeWrite(::grpc::ServerContext* /*context*/, const ::datanode_proto::CordRangeRWInfo* /*request*/, ::datanode_proto::RequestResult* /*response*/) override {
+    ::grpc::Status handleUpLRCRangeWrite(::grpc::ServerContext* /*context*/, const ::datanode_proto::UpLRCRangeRWInfo* /*request*/, ::datanode_proto::RequestResult* /*response*/) override {
       abort();
       return ::grpc::Status(::grpc::StatusCode::UNIMPLEMENTED, "");
     }
-    virtual ::grpc::ServerUnaryReactor* handleCordRangeWrite(
+    virtual ::grpc::ServerUnaryReactor* handleUpLRCRangeWrite(
       ::grpc::CallbackServerContext* /*context*/, const ::grpc::ByteBuffer* /*request*/, ::grpc::ByteBuffer* /*response*/)  { return nullptr; }
   };
   template <class BaseClass>
-  class WithRawCallbackMethod_handleCordRangeXorWrite : public BaseClass {
+  class WithRawCallbackMethod_handleUpLRCRangeXorWrite : public BaseClass {
    private:
     void BaseClassMustBeDerivedFromService(const Service* /*service*/) {}
    public:
-    WithRawCallbackMethod_handleCordRangeXorWrite() {
+    WithRawCallbackMethod_handleUpLRCRangeXorWrite() {
       ::grpc::Service::MarkMethodRawCallback(11,
           new ::grpc::internal::CallbackUnaryHandler< ::grpc::ByteBuffer, ::grpc::ByteBuffer>(
             [this](
-                   ::grpc::CallbackServerContext* context, const ::grpc::ByteBuffer* request, ::grpc::ByteBuffer* response) { return this->handleCordRangeXorWrite(context, request, response); }));
+                   ::grpc::CallbackServerContext* context, const ::grpc::ByteBuffer* request, ::grpc::ByteBuffer* response) { return this->handleUpLRCRangeXorWrite(context, request, response); }));
     }
-    ~WithRawCallbackMethod_handleCordRangeXorWrite() override {
+    ~WithRawCallbackMethod_handleUpLRCRangeXorWrite() override {
       BaseClassMustBeDerivedFromService(this);
     }
     // disable synchronous version of this method
-    ::grpc::Status handleCordRangeXorWrite(::grpc::ServerContext* /*context*/, const ::datanode_proto::CordRangeRWInfo* /*request*/, ::datanode_proto::RequestResult* /*response*/) override {
+    ::grpc::Status handleUpLRCRangeXorWrite(::grpc::ServerContext* /*context*/, const ::datanode_proto::UpLRCRangeRWInfo* /*request*/, ::datanode_proto::RequestResult* /*response*/) override {
       abort();
       return ::grpc::Status(::grpc::StatusCode::UNIMPLEMENTED, "");
     }
-    virtual ::grpc::ServerUnaryReactor* handleCordRangeXorWrite(
+    virtual ::grpc::ServerUnaryReactor* handleUpLRCRangeXorWrite(
       ::grpc::CallbackServerContext* /*context*/, const ::grpc::ByteBuffer* /*request*/, ::grpc::ByteBuffer* /*response*/)  { return nullptr; }
   };
   template <class BaseClass>
-  class WithRawCallbackMethod_handleCordDeltaBlob : public BaseClass {
+  class WithRawCallbackMethod_handleUpLRCDeltaBlob : public BaseClass {
    private:
     void BaseClassMustBeDerivedFromService(const Service* /*service*/) {}
    public:
-    WithRawCallbackMethod_handleCordDeltaBlob() {
+    WithRawCallbackMethod_handleUpLRCDeltaBlob() {
       ::grpc::Service::MarkMethodRawCallback(12,
           new ::grpc::internal::CallbackUnaryHandler< ::grpc::ByteBuffer, ::grpc::ByteBuffer>(
             [this](
-                   ::grpc::CallbackServerContext* context, const ::grpc::ByteBuffer* request, ::grpc::ByteBuffer* response) { return this->handleCordDeltaBlob(context, request, response); }));
+                   ::grpc::CallbackServerContext* context, const ::grpc::ByteBuffer* request, ::grpc::ByteBuffer* response) { return this->handleUpLRCDeltaBlob(context, request, response); }));
     }
-    ~WithRawCallbackMethod_handleCordDeltaBlob() override {
+    ~WithRawCallbackMethod_handleUpLRCDeltaBlob() override {
       BaseClassMustBeDerivedFromService(this);
     }
     // disable synchronous version of this method
-    ::grpc::Status handleCordDeltaBlob(::grpc::ServerContext* /*context*/, const ::datanode_proto::CordDeltaBlobInfo* /*request*/, ::datanode_proto::RequestResult* /*response*/) override {
+    ::grpc::Status handleUpLRCDeltaBlob(::grpc::ServerContext* /*context*/, const ::datanode_proto::UpLRCDeltaBlobInfo* /*request*/, ::datanode_proto::RequestResult* /*response*/) override {
       abort();
       return ::grpc::Status(::grpc::StatusCode::UNIMPLEMENTED, "");
     }
-    virtual ::grpc::ServerUnaryReactor* handleCordDeltaBlob(
+    virtual ::grpc::ServerUnaryReactor* handleUpLRCDeltaBlob(
       ::grpc::CallbackServerContext* /*context*/, const ::grpc::ByteBuffer* /*request*/, ::grpc::ByteBuffer* /*response*/)  { return nullptr; }
   };
   template <class BaseClass>
@@ -2182,112 +2182,112 @@ class datanodeService final {
     virtual ::grpc::Status StreamedhandleGetBreakdown(::grpc::ServerContext* context, ::grpc::ServerUnaryStreamer< ::datanode_proto::GetInfo,::datanode_proto::RequestResult>* server_unary_streamer) = 0;
   };
   template <class BaseClass>
-  class WithStreamedUnaryMethod_handleCordRangeRead : public BaseClass {
+  class WithStreamedUnaryMethod_handleUpLRCRangeRead : public BaseClass {
    private:
     void BaseClassMustBeDerivedFromService(const Service* /*service*/) {}
    public:
-    WithStreamedUnaryMethod_handleCordRangeRead() {
+    WithStreamedUnaryMethod_handleUpLRCRangeRead() {
       ::grpc::Service::MarkMethodStreamed(9,
         new ::grpc::internal::StreamedUnaryHandler<
-          ::datanode_proto::CordRangeRWInfo, ::datanode_proto::RequestResult>(
+          ::datanode_proto::UpLRCRangeRWInfo, ::datanode_proto::RequestResult>(
             [this](::grpc::ServerContext* context,
                    ::grpc::ServerUnaryStreamer<
-                     ::datanode_proto::CordRangeRWInfo, ::datanode_proto::RequestResult>* streamer) {
-                       return this->StreamedhandleCordRangeRead(context,
+                     ::datanode_proto::UpLRCRangeRWInfo, ::datanode_proto::RequestResult>* streamer) {
+                       return this->StreamedhandleUpLRCRangeRead(context,
                          streamer);
                   }));
     }
-    ~WithStreamedUnaryMethod_handleCordRangeRead() override {
+    ~WithStreamedUnaryMethod_handleUpLRCRangeRead() override {
       BaseClassMustBeDerivedFromService(this);
     }
     // disable regular version of this method
-    ::grpc::Status handleCordRangeRead(::grpc::ServerContext* /*context*/, const ::datanode_proto::CordRangeRWInfo* /*request*/, ::datanode_proto::RequestResult* /*response*/) override {
+    ::grpc::Status handleUpLRCRangeRead(::grpc::ServerContext* /*context*/, const ::datanode_proto::UpLRCRangeRWInfo* /*request*/, ::datanode_proto::RequestResult* /*response*/) override {
       abort();
       return ::grpc::Status(::grpc::StatusCode::UNIMPLEMENTED, "");
     }
     // replace default version of method with streamed unary
-    virtual ::grpc::Status StreamedhandleCordRangeRead(::grpc::ServerContext* context, ::grpc::ServerUnaryStreamer< ::datanode_proto::CordRangeRWInfo,::datanode_proto::RequestResult>* server_unary_streamer) = 0;
+    virtual ::grpc::Status StreamedhandleUpLRCRangeRead(::grpc::ServerContext* context, ::grpc::ServerUnaryStreamer< ::datanode_proto::UpLRCRangeRWInfo,::datanode_proto::RequestResult>* server_unary_streamer) = 0;
   };
   template <class BaseClass>
-  class WithStreamedUnaryMethod_handleCordRangeWrite : public BaseClass {
+  class WithStreamedUnaryMethod_handleUpLRCRangeWrite : public BaseClass {
    private:
     void BaseClassMustBeDerivedFromService(const Service* /*service*/) {}
    public:
-    WithStreamedUnaryMethod_handleCordRangeWrite() {
+    WithStreamedUnaryMethod_handleUpLRCRangeWrite() {
       ::grpc::Service::MarkMethodStreamed(10,
         new ::grpc::internal::StreamedUnaryHandler<
-          ::datanode_proto::CordRangeRWInfo, ::datanode_proto::RequestResult>(
+          ::datanode_proto::UpLRCRangeRWInfo, ::datanode_proto::RequestResult>(
             [this](::grpc::ServerContext* context,
                    ::grpc::ServerUnaryStreamer<
-                     ::datanode_proto::CordRangeRWInfo, ::datanode_proto::RequestResult>* streamer) {
-                       return this->StreamedhandleCordRangeWrite(context,
+                     ::datanode_proto::UpLRCRangeRWInfo, ::datanode_proto::RequestResult>* streamer) {
+                       return this->StreamedhandleUpLRCRangeWrite(context,
                          streamer);
                   }));
     }
-    ~WithStreamedUnaryMethod_handleCordRangeWrite() override {
+    ~WithStreamedUnaryMethod_handleUpLRCRangeWrite() override {
       BaseClassMustBeDerivedFromService(this);
     }
     // disable regular version of this method
-    ::grpc::Status handleCordRangeWrite(::grpc::ServerContext* /*context*/, const ::datanode_proto::CordRangeRWInfo* /*request*/, ::datanode_proto::RequestResult* /*response*/) override {
+    ::grpc::Status handleUpLRCRangeWrite(::grpc::ServerContext* /*context*/, const ::datanode_proto::UpLRCRangeRWInfo* /*request*/, ::datanode_proto::RequestResult* /*response*/) override {
       abort();
       return ::grpc::Status(::grpc::StatusCode::UNIMPLEMENTED, "");
     }
     // replace default version of method with streamed unary
-    virtual ::grpc::Status StreamedhandleCordRangeWrite(::grpc::ServerContext* context, ::grpc::ServerUnaryStreamer< ::datanode_proto::CordRangeRWInfo,::datanode_proto::RequestResult>* server_unary_streamer) = 0;
+    virtual ::grpc::Status StreamedhandleUpLRCRangeWrite(::grpc::ServerContext* context, ::grpc::ServerUnaryStreamer< ::datanode_proto::UpLRCRangeRWInfo,::datanode_proto::RequestResult>* server_unary_streamer) = 0;
   };
   template <class BaseClass>
-  class WithStreamedUnaryMethod_handleCordRangeXorWrite : public BaseClass {
+  class WithStreamedUnaryMethod_handleUpLRCRangeXorWrite : public BaseClass {
    private:
     void BaseClassMustBeDerivedFromService(const Service* /*service*/) {}
    public:
-    WithStreamedUnaryMethod_handleCordRangeXorWrite() {
+    WithStreamedUnaryMethod_handleUpLRCRangeXorWrite() {
       ::grpc::Service::MarkMethodStreamed(11,
         new ::grpc::internal::StreamedUnaryHandler<
-          ::datanode_proto::CordRangeRWInfo, ::datanode_proto::RequestResult>(
+          ::datanode_proto::UpLRCRangeRWInfo, ::datanode_proto::RequestResult>(
             [this](::grpc::ServerContext* context,
                    ::grpc::ServerUnaryStreamer<
-                     ::datanode_proto::CordRangeRWInfo, ::datanode_proto::RequestResult>* streamer) {
-                       return this->StreamedhandleCordRangeXorWrite(context,
+                     ::datanode_proto::UpLRCRangeRWInfo, ::datanode_proto::RequestResult>* streamer) {
+                       return this->StreamedhandleUpLRCRangeXorWrite(context,
                          streamer);
                   }));
     }
-    ~WithStreamedUnaryMethod_handleCordRangeXorWrite() override {
+    ~WithStreamedUnaryMethod_handleUpLRCRangeXorWrite() override {
       BaseClassMustBeDerivedFromService(this);
     }
     // disable regular version of this method
-    ::grpc::Status handleCordRangeXorWrite(::grpc::ServerContext* /*context*/, const ::datanode_proto::CordRangeRWInfo* /*request*/, ::datanode_proto::RequestResult* /*response*/) override {
+    ::grpc::Status handleUpLRCRangeXorWrite(::grpc::ServerContext* /*context*/, const ::datanode_proto::UpLRCRangeRWInfo* /*request*/, ::datanode_proto::RequestResult* /*response*/) override {
       abort();
       return ::grpc::Status(::grpc::StatusCode::UNIMPLEMENTED, "");
     }
     // replace default version of method with streamed unary
-    virtual ::grpc::Status StreamedhandleCordRangeXorWrite(::grpc::ServerContext* context, ::grpc::ServerUnaryStreamer< ::datanode_proto::CordRangeRWInfo,::datanode_proto::RequestResult>* server_unary_streamer) = 0;
+    virtual ::grpc::Status StreamedhandleUpLRCRangeXorWrite(::grpc::ServerContext* context, ::grpc::ServerUnaryStreamer< ::datanode_proto::UpLRCRangeRWInfo,::datanode_proto::RequestResult>* server_unary_streamer) = 0;
   };
   template <class BaseClass>
-  class WithStreamedUnaryMethod_handleCordDeltaBlob : public BaseClass {
+  class WithStreamedUnaryMethod_handleUpLRCDeltaBlob : public BaseClass {
    private:
     void BaseClassMustBeDerivedFromService(const Service* /*service*/) {}
    public:
-    WithStreamedUnaryMethod_handleCordDeltaBlob() {
+    WithStreamedUnaryMethod_handleUpLRCDeltaBlob() {
       ::grpc::Service::MarkMethodStreamed(12,
         new ::grpc::internal::StreamedUnaryHandler<
-          ::datanode_proto::CordDeltaBlobInfo, ::datanode_proto::RequestResult>(
+          ::datanode_proto::UpLRCDeltaBlobInfo, ::datanode_proto::RequestResult>(
             [this](::grpc::ServerContext* context,
                    ::grpc::ServerUnaryStreamer<
-                     ::datanode_proto::CordDeltaBlobInfo, ::datanode_proto::RequestResult>* streamer) {
-                       return this->StreamedhandleCordDeltaBlob(context,
+                     ::datanode_proto::UpLRCDeltaBlobInfo, ::datanode_proto::RequestResult>* streamer) {
+                       return this->StreamedhandleUpLRCDeltaBlob(context,
                          streamer);
                   }));
     }
-    ~WithStreamedUnaryMethod_handleCordDeltaBlob() override {
+    ~WithStreamedUnaryMethod_handleUpLRCDeltaBlob() override {
       BaseClassMustBeDerivedFromService(this);
     }
     // disable regular version of this method
-    ::grpc::Status handleCordDeltaBlob(::grpc::ServerContext* /*context*/, const ::datanode_proto::CordDeltaBlobInfo* /*request*/, ::datanode_proto::RequestResult* /*response*/) override {
+    ::grpc::Status handleUpLRCDeltaBlob(::grpc::ServerContext* /*context*/, const ::datanode_proto::UpLRCDeltaBlobInfo* /*request*/, ::datanode_proto::RequestResult* /*response*/) override {
       abort();
       return ::grpc::Status(::grpc::StatusCode::UNIMPLEMENTED, "");
     }
     // replace default version of method with streamed unary
-    virtual ::grpc::Status StreamedhandleCordDeltaBlob(::grpc::ServerContext* context, ::grpc::ServerUnaryStreamer< ::datanode_proto::CordDeltaBlobInfo,::datanode_proto::RequestResult>* server_unary_streamer) = 0;
+    virtual ::grpc::Status StreamedhandleUpLRCDeltaBlob(::grpc::ServerContext* context, ::grpc::ServerUnaryStreamer< ::datanode_proto::UpLRCDeltaBlobInfo,::datanode_proto::RequestResult>* server_unary_streamer) = 0;
   };
   template <class BaseClass>
   class WithStreamedUnaryMethod_handleDelete : public BaseClass {
@@ -2316,9 +2316,9 @@ class datanodeService final {
     // replace default version of method with streamed unary
     virtual ::grpc::Status StreamedhandleDelete(::grpc::ServerContext* context, ::grpc::ServerUnaryStreamer< ::datanode_proto::DelInfo,::datanode_proto::RequestResult>* server_unary_streamer) = 0;
   };
-  typedef WithStreamedUnaryMethod_checkalive<WithStreamedUnaryMethod_handleSet<WithStreamedUnaryMethod_handleAppend<WithStreamedUnaryMethod_handleMergeParity<WithStreamedUnaryMethod_handleMergeParityWithRep<WithStreamedUnaryMethod_handleRecovery<WithStreamedUnaryMethod_handleRecoveryBreakdown<WithStreamedUnaryMethod_handleGet<WithStreamedUnaryMethod_handleGetBreakdown<WithStreamedUnaryMethod_handleCordRangeRead<WithStreamedUnaryMethod_handleCordRangeWrite<WithStreamedUnaryMethod_handleCordRangeXorWrite<WithStreamedUnaryMethod_handleCordDeltaBlob<WithStreamedUnaryMethod_handleDelete<Service > > > > > > > > > > > > > > StreamedUnaryService;
+  typedef WithStreamedUnaryMethod_checkalive<WithStreamedUnaryMethod_handleSet<WithStreamedUnaryMethod_handleAppend<WithStreamedUnaryMethod_handleMergeParity<WithStreamedUnaryMethod_handleMergeParityWithRep<WithStreamedUnaryMethod_handleRecovery<WithStreamedUnaryMethod_handleRecoveryBreakdown<WithStreamedUnaryMethod_handleGet<WithStreamedUnaryMethod_handleGetBreakdown<WithStreamedUnaryMethod_handleUpLRCRangeRead<WithStreamedUnaryMethod_handleUpLRCRangeWrite<WithStreamedUnaryMethod_handleUpLRCRangeXorWrite<WithStreamedUnaryMethod_handleUpLRCDeltaBlob<WithStreamedUnaryMethod_handleDelete<Service > > > > > > > > > > > > > > StreamedUnaryService;
   typedef Service SplitStreamedService;
-  typedef WithStreamedUnaryMethod_checkalive<WithStreamedUnaryMethod_handleSet<WithStreamedUnaryMethod_handleAppend<WithStreamedUnaryMethod_handleMergeParity<WithStreamedUnaryMethod_handleMergeParityWithRep<WithStreamedUnaryMethod_handleRecovery<WithStreamedUnaryMethod_handleRecoveryBreakdown<WithStreamedUnaryMethod_handleGet<WithStreamedUnaryMethod_handleGetBreakdown<WithStreamedUnaryMethod_handleCordRangeRead<WithStreamedUnaryMethod_handleCordRangeWrite<WithStreamedUnaryMethod_handleCordRangeXorWrite<WithStreamedUnaryMethod_handleCordDeltaBlob<WithStreamedUnaryMethod_handleDelete<Service > > > > > > > > > > > > > > StreamedService;
+  typedef WithStreamedUnaryMethod_checkalive<WithStreamedUnaryMethod_handleSet<WithStreamedUnaryMethod_handleAppend<WithStreamedUnaryMethod_handleMergeParity<WithStreamedUnaryMethod_handleMergeParityWithRep<WithStreamedUnaryMethod_handleRecovery<WithStreamedUnaryMethod_handleRecoveryBreakdown<WithStreamedUnaryMethod_handleGet<WithStreamedUnaryMethod_handleGetBreakdown<WithStreamedUnaryMethod_handleUpLRCRangeRead<WithStreamedUnaryMethod_handleUpLRCRangeWrite<WithStreamedUnaryMethod_handleUpLRCRangeXorWrite<WithStreamedUnaryMethod_handleUpLRCDeltaBlob<WithStreamedUnaryMethod_handleDelete<Service > > > > > > > > > > > > > > StreamedService;
 };
 
 }  // namespace datanode_proto

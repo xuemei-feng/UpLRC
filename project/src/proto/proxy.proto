@@ -40,21 +40,21 @@ service proxyService {
   rpc deleteBlock(NodeAndBlock) returns (DelReply);
   // append
   rpc scheduleAppend2Datanode(AppendStripeDataPlacement) returns (SetReply);
-  // CoRD：客户端下发新数据；proxy 读旧、异或得 Δ、写新数据，Δ 暂存于本 cluster 的 datanode
-  rpc scheduleCordDataUpdate(CordDataUpdatePlacement) returns (SetReply);
-  rpc scheduleCordLocalParityApply(CordLocalParityBundle) returns (SetReply);
-  rpc cordLpHubSessionBegin(CordLpHubSessionBegin) returns (SetReply);
-  rpc cordLpHubPartialPush(CordLpHubPartialPush) returns (SetReply);
-  rpc cordLpComputePartialAndPush(CordLpComputePartialAndPush) returns (SetReply);
-  rpc cordLpApplyParityDelta(CordLpParityApplyDelta) returns (SetReply);
-  // CoRD：下发算法二生成的跨 proxy 传输计划（train_route + timeslot_schedule 的可序列化形式）
-  rpc scheduleCordTransferPlan(CordTransferPlan) returns (SetReply);
-  rpc cordPlanStartExecution(CordPlanKeyMsg) returns (SetReply);
-  rpc cordPlanJoinExecution(CordPlanKeyMsg) returns (SetReply);
-  // CoRD 跨 proxy：收集器聚合数据增量 / 校验块 XOR 落盘 / MST 转发数据增量
-  rpc cordPlanCollectorIngestDataDelta(CordPlanCollectorIngestReq) returns (SetReply);
-  rpc cordPlanApplyParityXorDelta(CordPlanApplyParityXorReq) returns (SetReply);
-  rpc cordPlanMstDataDeltaChunk(CordPlanMstDataDeltaReq) returns (SetReply);
+  // UpLRC：客户端下发新数据；proxy 读旧、异或得 Δ、写新数据，Δ 暂存于本 cluster 的 datanode
+  rpc scheduleUpLRCDataUpdate(UpLRCDataUpdatePlacement) returns (SetReply);
+  rpc scheduleUpLRCLocalParityApply(UpLRCLocalParityBundle) returns (SetReply);
+  rpc uplrcLpHubSessionBegin(UpLRCLpHubSessionBegin) returns (SetReply);
+  rpc uplrcLpHubPartialPush(UpLRCLpHubPartialPush) returns (SetReply);
+  rpc uplrcLpComputePartialAndPush(UpLRCLpComputePartialAndPush) returns (SetReply);
+  rpc uplrcLpApplyParityDelta(UpLRCLpParityApplyDelta) returns (SetReply);
+  // UpLRC：下发算法二生成的跨 proxy 传输计划（train_route + timeslot_schedule 的可序列化形式）
+  rpc scheduleUpLRCTransferPlan(UpLRCTransferPlan) returns (SetReply);
+  rpc uplrcPlanStartExecution(UpLRCPlanKeyMsg) returns (SetReply);
+  rpc uplrcPlanJoinExecution(UpLRCPlanKeyMsg) returns (SetReply);
+  // UpLRC 跨 proxy：收集器聚合数据增量 / 校验块 XOR 落盘 / MST 转发数据增量
+  rpc uplrcPlanCollectorIngestDataDelta(UpLRCPlanCollectorIngestReq) returns (SetReply);
+  rpc uplrcPlanApplyParityXorDelta(UpLRCPlanApplyParityXorReq) returns (SetReply);
+  rpc uplrcPlanMstDataDeltaChunk(UpLRCPlanMstDataDeltaReq) returns (SetReply);
   // get stripe
   rpc getBlocks(StripeAndBlockIDs) returns (GetReply);
 }
@@ -275,51 +275,51 @@ message AppendStripeDataPlacement{
   repeated int32 forward_cluster_ids = 17;  // 仅用于日志/调试
 }
 
-// 算法二链路类型，与 cord_alg2::TrainLinkKind 一致
-enum CordTransferLinkKind {
-  CORD_TRANSFER_STAR_DATA_TO_CENTER = 0;
-  CORD_TRANSFER_STAR_CENTER_TO_GLOBAL = 1;
-  CORD_TRANSFER_STAR_CENTER_TO_LOCAL = 2;
-  CORD_TRANSFER_MST_FORWARD = 3;
+// 算法二链路类型，与 uplrc_alg2::TrainLinkKind 一致
+enum UpLRCTransferLinkKind {
+  UPLRC_TRANSFER_STAR_DATA_TO_CENTER = 0;
+  UPLRC_TRANSFER_STAR_CENTER_TO_GLOBAL = 1;
+  UPLRC_TRANSFER_STAR_CENTER_TO_LOCAL = 2;
+  UPLRC_TRANSFER_MST_FORWARD = 3;
   // class3 并发：data 机架编码 local parity ΔP 后直发 local 机架
-  CORD_TRANSFER_STAR_DATA_TO_LOCAL = 4;
+  UPLRC_TRANSFER_STAR_DATA_TO_LOCAL = 4;
 }
 
-// 与 cord_alg2::CordDeltaPayloadKind 一致：线上是数据增量还是校验增量
-enum CordDeltaPayloadKind {
-  CORD_DELTA_DATA = 0;
-  CORD_DELTA_PARITY = 1;
+// 与 uplrc_alg2::UpLRCDeltaPayloadKind 一致：线上是数据增量还是校验增量
+enum UpLRCDeltaPayloadKind {
+  UPLRC_DELTA_DATA = 0;
+  UPLRC_DELTA_PARITY = 1;
 }
 
-message CordTransferClusterEndpoint {
+message UpLRCTransferClusterEndpoint {
   int32 cluster_id = 1;
   string proxy_ip = 2;
   int32 proxy_port = 3;
 }
 
-message CordTransferBlockPlacement {
+message UpLRCTransferBlockPlacement {
   int32 block_id = 1;
   string block_key = 2;
   string datanode_ip = 3;
   int32 datanode_port = 4;
 }
 
-message CordTransferDeltaBlobRef {
+message UpLRCTransferDeltaBlobRef {
   int32 cluster_id = 1;
-  string cord_plan_key = 2;
+  string uplrc_plan_key = 2;
   string delta_blob_key = 3;
   string delta_datanode_ip = 4;
   int32 delta_datanode_port = 5;
 }
 
 // 相交集一组内，收集器按字节 XOR 合并数据增量时的缓冲区长度（取组内各数据链路 payload 上界）
-message CordTransferGroupXorHint {
+message UpLRCTransferGroupXorHint {
   int32 group_index = 1;
   uint64 xor_accum_byte_length = 2;
 }
 
-// 每个 cluster 上 cord delta 拼接 blob 内，各数据块增量区间的起点与长度（与 notify cord_update 顺序一致）
-message CordTransferClusterDeltaLayout {
+// 每个 cluster 上 uplrc delta 拼接 blob 内，各数据块增量区间的起点与长度（与 notify uplrc_update 顺序一致）
+message UpLRCTransferClusterDeltaLayout {
   int32 cluster_id = 1;
   repeated int32 data_block_ids = 2;
   repeated uint64 delta_base_offset = 3;
@@ -327,19 +327,19 @@ message CordTransferClusterDeltaLayout {
 }
 
 // 单条传输步骤（对应一次时隙内选中的一条 train_route 链路片段）
-message CordTransferStep {
+message UpLRCTransferStep {
   int32 step_index = 1;
   int32 src_proxy_cluster_id = 2;
   int32 dst_proxy_cluster_id = 3;
   int32 src_block_id = 4;
   int32 dst_block_id = 5;
   uint64 payload_bytes = 6;
-  CordTransferLinkKind link_kind = 7;
+  UpLRCTransferLinkKind link_kind = 7;
   uint32 scheduled_slot = 8;
   int32 depends_on_step_index = 9;
   double estimated_transfer_sec = 10;
   int32 group_index = 11;
-  CordDeltaPayloadKind delta_payload_kind = 12;
+  UpLRCDeltaPayloadKind delta_payload_kind = 12;
   uint64 chunk_byte_offset = 13;
   uint64 chunk_byte_length = 14;
   // 仅 STAR_CENTER_TO_LOCAL 且矩阵/合并语义：只使用 map2group==该值的数据块增量参与编码；不设置则扇出用全量收集缓冲
@@ -350,21 +350,21 @@ message CordTransferStep {
   repeated int32 parity_merge_data_block_ids = 17;
 }
 
-message CordBlockStripeGroup {
+message UpLRCBlockStripeGroup {
   int32 block_id = 1;
   int32 stripe_group = 2;
 }
 
-// 本次 CoRD 更新中各数据块在块内的半开区间 [lo, hi_excl)（与 coordinator block_intervals 一致）；
+// 本次 UpLRC 更新中各数据块在块内的半开区间 [lo, hi_excl)（与 coordinator block_intervals 一致）；
 // 供 proxy 将「合并校验跨度」内的逻辑字节偏移映射到 ingest 缓冲区内的 packed 下标。
-message CordBlockHalfOpenSeg {
+message UpLRCBlockHalfOpenSeg {
   int32 block_id = 1;
   int32 lo = 2;
   int32 hi_excl = 3;
 }
 
 // LRC 矩阵编码条带（与 coordinator build_slice_plan + lrc_make_matrix 一致）
-message CordTransferEncodeMeta {
+message UpLRCTransferEncodeMeta {
   int32 encode_type = 1;         // ECProject::EncodeType
   int32 k = 2;
   int32 g_m = 3;
@@ -374,7 +374,7 @@ message CordTransferEncodeMeta {
 }
 
 // 每个收集器期望收到的数据块增量（按块分缓冲，供矩阵乘）
-message CordCollectorIngressExpect {
+message UpLRCCollectorIngressExpect {
   int32 group_index = 1;
   int32 collector_block_id = 2;
   repeated int32 src_data_block_ids = 3;
@@ -382,42 +382,42 @@ message CordCollectorIngressExpect {
 }
 
 // 各数据块在本次更新中相对于校验条带的切片（块内 [slice_offset, slice_offset+slice_len)）
-message CordDataStripDesc {
+message UpLRCDataStripDesc {
   int32 block_id = 1;
   int32 slice_offset = 2;
   int32 slice_len = 3;
 }
 
-message CordPlanKeyMsg {
+message UpLRCPlanKeyMsg {
   string plan_key = 1;
 }
 
-message CordIngressCacheRef {
+message UpLRCIngressCacheRef {
   int32 cluster_id = 1;
   string append_key = 2;
 }
 
-message CordTransferPlan {
+message UpLRCTransferPlan {
   int32 stripe_id = 1;
   string plan_key = 2;
   uint32 total_rounds = 3;
-  repeated CordTransferStep steps = 4;
+  repeated UpLRCTransferStep steps = 4;
   int32 slot_unit_bytes = 5;
   int32 k_datablock = 6;
-  repeated CordTransferClusterEndpoint cluster_endpoints = 7;
-  repeated CordTransferBlockPlacement block_placements = 8;
-  repeated CordTransferDeltaBlobRef delta_blob_refs = 9;
-  repeated CordTransferGroupXorHint group_xor_hints = 10;
-  repeated CordTransferClusterDeltaLayout cluster_delta_layouts = 11;
-  CordTransferEncodeMeta cord_encode_meta = 12;
-  repeated CordCollectorIngressExpect cord_collector_expects = 13;
-  repeated CordDataStripDesc cord_data_strip_descs = 14;
-  repeated CordBlockStripeGroup cord_block_stripe_groups = 15;
-  repeated CordBlockHalfOpenSeg cord_block_delta_segs = 16;
-  repeated CordIngressCacheRef ingress_cache_refs = 17;
+  repeated UpLRCTransferClusterEndpoint cluster_endpoints = 7;
+  repeated UpLRCTransferBlockPlacement block_placements = 8;
+  repeated UpLRCTransferDeltaBlobRef delta_blob_refs = 9;
+  repeated UpLRCTransferGroupXorHint group_xor_hints = 10;
+  repeated UpLRCTransferClusterDeltaLayout cluster_delta_layouts = 11;
+  UpLRCTransferEncodeMeta uplrc_encode_meta = 12;
+  repeated UpLRCCollectorIngressExpect uplrc_collector_expects = 13;
+  repeated UpLRCDataStripDesc uplrc_data_strip_descs = 14;
+  repeated UpLRCBlockStripeGroup uplrc_block_stripe_groups = 15;
+  repeated UpLRCBlockHalfOpenSeg uplrc_block_delta_segs = 16;
+  repeated UpLRCIngressCacheRef ingress_cache_refs = 17;
 }
 
-message CordPlanCollectorIngestReq {
+message UpLRCPlanCollectorIngestReq {
   string plan_key = 1;
   int32 group_index = 2;
   int32 collector_block_id = 3;
@@ -427,7 +427,7 @@ message CordPlanCollectorIngestReq {
   int32 src_data_block_id = 7;
 }
 
-message CordPlanApplyParityXorReq {
+message UpLRCPlanApplyParityXorReq {
   string plan_key = 1;
   int32 dst_block_id = 2;
   string block_key = 3;
@@ -438,7 +438,7 @@ message CordPlanApplyParityXorReq {
   bytes parity_delta_payload = 8;
 }
 
-message CordPlanMstDataDeltaReq {
+message UpLRCPlanMstDataDeltaReq {
   string plan_key = 1;
   int32 dst_proxy_cluster_id = 2;
   int32 dst_block_id = 3;
@@ -452,7 +452,7 @@ message CordPlanMstDataDeltaReq {
   int32 src_data_block_id = 11;
 }
 
-message CordIngressParityWrite {
+message UpLRCIngressParityWrite {
   int32 block_id = 1;
   string block_key = 2;
   string datanode_ip = 3;
@@ -460,7 +460,7 @@ message CordIngressParityWrite {
   int32 stripe_group = 5;
 }
 
-message CordDataUpdatePlacement {
+message UpLRCDataUpdatePlacement {
   string key = 1;
   int32 cluster_id = 2;
   int32 stripe_id = 3;
@@ -474,13 +474,13 @@ message CordDataUpdatePlacement {
   string delta_blob_key = 11;
   string delta_datanode_ip = 12;
   int32 delta_datanode_port = 13;
-  // CordXueLRC class 算法：ingress 机架内校验更新 / 缓存（由 coordinator 填写）
-  repeated CordIngressParityWrite cord_ingress_local_parity_writes = 14;
-  repeated CordIngressParityWrite cord_ingress_global_parity_writes = 15;
-  repeated int32 cord_ingress_cache_lp_stripe_groups = 16;
+  // UpLRC class 算法：ingress 机架内校验更新 / 缓存（由 coordinator 填写）
+  repeated UpLRCIngressParityWrite uplrc_ingress_local_parity_writes = 14;
+  repeated UpLRCIngressParityWrite uplrc_ingress_global_parity_writes = 15;
+  repeated int32 uplrc_ingress_cache_lp_stripe_groups = 16;
 }
 
-message CordLpDeltaFetch {
+message UpLRCLpDeltaFetch {
   string blob_key = 1;
   string datanode_ip = 2;
   int32 datanode_port = 3;
@@ -489,23 +489,23 @@ message CordLpDeltaFetch {
   int32 acc_offset = 6;
 }
 
-message CordLpWorkItem {
+message UpLRCLpWorkItem {
   int32 local_block_id = 1;
   string local_block_key = 2;
   string local_datanode_ip = 3;
   int32 local_datanode_port = 4;
   int32 parity_slice_offset = 5;
   int32 parity_slice_size = 6;
-  repeated CordLpDeltaFetch fetches = 7;
+  repeated UpLRCLpDeltaFetch fetches = 7;
 }
 
-message CordLocalParityBundle {
+message UpLRCLocalParityBundle {
   string key = 1;
   int32 stripe_id = 2;
-  repeated CordLpWorkItem items = 3;
+  repeated UpLRCLpWorkItem items = 3;
 }
 
-message CordLpHubSessionBegin {
+message UpLRCLpHubSessionBegin {
   string session_key = 1;
   int32 expected_partials = 2;
   int32 parity_slice_size = 3;
@@ -520,12 +520,12 @@ message CordLpHubSessionBegin {
   int32 hub_global_block_id = 12;
 }
 
-message CordLpHubPartialPush {
+message UpLRCLpHubPartialPush {
   string session_key = 1;
   bytes partial_payload = 2;
 }
 
-message CordLpComputePartialAndPush {
+message UpLRCLpComputePartialAndPush {
   string session_key = 1;
   string hub_proxy_ip = 2;
   int32 hub_proxy_port = 3;
@@ -533,10 +533,10 @@ message CordLpComputePartialAndPush {
   string delta_datanode_ip = 5;
   int32 delta_datanode_port = 6;
   int32 parity_slice_size = 7;
-  repeated CordLpDeltaFetch fetches = 8;
+  repeated UpLRCLpDeltaFetch fetches = 8;
 }
 
-message CordLpParityApplyDelta {
+message UpLRCLpParityApplyDelta {
   int32 stripe_id = 1;
   int32 local_block_id = 2;
   string local_block_key = 3;
@@ -549,11 +549,11 @@ message CordLpParityApplyDelta {
 
 message SetReply {
   bool ifcommit = 1;
-  // cordPlanJoinExecution：本 proxy 纯传输窗口（与 pure_xfer_wall_sec 一致），供 Coordinator 聚合 cluster_pure_xfer_span_wall_sec
-  bool cord_join_xfer_timing_present = 2;
-  double cord_join_pure_xfer_sec = 3;
-  int64 cord_join_pure_xfer_start_unix_ms = 4;
-  int64 cord_join_pure_xfer_end_unix_ms = 5;
+  // uplrcPlanJoinExecution：本 proxy 纯传输窗口（与 pure_xfer_wall_sec 一致），供 Coordinator 聚合 cluster_pure_xfer_span_wall_sec
+  bool uplrc_join_xfer_timing_present = 2;
+  double uplrc_join_pure_xfer_sec = 3;
+  int64 uplrc_join_pure_xfer_start_unix_ms = 4;
+  int64 uplrc_join_pure_xfer_end_unix_ms = 5;
 }
 message GetReply {
   bool getsuccess = 1;

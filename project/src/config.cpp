@@ -17,11 +17,11 @@ namespace ECProject
   {
     assert(BlockSize % UnitSize == 0 && "Error: BlockSize must be divisible by UnitSize");
     assert((AppendMode == "REP_MODE" || AppendMode == "UNILRC_MODE" || AppendMode == "CACHED_MODE") && "Error: AppendMode must be REP_MODE, UNILRC_MODE, or CACHED_MODE");
-    assert((CodeType == "UniLRC" || CodeType == "AzureLRC" || CodeType == "RandomLRC" || CodeType == "SplitParityLRC" || CodeType == "CordXueLRC" || CodeType == "OptimalLRC" || CodeType == "UniformLRC" || CodeType == "XueLRC") && "Error: CodeType must be UniLRC, AzureLRC, RandomLRC, SplitParityLRC, CordXueLRC, OptimalLRC, UniformLRC, or XueLRC");
+    assert((CodeType == "UniLRC" || CodeType == "AzureLRC" || CodeType == "RandomLRC" || CodeType == "SplitParityLRC" || CodeType == "UpLRC" || CodeType == "OptimalLRC" || CodeType == "UniformLRC" || CodeType == "UplrcLegacyLRC") && "Error: CodeType must be UniLRC, AzureLRC, RandomLRC, SplitParityLRC, UpLRC, OptimalLRC, UniformLRC, or UplrcLegacyLRC");
     assert(DatanodeNumPerCluster > 0 && "Error: DatanodeNumPerCluster must be greater than 0");
     assert(ClusterNum > 0 && "Error: ClusterNum must be greater than 0");
     assert(ClientStripeNum > 0 && "Error: ClientStripeNum must be greater than 0");
-    assert(CordRequestTimeoutSec > 0 && "Error: CordRequestTimeoutSec must be greater than 0");
+    assert(UpLRCRequestTimeoutSec > 0 && "Error: UpLRCRequestTimeoutSec must be greater than 0");
     if (CodeType == "UniLRC")
     {
       assert(DatanodeNumPerCluster > n / z && "Error: DatanodeNumPerCluster must be greater than n / z");
@@ -38,11 +38,11 @@ namespace ECProject
       assert(ClusterNum >= 6 && "Error: SplitParityLRC requires ClusterNum >= 6");
       assert(k <= 4 * (r + 1) && "Error: SplitParityLRC requires k <= 4*(r+1)");
     }
-    if (CodeType == "CordXueLRC")
+    if (CodeType == "UpLRC")
     {
-      assert(k % z == 0 && "Error: CordXueLRC requires k divisible by z");
+      assert(k % z == 0 && "Error: UpLRC requires k divisible by z");
       assert(DatanodeNumPerCluster > k / z + 1 && "Error: DatanodeNumPerCluster must be greater than k / z + 1");
-      assert(ClusterNum > z + 1 && "Error: CordXueLRC requires ClusterNum > z + 1");
+      assert(ClusterNum > z + 1 && "Error: UpLRC requires ClusterNum > z + 1");
     }
     if (CodeType == "OptimalLRC")
     {
@@ -54,12 +54,12 @@ namespace ECProject
       assert(DatanodeNumPerCluster > r && "Error: DatanodeNumPerCluster must be greater than r");
       assert(ClusterNum > ((((k + r) / z + 1) / (r + 1) + (bool)(((k + r) / z + 1) % (r + 1))) * ((k + r) % z)) + (((k + r) / z) / (r + 1) + (bool)(((k + r) / z) % (r + 1))) * (z - ((k + r) % z)) && "Error: ClusterNum must be greater than ((((k + r) / z + 1) / (r + 1) + (bool)(((k + r) / z + 1) % (r + 1))) * ((k + r) % z)) + (((k + r) / z) / (r + 1) + (bool)(((k + r) / z) % (r + 1))) * (z - ((k + r) % z))");
     }
-    if (CodeType == "XueLRC")
+    if (CodeType == "UplrcLegacyLRC")
     {
-      assert(r > 0 && z > 0 && "Error: XueLRC requires r > 0 and z > 0");
-      assert(k % r == 0 && "Error: XueLRC requires k % r == 0");
+      assert(r > 0 && z > 0 && "Error: UplrcLegacyLRC requires r > 0 and z > 0");
+      assert(k % r == 0 && "Error: UplrcLegacyLRC requires k % r == 0");
       assert(DatanodeNumPerCluster > z && "Error: DatanodeNumPerCluster should be greater than z");
-      assert(ClusterNum > 1 && "Error: XueLRC requires at least 2 clusters");
+      assert(ClusterNum > 1 && "Error: UplrcLegacyLRC requires at least 2 clusters");
     }
   }
 
@@ -128,8 +128,8 @@ namespace ECProject
       PlacementRandomSeed = std::stoull(elem->GetText());
     if (auto elem = root->FirstChildElement("ClientStripeNum"))
       ClientStripeNum = std::stoi(elem->GetText());
-    if (auto elem = root->FirstChildElement("CordRequestTimeoutSec"))
-      CordRequestTimeoutSec = std::stoi(elem->GetText());
+    if (auto elem = root->FirstChildElement("UpLRCRequestTimeoutSec"))
+      UpLRCRequestTimeoutSec = std::stoi(elem->GetText());
   }
 
   void Config::printConfigs() const
@@ -152,6 +152,6 @@ namespace ECProject
     std::cout << "  CodeType: " << CodeType << std::endl;
     std::cout << "  PlacementRandomSeed: " << PlacementRandomSeed << std::endl;
     std::cout << "  ClientStripeNum: " << ClientStripeNum << std::endl;
-    std::cout << "  CordRequestTimeoutSec: " << CordRequestTimeoutSec << " s" << std::endl;
+    std::cout << "  UpLRCRequestTimeoutSec: " << UpLRCRequestTimeoutSec << " s" << std::endl;
   }
 }

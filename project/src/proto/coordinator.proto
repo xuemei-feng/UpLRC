@@ -33,16 +33,16 @@ service coordinatorService {
   rpc uploadSubsetValue (RequestProxyIPPort) returns (ReplyProxyIPsPorts) {};
   // append
   rpc uploadAppendValue (RequestProxyIPPort) returns (ReplyProxyIPsPorts) {};
-  // xue update
-  rpc uploadXueUpdate (XueUpdateRequest) returns (ReplyProxyIPsPorts) {};
-  // CoRD：按块内更新区间相交性分组（算法一）
-  rpc uploadCordUpdate (CordUpdateRequest) returns (ReplyProxyIPsPorts) {};
-  // 客户端在各 cluster 完成 TCP delta 后调用，再向各 proxy 下发 CordTransferPlan（保证 delta blob 先就绪）
-  rpc cordPlanBeginTransfer (CordPlanKeyOnly) returns (RepIfSuccess) {};
+  // uplrc update
+  rpc uploadUplrcLegacyUpdate (UplrcLegacyUpdateRequest) returns (ReplyProxyIPsPorts) {};
+  // UpLRC：按块内更新区间相交性分组（算法一）
+  rpc uploadUpLRCUpdate (UpLRCUpdateRequest) returns (ReplyProxyIPsPorts) {};
+  // 客户端在各 cluster 完成 TCP delta 后调用，再向各 proxy 下发 UpLRCTransferPlan（保证 delta blob 先就绪）
+  rpc uplrcPlanBeginTransfer (UpLRCPlanKeyOnly) returns (RepIfSuccess) {};
   // 阻塞直至各相关 proxy 上本轮 plan 执行线程结束（真实墙钟语义）
-  rpc cordPlanWaitTransferComplete (CordPlanWaitRequest) returns (RepIfSuccess) {};
-  rpc uploadCordLocalParityApply (CordUpdateRequest) returns (RepIfSuccess) {};
-  rpc uploadCordLocalParityViaGlobalHub (CordUpdateRequest) returns (RepIfSuccess) {};
+  rpc uplrcPlanWaitTransferComplete (UpLRCPlanWaitRequest) returns (RepIfSuccess) {};
+  rpc uploadUpLRCLocalParityApply (UpLRCUpdateRequest) returns (RepIfSuccess) {};
+  rpc uploadUpLRCLocalParityViaGlobalHub (UpLRCUpdateRequest) returns (RepIfSuccess) {};
   // get
   rpc getValue(KeyAndClientIP) returns (RepIfGetSuccess) {};
 
@@ -122,17 +122,17 @@ message ReplyProxyIPsPorts {
   repeated int32 proxyports = 4;
   repeated uint64 cluster_slice_sizes = 5;
   repeated int32 group_ids = 6;
-  string cord_transfer_plan_key = 7;
-  // CordXueLRC SET：按物理机架切片时，告知 client 每个 slice 内的 block_id（升序）及个数
+  string uplrc_transfer_plan_key = 7;
+  // UpLRC SET：按物理机架切片时，告知 client 每个 slice 内的 block_id（升序）及个数
   repeated int32 slice_block_ids = 8;
   repeated int32 slice_block_counts = 9;
 }
 
-message CordPlanKeyOnly {
+message UpLRCPlanKeyOnly {
   string plan_key = 1;
 }
 
-message CordPlanWaitRequest {
+message UpLRCPlanWaitRequest {
   string plan_key = 1;
 }
 
@@ -145,10 +145,10 @@ message AskIfSuccess {
 
 message RepIfSuccess {
   bool ifcommit = 1;
-  // cordPlanWaitTransferComplete 耗时拆分（proxy 上报 pure_xfer + coordinator 侧 join 编排）
-  bool cord_xfer_timing_present = 2;
-  double cord_xfer_pure_sec = 3;  // 跨 cluster 真实传输（proxy wall span 或 max pure_xfer）
-  double cord_xfer_grpc_sec = 4;  // coordinator handler 中非 pure 部分（串行 join gRPC/编排）
+  // uplrcPlanWaitTransferComplete 耗时拆分（proxy 上报 pure_xfer + coordinator 侧 join 编排）
+  bool uplrc_xfer_timing_present = 2;
+  double uplrc_xfer_pure_sec = 3;  // 跨 cluster 真实传输（proxy wall span 或 max pure_xfer）
+  double uplrc_xfer_grpc_sec = 4;  // coordinator handler 中非 pure 部分（串行 join gRPC/编排）
 }
 
 // get
@@ -174,15 +174,15 @@ message LogicalRange {
   int32 logical_offset_end = 2;
 }
 
-message XueUpdateRequest {
+message UplrcLegacyUpdateRequest {
   string client_id = 1;
   int32 stripe_id = 2;
   // 多个不连续逻辑区间，均在同一条带内
   repeated LogicalRange ranges = 3;
 }
 
-// CoRD 策略：条带号 + 更新区间数（可选校验）+ 条带内逻辑地址空间上的更新半开区间
-message CordUpdateRequest {
+// UpLRC 策略：条带号 + 更新区间数（可选校验）+ 条带内逻辑地址空间上的更新半开区间
+message UpLRCUpdateRequest {
   string client_id = 1;
   int32 stripe_id = 2;
   // 与 append 相同语义：条带数据区 [0, k*BlockSize) 内的 [logical_offset_start, logical_offset_end)
@@ -190,7 +190,7 @@ message CordUpdateRequest {
   // 若 >0 则必须等于 update_intervals 个数；0 表示不校验
   int32 interval_count = 4;
   // 为 true 时第二阶段走「经全局校验 hub 聚合」的本地校验更新
-  bool cord_lp_use_global_hub = 5;
+  bool uplrc_lp_use_global_hub = 5;
 }
 
 // delete

@@ -3,7 +3,7 @@
 set -e
 set -o pipefail
 
-ROOT_DIR="/root/xue"
+ROOT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]:-$0}")" && pwd)"
 HOSTS_FILE="$ROOT_DIR/datanode_hosts"
 USER="root"
 FRESH_MODE=0

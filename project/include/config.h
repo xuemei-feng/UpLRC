@@ -8,7 +8,7 @@ namespace ECProject
 {
   const int DATANODE_PORT_SHIFT = 500;
   const int PROXY_PORT_SHIFT = 100;
-  /** CoRD proxy↔proxy delta 直连 TCP：grpc_port + PROXY_PORT_SHIFT + 此偏移（与 client 数据口 +100 错开） */
+  /** UpLRC proxy↔proxy delta 直连 TCP：grpc_port + PROXY_PORT_SHIFT + 此偏移（与 client 数据口 +100 错开） */
   const int PROXY_XFER_PORT_SUB_OFFSET = 1;
 
   class Config
@@ -42,8 +42,8 @@ namespace ECProject
     std::uint64_t PlacementRandomSeed = 0;
     /** SET 阶段放置的条带数；有效 stripe_id 为 0 .. ClientStripeNum-1 */
     int ClientStripeNum = 100;
-    /** CoRD 单次 update 总超时（秒），含 plan、upload、跨 cluster 传输等待 */
-    int CordRequestTimeoutSec = 2;
+    /** UpLRC 单次 update 总超时（秒），含 plan、upload、跨 cluster 传输等待 */
+    int UpLRCRequestTimeoutSec = 2;
   };
 }
 

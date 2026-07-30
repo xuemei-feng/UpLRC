@@ -7,7 +7,7 @@
 #include <grpcpp/grpcpp.h>
 #include <grpcpp/health_check_service_interface.h>
 #include <meta_definition.h>
-#include "cord_algorithm2.h"
+#include "uplrc_algorithm2.h"
 #include <map>
 #include <mutex>
 #include <random>
@@ -71,29 +71,29 @@ namespace ECProject
         grpc::ServerContext *context,
         const coordinator_proto::RequestProxyIPPort *keyValueSize,
         coordinator_proto::ReplyProxyIPsPorts *proxyIPPort) override;
-    grpc::Status uploadXueUpdate(
+    grpc::Status uploadUplrcLegacyUpdate(
         grpc::ServerContext *context,
-        const coordinator_proto::XueUpdateRequest *request,
+        const coordinator_proto::UplrcLegacyUpdateRequest *request,
         coordinator_proto::ReplyProxyIPsPorts *proxyIPPort) override;
-    grpc::Status uploadCordUpdate(
+    grpc::Status uploadUpLRCUpdate(
         grpc::ServerContext *context,
-        const coordinator_proto::CordUpdateRequest *request,
+        const coordinator_proto::UpLRCUpdateRequest *request,
         coordinator_proto::ReplyProxyIPsPorts *proxyIPPort) override;
-    grpc::Status cordPlanBeginTransfer(
+    grpc::Status uplrcPlanBeginTransfer(
         grpc::ServerContext *context,
-        const coordinator_proto::CordPlanKeyOnly *request,
+        const coordinator_proto::UpLRCPlanKeyOnly *request,
         coordinator_proto::RepIfSuccess *reply) override;
-    grpc::Status cordPlanWaitTransferComplete(
+    grpc::Status uplrcPlanWaitTransferComplete(
         grpc::ServerContext *context,
-        const coordinator_proto::CordPlanWaitRequest *request,
+        const coordinator_proto::UpLRCPlanWaitRequest *request,
         coordinator_proto::RepIfSuccess *reply) override;
-    grpc::Status uploadCordLocalParityApply(
+    grpc::Status uploadUpLRCLocalParityApply(
         grpc::ServerContext *context,
-        const coordinator_proto::CordUpdateRequest *request,
+        const coordinator_proto::UpLRCUpdateRequest *request,
         coordinator_proto::RepIfSuccess *reply) override;
-    grpc::Status uploadCordLocalParityViaGlobalHub(
+    grpc::Status uploadUpLRCLocalParityViaGlobalHub(
         grpc::ServerContext *context,
-        const coordinator_proto::CordUpdateRequest *request,
+        const coordinator_proto::UpLRCUpdateRequest *request,
         coordinator_proto::RepIfSuccess *reply) override;
     // get
     grpc::Status getValue(
@@ -177,11 +177,11 @@ namespace ECProject
     void initialize_uniform_lrc_stripe_placement(Stripe *stripe);
     void initialize_random_lrc_stripe_placement(Stripe *stripe);
     void initialize_split_parity_lrc_stripe_placement(Stripe *stripe);
-    void initialize_cord_xue_lrc_stripe_placement(Stripe *stripe);
-    void initialize_xue_tripe_placement(Stripe *stripe);
+    void initialize_uplrc_stripe_placement(Stripe *stripe);
+    void initialize_uplrc_legacy_stripe_placement(Stripe *stripe);
     void add_to_map(std::map<int, std::vector<int>> &map, int key, int value);
     std::vector<proxy_proto::AppendStripeDataPlacement> generate_add_plans(Stripe *stripe);
-    /** CordXueLRC SET：按物理机架(cluster)聚合 block，块序按 block_id 升序；key=stripe_id_cluster_id */
+    /** UpLRC SET：按物理机架(cluster)聚合 block，块序按 block_id 升序；key=stripe_id_cluster_id */
     std::vector<proxy_proto::AppendStripeDataPlacement> generate_add_plans_by_cluster(Stripe *stripe);
     std::vector<proxy_proto::AppendStripeDataPlacement> generate_sub_add_plans(Stripe *stripe, size_t subset_size);
     std::vector<proxy_proto::AppendStripeDataPlacement> generateAppendPlan(Stripe *stripe, int curr_logical_offset, int append_size);
@@ -193,22 +193,22 @@ namespace ECProject
     void update_stripe_info_in_node(int t_node_id, int stripe_id, int index);
     int getClusterAppendSize(Stripe *stripe, const std::map<int, std::pair<int, int>> &block_to_slice_sizes, int curr_group_id, int parity_slice_size);
     void notify_proxies_ready(const proxy_proto::AppendStripeDataPlacement &plan);
-    bool notify_proxies_cord_ready(const proxy_proto::CordDataUpdatePlacement &plan);
-    void notify_proxies_cord_transfer_plan(const proxy_proto::CordTransferPlan &plan);
+    bool notify_proxies_uplrc_ready(const proxy_proto::UpLRCDataUpdatePlacement &plan);
+    void notify_proxies_uplrc_transfer_plan(const proxy_proto::UpLRCTransferPlan &plan);
     /** 若 plan 仍在 pending 表，取出并 notify；已 auto-start 则返回 false。 */
-    bool cord_start_pending_transfer_plan(const std::string &plan_key);
-    void cord_register_auto_begin_session(const std::string &plan_key,
+    bool uplrc_start_pending_transfer_plan(const std::string &plan_key);
+    void uplrc_register_auto_begin_session(const std::string &plan_key,
                                           const std::vector<std::string> &delta_append_keys);
-    void cord_on_delta_key_committed(const std::string &delta_append_key);
-    void cord_clear_auto_begin_session(const std::string &plan_key);
-    /** CoRD 传输计划：写入矩阵编码元数据、收集器 ingress 期望与各数据块切片描述 */
-    void enrich_cord_transfer_plan_encoding(
+    void uplrc_on_delta_key_committed(const std::string &delta_append_key);
+    void uplrc_clear_auto_begin_session(const std::string &plan_key);
+    /** UpLRC 传输计划：写入矩阵编码元数据、收集器 ingress 期望与各数据块切片描述 */
+    void enrich_uplrc_transfer_plan_encoding(
         Stripe *stripe,
         const std::map<int, std::vector<std::pair<int, int>>> &block_intervals,
-        const cord_alg2::Algorithm2Result &alg2,
-        proxy_proto::CordTransferPlan *plan);
-    void notify_proxy_cord_local_parity_bundle(int target_cluster_id,
-                                                const proxy_proto::CordLocalParityBundle &bundle);
+        const uplrc_alg2::Algorithm2Result &alg2,
+        proxy_proto::UpLRCTransferPlan *plan);
+    void notify_proxy_uplrc_local_parity_bundle(int target_cluster_id,
+                                                const proxy_proto::UpLRCLocalParityBundle &bundle);
 
     std::vector<int> get_recovery_group_ids(std::string code_type, int k, int r, int z, int failed_block_id);
     void init_recovery_group_lookup_table();
@@ -243,16 +243,16 @@ namespace ECProject
 
   private:
     std::mutex m_mutex;
-    struct CordAutoBeginSession
+    struct UpLRCAutoBeginSession
     {
       std::unordered_set<std::string> pending_delta_keys;
       bool transfer_started = false;
     };
-    std::mutex m_cord_pending_mu;
-    std::unordered_map<std::string, proxy_proto::CordTransferPlan> m_cord_pending_plans;
-    std::unordered_map<std::string, std::vector<int>> m_cord_pending_plan_clusters;
-    std::unordered_map<std::string, CordAutoBeginSession> m_cord_auto_begin_sessions;
-    std::unordered_map<std::string, std::string> m_cord_append_key_to_plan_key;
+    std::mutex m_uplrc_pending_mu;
+    std::unordered_map<std::string, proxy_proto::UpLRCTransferPlan> m_uplrc_pending_plans;
+    std::unordered_map<std::string, std::vector<int>> m_uplrc_pending_plan_clusters;
+    std::unordered_map<std::string, UpLRCAutoBeginSession> m_uplrc_auto_begin_sessions;
+    std::unordered_map<std::string, std::string> m_uplrc_append_key_to_plan_key;
     std::condition_variable cv;
     std::map<std::string, std::unique_ptr<proxy_proto::proxyService::Stub>>
         m_proxy_ptrs;

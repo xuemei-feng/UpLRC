@@ -4,7 +4,9 @@ HOSTS_FILE="hosts"
 
 USER="root"
 
-REMOTE_COMMAND="cd /root/xue && sh unlimit.sh"
+ROOT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]:-$0}")" && pwd)"
+REMOTE_ROOT="${REMOTE_ROOT:-$ROOT_DIR}"
+REMOTE_COMMAND="cd ${REMOTE_ROOT} && sh unlimit.sh"
 
 PARALLEL=5
 

@@ -41,7 +41,7 @@ PROTOBUF_CONSTEXPR RequestResult::RequestResult(
   , /*decltype(_impl_.disk_io_start_time_)*/0
   , /*decltype(_impl_.disk_io_end_time_)*/0
   , /*decltype(_impl_.grpc_start_time_)*/0
-  , /*decltype(_impl_.cord_tcp_xfer_tag_)*/uint64_t{0u}
+  , /*decltype(_impl_.uplrc_tcp_xfer_tag_)*/uint64_t{0u}
   , /*decltype(_impl_._cached_size_)*/{}} {}
 struct RequestResultDefaultTypeInternal {
   PROTOBUF_CONSTEXPR RequestResultDefaultTypeInternal()
@@ -118,7 +118,7 @@ struct GetInfoDefaultTypeInternal {
   };
 };
 PROTOBUF_ATTRIBUTE_NO_DESTROY PROTOBUF_CONSTINIT PROTOBUF_ATTRIBUTE_INIT_PRIORITY1 GetInfoDefaultTypeInternal _GetInfo_default_instance_;
-PROTOBUF_CONSTEXPR CordRangeRWInfo::CordRangeRWInfo(
+PROTOBUF_CONSTEXPR UpLRCRangeRWInfo::UpLRCRangeRWInfo(
     ::_pbi::ConstantInitialized): _impl_{
     /*decltype(_impl_.block_key_)*/{&::_pbi::fixed_address_empty_string, ::_pbi::ConstantInitialized{}}
   , /*decltype(_impl_.proxy_ip_)*/{&::_pbi::fixed_address_empty_string, ::_pbi::ConstantInitialized{}}
@@ -127,31 +127,31 @@ PROTOBUF_CONSTEXPR CordRangeRWInfo::CordRangeRWInfo(
   , /*decltype(_impl_.range_length_)*/0
   , /*decltype(_impl_.proxy_port_)*/0
   , /*decltype(_impl_._cached_size_)*/{}} {}
-struct CordRangeRWInfoDefaultTypeInternal {
-  PROTOBUF_CONSTEXPR CordRangeRWInfoDefaultTypeInternal()
+struct UpLRCRangeRWInfoDefaultTypeInternal {
+  PROTOBUF_CONSTEXPR UpLRCRangeRWInfoDefaultTypeInternal()
       : _instance(::_pbi::ConstantInitialized{}) {}
-  ~CordRangeRWInfoDefaultTypeInternal() {}
+  ~UpLRCRangeRWInfoDefaultTypeInternal() {}
   union {
-    CordRangeRWInfo _instance;
+    UpLRCRangeRWInfo _instance;
   };
 };
-PROTOBUF_ATTRIBUTE_NO_DESTROY PROTOBUF_CONSTINIT PROTOBUF_ATTRIBUTE_INIT_PRIORITY1 CordRangeRWInfoDefaultTypeInternal _CordRangeRWInfo_default_instance_;
-PROTOBUF_CONSTEXPR CordDeltaBlobInfo::CordDeltaBlobInfo(
+PROTOBUF_ATTRIBUTE_NO_DESTROY PROTOBUF_CONSTINIT PROTOBUF_ATTRIBUTE_INIT_PRIORITY1 UpLRCRangeRWInfoDefaultTypeInternal _UpLRCRangeRWInfo_default_instance_;
+PROTOBUF_CONSTEXPR UpLRCDeltaBlobInfo::UpLRCDeltaBlobInfo(
     ::_pbi::ConstantInitialized): _impl_{
     /*decltype(_impl_.blob_key_)*/{&::_pbi::fixed_address_empty_string, ::_pbi::ConstantInitialized{}}
   , /*decltype(_impl_.proxy_ip_)*/{&::_pbi::fixed_address_empty_string, ::_pbi::ConstantInitialized{}}
   , /*decltype(_impl_.byte_length_)*/0
   , /*decltype(_impl_.proxy_port_)*/0
   , /*decltype(_impl_._cached_size_)*/{}} {}
-struct CordDeltaBlobInfoDefaultTypeInternal {
-  PROTOBUF_CONSTEXPR CordDeltaBlobInfoDefaultTypeInternal()
+struct UpLRCDeltaBlobInfoDefaultTypeInternal {
+  PROTOBUF_CONSTEXPR UpLRCDeltaBlobInfoDefaultTypeInternal()
       : _instance(::_pbi::ConstantInitialized{}) {}
-  ~CordDeltaBlobInfoDefaultTypeInternal() {}
+  ~UpLRCDeltaBlobInfoDefaultTypeInternal() {}
   union {
-    CordDeltaBlobInfo _instance;
+    UpLRCDeltaBlobInfo _instance;
   };
 };
-PROTOBUF_ATTRIBUTE_NO_DESTROY PROTOBUF_CONSTINIT PROTOBUF_ATTRIBUTE_INIT_PRIORITY1 CordDeltaBlobInfoDefaultTypeInternal _CordDeltaBlobInfo_default_instance_;
+PROTOBUF_ATTRIBUTE_NO_DESTROY PROTOBUF_CONSTINIT PROTOBUF_ATTRIBUTE_INIT_PRIORITY1 UpLRCDeltaBlobInfoDefaultTypeInternal _UpLRCDeltaBlobInfo_default_instance_;
 PROTOBUF_CONSTEXPR DelInfo::DelInfo(
     ::_pbi::ConstantInitialized): _impl_{
     /*decltype(_impl_.block_key_)*/{&::_pbi::fixed_address_empty_string, ::_pbi::ConstantInitialized{}}
@@ -189,7 +189,7 @@ const uint32_t TableStruct_datanode_2eproto::offsets[] PROTOBUF_SECTION_VARIABLE
   PROTOBUF_FIELD_OFFSET(::datanode_proto::RequestResult, _impl_.disk_io_start_time_),
   PROTOBUF_FIELD_OFFSET(::datanode_proto::RequestResult, _impl_.disk_io_end_time_),
   PROTOBUF_FIELD_OFFSET(::datanode_proto::RequestResult, _impl_.grpc_start_time_),
-  PROTOBUF_FIELD_OFFSET(::datanode_proto::RequestResult, _impl_.cord_tcp_xfer_tag_),
+  PROTOBUF_FIELD_OFFSET(::datanode_proto::RequestResult, _impl_.uplrc_tcp_xfer_tag_),
   ~0u,  // no _has_bits_
   PROTOBUF_FIELD_OFFSET(::datanode_proto::SetInfo, _internal_metadata_),
   ~0u,  // no _extensions_
@@ -233,27 +233,27 @@ const uint32_t TableStruct_datanode_2eproto::offsets[] PROTOBUF_SECTION_VARIABLE
   PROTOBUF_FIELD_OFFSET(::datanode_proto::GetInfo, _impl_.proxy_ip_),
   PROTOBUF_FIELD_OFFSET(::datanode_proto::GetInfo, _impl_.proxy_port_),
   ~0u,  // no _has_bits_
-  PROTOBUF_FIELD_OFFSET(::datanode_proto::CordRangeRWInfo, _internal_metadata_),
+  PROTOBUF_FIELD_OFFSET(::datanode_proto::UpLRCRangeRWInfo, _internal_metadata_),
   ~0u,  // no _extensions_
   ~0u,  // no _oneof_case_
   ~0u,  // no _weak_field_map_
   ~0u,  // no _inlined_string_donated_
-  PROTOBUF_FIELD_OFFSET(::datanode_proto::CordRangeRWInfo, _impl_.block_key_),
-  PROTOBUF_FIELD_OFFSET(::datanode_proto::CordRangeRWInfo, _impl_.block_id_),
-  PROTOBUF_FIELD_OFFSET(::datanode_proto::CordRangeRWInfo, _impl_.range_offset_),
-  PROTOBUF_FIELD_OFFSET(::datanode_proto::CordRangeRWInfo, _impl_.range_length_),
-  PROTOBUF_FIELD_OFFSET(::datanode_proto::CordRangeRWInfo, _impl_.proxy_ip_),
-  PROTOBUF_FIELD_OFFSET(::datanode_proto::CordRangeRWInfo, _impl_.proxy_port_),
+  PROTOBUF_FIELD_OFFSET(::datanode_proto::UpLRCRangeRWInfo, _impl_.block_key_),
+  PROTOBUF_FIELD_OFFSET(::datanode_proto::UpLRCRangeRWInfo, _impl_.block_id_),
+  PROTOBUF_FIELD_OFFSET(::datanode_proto::UpLRCRangeRWInfo, _impl_.range_offset_),
+  PROTOBUF_FIELD_OFFSET(::datanode_proto::UpLRCRangeRWInfo, _impl_.range_length_),
+  PROTOBUF_FIELD_OFFSET(::datanode_proto::UpLRCRangeRWInfo, _impl_.proxy_ip_),
+  PROTOBUF_FIELD_OFFSET(::datanode_proto::UpLRCRangeRWInfo, _impl_.proxy_port_),
   ~0u,  // no _has_bits_
-  PROTOBUF_FIELD_OFFSET(::datanode_proto::CordDeltaBlobInfo, _internal_metadata_),
+  PROTOBUF_FIELD_OFFSET(::datanode_proto::UpLRCDeltaBlobInfo, _internal_metadata_),
   ~0u,  // no _extensions_
   ~0u,  // no _oneof_case_
   ~0u,  // no _weak_field_map_
   ~0u,  // no _inlined_string_donated_
-  PROTOBUF_FIELD_OFFSET(::datanode_proto::CordDeltaBlobInfo, _impl_.blob_key_),
-  PROTOBUF_FIELD_OFFSET(::datanode_proto::CordDeltaBlobInfo, _impl_.byte_length_),
-  PROTOBUF_FIELD_OFFSET(::datanode_proto::CordDeltaBlobInfo, _impl_.proxy_ip_),
-  PROTOBUF_FIELD_OFFSET(::datanode_proto::CordDeltaBlobInfo, _impl_.proxy_port_),
+  PROTOBUF_FIELD_OFFSET(::datanode_proto::UpLRCDeltaBlobInfo, _impl_.blob_key_),
+  PROTOBUF_FIELD_OFFSET(::datanode_proto::UpLRCDeltaBlobInfo, _impl_.byte_length_),
+  PROTOBUF_FIELD_OFFSET(::datanode_proto::UpLRCDeltaBlobInfo, _impl_.proxy_ip_),
+  PROTOBUF_FIELD_OFFSET(::datanode_proto::UpLRCDeltaBlobInfo, _impl_.proxy_port_),
   ~0u,  // no _has_bits_
   PROTOBUF_FIELD_OFFSET(::datanode_proto::DelInfo, _internal_metadata_),
   ~0u,  // no _extensions_
@@ -269,8 +269,8 @@ static const ::_pbi::MigrationSchema schemas[] PROTOBUF_SECTION_VARIABLE(protode
   { 31, -1, -1, sizeof(::datanode_proto::AppendInfo)},
   { 42, -1, -1, sizeof(::datanode_proto::MergeParityInfo)},
   { 50, -1, -1, sizeof(::datanode_proto::GetInfo)},
-  { 61, -1, -1, sizeof(::datanode_proto::CordRangeRWInfo)},
-  { 73, -1, -1, sizeof(::datanode_proto::CordDeltaBlobInfo)},
+  { 61, -1, -1, sizeof(::datanode_proto::UpLRCRangeRWInfo)},
+  { 73, -1, -1, sizeof(::datanode_proto::UpLRCDeltaBlobInfo)},
   { 83, -1, -1, sizeof(::datanode_proto::DelInfo)},
 };
 
@@ -281,68 +281,68 @@ static const ::_pb::Message* const file_default_instances[] = {
   &::datanode_proto::_AppendInfo_default_instance_._instance,
   &::datanode_proto::_MergeParityInfo_default_instance_._instance,
   &::datanode_proto::_GetInfo_default_instance_._instance,
-  &::datanode_proto::_CordRangeRWInfo_default_instance_._instance,
-  &::datanode_proto::_CordDeltaBlobInfo_default_instance_._instance,
+  &::datanode_proto::_UpLRCRangeRWInfo_default_instance_._instance,
+  &::datanode_proto::_UpLRCDeltaBlobInfo_default_instance_._instance,
   &::datanode_proto::_DelInfo_default_instance_._instance,
 };
 
 const char descriptor_table_protodef_datanode_2eproto[] PROTOBUF_SECTION_VARIABLE(protodesc_cold) =
   "\n\016datanode.proto\022\016datanode_proto\"\035\n\rChec"
-  "kaliveCMD\022\014\n\004name\030\001 \001(\t\"\242\001\n\rRequestResul"
+  "kaliveCMD\022\014\n\004name\030\001 \001(\t\"\243\001\n\rRequestResul"
   "t\022\017\n\007message\030\001 \001(\010\022\026\n\016valuesizebytes\030\002 \001"
   "(\005\022\032\n\022disk_io_start_time\030\003 \001(\001\022\030\n\020disk_i"
   "o_end_time\030\004 \001(\001\022\027\n\017grpc_start_time\030\005 \001("
-  "\001\022\031\n\021cord_tcp_xfer_tag\030\006 \001(\004\"x\n\007SetInfo\022"
-  "\021\n\tblock_key\030\001 \001(\t\022\022\n\nblock_size\030\002 \001(\005\022\020"
-  "\n\010block_id\030\003 \001(\005\022\020\n\010proxy_ip\030\004 \001(\t\022\022\n\npr"
-  "oxy_port\030\005 \001(\005\022\016\n\006ispull\030\006 \001(\010\"t\n\nAppend"
-  "Info\022\021\n\tblock_key\030\001 \001(\t\022\020\n\010block_id\030\002 \001("
-  "\005\022\023\n\013append_size\030\003 \001(\005\022\025\n\rappend_offset\030"
-  "\004 \001(\005\022\025\n\ris_serialized\030\005 \001(\010\"6\n\017MergePar"
-  "ityInfo\022\021\n\tblock_key\030\001 \001(\t\022\020\n\010block_id\030\002"
-  " \001(\005\"h\n\007GetInfo\022\021\n\tblock_key\030\001 \001(\t\022\022\n\nbl"
-  "ock_size\030\002 \001(\005\022\020\n\010block_id\030\003 \001(\005\022\020\n\010prox"
-  "y_ip\030\004 \001(\t\022\022\n\nproxy_port\030\005 \001(\005\"\210\001\n\017CordR"
-  "angeRWInfo\022\021\n\tblock_key\030\001 \001(\t\022\020\n\010block_i"
-  "d\030\002 \001(\005\022\024\n\014range_offset\030\003 \001(\005\022\024\n\014range_l"
-  "ength\030\004 \001(\005\022\020\n\010proxy_ip\030\005 \001(\t\022\022\n\nproxy_p"
-  "ort\030\006 \001(\005\"`\n\021CordDeltaBlobInfo\022\020\n\010blob_k"
-  "ey\030\001 \001(\t\022\023\n\013byte_length\030\002 \001(\005\022\020\n\010proxy_i"
-  "p\030\003 \001(\t\022\022\n\nproxy_port\030\004 \001(\005\"\034\n\007DelInfo\022\021"
-  "\n\tblock_key\030\001 \001(\t2\211\t\n\017datanodeService\022J\n"
-  "\ncheckalive\022\035.datanode_proto.CheckaliveC"
-  "MD\032\035.datanode_proto.RequestResult\022C\n\than"
-  "dleSet\022\027.datanode_proto.SetInfo\032\035.datano"
-  "de_proto.RequestResult\022I\n\014handleAppend\022\032"
-  ".datanode_proto.AppendInfo\032\035.datanode_pr"
-  "oto.RequestResult\022S\n\021handleMergeParity\022\037"
-  ".datanode_proto.MergeParityInfo\032\035.datano"
-  "de_proto.RequestResult\022Z\n\030handleMergePar"
-  "ityWithRep\022\037.datanode_proto.MergeParityI"
-  "nfo\032\035.datanode_proto.RequestResult\022P\n\016ha"
-  "ndleRecovery\022\037.datanode_proto.MergeParit"
-  "yInfo\032\035.datanode_proto.RequestResult\022Y\n\027"
-  "handleRecoveryBreakdown\022\037.datanode_proto"
-  ".MergeParityInfo\032\035.datanode_proto.Reques"
-  "tResult\022C\n\thandleGet\022\027.datanode_proto.Ge"
-  "tInfo\032\035.datanode_proto.RequestResult\022L\n\022"
-  "handleGetBreakdown\022\027.datanode_proto.GetI"
-  "nfo\032\035.datanode_proto.RequestResult\022U\n\023ha"
-  "ndleCordRangeRead\022\037.datanode_proto.CordR"
-  "angeRWInfo\032\035.datanode_proto.RequestResul"
-  "t\022V\n\024handleCordRangeWrite\022\037.datanode_pro"
-  "to.CordRangeRWInfo\032\035.datanode_proto.Requ"
-  "estResult\022Y\n\027handleCordRangeXorWrite\022\037.d"
-  "atanode_proto.CordRangeRWInfo\032\035.datanode"
-  "_proto.RequestResult\022W\n\023handleCordDeltaB"
-  "lob\022!.datanode_proto.CordDeltaBlobInfo\032\035"
-  ".datanode_proto.RequestResult\022F\n\014handleD"
-  "elete\022\027.datanode_proto.DelInfo\032\035.datanod"
-  "e_proto.RequestResultb\006proto3"
+  "\001\022\032\n\022uplrc_tcp_xfer_tag\030\006 \001(\004\"x\n\007SetInfo"
+  "\022\021\n\tblock_key\030\001 \001(\t\022\022\n\nblock_size\030\002 \001(\005\022"
+  "\020\n\010block_id\030\003 \001(\005\022\020\n\010proxy_ip\030\004 \001(\t\022\022\n\np"
+  "roxy_port\030\005 \001(\005\022\016\n\006ispull\030\006 \001(\010\"t\n\nAppen"
+  "dInfo\022\021\n\tblock_key\030\001 \001(\t\022\020\n\010block_id\030\002 \001"
+  "(\005\022\023\n\013append_size\030\003 \001(\005\022\025\n\rappend_offset"
+  "\030\004 \001(\005\022\025\n\ris_serialized\030\005 \001(\010\"6\n\017MergePa"
+  "rityInfo\022\021\n\tblock_key\030\001 \001(\t\022\020\n\010block_id\030"
+  "\002 \001(\005\"h\n\007GetInfo\022\021\n\tblock_key\030\001 \001(\t\022\022\n\nb"
+  "lock_size\030\002 \001(\005\022\020\n\010block_id\030\003 \001(\005\022\020\n\010pro"
+  "xy_ip\030\004 \001(\t\022\022\n\nproxy_port\030\005 \001(\005\"\211\001\n\020UpLR"
+  "CRangeRWInfo\022\021\n\tblock_key\030\001 \001(\t\022\020\n\010block"
+  "_id\030\002 \001(\005\022\024\n\014range_offset\030\003 \001(\005\022\024\n\014range"
+  "_length\030\004 \001(\005\022\020\n\010proxy_ip\030\005 \001(\t\022\022\n\nproxy"
+  "_port\030\006 \001(\005\"a\n\022UpLRCDeltaBlobInfo\022\020\n\010blo"
+  "b_key\030\001 \001(\t\022\023\n\013byte_length\030\002 \001(\005\022\020\n\010prox"
+  "y_ip\030\003 \001(\t\022\022\n\nproxy_port\030\004 \001(\005\"\034\n\007DelInf"
+  "o\022\021\n\tblock_key\030\001 \001(\t2\221\t\n\017datanodeService"
+  "\022J\n\ncheckalive\022\035.datanode_proto.Checkali"
+  "veCMD\032\035.datanode_proto.RequestResult\022C\n\t"
+  "handleSet\022\027.datanode_proto.SetInfo\032\035.dat"
+  "anode_proto.RequestResult\022I\n\014handleAppen"
+  "d\022\032.datanode_proto.AppendInfo\032\035.datanode"
+  "_proto.RequestResult\022S\n\021handleMergeParit"
+  "y\022\037.datanode_proto.MergeParityInfo\032\035.dat"
+  "anode_proto.RequestResult\022Z\n\030handleMerge"
+  "ParityWithRep\022\037.datanode_proto.MergePari"
+  "tyInfo\032\035.datanode_proto.RequestResult\022P\n"
+  "\016handleRecovery\022\037.datanode_proto.MergePa"
+  "rityInfo\032\035.datanode_proto.RequestResult\022"
+  "Y\n\027handleRecoveryBreakdown\022\037.datanode_pr"
+  "oto.MergeParityInfo\032\035.datanode_proto.Req"
+  "uestResult\022C\n\thandleGet\022\027.datanode_proto"
+  ".GetInfo\032\035.datanode_proto.RequestResult\022"
+  "L\n\022handleGetBreakdown\022\027.datanode_proto.G"
+  "etInfo\032\035.datanode_proto.RequestResult\022W\n"
+  "\024handleUpLRCRangeRead\022 .datanode_proto.U"
+  "pLRCRangeRWInfo\032\035.datanode_proto.Request"
+  "Result\022X\n\025handleUpLRCRangeWrite\022 .datano"
+  "de_proto.UpLRCRangeRWInfo\032\035.datanode_pro"
+  "to.RequestResult\022[\n\030handleUpLRCRangeXorW"
+  "rite\022 .datanode_proto.UpLRCRangeRWInfo\032\035"
+  ".datanode_proto.RequestResult\022Y\n\024handleU"
+  "pLRCDeltaBlob\022\".datanode_proto.UpLRCDelt"
+  "aBlobInfo\032\035.datanode_proto.RequestResult"
+  "\022F\n\014handleDelete\022\027.datanode_proto.DelInf"
+  "o\032\035.datanode_proto.RequestResultb\006proto3"
   ;
 static ::_pbi::once_flag descriptor_table_datanode_2eproto_once;
 const ::_pbi::DescriptorTable descriptor_table_datanode_2eproto = {
-    false, false, 2069, descriptor_table_protodef_datanode_2eproto,
+    false, false, 2080, descriptor_table_protodef_datanode_2eproto,
     "datanode.proto",
     &descriptor_table_datanode_2eproto_once, nullptr, 0, 9,
     schemas, file_default_instances, TableStruct_datanode_2eproto::offsets,
@@ -581,13 +581,13 @@ RequestResult::RequestResult(const RequestResult& from)
     , decltype(_impl_.disk_io_start_time_){}
     , decltype(_impl_.disk_io_end_time_){}
     , decltype(_impl_.grpc_start_time_){}
-    , decltype(_impl_.cord_tcp_xfer_tag_){}
+    , decltype(_impl_.uplrc_tcp_xfer_tag_){}
     , /*decltype(_impl_._cached_size_)*/{}};
 
   _internal_metadata_.MergeFrom<::PROTOBUF_NAMESPACE_ID::UnknownFieldSet>(from._internal_metadata_);
   ::memcpy(&_impl_.message_, &from._impl_.message_,
-    static_cast<size_t>(reinterpret_cast<char*>(&_impl_.cord_tcp_xfer_tag_) -
-    reinterpret_cast<char*>(&_impl_.message_)) + sizeof(_impl_.cord_tcp_xfer_tag_));
+    static_cast<size_t>(reinterpret_cast<char*>(&_impl_.uplrc_tcp_xfer_tag_) -
+    reinterpret_cast<char*>(&_impl_.message_)) + sizeof(_impl_.uplrc_tcp_xfer_tag_));
   // @@protoc_insertion_point(copy_constructor:datanode_proto.RequestResult)
 }
 
@@ -601,7 +601,7 @@ inline void RequestResult::SharedCtor(
     , decltype(_impl_.disk_io_start_time_){0}
     , decltype(_impl_.disk_io_end_time_){0}
     , decltype(_impl_.grpc_start_time_){0}
-    , decltype(_impl_.cord_tcp_xfer_tag_){uint64_t{0u}}
+    , decltype(_impl_.uplrc_tcp_xfer_tag_){uint64_t{0u}}
     , /*decltype(_impl_._cached_size_)*/{}
   };
 }
@@ -630,8 +630,8 @@ void RequestResult::Clear() {
   (void) cached_has_bits;
 
   ::memset(&_impl_.message_, 0, static_cast<size_t>(
-      reinterpret_cast<char*>(&_impl_.cord_tcp_xfer_tag_) -
-      reinterpret_cast<char*>(&_impl_.message_)) + sizeof(_impl_.cord_tcp_xfer_tag_));
+      reinterpret_cast<char*>(&_impl_.uplrc_tcp_xfer_tag_) -
+      reinterpret_cast<char*>(&_impl_.message_)) + sizeof(_impl_.uplrc_tcp_xfer_tag_));
   _internal_metadata_.Clear<::PROTOBUF_NAMESPACE_ID::UnknownFieldSet>();
 }
 
@@ -681,10 +681,10 @@ const char* RequestResult::_InternalParse(const char* ptr, ::_pbi::ParseContext*
         } else
           goto handle_unusual;
         continue;
-      // uint64 cord_tcp_xfer_tag = 6;
+      // uint64 uplrc_tcp_xfer_tag = 6;
       case 6:
         if (PROTOBUF_PREDICT_TRUE(static_cast<uint8_t>(tag) == 48)) {
-          _impl_.cord_tcp_xfer_tag_ = ::PROTOBUF_NAMESPACE_ID::internal::ReadVarint64(&ptr);
+          _impl_.uplrc_tcp_xfer_tag_ = ::PROTOBUF_NAMESPACE_ID::internal::ReadVarint64(&ptr);
           CHK_(ptr);
         } else
           goto handle_unusual;
@@ -760,10 +760,10 @@ uint8_t* RequestResult::_InternalSerialize(
     target = ::_pbi::WireFormatLite::WriteDoubleToArray(5, this->_internal_grpc_start_time(), target);
   }
 
-  // uint64 cord_tcp_xfer_tag = 6;
-  if (this->_internal_cord_tcp_xfer_tag() != 0) {
+  // uint64 uplrc_tcp_xfer_tag = 6;
+  if (this->_internal_uplrc_tcp_xfer_tag() != 0) {
     target = stream->EnsureSpace(target);
-    target = ::_pbi::WireFormatLite::WriteUInt64ToArray(6, this->_internal_cord_tcp_xfer_tag(), target);
+    target = ::_pbi::WireFormatLite::WriteUInt64ToArray(6, this->_internal_uplrc_tcp_xfer_tag(), target);
   }
 
   if (PROTOBUF_PREDICT_FALSE(_internal_metadata_.have_unknown_fields())) {
@@ -819,9 +819,9 @@ size_t RequestResult::ByteSizeLong() const {
     total_size += 1 + 8;
   }
 
-  // uint64 cord_tcp_xfer_tag = 6;
-  if (this->_internal_cord_tcp_xfer_tag() != 0) {
-    total_size += ::_pbi::WireFormatLite::UInt64SizePlusOne(this->_internal_cord_tcp_xfer_tag());
+  // uint64 uplrc_tcp_xfer_tag = 6;
+  if (this->_internal_uplrc_tcp_xfer_tag() != 0) {
+    total_size += ::_pbi::WireFormatLite::UInt64SizePlusOne(this->_internal_uplrc_tcp_xfer_tag());
   }
 
   return MaybeComputeUnknownFieldsSize(total_size, &_impl_._cached_size_);
@@ -869,8 +869,8 @@ void RequestResult::MergeImpl(::PROTOBUF_NAMESPACE_ID::Message& to_msg, const ::
   if (raw_grpc_start_time != 0) {
     _this->_internal_set_grpc_start_time(from._internal_grpc_start_time());
   }
-  if (from._internal_cord_tcp_xfer_tag() != 0) {
-    _this->_internal_set_cord_tcp_xfer_tag(from._internal_cord_tcp_xfer_tag());
+  if (from._internal_uplrc_tcp_xfer_tag() != 0) {
+    _this->_internal_set_uplrc_tcp_xfer_tag(from._internal_uplrc_tcp_xfer_tag());
   }
   _this->_internal_metadata_.MergeFrom<::PROTOBUF_NAMESPACE_ID::UnknownFieldSet>(from._internal_metadata_);
 }
@@ -890,8 +890,8 @@ void RequestResult::InternalSwap(RequestResult* other) {
   using std::swap;
   _internal_metadata_.InternalSwap(&other->_internal_metadata_);
   ::PROTOBUF_NAMESPACE_ID::internal::memswap<
-      PROTOBUF_FIELD_OFFSET(RequestResult, _impl_.cord_tcp_xfer_tag_)
-      + sizeof(RequestResult::_impl_.cord_tcp_xfer_tag_)
+      PROTOBUF_FIELD_OFFSET(RequestResult, _impl_.uplrc_tcp_xfer_tag_)
+      + sizeof(RequestResult::_impl_.uplrc_tcp_xfer_tag_)
       - PROTOBUF_FIELD_OFFSET(RequestResult, _impl_.message_)>(
           reinterpret_cast<char*>(&_impl_.message_),
           reinterpret_cast<char*>(&other->_impl_.message_));
@@ -2144,19 +2144,19 @@ void GetInfo::InternalSwap(GetInfo* other) {
 
 // ===================================================================
 
-class CordRangeRWInfo::_Internal {
+class UpLRCRangeRWInfo::_Internal {
  public:
 };
 
-CordRangeRWInfo::CordRangeRWInfo(::PROTOBUF_NAMESPACE_ID::Arena* arena,
+UpLRCRangeRWInfo::UpLRCRangeRWInfo(::PROTOBUF_NAMESPACE_ID::Arena* arena,
                          bool is_message_owned)
   : ::PROTOBUF_NAMESPACE_ID::Message(arena, is_message_owned) {
   SharedCtor(arena, is_message_owned);
-  // @@protoc_insertion_point(arena_constructor:datanode_proto.CordRangeRWInfo)
+  // @@protoc_insertion_point(arena_constructor:datanode_proto.UpLRCRangeRWInfo)
 }
-CordRangeRWInfo::CordRangeRWInfo(const CordRangeRWInfo& from)
+UpLRCRangeRWInfo::UpLRCRangeRWInfo(const UpLRCRangeRWInfo& from)
   : ::PROTOBUF_NAMESPACE_ID::Message() {
-  CordRangeRWInfo* const _this = this; (void)_this;
+  UpLRCRangeRWInfo* const _this = this; (void)_this;
   new (&_impl_) Impl_{
       decltype(_impl_.block_key_){}
     , decltype(_impl_.proxy_ip_){}
@@ -2186,10 +2186,10 @@ CordRangeRWInfo::CordRangeRWInfo(const CordRangeRWInfo& from)
   ::memcpy(&_impl_.block_id_, &from._impl_.block_id_,
     static_cast<size_t>(reinterpret_cast<char*>(&_impl_.proxy_port_) -
     reinterpret_cast<char*>(&_impl_.block_id_)) + sizeof(_impl_.proxy_port_));
-  // @@protoc_insertion_point(copy_constructor:datanode_proto.CordRangeRWInfo)
+  // @@protoc_insertion_point(copy_constructor:datanode_proto.UpLRCRangeRWInfo)
 }
 
-inline void CordRangeRWInfo::SharedCtor(
+inline void UpLRCRangeRWInfo::SharedCtor(
     ::_pb::Arena* arena, bool is_message_owned) {
   (void)arena;
   (void)is_message_owned;
@@ -2212,8 +2212,8 @@ inline void CordRangeRWInfo::SharedCtor(
   #endif // PROTOBUF_FORCE_COPY_DEFAULT_STRING
 }
 
-CordRangeRWInfo::~CordRangeRWInfo() {
-  // @@protoc_insertion_point(destructor:datanode_proto.CordRangeRWInfo)
+UpLRCRangeRWInfo::~UpLRCRangeRWInfo() {
+  // @@protoc_insertion_point(destructor:datanode_proto.UpLRCRangeRWInfo)
   if (auto *arena = _internal_metadata_.DeleteReturnArena<::PROTOBUF_NAMESPACE_ID::UnknownFieldSet>()) {
   (void)arena;
     return;
@@ -2221,18 +2221,18 @@ CordRangeRWInfo::~CordRangeRWInfo() {
   SharedDtor();
 }
 
-inline void CordRangeRWInfo::SharedDtor() {
+inline void UpLRCRangeRWInfo::SharedDtor() {
   GOOGLE_DCHECK(GetArenaForAllocation() == nullptr);
   _impl_.block_key_.Destroy();
   _impl_.proxy_ip_.Destroy();
 }
 
-void CordRangeRWInfo::SetCachedSize(int size) const {
+void UpLRCRangeRWInfo::SetCachedSize(int size) const {
   _impl_._cached_size_.Set(size);
 }
 
-void CordRangeRWInfo::Clear() {
-// @@protoc_insertion_point(message_clear_start:datanode_proto.CordRangeRWInfo)
+void UpLRCRangeRWInfo::Clear() {
+// @@protoc_insertion_point(message_clear_start:datanode_proto.UpLRCRangeRWInfo)
   uint32_t cached_has_bits = 0;
   // Prevent compiler warnings about cached_has_bits being unused
   (void) cached_has_bits;
@@ -2245,7 +2245,7 @@ void CordRangeRWInfo::Clear() {
   _internal_metadata_.Clear<::PROTOBUF_NAMESPACE_ID::UnknownFieldSet>();
 }
 
-const char* CordRangeRWInfo::_InternalParse(const char* ptr, ::_pbi::ParseContext* ctx) {
+const char* UpLRCRangeRWInfo::_InternalParse(const char* ptr, ::_pbi::ParseContext* ctx) {
 #define CHK_(x) if (PROTOBUF_PREDICT_FALSE(!(x))) goto failure
   while (!ctx->Done(&ptr)) {
     uint32_t tag;
@@ -2257,7 +2257,7 @@ const char* CordRangeRWInfo::_InternalParse(const char* ptr, ::_pbi::ParseContex
           auto str = _internal_mutable_block_key();
           ptr = ::_pbi::InlineGreedyStringParser(str, ptr, ctx);
           CHK_(ptr);
-          CHK_(::_pbi::VerifyUTF8(str, "datanode_proto.CordRangeRWInfo.block_key"));
+          CHK_(::_pbi::VerifyUTF8(str, "datanode_proto.UpLRCRangeRWInfo.block_key"));
         } else
           goto handle_unusual;
         continue;
@@ -2291,7 +2291,7 @@ const char* CordRangeRWInfo::_InternalParse(const char* ptr, ::_pbi::ParseContex
           auto str = _internal_mutable_proxy_ip();
           ptr = ::_pbi::InlineGreedyStringParser(str, ptr, ctx);
           CHK_(ptr);
-          CHK_(::_pbi::VerifyUTF8(str, "datanode_proto.CordRangeRWInfo.proxy_ip"));
+          CHK_(::_pbi::VerifyUTF8(str, "datanode_proto.UpLRCRangeRWInfo.proxy_ip"));
         } else
           goto handle_unusual;
         continue;
@@ -2326,9 +2326,9 @@ failure:
 #undef CHK_
 }
 
-uint8_t* CordRangeRWInfo::_InternalSerialize(
+uint8_t* UpLRCRangeRWInfo::_InternalSerialize(
     uint8_t* target, ::PROTOBUF_NAMESPACE_ID::io::EpsCopyOutputStream* stream) const {
-  // @@protoc_insertion_point(serialize_to_array_start:datanode_proto.CordRangeRWInfo)
+  // @@protoc_insertion_point(serialize_to_array_start:datanode_proto.UpLRCRangeRWInfo)
   uint32_t cached_has_bits = 0;
   (void) cached_has_bits;
 
@@ -2337,7 +2337,7 @@ uint8_t* CordRangeRWInfo::_InternalSerialize(
     ::PROTOBUF_NAMESPACE_ID::internal::WireFormatLite::VerifyUtf8String(
       this->_internal_block_key().data(), static_cast<int>(this->_internal_block_key().length()),
       ::PROTOBUF_NAMESPACE_ID::internal::WireFormatLite::SERIALIZE,
-      "datanode_proto.CordRangeRWInfo.block_key");
+      "datanode_proto.UpLRCRangeRWInfo.block_key");
     target = stream->WriteStringMaybeAliased(
         1, this->_internal_block_key(), target);
   }
@@ -2365,7 +2365,7 @@ uint8_t* CordRangeRWInfo::_InternalSerialize(
     ::PROTOBUF_NAMESPACE_ID::internal::WireFormatLite::VerifyUtf8String(
       this->_internal_proxy_ip().data(), static_cast<int>(this->_internal_proxy_ip().length()),
       ::PROTOBUF_NAMESPACE_ID::internal::WireFormatLite::SERIALIZE,
-      "datanode_proto.CordRangeRWInfo.proxy_ip");
+      "datanode_proto.UpLRCRangeRWInfo.proxy_ip");
     target = stream->WriteStringMaybeAliased(
         5, this->_internal_proxy_ip(), target);
   }
@@ -2380,12 +2380,12 @@ uint8_t* CordRangeRWInfo::_InternalSerialize(
     target = ::_pbi::WireFormat::InternalSerializeUnknownFieldsToArray(
         _internal_metadata_.unknown_fields<::PROTOBUF_NAMESPACE_ID::UnknownFieldSet>(::PROTOBUF_NAMESPACE_ID::UnknownFieldSet::default_instance), target, stream);
   }
-  // @@protoc_insertion_point(serialize_to_array_end:datanode_proto.CordRangeRWInfo)
+  // @@protoc_insertion_point(serialize_to_array_end:datanode_proto.UpLRCRangeRWInfo)
   return target;
 }
 
-size_t CordRangeRWInfo::ByteSizeLong() const {
-// @@protoc_insertion_point(message_byte_size_start:datanode_proto.CordRangeRWInfo)
+size_t UpLRCRangeRWInfo::ByteSizeLong() const {
+// @@protoc_insertion_point(message_byte_size_start:datanode_proto.UpLRCRangeRWInfo)
   size_t total_size = 0;
 
   uint32_t cached_has_bits = 0;
@@ -2429,17 +2429,17 @@ size_t CordRangeRWInfo::ByteSizeLong() const {
   return MaybeComputeUnknownFieldsSize(total_size, &_impl_._cached_size_);
 }
 
-const ::PROTOBUF_NAMESPACE_ID::Message::ClassData CordRangeRWInfo::_class_data_ = {
+const ::PROTOBUF_NAMESPACE_ID::Message::ClassData UpLRCRangeRWInfo::_class_data_ = {
     ::PROTOBUF_NAMESPACE_ID::Message::CopyWithSourceCheck,
-    CordRangeRWInfo::MergeImpl
+    UpLRCRangeRWInfo::MergeImpl
 };
-const ::PROTOBUF_NAMESPACE_ID::Message::ClassData*CordRangeRWInfo::GetClassData() const { return &_class_data_; }
+const ::PROTOBUF_NAMESPACE_ID::Message::ClassData*UpLRCRangeRWInfo::GetClassData() const { return &_class_data_; }
 
 
-void CordRangeRWInfo::MergeImpl(::PROTOBUF_NAMESPACE_ID::Message& to_msg, const ::PROTOBUF_NAMESPACE_ID::Message& from_msg) {
-  auto* const _this = static_cast<CordRangeRWInfo*>(&to_msg);
-  auto& from = static_cast<const CordRangeRWInfo&>(from_msg);
-  // @@protoc_insertion_point(class_specific_merge_from_start:datanode_proto.CordRangeRWInfo)
+void UpLRCRangeRWInfo::MergeImpl(::PROTOBUF_NAMESPACE_ID::Message& to_msg, const ::PROTOBUF_NAMESPACE_ID::Message& from_msg) {
+  auto* const _this = static_cast<UpLRCRangeRWInfo*>(&to_msg);
+  auto& from = static_cast<const UpLRCRangeRWInfo&>(from_msg);
+  // @@protoc_insertion_point(class_specific_merge_from_start:datanode_proto.UpLRCRangeRWInfo)
   GOOGLE_DCHECK_NE(&from, _this);
   uint32_t cached_has_bits = 0;
   (void) cached_has_bits;
@@ -2465,18 +2465,18 @@ void CordRangeRWInfo::MergeImpl(::PROTOBUF_NAMESPACE_ID::Message& to_msg, const 
   _this->_internal_metadata_.MergeFrom<::PROTOBUF_NAMESPACE_ID::UnknownFieldSet>(from._internal_metadata_);
 }
 
-void CordRangeRWInfo::CopyFrom(const CordRangeRWInfo& from) {
-// @@protoc_insertion_point(class_specific_copy_from_start:datanode_proto.CordRangeRWInfo)
+void UpLRCRangeRWInfo::CopyFrom(const UpLRCRangeRWInfo& from) {
+// @@protoc_insertion_point(class_specific_copy_from_start:datanode_proto.UpLRCRangeRWInfo)
   if (&from == this) return;
   Clear();
   MergeFrom(from);
 }
 
-bool CordRangeRWInfo::IsInitialized() const {
+bool UpLRCRangeRWInfo::IsInitialized() const {
   return true;
 }
 
-void CordRangeRWInfo::InternalSwap(CordRangeRWInfo* other) {
+void UpLRCRangeRWInfo::InternalSwap(UpLRCRangeRWInfo* other) {
   using std::swap;
   auto* lhs_arena = GetArenaForAllocation();
   auto* rhs_arena = other->GetArenaForAllocation();
@@ -2490,14 +2490,14 @@ void CordRangeRWInfo::InternalSwap(CordRangeRWInfo* other) {
       &other->_impl_.proxy_ip_, rhs_arena
   );
   ::PROTOBUF_NAMESPACE_ID::internal::memswap<
-      PROTOBUF_FIELD_OFFSET(CordRangeRWInfo, _impl_.proxy_port_)
-      + sizeof(CordRangeRWInfo::_impl_.proxy_port_)
-      - PROTOBUF_FIELD_OFFSET(CordRangeRWInfo, _impl_.block_id_)>(
+      PROTOBUF_FIELD_OFFSET(UpLRCRangeRWInfo, _impl_.proxy_port_)
+      + sizeof(UpLRCRangeRWInfo::_impl_.proxy_port_)
+      - PROTOBUF_FIELD_OFFSET(UpLRCRangeRWInfo, _impl_.block_id_)>(
           reinterpret_cast<char*>(&_impl_.block_id_),
           reinterpret_cast<char*>(&other->_impl_.block_id_));
 }
 
-::PROTOBUF_NAMESPACE_ID::Metadata CordRangeRWInfo::GetMetadata() const {
+::PROTOBUF_NAMESPACE_ID::Metadata UpLRCRangeRWInfo::GetMetadata() const {
   return ::_pbi::AssignDescriptors(
       &descriptor_table_datanode_2eproto_getter, &descriptor_table_datanode_2eproto_once,
       file_level_metadata_datanode_2eproto[6]);
@@ -2505,19 +2505,19 @@ void CordRangeRWInfo::InternalSwap(CordRangeRWInfo* other) {
 
 // ===================================================================
 
-class CordDeltaBlobInfo::_Internal {
+class UpLRCDeltaBlobInfo::_Internal {
  public:
 };
 
-CordDeltaBlobInfo::CordDeltaBlobInfo(::PROTOBUF_NAMESPACE_ID::Arena* arena,
+UpLRCDeltaBlobInfo::UpLRCDeltaBlobInfo(::PROTOBUF_NAMESPACE_ID::Arena* arena,
                          bool is_message_owned)
   : ::PROTOBUF_NAMESPACE_ID::Message(arena, is_message_owned) {
   SharedCtor(arena, is_message_owned);
-  // @@protoc_insertion_point(arena_constructor:datanode_proto.CordDeltaBlobInfo)
+  // @@protoc_insertion_point(arena_constructor:datanode_proto.UpLRCDeltaBlobInfo)
 }
-CordDeltaBlobInfo::CordDeltaBlobInfo(const CordDeltaBlobInfo& from)
+UpLRCDeltaBlobInfo::UpLRCDeltaBlobInfo(const UpLRCDeltaBlobInfo& from)
   : ::PROTOBUF_NAMESPACE_ID::Message() {
-  CordDeltaBlobInfo* const _this = this; (void)_this;
+  UpLRCDeltaBlobInfo* const _this = this; (void)_this;
   new (&_impl_) Impl_{
       decltype(_impl_.blob_key_){}
     , decltype(_impl_.proxy_ip_){}
@@ -2545,10 +2545,10 @@ CordDeltaBlobInfo::CordDeltaBlobInfo(const CordDeltaBlobInfo& from)
   ::memcpy(&_impl_.byte_length_, &from._impl_.byte_length_,
     static_cast<size_t>(reinterpret_cast<char*>(&_impl_.proxy_port_) -
     reinterpret_cast<char*>(&_impl_.byte_length_)) + sizeof(_impl_.proxy_port_));
-  // @@protoc_insertion_point(copy_constructor:datanode_proto.CordDeltaBlobInfo)
+  // @@protoc_insertion_point(copy_constructor:datanode_proto.UpLRCDeltaBlobInfo)
 }
 
-inline void CordDeltaBlobInfo::SharedCtor(
+inline void UpLRCDeltaBlobInfo::SharedCtor(
     ::_pb::Arena* arena, bool is_message_owned) {
   (void)arena;
   (void)is_message_owned;
@@ -2569,8 +2569,8 @@ inline void CordDeltaBlobInfo::SharedCtor(
   #endif // PROTOBUF_FORCE_COPY_DEFAULT_STRING
 }
 
-CordDeltaBlobInfo::~CordDeltaBlobInfo() {
-  // @@protoc_insertion_point(destructor:datanode_proto.CordDeltaBlobInfo)
+UpLRCDeltaBlobInfo::~UpLRCDeltaBlobInfo() {
+  // @@protoc_insertion_point(destructor:datanode_proto.UpLRCDeltaBlobInfo)
   if (auto *arena = _internal_metadata_.DeleteReturnArena<::PROTOBUF_NAMESPACE_ID::UnknownFieldSet>()) {
   (void)arena;
     return;
@@ -2578,18 +2578,18 @@ CordDeltaBlobInfo::~CordDeltaBlobInfo() {
   SharedDtor();
 }
 
-inline void CordDeltaBlobInfo::SharedDtor() {
+inline void UpLRCDeltaBlobInfo::SharedDtor() {
   GOOGLE_DCHECK(GetArenaForAllocation() == nullptr);
   _impl_.blob_key_.Destroy();
   _impl_.proxy_ip_.Destroy();
 }
 
-void CordDeltaBlobInfo::SetCachedSize(int size) const {
+void UpLRCDeltaBlobInfo::SetCachedSize(int size) const {
   _impl_._cached_size_.Set(size);
 }
 
-void CordDeltaBlobInfo::Clear() {
-// @@protoc_insertion_point(message_clear_start:datanode_proto.CordDeltaBlobInfo)
+void UpLRCDeltaBlobInfo::Clear() {
+// @@protoc_insertion_point(message_clear_start:datanode_proto.UpLRCDeltaBlobInfo)
   uint32_t cached_has_bits = 0;
   // Prevent compiler warnings about cached_has_bits being unused
   (void) cached_has_bits;
@@ -2602,7 +2602,7 @@ void CordDeltaBlobInfo::Clear() {
   _internal_metadata_.Clear<::PROTOBUF_NAMESPACE_ID::UnknownFieldSet>();
 }
 
-const char* CordDeltaBlobInfo::_InternalParse(const char* ptr, ::_pbi::ParseContext* ctx) {
+const char* UpLRCDeltaBlobInfo::_InternalParse(const char* ptr, ::_pbi::ParseContext* ctx) {
 #define CHK_(x) if (PROTOBUF_PREDICT_FALSE(!(x))) goto failure
   while (!ctx->Done(&ptr)) {
     uint32_t tag;
@@ -2614,7 +2614,7 @@ const char* CordDeltaBlobInfo::_InternalParse(const char* ptr, ::_pbi::ParseCont
           auto str = _internal_mutable_blob_key();
           ptr = ::_pbi::InlineGreedyStringParser(str, ptr, ctx);
           CHK_(ptr);
-          CHK_(::_pbi::VerifyUTF8(str, "datanode_proto.CordDeltaBlobInfo.blob_key"));
+          CHK_(::_pbi::VerifyUTF8(str, "datanode_proto.UpLRCDeltaBlobInfo.blob_key"));
         } else
           goto handle_unusual;
         continue;
@@ -2632,7 +2632,7 @@ const char* CordDeltaBlobInfo::_InternalParse(const char* ptr, ::_pbi::ParseCont
           auto str = _internal_mutable_proxy_ip();
           ptr = ::_pbi::InlineGreedyStringParser(str, ptr, ctx);
           CHK_(ptr);
-          CHK_(::_pbi::VerifyUTF8(str, "datanode_proto.CordDeltaBlobInfo.proxy_ip"));
+          CHK_(::_pbi::VerifyUTF8(str, "datanode_proto.UpLRCDeltaBlobInfo.proxy_ip"));
         } else
           goto handle_unusual;
         continue;
@@ -2667,9 +2667,9 @@ failure:
 #undef CHK_
 }
 
-uint8_t* CordDeltaBlobInfo::_InternalSerialize(
+uint8_t* UpLRCDeltaBlobInfo::_InternalSerialize(
     uint8_t* target, ::PROTOBUF_NAMESPACE_ID::io::EpsCopyOutputStream* stream) const {
-  // @@protoc_insertion_point(serialize_to_array_start:datanode_proto.CordDeltaBlobInfo)
+  // @@protoc_insertion_point(serialize_to_array_start:datanode_proto.UpLRCDeltaBlobInfo)
   uint32_t cached_has_bits = 0;
   (void) cached_has_bits;
 
@@ -2678,7 +2678,7 @@ uint8_t* CordDeltaBlobInfo::_InternalSerialize(
     ::PROTOBUF_NAMESPACE_ID::internal::WireFormatLite::VerifyUtf8String(
       this->_internal_blob_key().data(), static_cast<int>(this->_internal_blob_key().length()),
       ::PROTOBUF_NAMESPACE_ID::internal::WireFormatLite::SERIALIZE,
-      "datanode_proto.CordDeltaBlobInfo.blob_key");
+      "datanode_proto.UpLRCDeltaBlobInfo.blob_key");
     target = stream->WriteStringMaybeAliased(
         1, this->_internal_blob_key(), target);
   }
@@ -2694,7 +2694,7 @@ uint8_t* CordDeltaBlobInfo::_InternalSerialize(
     ::PROTOBUF_NAMESPACE_ID::internal::WireFormatLite::VerifyUtf8String(
       this->_internal_proxy_ip().data(), static_cast<int>(this->_internal_proxy_ip().length()),
       ::PROTOBUF_NAMESPACE_ID::internal::WireFormatLite::SERIALIZE,
-      "datanode_proto.CordDeltaBlobInfo.proxy_ip");
+      "datanode_proto.UpLRCDeltaBlobInfo.proxy_ip");
     target = stream->WriteStringMaybeAliased(
         3, this->_internal_proxy_ip(), target);
   }
@@ -2709,12 +2709,12 @@ uint8_t* CordDeltaBlobInfo::_InternalSerialize(
     target = ::_pbi::WireFormat::InternalSerializeUnknownFieldsToArray(
         _internal_metadata_.unknown_fields<::PROTOBUF_NAMESPACE_ID::UnknownFieldSet>(::PROTOBUF_NAMESPACE_ID::UnknownFieldSet::default_instance), target, stream);
   }
-  // @@protoc_insertion_point(serialize_to_array_end:datanode_proto.CordDeltaBlobInfo)
+  // @@protoc_insertion_point(serialize_to_array_end:datanode_proto.UpLRCDeltaBlobInfo)
   return target;
 }
 
-size_t CordDeltaBlobInfo::ByteSizeLong() const {
-// @@protoc_insertion_point(message_byte_size_start:datanode_proto.CordDeltaBlobInfo)
+size_t UpLRCDeltaBlobInfo::ByteSizeLong() const {
+// @@protoc_insertion_point(message_byte_size_start:datanode_proto.UpLRCDeltaBlobInfo)
   size_t total_size = 0;
 
   uint32_t cached_has_bits = 0;
@@ -2748,17 +2748,17 @@ size_t CordDeltaBlobInfo::ByteSizeLong() const {
   return MaybeComputeUnknownFieldsSize(total_size, &_impl_._cached_size_);
 }
 
-const ::PROTOBUF_NAMESPACE_ID::Message::ClassData CordDeltaBlobInfo::_class_data_ = {
+const ::PROTOBUF_NAMESPACE_ID::Message::ClassData UpLRCDeltaBlobInfo::_class_data_ = {
     ::PROTOBUF_NAMESPACE_ID::Message::CopyWithSourceCheck,
-    CordDeltaBlobInfo::MergeImpl
+    UpLRCDeltaBlobInfo::MergeImpl
 };
-const ::PROTOBUF_NAMESPACE_ID::Message::ClassData*CordDeltaBlobInfo::GetClassData() const { return &_class_data_; }
+const ::PROTOBUF_NAMESPACE_ID::Message::ClassData*UpLRCDeltaBlobInfo::GetClassData() const { return &_class_data_; }
 
 
-void CordDeltaBlobInfo::MergeImpl(::PROTOBUF_NAMESPACE_ID::Message& to_msg, const ::PROTOBUF_NAMESPACE_ID::Message& from_msg) {
-  auto* const _this = static_cast<CordDeltaBlobInfo*>(&to_msg);
-  auto& from = static_cast<const CordDeltaBlobInfo&>(from_msg);
-  // @@protoc_insertion_point(class_specific_merge_from_start:datanode_proto.CordDeltaBlobInfo)
+void UpLRCDeltaBlobInfo::MergeImpl(::PROTOBUF_NAMESPACE_ID::Message& to_msg, const ::PROTOBUF_NAMESPACE_ID::Message& from_msg) {
+  auto* const _this = static_cast<UpLRCDeltaBlobInfo*>(&to_msg);
+  auto& from = static_cast<const UpLRCDeltaBlobInfo&>(from_msg);
+  // @@protoc_insertion_point(class_specific_merge_from_start:datanode_proto.UpLRCDeltaBlobInfo)
   GOOGLE_DCHECK_NE(&from, _this);
   uint32_t cached_has_bits = 0;
   (void) cached_has_bits;
@@ -2778,18 +2778,18 @@ void CordDeltaBlobInfo::MergeImpl(::PROTOBUF_NAMESPACE_ID::Message& to_msg, cons
   _this->_internal_metadata_.MergeFrom<::PROTOBUF_NAMESPACE_ID::UnknownFieldSet>(from._internal_metadata_);
 }
 
-void CordDeltaBlobInfo::CopyFrom(const CordDeltaBlobInfo& from) {
-// @@protoc_insertion_point(class_specific_copy_from_start:datanode_proto.CordDeltaBlobInfo)
+void UpLRCDeltaBlobInfo::CopyFrom(const UpLRCDeltaBlobInfo& from) {
+// @@protoc_insertion_point(class_specific_copy_from_start:datanode_proto.UpLRCDeltaBlobInfo)
   if (&from == this) return;
   Clear();
   MergeFrom(from);
 }
 
-bool CordDeltaBlobInfo::IsInitialized() const {
+bool UpLRCDeltaBlobInfo::IsInitialized() const {
   return true;
 }
 
-void CordDeltaBlobInfo::InternalSwap(CordDeltaBlobInfo* other) {
+void UpLRCDeltaBlobInfo::InternalSwap(UpLRCDeltaBlobInfo* other) {
   using std::swap;
   auto* lhs_arena = GetArenaForAllocation();
   auto* rhs_arena = other->GetArenaForAllocation();
@@ -2803,14 +2803,14 @@ void CordDeltaBlobInfo::InternalSwap(CordDeltaBlobInfo* other) {
       &other->_impl_.proxy_ip_, rhs_arena
   );
   ::PROTOBUF_NAMESPACE_ID::internal::memswap<
-      PROTOBUF_FIELD_OFFSET(CordDeltaBlobInfo, _impl_.proxy_port_)
-      + sizeof(CordDeltaBlobInfo::_impl_.proxy_port_)
-      - PROTOBUF_FIELD_OFFSET(CordDeltaBlobInfo, _impl_.byte_length_)>(
+      PROTOBUF_FIELD_OFFSET(UpLRCDeltaBlobInfo, _impl_.proxy_port_)
+      + sizeof(UpLRCDeltaBlobInfo::_impl_.proxy_port_)
+      - PROTOBUF_FIELD_OFFSET(UpLRCDeltaBlobInfo, _impl_.byte_length_)>(
           reinterpret_cast<char*>(&_impl_.byte_length_),
           reinterpret_cast<char*>(&other->_impl_.byte_length_));
 }
 
-::PROTOBUF_NAMESPACE_ID::Metadata CordDeltaBlobInfo::GetMetadata() const {
+::PROTOBUF_NAMESPACE_ID::Metadata UpLRCDeltaBlobInfo::GetMetadata() const {
   return ::_pbi::AssignDescriptors(
       &descriptor_table_datanode_2eproto_getter, &descriptor_table_datanode_2eproto_once,
       file_level_metadata_datanode_2eproto[7]);
@@ -3046,13 +3046,13 @@ template<> PROTOBUF_NOINLINE ::datanode_proto::GetInfo*
 Arena::CreateMaybeMessage< ::datanode_proto::GetInfo >(Arena* arena) {
   return Arena::CreateMessageInternal< ::datanode_proto::GetInfo >(arena);
 }
-template<> PROTOBUF_NOINLINE ::datanode_proto::CordRangeRWInfo*
-Arena::CreateMaybeMessage< ::datanode_proto::CordRangeRWInfo >(Arena* arena) {
-  return Arena::CreateMessageInternal< ::datanode_proto::CordRangeRWInfo >(arena);
+template<> PROTOBUF_NOINLINE ::datanode_proto::UpLRCRangeRWInfo*
+Arena::CreateMaybeMessage< ::datanode_proto::UpLRCRangeRWInfo >(Arena* arena) {
+  return Arena::CreateMessageInternal< ::datanode_proto::UpLRCRangeRWInfo >(arena);
 }
-template<> PROTOBUF_NOINLINE ::datanode_proto::CordDeltaBlobInfo*
-Arena::CreateMaybeMessage< ::datanode_proto::CordDeltaBlobInfo >(Arena* arena) {
-  return Arena::CreateMessageInternal< ::datanode_proto::CordDeltaBlobInfo >(arena);
+template<> PROTOBUF_NOINLINE ::datanode_proto::UpLRCDeltaBlobInfo*
+Arena::CreateMaybeMessage< ::datanode_proto::UpLRCDeltaBlobInfo >(Arena* arena) {
+  return Arena::CreateMessageInternal< ::datanode_proto::UpLRCDeltaBlobInfo >(arena);
 }
 template<> PROTOBUF_NOINLINE ::datanode_proto::DelInfo*
 Arena::CreateMaybeMessage< ::datanode_proto::DelInfo >(Arena* arena) {

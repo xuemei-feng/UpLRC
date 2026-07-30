@@ -31,12 +31,12 @@ static const char* coordinatorService_method_names[] = {
   "/coordinator_proto.coordinatorService/uploadSetValue",
   "/coordinator_proto.coordinatorService/uploadSubsetValue",
   "/coordinator_proto.coordinatorService/uploadAppendValue",
-  "/coordinator_proto.coordinatorService/uploadXueUpdate",
-  "/coordinator_proto.coordinatorService/uploadCordUpdate",
-  "/coordinator_proto.coordinatorService/cordPlanBeginTransfer",
-  "/coordinator_proto.coordinatorService/cordPlanWaitTransferComplete",
-  "/coordinator_proto.coordinatorService/uploadCordLocalParityApply",
-  "/coordinator_proto.coordinatorService/uploadCordLocalParityViaGlobalHub",
+  "/coordinator_proto.coordinatorService/uploadUplrcLegacyUpdate",
+  "/coordinator_proto.coordinatorService/uploadUpLRCUpdate",
+  "/coordinator_proto.coordinatorService/uplrcPlanBeginTransfer",
+  "/coordinator_proto.coordinatorService/uplrcPlanWaitTransferComplete",
+  "/coordinator_proto.coordinatorService/uploadUpLRCLocalParityApply",
+  "/coordinator_proto.coordinatorService/uploadUpLRCLocalParityViaGlobalHub",
   "/coordinator_proto.coordinatorService/getValue",
   "/coordinator_proto.coordinatorService/getStripe",
   "/coordinator_proto.coordinatorService/getBlocks",
@@ -69,12 +69,12 @@ coordinatorService::Stub::Stub(const std::shared_ptr< ::grpc::ChannelInterface>&
   , rpcmethod_uploadSetValue_(coordinatorService_method_names[6], options.suffix_for_stats(),::grpc::internal::RpcMethod::NORMAL_RPC, channel)
   , rpcmethod_uploadSubsetValue_(coordinatorService_method_names[7], options.suffix_for_stats(),::grpc::internal::RpcMethod::NORMAL_RPC, channel)
   , rpcmethod_uploadAppendValue_(coordinatorService_method_names[8], options.suffix_for_stats(),::grpc::internal::RpcMethod::NORMAL_RPC, channel)
-  , rpcmethod_uploadXueUpdate_(coordinatorService_method_names[9], options.suffix_for_stats(),::grpc::internal::RpcMethod::NORMAL_RPC, channel)
-  , rpcmethod_uploadCordUpdate_(coordinatorService_method_names[10], options.suffix_for_stats(),::grpc::internal::RpcMethod::NORMAL_RPC, channel)
-  , rpcmethod_cordPlanBeginTransfer_(coordinatorService_method_names[11], options.suffix_for_stats(),::grpc::internal::RpcMethod::NORMAL_RPC, channel)
-  , rpcmethod_cordPlanWaitTransferComplete_(coordinatorService_method_names[12], options.suffix_for_stats(),::grpc::internal::RpcMethod::NORMAL_RPC, channel)
-  , rpcmethod_uploadCordLocalParityApply_(coordinatorService_method_names[13], options.suffix_for_stats(),::grpc::internal::RpcMethod::NORMAL_RPC, channel)
-  , rpcmethod_uploadCordLocalParityViaGlobalHub_(coordinatorService_method_names[14], options.suffix_for_stats(),::grpc::internal::RpcMethod::NORMAL_RPC, channel)
+  , rpcmethod_uploadUplrcLegacyUpdate_(coordinatorService_method_names[9], options.suffix_for_stats(),::grpc::internal::RpcMethod::NORMAL_RPC, channel)
+  , rpcmethod_uploadUpLRCUpdate_(coordinatorService_method_names[10], options.suffix_for_stats(),::grpc::internal::RpcMethod::NORMAL_RPC, channel)
+  , rpcmethod_uplrcPlanBeginTransfer_(coordinatorService_method_names[11], options.suffix_for_stats(),::grpc::internal::RpcMethod::NORMAL_RPC, channel)
+  , rpcmethod_uplrcPlanWaitTransferComplete_(coordinatorService_method_names[12], options.suffix_for_stats(),::grpc::internal::RpcMethod::NORMAL_RPC, channel)
+  , rpcmethod_uploadUpLRCLocalParityApply_(coordinatorService_method_names[13], options.suffix_for_stats(),::grpc::internal::RpcMethod::NORMAL_RPC, channel)
+  , rpcmethod_uploadUpLRCLocalParityViaGlobalHub_(coordinatorService_method_names[14], options.suffix_for_stats(),::grpc::internal::RpcMethod::NORMAL_RPC, channel)
   , rpcmethod_getValue_(coordinatorService_method_names[15], options.suffix_for_stats(),::grpc::internal::RpcMethod::NORMAL_RPC, channel)
   , rpcmethod_getStripe_(coordinatorService_method_names[16], options.suffix_for_stats(),::grpc::internal::RpcMethod::NORMAL_RPC, channel)
   , rpcmethod_getBlocks_(coordinatorService_method_names[17], options.suffix_for_stats(),::grpc::internal::RpcMethod::NORMAL_RPC, channel)
@@ -298,140 +298,140 @@ void coordinatorService::Stub::async::uploadAppendValue(::grpc::ClientContext* c
   return result;
 }
 
-::grpc::Status coordinatorService::Stub::uploadXueUpdate(::grpc::ClientContext* context, const ::coordinator_proto::XueUpdateRequest& request, ::coordinator_proto::ReplyProxyIPsPorts* response) {
-  return ::grpc::internal::BlockingUnaryCall< ::coordinator_proto::XueUpdateRequest, ::coordinator_proto::ReplyProxyIPsPorts, ::grpc::protobuf::MessageLite, ::grpc::protobuf::MessageLite>(channel_.get(), rpcmethod_uploadXueUpdate_, context, request, response);
+::grpc::Status coordinatorService::Stub::uploadUplrcLegacyUpdate(::grpc::ClientContext* context, const ::coordinator_proto::UplrcLegacyUpdateRequest& request, ::coordinator_proto::ReplyProxyIPsPorts* response) {
+  return ::grpc::internal::BlockingUnaryCall< ::coordinator_proto::UplrcLegacyUpdateRequest, ::coordinator_proto::ReplyProxyIPsPorts, ::grpc::protobuf::MessageLite, ::grpc::protobuf::MessageLite>(channel_.get(), rpcmethod_uploadUplrcLegacyUpdate_, context, request, response);
 }
 
-void coordinatorService::Stub::async::uploadXueUpdate(::grpc::ClientContext* context, const ::coordinator_proto::XueUpdateRequest* request, ::coordinator_proto::ReplyProxyIPsPorts* response, std::function<void(::grpc::Status)> f) {
-  ::grpc::internal::CallbackUnaryCall< ::coordinator_proto::XueUpdateRequest, ::coordinator_proto::ReplyProxyIPsPorts, ::grpc::protobuf::MessageLite, ::grpc::protobuf::MessageLite>(stub_->channel_.get(), stub_->rpcmethod_uploadXueUpdate_, context, request, response, std::move(f));
+void coordinatorService::Stub::async::uploadUplrcLegacyUpdate(::grpc::ClientContext* context, const ::coordinator_proto::UplrcLegacyUpdateRequest* request, ::coordinator_proto::ReplyProxyIPsPorts* response, std::function<void(::grpc::Status)> f) {
+  ::grpc::internal::CallbackUnaryCall< ::coordinator_proto::UplrcLegacyUpdateRequest, ::coordinator_proto::ReplyProxyIPsPorts, ::grpc::protobuf::MessageLite, ::grpc::protobuf::MessageLite>(stub_->channel_.get(), stub_->rpcmethod_uploadUplrcLegacyUpdate_, context, request, response, std::move(f));
 }
 
-void coordinatorService::Stub::async::uploadXueUpdate(::grpc::ClientContext* context, const ::coordinator_proto::XueUpdateRequest* request, ::coordinator_proto::ReplyProxyIPsPorts* response, ::grpc::ClientUnaryReactor* reactor) {
-  ::grpc::internal::ClientCallbackUnaryFactory::Create< ::grpc::protobuf::MessageLite, ::grpc::protobuf::MessageLite>(stub_->channel_.get(), stub_->rpcmethod_uploadXueUpdate_, context, request, response, reactor);
+void coordinatorService::Stub::async::uploadUplrcLegacyUpdate(::grpc::ClientContext* context, const ::coordinator_proto::UplrcLegacyUpdateRequest* request, ::coordinator_proto::ReplyProxyIPsPorts* response, ::grpc::ClientUnaryReactor* reactor) {
+  ::grpc::internal::ClientCallbackUnaryFactory::Create< ::grpc::protobuf::MessageLite, ::grpc::protobuf::MessageLite>(stub_->channel_.get(), stub_->rpcmethod_uploadUplrcLegacyUpdate_, context, request, response, reactor);
 }
 
-::grpc::ClientAsyncResponseReader< ::coordinator_proto::ReplyProxyIPsPorts>* coordinatorService::Stub::PrepareAsyncuploadXueUpdateRaw(::grpc::ClientContext* context, const ::coordinator_proto::XueUpdateRequest& request, ::grpc::CompletionQueue* cq) {
-  return ::grpc::internal::ClientAsyncResponseReaderHelper::Create< ::coordinator_proto::ReplyProxyIPsPorts, ::coordinator_proto::XueUpdateRequest, ::grpc::protobuf::MessageLite, ::grpc::protobuf::MessageLite>(channel_.get(), cq, rpcmethod_uploadXueUpdate_, context, request);
+::grpc::ClientAsyncResponseReader< ::coordinator_proto::ReplyProxyIPsPorts>* coordinatorService::Stub::PrepareAsyncuploadUplrcLegacyUpdateRaw(::grpc::ClientContext* context, const ::coordinator_proto::UplrcLegacyUpdateRequest& request, ::grpc::CompletionQueue* cq) {
+  return ::grpc::internal::ClientAsyncResponseReaderHelper::Create< ::coordinator_proto::ReplyProxyIPsPorts, ::coordinator_proto::UplrcLegacyUpdateRequest, ::grpc::protobuf::MessageLite, ::grpc::protobuf::MessageLite>(channel_.get(), cq, rpcmethod_uploadUplrcLegacyUpdate_, context, request);
 }
 
-::grpc::ClientAsyncResponseReader< ::coordinator_proto::ReplyProxyIPsPorts>* coordinatorService::Stub::AsyncuploadXueUpdateRaw(::grpc::ClientContext* context, const ::coordinator_proto::XueUpdateRequest& request, ::grpc::CompletionQueue* cq) {
+::grpc::ClientAsyncResponseReader< ::coordinator_proto::ReplyProxyIPsPorts>* coordinatorService::Stub::AsyncuploadUplrcLegacyUpdateRaw(::grpc::ClientContext* context, const ::coordinator_proto::UplrcLegacyUpdateRequest& request, ::grpc::CompletionQueue* cq) {
   auto* result =
-    this->PrepareAsyncuploadXueUpdateRaw(context, request, cq);
+    this->PrepareAsyncuploadUplrcLegacyUpdateRaw(context, request, cq);
   result->StartCall();
   return result;
 }
 
-::grpc::Status coordinatorService::Stub::uploadCordUpdate(::grpc::ClientContext* context, const ::coordinator_proto::CordUpdateRequest& request, ::coordinator_proto::ReplyProxyIPsPorts* response) {
-  return ::grpc::internal::BlockingUnaryCall< ::coordinator_proto::CordUpdateRequest, ::coordinator_proto::ReplyProxyIPsPorts, ::grpc::protobuf::MessageLite, ::grpc::protobuf::MessageLite>(channel_.get(), rpcmethod_uploadCordUpdate_, context, request, response);
+::grpc::Status coordinatorService::Stub::uploadUpLRCUpdate(::grpc::ClientContext* context, const ::coordinator_proto::UpLRCUpdateRequest& request, ::coordinator_proto::ReplyProxyIPsPorts* response) {
+  return ::grpc::internal::BlockingUnaryCall< ::coordinator_proto::UpLRCUpdateRequest, ::coordinator_proto::ReplyProxyIPsPorts, ::grpc::protobuf::MessageLite, ::grpc::protobuf::MessageLite>(channel_.get(), rpcmethod_uploadUpLRCUpdate_, context, request, response);
 }
 
-void coordinatorService::Stub::async::uploadCordUpdate(::grpc::ClientContext* context, const ::coordinator_proto::CordUpdateRequest* request, ::coordinator_proto::ReplyProxyIPsPorts* response, std::function<void(::grpc::Status)> f) {
-  ::grpc::internal::CallbackUnaryCall< ::coordinator_proto::CordUpdateRequest, ::coordinator_proto::ReplyProxyIPsPorts, ::grpc::protobuf::MessageLite, ::grpc::protobuf::MessageLite>(stub_->channel_.get(), stub_->rpcmethod_uploadCordUpdate_, context, request, response, std::move(f));
+void coordinatorService::Stub::async::uploadUpLRCUpdate(::grpc::ClientContext* context, const ::coordinator_proto::UpLRCUpdateRequest* request, ::coordinator_proto::ReplyProxyIPsPorts* response, std::function<void(::grpc::Status)> f) {
+  ::grpc::internal::CallbackUnaryCall< ::coordinator_proto::UpLRCUpdateRequest, ::coordinator_proto::ReplyProxyIPsPorts, ::grpc::protobuf::MessageLite, ::grpc::protobuf::MessageLite>(stub_->channel_.get(), stub_->rpcmethod_uploadUpLRCUpdate_, context, request, response, std::move(f));
 }
 
-void coordinatorService::Stub::async::uploadCordUpdate(::grpc::ClientContext* context, const ::coordinator_proto::CordUpdateRequest* request, ::coordinator_proto::ReplyProxyIPsPorts* response, ::grpc::ClientUnaryReactor* reactor) {
-  ::grpc::internal::ClientCallbackUnaryFactory::Create< ::grpc::protobuf::MessageLite, ::grpc::protobuf::MessageLite>(stub_->channel_.get(), stub_->rpcmethod_uploadCordUpdate_, context, request, response, reactor);
+void coordinatorService::Stub::async::uploadUpLRCUpdate(::grpc::ClientContext* context, const ::coordinator_proto::UpLRCUpdateRequest* request, ::coordinator_proto::ReplyProxyIPsPorts* response, ::grpc::ClientUnaryReactor* reactor) {
+  ::grpc::internal::ClientCallbackUnaryFactory::Create< ::grpc::protobuf::MessageLite, ::grpc::protobuf::MessageLite>(stub_->channel_.get(), stub_->rpcmethod_uploadUpLRCUpdate_, context, request, response, reactor);
 }
 
-::grpc::ClientAsyncResponseReader< ::coordinator_proto::ReplyProxyIPsPorts>* coordinatorService::Stub::PrepareAsyncuploadCordUpdateRaw(::grpc::ClientContext* context, const ::coordinator_proto::CordUpdateRequest& request, ::grpc::CompletionQueue* cq) {
-  return ::grpc::internal::ClientAsyncResponseReaderHelper::Create< ::coordinator_proto::ReplyProxyIPsPorts, ::coordinator_proto::CordUpdateRequest, ::grpc::protobuf::MessageLite, ::grpc::protobuf::MessageLite>(channel_.get(), cq, rpcmethod_uploadCordUpdate_, context, request);
+::grpc::ClientAsyncResponseReader< ::coordinator_proto::ReplyProxyIPsPorts>* coordinatorService::Stub::PrepareAsyncuploadUpLRCUpdateRaw(::grpc::ClientContext* context, const ::coordinator_proto::UpLRCUpdateRequest& request, ::grpc::CompletionQueue* cq) {
+  return ::grpc::internal::ClientAsyncResponseReaderHelper::Create< ::coordinator_proto::ReplyProxyIPsPorts, ::coordinator_proto::UpLRCUpdateRequest, ::grpc::protobuf::MessageLite, ::grpc::protobuf::MessageLite>(channel_.get(), cq, rpcmethod_uploadUpLRCUpdate_, context, request);
 }
 
-::grpc::ClientAsyncResponseReader< ::coordinator_proto::ReplyProxyIPsPorts>* coordinatorService::Stub::AsyncuploadCordUpdateRaw(::grpc::ClientContext* context, const ::coordinator_proto::CordUpdateRequest& request, ::grpc::CompletionQueue* cq) {
+::grpc::ClientAsyncResponseReader< ::coordinator_proto::ReplyProxyIPsPorts>* coordinatorService::Stub::AsyncuploadUpLRCUpdateRaw(::grpc::ClientContext* context, const ::coordinator_proto::UpLRCUpdateRequest& request, ::grpc::CompletionQueue* cq) {
   auto* result =
-    this->PrepareAsyncuploadCordUpdateRaw(context, request, cq);
+    this->PrepareAsyncuploadUpLRCUpdateRaw(context, request, cq);
   result->StartCall();
   return result;
 }
 
-::grpc::Status coordinatorService::Stub::cordPlanBeginTransfer(::grpc::ClientContext* context, const ::coordinator_proto::CordPlanKeyOnly& request, ::coordinator_proto::RepIfSuccess* response) {
-  return ::grpc::internal::BlockingUnaryCall< ::coordinator_proto::CordPlanKeyOnly, ::coordinator_proto::RepIfSuccess, ::grpc::protobuf::MessageLite, ::grpc::protobuf::MessageLite>(channel_.get(), rpcmethod_cordPlanBeginTransfer_, context, request, response);
+::grpc::Status coordinatorService::Stub::uplrcPlanBeginTransfer(::grpc::ClientContext* context, const ::coordinator_proto::UpLRCPlanKeyOnly& request, ::coordinator_proto::RepIfSuccess* response) {
+  return ::grpc::internal::BlockingUnaryCall< ::coordinator_proto::UpLRCPlanKeyOnly, ::coordinator_proto::RepIfSuccess, ::grpc::protobuf::MessageLite, ::grpc::protobuf::MessageLite>(channel_.get(), rpcmethod_uplrcPlanBeginTransfer_, context, request, response);
 }
 
-void coordinatorService::Stub::async::cordPlanBeginTransfer(::grpc::ClientContext* context, const ::coordinator_proto::CordPlanKeyOnly* request, ::coordinator_proto::RepIfSuccess* response, std::function<void(::grpc::Status)> f) {
-  ::grpc::internal::CallbackUnaryCall< ::coordinator_proto::CordPlanKeyOnly, ::coordinator_proto::RepIfSuccess, ::grpc::protobuf::MessageLite, ::grpc::protobuf::MessageLite>(stub_->channel_.get(), stub_->rpcmethod_cordPlanBeginTransfer_, context, request, response, std::move(f));
+void coordinatorService::Stub::async::uplrcPlanBeginTransfer(::grpc::ClientContext* context, const ::coordinator_proto::UpLRCPlanKeyOnly* request, ::coordinator_proto::RepIfSuccess* response, std::function<void(::grpc::Status)> f) {
+  ::grpc::internal::CallbackUnaryCall< ::coordinator_proto::UpLRCPlanKeyOnly, ::coordinator_proto::RepIfSuccess, ::grpc::protobuf::MessageLite, ::grpc::protobuf::MessageLite>(stub_->channel_.get(), stub_->rpcmethod_uplrcPlanBeginTransfer_, context, request, response, std::move(f));
 }
 
-void coordinatorService::Stub::async::cordPlanBeginTransfer(::grpc::ClientContext* context, const ::coordinator_proto::CordPlanKeyOnly* request, ::coordinator_proto::RepIfSuccess* response, ::grpc::ClientUnaryReactor* reactor) {
-  ::grpc::internal::ClientCallbackUnaryFactory::Create< ::grpc::protobuf::MessageLite, ::grpc::protobuf::MessageLite>(stub_->channel_.get(), stub_->rpcmethod_cordPlanBeginTransfer_, context, request, response, reactor);
+void coordinatorService::Stub::async::uplrcPlanBeginTransfer(::grpc::ClientContext* context, const ::coordinator_proto::UpLRCPlanKeyOnly* request, ::coordinator_proto::RepIfSuccess* response, ::grpc::ClientUnaryReactor* reactor) {
+  ::grpc::internal::ClientCallbackUnaryFactory::Create< ::grpc::protobuf::MessageLite, ::grpc::protobuf::MessageLite>(stub_->channel_.get(), stub_->rpcmethod_uplrcPlanBeginTransfer_, context, request, response, reactor);
 }
 
-::grpc::ClientAsyncResponseReader< ::coordinator_proto::RepIfSuccess>* coordinatorService::Stub::PrepareAsynccordPlanBeginTransferRaw(::grpc::ClientContext* context, const ::coordinator_proto::CordPlanKeyOnly& request, ::grpc::CompletionQueue* cq) {
-  return ::grpc::internal::ClientAsyncResponseReaderHelper::Create< ::coordinator_proto::RepIfSuccess, ::coordinator_proto::CordPlanKeyOnly, ::grpc::protobuf::MessageLite, ::grpc::protobuf::MessageLite>(channel_.get(), cq, rpcmethod_cordPlanBeginTransfer_, context, request);
+::grpc::ClientAsyncResponseReader< ::coordinator_proto::RepIfSuccess>* coordinatorService::Stub::PrepareAsyncuplrcPlanBeginTransferRaw(::grpc::ClientContext* context, const ::coordinator_proto::UpLRCPlanKeyOnly& request, ::grpc::CompletionQueue* cq) {
+  return ::grpc::internal::ClientAsyncResponseReaderHelper::Create< ::coordinator_proto::RepIfSuccess, ::coordinator_proto::UpLRCPlanKeyOnly, ::grpc::protobuf::MessageLite, ::grpc::protobuf::MessageLite>(channel_.get(), cq, rpcmethod_uplrcPlanBeginTransfer_, context, request);
 }
 
-::grpc::ClientAsyncResponseReader< ::coordinator_proto::RepIfSuccess>* coordinatorService::Stub::AsynccordPlanBeginTransferRaw(::grpc::ClientContext* context, const ::coordinator_proto::CordPlanKeyOnly& request, ::grpc::CompletionQueue* cq) {
+::grpc::ClientAsyncResponseReader< ::coordinator_proto::RepIfSuccess>* coordinatorService::Stub::AsyncuplrcPlanBeginTransferRaw(::grpc::ClientContext* context, const ::coordinator_proto::UpLRCPlanKeyOnly& request, ::grpc::CompletionQueue* cq) {
   auto* result =
-    this->PrepareAsynccordPlanBeginTransferRaw(context, request, cq);
+    this->PrepareAsyncuplrcPlanBeginTransferRaw(context, request, cq);
   result->StartCall();
   return result;
 }
 
-::grpc::Status coordinatorService::Stub::cordPlanWaitTransferComplete(::grpc::ClientContext* context, const ::coordinator_proto::CordPlanWaitRequest& request, ::coordinator_proto::RepIfSuccess* response) {
-  return ::grpc::internal::BlockingUnaryCall< ::coordinator_proto::CordPlanWaitRequest, ::coordinator_proto::RepIfSuccess, ::grpc::protobuf::MessageLite, ::grpc::protobuf::MessageLite>(channel_.get(), rpcmethod_cordPlanWaitTransferComplete_, context, request, response);
+::grpc::Status coordinatorService::Stub::uplrcPlanWaitTransferComplete(::grpc::ClientContext* context, const ::coordinator_proto::UpLRCPlanWaitRequest& request, ::coordinator_proto::RepIfSuccess* response) {
+  return ::grpc::internal::BlockingUnaryCall< ::coordinator_proto::UpLRCPlanWaitRequest, ::coordinator_proto::RepIfSuccess, ::grpc::protobuf::MessageLite, ::grpc::protobuf::MessageLite>(channel_.get(), rpcmethod_uplrcPlanWaitTransferComplete_, context, request, response);
 }
 
-void coordinatorService::Stub::async::cordPlanWaitTransferComplete(::grpc::ClientContext* context, const ::coordinator_proto::CordPlanWaitRequest* request, ::coordinator_proto::RepIfSuccess* response, std::function<void(::grpc::Status)> f) {
-  ::grpc::internal::CallbackUnaryCall< ::coordinator_proto::CordPlanWaitRequest, ::coordinator_proto::RepIfSuccess, ::grpc::protobuf::MessageLite, ::grpc::protobuf::MessageLite>(stub_->channel_.get(), stub_->rpcmethod_cordPlanWaitTransferComplete_, context, request, response, std::move(f));
+void coordinatorService::Stub::async::uplrcPlanWaitTransferComplete(::grpc::ClientContext* context, const ::coordinator_proto::UpLRCPlanWaitRequest* request, ::coordinator_proto::RepIfSuccess* response, std::function<void(::grpc::Status)> f) {
+  ::grpc::internal::CallbackUnaryCall< ::coordinator_proto::UpLRCPlanWaitRequest, ::coordinator_proto::RepIfSuccess, ::grpc::protobuf::MessageLite, ::grpc::protobuf::MessageLite>(stub_->channel_.get(), stub_->rpcmethod_uplrcPlanWaitTransferComplete_, context, request, response, std::move(f));
 }
 
-void coordinatorService::Stub::async::cordPlanWaitTransferComplete(::grpc::ClientContext* context, const ::coordinator_proto::CordPlanWaitRequest* request, ::coordinator_proto::RepIfSuccess* response, ::grpc::ClientUnaryReactor* reactor) {
-  ::grpc::internal::ClientCallbackUnaryFactory::Create< ::grpc::protobuf::MessageLite, ::grpc::protobuf::MessageLite>(stub_->channel_.get(), stub_->rpcmethod_cordPlanWaitTransferComplete_, context, request, response, reactor);
+void coordinatorService::Stub::async::uplrcPlanWaitTransferComplete(::grpc::ClientContext* context, const ::coordinator_proto::UpLRCPlanWaitRequest* request, ::coordinator_proto::RepIfSuccess* response, ::grpc::ClientUnaryReactor* reactor) {
+  ::grpc::internal::ClientCallbackUnaryFactory::Create< ::grpc::protobuf::MessageLite, ::grpc::protobuf::MessageLite>(stub_->channel_.get(), stub_->rpcmethod_uplrcPlanWaitTransferComplete_, context, request, response, reactor);
 }
 
-::grpc::ClientAsyncResponseReader< ::coordinator_proto::RepIfSuccess>* coordinatorService::Stub::PrepareAsynccordPlanWaitTransferCompleteRaw(::grpc::ClientContext* context, const ::coordinator_proto::CordPlanWaitRequest& request, ::grpc::CompletionQueue* cq) {
-  return ::grpc::internal::ClientAsyncResponseReaderHelper::Create< ::coordinator_proto::RepIfSuccess, ::coordinator_proto::CordPlanWaitRequest, ::grpc::protobuf::MessageLite, ::grpc::protobuf::MessageLite>(channel_.get(), cq, rpcmethod_cordPlanWaitTransferComplete_, context, request);
+::grpc::ClientAsyncResponseReader< ::coordinator_proto::RepIfSuccess>* coordinatorService::Stub::PrepareAsyncuplrcPlanWaitTransferCompleteRaw(::grpc::ClientContext* context, const ::coordinator_proto::UpLRCPlanWaitRequest& request, ::grpc::CompletionQueue* cq) {
+  return ::grpc::internal::ClientAsyncResponseReaderHelper::Create< ::coordinator_proto::RepIfSuccess, ::coordinator_proto::UpLRCPlanWaitRequest, ::grpc::protobuf::MessageLite, ::grpc::protobuf::MessageLite>(channel_.get(), cq, rpcmethod_uplrcPlanWaitTransferComplete_, context, request);
 }
 
-::grpc::ClientAsyncResponseReader< ::coordinator_proto::RepIfSuccess>* coordinatorService::Stub::AsynccordPlanWaitTransferCompleteRaw(::grpc::ClientContext* context, const ::coordinator_proto::CordPlanWaitRequest& request, ::grpc::CompletionQueue* cq) {
+::grpc::ClientAsyncResponseReader< ::coordinator_proto::RepIfSuccess>* coordinatorService::Stub::AsyncuplrcPlanWaitTransferCompleteRaw(::grpc::ClientContext* context, const ::coordinator_proto::UpLRCPlanWaitRequest& request, ::grpc::CompletionQueue* cq) {
   auto* result =
-    this->PrepareAsynccordPlanWaitTransferCompleteRaw(context, request, cq);
+    this->PrepareAsyncuplrcPlanWaitTransferCompleteRaw(context, request, cq);
   result->StartCall();
   return result;
 }
 
-::grpc::Status coordinatorService::Stub::uploadCordLocalParityApply(::grpc::ClientContext* context, const ::coordinator_proto::CordUpdateRequest& request, ::coordinator_proto::RepIfSuccess* response) {
-  return ::grpc::internal::BlockingUnaryCall< ::coordinator_proto::CordUpdateRequest, ::coordinator_proto::RepIfSuccess, ::grpc::protobuf::MessageLite, ::grpc::protobuf::MessageLite>(channel_.get(), rpcmethod_uploadCordLocalParityApply_, context, request, response);
+::grpc::Status coordinatorService::Stub::uploadUpLRCLocalParityApply(::grpc::ClientContext* context, const ::coordinator_proto::UpLRCUpdateRequest& request, ::coordinator_proto::RepIfSuccess* response) {
+  return ::grpc::internal::BlockingUnaryCall< ::coordinator_proto::UpLRCUpdateRequest, ::coordinator_proto::RepIfSuccess, ::grpc::protobuf::MessageLite, ::grpc::protobuf::MessageLite>(channel_.get(), rpcmethod_uploadUpLRCLocalParityApply_, context, request, response);
 }
 
-void coordinatorService::Stub::async::uploadCordLocalParityApply(::grpc::ClientContext* context, const ::coordinator_proto::CordUpdateRequest* request, ::coordinator_proto::RepIfSuccess* response, std::function<void(::grpc::Status)> f) {
-  ::grpc::internal::CallbackUnaryCall< ::coordinator_proto::CordUpdateRequest, ::coordinator_proto::RepIfSuccess, ::grpc::protobuf::MessageLite, ::grpc::protobuf::MessageLite>(stub_->channel_.get(), stub_->rpcmethod_uploadCordLocalParityApply_, context, request, response, std::move(f));
+void coordinatorService::Stub::async::uploadUpLRCLocalParityApply(::grpc::ClientContext* context, const ::coordinator_proto::UpLRCUpdateRequest* request, ::coordinator_proto::RepIfSuccess* response, std::function<void(::grpc::Status)> f) {
+  ::grpc::internal::CallbackUnaryCall< ::coordinator_proto::UpLRCUpdateRequest, ::coordinator_proto::RepIfSuccess, ::grpc::protobuf::MessageLite, ::grpc::protobuf::MessageLite>(stub_->channel_.get(), stub_->rpcmethod_uploadUpLRCLocalParityApply_, context, request, response, std::move(f));
 }
 
-void coordinatorService::Stub::async::uploadCordLocalParityApply(::grpc::ClientContext* context, const ::coordinator_proto::CordUpdateRequest* request, ::coordinator_proto::RepIfSuccess* response, ::grpc::ClientUnaryReactor* reactor) {
-  ::grpc::internal::ClientCallbackUnaryFactory::Create< ::grpc::protobuf::MessageLite, ::grpc::protobuf::MessageLite>(stub_->channel_.get(), stub_->rpcmethod_uploadCordLocalParityApply_, context, request, response, reactor);
+void coordinatorService::Stub::async::uploadUpLRCLocalParityApply(::grpc::ClientContext* context, const ::coordinator_proto::UpLRCUpdateRequest* request, ::coordinator_proto::RepIfSuccess* response, ::grpc::ClientUnaryReactor* reactor) {
+  ::grpc::internal::ClientCallbackUnaryFactory::Create< ::grpc::protobuf::MessageLite, ::grpc::protobuf::MessageLite>(stub_->channel_.get(), stub_->rpcmethod_uploadUpLRCLocalParityApply_, context, request, response, reactor);
 }
 
-::grpc::ClientAsyncResponseReader< ::coordinator_proto::RepIfSuccess>* coordinatorService::Stub::PrepareAsyncuploadCordLocalParityApplyRaw(::grpc::ClientContext* context, const ::coordinator_proto::CordUpdateRequest& request, ::grpc::CompletionQueue* cq) {
-  return ::grpc::internal::ClientAsyncResponseReaderHelper::Create< ::coordinator_proto::RepIfSuccess, ::coordinator_proto::CordUpdateRequest, ::grpc::protobuf::MessageLite, ::grpc::protobuf::MessageLite>(channel_.get(), cq, rpcmethod_uploadCordLocalParityApply_, context, request);
+::grpc::ClientAsyncResponseReader< ::coordinator_proto::RepIfSuccess>* coordinatorService::Stub::PrepareAsyncuploadUpLRCLocalParityApplyRaw(::grpc::ClientContext* context, const ::coordinator_proto::UpLRCUpdateRequest& request, ::grpc::CompletionQueue* cq) {
+  return ::grpc::internal::ClientAsyncResponseReaderHelper::Create< ::coordinator_proto::RepIfSuccess, ::coordinator_proto::UpLRCUpdateRequest, ::grpc::protobuf::MessageLite, ::grpc::protobuf::MessageLite>(channel_.get(), cq, rpcmethod_uploadUpLRCLocalParityApply_, context, request);
 }
 
-::grpc::ClientAsyncResponseReader< ::coordinator_proto::RepIfSuccess>* coordinatorService::Stub::AsyncuploadCordLocalParityApplyRaw(::grpc::ClientContext* context, const ::coordinator_proto::CordUpdateRequest& request, ::grpc::CompletionQueue* cq) {
+::grpc::ClientAsyncResponseReader< ::coordinator_proto::RepIfSuccess>* coordinatorService::Stub::AsyncuploadUpLRCLocalParityApplyRaw(::grpc::ClientContext* context, const ::coordinator_proto::UpLRCUpdateRequest& request, ::grpc::CompletionQueue* cq) {
   auto* result =
-    this->PrepareAsyncuploadCordLocalParityApplyRaw(context, request, cq);
+    this->PrepareAsyncuploadUpLRCLocalParityApplyRaw(context, request, cq);
   result->StartCall();
   return result;
 }
 
-::grpc::Status coordinatorService::Stub::uploadCordLocalParityViaGlobalHub(::grpc::ClientContext* context, const ::coordinator_proto::CordUpdateRequest& request, ::coordinator_proto::RepIfSuccess* response) {
-  return ::grpc::internal::BlockingUnaryCall< ::coordinator_proto::CordUpdateRequest, ::coordinator_proto::RepIfSuccess, ::grpc::protobuf::MessageLite, ::grpc::protobuf::MessageLite>(channel_.get(), rpcmethod_uploadCordLocalParityViaGlobalHub_, context, request, response);
+::grpc::Status coordinatorService::Stub::uploadUpLRCLocalParityViaGlobalHub(::grpc::ClientContext* context, const ::coordinator_proto::UpLRCUpdateRequest& request, ::coordinator_proto::RepIfSuccess* response) {
+  return ::grpc::internal::BlockingUnaryCall< ::coordinator_proto::UpLRCUpdateRequest, ::coordinator_proto::RepIfSuccess, ::grpc::protobuf::MessageLite, ::grpc::protobuf::MessageLite>(channel_.get(), rpcmethod_uploadUpLRCLocalParityViaGlobalHub_, context, request, response);
 }
 
-void coordinatorService::Stub::async::uploadCordLocalParityViaGlobalHub(::grpc::ClientContext* context, const ::coordinator_proto::CordUpdateRequest* request, ::coordinator_proto::RepIfSuccess* response, std::function<void(::grpc::Status)> f) {
-  ::grpc::internal::CallbackUnaryCall< ::coordinator_proto::CordUpdateRequest, ::coordinator_proto::RepIfSuccess, ::grpc::protobuf::MessageLite, ::grpc::protobuf::MessageLite>(stub_->channel_.get(), stub_->rpcmethod_uploadCordLocalParityViaGlobalHub_, context, request, response, std::move(f));
+void coordinatorService::Stub::async::uploadUpLRCLocalParityViaGlobalHub(::grpc::ClientContext* context, const ::coordinator_proto::UpLRCUpdateRequest* request, ::coordinator_proto::RepIfSuccess* response, std::function<void(::grpc::Status)> f) {
+  ::grpc::internal::CallbackUnaryCall< ::coordinator_proto::UpLRCUpdateRequest, ::coordinator_proto::RepIfSuccess, ::grpc::protobuf::MessageLite, ::grpc::protobuf::MessageLite>(stub_->channel_.get(), stub_->rpcmethod_uploadUpLRCLocalParityViaGlobalHub_, context, request, response, std::move(f));
 }
 
-void coordinatorService::Stub::async::uploadCordLocalParityViaGlobalHub(::grpc::ClientContext* context, const ::coordinator_proto::CordUpdateRequest* request, ::coordinator_proto::RepIfSuccess* response, ::grpc::ClientUnaryReactor* reactor) {
-  ::grpc::internal::ClientCallbackUnaryFactory::Create< ::grpc::protobuf::MessageLite, ::grpc::protobuf::MessageLite>(stub_->channel_.get(), stub_->rpcmethod_uploadCordLocalParityViaGlobalHub_, context, request, response, reactor);
+void coordinatorService::Stub::async::uploadUpLRCLocalParityViaGlobalHub(::grpc::ClientContext* context, const ::coordinator_proto::UpLRCUpdateRequest* request, ::coordinator_proto::RepIfSuccess* response, ::grpc::ClientUnaryReactor* reactor) {
+  ::grpc::internal::ClientCallbackUnaryFactory::Create< ::grpc::protobuf::MessageLite, ::grpc::protobuf::MessageLite>(stub_->channel_.get(), stub_->rpcmethod_uploadUpLRCLocalParityViaGlobalHub_, context, request, response, reactor);
 }
 
-::grpc::ClientAsyncResponseReader< ::coordinator_proto::RepIfSuccess>* coordinatorService::Stub::PrepareAsyncuploadCordLocalParityViaGlobalHubRaw(::grpc::ClientContext* context, const ::coordinator_proto::CordUpdateRequest& request, ::grpc::CompletionQueue* cq) {
-  return ::grpc::internal::ClientAsyncResponseReaderHelper::Create< ::coordinator_proto::RepIfSuccess, ::coordinator_proto::CordUpdateRequest, ::grpc::protobuf::MessageLite, ::grpc::protobuf::MessageLite>(channel_.get(), cq, rpcmethod_uploadCordLocalParityViaGlobalHub_, context, request);
+::grpc::ClientAsyncResponseReader< ::coordinator_proto::RepIfSuccess>* coordinatorService::Stub::PrepareAsyncuploadUpLRCLocalParityViaGlobalHubRaw(::grpc::ClientContext* context, const ::coordinator_proto::UpLRCUpdateRequest& request, ::grpc::CompletionQueue* cq) {
+  return ::grpc::internal::ClientAsyncResponseReaderHelper::Create< ::coordinator_proto::RepIfSuccess, ::coordinator_proto::UpLRCUpdateRequest, ::grpc::protobuf::MessageLite, ::grpc::protobuf::MessageLite>(channel_.get(), cq, rpcmethod_uploadUpLRCLocalParityViaGlobalHub_, context, request);
 }
 
-::grpc::ClientAsyncResponseReader< ::coordinator_proto::RepIfSuccess>* coordinatorService::Stub::AsyncuploadCordLocalParityViaGlobalHubRaw(::grpc::ClientContext* context, const ::coordinator_proto::CordUpdateRequest& request, ::grpc::CompletionQueue* cq) {
+::grpc::ClientAsyncResponseReader< ::coordinator_proto::RepIfSuccess>* coordinatorService::Stub::AsyncuploadUpLRCLocalParityViaGlobalHubRaw(::grpc::ClientContext* context, const ::coordinator_proto::UpLRCUpdateRequest& request, ::grpc::CompletionQueue* cq) {
   auto* result =
-    this->PrepareAsyncuploadCordLocalParityViaGlobalHubRaw(context, request, cq);
+    this->PrepareAsyncuploadUpLRCLocalParityViaGlobalHubRaw(context, request, cq);
   result->StartCall();
   return result;
 }
@@ -852,62 +852,62 @@ coordinatorService::Service::Service() {
   AddMethod(new ::grpc::internal::RpcServiceMethod(
       coordinatorService_method_names[9],
       ::grpc::internal::RpcMethod::NORMAL_RPC,
-      new ::grpc::internal::RpcMethodHandler< coordinatorService::Service, ::coordinator_proto::XueUpdateRequest, ::coordinator_proto::ReplyProxyIPsPorts, ::grpc::protobuf::MessageLite, ::grpc::protobuf::MessageLite>(
+      new ::grpc::internal::RpcMethodHandler< coordinatorService::Service, ::coordinator_proto::UplrcLegacyUpdateRequest, ::coordinator_proto::ReplyProxyIPsPorts, ::grpc::protobuf::MessageLite, ::grpc::protobuf::MessageLite>(
           [](coordinatorService::Service* service,
              ::grpc::ServerContext* ctx,
-             const ::coordinator_proto::XueUpdateRequest* req,
+             const ::coordinator_proto::UplrcLegacyUpdateRequest* req,
              ::coordinator_proto::ReplyProxyIPsPorts* resp) {
-               return service->uploadXueUpdate(ctx, req, resp);
+               return service->uploadUplrcLegacyUpdate(ctx, req, resp);
              }, this)));
   AddMethod(new ::grpc::internal::RpcServiceMethod(
       coordinatorService_method_names[10],
       ::grpc::internal::RpcMethod::NORMAL_RPC,
-      new ::grpc::internal::RpcMethodHandler< coordinatorService::Service, ::coordinator_proto::CordUpdateRequest, ::coordinator_proto::ReplyProxyIPsPorts, ::grpc::protobuf::MessageLite, ::grpc::protobuf::MessageLite>(
+      new ::grpc::internal::RpcMethodHandler< coordinatorService::Service, ::coordinator_proto::UpLRCUpdateRequest, ::coordinator_proto::ReplyProxyIPsPorts, ::grpc::protobuf::MessageLite, ::grpc::protobuf::MessageLite>(
           [](coordinatorService::Service* service,
              ::grpc::ServerContext* ctx,
-             const ::coordinator_proto::CordUpdateRequest* req,
+             const ::coordinator_proto::UpLRCUpdateRequest* req,
              ::coordinator_proto::ReplyProxyIPsPorts* resp) {
-               return service->uploadCordUpdate(ctx, req, resp);
+               return service->uploadUpLRCUpdate(ctx, req, resp);
              }, this)));
   AddMethod(new ::grpc::internal::RpcServiceMethod(
       coordinatorService_method_names[11],
       ::grpc::internal::RpcMethod::NORMAL_RPC,
-      new ::grpc::internal::RpcMethodHandler< coordinatorService::Service, ::coordinator_proto::CordPlanKeyOnly, ::coordinator_proto::RepIfSuccess, ::grpc::protobuf::MessageLite, ::grpc::protobuf::MessageLite>(
+      new ::grpc::internal::RpcMethodHandler< coordinatorService::Service, ::coordinator_proto::UpLRCPlanKeyOnly, ::coordinator_proto::RepIfSuccess, ::grpc::protobuf::MessageLite, ::grpc::protobuf::MessageLite>(
           [](coordinatorService::Service* service,
              ::grpc::ServerContext* ctx,
-             const ::coordinator_proto::CordPlanKeyOnly* req,
+             const ::coordinator_proto::UpLRCPlanKeyOnly* req,
              ::coordinator_proto::RepIfSuccess* resp) {
-               return service->cordPlanBeginTransfer(ctx, req, resp);
+               return service->uplrcPlanBeginTransfer(ctx, req, resp);
              }, this)));
   AddMethod(new ::grpc::internal::RpcServiceMethod(
       coordinatorService_method_names[12],
       ::grpc::internal::RpcMethod::NORMAL_RPC,
-      new ::grpc::internal::RpcMethodHandler< coordinatorService::Service, ::coordinator_proto::CordPlanWaitRequest, ::coordinator_proto::RepIfSuccess, ::grpc::protobuf::MessageLite, ::grpc::protobuf::MessageLite>(
+      new ::grpc::internal::RpcMethodHandler< coordinatorService::Service, ::coordinator_proto::UpLRCPlanWaitRequest, ::coordinator_proto::RepIfSuccess, ::grpc::protobuf::MessageLite, ::grpc::protobuf::MessageLite>(
           [](coordinatorService::Service* service,
              ::grpc::ServerContext* ctx,
-             const ::coordinator_proto::CordPlanWaitRequest* req,
+             const ::coordinator_proto::UpLRCPlanWaitRequest* req,
              ::coordinator_proto::RepIfSuccess* resp) {
-               return service->cordPlanWaitTransferComplete(ctx, req, resp);
+               return service->uplrcPlanWaitTransferComplete(ctx, req, resp);
              }, this)));
   AddMethod(new ::grpc::internal::RpcServiceMethod(
       coordinatorService_method_names[13],
       ::grpc::internal::RpcMethod::NORMAL_RPC,
-      new ::grpc::internal::RpcMethodHandler< coordinatorService::Service, ::coordinator_proto::CordUpdateRequest, ::coordinator_proto::RepIfSuccess, ::grpc::protobuf::MessageLite, ::grpc::protobuf::MessageLite>(
+      new ::grpc::internal::RpcMethodHandler< coordinatorService::Service, ::coordinator_proto::UpLRCUpdateRequest, ::coordinator_proto::RepIfSuccess, ::grpc::protobuf::MessageLite, ::grpc::protobuf::MessageLite>(
           [](coordinatorService::Service* service,
              ::grpc::ServerContext* ctx,
-             const ::coordinator_proto::CordUpdateRequest* req,
+             const ::coordinator_proto::UpLRCUpdateRequest* req,
              ::coordinator_proto::RepIfSuccess* resp) {
-               return service->uploadCordLocalParityApply(ctx, req, resp);
+               return service->uploadUpLRCLocalParityApply(ctx, req, resp);
              }, this)));
   AddMethod(new ::grpc::internal::RpcServiceMethod(
       coordinatorService_method_names[14],
       ::grpc::internal::RpcMethod::NORMAL_RPC,
-      new ::grpc::internal::RpcMethodHandler< coordinatorService::Service, ::coordinator_proto::CordUpdateRequest, ::coordinator_proto::RepIfSuccess, ::grpc::protobuf::MessageLite, ::grpc::protobuf::MessageLite>(
+      new ::grpc::internal::RpcMethodHandler< coordinatorService::Service, ::coordinator_proto::UpLRCUpdateRequest, ::coordinator_proto::RepIfSuccess, ::grpc::protobuf::MessageLite, ::grpc::protobuf::MessageLite>(
           [](coordinatorService::Service* service,
              ::grpc::ServerContext* ctx,
-             const ::coordinator_proto::CordUpdateRequest* req,
+             const ::coordinator_proto::UpLRCUpdateRequest* req,
              ::coordinator_proto::RepIfSuccess* resp) {
-               return service->uploadCordLocalParityViaGlobalHub(ctx, req, resp);
+               return service->uploadUpLRCLocalParityViaGlobalHub(ctx, req, resp);
              }, this)));
   AddMethod(new ::grpc::internal::RpcServiceMethod(
       coordinatorService_method_names[15],
@@ -1117,42 +1117,42 @@ coordinatorService::Service::~Service() {
   return ::grpc::Status(::grpc::StatusCode::UNIMPLEMENTED, "");
 }
 
-::grpc::Status coordinatorService::Service::uploadXueUpdate(::grpc::ServerContext* context, const ::coordinator_proto::XueUpdateRequest* request, ::coordinator_proto::ReplyProxyIPsPorts* response) {
+::grpc::Status coordinatorService::Service::uploadUplrcLegacyUpdate(::grpc::ServerContext* context, const ::coordinator_proto::UplrcLegacyUpdateRequest* request, ::coordinator_proto::ReplyProxyIPsPorts* response) {
   (void) context;
   (void) request;
   (void) response;
   return ::grpc::Status(::grpc::StatusCode::UNIMPLEMENTED, "");
 }
 
-::grpc::Status coordinatorService::Service::uploadCordUpdate(::grpc::ServerContext* context, const ::coordinator_proto::CordUpdateRequest* request, ::coordinator_proto::ReplyProxyIPsPorts* response) {
+::grpc::Status coordinatorService::Service::uploadUpLRCUpdate(::grpc::ServerContext* context, const ::coordinator_proto::UpLRCUpdateRequest* request, ::coordinator_proto::ReplyProxyIPsPorts* response) {
   (void) context;
   (void) request;
   (void) response;
   return ::grpc::Status(::grpc::StatusCode::UNIMPLEMENTED, "");
 }
 
-::grpc::Status coordinatorService::Service::cordPlanBeginTransfer(::grpc::ServerContext* context, const ::coordinator_proto::CordPlanKeyOnly* request, ::coordinator_proto::RepIfSuccess* response) {
+::grpc::Status coordinatorService::Service::uplrcPlanBeginTransfer(::grpc::ServerContext* context, const ::coordinator_proto::UpLRCPlanKeyOnly* request, ::coordinator_proto::RepIfSuccess* response) {
   (void) context;
   (void) request;
   (void) response;
   return ::grpc::Status(::grpc::StatusCode::UNIMPLEMENTED, "");
 }
 
-::grpc::Status coordinatorService::Service::cordPlanWaitTransferComplete(::grpc::ServerContext* context, const ::coordinator_proto::CordPlanWaitRequest* request, ::coordinator_proto::RepIfSuccess* response) {
+::grpc::Status coordinatorService::Service::uplrcPlanWaitTransferComplete(::grpc::ServerContext* context, const ::coordinator_proto::UpLRCPlanWaitRequest* request, ::coordinator_proto::RepIfSuccess* response) {
   (void) context;
   (void) request;
   (void) response;
   return ::grpc::Status(::grpc::StatusCode::UNIMPLEMENTED, "");
 }
 
-::grpc::Status coordinatorService::Service::uploadCordLocalParityApply(::grpc::ServerContext* context, const ::coordinator_proto::CordUpdateRequest* request, ::coordinator_proto::RepIfSuccess* response) {
+::grpc::Status coordinatorService::Service::uploadUpLRCLocalParityApply(::grpc::ServerContext* context, const ::coordinator_proto::UpLRCUpdateRequest* request, ::coordinator_proto::RepIfSuccess* response) {
   (void) context;
   (void) request;
   (void) response;
   return ::grpc::Status(::grpc::StatusCode::UNIMPLEMENTED, "");
 }
 
-::grpc::Status coordinatorService::Service::uploadCordLocalParityViaGlobalHub(::grpc::ServerContext* context, const ::coordinator_proto::CordUpdateRequest* request, ::coordinator_proto::RepIfSuccess* response) {
+::grpc::Status coordinatorService::Service::uploadUpLRCLocalParityViaGlobalHub(::grpc::ServerContext* context, const ::coordinator_proto::UpLRCUpdateRequest* request, ::coordinator_proto::RepIfSuccess* response) {
   (void) context;
   (void) request;
   (void) response;

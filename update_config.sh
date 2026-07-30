@@ -1,10 +1,12 @@
 #!/bin/bash
 
 # 定义源文件夹路径
-SOURCE_DIR="/root/xue/project/config"
+ROOT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]:-$0}")" && pwd)"
+SOURCE_DIR="${SOURCE_DIR:-$ROOT_DIR/project/config}"
+REMOTE_CONFIG_DIR="${REMOTE_CONFIG_DIR:-$ROOT_DIR/project/config}"
 
 # 定义 hosts 文件路径
-HOSTS_FILE="hosts"
+HOSTS_FILE="${HOSTS_FILE:-$ROOT_DIR/hosts}"
 
 # 获取本机的主机名
 LOCAL_HOST=$(hostname)
@@ -25,7 +27,7 @@ while read -r REMOTE_HOST; do
   echo "Copying contents of $SOURCE_DIR to $REMOTE_HOST..."
 
   # 使用 scp 递归复制文件夹内容
-  sudo scp -r "$SOURCE_DIR"/* "$REMOTE_HOST:/root/xue/project/config/"
+  sudo scp -r "$SOURCE_DIR"/* "$REMOTE_HOST:$REMOTE_CONFIG_DIR/"
 
   # 检查 scp 是否成功
   if [ $? -eq 0 ]; then

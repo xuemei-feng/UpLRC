@@ -1,4 +1,4 @@
-#include "cord_algorithm3.h"
+#include "uplrc_algorithm3.h"
 #include "meta_definition.h"
 #include <algorithm>
 #include <cmath>
@@ -8,7 +8,7 @@
 
 namespace ECProject
 {
-  namespace cord_alg3
+  namespace uplrc_alg3
   {
     namespace
     {
@@ -53,7 +53,7 @@ namespace ECProject
       }
 
       double transfer_sec_clu(int src_c, int dst_c, int64_t bytes,
-                              const cord_alg2::TransferParams &tp)
+                              const uplrc_alg2::TransferParams &tp)
       {
         if (bytes <= 0)
           return 0.0;
@@ -120,7 +120,7 @@ namespace ECProject
         const std::map<int, std::vector<std::pair<int, int>>> &block_intervals,
         const std::vector<int> &N_intersection,
         int cluster_num,
-        const cord_alg2::TransferParams &tp)
+        const uplrc_alg2::TransferParams &tp)
     {
       Algorithm3Result out;
       (void)cluster_num;
@@ -165,7 +165,7 @@ namespace ECProject
         for (int j = i; j < N; ++j)
         {
           std::vector<int> subset(sorted.begin() + i, sorted.begin() + j + 1);
-          cost[i][j] = cord_alg2::merged_delta_hull_span_bytes(block_intervals, subset);
+          cost[i][j] = uplrc_alg2::merged_delta_hull_span_bytes(block_intervals, subset);
         }
       }
 
@@ -432,5 +432,5 @@ namespace ECProject
       out.note = "ok";
       return out;
     }
-  } // namespace cord_alg3
+  } // namespace uplrc_alg3
 } // namespace ECProject

@@ -84,7 +84,7 @@ namespace
 
   std::string resolve_client_ip(const ECProject::Config *config)
   {
-    if (const char *env = std::getenv("CORD_CLIENT_IP"))
+    if (const char *env = std::getenv("UPLRC_CLIENT_IP"))
     {
       if (env[0] != '\0')
         return env;
@@ -133,12 +133,12 @@ namespace
   void print_client_usage(const char *argv0)
   {
     std::cout << "Usage: " << argv0
-              << " [--ip CLIENT_IP] [--port PORT] [--config PATH] <cord_update_trace_file>"
+              << " [--ip CLIENT_IP] [--port PORT] [--config PATH] <uplrc_update_trace_file>"
               << std::endl;
-    std::cout << "Environment: CORD_CLIENT_IP overrides auto-detected cluster client IP." << std::endl;
+    std::cout << "Environment: UPLRC_CLIENT_IP overrides auto-detected cluster client IP." << std::endl;
   }
 
-  bool parse_cord_trace_line(const std::string &line, int &stripe_id, int &range_cnt,
+  bool parse_uplrc_trace_line(const std::string &line, int &stripe_id, int &range_cnt,
                              std::vector<std::pair<int, int>> &logical_ranges, std::string &err)
   {
     logical_ranges.clear();
@@ -189,7 +189,7 @@ namespace
     return line[i] == '#';
   }
 
-  std::ostream &print_cord_timing_fields(std::ostream &os, const ECProject::CordUpdateTiming &t)
+  std::ostream &print_uplrc_timing_fields(std::ostream &os, const ECProject::UpLRCUpdateTiming &t)
   {
     os << "wall_sec=" << std::fixed << std::setprecision(6) << t.wall_sec
        << " plan_sec=" << t.plan_sec
@@ -202,7 +202,7 @@ namespace
     return os;
   }
 
-  struct CordTimingTotals
+  struct UpLRCTimingTotals
   {
     double wall_sec = 0.0;
     double plan_sec = 0.0;
@@ -213,7 +213,7 @@ namespace
     double xfer_pure_sec = 0.0;
     double xfer_grpc_sec = 0.0;
 
-    void add(const ECProject::CordUpdateTiming &t)
+    void add(const ECProject::UpLRCUpdateTiming &t)
     {
       wall_sec += t.wall_sec;
       plan_sec += t.plan_sec;
@@ -225,9 +225,9 @@ namespace
       xfer_grpc_sec += t.xfer_grpc_sec;
     }
 
-    ECProject::CordUpdateTiming avg(int count) const
+    ECProject::UpLRCUpdateTiming avg(int count) const
     {
-      ECProject::CordUpdateTiming out;
+      ECProject::UpLRCUpdateTiming out;
       if (count <= 0)
         return out;
       const double n = static_cast<double>(count);
@@ -243,24 +243,24 @@ namespace
     }
   };
 
-  struct CordBatchTask
+  struct UpLRCBatchTask
   {
     int line_no = 0;
     int stripe_id = 0;
     std::vector<std::pair<int, int>> logical_ranges;
   };
 
-  struct CordBatchResult
+  struct UpLRCBatchResult
   {
     int line_no = 0;
     int stripe_id = 0;
     bool ok = false;
-    ECProject::CordUpdateTiming timing;
+    ECProject::UpLRCUpdateTiming timing;
   };
 
-  int parse_cord_batch_threads()
+  int parse_uplrc_batch_threads()
   {
-    const char *env = std::getenv("CORD_BATCH_THREADS");
+    const char *env = std::getenv("UPLRC_BATCH_THREADS");
     if (env == nullptr || env[0] == '\0')
       return 1;
     char *end = nullptr;
@@ -272,9 +272,9 @@ namespace
     return static_cast<int>(v);
   }
 
-  bool parse_cord_pipeline_xfer()
+  bool parse_uplrc_pipeline_xfer()
   {
-    const char *env = std::getenv("CORD_PIPELINE_XFER");
+    const char *env = std::getenv("UPLRC_PIPELINE_XFER");
     if (env == nullptr || env[0] == '\0')
       return true;
     return !(env[0] == '0' && env[1] == '\0');
@@ -317,10 +317,10 @@ namespace
     g.cv.notify_all();
   }
 
-  struct CordPipelineSlot
+  struct UpLRCPipelineSlot
   {
-    ECProject::CordUpdatePending pending;
-    CordBatchTask task;
+    ECProject::UpLRCUpdatePending pending;
+    UpLRCBatchTask task;
   };
 }
 
@@ -392,8 +392,8 @@ int main(int argc, char **argv)
     }
     const double total_write_size = static_cast<double>(stripe_num) * block_size * static_cast<double>(n); // MB
     std::cout << "Set phase: ClientStripeNum=" << stripe_num << ", total_write_size_mb=" << total_write_size << std::endl;
-    const int set_threads = parse_cord_batch_threads();
-    std::cout << "Set phase concurrency (CORD_BATCH_THREADS)=" << set_threads << std::endl;
+    const int set_threads = parse_uplrc_batch_threads();
+    std::cout << "Set phase concurrency (UPLRC_BATCH_THREADS)=" << set_threads << std::endl;
     std::cout << "Starting set stripe operation" << std::endl;
     std::chrono::high_resolution_clock::time_point set_start = std::chrono::high_resolution_clock::now();
     if (set_threads <= 1)
@@ -444,7 +444,7 @@ int main(int argc, char **argv)
     std::chrono::duration<double> set_time = std::chrono::duration_cast<std::chrono::duration<double>>(set_end - set_start);
     std::cout << "write throughput: " << (static_cast<double> (total_write_size) / set_time.count() / 1024) << "MB/s" << std::endl;
     char input = 0;
-    std::cout << "Start CoRD batch update? (type 'y' to proceed): " << std::endl;
+    std::cout << "Start UpLRC batch update? (type 'y' to proceed): " << std::endl;
     std::cin >> input;
     if (input == 'y')
     {
@@ -464,11 +464,11 @@ int main(int argc, char **argv)
             return 1;
         }
 
-        const int batch_threads = parse_cord_batch_threads();
+        const int batch_threads = parse_uplrc_batch_threads();
         const std::string coord_addr = config->CoordinatorIP + ":" + std::to_string(config->CoordinatorPort);
-        std::cout << "CoRD batch parallel workers (CORD_BATCH_THREADS)=" << batch_threads << std::endl;
+        std::cout << "UpLRC batch parallel workers (UPLRC_BATCH_THREADS)=" << batch_threads << std::endl;
 
-        std::vector<CordBatchTask> tasks;
+        std::vector<UpLRCBatchTask> tasks;
         tasks.reserve(256);
         std::string line;
         int line_no = 0;
@@ -478,13 +478,13 @@ int main(int argc, char **argv)
             ++line_no;
             if (is_blank_or_comment_line(line))
                 continue;
-            CordBatchTask task;
+            UpLRCBatchTask task;
             task.line_no = line_no;
             int range_cnt = 0;
             std::string parse_err;
-            if (!parse_cord_trace_line(line, task.stripe_id, range_cnt, task.logical_ranges, parse_err))
+            if (!parse_uplrc_trace_line(line, task.stripe_id, range_cnt, task.logical_ranges, parse_err))
             {
-                std::cout << "[CoRD batch] line " << line_no << " parse error: " << parse_err
+                std::cout << "[UpLRC batch] line " << line_no << " parse error: " << parse_err
                           << " (skipped, continue)" << std::endl;
                 ++parse_failures;
                 continue;
@@ -494,28 +494,28 @@ int main(int argc, char **argv)
 
         int total_failures = parse_failures;
         int success_count = 0;
-        CordTimingTotals timing_totals;
-        std::vector<CordBatchResult> batch_results;
+        UpLRCTimingTotals timing_totals;
+        std::vector<UpLRCBatchResult> batch_results;
         batch_results.reserve(tasks.size());
 
         const auto batch_wall_t0 = std::chrono::steady_clock::now();
-        const bool pipeline_xfer = parse_cord_pipeline_xfer();
+        const bool pipeline_xfer = parse_uplrc_pipeline_xfer();
         const int stripe_gate_n = std::max(stripe_num, 1);
         std::vector<StripeXferGate> stripe_xfer_gates(static_cast<size_t>(stripe_gate_n));
-        std::cout << "CORD_PIPELINE_XFER=" << (pipeline_xfer ? 1 : 0)
+        std::cout << "UPLRC_PIPELINE_XFER=" << (pipeline_xfer ? 1 : 0)
                   << " (defer xfer wait; overlap upload with prior stripe xfer)" << std::endl;
 
         std::mutex log_mu;
         std::mutex result_mu;
 
-        auto record_batch_result = [&](const CordBatchTask &task, bool ok, const ECProject::CordUpdateTiming &timing,
+        auto reuplrc_batch_result = [&](const UpLRCBatchTask &task, bool ok, const ECProject::UpLRCUpdateTiming &timing,
                                        int worker_id) {
             if (worker_id >= 0)
             {
                 std::lock_guard<std::mutex> lk(log_mu);
-                std::cout << "[CoRD batch][w" << worker_id << "] line " << task.line_no
+                std::cout << "[UpLRC batch][w" << worker_id << "] line " << task.line_no
                           << (ok ? " OK " : " FAILED ");
-                print_cord_timing_fields(std::cout, timing);
+                print_uplrc_timing_fields(std::cout, timing);
                 if (!ok)
                     std::cout << std::endl;
                 else
@@ -523,12 +523,12 @@ int main(int argc, char **argv)
             }
             else
             {
-                std::cout << "[CoRD batch] line " << task.line_no << (ok ? " OK " : " FAILED ");
-                print_cord_timing_fields(std::cout, timing);
+                std::cout << "[UpLRC batch] line " << task.line_no << (ok ? " OK " : " FAILED ");
+                print_uplrc_timing_fields(std::cout, timing);
                 std::cout << (ok ? "" : " (skipped, continue)") << std::endl;
             }
             std::lock_guard<std::mutex> rlk(result_mu);
-            batch_results.push_back(CordBatchResult{task.line_no, task.stripe_id, ok, timing});
+            batch_results.push_back(UpLRCBatchResult{task.line_no, task.stripe_id, ok, timing});
             if (ok)
             {
                 ++success_count;
@@ -539,20 +539,20 @@ int main(int argc, char **argv)
         };
 
         auto finalize_pipeline_stripe = [&](ECProject::Client &wc, int worker_id,
-                                            std::unordered_map<int, CordPipelineSlot> &slots, int stripe_id) {
+                                            std::unordered_map<int, UpLRCPipelineSlot> &slots, int stripe_id) {
             auto sit = slots.find(stripe_id);
             if (sit == slots.end())
                 return;
-            ECProject::CordUpdateTiming timing;
-            const bool ok = wc.cord_update_wait_xfer(&sit->second.pending, &timing);
+            ECProject::UpLRCUpdateTiming timing;
+            const bool ok = wc.uplrc_update_wait_xfer(&sit->second.pending, &timing);
             stripe_xfer_gate_clear_inflight(stripe_xfer_gates.data(), stripe_gate_n, stripe_id);
-            const CordBatchTask task = sit->second.task;
+            const UpLRCBatchTask task = sit->second.task;
             slots.erase(sit);
-            record_batch_result(task, ok, timing, worker_id);
+            reuplrc_batch_result(task, ok, timing, worker_id);
         };
 
         auto drain_pipeline_slots = [&](ECProject::Client &wc, int worker_id,
-                                        std::unordered_map<int, CordPipelineSlot> &slots) {
+                                        std::unordered_map<int, UpLRCPipelineSlot> &slots) {
             while (!slots.empty())
             {
                 const int sid = slots.begin()->first;
@@ -560,25 +560,25 @@ int main(int argc, char **argv)
             }
         };
 
-        auto run_pipeline_task = [&](ECProject::Client &wc, int worker_id, const CordBatchTask &task,
-                                     std::unordered_map<int, CordPipelineSlot> &slots) {
+        auto run_pipeline_task = [&](ECProject::Client &wc, int worker_id, const UpLRCBatchTask &task,
+                                     std::unordered_map<int, UpLRCPipelineSlot> &slots) {
             if (task.stripe_id < 0 || task.stripe_id >= stripe_gate_n)
             {
-                ECProject::CordUpdateTiming timing;
+                ECProject::UpLRCUpdateTiming timing;
                 if (worker_id >= 0)
                 {
                     std::lock_guard<std::mutex> lk(log_mu);
-                    std::cout << "[CoRD batch][w" << worker_id << "] line " << task.line_no
+                    std::cout << "[UpLRC batch][w" << worker_id << "] line " << task.line_no
                               << " stripe_id=" << task.stripe_id << " out of range" << std::endl;
                 }
                 else
                 {
-                    std::cout << "[CoRD batch] line " << task.line_no << " stripe_id=" << task.stripe_id
+                    std::cout << "[UpLRC batch] line " << task.line_no << " stripe_id=" << task.stripe_id
                               << " out of range" << std::endl;
                 }
                 std::lock_guard<std::mutex> rlk(result_mu);
                 ++total_failures;
-                batch_results.push_back(CordBatchResult{task.line_no, task.stripe_id, false, timing});
+                batch_results.push_back(UpLRCBatchResult{task.line_no, task.stripe_id, false, timing});
                 return;
             }
 
@@ -588,32 +588,32 @@ int main(int argc, char **argv)
             if (worker_id >= 0)
             {
                 std::lock_guard<std::mutex> lk(log_mu);
-                std::cout << "[CoRD batch][w" << worker_id << "] line " << task.line_no
+                std::cout << "[UpLRC batch][w" << worker_id << "] line " << task.line_no
                           << " stripe_id=" << task.stripe_id
                           << " ranges=" << task.logical_ranges.size() << " ..." << std::endl;
             }
             else
             {
-                std::cout << "[CoRD batch] line " << task.line_no << " stripe_id=" << task.stripe_id
+                std::cout << "[UpLRC batch] line " << task.line_no << " stripe_id=" << task.stripe_id
                           << " ranges=" << task.logical_ranges.size() << " ..." << std::endl;
             }
 
-            ECProject::CordUpdatePending pending;
-            ECProject::CordUpdateTiming partial;
+            ECProject::UpLRCUpdatePending pending;
+            ECProject::UpLRCUpdateTiming partial;
             const bool started =
-                wc.cord_update_start(task.stripe_id, task.logical_ranges, nullptr, 0, &pending, &partial);
+                wc.uplrc_update_start(task.stripe_id, task.logical_ranges, nullptr, 0, &pending, &partial);
             if (!started)
             {
-                record_batch_result(task, false, partial, worker_id);
+                reuplrc_batch_result(task, false, partial, worker_id);
                 return;
             }
             if (pending.transfer_plan_key.empty())
             {
-                record_batch_result(task, true, partial, worker_id);
+                reuplrc_batch_result(task, true, partial, worker_id);
                 return;
             }
             stripe_xfer_gate_mark_inflight(stripe_xfer_gates.data(), stripe_gate_n, task.stripe_id);
-            CordPipelineSlot slot;
+            UpLRCPipelineSlot slot;
             slot.pending = std::move(pending);
             slot.task = task;
             slots[task.stripe_id] = std::move(slot);
@@ -621,32 +621,32 @@ int main(int argc, char **argv)
 
         if (batch_threads <= 1 && !pipeline_xfer)
         {
-            for (const CordBatchTask &task : tasks)
+            for (const UpLRCBatchTask &task : tasks)
             {
-                std::cout << "[CoRD batch] line " << task.line_no << " stripe_id=" << task.stripe_id
+                std::cout << "[UpLRC batch] line " << task.line_no << " stripe_id=" << task.stripe_id
                           << " ranges=" << task.logical_ranges.size() << " ..." << std::endl;
-                ECProject::CordUpdateTiming timing;
-                const bool ok = client.cord_update(task.stripe_id, task.logical_ranges, nullptr, 0, &timing);
-                batch_results.push_back(CordBatchResult{task.line_no, task.stripe_id, ok, timing});
+                ECProject::UpLRCUpdateTiming timing;
+                const bool ok = client.uplrc_update(task.stripe_id, task.logical_ranges, nullptr, 0, &timing);
+                batch_results.push_back(UpLRCBatchResult{task.line_no, task.stripe_id, ok, timing});
                 if (!ok)
                 {
-                    std::cout << "[CoRD batch] line " << task.line_no << " FAILED ";
-                    print_cord_timing_fields(std::cout, timing);
+                    std::cout << "[UpLRC batch] line " << task.line_no << " FAILED ";
+                    print_uplrc_timing_fields(std::cout, timing);
                     std::cout << " (skipped, continue)" << std::endl;
                     ++total_failures;
                     continue;
                 }
                 ++success_count;
                 timing_totals.add(timing);
-                std::cout << "[CoRD batch] line " << task.line_no << " OK ";
-                print_cord_timing_fields(std::cout, timing);
+                std::cout << "[UpLRC batch] line " << task.line_no << " OK ";
+                print_uplrc_timing_fields(std::cout, timing);
                 std::cout << std::endl;
             }
         }
         else if (batch_threads <= 1)
         {
-            std::unordered_map<int, CordPipelineSlot> pipeline_slots;
-            for (const CordBatchTask &task : tasks)
+            std::unordered_map<int, UpLRCPipelineSlot> pipeline_slots;
+            for (const UpLRCBatchTask &task : tasks)
                 run_pipeline_task(client, -1, task, pipeline_slots);
             drain_pipeline_slots(client, -1, pipeline_slots);
         }
@@ -659,7 +659,7 @@ int main(int argc, char **argv)
                 const int port = client_port + 1 + wi;
                 worker_clients.push_back(std::make_unique<ECProject::Client>(
                     client_ip, port, coord_addr, sys_config_path));
-                std::cout << "[CoRD batch] worker " << wi << " client_id=" << client_ip << ":" << port << std::endl;
+                std::cout << "[UpLRC batch] worker " << wi << " client_id=" << client_ip << ":" << port << std::endl;
             }
 
             const int stripe_lock_n = std::max(stripe_num, 1);
@@ -673,31 +673,31 @@ int main(int argc, char **argv)
                     const size_t idx = next_task.fetch_add(1);
                     if (idx >= tasks.size())
                         break;
-                    const CordBatchTask &task = tasks[idx];
+                    const UpLRCBatchTask &task = tasks[idx];
                     if (task.stripe_id < 0 || task.stripe_id >= stripe_lock_n)
                     {
-                        ECProject::CordUpdateTiming timing;
+                        ECProject::UpLRCUpdateTiming timing;
                         std::lock_guard<std::mutex> lk(log_mu);
-                        std::cout << "[CoRD batch][w" << worker_id << "] line " << task.line_no
+                        std::cout << "[UpLRC batch][w" << worker_id << "] line " << task.line_no
                                   << " stripe_id=" << task.stripe_id << " out of range" << std::endl;
                         std::lock_guard<std::mutex> rlk(result_mu);
                         ++total_failures;
-                        batch_results.push_back(CordBatchResult{task.line_no, task.stripe_id, false, timing});
+                        batch_results.push_back(UpLRCBatchResult{task.line_no, task.stripe_id, false, timing});
                         continue;
                     }
                     {
                         std::lock_guard<std::mutex> lk(log_mu);
-                        std::cout << "[CoRD batch][w" << worker_id << "] line " << task.line_no
+                        std::cout << "[UpLRC batch][w" << worker_id << "] line " << task.line_no
                                   << " stripe_id=" << task.stripe_id
                                   << " ranges=" << task.logical_ranges.size() << " ..." << std::endl;
                     }
-                    ECProject::CordUpdateTiming timing;
+                    ECProject::UpLRCUpdateTiming timing;
                     bool ok = false;
                     {
                         std::lock_guard<std::mutex> stripe_lk(stripe_locks[static_cast<size_t>(task.stripe_id)]);
-                        ok = wc.cord_update(task.stripe_id, task.logical_ranges, nullptr, 0, &timing);
+                        ok = wc.uplrc_update(task.stripe_id, task.logical_ranges, nullptr, 0, &timing);
                     }
-                    record_batch_result(task, ok, timing, worker_id);
+                    reuplrc_batch_result(task, ok, timing, worker_id);
                 }
             };
 
@@ -717,14 +717,14 @@ int main(int argc, char **argv)
                 const int port = client_port + 1 + wi;
                 worker_clients.push_back(std::make_unique<ECProject::Client>(
                     client_ip, port, coord_addr, sys_config_path));
-                std::cout << "[CoRD batch] worker " << wi << " client_id=" << client_ip << ":" << port << std::endl;
+                std::cout << "[UpLRC batch] worker " << wi << " client_id=" << client_ip << ":" << port << std::endl;
             }
 
             std::atomic<size_t> next_task{0};
 
             auto worker_fn = [&](int worker_id) {
                 ECProject::Client &wc = *worker_clients[static_cast<size_t>(worker_id)];
-                std::unordered_map<int, CordPipelineSlot> pipeline_slots;
+                std::unordered_map<int, UpLRCPipelineSlot> pipeline_slots;
                 for (;;)
                 {
                     const size_t idx = next_task.fetch_add(1);
@@ -746,35 +746,35 @@ int main(int argc, char **argv)
         const double batch_wall_sec =
             std::chrono::duration<double>(std::chrono::steady_clock::now() - batch_wall_t0).count();
         std::sort(batch_results.begin(), batch_results.end(),
-                  [](const CordBatchResult &a, const CordBatchResult &b) { return a.line_no < b.line_no; });
+                  [](const UpLRCBatchResult &a, const UpLRCBatchResult &b) { return a.line_no < b.line_no; });
 
-        std::cout << "=== CoRD batch summary ===" << std::endl;
+        std::cout << "=== UpLRC batch summary ===" << std::endl;
         std::cout << "trace_file=" << trace_path << std::endl;
         std::cout << "batch_threads=" << batch_threads << std::endl;
-        for (const CordBatchResult &br : batch_results)
+        for (const UpLRCBatchResult &br : batch_results)
         {
             if (!br.ok)
                 continue;
             std::cout << "  success[line=" << br.line_no << " stripe=" << br.stripe_id << "] ";
-            print_cord_timing_fields(std::cout, br.timing);
+            print_uplrc_timing_fields(std::cout, br.timing);
             std::cout << std::endl;
         }
         std::cout << "success_count=" << success_count << std::endl;
         std::cout << "total_failures=" << total_failures << std::endl;
         std::cout << "batch_total ";
-        print_cord_timing_fields(std::cout, ECProject::CordUpdateTiming{
+        print_uplrc_timing_fields(std::cout, ECProject::UpLRCUpdateTiming{
             timing_totals.wall_sec, timing_totals.plan_sec, timing_totals.payload_prep_sec,
             timing_totals.upload_sec, timing_totals.xfer_begin_sec, timing_totals.xfer_wait_sec,
             timing_totals.xfer_pure_sec, timing_totals.xfer_grpc_sec});
         std::cout << std::endl;
         if (success_count > 0)
         {
-            const ECProject::CordUpdateTiming avg_timing = timing_totals.avg(success_count);
+            const ECProject::UpLRCUpdateTiming avg_timing = timing_totals.avg(success_count);
             std::cout << "batch_avg ";
-            print_cord_timing_fields(std::cout, avg_timing);
+            print_uplrc_timing_fields(std::cout, avg_timing);
             std::cout << std::endl;
         }
-        std::cout << "[CoRD] e2e_wall_sec=" << std::fixed << std::setprecision(6) << batch_wall_sec
+        std::cout << "[UpLRC] e2e_wall_sec=" << std::fixed << std::setprecision(6) << batch_wall_sec
                   << " success=" << success_count << " failures=" << total_failures << std::endl;
         if (total_failures > 0)
             return 1;

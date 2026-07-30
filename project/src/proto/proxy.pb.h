@@ -55,84 +55,6 @@ extern AskIfSuccessDefaultTypeInternal _AskIfSuccess_default_instance_;
 class CheckaliveCMD;
 struct CheckaliveCMDDefaultTypeInternal;
 extern CheckaliveCMDDefaultTypeInternal _CheckaliveCMD_default_instance_;
-class CordBlockHalfOpenSeg;
-struct CordBlockHalfOpenSegDefaultTypeInternal;
-extern CordBlockHalfOpenSegDefaultTypeInternal _CordBlockHalfOpenSeg_default_instance_;
-class CordBlockStripeGroup;
-struct CordBlockStripeGroupDefaultTypeInternal;
-extern CordBlockStripeGroupDefaultTypeInternal _CordBlockStripeGroup_default_instance_;
-class CordCollectorIngressExpect;
-struct CordCollectorIngressExpectDefaultTypeInternal;
-extern CordCollectorIngressExpectDefaultTypeInternal _CordCollectorIngressExpect_default_instance_;
-class CordDataStripDesc;
-struct CordDataStripDescDefaultTypeInternal;
-extern CordDataStripDescDefaultTypeInternal _CordDataStripDesc_default_instance_;
-class CordDataUpdatePlacement;
-struct CordDataUpdatePlacementDefaultTypeInternal;
-extern CordDataUpdatePlacementDefaultTypeInternal _CordDataUpdatePlacement_default_instance_;
-class CordIngressCacheRef;
-struct CordIngressCacheRefDefaultTypeInternal;
-extern CordIngressCacheRefDefaultTypeInternal _CordIngressCacheRef_default_instance_;
-class CordIngressParityWrite;
-struct CordIngressParityWriteDefaultTypeInternal;
-extern CordIngressParityWriteDefaultTypeInternal _CordIngressParityWrite_default_instance_;
-class CordLocalParityBundle;
-struct CordLocalParityBundleDefaultTypeInternal;
-extern CordLocalParityBundleDefaultTypeInternal _CordLocalParityBundle_default_instance_;
-class CordLpComputePartialAndPush;
-struct CordLpComputePartialAndPushDefaultTypeInternal;
-extern CordLpComputePartialAndPushDefaultTypeInternal _CordLpComputePartialAndPush_default_instance_;
-class CordLpDeltaFetch;
-struct CordLpDeltaFetchDefaultTypeInternal;
-extern CordLpDeltaFetchDefaultTypeInternal _CordLpDeltaFetch_default_instance_;
-class CordLpHubPartialPush;
-struct CordLpHubPartialPushDefaultTypeInternal;
-extern CordLpHubPartialPushDefaultTypeInternal _CordLpHubPartialPush_default_instance_;
-class CordLpHubSessionBegin;
-struct CordLpHubSessionBeginDefaultTypeInternal;
-extern CordLpHubSessionBeginDefaultTypeInternal _CordLpHubSessionBegin_default_instance_;
-class CordLpParityApplyDelta;
-struct CordLpParityApplyDeltaDefaultTypeInternal;
-extern CordLpParityApplyDeltaDefaultTypeInternal _CordLpParityApplyDelta_default_instance_;
-class CordLpWorkItem;
-struct CordLpWorkItemDefaultTypeInternal;
-extern CordLpWorkItemDefaultTypeInternal _CordLpWorkItem_default_instance_;
-class CordPlanApplyParityXorReq;
-struct CordPlanApplyParityXorReqDefaultTypeInternal;
-extern CordPlanApplyParityXorReqDefaultTypeInternal _CordPlanApplyParityXorReq_default_instance_;
-class CordPlanCollectorIngestReq;
-struct CordPlanCollectorIngestReqDefaultTypeInternal;
-extern CordPlanCollectorIngestReqDefaultTypeInternal _CordPlanCollectorIngestReq_default_instance_;
-class CordPlanKeyMsg;
-struct CordPlanKeyMsgDefaultTypeInternal;
-extern CordPlanKeyMsgDefaultTypeInternal _CordPlanKeyMsg_default_instance_;
-class CordPlanMstDataDeltaReq;
-struct CordPlanMstDataDeltaReqDefaultTypeInternal;
-extern CordPlanMstDataDeltaReqDefaultTypeInternal _CordPlanMstDataDeltaReq_default_instance_;
-class CordTransferBlockPlacement;
-struct CordTransferBlockPlacementDefaultTypeInternal;
-extern CordTransferBlockPlacementDefaultTypeInternal _CordTransferBlockPlacement_default_instance_;
-class CordTransferClusterDeltaLayout;
-struct CordTransferClusterDeltaLayoutDefaultTypeInternal;
-extern CordTransferClusterDeltaLayoutDefaultTypeInternal _CordTransferClusterDeltaLayout_default_instance_;
-class CordTransferClusterEndpoint;
-struct CordTransferClusterEndpointDefaultTypeInternal;
-extern CordTransferClusterEndpointDefaultTypeInternal _CordTransferClusterEndpoint_default_instance_;
-class CordTransferDeltaBlobRef;
-struct CordTransferDeltaBlobRefDefaultTypeInternal;
-extern CordTransferDeltaBlobRefDefaultTypeInternal _CordTransferDeltaBlobRef_default_instance_;
-class CordTransferEncodeMeta;
-struct CordTransferEncodeMetaDefaultTypeInternal;
-extern CordTransferEncodeMetaDefaultTypeInternal _CordTransferEncodeMeta_default_instance_;
-class CordTransferGroupXorHint;
-struct CordTransferGroupXorHintDefaultTypeInternal;
-extern CordTransferGroupXorHintDefaultTypeInternal _CordTransferGroupXorHint_default_instance_;
-class CordTransferPlan;
-struct CordTransferPlanDefaultTypeInternal;
-extern CordTransferPlanDefaultTypeInternal _CordTransferPlan_default_instance_;
-class CordTransferStep;
-struct CordTransferStepDefaultTypeInternal;
-extern CordTransferStepDefaultTypeInternal _CordTransferStep_default_instance_;
 class DegradedReadReply;
 struct DegradedReadReplyDefaultTypeInternal;
 extern DegradedReadReplyDefaultTypeInternal _DegradedReadReply_default_instance_;
@@ -178,6 +100,84 @@ extern SetReplyDefaultTypeInternal _SetReply_default_instance_;
 class StripeAndBlockIDs;
 struct StripeAndBlockIDsDefaultTypeInternal;
 extern StripeAndBlockIDsDefaultTypeInternal _StripeAndBlockIDs_default_instance_;
+class UpLRCBlockHalfOpenSeg;
+struct UpLRCBlockHalfOpenSegDefaultTypeInternal;
+extern UpLRCBlockHalfOpenSegDefaultTypeInternal _UpLRCBlockHalfOpenSeg_default_instance_;
+class UpLRCBlockStripeGroup;
+struct UpLRCBlockStripeGroupDefaultTypeInternal;
+extern UpLRCBlockStripeGroupDefaultTypeInternal _UpLRCBlockStripeGroup_default_instance_;
+class UpLRCCollectorIngressExpect;
+struct UpLRCCollectorIngressExpectDefaultTypeInternal;
+extern UpLRCCollectorIngressExpectDefaultTypeInternal _UpLRCCollectorIngressExpect_default_instance_;
+class UpLRCDataStripDesc;
+struct UpLRCDataStripDescDefaultTypeInternal;
+extern UpLRCDataStripDescDefaultTypeInternal _UpLRCDataStripDesc_default_instance_;
+class UpLRCDataUpdatePlacement;
+struct UpLRCDataUpdatePlacementDefaultTypeInternal;
+extern UpLRCDataUpdatePlacementDefaultTypeInternal _UpLRCDataUpdatePlacement_default_instance_;
+class UpLRCIngressCacheRef;
+struct UpLRCIngressCacheRefDefaultTypeInternal;
+extern UpLRCIngressCacheRefDefaultTypeInternal _UpLRCIngressCacheRef_default_instance_;
+class UpLRCIngressParityWrite;
+struct UpLRCIngressParityWriteDefaultTypeInternal;
+extern UpLRCIngressParityWriteDefaultTypeInternal _UpLRCIngressParityWrite_default_instance_;
+class UpLRCLocalParityBundle;
+struct UpLRCLocalParityBundleDefaultTypeInternal;
+extern UpLRCLocalParityBundleDefaultTypeInternal _UpLRCLocalParityBundle_default_instance_;
+class UpLRCLpComputePartialAndPush;
+struct UpLRCLpComputePartialAndPushDefaultTypeInternal;
+extern UpLRCLpComputePartialAndPushDefaultTypeInternal _UpLRCLpComputePartialAndPush_default_instance_;
+class UpLRCLpDeltaFetch;
+struct UpLRCLpDeltaFetchDefaultTypeInternal;
+extern UpLRCLpDeltaFetchDefaultTypeInternal _UpLRCLpDeltaFetch_default_instance_;
+class UpLRCLpHubPartialPush;
+struct UpLRCLpHubPartialPushDefaultTypeInternal;
+extern UpLRCLpHubPartialPushDefaultTypeInternal _UpLRCLpHubPartialPush_default_instance_;
+class UpLRCLpHubSessionBegin;
+struct UpLRCLpHubSessionBeginDefaultTypeInternal;
+extern UpLRCLpHubSessionBeginDefaultTypeInternal _UpLRCLpHubSessionBegin_default_instance_;
+class UpLRCLpParityApplyDelta;
+struct UpLRCLpParityApplyDeltaDefaultTypeInternal;
+extern UpLRCLpParityApplyDeltaDefaultTypeInternal _UpLRCLpParityApplyDelta_default_instance_;
+class UpLRCLpWorkItem;
+struct UpLRCLpWorkItemDefaultTypeInternal;
+extern UpLRCLpWorkItemDefaultTypeInternal _UpLRCLpWorkItem_default_instance_;
+class UpLRCPlanApplyParityXorReq;
+struct UpLRCPlanApplyParityXorReqDefaultTypeInternal;
+extern UpLRCPlanApplyParityXorReqDefaultTypeInternal _UpLRCPlanApplyParityXorReq_default_instance_;
+class UpLRCPlanCollectorIngestReq;
+struct UpLRCPlanCollectorIngestReqDefaultTypeInternal;
+extern UpLRCPlanCollectorIngestReqDefaultTypeInternal _UpLRCPlanCollectorIngestReq_default_instance_;
+class UpLRCPlanKeyMsg;
+struct UpLRCPlanKeyMsgDefaultTypeInternal;
+extern UpLRCPlanKeyMsgDefaultTypeInternal _UpLRCPlanKeyMsg_default_instance_;
+class UpLRCPlanMstDataDeltaReq;
+struct UpLRCPlanMstDataDeltaReqDefaultTypeInternal;
+extern UpLRCPlanMstDataDeltaReqDefaultTypeInternal _UpLRCPlanMstDataDeltaReq_default_instance_;
+class UpLRCTransferBlockPlacement;
+struct UpLRCTransferBlockPlacementDefaultTypeInternal;
+extern UpLRCTransferBlockPlacementDefaultTypeInternal _UpLRCTransferBlockPlacement_default_instance_;
+class UpLRCTransferClusterDeltaLayout;
+struct UpLRCTransferClusterDeltaLayoutDefaultTypeInternal;
+extern UpLRCTransferClusterDeltaLayoutDefaultTypeInternal _UpLRCTransferClusterDeltaLayout_default_instance_;
+class UpLRCTransferClusterEndpoint;
+struct UpLRCTransferClusterEndpointDefaultTypeInternal;
+extern UpLRCTransferClusterEndpointDefaultTypeInternal _UpLRCTransferClusterEndpoint_default_instance_;
+class UpLRCTransferDeltaBlobRef;
+struct UpLRCTransferDeltaBlobRefDefaultTypeInternal;
+extern UpLRCTransferDeltaBlobRefDefaultTypeInternal _UpLRCTransferDeltaBlobRef_default_instance_;
+class UpLRCTransferEncodeMeta;
+struct UpLRCTransferEncodeMetaDefaultTypeInternal;
+extern UpLRCTransferEncodeMetaDefaultTypeInternal _UpLRCTransferEncodeMeta_default_instance_;
+class UpLRCTransferGroupXorHint;
+struct UpLRCTransferGroupXorHintDefaultTypeInternal;
+extern UpLRCTransferGroupXorHintDefaultTypeInternal _UpLRCTransferGroupXorHint_default_instance_;
+class UpLRCTransferPlan;
+struct UpLRCTransferPlanDefaultTypeInternal;
+extern UpLRCTransferPlanDefaultTypeInternal _UpLRCTransferPlan_default_instance_;
+class UpLRCTransferStep;
+struct UpLRCTransferStepDefaultTypeInternal;
+extern UpLRCTransferStepDefaultTypeInternal _UpLRCTransferStep_default_instance_;
 class blockRelocPlan;
 struct blockRelocPlanDefaultTypeInternal;
 extern blockRelocPlanDefaultTypeInternal _blockRelocPlan_default_instance_;
@@ -198,32 +198,6 @@ PROTOBUF_NAMESPACE_OPEN
 template<> ::proxy_proto::AppendStripeDataPlacement* Arena::CreateMaybeMessage<::proxy_proto::AppendStripeDataPlacement>(Arena*);
 template<> ::proxy_proto::AskIfSuccess* Arena::CreateMaybeMessage<::proxy_proto::AskIfSuccess>(Arena*);
 template<> ::proxy_proto::CheckaliveCMD* Arena::CreateMaybeMessage<::proxy_proto::CheckaliveCMD>(Arena*);
-template<> ::proxy_proto::CordBlockHalfOpenSeg* Arena::CreateMaybeMessage<::proxy_proto::CordBlockHalfOpenSeg>(Arena*);
-template<> ::proxy_proto::CordBlockStripeGroup* Arena::CreateMaybeMessage<::proxy_proto::CordBlockStripeGroup>(Arena*);
-template<> ::proxy_proto::CordCollectorIngressExpect* Arena::CreateMaybeMessage<::proxy_proto::CordCollectorIngressExpect>(Arena*);
-template<> ::proxy_proto::CordDataStripDesc* Arena::CreateMaybeMessage<::proxy_proto::CordDataStripDesc>(Arena*);
-template<> ::proxy_proto::CordDataUpdatePlacement* Arena::CreateMaybeMessage<::proxy_proto::CordDataUpdatePlacement>(Arena*);
-template<> ::proxy_proto::CordIngressCacheRef* Arena::CreateMaybeMessage<::proxy_proto::CordIngressCacheRef>(Arena*);
-template<> ::proxy_proto::CordIngressParityWrite* Arena::CreateMaybeMessage<::proxy_proto::CordIngressParityWrite>(Arena*);
-template<> ::proxy_proto::CordLocalParityBundle* Arena::CreateMaybeMessage<::proxy_proto::CordLocalParityBundle>(Arena*);
-template<> ::proxy_proto::CordLpComputePartialAndPush* Arena::CreateMaybeMessage<::proxy_proto::CordLpComputePartialAndPush>(Arena*);
-template<> ::proxy_proto::CordLpDeltaFetch* Arena::CreateMaybeMessage<::proxy_proto::CordLpDeltaFetch>(Arena*);
-template<> ::proxy_proto::CordLpHubPartialPush* Arena::CreateMaybeMessage<::proxy_proto::CordLpHubPartialPush>(Arena*);
-template<> ::proxy_proto::CordLpHubSessionBegin* Arena::CreateMaybeMessage<::proxy_proto::CordLpHubSessionBegin>(Arena*);
-template<> ::proxy_proto::CordLpParityApplyDelta* Arena::CreateMaybeMessage<::proxy_proto::CordLpParityApplyDelta>(Arena*);
-template<> ::proxy_proto::CordLpWorkItem* Arena::CreateMaybeMessage<::proxy_proto::CordLpWorkItem>(Arena*);
-template<> ::proxy_proto::CordPlanApplyParityXorReq* Arena::CreateMaybeMessage<::proxy_proto::CordPlanApplyParityXorReq>(Arena*);
-template<> ::proxy_proto::CordPlanCollectorIngestReq* Arena::CreateMaybeMessage<::proxy_proto::CordPlanCollectorIngestReq>(Arena*);
-template<> ::proxy_proto::CordPlanKeyMsg* Arena::CreateMaybeMessage<::proxy_proto::CordPlanKeyMsg>(Arena*);
-template<> ::proxy_proto::CordPlanMstDataDeltaReq* Arena::CreateMaybeMessage<::proxy_proto::CordPlanMstDataDeltaReq>(Arena*);
-template<> ::proxy_proto::CordTransferBlockPlacement* Arena::CreateMaybeMessage<::proxy_proto::CordTransferBlockPlacement>(Arena*);
-template<> ::proxy_proto::CordTransferClusterDeltaLayout* Arena::CreateMaybeMessage<::proxy_proto::CordTransferClusterDeltaLayout>(Arena*);
-template<> ::proxy_proto::CordTransferClusterEndpoint* Arena::CreateMaybeMessage<::proxy_proto::CordTransferClusterEndpoint>(Arena*);
-template<> ::proxy_proto::CordTransferDeltaBlobRef* Arena::CreateMaybeMessage<::proxy_proto::CordTransferDeltaBlobRef>(Arena*);
-template<> ::proxy_proto::CordTransferEncodeMeta* Arena::CreateMaybeMessage<::proxy_proto::CordTransferEncodeMeta>(Arena*);
-template<> ::proxy_proto::CordTransferGroupXorHint* Arena::CreateMaybeMessage<::proxy_proto::CordTransferGroupXorHint>(Arena*);
-template<> ::proxy_proto::CordTransferPlan* Arena::CreateMaybeMessage<::proxy_proto::CordTransferPlan>(Arena*);
-template<> ::proxy_proto::CordTransferStep* Arena::CreateMaybeMessage<::proxy_proto::CordTransferStep>(Arena*);
 template<> ::proxy_proto::DegradedReadReply* Arena::CreateMaybeMessage<::proxy_proto::DegradedReadReply>(Arena*);
 template<> ::proxy_proto::DegradedReadRequest* Arena::CreateMaybeMessage<::proxy_proto::DegradedReadRequest>(Arena*);
 template<> ::proxy_proto::DelReply* Arena::CreateMaybeMessage<::proxy_proto::DelReply>(Arena*);
@@ -239,6 +213,32 @@ template<> ::proxy_proto::RepIfSuccess* Arena::CreateMaybeMessage<::proxy_proto:
 template<> ::proxy_proto::RequestResult* Arena::CreateMaybeMessage<::proxy_proto::RequestResult>(Arena*);
 template<> ::proxy_proto::SetReply* Arena::CreateMaybeMessage<::proxy_proto::SetReply>(Arena*);
 template<> ::proxy_proto::StripeAndBlockIDs* Arena::CreateMaybeMessage<::proxy_proto::StripeAndBlockIDs>(Arena*);
+template<> ::proxy_proto::UpLRCBlockHalfOpenSeg* Arena::CreateMaybeMessage<::proxy_proto::UpLRCBlockHalfOpenSeg>(Arena*);
+template<> ::proxy_proto::UpLRCBlockStripeGroup* Arena::CreateMaybeMessage<::proxy_proto::UpLRCBlockStripeGroup>(Arena*);
+template<> ::proxy_proto::UpLRCCollectorIngressExpect* Arena::CreateMaybeMessage<::proxy_proto::UpLRCCollectorIngressExpect>(Arena*);
+template<> ::proxy_proto::UpLRCDataStripDesc* Arena::CreateMaybeMessage<::proxy_proto::UpLRCDataStripDesc>(Arena*);
+template<> ::proxy_proto::UpLRCDataUpdatePlacement* Arena::CreateMaybeMessage<::proxy_proto::UpLRCDataUpdatePlacement>(Arena*);
+template<> ::proxy_proto::UpLRCIngressCacheRef* Arena::CreateMaybeMessage<::proxy_proto::UpLRCIngressCacheRef>(Arena*);
+template<> ::proxy_proto::UpLRCIngressParityWrite* Arena::CreateMaybeMessage<::proxy_proto::UpLRCIngressParityWrite>(Arena*);
+template<> ::proxy_proto::UpLRCLocalParityBundle* Arena::CreateMaybeMessage<::proxy_proto::UpLRCLocalParityBundle>(Arena*);
+template<> ::proxy_proto::UpLRCLpComputePartialAndPush* Arena::CreateMaybeMessage<::proxy_proto::UpLRCLpComputePartialAndPush>(Arena*);
+template<> ::proxy_proto::UpLRCLpDeltaFetch* Arena::CreateMaybeMessage<::proxy_proto::UpLRCLpDeltaFetch>(Arena*);
+template<> ::proxy_proto::UpLRCLpHubPartialPush* Arena::CreateMaybeMessage<::proxy_proto::UpLRCLpHubPartialPush>(Arena*);
+template<> ::proxy_proto::UpLRCLpHubSessionBegin* Arena::CreateMaybeMessage<::proxy_proto::UpLRCLpHubSessionBegin>(Arena*);
+template<> ::proxy_proto::UpLRCLpParityApplyDelta* Arena::CreateMaybeMessage<::proxy_proto::UpLRCLpParityApplyDelta>(Arena*);
+template<> ::proxy_proto::UpLRCLpWorkItem* Arena::CreateMaybeMessage<::proxy_proto::UpLRCLpWorkItem>(Arena*);
+template<> ::proxy_proto::UpLRCPlanApplyParityXorReq* Arena::CreateMaybeMessage<::proxy_proto::UpLRCPlanApplyParityXorReq>(Arena*);
+template<> ::proxy_proto::UpLRCPlanCollectorIngestReq* Arena::CreateMaybeMessage<::proxy_proto::UpLRCPlanCollectorIngestReq>(Arena*);
+template<> ::proxy_proto::UpLRCPlanKeyMsg* Arena::CreateMaybeMessage<::proxy_proto::UpLRCPlanKeyMsg>(Arena*);
+template<> ::proxy_proto::UpLRCPlanMstDataDeltaReq* Arena::CreateMaybeMessage<::proxy_proto::UpLRCPlanMstDataDeltaReq>(Arena*);
+template<> ::proxy_proto::UpLRCTransferBlockPlacement* Arena::CreateMaybeMessage<::proxy_proto::UpLRCTransferBlockPlacement>(Arena*);
+template<> ::proxy_proto::UpLRCTransferClusterDeltaLayout* Arena::CreateMaybeMessage<::proxy_proto::UpLRCTransferClusterDeltaLayout>(Arena*);
+template<> ::proxy_proto::UpLRCTransferClusterEndpoint* Arena::CreateMaybeMessage<::proxy_proto::UpLRCTransferClusterEndpoint>(Arena*);
+template<> ::proxy_proto::UpLRCTransferDeltaBlobRef* Arena::CreateMaybeMessage<::proxy_proto::UpLRCTransferDeltaBlobRef>(Arena*);
+template<> ::proxy_proto::UpLRCTransferEncodeMeta* Arena::CreateMaybeMessage<::proxy_proto::UpLRCTransferEncodeMeta>(Arena*);
+template<> ::proxy_proto::UpLRCTransferGroupXorHint* Arena::CreateMaybeMessage<::proxy_proto::UpLRCTransferGroupXorHint>(Arena*);
+template<> ::proxy_proto::UpLRCTransferPlan* Arena::CreateMaybeMessage<::proxy_proto::UpLRCTransferPlan>(Arena*);
+template<> ::proxy_proto::UpLRCTransferStep* Arena::CreateMaybeMessage<::proxy_proto::UpLRCTransferStep>(Arena*);
 template<> ::proxy_proto::blockRelocPlan* Arena::CreateMaybeMessage<::proxy_proto::blockRelocPlan>(Arena*);
 template<> ::proxy_proto::blockRelocReply* Arena::CreateMaybeMessage<::proxy_proto::blockRelocReply>(Arena*);
 template<> ::proxy_proto::helpRecalPlan* Arena::CreateMaybeMessage<::proxy_proto::helpRecalPlan>(Arena*);
@@ -247,58 +247,58 @@ template<> ::proxy_proto::mainRecalPlan* Arena::CreateMaybeMessage<::proxy_proto
 PROTOBUF_NAMESPACE_CLOSE
 namespace proxy_proto {
 
-enum CordTransferLinkKind : int {
-  CORD_TRANSFER_STAR_DATA_TO_CENTER = 0,
-  CORD_TRANSFER_STAR_CENTER_TO_GLOBAL = 1,
-  CORD_TRANSFER_STAR_CENTER_TO_LOCAL = 2,
-  CORD_TRANSFER_MST_FORWARD = 3,
-  CORD_TRANSFER_STAR_DATA_TO_LOCAL = 4,
-  CordTransferLinkKind_INT_MIN_SENTINEL_DO_NOT_USE_ = std::numeric_limits<int32_t>::min(),
-  CordTransferLinkKind_INT_MAX_SENTINEL_DO_NOT_USE_ = std::numeric_limits<int32_t>::max()
+enum UpLRCTransferLinkKind : int {
+  UPLRC_TRANSFER_STAR_DATA_TO_CENTER = 0,
+  UPLRC_TRANSFER_STAR_CENTER_TO_GLOBAL = 1,
+  UPLRC_TRANSFER_STAR_CENTER_TO_LOCAL = 2,
+  UPLRC_TRANSFER_MST_FORWARD = 3,
+  UPLRC_TRANSFER_STAR_DATA_TO_LOCAL = 4,
+  UpLRCTransferLinkKind_INT_MIN_SENTINEL_DO_NOT_USE_ = std::numeric_limits<int32_t>::min(),
+  UpLRCTransferLinkKind_INT_MAX_SENTINEL_DO_NOT_USE_ = std::numeric_limits<int32_t>::max()
 };
-bool CordTransferLinkKind_IsValid(int value);
-constexpr CordTransferLinkKind CordTransferLinkKind_MIN = CORD_TRANSFER_STAR_DATA_TO_CENTER;
-constexpr CordTransferLinkKind CordTransferLinkKind_MAX = CORD_TRANSFER_STAR_DATA_TO_LOCAL;
-constexpr int CordTransferLinkKind_ARRAYSIZE = CordTransferLinkKind_MAX + 1;
+bool UpLRCTransferLinkKind_IsValid(int value);
+constexpr UpLRCTransferLinkKind UpLRCTransferLinkKind_MIN = UPLRC_TRANSFER_STAR_DATA_TO_CENTER;
+constexpr UpLRCTransferLinkKind UpLRCTransferLinkKind_MAX = UPLRC_TRANSFER_STAR_DATA_TO_LOCAL;
+constexpr int UpLRCTransferLinkKind_ARRAYSIZE = UpLRCTransferLinkKind_MAX + 1;
 
-const ::PROTOBUF_NAMESPACE_ID::EnumDescriptor* CordTransferLinkKind_descriptor();
+const ::PROTOBUF_NAMESPACE_ID::EnumDescriptor* UpLRCTransferLinkKind_descriptor();
 template<typename T>
-inline const std::string& CordTransferLinkKind_Name(T enum_t_value) {
-  static_assert(::std::is_same<T, CordTransferLinkKind>::value ||
+inline const std::string& UpLRCTransferLinkKind_Name(T enum_t_value) {
+  static_assert(::std::is_same<T, UpLRCTransferLinkKind>::value ||
     ::std::is_integral<T>::value,
-    "Incorrect type passed to function CordTransferLinkKind_Name.");
+    "Incorrect type passed to function UpLRCTransferLinkKind_Name.");
   return ::PROTOBUF_NAMESPACE_ID::internal::NameOfEnum(
-    CordTransferLinkKind_descriptor(), enum_t_value);
+    UpLRCTransferLinkKind_descriptor(), enum_t_value);
 }
-inline bool CordTransferLinkKind_Parse(
-    ::PROTOBUF_NAMESPACE_ID::ConstStringParam name, CordTransferLinkKind* value) {
-  return ::PROTOBUF_NAMESPACE_ID::internal::ParseNamedEnum<CordTransferLinkKind>(
-    CordTransferLinkKind_descriptor(), name, value);
+inline bool UpLRCTransferLinkKind_Parse(
+    ::PROTOBUF_NAMESPACE_ID::ConstStringParam name, UpLRCTransferLinkKind* value) {
+  return ::PROTOBUF_NAMESPACE_ID::internal::ParseNamedEnum<UpLRCTransferLinkKind>(
+    UpLRCTransferLinkKind_descriptor(), name, value);
 }
-enum CordDeltaPayloadKind : int {
-  CORD_DELTA_DATA = 0,
-  CORD_DELTA_PARITY = 1,
-  CordDeltaPayloadKind_INT_MIN_SENTINEL_DO_NOT_USE_ = std::numeric_limits<int32_t>::min(),
-  CordDeltaPayloadKind_INT_MAX_SENTINEL_DO_NOT_USE_ = std::numeric_limits<int32_t>::max()
+enum UpLRCDeltaPayloadKind : int {
+  UPLRC_DELTA_DATA = 0,
+  UPLRC_DELTA_PARITY = 1,
+  UpLRCDeltaPayloadKind_INT_MIN_SENTINEL_DO_NOT_USE_ = std::numeric_limits<int32_t>::min(),
+  UpLRCDeltaPayloadKind_INT_MAX_SENTINEL_DO_NOT_USE_ = std::numeric_limits<int32_t>::max()
 };
-bool CordDeltaPayloadKind_IsValid(int value);
-constexpr CordDeltaPayloadKind CordDeltaPayloadKind_MIN = CORD_DELTA_DATA;
-constexpr CordDeltaPayloadKind CordDeltaPayloadKind_MAX = CORD_DELTA_PARITY;
-constexpr int CordDeltaPayloadKind_ARRAYSIZE = CordDeltaPayloadKind_MAX + 1;
+bool UpLRCDeltaPayloadKind_IsValid(int value);
+constexpr UpLRCDeltaPayloadKind UpLRCDeltaPayloadKind_MIN = UPLRC_DELTA_DATA;
+constexpr UpLRCDeltaPayloadKind UpLRCDeltaPayloadKind_MAX = UPLRC_DELTA_PARITY;
+constexpr int UpLRCDeltaPayloadKind_ARRAYSIZE = UpLRCDeltaPayloadKind_MAX + 1;
 
-const ::PROTOBUF_NAMESPACE_ID::EnumDescriptor* CordDeltaPayloadKind_descriptor();
+const ::PROTOBUF_NAMESPACE_ID::EnumDescriptor* UpLRCDeltaPayloadKind_descriptor();
 template<typename T>
-inline const std::string& CordDeltaPayloadKind_Name(T enum_t_value) {
-  static_assert(::std::is_same<T, CordDeltaPayloadKind>::value ||
+inline const std::string& UpLRCDeltaPayloadKind_Name(T enum_t_value) {
+  static_assert(::std::is_same<T, UpLRCDeltaPayloadKind>::value ||
     ::std::is_integral<T>::value,
-    "Incorrect type passed to function CordDeltaPayloadKind_Name.");
+    "Incorrect type passed to function UpLRCDeltaPayloadKind_Name.");
   return ::PROTOBUF_NAMESPACE_ID::internal::NameOfEnum(
-    CordDeltaPayloadKind_descriptor(), enum_t_value);
+    UpLRCDeltaPayloadKind_descriptor(), enum_t_value);
 }
-inline bool CordDeltaPayloadKind_Parse(
-    ::PROTOBUF_NAMESPACE_ID::ConstStringParam name, CordDeltaPayloadKind* value) {
-  return ::PROTOBUF_NAMESPACE_ID::internal::ParseNamedEnum<CordDeltaPayloadKind>(
-    CordDeltaPayloadKind_descriptor(), name, value);
+inline bool UpLRCDeltaPayloadKind_Parse(
+    ::PROTOBUF_NAMESPACE_ID::ConstStringParam name, UpLRCDeltaPayloadKind* value) {
+  return ::PROTOBUF_NAMESPACE_ID::internal::ParseNamedEnum<UpLRCDeltaPayloadKind>(
+    UpLRCDeltaPayloadKind_descriptor(), name, value);
 }
 // ===================================================================
 
@@ -5381,24 +5381,24 @@ class AppendStripeDataPlacement final :
 };
 // -------------------------------------------------------------------
 
-class CordTransferClusterEndpoint final :
-    public ::PROTOBUF_NAMESPACE_ID::Message /* @@protoc_insertion_point(class_definition:proxy_proto.CordTransferClusterEndpoint) */ {
+class UpLRCTransferClusterEndpoint final :
+    public ::PROTOBUF_NAMESPACE_ID::Message /* @@protoc_insertion_point(class_definition:proxy_proto.UpLRCTransferClusterEndpoint) */ {
  public:
-  inline CordTransferClusterEndpoint() : CordTransferClusterEndpoint(nullptr) {}
-  ~CordTransferClusterEndpoint() override;
-  explicit PROTOBUF_CONSTEXPR CordTransferClusterEndpoint(::PROTOBUF_NAMESPACE_ID::internal::ConstantInitialized);
+  inline UpLRCTransferClusterEndpoint() : UpLRCTransferClusterEndpoint(nullptr) {}
+  ~UpLRCTransferClusterEndpoint() override;
+  explicit PROTOBUF_CONSTEXPR UpLRCTransferClusterEndpoint(::PROTOBUF_NAMESPACE_ID::internal::ConstantInitialized);
 
-  CordTransferClusterEndpoint(const CordTransferClusterEndpoint& from);
-  CordTransferClusterEndpoint(CordTransferClusterEndpoint&& from) noexcept
-    : CordTransferClusterEndpoint() {
+  UpLRCTransferClusterEndpoint(const UpLRCTransferClusterEndpoint& from);
+  UpLRCTransferClusterEndpoint(UpLRCTransferClusterEndpoint&& from) noexcept
+    : UpLRCTransferClusterEndpoint() {
     *this = ::std::move(from);
   }
 
-  inline CordTransferClusterEndpoint& operator=(const CordTransferClusterEndpoint& from) {
+  inline UpLRCTransferClusterEndpoint& operator=(const UpLRCTransferClusterEndpoint& from) {
     CopyFrom(from);
     return *this;
   }
-  inline CordTransferClusterEndpoint& operator=(CordTransferClusterEndpoint&& from) noexcept {
+  inline UpLRCTransferClusterEndpoint& operator=(UpLRCTransferClusterEndpoint&& from) noexcept {
     if (this == &from) return *this;
     if (GetOwningArena() == from.GetOwningArena()
   #ifdef PROTOBUF_FORCE_COPY_IN_MOVE
@@ -5421,20 +5421,20 @@ class CordTransferClusterEndpoint final :
   static const ::PROTOBUF_NAMESPACE_ID::Reflection* GetReflection() {
     return default_instance().GetMetadata().reflection;
   }
-  static const CordTransferClusterEndpoint& default_instance() {
+  static const UpLRCTransferClusterEndpoint& default_instance() {
     return *internal_default_instance();
   }
-  static inline const CordTransferClusterEndpoint* internal_default_instance() {
-    return reinterpret_cast<const CordTransferClusterEndpoint*>(
-               &_CordTransferClusterEndpoint_default_instance_);
+  static inline const UpLRCTransferClusterEndpoint* internal_default_instance() {
+    return reinterpret_cast<const UpLRCTransferClusterEndpoint*>(
+               &_UpLRCTransferClusterEndpoint_default_instance_);
   }
   static constexpr int kIndexInFileMessages =
     20;
 
-  friend void swap(CordTransferClusterEndpoint& a, CordTransferClusterEndpoint& b) {
+  friend void swap(UpLRCTransferClusterEndpoint& a, UpLRCTransferClusterEndpoint& b) {
     a.Swap(&b);
   }
-  inline void Swap(CordTransferClusterEndpoint* other) {
+  inline void Swap(UpLRCTransferClusterEndpoint* other) {
     if (other == this) return;
   #ifdef PROTOBUF_FORCE_COPY_IN_SWAP
     if (GetOwningArena() != nullptr &&
@@ -5447,7 +5447,7 @@ class CordTransferClusterEndpoint final :
       ::PROTOBUF_NAMESPACE_ID::internal::GenericSwap(this, other);
     }
   }
-  void UnsafeArenaSwap(CordTransferClusterEndpoint* other) {
+  void UnsafeArenaSwap(UpLRCTransferClusterEndpoint* other) {
     if (other == this) return;
     GOOGLE_DCHECK(GetOwningArena() == other->GetOwningArena());
     InternalSwap(other);
@@ -5455,14 +5455,14 @@ class CordTransferClusterEndpoint final :
 
   // implements Message ----------------------------------------------
 
-  CordTransferClusterEndpoint* New(::PROTOBUF_NAMESPACE_ID::Arena* arena = nullptr) const final {
-    return CreateMaybeMessage<CordTransferClusterEndpoint>(arena);
+  UpLRCTransferClusterEndpoint* New(::PROTOBUF_NAMESPACE_ID::Arena* arena = nullptr) const final {
+    return CreateMaybeMessage<UpLRCTransferClusterEndpoint>(arena);
   }
   using ::PROTOBUF_NAMESPACE_ID::Message::CopyFrom;
-  void CopyFrom(const CordTransferClusterEndpoint& from);
+  void CopyFrom(const UpLRCTransferClusterEndpoint& from);
   using ::PROTOBUF_NAMESPACE_ID::Message::MergeFrom;
-  void MergeFrom( const CordTransferClusterEndpoint& from) {
-    CordTransferClusterEndpoint::MergeImpl(*this, from);
+  void MergeFrom( const UpLRCTransferClusterEndpoint& from) {
+    UpLRCTransferClusterEndpoint::MergeImpl(*this, from);
   }
   private:
   static void MergeImpl(::PROTOBUF_NAMESPACE_ID::Message& to_msg, const ::PROTOBUF_NAMESPACE_ID::Message& from_msg);
@@ -5480,15 +5480,15 @@ class CordTransferClusterEndpoint final :
   void SharedCtor(::PROTOBUF_NAMESPACE_ID::Arena* arena, bool is_message_owned);
   void SharedDtor();
   void SetCachedSize(int size) const final;
-  void InternalSwap(CordTransferClusterEndpoint* other);
+  void InternalSwap(UpLRCTransferClusterEndpoint* other);
 
   private:
   friend class ::PROTOBUF_NAMESPACE_ID::internal::AnyMetadata;
   static ::PROTOBUF_NAMESPACE_ID::StringPiece FullMessageName() {
-    return "proxy_proto.CordTransferClusterEndpoint";
+    return "proxy_proto.UpLRCTransferClusterEndpoint";
   }
   protected:
-  explicit CordTransferClusterEndpoint(::PROTOBUF_NAMESPACE_ID::Arena* arena,
+  explicit UpLRCTransferClusterEndpoint(::PROTOBUF_NAMESPACE_ID::Arena* arena,
                        bool is_message_owned = false);
   public:
 
@@ -5538,7 +5538,7 @@ class CordTransferClusterEndpoint final :
   void _internal_set_proxy_port(int32_t value);
   public:
 
-  // @@protoc_insertion_point(class_scope:proxy_proto.CordTransferClusterEndpoint)
+  // @@protoc_insertion_point(class_scope:proxy_proto.UpLRCTransferClusterEndpoint)
  private:
   class _Internal;
 
@@ -5556,24 +5556,24 @@ class CordTransferClusterEndpoint final :
 };
 // -------------------------------------------------------------------
 
-class CordTransferBlockPlacement final :
-    public ::PROTOBUF_NAMESPACE_ID::Message /* @@protoc_insertion_point(class_definition:proxy_proto.CordTransferBlockPlacement) */ {
+class UpLRCTransferBlockPlacement final :
+    public ::PROTOBUF_NAMESPACE_ID::Message /* @@protoc_insertion_point(class_definition:proxy_proto.UpLRCTransferBlockPlacement) */ {
  public:
-  inline CordTransferBlockPlacement() : CordTransferBlockPlacement(nullptr) {}
-  ~CordTransferBlockPlacement() override;
-  explicit PROTOBUF_CONSTEXPR CordTransferBlockPlacement(::PROTOBUF_NAMESPACE_ID::internal::ConstantInitialized);
+  inline UpLRCTransferBlockPlacement() : UpLRCTransferBlockPlacement(nullptr) {}
+  ~UpLRCTransferBlockPlacement() override;
+  explicit PROTOBUF_CONSTEXPR UpLRCTransferBlockPlacement(::PROTOBUF_NAMESPACE_ID::internal::ConstantInitialized);
 
-  CordTransferBlockPlacement(const CordTransferBlockPlacement& from);
-  CordTransferBlockPlacement(CordTransferBlockPlacement&& from) noexcept
-    : CordTransferBlockPlacement() {
+  UpLRCTransferBlockPlacement(const UpLRCTransferBlockPlacement& from);
+  UpLRCTransferBlockPlacement(UpLRCTransferBlockPlacement&& from) noexcept
+    : UpLRCTransferBlockPlacement() {
     *this = ::std::move(from);
   }
 
-  inline CordTransferBlockPlacement& operator=(const CordTransferBlockPlacement& from) {
+  inline UpLRCTransferBlockPlacement& operator=(const UpLRCTransferBlockPlacement& from) {
     CopyFrom(from);
     return *this;
   }
-  inline CordTransferBlockPlacement& operator=(CordTransferBlockPlacement&& from) noexcept {
+  inline UpLRCTransferBlockPlacement& operator=(UpLRCTransferBlockPlacement&& from) noexcept {
     if (this == &from) return *this;
     if (GetOwningArena() == from.GetOwningArena()
   #ifdef PROTOBUF_FORCE_COPY_IN_MOVE
@@ -5596,20 +5596,20 @@ class CordTransferBlockPlacement final :
   static const ::PROTOBUF_NAMESPACE_ID::Reflection* GetReflection() {
     return default_instance().GetMetadata().reflection;
   }
-  static const CordTransferBlockPlacement& default_instance() {
+  static const UpLRCTransferBlockPlacement& default_instance() {
     return *internal_default_instance();
   }
-  static inline const CordTransferBlockPlacement* internal_default_instance() {
-    return reinterpret_cast<const CordTransferBlockPlacement*>(
-               &_CordTransferBlockPlacement_default_instance_);
+  static inline const UpLRCTransferBlockPlacement* internal_default_instance() {
+    return reinterpret_cast<const UpLRCTransferBlockPlacement*>(
+               &_UpLRCTransferBlockPlacement_default_instance_);
   }
   static constexpr int kIndexInFileMessages =
     21;
 
-  friend void swap(CordTransferBlockPlacement& a, CordTransferBlockPlacement& b) {
+  friend void swap(UpLRCTransferBlockPlacement& a, UpLRCTransferBlockPlacement& b) {
     a.Swap(&b);
   }
-  inline void Swap(CordTransferBlockPlacement* other) {
+  inline void Swap(UpLRCTransferBlockPlacement* other) {
     if (other == this) return;
   #ifdef PROTOBUF_FORCE_COPY_IN_SWAP
     if (GetOwningArena() != nullptr &&
@@ -5622,7 +5622,7 @@ class CordTransferBlockPlacement final :
       ::PROTOBUF_NAMESPACE_ID::internal::GenericSwap(this, other);
     }
   }
-  void UnsafeArenaSwap(CordTransferBlockPlacement* other) {
+  void UnsafeArenaSwap(UpLRCTransferBlockPlacement* other) {
     if (other == this) return;
     GOOGLE_DCHECK(GetOwningArena() == other->GetOwningArena());
     InternalSwap(other);
@@ -5630,14 +5630,14 @@ class CordTransferBlockPlacement final :
 
   // implements Message ----------------------------------------------
 
-  CordTransferBlockPlacement* New(::PROTOBUF_NAMESPACE_ID::Arena* arena = nullptr) const final {
-    return CreateMaybeMessage<CordTransferBlockPlacement>(arena);
+  UpLRCTransferBlockPlacement* New(::PROTOBUF_NAMESPACE_ID::Arena* arena = nullptr) const final {
+    return CreateMaybeMessage<UpLRCTransferBlockPlacement>(arena);
   }
   using ::PROTOBUF_NAMESPACE_ID::Message::CopyFrom;
-  void CopyFrom(const CordTransferBlockPlacement& from);
+  void CopyFrom(const UpLRCTransferBlockPlacement& from);
   using ::PROTOBUF_NAMESPACE_ID::Message::MergeFrom;
-  void MergeFrom( const CordTransferBlockPlacement& from) {
-    CordTransferBlockPlacement::MergeImpl(*this, from);
+  void MergeFrom( const UpLRCTransferBlockPlacement& from) {
+    UpLRCTransferBlockPlacement::MergeImpl(*this, from);
   }
   private:
   static void MergeImpl(::PROTOBUF_NAMESPACE_ID::Message& to_msg, const ::PROTOBUF_NAMESPACE_ID::Message& from_msg);
@@ -5655,15 +5655,15 @@ class CordTransferBlockPlacement final :
   void SharedCtor(::PROTOBUF_NAMESPACE_ID::Arena* arena, bool is_message_owned);
   void SharedDtor();
   void SetCachedSize(int size) const final;
-  void InternalSwap(CordTransferBlockPlacement* other);
+  void InternalSwap(UpLRCTransferBlockPlacement* other);
 
   private:
   friend class ::PROTOBUF_NAMESPACE_ID::internal::AnyMetadata;
   static ::PROTOBUF_NAMESPACE_ID::StringPiece FullMessageName() {
-    return "proxy_proto.CordTransferBlockPlacement";
+    return "proxy_proto.UpLRCTransferBlockPlacement";
   }
   protected:
-  explicit CordTransferBlockPlacement(::PROTOBUF_NAMESPACE_ID::Arena* arena,
+  explicit UpLRCTransferBlockPlacement(::PROTOBUF_NAMESPACE_ID::Arena* arena,
                        bool is_message_owned = false);
   public:
 
@@ -5728,7 +5728,7 @@ class CordTransferBlockPlacement final :
   void _internal_set_datanode_port(int32_t value);
   public:
 
-  // @@protoc_insertion_point(class_scope:proxy_proto.CordTransferBlockPlacement)
+  // @@protoc_insertion_point(class_scope:proxy_proto.UpLRCTransferBlockPlacement)
  private:
   class _Internal;
 
@@ -5747,24 +5747,24 @@ class CordTransferBlockPlacement final :
 };
 // -------------------------------------------------------------------
 
-class CordTransferDeltaBlobRef final :
-    public ::PROTOBUF_NAMESPACE_ID::Message /* @@protoc_insertion_point(class_definition:proxy_proto.CordTransferDeltaBlobRef) */ {
+class UpLRCTransferDeltaBlobRef final :
+    public ::PROTOBUF_NAMESPACE_ID::Message /* @@protoc_insertion_point(class_definition:proxy_proto.UpLRCTransferDeltaBlobRef) */ {
  public:
-  inline CordTransferDeltaBlobRef() : CordTransferDeltaBlobRef(nullptr) {}
-  ~CordTransferDeltaBlobRef() override;
-  explicit PROTOBUF_CONSTEXPR CordTransferDeltaBlobRef(::PROTOBUF_NAMESPACE_ID::internal::ConstantInitialized);
+  inline UpLRCTransferDeltaBlobRef() : UpLRCTransferDeltaBlobRef(nullptr) {}
+  ~UpLRCTransferDeltaBlobRef() override;
+  explicit PROTOBUF_CONSTEXPR UpLRCTransferDeltaBlobRef(::PROTOBUF_NAMESPACE_ID::internal::ConstantInitialized);
 
-  CordTransferDeltaBlobRef(const CordTransferDeltaBlobRef& from);
-  CordTransferDeltaBlobRef(CordTransferDeltaBlobRef&& from) noexcept
-    : CordTransferDeltaBlobRef() {
+  UpLRCTransferDeltaBlobRef(const UpLRCTransferDeltaBlobRef& from);
+  UpLRCTransferDeltaBlobRef(UpLRCTransferDeltaBlobRef&& from) noexcept
+    : UpLRCTransferDeltaBlobRef() {
     *this = ::std::move(from);
   }
 
-  inline CordTransferDeltaBlobRef& operator=(const CordTransferDeltaBlobRef& from) {
+  inline UpLRCTransferDeltaBlobRef& operator=(const UpLRCTransferDeltaBlobRef& from) {
     CopyFrom(from);
     return *this;
   }
-  inline CordTransferDeltaBlobRef& operator=(CordTransferDeltaBlobRef&& from) noexcept {
+  inline UpLRCTransferDeltaBlobRef& operator=(UpLRCTransferDeltaBlobRef&& from) noexcept {
     if (this == &from) return *this;
     if (GetOwningArena() == from.GetOwningArena()
   #ifdef PROTOBUF_FORCE_COPY_IN_MOVE
@@ -5787,20 +5787,20 @@ class CordTransferDeltaBlobRef final :
   static const ::PROTOBUF_NAMESPACE_ID::Reflection* GetReflection() {
     return default_instance().GetMetadata().reflection;
   }
-  static const CordTransferDeltaBlobRef& default_instance() {
+  static const UpLRCTransferDeltaBlobRef& default_instance() {
     return *internal_default_instance();
   }
-  static inline const CordTransferDeltaBlobRef* internal_default_instance() {
-    return reinterpret_cast<const CordTransferDeltaBlobRef*>(
-               &_CordTransferDeltaBlobRef_default_instance_);
+  static inline const UpLRCTransferDeltaBlobRef* internal_default_instance() {
+    return reinterpret_cast<const UpLRCTransferDeltaBlobRef*>(
+               &_UpLRCTransferDeltaBlobRef_default_instance_);
   }
   static constexpr int kIndexInFileMessages =
     22;
 
-  friend void swap(CordTransferDeltaBlobRef& a, CordTransferDeltaBlobRef& b) {
+  friend void swap(UpLRCTransferDeltaBlobRef& a, UpLRCTransferDeltaBlobRef& b) {
     a.Swap(&b);
   }
-  inline void Swap(CordTransferDeltaBlobRef* other) {
+  inline void Swap(UpLRCTransferDeltaBlobRef* other) {
     if (other == this) return;
   #ifdef PROTOBUF_FORCE_COPY_IN_SWAP
     if (GetOwningArena() != nullptr &&
@@ -5813,7 +5813,7 @@ class CordTransferDeltaBlobRef final :
       ::PROTOBUF_NAMESPACE_ID::internal::GenericSwap(this, other);
     }
   }
-  void UnsafeArenaSwap(CordTransferDeltaBlobRef* other) {
+  void UnsafeArenaSwap(UpLRCTransferDeltaBlobRef* other) {
     if (other == this) return;
     GOOGLE_DCHECK(GetOwningArena() == other->GetOwningArena());
     InternalSwap(other);
@@ -5821,14 +5821,14 @@ class CordTransferDeltaBlobRef final :
 
   // implements Message ----------------------------------------------
 
-  CordTransferDeltaBlobRef* New(::PROTOBUF_NAMESPACE_ID::Arena* arena = nullptr) const final {
-    return CreateMaybeMessage<CordTransferDeltaBlobRef>(arena);
+  UpLRCTransferDeltaBlobRef* New(::PROTOBUF_NAMESPACE_ID::Arena* arena = nullptr) const final {
+    return CreateMaybeMessage<UpLRCTransferDeltaBlobRef>(arena);
   }
   using ::PROTOBUF_NAMESPACE_ID::Message::CopyFrom;
-  void CopyFrom(const CordTransferDeltaBlobRef& from);
+  void CopyFrom(const UpLRCTransferDeltaBlobRef& from);
   using ::PROTOBUF_NAMESPACE_ID::Message::MergeFrom;
-  void MergeFrom( const CordTransferDeltaBlobRef& from) {
-    CordTransferDeltaBlobRef::MergeImpl(*this, from);
+  void MergeFrom( const UpLRCTransferDeltaBlobRef& from) {
+    UpLRCTransferDeltaBlobRef::MergeImpl(*this, from);
   }
   private:
   static void MergeImpl(::PROTOBUF_NAMESPACE_ID::Message& to_msg, const ::PROTOBUF_NAMESPACE_ID::Message& from_msg);
@@ -5846,15 +5846,15 @@ class CordTransferDeltaBlobRef final :
   void SharedCtor(::PROTOBUF_NAMESPACE_ID::Arena* arena, bool is_message_owned);
   void SharedDtor();
   void SetCachedSize(int size) const final;
-  void InternalSwap(CordTransferDeltaBlobRef* other);
+  void InternalSwap(UpLRCTransferDeltaBlobRef* other);
 
   private:
   friend class ::PROTOBUF_NAMESPACE_ID::internal::AnyMetadata;
   static ::PROTOBUF_NAMESPACE_ID::StringPiece FullMessageName() {
-    return "proxy_proto.CordTransferDeltaBlobRef";
+    return "proxy_proto.UpLRCTransferDeltaBlobRef";
   }
   protected:
-  explicit CordTransferDeltaBlobRef(::PROTOBUF_NAMESPACE_ID::Arena* arena,
+  explicit UpLRCTransferDeltaBlobRef(::PROTOBUF_NAMESPACE_ID::Arena* arena,
                        bool is_message_owned = false);
   public:
 
@@ -5868,24 +5868,24 @@ class CordTransferDeltaBlobRef final :
   // accessors -------------------------------------------------------
 
   enum : int {
-    kCordPlanKeyFieldNumber = 2,
+    kUplrcPlanKeyFieldNumber = 2,
     kDeltaBlobKeyFieldNumber = 3,
     kDeltaDatanodeIpFieldNumber = 4,
     kClusterIdFieldNumber = 1,
     kDeltaDatanodePortFieldNumber = 5,
   };
-  // string cord_plan_key = 2;
-  void clear_cord_plan_key();
-  const std::string& cord_plan_key() const;
+  // string uplrc_plan_key = 2;
+  void clear_uplrc_plan_key();
+  const std::string& uplrc_plan_key() const;
   template <typename ArgT0 = const std::string&, typename... ArgT>
-  void set_cord_plan_key(ArgT0&& arg0, ArgT... args);
-  std::string* mutable_cord_plan_key();
-  PROTOBUF_NODISCARD std::string* release_cord_plan_key();
-  void set_allocated_cord_plan_key(std::string* cord_plan_key);
+  void set_uplrc_plan_key(ArgT0&& arg0, ArgT... args);
+  std::string* mutable_uplrc_plan_key();
+  PROTOBUF_NODISCARD std::string* release_uplrc_plan_key();
+  void set_allocated_uplrc_plan_key(std::string* uplrc_plan_key);
   private:
-  const std::string& _internal_cord_plan_key() const;
-  inline PROTOBUF_ALWAYS_INLINE void _internal_set_cord_plan_key(const std::string& value);
-  std::string* _internal_mutable_cord_plan_key();
+  const std::string& _internal_uplrc_plan_key() const;
+  inline PROTOBUF_ALWAYS_INLINE void _internal_set_uplrc_plan_key(const std::string& value);
+  std::string* _internal_mutable_uplrc_plan_key();
   public:
 
   // string delta_blob_key = 3;
@@ -5934,7 +5934,7 @@ class CordTransferDeltaBlobRef final :
   void _internal_set_delta_datanode_port(int32_t value);
   public:
 
-  // @@protoc_insertion_point(class_scope:proxy_proto.CordTransferDeltaBlobRef)
+  // @@protoc_insertion_point(class_scope:proxy_proto.UpLRCTransferDeltaBlobRef)
  private:
   class _Internal;
 
@@ -5942,7 +5942,7 @@ class CordTransferDeltaBlobRef final :
   typedef void InternalArenaConstructable_;
   typedef void DestructorSkippable_;
   struct Impl_ {
-    ::PROTOBUF_NAMESPACE_ID::internal::ArenaStringPtr cord_plan_key_;
+    ::PROTOBUF_NAMESPACE_ID::internal::ArenaStringPtr uplrc_plan_key_;
     ::PROTOBUF_NAMESPACE_ID::internal::ArenaStringPtr delta_blob_key_;
     ::PROTOBUF_NAMESPACE_ID::internal::ArenaStringPtr delta_datanode_ip_;
     int32_t cluster_id_;
@@ -5954,24 +5954,24 @@ class CordTransferDeltaBlobRef final :
 };
 // -------------------------------------------------------------------
 
-class CordTransferGroupXorHint final :
-    public ::PROTOBUF_NAMESPACE_ID::Message /* @@protoc_insertion_point(class_definition:proxy_proto.CordTransferGroupXorHint) */ {
+class UpLRCTransferGroupXorHint final :
+    public ::PROTOBUF_NAMESPACE_ID::Message /* @@protoc_insertion_point(class_definition:proxy_proto.UpLRCTransferGroupXorHint) */ {
  public:
-  inline CordTransferGroupXorHint() : CordTransferGroupXorHint(nullptr) {}
-  ~CordTransferGroupXorHint() override;
-  explicit PROTOBUF_CONSTEXPR CordTransferGroupXorHint(::PROTOBUF_NAMESPACE_ID::internal::ConstantInitialized);
+  inline UpLRCTransferGroupXorHint() : UpLRCTransferGroupXorHint(nullptr) {}
+  ~UpLRCTransferGroupXorHint() override;
+  explicit PROTOBUF_CONSTEXPR UpLRCTransferGroupXorHint(::PROTOBUF_NAMESPACE_ID::internal::ConstantInitialized);
 
-  CordTransferGroupXorHint(const CordTransferGroupXorHint& from);
-  CordTransferGroupXorHint(CordTransferGroupXorHint&& from) noexcept
-    : CordTransferGroupXorHint() {
+  UpLRCTransferGroupXorHint(const UpLRCTransferGroupXorHint& from);
+  UpLRCTransferGroupXorHint(UpLRCTransferGroupXorHint&& from) noexcept
+    : UpLRCTransferGroupXorHint() {
     *this = ::std::move(from);
   }
 
-  inline CordTransferGroupXorHint& operator=(const CordTransferGroupXorHint& from) {
+  inline UpLRCTransferGroupXorHint& operator=(const UpLRCTransferGroupXorHint& from) {
     CopyFrom(from);
     return *this;
   }
-  inline CordTransferGroupXorHint& operator=(CordTransferGroupXorHint&& from) noexcept {
+  inline UpLRCTransferGroupXorHint& operator=(UpLRCTransferGroupXorHint&& from) noexcept {
     if (this == &from) return *this;
     if (GetOwningArena() == from.GetOwningArena()
   #ifdef PROTOBUF_FORCE_COPY_IN_MOVE
@@ -5994,20 +5994,20 @@ class CordTransferGroupXorHint final :
   static const ::PROTOBUF_NAMESPACE_ID::Reflection* GetReflection() {
     return default_instance().GetMetadata().reflection;
   }
-  static const CordTransferGroupXorHint& default_instance() {
+  static const UpLRCTransferGroupXorHint& default_instance() {
     return *internal_default_instance();
   }
-  static inline const CordTransferGroupXorHint* internal_default_instance() {
-    return reinterpret_cast<const CordTransferGroupXorHint*>(
-               &_CordTransferGroupXorHint_default_instance_);
+  static inline const UpLRCTransferGroupXorHint* internal_default_instance() {
+    return reinterpret_cast<const UpLRCTransferGroupXorHint*>(
+               &_UpLRCTransferGroupXorHint_default_instance_);
   }
   static constexpr int kIndexInFileMessages =
     23;
 
-  friend void swap(CordTransferGroupXorHint& a, CordTransferGroupXorHint& b) {
+  friend void swap(UpLRCTransferGroupXorHint& a, UpLRCTransferGroupXorHint& b) {
     a.Swap(&b);
   }
-  inline void Swap(CordTransferGroupXorHint* other) {
+  inline void Swap(UpLRCTransferGroupXorHint* other) {
     if (other == this) return;
   #ifdef PROTOBUF_FORCE_COPY_IN_SWAP
     if (GetOwningArena() != nullptr &&
@@ -6020,7 +6020,7 @@ class CordTransferGroupXorHint final :
       ::PROTOBUF_NAMESPACE_ID::internal::GenericSwap(this, other);
     }
   }
-  void UnsafeArenaSwap(CordTransferGroupXorHint* other) {
+  void UnsafeArenaSwap(UpLRCTransferGroupXorHint* other) {
     if (other == this) return;
     GOOGLE_DCHECK(GetOwningArena() == other->GetOwningArena());
     InternalSwap(other);
@@ -6028,14 +6028,14 @@ class CordTransferGroupXorHint final :
 
   // implements Message ----------------------------------------------
 
-  CordTransferGroupXorHint* New(::PROTOBUF_NAMESPACE_ID::Arena* arena = nullptr) const final {
-    return CreateMaybeMessage<CordTransferGroupXorHint>(arena);
+  UpLRCTransferGroupXorHint* New(::PROTOBUF_NAMESPACE_ID::Arena* arena = nullptr) const final {
+    return CreateMaybeMessage<UpLRCTransferGroupXorHint>(arena);
   }
   using ::PROTOBUF_NAMESPACE_ID::Message::CopyFrom;
-  void CopyFrom(const CordTransferGroupXorHint& from);
+  void CopyFrom(const UpLRCTransferGroupXorHint& from);
   using ::PROTOBUF_NAMESPACE_ID::Message::MergeFrom;
-  void MergeFrom( const CordTransferGroupXorHint& from) {
-    CordTransferGroupXorHint::MergeImpl(*this, from);
+  void MergeFrom( const UpLRCTransferGroupXorHint& from) {
+    UpLRCTransferGroupXorHint::MergeImpl(*this, from);
   }
   private:
   static void MergeImpl(::PROTOBUF_NAMESPACE_ID::Message& to_msg, const ::PROTOBUF_NAMESPACE_ID::Message& from_msg);
@@ -6053,15 +6053,15 @@ class CordTransferGroupXorHint final :
   void SharedCtor(::PROTOBUF_NAMESPACE_ID::Arena* arena, bool is_message_owned);
   void SharedDtor();
   void SetCachedSize(int size) const final;
-  void InternalSwap(CordTransferGroupXorHint* other);
+  void InternalSwap(UpLRCTransferGroupXorHint* other);
 
   private:
   friend class ::PROTOBUF_NAMESPACE_ID::internal::AnyMetadata;
   static ::PROTOBUF_NAMESPACE_ID::StringPiece FullMessageName() {
-    return "proxy_proto.CordTransferGroupXorHint";
+    return "proxy_proto.UpLRCTransferGroupXorHint";
   }
   protected:
-  explicit CordTransferGroupXorHint(::PROTOBUF_NAMESPACE_ID::Arena* arena,
+  explicit UpLRCTransferGroupXorHint(::PROTOBUF_NAMESPACE_ID::Arena* arena,
                        bool is_message_owned = false);
   public:
 
@@ -6096,7 +6096,7 @@ class CordTransferGroupXorHint final :
   void _internal_set_group_index(int32_t value);
   public:
 
-  // @@protoc_insertion_point(class_scope:proxy_proto.CordTransferGroupXorHint)
+  // @@protoc_insertion_point(class_scope:proxy_proto.UpLRCTransferGroupXorHint)
  private:
   class _Internal;
 
@@ -6113,24 +6113,24 @@ class CordTransferGroupXorHint final :
 };
 // -------------------------------------------------------------------
 
-class CordTransferClusterDeltaLayout final :
-    public ::PROTOBUF_NAMESPACE_ID::Message /* @@protoc_insertion_point(class_definition:proxy_proto.CordTransferClusterDeltaLayout) */ {
+class UpLRCTransferClusterDeltaLayout final :
+    public ::PROTOBUF_NAMESPACE_ID::Message /* @@protoc_insertion_point(class_definition:proxy_proto.UpLRCTransferClusterDeltaLayout) */ {
  public:
-  inline CordTransferClusterDeltaLayout() : CordTransferClusterDeltaLayout(nullptr) {}
-  ~CordTransferClusterDeltaLayout() override;
-  explicit PROTOBUF_CONSTEXPR CordTransferClusterDeltaLayout(::PROTOBUF_NAMESPACE_ID::internal::ConstantInitialized);
+  inline UpLRCTransferClusterDeltaLayout() : UpLRCTransferClusterDeltaLayout(nullptr) {}
+  ~UpLRCTransferClusterDeltaLayout() override;
+  explicit PROTOBUF_CONSTEXPR UpLRCTransferClusterDeltaLayout(::PROTOBUF_NAMESPACE_ID::internal::ConstantInitialized);
 
-  CordTransferClusterDeltaLayout(const CordTransferClusterDeltaLayout& from);
-  CordTransferClusterDeltaLayout(CordTransferClusterDeltaLayout&& from) noexcept
-    : CordTransferClusterDeltaLayout() {
+  UpLRCTransferClusterDeltaLayout(const UpLRCTransferClusterDeltaLayout& from);
+  UpLRCTransferClusterDeltaLayout(UpLRCTransferClusterDeltaLayout&& from) noexcept
+    : UpLRCTransferClusterDeltaLayout() {
     *this = ::std::move(from);
   }
 
-  inline CordTransferClusterDeltaLayout& operator=(const CordTransferClusterDeltaLayout& from) {
+  inline UpLRCTransferClusterDeltaLayout& operator=(const UpLRCTransferClusterDeltaLayout& from) {
     CopyFrom(from);
     return *this;
   }
-  inline CordTransferClusterDeltaLayout& operator=(CordTransferClusterDeltaLayout&& from) noexcept {
+  inline UpLRCTransferClusterDeltaLayout& operator=(UpLRCTransferClusterDeltaLayout&& from) noexcept {
     if (this == &from) return *this;
     if (GetOwningArena() == from.GetOwningArena()
   #ifdef PROTOBUF_FORCE_COPY_IN_MOVE
@@ -6153,20 +6153,20 @@ class CordTransferClusterDeltaLayout final :
   static const ::PROTOBUF_NAMESPACE_ID::Reflection* GetReflection() {
     return default_instance().GetMetadata().reflection;
   }
-  static const CordTransferClusterDeltaLayout& default_instance() {
+  static const UpLRCTransferClusterDeltaLayout& default_instance() {
     return *internal_default_instance();
   }
-  static inline const CordTransferClusterDeltaLayout* internal_default_instance() {
-    return reinterpret_cast<const CordTransferClusterDeltaLayout*>(
-               &_CordTransferClusterDeltaLayout_default_instance_);
+  static inline const UpLRCTransferClusterDeltaLayout* internal_default_instance() {
+    return reinterpret_cast<const UpLRCTransferClusterDeltaLayout*>(
+               &_UpLRCTransferClusterDeltaLayout_default_instance_);
   }
   static constexpr int kIndexInFileMessages =
     24;
 
-  friend void swap(CordTransferClusterDeltaLayout& a, CordTransferClusterDeltaLayout& b) {
+  friend void swap(UpLRCTransferClusterDeltaLayout& a, UpLRCTransferClusterDeltaLayout& b) {
     a.Swap(&b);
   }
-  inline void Swap(CordTransferClusterDeltaLayout* other) {
+  inline void Swap(UpLRCTransferClusterDeltaLayout* other) {
     if (other == this) return;
   #ifdef PROTOBUF_FORCE_COPY_IN_SWAP
     if (GetOwningArena() != nullptr &&
@@ -6179,7 +6179,7 @@ class CordTransferClusterDeltaLayout final :
       ::PROTOBUF_NAMESPACE_ID::internal::GenericSwap(this, other);
     }
   }
-  void UnsafeArenaSwap(CordTransferClusterDeltaLayout* other) {
+  void UnsafeArenaSwap(UpLRCTransferClusterDeltaLayout* other) {
     if (other == this) return;
     GOOGLE_DCHECK(GetOwningArena() == other->GetOwningArena());
     InternalSwap(other);
@@ -6187,14 +6187,14 @@ class CordTransferClusterDeltaLayout final :
 
   // implements Message ----------------------------------------------
 
-  CordTransferClusterDeltaLayout* New(::PROTOBUF_NAMESPACE_ID::Arena* arena = nullptr) const final {
-    return CreateMaybeMessage<CordTransferClusterDeltaLayout>(arena);
+  UpLRCTransferClusterDeltaLayout* New(::PROTOBUF_NAMESPACE_ID::Arena* arena = nullptr) const final {
+    return CreateMaybeMessage<UpLRCTransferClusterDeltaLayout>(arena);
   }
   using ::PROTOBUF_NAMESPACE_ID::Message::CopyFrom;
-  void CopyFrom(const CordTransferClusterDeltaLayout& from);
+  void CopyFrom(const UpLRCTransferClusterDeltaLayout& from);
   using ::PROTOBUF_NAMESPACE_ID::Message::MergeFrom;
-  void MergeFrom( const CordTransferClusterDeltaLayout& from) {
-    CordTransferClusterDeltaLayout::MergeImpl(*this, from);
+  void MergeFrom( const UpLRCTransferClusterDeltaLayout& from) {
+    UpLRCTransferClusterDeltaLayout::MergeImpl(*this, from);
   }
   private:
   static void MergeImpl(::PROTOBUF_NAMESPACE_ID::Message& to_msg, const ::PROTOBUF_NAMESPACE_ID::Message& from_msg);
@@ -6212,15 +6212,15 @@ class CordTransferClusterDeltaLayout final :
   void SharedCtor(::PROTOBUF_NAMESPACE_ID::Arena* arena, bool is_message_owned);
   void SharedDtor();
   void SetCachedSize(int size) const final;
-  void InternalSwap(CordTransferClusterDeltaLayout* other);
+  void InternalSwap(UpLRCTransferClusterDeltaLayout* other);
 
   private:
   friend class ::PROTOBUF_NAMESPACE_ID::internal::AnyMetadata;
   static ::PROTOBUF_NAMESPACE_ID::StringPiece FullMessageName() {
-    return "proxy_proto.CordTransferClusterDeltaLayout";
+    return "proxy_proto.UpLRCTransferClusterDeltaLayout";
   }
   protected:
-  explicit CordTransferClusterDeltaLayout(::PROTOBUF_NAMESPACE_ID::Arena* arena,
+  explicit UpLRCTransferClusterDeltaLayout(::PROTOBUF_NAMESPACE_ID::Arena* arena,
                        bool is_message_owned = false);
   public:
 
@@ -6314,7 +6314,7 @@ class CordTransferClusterDeltaLayout final :
   void _internal_set_cluster_id(int32_t value);
   public:
 
-  // @@protoc_insertion_point(class_scope:proxy_proto.CordTransferClusterDeltaLayout)
+  // @@protoc_insertion_point(class_scope:proxy_proto.UpLRCTransferClusterDeltaLayout)
  private:
   class _Internal;
 
@@ -6336,24 +6336,24 @@ class CordTransferClusterDeltaLayout final :
 };
 // -------------------------------------------------------------------
 
-class CordTransferStep final :
-    public ::PROTOBUF_NAMESPACE_ID::Message /* @@protoc_insertion_point(class_definition:proxy_proto.CordTransferStep) */ {
+class UpLRCTransferStep final :
+    public ::PROTOBUF_NAMESPACE_ID::Message /* @@protoc_insertion_point(class_definition:proxy_proto.UpLRCTransferStep) */ {
  public:
-  inline CordTransferStep() : CordTransferStep(nullptr) {}
-  ~CordTransferStep() override;
-  explicit PROTOBUF_CONSTEXPR CordTransferStep(::PROTOBUF_NAMESPACE_ID::internal::ConstantInitialized);
+  inline UpLRCTransferStep() : UpLRCTransferStep(nullptr) {}
+  ~UpLRCTransferStep() override;
+  explicit PROTOBUF_CONSTEXPR UpLRCTransferStep(::PROTOBUF_NAMESPACE_ID::internal::ConstantInitialized);
 
-  CordTransferStep(const CordTransferStep& from);
-  CordTransferStep(CordTransferStep&& from) noexcept
-    : CordTransferStep() {
+  UpLRCTransferStep(const UpLRCTransferStep& from);
+  UpLRCTransferStep(UpLRCTransferStep&& from) noexcept
+    : UpLRCTransferStep() {
     *this = ::std::move(from);
   }
 
-  inline CordTransferStep& operator=(const CordTransferStep& from) {
+  inline UpLRCTransferStep& operator=(const UpLRCTransferStep& from) {
     CopyFrom(from);
     return *this;
   }
-  inline CordTransferStep& operator=(CordTransferStep&& from) noexcept {
+  inline UpLRCTransferStep& operator=(UpLRCTransferStep&& from) noexcept {
     if (this == &from) return *this;
     if (GetOwningArena() == from.GetOwningArena()
   #ifdef PROTOBUF_FORCE_COPY_IN_MOVE
@@ -6376,20 +6376,20 @@ class CordTransferStep final :
   static const ::PROTOBUF_NAMESPACE_ID::Reflection* GetReflection() {
     return default_instance().GetMetadata().reflection;
   }
-  static const CordTransferStep& default_instance() {
+  static const UpLRCTransferStep& default_instance() {
     return *internal_default_instance();
   }
-  static inline const CordTransferStep* internal_default_instance() {
-    return reinterpret_cast<const CordTransferStep*>(
-               &_CordTransferStep_default_instance_);
+  static inline const UpLRCTransferStep* internal_default_instance() {
+    return reinterpret_cast<const UpLRCTransferStep*>(
+               &_UpLRCTransferStep_default_instance_);
   }
   static constexpr int kIndexInFileMessages =
     25;
 
-  friend void swap(CordTransferStep& a, CordTransferStep& b) {
+  friend void swap(UpLRCTransferStep& a, UpLRCTransferStep& b) {
     a.Swap(&b);
   }
-  inline void Swap(CordTransferStep* other) {
+  inline void Swap(UpLRCTransferStep* other) {
     if (other == this) return;
   #ifdef PROTOBUF_FORCE_COPY_IN_SWAP
     if (GetOwningArena() != nullptr &&
@@ -6402,7 +6402,7 @@ class CordTransferStep final :
       ::PROTOBUF_NAMESPACE_ID::internal::GenericSwap(this, other);
     }
   }
-  void UnsafeArenaSwap(CordTransferStep* other) {
+  void UnsafeArenaSwap(UpLRCTransferStep* other) {
     if (other == this) return;
     GOOGLE_DCHECK(GetOwningArena() == other->GetOwningArena());
     InternalSwap(other);
@@ -6410,14 +6410,14 @@ class CordTransferStep final :
 
   // implements Message ----------------------------------------------
 
-  CordTransferStep* New(::PROTOBUF_NAMESPACE_ID::Arena* arena = nullptr) const final {
-    return CreateMaybeMessage<CordTransferStep>(arena);
+  UpLRCTransferStep* New(::PROTOBUF_NAMESPACE_ID::Arena* arena = nullptr) const final {
+    return CreateMaybeMessage<UpLRCTransferStep>(arena);
   }
   using ::PROTOBUF_NAMESPACE_ID::Message::CopyFrom;
-  void CopyFrom(const CordTransferStep& from);
+  void CopyFrom(const UpLRCTransferStep& from);
   using ::PROTOBUF_NAMESPACE_ID::Message::MergeFrom;
-  void MergeFrom( const CordTransferStep& from) {
-    CordTransferStep::MergeImpl(*this, from);
+  void MergeFrom( const UpLRCTransferStep& from) {
+    UpLRCTransferStep::MergeImpl(*this, from);
   }
   private:
   static void MergeImpl(::PROTOBUF_NAMESPACE_ID::Message& to_msg, const ::PROTOBUF_NAMESPACE_ID::Message& from_msg);
@@ -6435,15 +6435,15 @@ class CordTransferStep final :
   void SharedCtor(::PROTOBUF_NAMESPACE_ID::Arena* arena, bool is_message_owned);
   void SharedDtor();
   void SetCachedSize(int size) const final;
-  void InternalSwap(CordTransferStep* other);
+  void InternalSwap(UpLRCTransferStep* other);
 
   private:
   friend class ::PROTOBUF_NAMESPACE_ID::internal::AnyMetadata;
   static ::PROTOBUF_NAMESPACE_ID::StringPiece FullMessageName() {
-    return "proxy_proto.CordTransferStep";
+    return "proxy_proto.UpLRCTransferStep";
   }
   protected:
-  explicit CordTransferStep(::PROTOBUF_NAMESPACE_ID::Arena* arena,
+  explicit UpLRCTransferStep(::PROTOBUF_NAMESPACE_ID::Arena* arena,
                        bool is_message_owned = false);
   public:
 
@@ -6551,13 +6551,13 @@ class CordTransferStep final :
   void _internal_set_dst_block_id(int32_t value);
   public:
 
-  // .proxy_proto.CordTransferLinkKind link_kind = 7;
+  // .proxy_proto.UpLRCTransferLinkKind link_kind = 7;
   void clear_link_kind();
-  ::proxy_proto::CordTransferLinkKind link_kind() const;
-  void set_link_kind(::proxy_proto::CordTransferLinkKind value);
+  ::proxy_proto::UpLRCTransferLinkKind link_kind() const;
+  void set_link_kind(::proxy_proto::UpLRCTransferLinkKind value);
   private:
-  ::proxy_proto::CordTransferLinkKind _internal_link_kind() const;
-  void _internal_set_link_kind(::proxy_proto::CordTransferLinkKind value);
+  ::proxy_proto::UpLRCTransferLinkKind _internal_link_kind() const;
+  void _internal_set_link_kind(::proxy_proto::UpLRCTransferLinkKind value);
   public:
 
   // uint32 scheduled_slot = 8;
@@ -6596,13 +6596,13 @@ class CordTransferStep final :
   void _internal_set_group_index(int32_t value);
   public:
 
-  // .proxy_proto.CordDeltaPayloadKind delta_payload_kind = 12;
+  // .proxy_proto.UpLRCDeltaPayloadKind delta_payload_kind = 12;
   void clear_delta_payload_kind();
-  ::proxy_proto::CordDeltaPayloadKind delta_payload_kind() const;
-  void set_delta_payload_kind(::proxy_proto::CordDeltaPayloadKind value);
+  ::proxy_proto::UpLRCDeltaPayloadKind delta_payload_kind() const;
+  void set_delta_payload_kind(::proxy_proto::UpLRCDeltaPayloadKind value);
   private:
-  ::proxy_proto::CordDeltaPayloadKind _internal_delta_payload_kind() const;
-  void _internal_set_delta_payload_kind(::proxy_proto::CordDeltaPayloadKind value);
+  ::proxy_proto::UpLRCDeltaPayloadKind _internal_delta_payload_kind() const;
+  void _internal_set_delta_payload_kind(::proxy_proto::UpLRCDeltaPayloadKind value);
   public:
 
   // uint64 chunk_byte_offset = 13;
@@ -6649,7 +6649,7 @@ class CordTransferStep final :
   void _internal_set_mst_origin_data_block_id(int32_t value);
   public:
 
-  // @@protoc_insertion_point(class_scope:proxy_proto.CordTransferStep)
+  // @@protoc_insertion_point(class_scope:proxy_proto.UpLRCTransferStep)
  private:
   class _Internal;
 
@@ -6683,24 +6683,24 @@ class CordTransferStep final :
 };
 // -------------------------------------------------------------------
 
-class CordBlockStripeGroup final :
-    public ::PROTOBUF_NAMESPACE_ID::Message /* @@protoc_insertion_point(class_definition:proxy_proto.CordBlockStripeGroup) */ {
+class UpLRCBlockStripeGroup final :
+    public ::PROTOBUF_NAMESPACE_ID::Message /* @@protoc_insertion_point(class_definition:proxy_proto.UpLRCBlockStripeGroup) */ {
  public:
-  inline CordBlockStripeGroup() : CordBlockStripeGroup(nullptr) {}
-  ~CordBlockStripeGroup() override;
-  explicit PROTOBUF_CONSTEXPR CordBlockStripeGroup(::PROTOBUF_NAMESPACE_ID::internal::ConstantInitialized);
+  inline UpLRCBlockStripeGroup() : UpLRCBlockStripeGroup(nullptr) {}
+  ~UpLRCBlockStripeGroup() override;
+  explicit PROTOBUF_CONSTEXPR UpLRCBlockStripeGroup(::PROTOBUF_NAMESPACE_ID::internal::ConstantInitialized);
 
-  CordBlockStripeGroup(const CordBlockStripeGroup& from);
-  CordBlockStripeGroup(CordBlockStripeGroup&& from) noexcept
-    : CordBlockStripeGroup() {
+  UpLRCBlockStripeGroup(const UpLRCBlockStripeGroup& from);
+  UpLRCBlockStripeGroup(UpLRCBlockStripeGroup&& from) noexcept
+    : UpLRCBlockStripeGroup() {
     *this = ::std::move(from);
   }
 
-  inline CordBlockStripeGroup& operator=(const CordBlockStripeGroup& from) {
+  inline UpLRCBlockStripeGroup& operator=(const UpLRCBlockStripeGroup& from) {
     CopyFrom(from);
     return *this;
   }
-  inline CordBlockStripeGroup& operator=(CordBlockStripeGroup&& from) noexcept {
+  inline UpLRCBlockStripeGroup& operator=(UpLRCBlockStripeGroup&& from) noexcept {
     if (this == &from) return *this;
     if (GetOwningArena() == from.GetOwningArena()
   #ifdef PROTOBUF_FORCE_COPY_IN_MOVE
@@ -6723,20 +6723,20 @@ class CordBlockStripeGroup final :
   static const ::PROTOBUF_NAMESPACE_ID::Reflection* GetReflection() {
     return default_instance().GetMetadata().reflection;
   }
-  static const CordBlockStripeGroup& default_instance() {
+  static const UpLRCBlockStripeGroup& default_instance() {
     return *internal_default_instance();
   }
-  static inline const CordBlockStripeGroup* internal_default_instance() {
-    return reinterpret_cast<const CordBlockStripeGroup*>(
-               &_CordBlockStripeGroup_default_instance_);
+  static inline const UpLRCBlockStripeGroup* internal_default_instance() {
+    return reinterpret_cast<const UpLRCBlockStripeGroup*>(
+               &_UpLRCBlockStripeGroup_default_instance_);
   }
   static constexpr int kIndexInFileMessages =
     26;
 
-  friend void swap(CordBlockStripeGroup& a, CordBlockStripeGroup& b) {
+  friend void swap(UpLRCBlockStripeGroup& a, UpLRCBlockStripeGroup& b) {
     a.Swap(&b);
   }
-  inline void Swap(CordBlockStripeGroup* other) {
+  inline void Swap(UpLRCBlockStripeGroup* other) {
     if (other == this) return;
   #ifdef PROTOBUF_FORCE_COPY_IN_SWAP
     if (GetOwningArena() != nullptr &&
@@ -6749,7 +6749,7 @@ class CordBlockStripeGroup final :
       ::PROTOBUF_NAMESPACE_ID::internal::GenericSwap(this, other);
     }
   }
-  void UnsafeArenaSwap(CordBlockStripeGroup* other) {
+  void UnsafeArenaSwap(UpLRCBlockStripeGroup* other) {
     if (other == this) return;
     GOOGLE_DCHECK(GetOwningArena() == other->GetOwningArena());
     InternalSwap(other);
@@ -6757,14 +6757,14 @@ class CordBlockStripeGroup final :
 
   // implements Message ----------------------------------------------
 
-  CordBlockStripeGroup* New(::PROTOBUF_NAMESPACE_ID::Arena* arena = nullptr) const final {
-    return CreateMaybeMessage<CordBlockStripeGroup>(arena);
+  UpLRCBlockStripeGroup* New(::PROTOBUF_NAMESPACE_ID::Arena* arena = nullptr) const final {
+    return CreateMaybeMessage<UpLRCBlockStripeGroup>(arena);
   }
   using ::PROTOBUF_NAMESPACE_ID::Message::CopyFrom;
-  void CopyFrom(const CordBlockStripeGroup& from);
+  void CopyFrom(const UpLRCBlockStripeGroup& from);
   using ::PROTOBUF_NAMESPACE_ID::Message::MergeFrom;
-  void MergeFrom( const CordBlockStripeGroup& from) {
-    CordBlockStripeGroup::MergeImpl(*this, from);
+  void MergeFrom( const UpLRCBlockStripeGroup& from) {
+    UpLRCBlockStripeGroup::MergeImpl(*this, from);
   }
   private:
   static void MergeImpl(::PROTOBUF_NAMESPACE_ID::Message& to_msg, const ::PROTOBUF_NAMESPACE_ID::Message& from_msg);
@@ -6782,15 +6782,15 @@ class CordBlockStripeGroup final :
   void SharedCtor(::PROTOBUF_NAMESPACE_ID::Arena* arena, bool is_message_owned);
   void SharedDtor();
   void SetCachedSize(int size) const final;
-  void InternalSwap(CordBlockStripeGroup* other);
+  void InternalSwap(UpLRCBlockStripeGroup* other);
 
   private:
   friend class ::PROTOBUF_NAMESPACE_ID::internal::AnyMetadata;
   static ::PROTOBUF_NAMESPACE_ID::StringPiece FullMessageName() {
-    return "proxy_proto.CordBlockStripeGroup";
+    return "proxy_proto.UpLRCBlockStripeGroup";
   }
   protected:
-  explicit CordBlockStripeGroup(::PROTOBUF_NAMESPACE_ID::Arena* arena,
+  explicit UpLRCBlockStripeGroup(::PROTOBUF_NAMESPACE_ID::Arena* arena,
                        bool is_message_owned = false);
   public:
 
@@ -6825,7 +6825,7 @@ class CordBlockStripeGroup final :
   void _internal_set_stripe_group(int32_t value);
   public:
 
-  // @@protoc_insertion_point(class_scope:proxy_proto.CordBlockStripeGroup)
+  // @@protoc_insertion_point(class_scope:proxy_proto.UpLRCBlockStripeGroup)
  private:
   class _Internal;
 
@@ -6842,24 +6842,24 @@ class CordBlockStripeGroup final :
 };
 // -------------------------------------------------------------------
 
-class CordBlockHalfOpenSeg final :
-    public ::PROTOBUF_NAMESPACE_ID::Message /* @@protoc_insertion_point(class_definition:proxy_proto.CordBlockHalfOpenSeg) */ {
+class UpLRCBlockHalfOpenSeg final :
+    public ::PROTOBUF_NAMESPACE_ID::Message /* @@protoc_insertion_point(class_definition:proxy_proto.UpLRCBlockHalfOpenSeg) */ {
  public:
-  inline CordBlockHalfOpenSeg() : CordBlockHalfOpenSeg(nullptr) {}
-  ~CordBlockHalfOpenSeg() override;
-  explicit PROTOBUF_CONSTEXPR CordBlockHalfOpenSeg(::PROTOBUF_NAMESPACE_ID::internal::ConstantInitialized);
+  inline UpLRCBlockHalfOpenSeg() : UpLRCBlockHalfOpenSeg(nullptr) {}
+  ~UpLRCBlockHalfOpenSeg() override;
+  explicit PROTOBUF_CONSTEXPR UpLRCBlockHalfOpenSeg(::PROTOBUF_NAMESPACE_ID::internal::ConstantInitialized);
 
-  CordBlockHalfOpenSeg(const CordBlockHalfOpenSeg& from);
-  CordBlockHalfOpenSeg(CordBlockHalfOpenSeg&& from) noexcept
-    : CordBlockHalfOpenSeg() {
+  UpLRCBlockHalfOpenSeg(const UpLRCBlockHalfOpenSeg& from);
+  UpLRCBlockHalfOpenSeg(UpLRCBlockHalfOpenSeg&& from) noexcept
+    : UpLRCBlockHalfOpenSeg() {
     *this = ::std::move(from);
   }
 
-  inline CordBlockHalfOpenSeg& operator=(const CordBlockHalfOpenSeg& from) {
+  inline UpLRCBlockHalfOpenSeg& operator=(const UpLRCBlockHalfOpenSeg& from) {
     CopyFrom(from);
     return *this;
   }
-  inline CordBlockHalfOpenSeg& operator=(CordBlockHalfOpenSeg&& from) noexcept {
+  inline UpLRCBlockHalfOpenSeg& operator=(UpLRCBlockHalfOpenSeg&& from) noexcept {
     if (this == &from) return *this;
     if (GetOwningArena() == from.GetOwningArena()
   #ifdef PROTOBUF_FORCE_COPY_IN_MOVE
@@ -6882,20 +6882,20 @@ class CordBlockHalfOpenSeg final :
   static const ::PROTOBUF_NAMESPACE_ID::Reflection* GetReflection() {
     return default_instance().GetMetadata().reflection;
   }
-  static const CordBlockHalfOpenSeg& default_instance() {
+  static const UpLRCBlockHalfOpenSeg& default_instance() {
     return *internal_default_instance();
   }
-  static inline const CordBlockHalfOpenSeg* internal_default_instance() {
-    return reinterpret_cast<const CordBlockHalfOpenSeg*>(
-               &_CordBlockHalfOpenSeg_default_instance_);
+  static inline const UpLRCBlockHalfOpenSeg* internal_default_instance() {
+    return reinterpret_cast<const UpLRCBlockHalfOpenSeg*>(
+               &_UpLRCBlockHalfOpenSeg_default_instance_);
   }
   static constexpr int kIndexInFileMessages =
     27;
 
-  friend void swap(CordBlockHalfOpenSeg& a, CordBlockHalfOpenSeg& b) {
+  friend void swap(UpLRCBlockHalfOpenSeg& a, UpLRCBlockHalfOpenSeg& b) {
     a.Swap(&b);
   }
-  inline void Swap(CordBlockHalfOpenSeg* other) {
+  inline void Swap(UpLRCBlockHalfOpenSeg* other) {
     if (other == this) return;
   #ifdef PROTOBUF_FORCE_COPY_IN_SWAP
     if (GetOwningArena() != nullptr &&
@@ -6908,7 +6908,7 @@ class CordBlockHalfOpenSeg final :
       ::PROTOBUF_NAMESPACE_ID::internal::GenericSwap(this, other);
     }
   }
-  void UnsafeArenaSwap(CordBlockHalfOpenSeg* other) {
+  void UnsafeArenaSwap(UpLRCBlockHalfOpenSeg* other) {
     if (other == this) return;
     GOOGLE_DCHECK(GetOwningArena() == other->GetOwningArena());
     InternalSwap(other);
@@ -6916,14 +6916,14 @@ class CordBlockHalfOpenSeg final :
 
   // implements Message ----------------------------------------------
 
-  CordBlockHalfOpenSeg* New(::PROTOBUF_NAMESPACE_ID::Arena* arena = nullptr) const final {
-    return CreateMaybeMessage<CordBlockHalfOpenSeg>(arena);
+  UpLRCBlockHalfOpenSeg* New(::PROTOBUF_NAMESPACE_ID::Arena* arena = nullptr) const final {
+    return CreateMaybeMessage<UpLRCBlockHalfOpenSeg>(arena);
   }
   using ::PROTOBUF_NAMESPACE_ID::Message::CopyFrom;
-  void CopyFrom(const CordBlockHalfOpenSeg& from);
+  void CopyFrom(const UpLRCBlockHalfOpenSeg& from);
   using ::PROTOBUF_NAMESPACE_ID::Message::MergeFrom;
-  void MergeFrom( const CordBlockHalfOpenSeg& from) {
-    CordBlockHalfOpenSeg::MergeImpl(*this, from);
+  void MergeFrom( const UpLRCBlockHalfOpenSeg& from) {
+    UpLRCBlockHalfOpenSeg::MergeImpl(*this, from);
   }
   private:
   static void MergeImpl(::PROTOBUF_NAMESPACE_ID::Message& to_msg, const ::PROTOBUF_NAMESPACE_ID::Message& from_msg);
@@ -6941,15 +6941,15 @@ class CordBlockHalfOpenSeg final :
   void SharedCtor(::PROTOBUF_NAMESPACE_ID::Arena* arena, bool is_message_owned);
   void SharedDtor();
   void SetCachedSize(int size) const final;
-  void InternalSwap(CordBlockHalfOpenSeg* other);
+  void InternalSwap(UpLRCBlockHalfOpenSeg* other);
 
   private:
   friend class ::PROTOBUF_NAMESPACE_ID::internal::AnyMetadata;
   static ::PROTOBUF_NAMESPACE_ID::StringPiece FullMessageName() {
-    return "proxy_proto.CordBlockHalfOpenSeg";
+    return "proxy_proto.UpLRCBlockHalfOpenSeg";
   }
   protected:
-  explicit CordBlockHalfOpenSeg(::PROTOBUF_NAMESPACE_ID::Arena* arena,
+  explicit UpLRCBlockHalfOpenSeg(::PROTOBUF_NAMESPACE_ID::Arena* arena,
                        bool is_message_owned = false);
   public:
 
@@ -6994,7 +6994,7 @@ class CordBlockHalfOpenSeg final :
   void _internal_set_hi_excl(int32_t value);
   public:
 
-  // @@protoc_insertion_point(class_scope:proxy_proto.CordBlockHalfOpenSeg)
+  // @@protoc_insertion_point(class_scope:proxy_proto.UpLRCBlockHalfOpenSeg)
  private:
   class _Internal;
 
@@ -7012,24 +7012,24 @@ class CordBlockHalfOpenSeg final :
 };
 // -------------------------------------------------------------------
 
-class CordTransferEncodeMeta final :
-    public ::PROTOBUF_NAMESPACE_ID::Message /* @@protoc_insertion_point(class_definition:proxy_proto.CordTransferEncodeMeta) */ {
+class UpLRCTransferEncodeMeta final :
+    public ::PROTOBUF_NAMESPACE_ID::Message /* @@protoc_insertion_point(class_definition:proxy_proto.UpLRCTransferEncodeMeta) */ {
  public:
-  inline CordTransferEncodeMeta() : CordTransferEncodeMeta(nullptr) {}
-  ~CordTransferEncodeMeta() override;
-  explicit PROTOBUF_CONSTEXPR CordTransferEncodeMeta(::PROTOBUF_NAMESPACE_ID::internal::ConstantInitialized);
+  inline UpLRCTransferEncodeMeta() : UpLRCTransferEncodeMeta(nullptr) {}
+  ~UpLRCTransferEncodeMeta() override;
+  explicit PROTOBUF_CONSTEXPR UpLRCTransferEncodeMeta(::PROTOBUF_NAMESPACE_ID::internal::ConstantInitialized);
 
-  CordTransferEncodeMeta(const CordTransferEncodeMeta& from);
-  CordTransferEncodeMeta(CordTransferEncodeMeta&& from) noexcept
-    : CordTransferEncodeMeta() {
+  UpLRCTransferEncodeMeta(const UpLRCTransferEncodeMeta& from);
+  UpLRCTransferEncodeMeta(UpLRCTransferEncodeMeta&& from) noexcept
+    : UpLRCTransferEncodeMeta() {
     *this = ::std::move(from);
   }
 
-  inline CordTransferEncodeMeta& operator=(const CordTransferEncodeMeta& from) {
+  inline UpLRCTransferEncodeMeta& operator=(const UpLRCTransferEncodeMeta& from) {
     CopyFrom(from);
     return *this;
   }
-  inline CordTransferEncodeMeta& operator=(CordTransferEncodeMeta&& from) noexcept {
+  inline UpLRCTransferEncodeMeta& operator=(UpLRCTransferEncodeMeta&& from) noexcept {
     if (this == &from) return *this;
     if (GetOwningArena() == from.GetOwningArena()
   #ifdef PROTOBUF_FORCE_COPY_IN_MOVE
@@ -7052,20 +7052,20 @@ class CordTransferEncodeMeta final :
   static const ::PROTOBUF_NAMESPACE_ID::Reflection* GetReflection() {
     return default_instance().GetMetadata().reflection;
   }
-  static const CordTransferEncodeMeta& default_instance() {
+  static const UpLRCTransferEncodeMeta& default_instance() {
     return *internal_default_instance();
   }
-  static inline const CordTransferEncodeMeta* internal_default_instance() {
-    return reinterpret_cast<const CordTransferEncodeMeta*>(
-               &_CordTransferEncodeMeta_default_instance_);
+  static inline const UpLRCTransferEncodeMeta* internal_default_instance() {
+    return reinterpret_cast<const UpLRCTransferEncodeMeta*>(
+               &_UpLRCTransferEncodeMeta_default_instance_);
   }
   static constexpr int kIndexInFileMessages =
     28;
 
-  friend void swap(CordTransferEncodeMeta& a, CordTransferEncodeMeta& b) {
+  friend void swap(UpLRCTransferEncodeMeta& a, UpLRCTransferEncodeMeta& b) {
     a.Swap(&b);
   }
-  inline void Swap(CordTransferEncodeMeta* other) {
+  inline void Swap(UpLRCTransferEncodeMeta* other) {
     if (other == this) return;
   #ifdef PROTOBUF_FORCE_COPY_IN_SWAP
     if (GetOwningArena() != nullptr &&
@@ -7078,7 +7078,7 @@ class CordTransferEncodeMeta final :
       ::PROTOBUF_NAMESPACE_ID::internal::GenericSwap(this, other);
     }
   }
-  void UnsafeArenaSwap(CordTransferEncodeMeta* other) {
+  void UnsafeArenaSwap(UpLRCTransferEncodeMeta* other) {
     if (other == this) return;
     GOOGLE_DCHECK(GetOwningArena() == other->GetOwningArena());
     InternalSwap(other);
@@ -7086,14 +7086,14 @@ class CordTransferEncodeMeta final :
 
   // implements Message ----------------------------------------------
 
-  CordTransferEncodeMeta* New(::PROTOBUF_NAMESPACE_ID::Arena* arena = nullptr) const final {
-    return CreateMaybeMessage<CordTransferEncodeMeta>(arena);
+  UpLRCTransferEncodeMeta* New(::PROTOBUF_NAMESPACE_ID::Arena* arena = nullptr) const final {
+    return CreateMaybeMessage<UpLRCTransferEncodeMeta>(arena);
   }
   using ::PROTOBUF_NAMESPACE_ID::Message::CopyFrom;
-  void CopyFrom(const CordTransferEncodeMeta& from);
+  void CopyFrom(const UpLRCTransferEncodeMeta& from);
   using ::PROTOBUF_NAMESPACE_ID::Message::MergeFrom;
-  void MergeFrom( const CordTransferEncodeMeta& from) {
-    CordTransferEncodeMeta::MergeImpl(*this, from);
+  void MergeFrom( const UpLRCTransferEncodeMeta& from) {
+    UpLRCTransferEncodeMeta::MergeImpl(*this, from);
   }
   private:
   static void MergeImpl(::PROTOBUF_NAMESPACE_ID::Message& to_msg, const ::PROTOBUF_NAMESPACE_ID::Message& from_msg);
@@ -7111,15 +7111,15 @@ class CordTransferEncodeMeta final :
   void SharedCtor(::PROTOBUF_NAMESPACE_ID::Arena* arena, bool is_message_owned);
   void SharedDtor();
   void SetCachedSize(int size) const final;
-  void InternalSwap(CordTransferEncodeMeta* other);
+  void InternalSwap(UpLRCTransferEncodeMeta* other);
 
   private:
   friend class ::PROTOBUF_NAMESPACE_ID::internal::AnyMetadata;
   static ::PROTOBUF_NAMESPACE_ID::StringPiece FullMessageName() {
-    return "proxy_proto.CordTransferEncodeMeta";
+    return "proxy_proto.UpLRCTransferEncodeMeta";
   }
   protected:
-  explicit CordTransferEncodeMeta(::PROTOBUF_NAMESPACE_ID::Arena* arena,
+  explicit UpLRCTransferEncodeMeta(::PROTOBUF_NAMESPACE_ID::Arena* arena,
                        bool is_message_owned = false);
   public:
 
@@ -7194,7 +7194,7 @@ class CordTransferEncodeMeta final :
   void _internal_set_parity_slice_size(int32_t value);
   public:
 
-  // @@protoc_insertion_point(class_scope:proxy_proto.CordTransferEncodeMeta)
+  // @@protoc_insertion_point(class_scope:proxy_proto.UpLRCTransferEncodeMeta)
  private:
   class _Internal;
 
@@ -7215,24 +7215,24 @@ class CordTransferEncodeMeta final :
 };
 // -------------------------------------------------------------------
 
-class CordCollectorIngressExpect final :
-    public ::PROTOBUF_NAMESPACE_ID::Message /* @@protoc_insertion_point(class_definition:proxy_proto.CordCollectorIngressExpect) */ {
+class UpLRCCollectorIngressExpect final :
+    public ::PROTOBUF_NAMESPACE_ID::Message /* @@protoc_insertion_point(class_definition:proxy_proto.UpLRCCollectorIngressExpect) */ {
  public:
-  inline CordCollectorIngressExpect() : CordCollectorIngressExpect(nullptr) {}
-  ~CordCollectorIngressExpect() override;
-  explicit PROTOBUF_CONSTEXPR CordCollectorIngressExpect(::PROTOBUF_NAMESPACE_ID::internal::ConstantInitialized);
+  inline UpLRCCollectorIngressExpect() : UpLRCCollectorIngressExpect(nullptr) {}
+  ~UpLRCCollectorIngressExpect() override;
+  explicit PROTOBUF_CONSTEXPR UpLRCCollectorIngressExpect(::PROTOBUF_NAMESPACE_ID::internal::ConstantInitialized);
 
-  CordCollectorIngressExpect(const CordCollectorIngressExpect& from);
-  CordCollectorIngressExpect(CordCollectorIngressExpect&& from) noexcept
-    : CordCollectorIngressExpect() {
+  UpLRCCollectorIngressExpect(const UpLRCCollectorIngressExpect& from);
+  UpLRCCollectorIngressExpect(UpLRCCollectorIngressExpect&& from) noexcept
+    : UpLRCCollectorIngressExpect() {
     *this = ::std::move(from);
   }
 
-  inline CordCollectorIngressExpect& operator=(const CordCollectorIngressExpect& from) {
+  inline UpLRCCollectorIngressExpect& operator=(const UpLRCCollectorIngressExpect& from) {
     CopyFrom(from);
     return *this;
   }
-  inline CordCollectorIngressExpect& operator=(CordCollectorIngressExpect&& from) noexcept {
+  inline UpLRCCollectorIngressExpect& operator=(UpLRCCollectorIngressExpect&& from) noexcept {
     if (this == &from) return *this;
     if (GetOwningArena() == from.GetOwningArena()
   #ifdef PROTOBUF_FORCE_COPY_IN_MOVE
@@ -7255,20 +7255,20 @@ class CordCollectorIngressExpect final :
   static const ::PROTOBUF_NAMESPACE_ID::Reflection* GetReflection() {
     return default_instance().GetMetadata().reflection;
   }
-  static const CordCollectorIngressExpect& default_instance() {
+  static const UpLRCCollectorIngressExpect& default_instance() {
     return *internal_default_instance();
   }
-  static inline const CordCollectorIngressExpect* internal_default_instance() {
-    return reinterpret_cast<const CordCollectorIngressExpect*>(
-               &_CordCollectorIngressExpect_default_instance_);
+  static inline const UpLRCCollectorIngressExpect* internal_default_instance() {
+    return reinterpret_cast<const UpLRCCollectorIngressExpect*>(
+               &_UpLRCCollectorIngressExpect_default_instance_);
   }
   static constexpr int kIndexInFileMessages =
     29;
 
-  friend void swap(CordCollectorIngressExpect& a, CordCollectorIngressExpect& b) {
+  friend void swap(UpLRCCollectorIngressExpect& a, UpLRCCollectorIngressExpect& b) {
     a.Swap(&b);
   }
-  inline void Swap(CordCollectorIngressExpect* other) {
+  inline void Swap(UpLRCCollectorIngressExpect* other) {
     if (other == this) return;
   #ifdef PROTOBUF_FORCE_COPY_IN_SWAP
     if (GetOwningArena() != nullptr &&
@@ -7281,7 +7281,7 @@ class CordCollectorIngressExpect final :
       ::PROTOBUF_NAMESPACE_ID::internal::GenericSwap(this, other);
     }
   }
-  void UnsafeArenaSwap(CordCollectorIngressExpect* other) {
+  void UnsafeArenaSwap(UpLRCCollectorIngressExpect* other) {
     if (other == this) return;
     GOOGLE_DCHECK(GetOwningArena() == other->GetOwningArena());
     InternalSwap(other);
@@ -7289,14 +7289,14 @@ class CordCollectorIngressExpect final :
 
   // implements Message ----------------------------------------------
 
-  CordCollectorIngressExpect* New(::PROTOBUF_NAMESPACE_ID::Arena* arena = nullptr) const final {
-    return CreateMaybeMessage<CordCollectorIngressExpect>(arena);
+  UpLRCCollectorIngressExpect* New(::PROTOBUF_NAMESPACE_ID::Arena* arena = nullptr) const final {
+    return CreateMaybeMessage<UpLRCCollectorIngressExpect>(arena);
   }
   using ::PROTOBUF_NAMESPACE_ID::Message::CopyFrom;
-  void CopyFrom(const CordCollectorIngressExpect& from);
+  void CopyFrom(const UpLRCCollectorIngressExpect& from);
   using ::PROTOBUF_NAMESPACE_ID::Message::MergeFrom;
-  void MergeFrom( const CordCollectorIngressExpect& from) {
-    CordCollectorIngressExpect::MergeImpl(*this, from);
+  void MergeFrom( const UpLRCCollectorIngressExpect& from) {
+    UpLRCCollectorIngressExpect::MergeImpl(*this, from);
   }
   private:
   static void MergeImpl(::PROTOBUF_NAMESPACE_ID::Message& to_msg, const ::PROTOBUF_NAMESPACE_ID::Message& from_msg);
@@ -7314,15 +7314,15 @@ class CordCollectorIngressExpect final :
   void SharedCtor(::PROTOBUF_NAMESPACE_ID::Arena* arena, bool is_message_owned);
   void SharedDtor();
   void SetCachedSize(int size) const final;
-  void InternalSwap(CordCollectorIngressExpect* other);
+  void InternalSwap(UpLRCCollectorIngressExpect* other);
 
   private:
   friend class ::PROTOBUF_NAMESPACE_ID::internal::AnyMetadata;
   static ::PROTOBUF_NAMESPACE_ID::StringPiece FullMessageName() {
-    return "proxy_proto.CordCollectorIngressExpect";
+    return "proxy_proto.UpLRCCollectorIngressExpect";
   }
   protected:
-  explicit CordCollectorIngressExpect(::PROTOBUF_NAMESPACE_ID::Arena* arena,
+  explicit UpLRCCollectorIngressExpect(::PROTOBUF_NAMESPACE_ID::Arena* arena,
                        bool is_message_owned = false);
   public:
 
@@ -7403,7 +7403,7 @@ class CordCollectorIngressExpect final :
   void _internal_set_collector_block_id(int32_t value);
   public:
 
-  // @@protoc_insertion_point(class_scope:proxy_proto.CordCollectorIngressExpect)
+  // @@protoc_insertion_point(class_scope:proxy_proto.UpLRCCollectorIngressExpect)
  private:
   class _Internal;
 
@@ -7424,24 +7424,24 @@ class CordCollectorIngressExpect final :
 };
 // -------------------------------------------------------------------
 
-class CordDataStripDesc final :
-    public ::PROTOBUF_NAMESPACE_ID::Message /* @@protoc_insertion_point(class_definition:proxy_proto.CordDataStripDesc) */ {
+class UpLRCDataStripDesc final :
+    public ::PROTOBUF_NAMESPACE_ID::Message /* @@protoc_insertion_point(class_definition:proxy_proto.UpLRCDataStripDesc) */ {
  public:
-  inline CordDataStripDesc() : CordDataStripDesc(nullptr) {}
-  ~CordDataStripDesc() override;
-  explicit PROTOBUF_CONSTEXPR CordDataStripDesc(::PROTOBUF_NAMESPACE_ID::internal::ConstantInitialized);
+  inline UpLRCDataStripDesc() : UpLRCDataStripDesc(nullptr) {}
+  ~UpLRCDataStripDesc() override;
+  explicit PROTOBUF_CONSTEXPR UpLRCDataStripDesc(::PROTOBUF_NAMESPACE_ID::internal::ConstantInitialized);
 
-  CordDataStripDesc(const CordDataStripDesc& from);
-  CordDataStripDesc(CordDataStripDesc&& from) noexcept
-    : CordDataStripDesc() {
+  UpLRCDataStripDesc(const UpLRCDataStripDesc& from);
+  UpLRCDataStripDesc(UpLRCDataStripDesc&& from) noexcept
+    : UpLRCDataStripDesc() {
     *this = ::std::move(from);
   }
 
-  inline CordDataStripDesc& operator=(const CordDataStripDesc& from) {
+  inline UpLRCDataStripDesc& operator=(const UpLRCDataStripDesc& from) {
     CopyFrom(from);
     return *this;
   }
-  inline CordDataStripDesc& operator=(CordDataStripDesc&& from) noexcept {
+  inline UpLRCDataStripDesc& operator=(UpLRCDataStripDesc&& from) noexcept {
     if (this == &from) return *this;
     if (GetOwningArena() == from.GetOwningArena()
   #ifdef PROTOBUF_FORCE_COPY_IN_MOVE
@@ -7464,20 +7464,20 @@ class CordDataStripDesc final :
   static const ::PROTOBUF_NAMESPACE_ID::Reflection* GetReflection() {
     return default_instance().GetMetadata().reflection;
   }
-  static const CordDataStripDesc& default_instance() {
+  static const UpLRCDataStripDesc& default_instance() {
     return *internal_default_instance();
   }
-  static inline const CordDataStripDesc* internal_default_instance() {
-    return reinterpret_cast<const CordDataStripDesc*>(
-               &_CordDataStripDesc_default_instance_);
+  static inline const UpLRCDataStripDesc* internal_default_instance() {
+    return reinterpret_cast<const UpLRCDataStripDesc*>(
+               &_UpLRCDataStripDesc_default_instance_);
   }
   static constexpr int kIndexInFileMessages =
     30;
 
-  friend void swap(CordDataStripDesc& a, CordDataStripDesc& b) {
+  friend void swap(UpLRCDataStripDesc& a, UpLRCDataStripDesc& b) {
     a.Swap(&b);
   }
-  inline void Swap(CordDataStripDesc* other) {
+  inline void Swap(UpLRCDataStripDesc* other) {
     if (other == this) return;
   #ifdef PROTOBUF_FORCE_COPY_IN_SWAP
     if (GetOwningArena() != nullptr &&
@@ -7490,7 +7490,7 @@ class CordDataStripDesc final :
       ::PROTOBUF_NAMESPACE_ID::internal::GenericSwap(this, other);
     }
   }
-  void UnsafeArenaSwap(CordDataStripDesc* other) {
+  void UnsafeArenaSwap(UpLRCDataStripDesc* other) {
     if (other == this) return;
     GOOGLE_DCHECK(GetOwningArena() == other->GetOwningArena());
     InternalSwap(other);
@@ -7498,14 +7498,14 @@ class CordDataStripDesc final :
 
   // implements Message ----------------------------------------------
 
-  CordDataStripDesc* New(::PROTOBUF_NAMESPACE_ID::Arena* arena = nullptr) const final {
-    return CreateMaybeMessage<CordDataStripDesc>(arena);
+  UpLRCDataStripDesc* New(::PROTOBUF_NAMESPACE_ID::Arena* arena = nullptr) const final {
+    return CreateMaybeMessage<UpLRCDataStripDesc>(arena);
   }
   using ::PROTOBUF_NAMESPACE_ID::Message::CopyFrom;
-  void CopyFrom(const CordDataStripDesc& from);
+  void CopyFrom(const UpLRCDataStripDesc& from);
   using ::PROTOBUF_NAMESPACE_ID::Message::MergeFrom;
-  void MergeFrom( const CordDataStripDesc& from) {
-    CordDataStripDesc::MergeImpl(*this, from);
+  void MergeFrom( const UpLRCDataStripDesc& from) {
+    UpLRCDataStripDesc::MergeImpl(*this, from);
   }
   private:
   static void MergeImpl(::PROTOBUF_NAMESPACE_ID::Message& to_msg, const ::PROTOBUF_NAMESPACE_ID::Message& from_msg);
@@ -7523,15 +7523,15 @@ class CordDataStripDesc final :
   void SharedCtor(::PROTOBUF_NAMESPACE_ID::Arena* arena, bool is_message_owned);
   void SharedDtor();
   void SetCachedSize(int size) const final;
-  void InternalSwap(CordDataStripDesc* other);
+  void InternalSwap(UpLRCDataStripDesc* other);
 
   private:
   friend class ::PROTOBUF_NAMESPACE_ID::internal::AnyMetadata;
   static ::PROTOBUF_NAMESPACE_ID::StringPiece FullMessageName() {
-    return "proxy_proto.CordDataStripDesc";
+    return "proxy_proto.UpLRCDataStripDesc";
   }
   protected:
-  explicit CordDataStripDesc(::PROTOBUF_NAMESPACE_ID::Arena* arena,
+  explicit UpLRCDataStripDesc(::PROTOBUF_NAMESPACE_ID::Arena* arena,
                        bool is_message_owned = false);
   public:
 
@@ -7576,7 +7576,7 @@ class CordDataStripDesc final :
   void _internal_set_slice_len(int32_t value);
   public:
 
-  // @@protoc_insertion_point(class_scope:proxy_proto.CordDataStripDesc)
+  // @@protoc_insertion_point(class_scope:proxy_proto.UpLRCDataStripDesc)
  private:
   class _Internal;
 
@@ -7594,24 +7594,24 @@ class CordDataStripDesc final :
 };
 // -------------------------------------------------------------------
 
-class CordPlanKeyMsg final :
-    public ::PROTOBUF_NAMESPACE_ID::Message /* @@protoc_insertion_point(class_definition:proxy_proto.CordPlanKeyMsg) */ {
+class UpLRCPlanKeyMsg final :
+    public ::PROTOBUF_NAMESPACE_ID::Message /* @@protoc_insertion_point(class_definition:proxy_proto.UpLRCPlanKeyMsg) */ {
  public:
-  inline CordPlanKeyMsg() : CordPlanKeyMsg(nullptr) {}
-  ~CordPlanKeyMsg() override;
-  explicit PROTOBUF_CONSTEXPR CordPlanKeyMsg(::PROTOBUF_NAMESPACE_ID::internal::ConstantInitialized);
+  inline UpLRCPlanKeyMsg() : UpLRCPlanKeyMsg(nullptr) {}
+  ~UpLRCPlanKeyMsg() override;
+  explicit PROTOBUF_CONSTEXPR UpLRCPlanKeyMsg(::PROTOBUF_NAMESPACE_ID::internal::ConstantInitialized);
 
-  CordPlanKeyMsg(const CordPlanKeyMsg& from);
-  CordPlanKeyMsg(CordPlanKeyMsg&& from) noexcept
-    : CordPlanKeyMsg() {
+  UpLRCPlanKeyMsg(const UpLRCPlanKeyMsg& from);
+  UpLRCPlanKeyMsg(UpLRCPlanKeyMsg&& from) noexcept
+    : UpLRCPlanKeyMsg() {
     *this = ::std::move(from);
   }
 
-  inline CordPlanKeyMsg& operator=(const CordPlanKeyMsg& from) {
+  inline UpLRCPlanKeyMsg& operator=(const UpLRCPlanKeyMsg& from) {
     CopyFrom(from);
     return *this;
   }
-  inline CordPlanKeyMsg& operator=(CordPlanKeyMsg&& from) noexcept {
+  inline UpLRCPlanKeyMsg& operator=(UpLRCPlanKeyMsg&& from) noexcept {
     if (this == &from) return *this;
     if (GetOwningArena() == from.GetOwningArena()
   #ifdef PROTOBUF_FORCE_COPY_IN_MOVE
@@ -7634,20 +7634,20 @@ class CordPlanKeyMsg final :
   static const ::PROTOBUF_NAMESPACE_ID::Reflection* GetReflection() {
     return default_instance().GetMetadata().reflection;
   }
-  static const CordPlanKeyMsg& default_instance() {
+  static const UpLRCPlanKeyMsg& default_instance() {
     return *internal_default_instance();
   }
-  static inline const CordPlanKeyMsg* internal_default_instance() {
-    return reinterpret_cast<const CordPlanKeyMsg*>(
-               &_CordPlanKeyMsg_default_instance_);
+  static inline const UpLRCPlanKeyMsg* internal_default_instance() {
+    return reinterpret_cast<const UpLRCPlanKeyMsg*>(
+               &_UpLRCPlanKeyMsg_default_instance_);
   }
   static constexpr int kIndexInFileMessages =
     31;
 
-  friend void swap(CordPlanKeyMsg& a, CordPlanKeyMsg& b) {
+  friend void swap(UpLRCPlanKeyMsg& a, UpLRCPlanKeyMsg& b) {
     a.Swap(&b);
   }
-  inline void Swap(CordPlanKeyMsg* other) {
+  inline void Swap(UpLRCPlanKeyMsg* other) {
     if (other == this) return;
   #ifdef PROTOBUF_FORCE_COPY_IN_SWAP
     if (GetOwningArena() != nullptr &&
@@ -7660,7 +7660,7 @@ class CordPlanKeyMsg final :
       ::PROTOBUF_NAMESPACE_ID::internal::GenericSwap(this, other);
     }
   }
-  void UnsafeArenaSwap(CordPlanKeyMsg* other) {
+  void UnsafeArenaSwap(UpLRCPlanKeyMsg* other) {
     if (other == this) return;
     GOOGLE_DCHECK(GetOwningArena() == other->GetOwningArena());
     InternalSwap(other);
@@ -7668,14 +7668,14 @@ class CordPlanKeyMsg final :
 
   // implements Message ----------------------------------------------
 
-  CordPlanKeyMsg* New(::PROTOBUF_NAMESPACE_ID::Arena* arena = nullptr) const final {
-    return CreateMaybeMessage<CordPlanKeyMsg>(arena);
+  UpLRCPlanKeyMsg* New(::PROTOBUF_NAMESPACE_ID::Arena* arena = nullptr) const final {
+    return CreateMaybeMessage<UpLRCPlanKeyMsg>(arena);
   }
   using ::PROTOBUF_NAMESPACE_ID::Message::CopyFrom;
-  void CopyFrom(const CordPlanKeyMsg& from);
+  void CopyFrom(const UpLRCPlanKeyMsg& from);
   using ::PROTOBUF_NAMESPACE_ID::Message::MergeFrom;
-  void MergeFrom( const CordPlanKeyMsg& from) {
-    CordPlanKeyMsg::MergeImpl(*this, from);
+  void MergeFrom( const UpLRCPlanKeyMsg& from) {
+    UpLRCPlanKeyMsg::MergeImpl(*this, from);
   }
   private:
   static void MergeImpl(::PROTOBUF_NAMESPACE_ID::Message& to_msg, const ::PROTOBUF_NAMESPACE_ID::Message& from_msg);
@@ -7693,15 +7693,15 @@ class CordPlanKeyMsg final :
   void SharedCtor(::PROTOBUF_NAMESPACE_ID::Arena* arena, bool is_message_owned);
   void SharedDtor();
   void SetCachedSize(int size) const final;
-  void InternalSwap(CordPlanKeyMsg* other);
+  void InternalSwap(UpLRCPlanKeyMsg* other);
 
   private:
   friend class ::PROTOBUF_NAMESPACE_ID::internal::AnyMetadata;
   static ::PROTOBUF_NAMESPACE_ID::StringPiece FullMessageName() {
-    return "proxy_proto.CordPlanKeyMsg";
+    return "proxy_proto.UpLRCPlanKeyMsg";
   }
   protected:
-  explicit CordPlanKeyMsg(::PROTOBUF_NAMESPACE_ID::Arena* arena,
+  explicit UpLRCPlanKeyMsg(::PROTOBUF_NAMESPACE_ID::Arena* arena,
                        bool is_message_owned = false);
   public:
 
@@ -7731,7 +7731,7 @@ class CordPlanKeyMsg final :
   std::string* _internal_mutable_plan_key();
   public:
 
-  // @@protoc_insertion_point(class_scope:proxy_proto.CordPlanKeyMsg)
+  // @@protoc_insertion_point(class_scope:proxy_proto.UpLRCPlanKeyMsg)
  private:
   class _Internal;
 
@@ -7747,24 +7747,24 @@ class CordPlanKeyMsg final :
 };
 // -------------------------------------------------------------------
 
-class CordIngressCacheRef final :
-    public ::PROTOBUF_NAMESPACE_ID::Message /* @@protoc_insertion_point(class_definition:proxy_proto.CordIngressCacheRef) */ {
+class UpLRCIngressCacheRef final :
+    public ::PROTOBUF_NAMESPACE_ID::Message /* @@protoc_insertion_point(class_definition:proxy_proto.UpLRCIngressCacheRef) */ {
  public:
-  inline CordIngressCacheRef() : CordIngressCacheRef(nullptr) {}
-  ~CordIngressCacheRef() override;
-  explicit PROTOBUF_CONSTEXPR CordIngressCacheRef(::PROTOBUF_NAMESPACE_ID::internal::ConstantInitialized);
+  inline UpLRCIngressCacheRef() : UpLRCIngressCacheRef(nullptr) {}
+  ~UpLRCIngressCacheRef() override;
+  explicit PROTOBUF_CONSTEXPR UpLRCIngressCacheRef(::PROTOBUF_NAMESPACE_ID::internal::ConstantInitialized);
 
-  CordIngressCacheRef(const CordIngressCacheRef& from);
-  CordIngressCacheRef(CordIngressCacheRef&& from) noexcept
-    : CordIngressCacheRef() {
+  UpLRCIngressCacheRef(const UpLRCIngressCacheRef& from);
+  UpLRCIngressCacheRef(UpLRCIngressCacheRef&& from) noexcept
+    : UpLRCIngressCacheRef() {
     *this = ::std::move(from);
   }
 
-  inline CordIngressCacheRef& operator=(const CordIngressCacheRef& from) {
+  inline UpLRCIngressCacheRef& operator=(const UpLRCIngressCacheRef& from) {
     CopyFrom(from);
     return *this;
   }
-  inline CordIngressCacheRef& operator=(CordIngressCacheRef&& from) noexcept {
+  inline UpLRCIngressCacheRef& operator=(UpLRCIngressCacheRef&& from) noexcept {
     if (this == &from) return *this;
     if (GetOwningArena() == from.GetOwningArena()
   #ifdef PROTOBUF_FORCE_COPY_IN_MOVE
@@ -7787,20 +7787,20 @@ class CordIngressCacheRef final :
   static const ::PROTOBUF_NAMESPACE_ID::Reflection* GetReflection() {
     return default_instance().GetMetadata().reflection;
   }
-  static const CordIngressCacheRef& default_instance() {
+  static const UpLRCIngressCacheRef& default_instance() {
     return *internal_default_instance();
   }
-  static inline const CordIngressCacheRef* internal_default_instance() {
-    return reinterpret_cast<const CordIngressCacheRef*>(
-               &_CordIngressCacheRef_default_instance_);
+  static inline const UpLRCIngressCacheRef* internal_default_instance() {
+    return reinterpret_cast<const UpLRCIngressCacheRef*>(
+               &_UpLRCIngressCacheRef_default_instance_);
   }
   static constexpr int kIndexInFileMessages =
     32;
 
-  friend void swap(CordIngressCacheRef& a, CordIngressCacheRef& b) {
+  friend void swap(UpLRCIngressCacheRef& a, UpLRCIngressCacheRef& b) {
     a.Swap(&b);
   }
-  inline void Swap(CordIngressCacheRef* other) {
+  inline void Swap(UpLRCIngressCacheRef* other) {
     if (other == this) return;
   #ifdef PROTOBUF_FORCE_COPY_IN_SWAP
     if (GetOwningArena() != nullptr &&
@@ -7813,7 +7813,7 @@ class CordIngressCacheRef final :
       ::PROTOBUF_NAMESPACE_ID::internal::GenericSwap(this, other);
     }
   }
-  void UnsafeArenaSwap(CordIngressCacheRef* other) {
+  void UnsafeArenaSwap(UpLRCIngressCacheRef* other) {
     if (other == this) return;
     GOOGLE_DCHECK(GetOwningArena() == other->GetOwningArena());
     InternalSwap(other);
@@ -7821,14 +7821,14 @@ class CordIngressCacheRef final :
 
   // implements Message ----------------------------------------------
 
-  CordIngressCacheRef* New(::PROTOBUF_NAMESPACE_ID::Arena* arena = nullptr) const final {
-    return CreateMaybeMessage<CordIngressCacheRef>(arena);
+  UpLRCIngressCacheRef* New(::PROTOBUF_NAMESPACE_ID::Arena* arena = nullptr) const final {
+    return CreateMaybeMessage<UpLRCIngressCacheRef>(arena);
   }
   using ::PROTOBUF_NAMESPACE_ID::Message::CopyFrom;
-  void CopyFrom(const CordIngressCacheRef& from);
+  void CopyFrom(const UpLRCIngressCacheRef& from);
   using ::PROTOBUF_NAMESPACE_ID::Message::MergeFrom;
-  void MergeFrom( const CordIngressCacheRef& from) {
-    CordIngressCacheRef::MergeImpl(*this, from);
+  void MergeFrom( const UpLRCIngressCacheRef& from) {
+    UpLRCIngressCacheRef::MergeImpl(*this, from);
   }
   private:
   static void MergeImpl(::PROTOBUF_NAMESPACE_ID::Message& to_msg, const ::PROTOBUF_NAMESPACE_ID::Message& from_msg);
@@ -7846,15 +7846,15 @@ class CordIngressCacheRef final :
   void SharedCtor(::PROTOBUF_NAMESPACE_ID::Arena* arena, bool is_message_owned);
   void SharedDtor();
   void SetCachedSize(int size) const final;
-  void InternalSwap(CordIngressCacheRef* other);
+  void InternalSwap(UpLRCIngressCacheRef* other);
 
   private:
   friend class ::PROTOBUF_NAMESPACE_ID::internal::AnyMetadata;
   static ::PROTOBUF_NAMESPACE_ID::StringPiece FullMessageName() {
-    return "proxy_proto.CordIngressCacheRef";
+    return "proxy_proto.UpLRCIngressCacheRef";
   }
   protected:
-  explicit CordIngressCacheRef(::PROTOBUF_NAMESPACE_ID::Arena* arena,
+  explicit UpLRCIngressCacheRef(::PROTOBUF_NAMESPACE_ID::Arena* arena,
                        bool is_message_owned = false);
   public:
 
@@ -7894,7 +7894,7 @@ class CordIngressCacheRef final :
   void _internal_set_cluster_id(int32_t value);
   public:
 
-  // @@protoc_insertion_point(class_scope:proxy_proto.CordIngressCacheRef)
+  // @@protoc_insertion_point(class_scope:proxy_proto.UpLRCIngressCacheRef)
  private:
   class _Internal;
 
@@ -7911,24 +7911,24 @@ class CordIngressCacheRef final :
 };
 // -------------------------------------------------------------------
 
-class CordTransferPlan final :
-    public ::PROTOBUF_NAMESPACE_ID::Message /* @@protoc_insertion_point(class_definition:proxy_proto.CordTransferPlan) */ {
+class UpLRCTransferPlan final :
+    public ::PROTOBUF_NAMESPACE_ID::Message /* @@protoc_insertion_point(class_definition:proxy_proto.UpLRCTransferPlan) */ {
  public:
-  inline CordTransferPlan() : CordTransferPlan(nullptr) {}
-  ~CordTransferPlan() override;
-  explicit PROTOBUF_CONSTEXPR CordTransferPlan(::PROTOBUF_NAMESPACE_ID::internal::ConstantInitialized);
+  inline UpLRCTransferPlan() : UpLRCTransferPlan(nullptr) {}
+  ~UpLRCTransferPlan() override;
+  explicit PROTOBUF_CONSTEXPR UpLRCTransferPlan(::PROTOBUF_NAMESPACE_ID::internal::ConstantInitialized);
 
-  CordTransferPlan(const CordTransferPlan& from);
-  CordTransferPlan(CordTransferPlan&& from) noexcept
-    : CordTransferPlan() {
+  UpLRCTransferPlan(const UpLRCTransferPlan& from);
+  UpLRCTransferPlan(UpLRCTransferPlan&& from) noexcept
+    : UpLRCTransferPlan() {
     *this = ::std::move(from);
   }
 
-  inline CordTransferPlan& operator=(const CordTransferPlan& from) {
+  inline UpLRCTransferPlan& operator=(const UpLRCTransferPlan& from) {
     CopyFrom(from);
     return *this;
   }
-  inline CordTransferPlan& operator=(CordTransferPlan&& from) noexcept {
+  inline UpLRCTransferPlan& operator=(UpLRCTransferPlan&& from) noexcept {
     if (this == &from) return *this;
     if (GetOwningArena() == from.GetOwningArena()
   #ifdef PROTOBUF_FORCE_COPY_IN_MOVE
@@ -7951,20 +7951,20 @@ class CordTransferPlan final :
   static const ::PROTOBUF_NAMESPACE_ID::Reflection* GetReflection() {
     return default_instance().GetMetadata().reflection;
   }
-  static const CordTransferPlan& default_instance() {
+  static const UpLRCTransferPlan& default_instance() {
     return *internal_default_instance();
   }
-  static inline const CordTransferPlan* internal_default_instance() {
-    return reinterpret_cast<const CordTransferPlan*>(
-               &_CordTransferPlan_default_instance_);
+  static inline const UpLRCTransferPlan* internal_default_instance() {
+    return reinterpret_cast<const UpLRCTransferPlan*>(
+               &_UpLRCTransferPlan_default_instance_);
   }
   static constexpr int kIndexInFileMessages =
     33;
 
-  friend void swap(CordTransferPlan& a, CordTransferPlan& b) {
+  friend void swap(UpLRCTransferPlan& a, UpLRCTransferPlan& b) {
     a.Swap(&b);
   }
-  inline void Swap(CordTransferPlan* other) {
+  inline void Swap(UpLRCTransferPlan* other) {
     if (other == this) return;
   #ifdef PROTOBUF_FORCE_COPY_IN_SWAP
     if (GetOwningArena() != nullptr &&
@@ -7977,7 +7977,7 @@ class CordTransferPlan final :
       ::PROTOBUF_NAMESPACE_ID::internal::GenericSwap(this, other);
     }
   }
-  void UnsafeArenaSwap(CordTransferPlan* other) {
+  void UnsafeArenaSwap(UpLRCTransferPlan* other) {
     if (other == this) return;
     GOOGLE_DCHECK(GetOwningArena() == other->GetOwningArena());
     InternalSwap(other);
@@ -7985,14 +7985,14 @@ class CordTransferPlan final :
 
   // implements Message ----------------------------------------------
 
-  CordTransferPlan* New(::PROTOBUF_NAMESPACE_ID::Arena* arena = nullptr) const final {
-    return CreateMaybeMessage<CordTransferPlan>(arena);
+  UpLRCTransferPlan* New(::PROTOBUF_NAMESPACE_ID::Arena* arena = nullptr) const final {
+    return CreateMaybeMessage<UpLRCTransferPlan>(arena);
   }
   using ::PROTOBUF_NAMESPACE_ID::Message::CopyFrom;
-  void CopyFrom(const CordTransferPlan& from);
+  void CopyFrom(const UpLRCTransferPlan& from);
   using ::PROTOBUF_NAMESPACE_ID::Message::MergeFrom;
-  void MergeFrom( const CordTransferPlan& from) {
-    CordTransferPlan::MergeImpl(*this, from);
+  void MergeFrom( const UpLRCTransferPlan& from) {
+    UpLRCTransferPlan::MergeImpl(*this, from);
   }
   private:
   static void MergeImpl(::PROTOBUF_NAMESPACE_ID::Message& to_msg, const ::PROTOBUF_NAMESPACE_ID::Message& from_msg);
@@ -8010,15 +8010,15 @@ class CordTransferPlan final :
   void SharedCtor(::PROTOBUF_NAMESPACE_ID::Arena* arena, bool is_message_owned);
   void SharedDtor();
   void SetCachedSize(int size) const final;
-  void InternalSwap(CordTransferPlan* other);
+  void InternalSwap(UpLRCTransferPlan* other);
 
   private:
   friend class ::PROTOBUF_NAMESPACE_ID::internal::AnyMetadata;
   static ::PROTOBUF_NAMESPACE_ID::StringPiece FullMessageName() {
-    return "proxy_proto.CordTransferPlan";
+    return "proxy_proto.UpLRCTransferPlan";
   }
   protected:
-  explicit CordTransferPlan(::PROTOBUF_NAMESPACE_ID::Arena* arena,
+  explicit UpLRCTransferPlan(::PROTOBUF_NAMESPACE_ID::Arena* arena,
                        bool is_message_owned = false);
   public:
 
@@ -8038,214 +8038,214 @@ class CordTransferPlan final :
     kDeltaBlobRefsFieldNumber = 9,
     kGroupXorHintsFieldNumber = 10,
     kClusterDeltaLayoutsFieldNumber = 11,
-    kCordCollectorExpectsFieldNumber = 13,
-    kCordDataStripDescsFieldNumber = 14,
-    kCordBlockStripeGroupsFieldNumber = 15,
-    kCordBlockDeltaSegsFieldNumber = 16,
+    kUplrcCollectorExpectsFieldNumber = 13,
+    kUplrcDataStripDescsFieldNumber = 14,
+    kUplrcBlockStripeGroupsFieldNumber = 15,
+    kUplrcBlockDeltaSegsFieldNumber = 16,
     kIngressCacheRefsFieldNumber = 17,
     kPlanKeyFieldNumber = 2,
-    kCordEncodeMetaFieldNumber = 12,
+    kUplrcEncodeMetaFieldNumber = 12,
     kStripeIdFieldNumber = 1,
     kTotalRoundsFieldNumber = 3,
     kSlotUnitBytesFieldNumber = 5,
     kKDatablockFieldNumber = 6,
   };
-  // repeated .proxy_proto.CordTransferStep steps = 4;
+  // repeated .proxy_proto.UpLRCTransferStep steps = 4;
   int steps_size() const;
   private:
   int _internal_steps_size() const;
   public:
   void clear_steps();
-  ::proxy_proto::CordTransferStep* mutable_steps(int index);
-  ::PROTOBUF_NAMESPACE_ID::RepeatedPtrField< ::proxy_proto::CordTransferStep >*
+  ::proxy_proto::UpLRCTransferStep* mutable_steps(int index);
+  ::PROTOBUF_NAMESPACE_ID::RepeatedPtrField< ::proxy_proto::UpLRCTransferStep >*
       mutable_steps();
   private:
-  const ::proxy_proto::CordTransferStep& _internal_steps(int index) const;
-  ::proxy_proto::CordTransferStep* _internal_add_steps();
+  const ::proxy_proto::UpLRCTransferStep& _internal_steps(int index) const;
+  ::proxy_proto::UpLRCTransferStep* _internal_add_steps();
   public:
-  const ::proxy_proto::CordTransferStep& steps(int index) const;
-  ::proxy_proto::CordTransferStep* add_steps();
-  const ::PROTOBUF_NAMESPACE_ID::RepeatedPtrField< ::proxy_proto::CordTransferStep >&
+  const ::proxy_proto::UpLRCTransferStep& steps(int index) const;
+  ::proxy_proto::UpLRCTransferStep* add_steps();
+  const ::PROTOBUF_NAMESPACE_ID::RepeatedPtrField< ::proxy_proto::UpLRCTransferStep >&
       steps() const;
 
-  // repeated .proxy_proto.CordTransferClusterEndpoint cluster_endpoints = 7;
+  // repeated .proxy_proto.UpLRCTransferClusterEndpoint cluster_endpoints = 7;
   int cluster_endpoints_size() const;
   private:
   int _internal_cluster_endpoints_size() const;
   public:
   void clear_cluster_endpoints();
-  ::proxy_proto::CordTransferClusterEndpoint* mutable_cluster_endpoints(int index);
-  ::PROTOBUF_NAMESPACE_ID::RepeatedPtrField< ::proxy_proto::CordTransferClusterEndpoint >*
+  ::proxy_proto::UpLRCTransferClusterEndpoint* mutable_cluster_endpoints(int index);
+  ::PROTOBUF_NAMESPACE_ID::RepeatedPtrField< ::proxy_proto::UpLRCTransferClusterEndpoint >*
       mutable_cluster_endpoints();
   private:
-  const ::proxy_proto::CordTransferClusterEndpoint& _internal_cluster_endpoints(int index) const;
-  ::proxy_proto::CordTransferClusterEndpoint* _internal_add_cluster_endpoints();
+  const ::proxy_proto::UpLRCTransferClusterEndpoint& _internal_cluster_endpoints(int index) const;
+  ::proxy_proto::UpLRCTransferClusterEndpoint* _internal_add_cluster_endpoints();
   public:
-  const ::proxy_proto::CordTransferClusterEndpoint& cluster_endpoints(int index) const;
-  ::proxy_proto::CordTransferClusterEndpoint* add_cluster_endpoints();
-  const ::PROTOBUF_NAMESPACE_ID::RepeatedPtrField< ::proxy_proto::CordTransferClusterEndpoint >&
+  const ::proxy_proto::UpLRCTransferClusterEndpoint& cluster_endpoints(int index) const;
+  ::proxy_proto::UpLRCTransferClusterEndpoint* add_cluster_endpoints();
+  const ::PROTOBUF_NAMESPACE_ID::RepeatedPtrField< ::proxy_proto::UpLRCTransferClusterEndpoint >&
       cluster_endpoints() const;
 
-  // repeated .proxy_proto.CordTransferBlockPlacement block_placements = 8;
+  // repeated .proxy_proto.UpLRCTransferBlockPlacement block_placements = 8;
   int block_placements_size() const;
   private:
   int _internal_block_placements_size() const;
   public:
   void clear_block_placements();
-  ::proxy_proto::CordTransferBlockPlacement* mutable_block_placements(int index);
-  ::PROTOBUF_NAMESPACE_ID::RepeatedPtrField< ::proxy_proto::CordTransferBlockPlacement >*
+  ::proxy_proto::UpLRCTransferBlockPlacement* mutable_block_placements(int index);
+  ::PROTOBUF_NAMESPACE_ID::RepeatedPtrField< ::proxy_proto::UpLRCTransferBlockPlacement >*
       mutable_block_placements();
   private:
-  const ::proxy_proto::CordTransferBlockPlacement& _internal_block_placements(int index) const;
-  ::proxy_proto::CordTransferBlockPlacement* _internal_add_block_placements();
+  const ::proxy_proto::UpLRCTransferBlockPlacement& _internal_block_placements(int index) const;
+  ::proxy_proto::UpLRCTransferBlockPlacement* _internal_add_block_placements();
   public:
-  const ::proxy_proto::CordTransferBlockPlacement& block_placements(int index) const;
-  ::proxy_proto::CordTransferBlockPlacement* add_block_placements();
-  const ::PROTOBUF_NAMESPACE_ID::RepeatedPtrField< ::proxy_proto::CordTransferBlockPlacement >&
+  const ::proxy_proto::UpLRCTransferBlockPlacement& block_placements(int index) const;
+  ::proxy_proto::UpLRCTransferBlockPlacement* add_block_placements();
+  const ::PROTOBUF_NAMESPACE_ID::RepeatedPtrField< ::proxy_proto::UpLRCTransferBlockPlacement >&
       block_placements() const;
 
-  // repeated .proxy_proto.CordTransferDeltaBlobRef delta_blob_refs = 9;
+  // repeated .proxy_proto.UpLRCTransferDeltaBlobRef delta_blob_refs = 9;
   int delta_blob_refs_size() const;
   private:
   int _internal_delta_blob_refs_size() const;
   public:
   void clear_delta_blob_refs();
-  ::proxy_proto::CordTransferDeltaBlobRef* mutable_delta_blob_refs(int index);
-  ::PROTOBUF_NAMESPACE_ID::RepeatedPtrField< ::proxy_proto::CordTransferDeltaBlobRef >*
+  ::proxy_proto::UpLRCTransferDeltaBlobRef* mutable_delta_blob_refs(int index);
+  ::PROTOBUF_NAMESPACE_ID::RepeatedPtrField< ::proxy_proto::UpLRCTransferDeltaBlobRef >*
       mutable_delta_blob_refs();
   private:
-  const ::proxy_proto::CordTransferDeltaBlobRef& _internal_delta_blob_refs(int index) const;
-  ::proxy_proto::CordTransferDeltaBlobRef* _internal_add_delta_blob_refs();
+  const ::proxy_proto::UpLRCTransferDeltaBlobRef& _internal_delta_blob_refs(int index) const;
+  ::proxy_proto::UpLRCTransferDeltaBlobRef* _internal_add_delta_blob_refs();
   public:
-  const ::proxy_proto::CordTransferDeltaBlobRef& delta_blob_refs(int index) const;
-  ::proxy_proto::CordTransferDeltaBlobRef* add_delta_blob_refs();
-  const ::PROTOBUF_NAMESPACE_ID::RepeatedPtrField< ::proxy_proto::CordTransferDeltaBlobRef >&
+  const ::proxy_proto::UpLRCTransferDeltaBlobRef& delta_blob_refs(int index) const;
+  ::proxy_proto::UpLRCTransferDeltaBlobRef* add_delta_blob_refs();
+  const ::PROTOBUF_NAMESPACE_ID::RepeatedPtrField< ::proxy_proto::UpLRCTransferDeltaBlobRef >&
       delta_blob_refs() const;
 
-  // repeated .proxy_proto.CordTransferGroupXorHint group_xor_hints = 10;
+  // repeated .proxy_proto.UpLRCTransferGroupXorHint group_xor_hints = 10;
   int group_xor_hints_size() const;
   private:
   int _internal_group_xor_hints_size() const;
   public:
   void clear_group_xor_hints();
-  ::proxy_proto::CordTransferGroupXorHint* mutable_group_xor_hints(int index);
-  ::PROTOBUF_NAMESPACE_ID::RepeatedPtrField< ::proxy_proto::CordTransferGroupXorHint >*
+  ::proxy_proto::UpLRCTransferGroupXorHint* mutable_group_xor_hints(int index);
+  ::PROTOBUF_NAMESPACE_ID::RepeatedPtrField< ::proxy_proto::UpLRCTransferGroupXorHint >*
       mutable_group_xor_hints();
   private:
-  const ::proxy_proto::CordTransferGroupXorHint& _internal_group_xor_hints(int index) const;
-  ::proxy_proto::CordTransferGroupXorHint* _internal_add_group_xor_hints();
+  const ::proxy_proto::UpLRCTransferGroupXorHint& _internal_group_xor_hints(int index) const;
+  ::proxy_proto::UpLRCTransferGroupXorHint* _internal_add_group_xor_hints();
   public:
-  const ::proxy_proto::CordTransferGroupXorHint& group_xor_hints(int index) const;
-  ::proxy_proto::CordTransferGroupXorHint* add_group_xor_hints();
-  const ::PROTOBUF_NAMESPACE_ID::RepeatedPtrField< ::proxy_proto::CordTransferGroupXorHint >&
+  const ::proxy_proto::UpLRCTransferGroupXorHint& group_xor_hints(int index) const;
+  ::proxy_proto::UpLRCTransferGroupXorHint* add_group_xor_hints();
+  const ::PROTOBUF_NAMESPACE_ID::RepeatedPtrField< ::proxy_proto::UpLRCTransferGroupXorHint >&
       group_xor_hints() const;
 
-  // repeated .proxy_proto.CordTransferClusterDeltaLayout cluster_delta_layouts = 11;
+  // repeated .proxy_proto.UpLRCTransferClusterDeltaLayout cluster_delta_layouts = 11;
   int cluster_delta_layouts_size() const;
   private:
   int _internal_cluster_delta_layouts_size() const;
   public:
   void clear_cluster_delta_layouts();
-  ::proxy_proto::CordTransferClusterDeltaLayout* mutable_cluster_delta_layouts(int index);
-  ::PROTOBUF_NAMESPACE_ID::RepeatedPtrField< ::proxy_proto::CordTransferClusterDeltaLayout >*
+  ::proxy_proto::UpLRCTransferClusterDeltaLayout* mutable_cluster_delta_layouts(int index);
+  ::PROTOBUF_NAMESPACE_ID::RepeatedPtrField< ::proxy_proto::UpLRCTransferClusterDeltaLayout >*
       mutable_cluster_delta_layouts();
   private:
-  const ::proxy_proto::CordTransferClusterDeltaLayout& _internal_cluster_delta_layouts(int index) const;
-  ::proxy_proto::CordTransferClusterDeltaLayout* _internal_add_cluster_delta_layouts();
+  const ::proxy_proto::UpLRCTransferClusterDeltaLayout& _internal_cluster_delta_layouts(int index) const;
+  ::proxy_proto::UpLRCTransferClusterDeltaLayout* _internal_add_cluster_delta_layouts();
   public:
-  const ::proxy_proto::CordTransferClusterDeltaLayout& cluster_delta_layouts(int index) const;
-  ::proxy_proto::CordTransferClusterDeltaLayout* add_cluster_delta_layouts();
-  const ::PROTOBUF_NAMESPACE_ID::RepeatedPtrField< ::proxy_proto::CordTransferClusterDeltaLayout >&
+  const ::proxy_proto::UpLRCTransferClusterDeltaLayout& cluster_delta_layouts(int index) const;
+  ::proxy_proto::UpLRCTransferClusterDeltaLayout* add_cluster_delta_layouts();
+  const ::PROTOBUF_NAMESPACE_ID::RepeatedPtrField< ::proxy_proto::UpLRCTransferClusterDeltaLayout >&
       cluster_delta_layouts() const;
 
-  // repeated .proxy_proto.CordCollectorIngressExpect cord_collector_expects = 13;
-  int cord_collector_expects_size() const;
+  // repeated .proxy_proto.UpLRCCollectorIngressExpect uplrc_collector_expects = 13;
+  int uplrc_collector_expects_size() const;
   private:
-  int _internal_cord_collector_expects_size() const;
+  int _internal_uplrc_collector_expects_size() const;
   public:
-  void clear_cord_collector_expects();
-  ::proxy_proto::CordCollectorIngressExpect* mutable_cord_collector_expects(int index);
-  ::PROTOBUF_NAMESPACE_ID::RepeatedPtrField< ::proxy_proto::CordCollectorIngressExpect >*
-      mutable_cord_collector_expects();
+  void clear_uplrc_collector_expects();
+  ::proxy_proto::UpLRCCollectorIngressExpect* mutable_uplrc_collector_expects(int index);
+  ::PROTOBUF_NAMESPACE_ID::RepeatedPtrField< ::proxy_proto::UpLRCCollectorIngressExpect >*
+      mutable_uplrc_collector_expects();
   private:
-  const ::proxy_proto::CordCollectorIngressExpect& _internal_cord_collector_expects(int index) const;
-  ::proxy_proto::CordCollectorIngressExpect* _internal_add_cord_collector_expects();
+  const ::proxy_proto::UpLRCCollectorIngressExpect& _internal_uplrc_collector_expects(int index) const;
+  ::proxy_proto::UpLRCCollectorIngressExpect* _internal_add_uplrc_collector_expects();
   public:
-  const ::proxy_proto::CordCollectorIngressExpect& cord_collector_expects(int index) const;
-  ::proxy_proto::CordCollectorIngressExpect* add_cord_collector_expects();
-  const ::PROTOBUF_NAMESPACE_ID::RepeatedPtrField< ::proxy_proto::CordCollectorIngressExpect >&
-      cord_collector_expects() const;
+  const ::proxy_proto::UpLRCCollectorIngressExpect& uplrc_collector_expects(int index) const;
+  ::proxy_proto::UpLRCCollectorIngressExpect* add_uplrc_collector_expects();
+  const ::PROTOBUF_NAMESPACE_ID::RepeatedPtrField< ::proxy_proto::UpLRCCollectorIngressExpect >&
+      uplrc_collector_expects() const;
 
-  // repeated .proxy_proto.CordDataStripDesc cord_data_strip_descs = 14;
-  int cord_data_strip_descs_size() const;
+  // repeated .proxy_proto.UpLRCDataStripDesc uplrc_data_strip_descs = 14;
+  int uplrc_data_strip_descs_size() const;
   private:
-  int _internal_cord_data_strip_descs_size() const;
+  int _internal_uplrc_data_strip_descs_size() const;
   public:
-  void clear_cord_data_strip_descs();
-  ::proxy_proto::CordDataStripDesc* mutable_cord_data_strip_descs(int index);
-  ::PROTOBUF_NAMESPACE_ID::RepeatedPtrField< ::proxy_proto::CordDataStripDesc >*
-      mutable_cord_data_strip_descs();
+  void clear_uplrc_data_strip_descs();
+  ::proxy_proto::UpLRCDataStripDesc* mutable_uplrc_data_strip_descs(int index);
+  ::PROTOBUF_NAMESPACE_ID::RepeatedPtrField< ::proxy_proto::UpLRCDataStripDesc >*
+      mutable_uplrc_data_strip_descs();
   private:
-  const ::proxy_proto::CordDataStripDesc& _internal_cord_data_strip_descs(int index) const;
-  ::proxy_proto::CordDataStripDesc* _internal_add_cord_data_strip_descs();
+  const ::proxy_proto::UpLRCDataStripDesc& _internal_uplrc_data_strip_descs(int index) const;
+  ::proxy_proto::UpLRCDataStripDesc* _internal_add_uplrc_data_strip_descs();
   public:
-  const ::proxy_proto::CordDataStripDesc& cord_data_strip_descs(int index) const;
-  ::proxy_proto::CordDataStripDesc* add_cord_data_strip_descs();
-  const ::PROTOBUF_NAMESPACE_ID::RepeatedPtrField< ::proxy_proto::CordDataStripDesc >&
-      cord_data_strip_descs() const;
+  const ::proxy_proto::UpLRCDataStripDesc& uplrc_data_strip_descs(int index) const;
+  ::proxy_proto::UpLRCDataStripDesc* add_uplrc_data_strip_descs();
+  const ::PROTOBUF_NAMESPACE_ID::RepeatedPtrField< ::proxy_proto::UpLRCDataStripDesc >&
+      uplrc_data_strip_descs() const;
 
-  // repeated .proxy_proto.CordBlockStripeGroup cord_block_stripe_groups = 15;
-  int cord_block_stripe_groups_size() const;
+  // repeated .proxy_proto.UpLRCBlockStripeGroup uplrc_block_stripe_groups = 15;
+  int uplrc_block_stripe_groups_size() const;
   private:
-  int _internal_cord_block_stripe_groups_size() const;
+  int _internal_uplrc_block_stripe_groups_size() const;
   public:
-  void clear_cord_block_stripe_groups();
-  ::proxy_proto::CordBlockStripeGroup* mutable_cord_block_stripe_groups(int index);
-  ::PROTOBUF_NAMESPACE_ID::RepeatedPtrField< ::proxy_proto::CordBlockStripeGroup >*
-      mutable_cord_block_stripe_groups();
+  void clear_uplrc_block_stripe_groups();
+  ::proxy_proto::UpLRCBlockStripeGroup* mutable_uplrc_block_stripe_groups(int index);
+  ::PROTOBUF_NAMESPACE_ID::RepeatedPtrField< ::proxy_proto::UpLRCBlockStripeGroup >*
+      mutable_uplrc_block_stripe_groups();
   private:
-  const ::proxy_proto::CordBlockStripeGroup& _internal_cord_block_stripe_groups(int index) const;
-  ::proxy_proto::CordBlockStripeGroup* _internal_add_cord_block_stripe_groups();
+  const ::proxy_proto::UpLRCBlockStripeGroup& _internal_uplrc_block_stripe_groups(int index) const;
+  ::proxy_proto::UpLRCBlockStripeGroup* _internal_add_uplrc_block_stripe_groups();
   public:
-  const ::proxy_proto::CordBlockStripeGroup& cord_block_stripe_groups(int index) const;
-  ::proxy_proto::CordBlockStripeGroup* add_cord_block_stripe_groups();
-  const ::PROTOBUF_NAMESPACE_ID::RepeatedPtrField< ::proxy_proto::CordBlockStripeGroup >&
-      cord_block_stripe_groups() const;
+  const ::proxy_proto::UpLRCBlockStripeGroup& uplrc_block_stripe_groups(int index) const;
+  ::proxy_proto::UpLRCBlockStripeGroup* add_uplrc_block_stripe_groups();
+  const ::PROTOBUF_NAMESPACE_ID::RepeatedPtrField< ::proxy_proto::UpLRCBlockStripeGroup >&
+      uplrc_block_stripe_groups() const;
 
-  // repeated .proxy_proto.CordBlockHalfOpenSeg cord_block_delta_segs = 16;
-  int cord_block_delta_segs_size() const;
+  // repeated .proxy_proto.UpLRCBlockHalfOpenSeg uplrc_block_delta_segs = 16;
+  int uplrc_block_delta_segs_size() const;
   private:
-  int _internal_cord_block_delta_segs_size() const;
+  int _internal_uplrc_block_delta_segs_size() const;
   public:
-  void clear_cord_block_delta_segs();
-  ::proxy_proto::CordBlockHalfOpenSeg* mutable_cord_block_delta_segs(int index);
-  ::PROTOBUF_NAMESPACE_ID::RepeatedPtrField< ::proxy_proto::CordBlockHalfOpenSeg >*
-      mutable_cord_block_delta_segs();
+  void clear_uplrc_block_delta_segs();
+  ::proxy_proto::UpLRCBlockHalfOpenSeg* mutable_uplrc_block_delta_segs(int index);
+  ::PROTOBUF_NAMESPACE_ID::RepeatedPtrField< ::proxy_proto::UpLRCBlockHalfOpenSeg >*
+      mutable_uplrc_block_delta_segs();
   private:
-  const ::proxy_proto::CordBlockHalfOpenSeg& _internal_cord_block_delta_segs(int index) const;
-  ::proxy_proto::CordBlockHalfOpenSeg* _internal_add_cord_block_delta_segs();
+  const ::proxy_proto::UpLRCBlockHalfOpenSeg& _internal_uplrc_block_delta_segs(int index) const;
+  ::proxy_proto::UpLRCBlockHalfOpenSeg* _internal_add_uplrc_block_delta_segs();
   public:
-  const ::proxy_proto::CordBlockHalfOpenSeg& cord_block_delta_segs(int index) const;
-  ::proxy_proto::CordBlockHalfOpenSeg* add_cord_block_delta_segs();
-  const ::PROTOBUF_NAMESPACE_ID::RepeatedPtrField< ::proxy_proto::CordBlockHalfOpenSeg >&
-      cord_block_delta_segs() const;
+  const ::proxy_proto::UpLRCBlockHalfOpenSeg& uplrc_block_delta_segs(int index) const;
+  ::proxy_proto::UpLRCBlockHalfOpenSeg* add_uplrc_block_delta_segs();
+  const ::PROTOBUF_NAMESPACE_ID::RepeatedPtrField< ::proxy_proto::UpLRCBlockHalfOpenSeg >&
+      uplrc_block_delta_segs() const;
 
-  // repeated .proxy_proto.CordIngressCacheRef ingress_cache_refs = 17;
+  // repeated .proxy_proto.UpLRCIngressCacheRef ingress_cache_refs = 17;
   int ingress_cache_refs_size() const;
   private:
   int _internal_ingress_cache_refs_size() const;
   public:
   void clear_ingress_cache_refs();
-  ::proxy_proto::CordIngressCacheRef* mutable_ingress_cache_refs(int index);
-  ::PROTOBUF_NAMESPACE_ID::RepeatedPtrField< ::proxy_proto::CordIngressCacheRef >*
+  ::proxy_proto::UpLRCIngressCacheRef* mutable_ingress_cache_refs(int index);
+  ::PROTOBUF_NAMESPACE_ID::RepeatedPtrField< ::proxy_proto::UpLRCIngressCacheRef >*
       mutable_ingress_cache_refs();
   private:
-  const ::proxy_proto::CordIngressCacheRef& _internal_ingress_cache_refs(int index) const;
-  ::proxy_proto::CordIngressCacheRef* _internal_add_ingress_cache_refs();
+  const ::proxy_proto::UpLRCIngressCacheRef& _internal_ingress_cache_refs(int index) const;
+  ::proxy_proto::UpLRCIngressCacheRef* _internal_add_ingress_cache_refs();
   public:
-  const ::proxy_proto::CordIngressCacheRef& ingress_cache_refs(int index) const;
-  ::proxy_proto::CordIngressCacheRef* add_ingress_cache_refs();
-  const ::PROTOBUF_NAMESPACE_ID::RepeatedPtrField< ::proxy_proto::CordIngressCacheRef >&
+  const ::proxy_proto::UpLRCIngressCacheRef& ingress_cache_refs(int index) const;
+  ::proxy_proto::UpLRCIngressCacheRef* add_ingress_cache_refs();
+  const ::PROTOBUF_NAMESPACE_ID::RepeatedPtrField< ::proxy_proto::UpLRCIngressCacheRef >&
       ingress_cache_refs() const;
 
   // string plan_key = 2;
@@ -8262,23 +8262,23 @@ class CordTransferPlan final :
   std::string* _internal_mutable_plan_key();
   public:
 
-  // .proxy_proto.CordTransferEncodeMeta cord_encode_meta = 12;
-  bool has_cord_encode_meta() const;
+  // .proxy_proto.UpLRCTransferEncodeMeta uplrc_encode_meta = 12;
+  bool has_uplrc_encode_meta() const;
   private:
-  bool _internal_has_cord_encode_meta() const;
+  bool _internal_has_uplrc_encode_meta() const;
   public:
-  void clear_cord_encode_meta();
-  const ::proxy_proto::CordTransferEncodeMeta& cord_encode_meta() const;
-  PROTOBUF_NODISCARD ::proxy_proto::CordTransferEncodeMeta* release_cord_encode_meta();
-  ::proxy_proto::CordTransferEncodeMeta* mutable_cord_encode_meta();
-  void set_allocated_cord_encode_meta(::proxy_proto::CordTransferEncodeMeta* cord_encode_meta);
+  void clear_uplrc_encode_meta();
+  const ::proxy_proto::UpLRCTransferEncodeMeta& uplrc_encode_meta() const;
+  PROTOBUF_NODISCARD ::proxy_proto::UpLRCTransferEncodeMeta* release_uplrc_encode_meta();
+  ::proxy_proto::UpLRCTransferEncodeMeta* mutable_uplrc_encode_meta();
+  void set_allocated_uplrc_encode_meta(::proxy_proto::UpLRCTransferEncodeMeta* uplrc_encode_meta);
   private:
-  const ::proxy_proto::CordTransferEncodeMeta& _internal_cord_encode_meta() const;
-  ::proxy_proto::CordTransferEncodeMeta* _internal_mutable_cord_encode_meta();
+  const ::proxy_proto::UpLRCTransferEncodeMeta& _internal_uplrc_encode_meta() const;
+  ::proxy_proto::UpLRCTransferEncodeMeta* _internal_mutable_uplrc_encode_meta();
   public:
-  void unsafe_arena_set_allocated_cord_encode_meta(
-      ::proxy_proto::CordTransferEncodeMeta* cord_encode_meta);
-  ::proxy_proto::CordTransferEncodeMeta* unsafe_arena_release_cord_encode_meta();
+  void unsafe_arena_set_allocated_uplrc_encode_meta(
+      ::proxy_proto::UpLRCTransferEncodeMeta* uplrc_encode_meta);
+  ::proxy_proto::UpLRCTransferEncodeMeta* unsafe_arena_release_uplrc_encode_meta();
 
   // int32 stripe_id = 1;
   void clear_stripe_id();
@@ -8316,7 +8316,7 @@ class CordTransferPlan final :
   void _internal_set_k_datablock(int32_t value);
   public:
 
-  // @@protoc_insertion_point(class_scope:proxy_proto.CordTransferPlan)
+  // @@protoc_insertion_point(class_scope:proxy_proto.UpLRCTransferPlan)
  private:
   class _Internal;
 
@@ -8324,19 +8324,19 @@ class CordTransferPlan final :
   typedef void InternalArenaConstructable_;
   typedef void DestructorSkippable_;
   struct Impl_ {
-    ::PROTOBUF_NAMESPACE_ID::RepeatedPtrField< ::proxy_proto::CordTransferStep > steps_;
-    ::PROTOBUF_NAMESPACE_ID::RepeatedPtrField< ::proxy_proto::CordTransferClusterEndpoint > cluster_endpoints_;
-    ::PROTOBUF_NAMESPACE_ID::RepeatedPtrField< ::proxy_proto::CordTransferBlockPlacement > block_placements_;
-    ::PROTOBUF_NAMESPACE_ID::RepeatedPtrField< ::proxy_proto::CordTransferDeltaBlobRef > delta_blob_refs_;
-    ::PROTOBUF_NAMESPACE_ID::RepeatedPtrField< ::proxy_proto::CordTransferGroupXorHint > group_xor_hints_;
-    ::PROTOBUF_NAMESPACE_ID::RepeatedPtrField< ::proxy_proto::CordTransferClusterDeltaLayout > cluster_delta_layouts_;
-    ::PROTOBUF_NAMESPACE_ID::RepeatedPtrField< ::proxy_proto::CordCollectorIngressExpect > cord_collector_expects_;
-    ::PROTOBUF_NAMESPACE_ID::RepeatedPtrField< ::proxy_proto::CordDataStripDesc > cord_data_strip_descs_;
-    ::PROTOBUF_NAMESPACE_ID::RepeatedPtrField< ::proxy_proto::CordBlockStripeGroup > cord_block_stripe_groups_;
-    ::PROTOBUF_NAMESPACE_ID::RepeatedPtrField< ::proxy_proto::CordBlockHalfOpenSeg > cord_block_delta_segs_;
-    ::PROTOBUF_NAMESPACE_ID::RepeatedPtrField< ::proxy_proto::CordIngressCacheRef > ingress_cache_refs_;
+    ::PROTOBUF_NAMESPACE_ID::RepeatedPtrField< ::proxy_proto::UpLRCTransferStep > steps_;
+    ::PROTOBUF_NAMESPACE_ID::RepeatedPtrField< ::proxy_proto::UpLRCTransferClusterEndpoint > cluster_endpoints_;
+    ::PROTOBUF_NAMESPACE_ID::RepeatedPtrField< ::proxy_proto::UpLRCTransferBlockPlacement > block_placements_;
+    ::PROTOBUF_NAMESPACE_ID::RepeatedPtrField< ::proxy_proto::UpLRCTransferDeltaBlobRef > delta_blob_refs_;
+    ::PROTOBUF_NAMESPACE_ID::RepeatedPtrField< ::proxy_proto::UpLRCTransferGroupXorHint > group_xor_hints_;
+    ::PROTOBUF_NAMESPACE_ID::RepeatedPtrField< ::proxy_proto::UpLRCTransferClusterDeltaLayout > cluster_delta_layouts_;
+    ::PROTOBUF_NAMESPACE_ID::RepeatedPtrField< ::proxy_proto::UpLRCCollectorIngressExpect > uplrc_collector_expects_;
+    ::PROTOBUF_NAMESPACE_ID::RepeatedPtrField< ::proxy_proto::UpLRCDataStripDesc > uplrc_data_strip_descs_;
+    ::PROTOBUF_NAMESPACE_ID::RepeatedPtrField< ::proxy_proto::UpLRCBlockStripeGroup > uplrc_block_stripe_groups_;
+    ::PROTOBUF_NAMESPACE_ID::RepeatedPtrField< ::proxy_proto::UpLRCBlockHalfOpenSeg > uplrc_block_delta_segs_;
+    ::PROTOBUF_NAMESPACE_ID::RepeatedPtrField< ::proxy_proto::UpLRCIngressCacheRef > ingress_cache_refs_;
     ::PROTOBUF_NAMESPACE_ID::internal::ArenaStringPtr plan_key_;
-    ::proxy_proto::CordTransferEncodeMeta* cord_encode_meta_;
+    ::proxy_proto::UpLRCTransferEncodeMeta* uplrc_encode_meta_;
     int32_t stripe_id_;
     uint32_t total_rounds_;
     int32_t slot_unit_bytes_;
@@ -8348,24 +8348,24 @@ class CordTransferPlan final :
 };
 // -------------------------------------------------------------------
 
-class CordPlanCollectorIngestReq final :
-    public ::PROTOBUF_NAMESPACE_ID::Message /* @@protoc_insertion_point(class_definition:proxy_proto.CordPlanCollectorIngestReq) */ {
+class UpLRCPlanCollectorIngestReq final :
+    public ::PROTOBUF_NAMESPACE_ID::Message /* @@protoc_insertion_point(class_definition:proxy_proto.UpLRCPlanCollectorIngestReq) */ {
  public:
-  inline CordPlanCollectorIngestReq() : CordPlanCollectorIngestReq(nullptr) {}
-  ~CordPlanCollectorIngestReq() override;
-  explicit PROTOBUF_CONSTEXPR CordPlanCollectorIngestReq(::PROTOBUF_NAMESPACE_ID::internal::ConstantInitialized);
+  inline UpLRCPlanCollectorIngestReq() : UpLRCPlanCollectorIngestReq(nullptr) {}
+  ~UpLRCPlanCollectorIngestReq() override;
+  explicit PROTOBUF_CONSTEXPR UpLRCPlanCollectorIngestReq(::PROTOBUF_NAMESPACE_ID::internal::ConstantInitialized);
 
-  CordPlanCollectorIngestReq(const CordPlanCollectorIngestReq& from);
-  CordPlanCollectorIngestReq(CordPlanCollectorIngestReq&& from) noexcept
-    : CordPlanCollectorIngestReq() {
+  UpLRCPlanCollectorIngestReq(const UpLRCPlanCollectorIngestReq& from);
+  UpLRCPlanCollectorIngestReq(UpLRCPlanCollectorIngestReq&& from) noexcept
+    : UpLRCPlanCollectorIngestReq() {
     *this = ::std::move(from);
   }
 
-  inline CordPlanCollectorIngestReq& operator=(const CordPlanCollectorIngestReq& from) {
+  inline UpLRCPlanCollectorIngestReq& operator=(const UpLRCPlanCollectorIngestReq& from) {
     CopyFrom(from);
     return *this;
   }
-  inline CordPlanCollectorIngestReq& operator=(CordPlanCollectorIngestReq&& from) noexcept {
+  inline UpLRCPlanCollectorIngestReq& operator=(UpLRCPlanCollectorIngestReq&& from) noexcept {
     if (this == &from) return *this;
     if (GetOwningArena() == from.GetOwningArena()
   #ifdef PROTOBUF_FORCE_COPY_IN_MOVE
@@ -8388,20 +8388,20 @@ class CordPlanCollectorIngestReq final :
   static const ::PROTOBUF_NAMESPACE_ID::Reflection* GetReflection() {
     return default_instance().GetMetadata().reflection;
   }
-  static const CordPlanCollectorIngestReq& default_instance() {
+  static const UpLRCPlanCollectorIngestReq& default_instance() {
     return *internal_default_instance();
   }
-  static inline const CordPlanCollectorIngestReq* internal_default_instance() {
-    return reinterpret_cast<const CordPlanCollectorIngestReq*>(
-               &_CordPlanCollectorIngestReq_default_instance_);
+  static inline const UpLRCPlanCollectorIngestReq* internal_default_instance() {
+    return reinterpret_cast<const UpLRCPlanCollectorIngestReq*>(
+               &_UpLRCPlanCollectorIngestReq_default_instance_);
   }
   static constexpr int kIndexInFileMessages =
     34;
 
-  friend void swap(CordPlanCollectorIngestReq& a, CordPlanCollectorIngestReq& b) {
+  friend void swap(UpLRCPlanCollectorIngestReq& a, UpLRCPlanCollectorIngestReq& b) {
     a.Swap(&b);
   }
-  inline void Swap(CordPlanCollectorIngestReq* other) {
+  inline void Swap(UpLRCPlanCollectorIngestReq* other) {
     if (other == this) return;
   #ifdef PROTOBUF_FORCE_COPY_IN_SWAP
     if (GetOwningArena() != nullptr &&
@@ -8414,7 +8414,7 @@ class CordPlanCollectorIngestReq final :
       ::PROTOBUF_NAMESPACE_ID::internal::GenericSwap(this, other);
     }
   }
-  void UnsafeArenaSwap(CordPlanCollectorIngestReq* other) {
+  void UnsafeArenaSwap(UpLRCPlanCollectorIngestReq* other) {
     if (other == this) return;
     GOOGLE_DCHECK(GetOwningArena() == other->GetOwningArena());
     InternalSwap(other);
@@ -8422,14 +8422,14 @@ class CordPlanCollectorIngestReq final :
 
   // implements Message ----------------------------------------------
 
-  CordPlanCollectorIngestReq* New(::PROTOBUF_NAMESPACE_ID::Arena* arena = nullptr) const final {
-    return CreateMaybeMessage<CordPlanCollectorIngestReq>(arena);
+  UpLRCPlanCollectorIngestReq* New(::PROTOBUF_NAMESPACE_ID::Arena* arena = nullptr) const final {
+    return CreateMaybeMessage<UpLRCPlanCollectorIngestReq>(arena);
   }
   using ::PROTOBUF_NAMESPACE_ID::Message::CopyFrom;
-  void CopyFrom(const CordPlanCollectorIngestReq& from);
+  void CopyFrom(const UpLRCPlanCollectorIngestReq& from);
   using ::PROTOBUF_NAMESPACE_ID::Message::MergeFrom;
-  void MergeFrom( const CordPlanCollectorIngestReq& from) {
-    CordPlanCollectorIngestReq::MergeImpl(*this, from);
+  void MergeFrom( const UpLRCPlanCollectorIngestReq& from) {
+    UpLRCPlanCollectorIngestReq::MergeImpl(*this, from);
   }
   private:
   static void MergeImpl(::PROTOBUF_NAMESPACE_ID::Message& to_msg, const ::PROTOBUF_NAMESPACE_ID::Message& from_msg);
@@ -8447,15 +8447,15 @@ class CordPlanCollectorIngestReq final :
   void SharedCtor(::PROTOBUF_NAMESPACE_ID::Arena* arena, bool is_message_owned);
   void SharedDtor();
   void SetCachedSize(int size) const final;
-  void InternalSwap(CordPlanCollectorIngestReq* other);
+  void InternalSwap(UpLRCPlanCollectorIngestReq* other);
 
   private:
   friend class ::PROTOBUF_NAMESPACE_ID::internal::AnyMetadata;
   static ::PROTOBUF_NAMESPACE_ID::StringPiece FullMessageName() {
-    return "proxy_proto.CordPlanCollectorIngestReq";
+    return "proxy_proto.UpLRCPlanCollectorIngestReq";
   }
   protected:
-  explicit CordPlanCollectorIngestReq(::PROTOBUF_NAMESPACE_ID::Arena* arena,
+  explicit UpLRCPlanCollectorIngestReq(::PROTOBUF_NAMESPACE_ID::Arena* arena,
                        bool is_message_owned = false);
   public:
 
@@ -8550,7 +8550,7 @@ class CordPlanCollectorIngestReq final :
   void _internal_set_src_data_block_id(int32_t value);
   public:
 
-  // @@protoc_insertion_point(class_scope:proxy_proto.CordPlanCollectorIngestReq)
+  // @@protoc_insertion_point(class_scope:proxy_proto.UpLRCPlanCollectorIngestReq)
  private:
   class _Internal;
 
@@ -8572,24 +8572,24 @@ class CordPlanCollectorIngestReq final :
 };
 // -------------------------------------------------------------------
 
-class CordPlanApplyParityXorReq final :
-    public ::PROTOBUF_NAMESPACE_ID::Message /* @@protoc_insertion_point(class_definition:proxy_proto.CordPlanApplyParityXorReq) */ {
+class UpLRCPlanApplyParityXorReq final :
+    public ::PROTOBUF_NAMESPACE_ID::Message /* @@protoc_insertion_point(class_definition:proxy_proto.UpLRCPlanApplyParityXorReq) */ {
  public:
-  inline CordPlanApplyParityXorReq() : CordPlanApplyParityXorReq(nullptr) {}
-  ~CordPlanApplyParityXorReq() override;
-  explicit PROTOBUF_CONSTEXPR CordPlanApplyParityXorReq(::PROTOBUF_NAMESPACE_ID::internal::ConstantInitialized);
+  inline UpLRCPlanApplyParityXorReq() : UpLRCPlanApplyParityXorReq(nullptr) {}
+  ~UpLRCPlanApplyParityXorReq() override;
+  explicit PROTOBUF_CONSTEXPR UpLRCPlanApplyParityXorReq(::PROTOBUF_NAMESPACE_ID::internal::ConstantInitialized);
 
-  CordPlanApplyParityXorReq(const CordPlanApplyParityXorReq& from);
-  CordPlanApplyParityXorReq(CordPlanApplyParityXorReq&& from) noexcept
-    : CordPlanApplyParityXorReq() {
+  UpLRCPlanApplyParityXorReq(const UpLRCPlanApplyParityXorReq& from);
+  UpLRCPlanApplyParityXorReq(UpLRCPlanApplyParityXorReq&& from) noexcept
+    : UpLRCPlanApplyParityXorReq() {
     *this = ::std::move(from);
   }
 
-  inline CordPlanApplyParityXorReq& operator=(const CordPlanApplyParityXorReq& from) {
+  inline UpLRCPlanApplyParityXorReq& operator=(const UpLRCPlanApplyParityXorReq& from) {
     CopyFrom(from);
     return *this;
   }
-  inline CordPlanApplyParityXorReq& operator=(CordPlanApplyParityXorReq&& from) noexcept {
+  inline UpLRCPlanApplyParityXorReq& operator=(UpLRCPlanApplyParityXorReq&& from) noexcept {
     if (this == &from) return *this;
     if (GetOwningArena() == from.GetOwningArena()
   #ifdef PROTOBUF_FORCE_COPY_IN_MOVE
@@ -8612,20 +8612,20 @@ class CordPlanApplyParityXorReq final :
   static const ::PROTOBUF_NAMESPACE_ID::Reflection* GetReflection() {
     return default_instance().GetMetadata().reflection;
   }
-  static const CordPlanApplyParityXorReq& default_instance() {
+  static const UpLRCPlanApplyParityXorReq& default_instance() {
     return *internal_default_instance();
   }
-  static inline const CordPlanApplyParityXorReq* internal_default_instance() {
-    return reinterpret_cast<const CordPlanApplyParityXorReq*>(
-               &_CordPlanApplyParityXorReq_default_instance_);
+  static inline const UpLRCPlanApplyParityXorReq* internal_default_instance() {
+    return reinterpret_cast<const UpLRCPlanApplyParityXorReq*>(
+               &_UpLRCPlanApplyParityXorReq_default_instance_);
   }
   static constexpr int kIndexInFileMessages =
     35;
 
-  friend void swap(CordPlanApplyParityXorReq& a, CordPlanApplyParityXorReq& b) {
+  friend void swap(UpLRCPlanApplyParityXorReq& a, UpLRCPlanApplyParityXorReq& b) {
     a.Swap(&b);
   }
-  inline void Swap(CordPlanApplyParityXorReq* other) {
+  inline void Swap(UpLRCPlanApplyParityXorReq* other) {
     if (other == this) return;
   #ifdef PROTOBUF_FORCE_COPY_IN_SWAP
     if (GetOwningArena() != nullptr &&
@@ -8638,7 +8638,7 @@ class CordPlanApplyParityXorReq final :
       ::PROTOBUF_NAMESPACE_ID::internal::GenericSwap(this, other);
     }
   }
-  void UnsafeArenaSwap(CordPlanApplyParityXorReq* other) {
+  void UnsafeArenaSwap(UpLRCPlanApplyParityXorReq* other) {
     if (other == this) return;
     GOOGLE_DCHECK(GetOwningArena() == other->GetOwningArena());
     InternalSwap(other);
@@ -8646,14 +8646,14 @@ class CordPlanApplyParityXorReq final :
 
   // implements Message ----------------------------------------------
 
-  CordPlanApplyParityXorReq* New(::PROTOBUF_NAMESPACE_ID::Arena* arena = nullptr) const final {
-    return CreateMaybeMessage<CordPlanApplyParityXorReq>(arena);
+  UpLRCPlanApplyParityXorReq* New(::PROTOBUF_NAMESPACE_ID::Arena* arena = nullptr) const final {
+    return CreateMaybeMessage<UpLRCPlanApplyParityXorReq>(arena);
   }
   using ::PROTOBUF_NAMESPACE_ID::Message::CopyFrom;
-  void CopyFrom(const CordPlanApplyParityXorReq& from);
+  void CopyFrom(const UpLRCPlanApplyParityXorReq& from);
   using ::PROTOBUF_NAMESPACE_ID::Message::MergeFrom;
-  void MergeFrom( const CordPlanApplyParityXorReq& from) {
-    CordPlanApplyParityXorReq::MergeImpl(*this, from);
+  void MergeFrom( const UpLRCPlanApplyParityXorReq& from) {
+    UpLRCPlanApplyParityXorReq::MergeImpl(*this, from);
   }
   private:
   static void MergeImpl(::PROTOBUF_NAMESPACE_ID::Message& to_msg, const ::PROTOBUF_NAMESPACE_ID::Message& from_msg);
@@ -8671,15 +8671,15 @@ class CordPlanApplyParityXorReq final :
   void SharedCtor(::PROTOBUF_NAMESPACE_ID::Arena* arena, bool is_message_owned);
   void SharedDtor();
   void SetCachedSize(int size) const final;
-  void InternalSwap(CordPlanApplyParityXorReq* other);
+  void InternalSwap(UpLRCPlanApplyParityXorReq* other);
 
   private:
   friend class ::PROTOBUF_NAMESPACE_ID::internal::AnyMetadata;
   static ::PROTOBUF_NAMESPACE_ID::StringPiece FullMessageName() {
-    return "proxy_proto.CordPlanApplyParityXorReq";
+    return "proxy_proto.UpLRCPlanApplyParityXorReq";
   }
   protected:
-  explicit CordPlanApplyParityXorReq(::PROTOBUF_NAMESPACE_ID::Arena* arena,
+  explicit UpLRCPlanApplyParityXorReq(::PROTOBUF_NAMESPACE_ID::Arena* arena,
                        bool is_message_owned = false);
   public:
 
@@ -8794,7 +8794,7 @@ class CordPlanApplyParityXorReq final :
   void _internal_set_parity_slice_length(int32_t value);
   public:
 
-  // @@protoc_insertion_point(class_scope:proxy_proto.CordPlanApplyParityXorReq)
+  // @@protoc_insertion_point(class_scope:proxy_proto.UpLRCPlanApplyParityXorReq)
  private:
   class _Internal;
 
@@ -8817,24 +8817,24 @@ class CordPlanApplyParityXorReq final :
 };
 // -------------------------------------------------------------------
 
-class CordPlanMstDataDeltaReq final :
-    public ::PROTOBUF_NAMESPACE_ID::Message /* @@protoc_insertion_point(class_definition:proxy_proto.CordPlanMstDataDeltaReq) */ {
+class UpLRCPlanMstDataDeltaReq final :
+    public ::PROTOBUF_NAMESPACE_ID::Message /* @@protoc_insertion_point(class_definition:proxy_proto.UpLRCPlanMstDataDeltaReq) */ {
  public:
-  inline CordPlanMstDataDeltaReq() : CordPlanMstDataDeltaReq(nullptr) {}
-  ~CordPlanMstDataDeltaReq() override;
-  explicit PROTOBUF_CONSTEXPR CordPlanMstDataDeltaReq(::PROTOBUF_NAMESPACE_ID::internal::ConstantInitialized);
+  inline UpLRCPlanMstDataDeltaReq() : UpLRCPlanMstDataDeltaReq(nullptr) {}
+  ~UpLRCPlanMstDataDeltaReq() override;
+  explicit PROTOBUF_CONSTEXPR UpLRCPlanMstDataDeltaReq(::PROTOBUF_NAMESPACE_ID::internal::ConstantInitialized);
 
-  CordPlanMstDataDeltaReq(const CordPlanMstDataDeltaReq& from);
-  CordPlanMstDataDeltaReq(CordPlanMstDataDeltaReq&& from) noexcept
-    : CordPlanMstDataDeltaReq() {
+  UpLRCPlanMstDataDeltaReq(const UpLRCPlanMstDataDeltaReq& from);
+  UpLRCPlanMstDataDeltaReq(UpLRCPlanMstDataDeltaReq&& from) noexcept
+    : UpLRCPlanMstDataDeltaReq() {
     *this = ::std::move(from);
   }
 
-  inline CordPlanMstDataDeltaReq& operator=(const CordPlanMstDataDeltaReq& from) {
+  inline UpLRCPlanMstDataDeltaReq& operator=(const UpLRCPlanMstDataDeltaReq& from) {
     CopyFrom(from);
     return *this;
   }
-  inline CordPlanMstDataDeltaReq& operator=(CordPlanMstDataDeltaReq&& from) noexcept {
+  inline UpLRCPlanMstDataDeltaReq& operator=(UpLRCPlanMstDataDeltaReq&& from) noexcept {
     if (this == &from) return *this;
     if (GetOwningArena() == from.GetOwningArena()
   #ifdef PROTOBUF_FORCE_COPY_IN_MOVE
@@ -8857,20 +8857,20 @@ class CordPlanMstDataDeltaReq final :
   static const ::PROTOBUF_NAMESPACE_ID::Reflection* GetReflection() {
     return default_instance().GetMetadata().reflection;
   }
-  static const CordPlanMstDataDeltaReq& default_instance() {
+  static const UpLRCPlanMstDataDeltaReq& default_instance() {
     return *internal_default_instance();
   }
-  static inline const CordPlanMstDataDeltaReq* internal_default_instance() {
-    return reinterpret_cast<const CordPlanMstDataDeltaReq*>(
-               &_CordPlanMstDataDeltaReq_default_instance_);
+  static inline const UpLRCPlanMstDataDeltaReq* internal_default_instance() {
+    return reinterpret_cast<const UpLRCPlanMstDataDeltaReq*>(
+               &_UpLRCPlanMstDataDeltaReq_default_instance_);
   }
   static constexpr int kIndexInFileMessages =
     36;
 
-  friend void swap(CordPlanMstDataDeltaReq& a, CordPlanMstDataDeltaReq& b) {
+  friend void swap(UpLRCPlanMstDataDeltaReq& a, UpLRCPlanMstDataDeltaReq& b) {
     a.Swap(&b);
   }
-  inline void Swap(CordPlanMstDataDeltaReq* other) {
+  inline void Swap(UpLRCPlanMstDataDeltaReq* other) {
     if (other == this) return;
   #ifdef PROTOBUF_FORCE_COPY_IN_SWAP
     if (GetOwningArena() != nullptr &&
@@ -8883,7 +8883,7 @@ class CordPlanMstDataDeltaReq final :
       ::PROTOBUF_NAMESPACE_ID::internal::GenericSwap(this, other);
     }
   }
-  void UnsafeArenaSwap(CordPlanMstDataDeltaReq* other) {
+  void UnsafeArenaSwap(UpLRCPlanMstDataDeltaReq* other) {
     if (other == this) return;
     GOOGLE_DCHECK(GetOwningArena() == other->GetOwningArena());
     InternalSwap(other);
@@ -8891,14 +8891,14 @@ class CordPlanMstDataDeltaReq final :
 
   // implements Message ----------------------------------------------
 
-  CordPlanMstDataDeltaReq* New(::PROTOBUF_NAMESPACE_ID::Arena* arena = nullptr) const final {
-    return CreateMaybeMessage<CordPlanMstDataDeltaReq>(arena);
+  UpLRCPlanMstDataDeltaReq* New(::PROTOBUF_NAMESPACE_ID::Arena* arena = nullptr) const final {
+    return CreateMaybeMessage<UpLRCPlanMstDataDeltaReq>(arena);
   }
   using ::PROTOBUF_NAMESPACE_ID::Message::CopyFrom;
-  void CopyFrom(const CordPlanMstDataDeltaReq& from);
+  void CopyFrom(const UpLRCPlanMstDataDeltaReq& from);
   using ::PROTOBUF_NAMESPACE_ID::Message::MergeFrom;
-  void MergeFrom( const CordPlanMstDataDeltaReq& from) {
-    CordPlanMstDataDeltaReq::MergeImpl(*this, from);
+  void MergeFrom( const UpLRCPlanMstDataDeltaReq& from) {
+    UpLRCPlanMstDataDeltaReq::MergeImpl(*this, from);
   }
   private:
   static void MergeImpl(::PROTOBUF_NAMESPACE_ID::Message& to_msg, const ::PROTOBUF_NAMESPACE_ID::Message& from_msg);
@@ -8916,15 +8916,15 @@ class CordPlanMstDataDeltaReq final :
   void SharedCtor(::PROTOBUF_NAMESPACE_ID::Arena* arena, bool is_message_owned);
   void SharedDtor();
   void SetCachedSize(int size) const final;
-  void InternalSwap(CordPlanMstDataDeltaReq* other);
+  void InternalSwap(UpLRCPlanMstDataDeltaReq* other);
 
   private:
   friend class ::PROTOBUF_NAMESPACE_ID::internal::AnyMetadata;
   static ::PROTOBUF_NAMESPACE_ID::StringPiece FullMessageName() {
-    return "proxy_proto.CordPlanMstDataDeltaReq";
+    return "proxy_proto.UpLRCPlanMstDataDeltaReq";
   }
   protected:
-  explicit CordPlanMstDataDeltaReq(::PROTOBUF_NAMESPACE_ID::Arena* arena,
+  explicit UpLRCPlanMstDataDeltaReq(::PROTOBUF_NAMESPACE_ID::Arena* arena,
                        bool is_message_owned = false);
   public:
 
@@ -9069,7 +9069,7 @@ class CordPlanMstDataDeltaReq final :
   void _internal_set_src_data_block_id(int32_t value);
   public:
 
-  // @@protoc_insertion_point(class_scope:proxy_proto.CordPlanMstDataDeltaReq)
+  // @@protoc_insertion_point(class_scope:proxy_proto.UpLRCPlanMstDataDeltaReq)
  private:
   class _Internal;
 
@@ -9095,24 +9095,24 @@ class CordPlanMstDataDeltaReq final :
 };
 // -------------------------------------------------------------------
 
-class CordIngressParityWrite final :
-    public ::PROTOBUF_NAMESPACE_ID::Message /* @@protoc_insertion_point(class_definition:proxy_proto.CordIngressParityWrite) */ {
+class UpLRCIngressParityWrite final :
+    public ::PROTOBUF_NAMESPACE_ID::Message /* @@protoc_insertion_point(class_definition:proxy_proto.UpLRCIngressParityWrite) */ {
  public:
-  inline CordIngressParityWrite() : CordIngressParityWrite(nullptr) {}
-  ~CordIngressParityWrite() override;
-  explicit PROTOBUF_CONSTEXPR CordIngressParityWrite(::PROTOBUF_NAMESPACE_ID::internal::ConstantInitialized);
+  inline UpLRCIngressParityWrite() : UpLRCIngressParityWrite(nullptr) {}
+  ~UpLRCIngressParityWrite() override;
+  explicit PROTOBUF_CONSTEXPR UpLRCIngressParityWrite(::PROTOBUF_NAMESPACE_ID::internal::ConstantInitialized);
 
-  CordIngressParityWrite(const CordIngressParityWrite& from);
-  CordIngressParityWrite(CordIngressParityWrite&& from) noexcept
-    : CordIngressParityWrite() {
+  UpLRCIngressParityWrite(const UpLRCIngressParityWrite& from);
+  UpLRCIngressParityWrite(UpLRCIngressParityWrite&& from) noexcept
+    : UpLRCIngressParityWrite() {
     *this = ::std::move(from);
   }
 
-  inline CordIngressParityWrite& operator=(const CordIngressParityWrite& from) {
+  inline UpLRCIngressParityWrite& operator=(const UpLRCIngressParityWrite& from) {
     CopyFrom(from);
     return *this;
   }
-  inline CordIngressParityWrite& operator=(CordIngressParityWrite&& from) noexcept {
+  inline UpLRCIngressParityWrite& operator=(UpLRCIngressParityWrite&& from) noexcept {
     if (this == &from) return *this;
     if (GetOwningArena() == from.GetOwningArena()
   #ifdef PROTOBUF_FORCE_COPY_IN_MOVE
@@ -9135,20 +9135,20 @@ class CordIngressParityWrite final :
   static const ::PROTOBUF_NAMESPACE_ID::Reflection* GetReflection() {
     return default_instance().GetMetadata().reflection;
   }
-  static const CordIngressParityWrite& default_instance() {
+  static const UpLRCIngressParityWrite& default_instance() {
     return *internal_default_instance();
   }
-  static inline const CordIngressParityWrite* internal_default_instance() {
-    return reinterpret_cast<const CordIngressParityWrite*>(
-               &_CordIngressParityWrite_default_instance_);
+  static inline const UpLRCIngressParityWrite* internal_default_instance() {
+    return reinterpret_cast<const UpLRCIngressParityWrite*>(
+               &_UpLRCIngressParityWrite_default_instance_);
   }
   static constexpr int kIndexInFileMessages =
     37;
 
-  friend void swap(CordIngressParityWrite& a, CordIngressParityWrite& b) {
+  friend void swap(UpLRCIngressParityWrite& a, UpLRCIngressParityWrite& b) {
     a.Swap(&b);
   }
-  inline void Swap(CordIngressParityWrite* other) {
+  inline void Swap(UpLRCIngressParityWrite* other) {
     if (other == this) return;
   #ifdef PROTOBUF_FORCE_COPY_IN_SWAP
     if (GetOwningArena() != nullptr &&
@@ -9161,7 +9161,7 @@ class CordIngressParityWrite final :
       ::PROTOBUF_NAMESPACE_ID::internal::GenericSwap(this, other);
     }
   }
-  void UnsafeArenaSwap(CordIngressParityWrite* other) {
+  void UnsafeArenaSwap(UpLRCIngressParityWrite* other) {
     if (other == this) return;
     GOOGLE_DCHECK(GetOwningArena() == other->GetOwningArena());
     InternalSwap(other);
@@ -9169,14 +9169,14 @@ class CordIngressParityWrite final :
 
   // implements Message ----------------------------------------------
 
-  CordIngressParityWrite* New(::PROTOBUF_NAMESPACE_ID::Arena* arena = nullptr) const final {
-    return CreateMaybeMessage<CordIngressParityWrite>(arena);
+  UpLRCIngressParityWrite* New(::PROTOBUF_NAMESPACE_ID::Arena* arena = nullptr) const final {
+    return CreateMaybeMessage<UpLRCIngressParityWrite>(arena);
   }
   using ::PROTOBUF_NAMESPACE_ID::Message::CopyFrom;
-  void CopyFrom(const CordIngressParityWrite& from);
+  void CopyFrom(const UpLRCIngressParityWrite& from);
   using ::PROTOBUF_NAMESPACE_ID::Message::MergeFrom;
-  void MergeFrom( const CordIngressParityWrite& from) {
-    CordIngressParityWrite::MergeImpl(*this, from);
+  void MergeFrom( const UpLRCIngressParityWrite& from) {
+    UpLRCIngressParityWrite::MergeImpl(*this, from);
   }
   private:
   static void MergeImpl(::PROTOBUF_NAMESPACE_ID::Message& to_msg, const ::PROTOBUF_NAMESPACE_ID::Message& from_msg);
@@ -9194,15 +9194,15 @@ class CordIngressParityWrite final :
   void SharedCtor(::PROTOBUF_NAMESPACE_ID::Arena* arena, bool is_message_owned);
   void SharedDtor();
   void SetCachedSize(int size) const final;
-  void InternalSwap(CordIngressParityWrite* other);
+  void InternalSwap(UpLRCIngressParityWrite* other);
 
   private:
   friend class ::PROTOBUF_NAMESPACE_ID::internal::AnyMetadata;
   static ::PROTOBUF_NAMESPACE_ID::StringPiece FullMessageName() {
-    return "proxy_proto.CordIngressParityWrite";
+    return "proxy_proto.UpLRCIngressParityWrite";
   }
   protected:
-  explicit CordIngressParityWrite(::PROTOBUF_NAMESPACE_ID::Arena* arena,
+  explicit UpLRCIngressParityWrite(::PROTOBUF_NAMESPACE_ID::Arena* arena,
                        bool is_message_owned = false);
   public:
 
@@ -9277,7 +9277,7 @@ class CordIngressParityWrite final :
   void _internal_set_stripe_group(int32_t value);
   public:
 
-  // @@protoc_insertion_point(class_scope:proxy_proto.CordIngressParityWrite)
+  // @@protoc_insertion_point(class_scope:proxy_proto.UpLRCIngressParityWrite)
  private:
   class _Internal;
 
@@ -9297,24 +9297,24 @@ class CordIngressParityWrite final :
 };
 // -------------------------------------------------------------------
 
-class CordDataUpdatePlacement final :
-    public ::PROTOBUF_NAMESPACE_ID::Message /* @@protoc_insertion_point(class_definition:proxy_proto.CordDataUpdatePlacement) */ {
+class UpLRCDataUpdatePlacement final :
+    public ::PROTOBUF_NAMESPACE_ID::Message /* @@protoc_insertion_point(class_definition:proxy_proto.UpLRCDataUpdatePlacement) */ {
  public:
-  inline CordDataUpdatePlacement() : CordDataUpdatePlacement(nullptr) {}
-  ~CordDataUpdatePlacement() override;
-  explicit PROTOBUF_CONSTEXPR CordDataUpdatePlacement(::PROTOBUF_NAMESPACE_ID::internal::ConstantInitialized);
+  inline UpLRCDataUpdatePlacement() : UpLRCDataUpdatePlacement(nullptr) {}
+  ~UpLRCDataUpdatePlacement() override;
+  explicit PROTOBUF_CONSTEXPR UpLRCDataUpdatePlacement(::PROTOBUF_NAMESPACE_ID::internal::ConstantInitialized);
 
-  CordDataUpdatePlacement(const CordDataUpdatePlacement& from);
-  CordDataUpdatePlacement(CordDataUpdatePlacement&& from) noexcept
-    : CordDataUpdatePlacement() {
+  UpLRCDataUpdatePlacement(const UpLRCDataUpdatePlacement& from);
+  UpLRCDataUpdatePlacement(UpLRCDataUpdatePlacement&& from) noexcept
+    : UpLRCDataUpdatePlacement() {
     *this = ::std::move(from);
   }
 
-  inline CordDataUpdatePlacement& operator=(const CordDataUpdatePlacement& from) {
+  inline UpLRCDataUpdatePlacement& operator=(const UpLRCDataUpdatePlacement& from) {
     CopyFrom(from);
     return *this;
   }
-  inline CordDataUpdatePlacement& operator=(CordDataUpdatePlacement&& from) noexcept {
+  inline UpLRCDataUpdatePlacement& operator=(UpLRCDataUpdatePlacement&& from) noexcept {
     if (this == &from) return *this;
     if (GetOwningArena() == from.GetOwningArena()
   #ifdef PROTOBUF_FORCE_COPY_IN_MOVE
@@ -9337,20 +9337,20 @@ class CordDataUpdatePlacement final :
   static const ::PROTOBUF_NAMESPACE_ID::Reflection* GetReflection() {
     return default_instance().GetMetadata().reflection;
   }
-  static const CordDataUpdatePlacement& default_instance() {
+  static const UpLRCDataUpdatePlacement& default_instance() {
     return *internal_default_instance();
   }
-  static inline const CordDataUpdatePlacement* internal_default_instance() {
-    return reinterpret_cast<const CordDataUpdatePlacement*>(
-               &_CordDataUpdatePlacement_default_instance_);
+  static inline const UpLRCDataUpdatePlacement* internal_default_instance() {
+    return reinterpret_cast<const UpLRCDataUpdatePlacement*>(
+               &_UpLRCDataUpdatePlacement_default_instance_);
   }
   static constexpr int kIndexInFileMessages =
     38;
 
-  friend void swap(CordDataUpdatePlacement& a, CordDataUpdatePlacement& b) {
+  friend void swap(UpLRCDataUpdatePlacement& a, UpLRCDataUpdatePlacement& b) {
     a.Swap(&b);
   }
-  inline void Swap(CordDataUpdatePlacement* other) {
+  inline void Swap(UpLRCDataUpdatePlacement* other) {
     if (other == this) return;
   #ifdef PROTOBUF_FORCE_COPY_IN_SWAP
     if (GetOwningArena() != nullptr &&
@@ -9363,7 +9363,7 @@ class CordDataUpdatePlacement final :
       ::PROTOBUF_NAMESPACE_ID::internal::GenericSwap(this, other);
     }
   }
-  void UnsafeArenaSwap(CordDataUpdatePlacement* other) {
+  void UnsafeArenaSwap(UpLRCDataUpdatePlacement* other) {
     if (other == this) return;
     GOOGLE_DCHECK(GetOwningArena() == other->GetOwningArena());
     InternalSwap(other);
@@ -9371,14 +9371,14 @@ class CordDataUpdatePlacement final :
 
   // implements Message ----------------------------------------------
 
-  CordDataUpdatePlacement* New(::PROTOBUF_NAMESPACE_ID::Arena* arena = nullptr) const final {
-    return CreateMaybeMessage<CordDataUpdatePlacement>(arena);
+  UpLRCDataUpdatePlacement* New(::PROTOBUF_NAMESPACE_ID::Arena* arena = nullptr) const final {
+    return CreateMaybeMessage<UpLRCDataUpdatePlacement>(arena);
   }
   using ::PROTOBUF_NAMESPACE_ID::Message::CopyFrom;
-  void CopyFrom(const CordDataUpdatePlacement& from);
+  void CopyFrom(const UpLRCDataUpdatePlacement& from);
   using ::PROTOBUF_NAMESPACE_ID::Message::MergeFrom;
-  void MergeFrom( const CordDataUpdatePlacement& from) {
-    CordDataUpdatePlacement::MergeImpl(*this, from);
+  void MergeFrom( const UpLRCDataUpdatePlacement& from) {
+    UpLRCDataUpdatePlacement::MergeImpl(*this, from);
   }
   private:
   static void MergeImpl(::PROTOBUF_NAMESPACE_ID::Message& to_msg, const ::PROTOBUF_NAMESPACE_ID::Message& from_msg);
@@ -9396,15 +9396,15 @@ class CordDataUpdatePlacement final :
   void SharedCtor(::PROTOBUF_NAMESPACE_ID::Arena* arena, bool is_message_owned);
   void SharedDtor();
   void SetCachedSize(int size) const final;
-  void InternalSwap(CordDataUpdatePlacement* other);
+  void InternalSwap(UpLRCDataUpdatePlacement* other);
 
   private:
   friend class ::PROTOBUF_NAMESPACE_ID::internal::AnyMetadata;
   static ::PROTOBUF_NAMESPACE_ID::StringPiece FullMessageName() {
-    return "proxy_proto.CordDataUpdatePlacement";
+    return "proxy_proto.UpLRCDataUpdatePlacement";
   }
   protected:
-  explicit CordDataUpdatePlacement(::PROTOBUF_NAMESPACE_ID::Arena* arena,
+  explicit UpLRCDataUpdatePlacement(::PROTOBUF_NAMESPACE_ID::Arena* arena,
                        bool is_message_owned = false);
   public:
 
@@ -9424,9 +9424,9 @@ class CordDataUpdatePlacement final :
     kBlockidsFieldNumber = 8,
     kOffsetsFieldNumber = 9,
     kSizesFieldNumber = 10,
-    kCordIngressLocalParityWritesFieldNumber = 14,
-    kCordIngressGlobalParityWritesFieldNumber = 15,
-    kCordIngressCacheLpStripeGroupsFieldNumber = 16,
+    kUplrcIngressLocalParityWritesFieldNumber = 14,
+    kUplrcIngressGlobalParityWritesFieldNumber = 15,
+    kUplrcIngressCacheLpStripeGroupsFieldNumber = 16,
     kKeyFieldNumber = 1,
     kDeltaBlobKeyFieldNumber = 11,
     kDeltaDatanodeIpFieldNumber = 12,
@@ -9571,63 +9571,63 @@ class CordDataUpdatePlacement final :
   ::PROTOBUF_NAMESPACE_ID::RepeatedField< uint64_t >*
       mutable_sizes();
 
-  // repeated .proxy_proto.CordIngressParityWrite cord_ingress_local_parity_writes = 14;
-  int cord_ingress_local_parity_writes_size() const;
+  // repeated .proxy_proto.UpLRCIngressParityWrite uplrc_ingress_local_parity_writes = 14;
+  int uplrc_ingress_local_parity_writes_size() const;
   private:
-  int _internal_cord_ingress_local_parity_writes_size() const;
+  int _internal_uplrc_ingress_local_parity_writes_size() const;
   public:
-  void clear_cord_ingress_local_parity_writes();
-  ::proxy_proto::CordIngressParityWrite* mutable_cord_ingress_local_parity_writes(int index);
-  ::PROTOBUF_NAMESPACE_ID::RepeatedPtrField< ::proxy_proto::CordIngressParityWrite >*
-      mutable_cord_ingress_local_parity_writes();
+  void clear_uplrc_ingress_local_parity_writes();
+  ::proxy_proto::UpLRCIngressParityWrite* mutable_uplrc_ingress_local_parity_writes(int index);
+  ::PROTOBUF_NAMESPACE_ID::RepeatedPtrField< ::proxy_proto::UpLRCIngressParityWrite >*
+      mutable_uplrc_ingress_local_parity_writes();
   private:
-  const ::proxy_proto::CordIngressParityWrite& _internal_cord_ingress_local_parity_writes(int index) const;
-  ::proxy_proto::CordIngressParityWrite* _internal_add_cord_ingress_local_parity_writes();
+  const ::proxy_proto::UpLRCIngressParityWrite& _internal_uplrc_ingress_local_parity_writes(int index) const;
+  ::proxy_proto::UpLRCIngressParityWrite* _internal_add_uplrc_ingress_local_parity_writes();
   public:
-  const ::proxy_proto::CordIngressParityWrite& cord_ingress_local_parity_writes(int index) const;
-  ::proxy_proto::CordIngressParityWrite* add_cord_ingress_local_parity_writes();
-  const ::PROTOBUF_NAMESPACE_ID::RepeatedPtrField< ::proxy_proto::CordIngressParityWrite >&
-      cord_ingress_local_parity_writes() const;
+  const ::proxy_proto::UpLRCIngressParityWrite& uplrc_ingress_local_parity_writes(int index) const;
+  ::proxy_proto::UpLRCIngressParityWrite* add_uplrc_ingress_local_parity_writes();
+  const ::PROTOBUF_NAMESPACE_ID::RepeatedPtrField< ::proxy_proto::UpLRCIngressParityWrite >&
+      uplrc_ingress_local_parity_writes() const;
 
-  // repeated .proxy_proto.CordIngressParityWrite cord_ingress_global_parity_writes = 15;
-  int cord_ingress_global_parity_writes_size() const;
+  // repeated .proxy_proto.UpLRCIngressParityWrite uplrc_ingress_global_parity_writes = 15;
+  int uplrc_ingress_global_parity_writes_size() const;
   private:
-  int _internal_cord_ingress_global_parity_writes_size() const;
+  int _internal_uplrc_ingress_global_parity_writes_size() const;
   public:
-  void clear_cord_ingress_global_parity_writes();
-  ::proxy_proto::CordIngressParityWrite* mutable_cord_ingress_global_parity_writes(int index);
-  ::PROTOBUF_NAMESPACE_ID::RepeatedPtrField< ::proxy_proto::CordIngressParityWrite >*
-      mutable_cord_ingress_global_parity_writes();
+  void clear_uplrc_ingress_global_parity_writes();
+  ::proxy_proto::UpLRCIngressParityWrite* mutable_uplrc_ingress_global_parity_writes(int index);
+  ::PROTOBUF_NAMESPACE_ID::RepeatedPtrField< ::proxy_proto::UpLRCIngressParityWrite >*
+      mutable_uplrc_ingress_global_parity_writes();
   private:
-  const ::proxy_proto::CordIngressParityWrite& _internal_cord_ingress_global_parity_writes(int index) const;
-  ::proxy_proto::CordIngressParityWrite* _internal_add_cord_ingress_global_parity_writes();
+  const ::proxy_proto::UpLRCIngressParityWrite& _internal_uplrc_ingress_global_parity_writes(int index) const;
+  ::proxy_proto::UpLRCIngressParityWrite* _internal_add_uplrc_ingress_global_parity_writes();
   public:
-  const ::proxy_proto::CordIngressParityWrite& cord_ingress_global_parity_writes(int index) const;
-  ::proxy_proto::CordIngressParityWrite* add_cord_ingress_global_parity_writes();
-  const ::PROTOBUF_NAMESPACE_ID::RepeatedPtrField< ::proxy_proto::CordIngressParityWrite >&
-      cord_ingress_global_parity_writes() const;
+  const ::proxy_proto::UpLRCIngressParityWrite& uplrc_ingress_global_parity_writes(int index) const;
+  ::proxy_proto::UpLRCIngressParityWrite* add_uplrc_ingress_global_parity_writes();
+  const ::PROTOBUF_NAMESPACE_ID::RepeatedPtrField< ::proxy_proto::UpLRCIngressParityWrite >&
+      uplrc_ingress_global_parity_writes() const;
 
-  // repeated int32 cord_ingress_cache_lp_stripe_groups = 16;
-  int cord_ingress_cache_lp_stripe_groups_size() const;
+  // repeated int32 uplrc_ingress_cache_lp_stripe_groups = 16;
+  int uplrc_ingress_cache_lp_stripe_groups_size() const;
   private:
-  int _internal_cord_ingress_cache_lp_stripe_groups_size() const;
+  int _internal_uplrc_ingress_cache_lp_stripe_groups_size() const;
   public:
-  void clear_cord_ingress_cache_lp_stripe_groups();
+  void clear_uplrc_ingress_cache_lp_stripe_groups();
   private:
-  int32_t _internal_cord_ingress_cache_lp_stripe_groups(int index) const;
+  int32_t _internal_uplrc_ingress_cache_lp_stripe_groups(int index) const;
   const ::PROTOBUF_NAMESPACE_ID::RepeatedField< int32_t >&
-      _internal_cord_ingress_cache_lp_stripe_groups() const;
-  void _internal_add_cord_ingress_cache_lp_stripe_groups(int32_t value);
+      _internal_uplrc_ingress_cache_lp_stripe_groups() const;
+  void _internal_add_uplrc_ingress_cache_lp_stripe_groups(int32_t value);
   ::PROTOBUF_NAMESPACE_ID::RepeatedField< int32_t >*
-      _internal_mutable_cord_ingress_cache_lp_stripe_groups();
+      _internal_mutable_uplrc_ingress_cache_lp_stripe_groups();
   public:
-  int32_t cord_ingress_cache_lp_stripe_groups(int index) const;
-  void set_cord_ingress_cache_lp_stripe_groups(int index, int32_t value);
-  void add_cord_ingress_cache_lp_stripe_groups(int32_t value);
+  int32_t uplrc_ingress_cache_lp_stripe_groups(int index) const;
+  void set_uplrc_ingress_cache_lp_stripe_groups(int index, int32_t value);
+  void add_uplrc_ingress_cache_lp_stripe_groups(int32_t value);
   const ::PROTOBUF_NAMESPACE_ID::RepeatedField< int32_t >&
-      cord_ingress_cache_lp_stripe_groups() const;
+      uplrc_ingress_cache_lp_stripe_groups() const;
   ::PROTOBUF_NAMESPACE_ID::RepeatedField< int32_t >*
-      mutable_cord_ingress_cache_lp_stripe_groups();
+      mutable_uplrc_ingress_cache_lp_stripe_groups();
 
   // string key = 1;
   void clear_key();
@@ -9707,7 +9707,7 @@ class CordDataUpdatePlacement final :
   void _internal_set_delta_datanode_port(int32_t value);
   public:
 
-  // @@protoc_insertion_point(class_scope:proxy_proto.CordDataUpdatePlacement)
+  // @@protoc_insertion_point(class_scope:proxy_proto.UpLRCDataUpdatePlacement)
  private:
   class _Internal;
 
@@ -9725,10 +9725,10 @@ class CordDataUpdatePlacement final :
     mutable std::atomic<int> _offsets_cached_byte_size_;
     ::PROTOBUF_NAMESPACE_ID::RepeatedField< uint64_t > sizes_;
     mutable std::atomic<int> _sizes_cached_byte_size_;
-    ::PROTOBUF_NAMESPACE_ID::RepeatedPtrField< ::proxy_proto::CordIngressParityWrite > cord_ingress_local_parity_writes_;
-    ::PROTOBUF_NAMESPACE_ID::RepeatedPtrField< ::proxy_proto::CordIngressParityWrite > cord_ingress_global_parity_writes_;
-    ::PROTOBUF_NAMESPACE_ID::RepeatedField< int32_t > cord_ingress_cache_lp_stripe_groups_;
-    mutable std::atomic<int> _cord_ingress_cache_lp_stripe_groups_cached_byte_size_;
+    ::PROTOBUF_NAMESPACE_ID::RepeatedPtrField< ::proxy_proto::UpLRCIngressParityWrite > uplrc_ingress_local_parity_writes_;
+    ::PROTOBUF_NAMESPACE_ID::RepeatedPtrField< ::proxy_proto::UpLRCIngressParityWrite > uplrc_ingress_global_parity_writes_;
+    ::PROTOBUF_NAMESPACE_ID::RepeatedField< int32_t > uplrc_ingress_cache_lp_stripe_groups_;
+    mutable std::atomic<int> _uplrc_ingress_cache_lp_stripe_groups_cached_byte_size_;
     ::PROTOBUF_NAMESPACE_ID::internal::ArenaStringPtr key_;
     ::PROTOBUF_NAMESPACE_ID::internal::ArenaStringPtr delta_blob_key_;
     ::PROTOBUF_NAMESPACE_ID::internal::ArenaStringPtr delta_datanode_ip_;
@@ -9743,24 +9743,24 @@ class CordDataUpdatePlacement final :
 };
 // -------------------------------------------------------------------
 
-class CordLpDeltaFetch final :
-    public ::PROTOBUF_NAMESPACE_ID::Message /* @@protoc_insertion_point(class_definition:proxy_proto.CordLpDeltaFetch) */ {
+class UpLRCLpDeltaFetch final :
+    public ::PROTOBUF_NAMESPACE_ID::Message /* @@protoc_insertion_point(class_definition:proxy_proto.UpLRCLpDeltaFetch) */ {
  public:
-  inline CordLpDeltaFetch() : CordLpDeltaFetch(nullptr) {}
-  ~CordLpDeltaFetch() override;
-  explicit PROTOBUF_CONSTEXPR CordLpDeltaFetch(::PROTOBUF_NAMESPACE_ID::internal::ConstantInitialized);
+  inline UpLRCLpDeltaFetch() : UpLRCLpDeltaFetch(nullptr) {}
+  ~UpLRCLpDeltaFetch() override;
+  explicit PROTOBUF_CONSTEXPR UpLRCLpDeltaFetch(::PROTOBUF_NAMESPACE_ID::internal::ConstantInitialized);
 
-  CordLpDeltaFetch(const CordLpDeltaFetch& from);
-  CordLpDeltaFetch(CordLpDeltaFetch&& from) noexcept
-    : CordLpDeltaFetch() {
+  UpLRCLpDeltaFetch(const UpLRCLpDeltaFetch& from);
+  UpLRCLpDeltaFetch(UpLRCLpDeltaFetch&& from) noexcept
+    : UpLRCLpDeltaFetch() {
     *this = ::std::move(from);
   }
 
-  inline CordLpDeltaFetch& operator=(const CordLpDeltaFetch& from) {
+  inline UpLRCLpDeltaFetch& operator=(const UpLRCLpDeltaFetch& from) {
     CopyFrom(from);
     return *this;
   }
-  inline CordLpDeltaFetch& operator=(CordLpDeltaFetch&& from) noexcept {
+  inline UpLRCLpDeltaFetch& operator=(UpLRCLpDeltaFetch&& from) noexcept {
     if (this == &from) return *this;
     if (GetOwningArena() == from.GetOwningArena()
   #ifdef PROTOBUF_FORCE_COPY_IN_MOVE
@@ -9783,20 +9783,20 @@ class CordLpDeltaFetch final :
   static const ::PROTOBUF_NAMESPACE_ID::Reflection* GetReflection() {
     return default_instance().GetMetadata().reflection;
   }
-  static const CordLpDeltaFetch& default_instance() {
+  static const UpLRCLpDeltaFetch& default_instance() {
     return *internal_default_instance();
   }
-  static inline const CordLpDeltaFetch* internal_default_instance() {
-    return reinterpret_cast<const CordLpDeltaFetch*>(
-               &_CordLpDeltaFetch_default_instance_);
+  static inline const UpLRCLpDeltaFetch* internal_default_instance() {
+    return reinterpret_cast<const UpLRCLpDeltaFetch*>(
+               &_UpLRCLpDeltaFetch_default_instance_);
   }
   static constexpr int kIndexInFileMessages =
     39;
 
-  friend void swap(CordLpDeltaFetch& a, CordLpDeltaFetch& b) {
+  friend void swap(UpLRCLpDeltaFetch& a, UpLRCLpDeltaFetch& b) {
     a.Swap(&b);
   }
-  inline void Swap(CordLpDeltaFetch* other) {
+  inline void Swap(UpLRCLpDeltaFetch* other) {
     if (other == this) return;
   #ifdef PROTOBUF_FORCE_COPY_IN_SWAP
     if (GetOwningArena() != nullptr &&
@@ -9809,7 +9809,7 @@ class CordLpDeltaFetch final :
       ::PROTOBUF_NAMESPACE_ID::internal::GenericSwap(this, other);
     }
   }
-  void UnsafeArenaSwap(CordLpDeltaFetch* other) {
+  void UnsafeArenaSwap(UpLRCLpDeltaFetch* other) {
     if (other == this) return;
     GOOGLE_DCHECK(GetOwningArena() == other->GetOwningArena());
     InternalSwap(other);
@@ -9817,14 +9817,14 @@ class CordLpDeltaFetch final :
 
   // implements Message ----------------------------------------------
 
-  CordLpDeltaFetch* New(::PROTOBUF_NAMESPACE_ID::Arena* arena = nullptr) const final {
-    return CreateMaybeMessage<CordLpDeltaFetch>(arena);
+  UpLRCLpDeltaFetch* New(::PROTOBUF_NAMESPACE_ID::Arena* arena = nullptr) const final {
+    return CreateMaybeMessage<UpLRCLpDeltaFetch>(arena);
   }
   using ::PROTOBUF_NAMESPACE_ID::Message::CopyFrom;
-  void CopyFrom(const CordLpDeltaFetch& from);
+  void CopyFrom(const UpLRCLpDeltaFetch& from);
   using ::PROTOBUF_NAMESPACE_ID::Message::MergeFrom;
-  void MergeFrom( const CordLpDeltaFetch& from) {
-    CordLpDeltaFetch::MergeImpl(*this, from);
+  void MergeFrom( const UpLRCLpDeltaFetch& from) {
+    UpLRCLpDeltaFetch::MergeImpl(*this, from);
   }
   private:
   static void MergeImpl(::PROTOBUF_NAMESPACE_ID::Message& to_msg, const ::PROTOBUF_NAMESPACE_ID::Message& from_msg);
@@ -9842,15 +9842,15 @@ class CordLpDeltaFetch final :
   void SharedCtor(::PROTOBUF_NAMESPACE_ID::Arena* arena, bool is_message_owned);
   void SharedDtor();
   void SetCachedSize(int size) const final;
-  void InternalSwap(CordLpDeltaFetch* other);
+  void InternalSwap(UpLRCLpDeltaFetch* other);
 
   private:
   friend class ::PROTOBUF_NAMESPACE_ID::internal::AnyMetadata;
   static ::PROTOBUF_NAMESPACE_ID::StringPiece FullMessageName() {
-    return "proxy_proto.CordLpDeltaFetch";
+    return "proxy_proto.UpLRCLpDeltaFetch";
   }
   protected:
-  explicit CordLpDeltaFetch(::PROTOBUF_NAMESPACE_ID::Arena* arena,
+  explicit UpLRCLpDeltaFetch(::PROTOBUF_NAMESPACE_ID::Arena* arena,
                        bool is_message_owned = false);
   public:
 
@@ -9935,7 +9935,7 @@ class CordLpDeltaFetch final :
   void _internal_set_read_len(uint64_t value);
   public:
 
-  // @@protoc_insertion_point(class_scope:proxy_proto.CordLpDeltaFetch)
+  // @@protoc_insertion_point(class_scope:proxy_proto.UpLRCLpDeltaFetch)
  private:
   class _Internal;
 
@@ -9956,24 +9956,24 @@ class CordLpDeltaFetch final :
 };
 // -------------------------------------------------------------------
 
-class CordLpWorkItem final :
-    public ::PROTOBUF_NAMESPACE_ID::Message /* @@protoc_insertion_point(class_definition:proxy_proto.CordLpWorkItem) */ {
+class UpLRCLpWorkItem final :
+    public ::PROTOBUF_NAMESPACE_ID::Message /* @@protoc_insertion_point(class_definition:proxy_proto.UpLRCLpWorkItem) */ {
  public:
-  inline CordLpWorkItem() : CordLpWorkItem(nullptr) {}
-  ~CordLpWorkItem() override;
-  explicit PROTOBUF_CONSTEXPR CordLpWorkItem(::PROTOBUF_NAMESPACE_ID::internal::ConstantInitialized);
+  inline UpLRCLpWorkItem() : UpLRCLpWorkItem(nullptr) {}
+  ~UpLRCLpWorkItem() override;
+  explicit PROTOBUF_CONSTEXPR UpLRCLpWorkItem(::PROTOBUF_NAMESPACE_ID::internal::ConstantInitialized);
 
-  CordLpWorkItem(const CordLpWorkItem& from);
-  CordLpWorkItem(CordLpWorkItem&& from) noexcept
-    : CordLpWorkItem() {
+  UpLRCLpWorkItem(const UpLRCLpWorkItem& from);
+  UpLRCLpWorkItem(UpLRCLpWorkItem&& from) noexcept
+    : UpLRCLpWorkItem() {
     *this = ::std::move(from);
   }
 
-  inline CordLpWorkItem& operator=(const CordLpWorkItem& from) {
+  inline UpLRCLpWorkItem& operator=(const UpLRCLpWorkItem& from) {
     CopyFrom(from);
     return *this;
   }
-  inline CordLpWorkItem& operator=(CordLpWorkItem&& from) noexcept {
+  inline UpLRCLpWorkItem& operator=(UpLRCLpWorkItem&& from) noexcept {
     if (this == &from) return *this;
     if (GetOwningArena() == from.GetOwningArena()
   #ifdef PROTOBUF_FORCE_COPY_IN_MOVE
@@ -9996,20 +9996,20 @@ class CordLpWorkItem final :
   static const ::PROTOBUF_NAMESPACE_ID::Reflection* GetReflection() {
     return default_instance().GetMetadata().reflection;
   }
-  static const CordLpWorkItem& default_instance() {
+  static const UpLRCLpWorkItem& default_instance() {
     return *internal_default_instance();
   }
-  static inline const CordLpWorkItem* internal_default_instance() {
-    return reinterpret_cast<const CordLpWorkItem*>(
-               &_CordLpWorkItem_default_instance_);
+  static inline const UpLRCLpWorkItem* internal_default_instance() {
+    return reinterpret_cast<const UpLRCLpWorkItem*>(
+               &_UpLRCLpWorkItem_default_instance_);
   }
   static constexpr int kIndexInFileMessages =
     40;
 
-  friend void swap(CordLpWorkItem& a, CordLpWorkItem& b) {
+  friend void swap(UpLRCLpWorkItem& a, UpLRCLpWorkItem& b) {
     a.Swap(&b);
   }
-  inline void Swap(CordLpWorkItem* other) {
+  inline void Swap(UpLRCLpWorkItem* other) {
     if (other == this) return;
   #ifdef PROTOBUF_FORCE_COPY_IN_SWAP
     if (GetOwningArena() != nullptr &&
@@ -10022,7 +10022,7 @@ class CordLpWorkItem final :
       ::PROTOBUF_NAMESPACE_ID::internal::GenericSwap(this, other);
     }
   }
-  void UnsafeArenaSwap(CordLpWorkItem* other) {
+  void UnsafeArenaSwap(UpLRCLpWorkItem* other) {
     if (other == this) return;
     GOOGLE_DCHECK(GetOwningArena() == other->GetOwningArena());
     InternalSwap(other);
@@ -10030,14 +10030,14 @@ class CordLpWorkItem final :
 
   // implements Message ----------------------------------------------
 
-  CordLpWorkItem* New(::PROTOBUF_NAMESPACE_ID::Arena* arena = nullptr) const final {
-    return CreateMaybeMessage<CordLpWorkItem>(arena);
+  UpLRCLpWorkItem* New(::PROTOBUF_NAMESPACE_ID::Arena* arena = nullptr) const final {
+    return CreateMaybeMessage<UpLRCLpWorkItem>(arena);
   }
   using ::PROTOBUF_NAMESPACE_ID::Message::CopyFrom;
-  void CopyFrom(const CordLpWorkItem& from);
+  void CopyFrom(const UpLRCLpWorkItem& from);
   using ::PROTOBUF_NAMESPACE_ID::Message::MergeFrom;
-  void MergeFrom( const CordLpWorkItem& from) {
-    CordLpWorkItem::MergeImpl(*this, from);
+  void MergeFrom( const UpLRCLpWorkItem& from) {
+    UpLRCLpWorkItem::MergeImpl(*this, from);
   }
   private:
   static void MergeImpl(::PROTOBUF_NAMESPACE_ID::Message& to_msg, const ::PROTOBUF_NAMESPACE_ID::Message& from_msg);
@@ -10055,15 +10055,15 @@ class CordLpWorkItem final :
   void SharedCtor(::PROTOBUF_NAMESPACE_ID::Arena* arena, bool is_message_owned);
   void SharedDtor();
   void SetCachedSize(int size) const final;
-  void InternalSwap(CordLpWorkItem* other);
+  void InternalSwap(UpLRCLpWorkItem* other);
 
   private:
   friend class ::PROTOBUF_NAMESPACE_ID::internal::AnyMetadata;
   static ::PROTOBUF_NAMESPACE_ID::StringPiece FullMessageName() {
-    return "proxy_proto.CordLpWorkItem";
+    return "proxy_proto.UpLRCLpWorkItem";
   }
   protected:
-  explicit CordLpWorkItem(::PROTOBUF_NAMESPACE_ID::Arena* arena,
+  explicit UpLRCLpWorkItem(::PROTOBUF_NAMESPACE_ID::Arena* arena,
                        bool is_message_owned = false);
   public:
 
@@ -10085,22 +10085,22 @@ class CordLpWorkItem final :
     kParitySliceOffsetFieldNumber = 5,
     kParitySliceSizeFieldNumber = 6,
   };
-  // repeated .proxy_proto.CordLpDeltaFetch fetches = 7;
+  // repeated .proxy_proto.UpLRCLpDeltaFetch fetches = 7;
   int fetches_size() const;
   private:
   int _internal_fetches_size() const;
   public:
   void clear_fetches();
-  ::proxy_proto::CordLpDeltaFetch* mutable_fetches(int index);
-  ::PROTOBUF_NAMESPACE_ID::RepeatedPtrField< ::proxy_proto::CordLpDeltaFetch >*
+  ::proxy_proto::UpLRCLpDeltaFetch* mutable_fetches(int index);
+  ::PROTOBUF_NAMESPACE_ID::RepeatedPtrField< ::proxy_proto::UpLRCLpDeltaFetch >*
       mutable_fetches();
   private:
-  const ::proxy_proto::CordLpDeltaFetch& _internal_fetches(int index) const;
-  ::proxy_proto::CordLpDeltaFetch* _internal_add_fetches();
+  const ::proxy_proto::UpLRCLpDeltaFetch& _internal_fetches(int index) const;
+  ::proxy_proto::UpLRCLpDeltaFetch* _internal_add_fetches();
   public:
-  const ::proxy_proto::CordLpDeltaFetch& fetches(int index) const;
-  ::proxy_proto::CordLpDeltaFetch* add_fetches();
-  const ::PROTOBUF_NAMESPACE_ID::RepeatedPtrField< ::proxy_proto::CordLpDeltaFetch >&
+  const ::proxy_proto::UpLRCLpDeltaFetch& fetches(int index) const;
+  ::proxy_proto::UpLRCLpDeltaFetch* add_fetches();
+  const ::PROTOBUF_NAMESPACE_ID::RepeatedPtrField< ::proxy_proto::UpLRCLpDeltaFetch >&
       fetches() const;
 
   // string local_block_key = 2;
@@ -10167,7 +10167,7 @@ class CordLpWorkItem final :
   void _internal_set_parity_slice_size(int32_t value);
   public:
 
-  // @@protoc_insertion_point(class_scope:proxy_proto.CordLpWorkItem)
+  // @@protoc_insertion_point(class_scope:proxy_proto.UpLRCLpWorkItem)
  private:
   class _Internal;
 
@@ -10175,7 +10175,7 @@ class CordLpWorkItem final :
   typedef void InternalArenaConstructable_;
   typedef void DestructorSkippable_;
   struct Impl_ {
-    ::PROTOBUF_NAMESPACE_ID::RepeatedPtrField< ::proxy_proto::CordLpDeltaFetch > fetches_;
+    ::PROTOBUF_NAMESPACE_ID::RepeatedPtrField< ::proxy_proto::UpLRCLpDeltaFetch > fetches_;
     ::PROTOBUF_NAMESPACE_ID::internal::ArenaStringPtr local_block_key_;
     ::PROTOBUF_NAMESPACE_ID::internal::ArenaStringPtr local_datanode_ip_;
     int32_t local_block_id_;
@@ -10189,24 +10189,24 @@ class CordLpWorkItem final :
 };
 // -------------------------------------------------------------------
 
-class CordLocalParityBundle final :
-    public ::PROTOBUF_NAMESPACE_ID::Message /* @@protoc_insertion_point(class_definition:proxy_proto.CordLocalParityBundle) */ {
+class UpLRCLocalParityBundle final :
+    public ::PROTOBUF_NAMESPACE_ID::Message /* @@protoc_insertion_point(class_definition:proxy_proto.UpLRCLocalParityBundle) */ {
  public:
-  inline CordLocalParityBundle() : CordLocalParityBundle(nullptr) {}
-  ~CordLocalParityBundle() override;
-  explicit PROTOBUF_CONSTEXPR CordLocalParityBundle(::PROTOBUF_NAMESPACE_ID::internal::ConstantInitialized);
+  inline UpLRCLocalParityBundle() : UpLRCLocalParityBundle(nullptr) {}
+  ~UpLRCLocalParityBundle() override;
+  explicit PROTOBUF_CONSTEXPR UpLRCLocalParityBundle(::PROTOBUF_NAMESPACE_ID::internal::ConstantInitialized);
 
-  CordLocalParityBundle(const CordLocalParityBundle& from);
-  CordLocalParityBundle(CordLocalParityBundle&& from) noexcept
-    : CordLocalParityBundle() {
+  UpLRCLocalParityBundle(const UpLRCLocalParityBundle& from);
+  UpLRCLocalParityBundle(UpLRCLocalParityBundle&& from) noexcept
+    : UpLRCLocalParityBundle() {
     *this = ::std::move(from);
   }
 
-  inline CordLocalParityBundle& operator=(const CordLocalParityBundle& from) {
+  inline UpLRCLocalParityBundle& operator=(const UpLRCLocalParityBundle& from) {
     CopyFrom(from);
     return *this;
   }
-  inline CordLocalParityBundle& operator=(CordLocalParityBundle&& from) noexcept {
+  inline UpLRCLocalParityBundle& operator=(UpLRCLocalParityBundle&& from) noexcept {
     if (this == &from) return *this;
     if (GetOwningArena() == from.GetOwningArena()
   #ifdef PROTOBUF_FORCE_COPY_IN_MOVE
@@ -10229,20 +10229,20 @@ class CordLocalParityBundle final :
   static const ::PROTOBUF_NAMESPACE_ID::Reflection* GetReflection() {
     return default_instance().GetMetadata().reflection;
   }
-  static const CordLocalParityBundle& default_instance() {
+  static const UpLRCLocalParityBundle& default_instance() {
     return *internal_default_instance();
   }
-  static inline const CordLocalParityBundle* internal_default_instance() {
-    return reinterpret_cast<const CordLocalParityBundle*>(
-               &_CordLocalParityBundle_default_instance_);
+  static inline const UpLRCLocalParityBundle* internal_default_instance() {
+    return reinterpret_cast<const UpLRCLocalParityBundle*>(
+               &_UpLRCLocalParityBundle_default_instance_);
   }
   static constexpr int kIndexInFileMessages =
     41;
 
-  friend void swap(CordLocalParityBundle& a, CordLocalParityBundle& b) {
+  friend void swap(UpLRCLocalParityBundle& a, UpLRCLocalParityBundle& b) {
     a.Swap(&b);
   }
-  inline void Swap(CordLocalParityBundle* other) {
+  inline void Swap(UpLRCLocalParityBundle* other) {
     if (other == this) return;
   #ifdef PROTOBUF_FORCE_COPY_IN_SWAP
     if (GetOwningArena() != nullptr &&
@@ -10255,7 +10255,7 @@ class CordLocalParityBundle final :
       ::PROTOBUF_NAMESPACE_ID::internal::GenericSwap(this, other);
     }
   }
-  void UnsafeArenaSwap(CordLocalParityBundle* other) {
+  void UnsafeArenaSwap(UpLRCLocalParityBundle* other) {
     if (other == this) return;
     GOOGLE_DCHECK(GetOwningArena() == other->GetOwningArena());
     InternalSwap(other);
@@ -10263,14 +10263,14 @@ class CordLocalParityBundle final :
 
   // implements Message ----------------------------------------------
 
-  CordLocalParityBundle* New(::PROTOBUF_NAMESPACE_ID::Arena* arena = nullptr) const final {
-    return CreateMaybeMessage<CordLocalParityBundle>(arena);
+  UpLRCLocalParityBundle* New(::PROTOBUF_NAMESPACE_ID::Arena* arena = nullptr) const final {
+    return CreateMaybeMessage<UpLRCLocalParityBundle>(arena);
   }
   using ::PROTOBUF_NAMESPACE_ID::Message::CopyFrom;
-  void CopyFrom(const CordLocalParityBundle& from);
+  void CopyFrom(const UpLRCLocalParityBundle& from);
   using ::PROTOBUF_NAMESPACE_ID::Message::MergeFrom;
-  void MergeFrom( const CordLocalParityBundle& from) {
-    CordLocalParityBundle::MergeImpl(*this, from);
+  void MergeFrom( const UpLRCLocalParityBundle& from) {
+    UpLRCLocalParityBundle::MergeImpl(*this, from);
   }
   private:
   static void MergeImpl(::PROTOBUF_NAMESPACE_ID::Message& to_msg, const ::PROTOBUF_NAMESPACE_ID::Message& from_msg);
@@ -10288,15 +10288,15 @@ class CordLocalParityBundle final :
   void SharedCtor(::PROTOBUF_NAMESPACE_ID::Arena* arena, bool is_message_owned);
   void SharedDtor();
   void SetCachedSize(int size) const final;
-  void InternalSwap(CordLocalParityBundle* other);
+  void InternalSwap(UpLRCLocalParityBundle* other);
 
   private:
   friend class ::PROTOBUF_NAMESPACE_ID::internal::AnyMetadata;
   static ::PROTOBUF_NAMESPACE_ID::StringPiece FullMessageName() {
-    return "proxy_proto.CordLocalParityBundle";
+    return "proxy_proto.UpLRCLocalParityBundle";
   }
   protected:
-  explicit CordLocalParityBundle(::PROTOBUF_NAMESPACE_ID::Arena* arena,
+  explicit UpLRCLocalParityBundle(::PROTOBUF_NAMESPACE_ID::Arena* arena,
                        bool is_message_owned = false);
   public:
 
@@ -10314,22 +10314,22 @@ class CordLocalParityBundle final :
     kKeyFieldNumber = 1,
     kStripeIdFieldNumber = 2,
   };
-  // repeated .proxy_proto.CordLpWorkItem items = 3;
+  // repeated .proxy_proto.UpLRCLpWorkItem items = 3;
   int items_size() const;
   private:
   int _internal_items_size() const;
   public:
   void clear_items();
-  ::proxy_proto::CordLpWorkItem* mutable_items(int index);
-  ::PROTOBUF_NAMESPACE_ID::RepeatedPtrField< ::proxy_proto::CordLpWorkItem >*
+  ::proxy_proto::UpLRCLpWorkItem* mutable_items(int index);
+  ::PROTOBUF_NAMESPACE_ID::RepeatedPtrField< ::proxy_proto::UpLRCLpWorkItem >*
       mutable_items();
   private:
-  const ::proxy_proto::CordLpWorkItem& _internal_items(int index) const;
-  ::proxy_proto::CordLpWorkItem* _internal_add_items();
+  const ::proxy_proto::UpLRCLpWorkItem& _internal_items(int index) const;
+  ::proxy_proto::UpLRCLpWorkItem* _internal_add_items();
   public:
-  const ::proxy_proto::CordLpWorkItem& items(int index) const;
-  ::proxy_proto::CordLpWorkItem* add_items();
-  const ::PROTOBUF_NAMESPACE_ID::RepeatedPtrField< ::proxy_proto::CordLpWorkItem >&
+  const ::proxy_proto::UpLRCLpWorkItem& items(int index) const;
+  ::proxy_proto::UpLRCLpWorkItem* add_items();
+  const ::PROTOBUF_NAMESPACE_ID::RepeatedPtrField< ::proxy_proto::UpLRCLpWorkItem >&
       items() const;
 
   // string key = 1;
@@ -10355,7 +10355,7 @@ class CordLocalParityBundle final :
   void _internal_set_stripe_id(int32_t value);
   public:
 
-  // @@protoc_insertion_point(class_scope:proxy_proto.CordLocalParityBundle)
+  // @@protoc_insertion_point(class_scope:proxy_proto.UpLRCLocalParityBundle)
  private:
   class _Internal;
 
@@ -10363,7 +10363,7 @@ class CordLocalParityBundle final :
   typedef void InternalArenaConstructable_;
   typedef void DestructorSkippable_;
   struct Impl_ {
-    ::PROTOBUF_NAMESPACE_ID::RepeatedPtrField< ::proxy_proto::CordLpWorkItem > items_;
+    ::PROTOBUF_NAMESPACE_ID::RepeatedPtrField< ::proxy_proto::UpLRCLpWorkItem > items_;
     ::PROTOBUF_NAMESPACE_ID::internal::ArenaStringPtr key_;
     int32_t stripe_id_;
     mutable ::PROTOBUF_NAMESPACE_ID::internal::CachedSize _cached_size_;
@@ -10373,24 +10373,24 @@ class CordLocalParityBundle final :
 };
 // -------------------------------------------------------------------
 
-class CordLpHubSessionBegin final :
-    public ::PROTOBUF_NAMESPACE_ID::Message /* @@protoc_insertion_point(class_definition:proxy_proto.CordLpHubSessionBegin) */ {
+class UpLRCLpHubSessionBegin final :
+    public ::PROTOBUF_NAMESPACE_ID::Message /* @@protoc_insertion_point(class_definition:proxy_proto.UpLRCLpHubSessionBegin) */ {
  public:
-  inline CordLpHubSessionBegin() : CordLpHubSessionBegin(nullptr) {}
-  ~CordLpHubSessionBegin() override;
-  explicit PROTOBUF_CONSTEXPR CordLpHubSessionBegin(::PROTOBUF_NAMESPACE_ID::internal::ConstantInitialized);
+  inline UpLRCLpHubSessionBegin() : UpLRCLpHubSessionBegin(nullptr) {}
+  ~UpLRCLpHubSessionBegin() override;
+  explicit PROTOBUF_CONSTEXPR UpLRCLpHubSessionBegin(::PROTOBUF_NAMESPACE_ID::internal::ConstantInitialized);
 
-  CordLpHubSessionBegin(const CordLpHubSessionBegin& from);
-  CordLpHubSessionBegin(CordLpHubSessionBegin&& from) noexcept
-    : CordLpHubSessionBegin() {
+  UpLRCLpHubSessionBegin(const UpLRCLpHubSessionBegin& from);
+  UpLRCLpHubSessionBegin(UpLRCLpHubSessionBegin&& from) noexcept
+    : UpLRCLpHubSessionBegin() {
     *this = ::std::move(from);
   }
 
-  inline CordLpHubSessionBegin& operator=(const CordLpHubSessionBegin& from) {
+  inline UpLRCLpHubSessionBegin& operator=(const UpLRCLpHubSessionBegin& from) {
     CopyFrom(from);
     return *this;
   }
-  inline CordLpHubSessionBegin& operator=(CordLpHubSessionBegin&& from) noexcept {
+  inline UpLRCLpHubSessionBegin& operator=(UpLRCLpHubSessionBegin&& from) noexcept {
     if (this == &from) return *this;
     if (GetOwningArena() == from.GetOwningArena()
   #ifdef PROTOBUF_FORCE_COPY_IN_MOVE
@@ -10413,20 +10413,20 @@ class CordLpHubSessionBegin final :
   static const ::PROTOBUF_NAMESPACE_ID::Reflection* GetReflection() {
     return default_instance().GetMetadata().reflection;
   }
-  static const CordLpHubSessionBegin& default_instance() {
+  static const UpLRCLpHubSessionBegin& default_instance() {
     return *internal_default_instance();
   }
-  static inline const CordLpHubSessionBegin* internal_default_instance() {
-    return reinterpret_cast<const CordLpHubSessionBegin*>(
-               &_CordLpHubSessionBegin_default_instance_);
+  static inline const UpLRCLpHubSessionBegin* internal_default_instance() {
+    return reinterpret_cast<const UpLRCLpHubSessionBegin*>(
+               &_UpLRCLpHubSessionBegin_default_instance_);
   }
   static constexpr int kIndexInFileMessages =
     42;
 
-  friend void swap(CordLpHubSessionBegin& a, CordLpHubSessionBegin& b) {
+  friend void swap(UpLRCLpHubSessionBegin& a, UpLRCLpHubSessionBegin& b) {
     a.Swap(&b);
   }
-  inline void Swap(CordLpHubSessionBegin* other) {
+  inline void Swap(UpLRCLpHubSessionBegin* other) {
     if (other == this) return;
   #ifdef PROTOBUF_FORCE_COPY_IN_SWAP
     if (GetOwningArena() != nullptr &&
@@ -10439,7 +10439,7 @@ class CordLpHubSessionBegin final :
       ::PROTOBUF_NAMESPACE_ID::internal::GenericSwap(this, other);
     }
   }
-  void UnsafeArenaSwap(CordLpHubSessionBegin* other) {
+  void UnsafeArenaSwap(UpLRCLpHubSessionBegin* other) {
     if (other == this) return;
     GOOGLE_DCHECK(GetOwningArena() == other->GetOwningArena());
     InternalSwap(other);
@@ -10447,14 +10447,14 @@ class CordLpHubSessionBegin final :
 
   // implements Message ----------------------------------------------
 
-  CordLpHubSessionBegin* New(::PROTOBUF_NAMESPACE_ID::Arena* arena = nullptr) const final {
-    return CreateMaybeMessage<CordLpHubSessionBegin>(arena);
+  UpLRCLpHubSessionBegin* New(::PROTOBUF_NAMESPACE_ID::Arena* arena = nullptr) const final {
+    return CreateMaybeMessage<UpLRCLpHubSessionBegin>(arena);
   }
   using ::PROTOBUF_NAMESPACE_ID::Message::CopyFrom;
-  void CopyFrom(const CordLpHubSessionBegin& from);
+  void CopyFrom(const UpLRCLpHubSessionBegin& from);
   using ::PROTOBUF_NAMESPACE_ID::Message::MergeFrom;
-  void MergeFrom( const CordLpHubSessionBegin& from) {
-    CordLpHubSessionBegin::MergeImpl(*this, from);
+  void MergeFrom( const UpLRCLpHubSessionBegin& from) {
+    UpLRCLpHubSessionBegin::MergeImpl(*this, from);
   }
   private:
   static void MergeImpl(::PROTOBUF_NAMESPACE_ID::Message& to_msg, const ::PROTOBUF_NAMESPACE_ID::Message& from_msg);
@@ -10472,15 +10472,15 @@ class CordLpHubSessionBegin final :
   void SharedCtor(::PROTOBUF_NAMESPACE_ID::Arena* arena, bool is_message_owned);
   void SharedDtor();
   void SetCachedSize(int size) const final;
-  void InternalSwap(CordLpHubSessionBegin* other);
+  void InternalSwap(UpLRCLpHubSessionBegin* other);
 
   private:
   friend class ::PROTOBUF_NAMESPACE_ID::internal::AnyMetadata;
   static ::PROTOBUF_NAMESPACE_ID::StringPiece FullMessageName() {
-    return "proxy_proto.CordLpHubSessionBegin";
+    return "proxy_proto.UpLRCLpHubSessionBegin";
   }
   protected:
-  explicit CordLpHubSessionBegin(::PROTOBUF_NAMESPACE_ID::Arena* arena,
+  explicit UpLRCLpHubSessionBegin(::PROTOBUF_NAMESPACE_ID::Arena* arena,
                        bool is_message_owned = false);
   public:
 
@@ -10635,7 +10635,7 @@ class CordLpHubSessionBegin final :
   void _internal_set_hub_global_block_id(int32_t value);
   public:
 
-  // @@protoc_insertion_point(class_scope:proxy_proto.CordLpHubSessionBegin)
+  // @@protoc_insertion_point(class_scope:proxy_proto.UpLRCLpHubSessionBegin)
  private:
   class _Internal;
 
@@ -10662,24 +10662,24 @@ class CordLpHubSessionBegin final :
 };
 // -------------------------------------------------------------------
 
-class CordLpHubPartialPush final :
-    public ::PROTOBUF_NAMESPACE_ID::Message /* @@protoc_insertion_point(class_definition:proxy_proto.CordLpHubPartialPush) */ {
+class UpLRCLpHubPartialPush final :
+    public ::PROTOBUF_NAMESPACE_ID::Message /* @@protoc_insertion_point(class_definition:proxy_proto.UpLRCLpHubPartialPush) */ {
  public:
-  inline CordLpHubPartialPush() : CordLpHubPartialPush(nullptr) {}
-  ~CordLpHubPartialPush() override;
-  explicit PROTOBUF_CONSTEXPR CordLpHubPartialPush(::PROTOBUF_NAMESPACE_ID::internal::ConstantInitialized);
+  inline UpLRCLpHubPartialPush() : UpLRCLpHubPartialPush(nullptr) {}
+  ~UpLRCLpHubPartialPush() override;
+  explicit PROTOBUF_CONSTEXPR UpLRCLpHubPartialPush(::PROTOBUF_NAMESPACE_ID::internal::ConstantInitialized);
 
-  CordLpHubPartialPush(const CordLpHubPartialPush& from);
-  CordLpHubPartialPush(CordLpHubPartialPush&& from) noexcept
-    : CordLpHubPartialPush() {
+  UpLRCLpHubPartialPush(const UpLRCLpHubPartialPush& from);
+  UpLRCLpHubPartialPush(UpLRCLpHubPartialPush&& from) noexcept
+    : UpLRCLpHubPartialPush() {
     *this = ::std::move(from);
   }
 
-  inline CordLpHubPartialPush& operator=(const CordLpHubPartialPush& from) {
+  inline UpLRCLpHubPartialPush& operator=(const UpLRCLpHubPartialPush& from) {
     CopyFrom(from);
     return *this;
   }
-  inline CordLpHubPartialPush& operator=(CordLpHubPartialPush&& from) noexcept {
+  inline UpLRCLpHubPartialPush& operator=(UpLRCLpHubPartialPush&& from) noexcept {
     if (this == &from) return *this;
     if (GetOwningArena() == from.GetOwningArena()
   #ifdef PROTOBUF_FORCE_COPY_IN_MOVE
@@ -10702,20 +10702,20 @@ class CordLpHubPartialPush final :
   static const ::PROTOBUF_NAMESPACE_ID::Reflection* GetReflection() {
     return default_instance().GetMetadata().reflection;
   }
-  static const CordLpHubPartialPush& default_instance() {
+  static const UpLRCLpHubPartialPush& default_instance() {
     return *internal_default_instance();
   }
-  static inline const CordLpHubPartialPush* internal_default_instance() {
-    return reinterpret_cast<const CordLpHubPartialPush*>(
-               &_CordLpHubPartialPush_default_instance_);
+  static inline const UpLRCLpHubPartialPush* internal_default_instance() {
+    return reinterpret_cast<const UpLRCLpHubPartialPush*>(
+               &_UpLRCLpHubPartialPush_default_instance_);
   }
   static constexpr int kIndexInFileMessages =
     43;
 
-  friend void swap(CordLpHubPartialPush& a, CordLpHubPartialPush& b) {
+  friend void swap(UpLRCLpHubPartialPush& a, UpLRCLpHubPartialPush& b) {
     a.Swap(&b);
   }
-  inline void Swap(CordLpHubPartialPush* other) {
+  inline void Swap(UpLRCLpHubPartialPush* other) {
     if (other == this) return;
   #ifdef PROTOBUF_FORCE_COPY_IN_SWAP
     if (GetOwningArena() != nullptr &&
@@ -10728,7 +10728,7 @@ class CordLpHubPartialPush final :
       ::PROTOBUF_NAMESPACE_ID::internal::GenericSwap(this, other);
     }
   }
-  void UnsafeArenaSwap(CordLpHubPartialPush* other) {
+  void UnsafeArenaSwap(UpLRCLpHubPartialPush* other) {
     if (other == this) return;
     GOOGLE_DCHECK(GetOwningArena() == other->GetOwningArena());
     InternalSwap(other);
@@ -10736,14 +10736,14 @@ class CordLpHubPartialPush final :
 
   // implements Message ----------------------------------------------
 
-  CordLpHubPartialPush* New(::PROTOBUF_NAMESPACE_ID::Arena* arena = nullptr) const final {
-    return CreateMaybeMessage<CordLpHubPartialPush>(arena);
+  UpLRCLpHubPartialPush* New(::PROTOBUF_NAMESPACE_ID::Arena* arena = nullptr) const final {
+    return CreateMaybeMessage<UpLRCLpHubPartialPush>(arena);
   }
   using ::PROTOBUF_NAMESPACE_ID::Message::CopyFrom;
-  void CopyFrom(const CordLpHubPartialPush& from);
+  void CopyFrom(const UpLRCLpHubPartialPush& from);
   using ::PROTOBUF_NAMESPACE_ID::Message::MergeFrom;
-  void MergeFrom( const CordLpHubPartialPush& from) {
-    CordLpHubPartialPush::MergeImpl(*this, from);
+  void MergeFrom( const UpLRCLpHubPartialPush& from) {
+    UpLRCLpHubPartialPush::MergeImpl(*this, from);
   }
   private:
   static void MergeImpl(::PROTOBUF_NAMESPACE_ID::Message& to_msg, const ::PROTOBUF_NAMESPACE_ID::Message& from_msg);
@@ -10761,15 +10761,15 @@ class CordLpHubPartialPush final :
   void SharedCtor(::PROTOBUF_NAMESPACE_ID::Arena* arena, bool is_message_owned);
   void SharedDtor();
   void SetCachedSize(int size) const final;
-  void InternalSwap(CordLpHubPartialPush* other);
+  void InternalSwap(UpLRCLpHubPartialPush* other);
 
   private:
   friend class ::PROTOBUF_NAMESPACE_ID::internal::AnyMetadata;
   static ::PROTOBUF_NAMESPACE_ID::StringPiece FullMessageName() {
-    return "proxy_proto.CordLpHubPartialPush";
+    return "proxy_proto.UpLRCLpHubPartialPush";
   }
   protected:
-  explicit CordLpHubPartialPush(::PROTOBUF_NAMESPACE_ID::Arena* arena,
+  explicit UpLRCLpHubPartialPush(::PROTOBUF_NAMESPACE_ID::Arena* arena,
                        bool is_message_owned = false);
   public:
 
@@ -10814,7 +10814,7 @@ class CordLpHubPartialPush final :
   std::string* _internal_mutable_partial_payload();
   public:
 
-  // @@protoc_insertion_point(class_scope:proxy_proto.CordLpHubPartialPush)
+  // @@protoc_insertion_point(class_scope:proxy_proto.UpLRCLpHubPartialPush)
  private:
   class _Internal;
 
@@ -10831,24 +10831,24 @@ class CordLpHubPartialPush final :
 };
 // -------------------------------------------------------------------
 
-class CordLpComputePartialAndPush final :
-    public ::PROTOBUF_NAMESPACE_ID::Message /* @@protoc_insertion_point(class_definition:proxy_proto.CordLpComputePartialAndPush) */ {
+class UpLRCLpComputePartialAndPush final :
+    public ::PROTOBUF_NAMESPACE_ID::Message /* @@protoc_insertion_point(class_definition:proxy_proto.UpLRCLpComputePartialAndPush) */ {
  public:
-  inline CordLpComputePartialAndPush() : CordLpComputePartialAndPush(nullptr) {}
-  ~CordLpComputePartialAndPush() override;
-  explicit PROTOBUF_CONSTEXPR CordLpComputePartialAndPush(::PROTOBUF_NAMESPACE_ID::internal::ConstantInitialized);
+  inline UpLRCLpComputePartialAndPush() : UpLRCLpComputePartialAndPush(nullptr) {}
+  ~UpLRCLpComputePartialAndPush() override;
+  explicit PROTOBUF_CONSTEXPR UpLRCLpComputePartialAndPush(::PROTOBUF_NAMESPACE_ID::internal::ConstantInitialized);
 
-  CordLpComputePartialAndPush(const CordLpComputePartialAndPush& from);
-  CordLpComputePartialAndPush(CordLpComputePartialAndPush&& from) noexcept
-    : CordLpComputePartialAndPush() {
+  UpLRCLpComputePartialAndPush(const UpLRCLpComputePartialAndPush& from);
+  UpLRCLpComputePartialAndPush(UpLRCLpComputePartialAndPush&& from) noexcept
+    : UpLRCLpComputePartialAndPush() {
     *this = ::std::move(from);
   }
 
-  inline CordLpComputePartialAndPush& operator=(const CordLpComputePartialAndPush& from) {
+  inline UpLRCLpComputePartialAndPush& operator=(const UpLRCLpComputePartialAndPush& from) {
     CopyFrom(from);
     return *this;
   }
-  inline CordLpComputePartialAndPush& operator=(CordLpComputePartialAndPush&& from) noexcept {
+  inline UpLRCLpComputePartialAndPush& operator=(UpLRCLpComputePartialAndPush&& from) noexcept {
     if (this == &from) return *this;
     if (GetOwningArena() == from.GetOwningArena()
   #ifdef PROTOBUF_FORCE_COPY_IN_MOVE
@@ -10871,20 +10871,20 @@ class CordLpComputePartialAndPush final :
   static const ::PROTOBUF_NAMESPACE_ID::Reflection* GetReflection() {
     return default_instance().GetMetadata().reflection;
   }
-  static const CordLpComputePartialAndPush& default_instance() {
+  static const UpLRCLpComputePartialAndPush& default_instance() {
     return *internal_default_instance();
   }
-  static inline const CordLpComputePartialAndPush* internal_default_instance() {
-    return reinterpret_cast<const CordLpComputePartialAndPush*>(
-               &_CordLpComputePartialAndPush_default_instance_);
+  static inline const UpLRCLpComputePartialAndPush* internal_default_instance() {
+    return reinterpret_cast<const UpLRCLpComputePartialAndPush*>(
+               &_UpLRCLpComputePartialAndPush_default_instance_);
   }
   static constexpr int kIndexInFileMessages =
     44;
 
-  friend void swap(CordLpComputePartialAndPush& a, CordLpComputePartialAndPush& b) {
+  friend void swap(UpLRCLpComputePartialAndPush& a, UpLRCLpComputePartialAndPush& b) {
     a.Swap(&b);
   }
-  inline void Swap(CordLpComputePartialAndPush* other) {
+  inline void Swap(UpLRCLpComputePartialAndPush* other) {
     if (other == this) return;
   #ifdef PROTOBUF_FORCE_COPY_IN_SWAP
     if (GetOwningArena() != nullptr &&
@@ -10897,7 +10897,7 @@ class CordLpComputePartialAndPush final :
       ::PROTOBUF_NAMESPACE_ID::internal::GenericSwap(this, other);
     }
   }
-  void UnsafeArenaSwap(CordLpComputePartialAndPush* other) {
+  void UnsafeArenaSwap(UpLRCLpComputePartialAndPush* other) {
     if (other == this) return;
     GOOGLE_DCHECK(GetOwningArena() == other->GetOwningArena());
     InternalSwap(other);
@@ -10905,14 +10905,14 @@ class CordLpComputePartialAndPush final :
 
   // implements Message ----------------------------------------------
 
-  CordLpComputePartialAndPush* New(::PROTOBUF_NAMESPACE_ID::Arena* arena = nullptr) const final {
-    return CreateMaybeMessage<CordLpComputePartialAndPush>(arena);
+  UpLRCLpComputePartialAndPush* New(::PROTOBUF_NAMESPACE_ID::Arena* arena = nullptr) const final {
+    return CreateMaybeMessage<UpLRCLpComputePartialAndPush>(arena);
   }
   using ::PROTOBUF_NAMESPACE_ID::Message::CopyFrom;
-  void CopyFrom(const CordLpComputePartialAndPush& from);
+  void CopyFrom(const UpLRCLpComputePartialAndPush& from);
   using ::PROTOBUF_NAMESPACE_ID::Message::MergeFrom;
-  void MergeFrom( const CordLpComputePartialAndPush& from) {
-    CordLpComputePartialAndPush::MergeImpl(*this, from);
+  void MergeFrom( const UpLRCLpComputePartialAndPush& from) {
+    UpLRCLpComputePartialAndPush::MergeImpl(*this, from);
   }
   private:
   static void MergeImpl(::PROTOBUF_NAMESPACE_ID::Message& to_msg, const ::PROTOBUF_NAMESPACE_ID::Message& from_msg);
@@ -10930,15 +10930,15 @@ class CordLpComputePartialAndPush final :
   void SharedCtor(::PROTOBUF_NAMESPACE_ID::Arena* arena, bool is_message_owned);
   void SharedDtor();
   void SetCachedSize(int size) const final;
-  void InternalSwap(CordLpComputePartialAndPush* other);
+  void InternalSwap(UpLRCLpComputePartialAndPush* other);
 
   private:
   friend class ::PROTOBUF_NAMESPACE_ID::internal::AnyMetadata;
   static ::PROTOBUF_NAMESPACE_ID::StringPiece FullMessageName() {
-    return "proxy_proto.CordLpComputePartialAndPush";
+    return "proxy_proto.UpLRCLpComputePartialAndPush";
   }
   protected:
-  explicit CordLpComputePartialAndPush(::PROTOBUF_NAMESPACE_ID::Arena* arena,
+  explicit UpLRCLpComputePartialAndPush(::PROTOBUF_NAMESPACE_ID::Arena* arena,
                        bool is_message_owned = false);
   public:
 
@@ -10961,22 +10961,22 @@ class CordLpComputePartialAndPush final :
     kDeltaDatanodePortFieldNumber = 6,
     kParitySliceSizeFieldNumber = 7,
   };
-  // repeated .proxy_proto.CordLpDeltaFetch fetches = 8;
+  // repeated .proxy_proto.UpLRCLpDeltaFetch fetches = 8;
   int fetches_size() const;
   private:
   int _internal_fetches_size() const;
   public:
   void clear_fetches();
-  ::proxy_proto::CordLpDeltaFetch* mutable_fetches(int index);
-  ::PROTOBUF_NAMESPACE_ID::RepeatedPtrField< ::proxy_proto::CordLpDeltaFetch >*
+  ::proxy_proto::UpLRCLpDeltaFetch* mutable_fetches(int index);
+  ::PROTOBUF_NAMESPACE_ID::RepeatedPtrField< ::proxy_proto::UpLRCLpDeltaFetch >*
       mutable_fetches();
   private:
-  const ::proxy_proto::CordLpDeltaFetch& _internal_fetches(int index) const;
-  ::proxy_proto::CordLpDeltaFetch* _internal_add_fetches();
+  const ::proxy_proto::UpLRCLpDeltaFetch& _internal_fetches(int index) const;
+  ::proxy_proto::UpLRCLpDeltaFetch* _internal_add_fetches();
   public:
-  const ::proxy_proto::CordLpDeltaFetch& fetches(int index) const;
-  ::proxy_proto::CordLpDeltaFetch* add_fetches();
-  const ::PROTOBUF_NAMESPACE_ID::RepeatedPtrField< ::proxy_proto::CordLpDeltaFetch >&
+  const ::proxy_proto::UpLRCLpDeltaFetch& fetches(int index) const;
+  ::proxy_proto::UpLRCLpDeltaFetch* add_fetches();
+  const ::PROTOBUF_NAMESPACE_ID::RepeatedPtrField< ::proxy_proto::UpLRCLpDeltaFetch >&
       fetches() const;
 
   // string session_key = 1;
@@ -11062,7 +11062,7 @@ class CordLpComputePartialAndPush final :
   void _internal_set_parity_slice_size(int32_t value);
   public:
 
-  // @@protoc_insertion_point(class_scope:proxy_proto.CordLpComputePartialAndPush)
+  // @@protoc_insertion_point(class_scope:proxy_proto.UpLRCLpComputePartialAndPush)
  private:
   class _Internal;
 
@@ -11070,7 +11070,7 @@ class CordLpComputePartialAndPush final :
   typedef void InternalArenaConstructable_;
   typedef void DestructorSkippable_;
   struct Impl_ {
-    ::PROTOBUF_NAMESPACE_ID::RepeatedPtrField< ::proxy_proto::CordLpDeltaFetch > fetches_;
+    ::PROTOBUF_NAMESPACE_ID::RepeatedPtrField< ::proxy_proto::UpLRCLpDeltaFetch > fetches_;
     ::PROTOBUF_NAMESPACE_ID::internal::ArenaStringPtr session_key_;
     ::PROTOBUF_NAMESPACE_ID::internal::ArenaStringPtr hub_proxy_ip_;
     ::PROTOBUF_NAMESPACE_ID::internal::ArenaStringPtr delta_blob_key_;
@@ -11085,24 +11085,24 @@ class CordLpComputePartialAndPush final :
 };
 // -------------------------------------------------------------------
 
-class CordLpParityApplyDelta final :
-    public ::PROTOBUF_NAMESPACE_ID::Message /* @@protoc_insertion_point(class_definition:proxy_proto.CordLpParityApplyDelta) */ {
+class UpLRCLpParityApplyDelta final :
+    public ::PROTOBUF_NAMESPACE_ID::Message /* @@protoc_insertion_point(class_definition:proxy_proto.UpLRCLpParityApplyDelta) */ {
  public:
-  inline CordLpParityApplyDelta() : CordLpParityApplyDelta(nullptr) {}
-  ~CordLpParityApplyDelta() override;
-  explicit PROTOBUF_CONSTEXPR CordLpParityApplyDelta(::PROTOBUF_NAMESPACE_ID::internal::ConstantInitialized);
+  inline UpLRCLpParityApplyDelta() : UpLRCLpParityApplyDelta(nullptr) {}
+  ~UpLRCLpParityApplyDelta() override;
+  explicit PROTOBUF_CONSTEXPR UpLRCLpParityApplyDelta(::PROTOBUF_NAMESPACE_ID::internal::ConstantInitialized);
 
-  CordLpParityApplyDelta(const CordLpParityApplyDelta& from);
-  CordLpParityApplyDelta(CordLpParityApplyDelta&& from) noexcept
-    : CordLpParityApplyDelta() {
+  UpLRCLpParityApplyDelta(const UpLRCLpParityApplyDelta& from);
+  UpLRCLpParityApplyDelta(UpLRCLpParityApplyDelta&& from) noexcept
+    : UpLRCLpParityApplyDelta() {
     *this = ::std::move(from);
   }
 
-  inline CordLpParityApplyDelta& operator=(const CordLpParityApplyDelta& from) {
+  inline UpLRCLpParityApplyDelta& operator=(const UpLRCLpParityApplyDelta& from) {
     CopyFrom(from);
     return *this;
   }
-  inline CordLpParityApplyDelta& operator=(CordLpParityApplyDelta&& from) noexcept {
+  inline UpLRCLpParityApplyDelta& operator=(UpLRCLpParityApplyDelta&& from) noexcept {
     if (this == &from) return *this;
     if (GetOwningArena() == from.GetOwningArena()
   #ifdef PROTOBUF_FORCE_COPY_IN_MOVE
@@ -11125,20 +11125,20 @@ class CordLpParityApplyDelta final :
   static const ::PROTOBUF_NAMESPACE_ID::Reflection* GetReflection() {
     return default_instance().GetMetadata().reflection;
   }
-  static const CordLpParityApplyDelta& default_instance() {
+  static const UpLRCLpParityApplyDelta& default_instance() {
     return *internal_default_instance();
   }
-  static inline const CordLpParityApplyDelta* internal_default_instance() {
-    return reinterpret_cast<const CordLpParityApplyDelta*>(
-               &_CordLpParityApplyDelta_default_instance_);
+  static inline const UpLRCLpParityApplyDelta* internal_default_instance() {
+    return reinterpret_cast<const UpLRCLpParityApplyDelta*>(
+               &_UpLRCLpParityApplyDelta_default_instance_);
   }
   static constexpr int kIndexInFileMessages =
     45;
 
-  friend void swap(CordLpParityApplyDelta& a, CordLpParityApplyDelta& b) {
+  friend void swap(UpLRCLpParityApplyDelta& a, UpLRCLpParityApplyDelta& b) {
     a.Swap(&b);
   }
-  inline void Swap(CordLpParityApplyDelta* other) {
+  inline void Swap(UpLRCLpParityApplyDelta* other) {
     if (other == this) return;
   #ifdef PROTOBUF_FORCE_COPY_IN_SWAP
     if (GetOwningArena() != nullptr &&
@@ -11151,7 +11151,7 @@ class CordLpParityApplyDelta final :
       ::PROTOBUF_NAMESPACE_ID::internal::GenericSwap(this, other);
     }
   }
-  void UnsafeArenaSwap(CordLpParityApplyDelta* other) {
+  void UnsafeArenaSwap(UpLRCLpParityApplyDelta* other) {
     if (other == this) return;
     GOOGLE_DCHECK(GetOwningArena() == other->GetOwningArena());
     InternalSwap(other);
@@ -11159,14 +11159,14 @@ class CordLpParityApplyDelta final :
 
   // implements Message ----------------------------------------------
 
-  CordLpParityApplyDelta* New(::PROTOBUF_NAMESPACE_ID::Arena* arena = nullptr) const final {
-    return CreateMaybeMessage<CordLpParityApplyDelta>(arena);
+  UpLRCLpParityApplyDelta* New(::PROTOBUF_NAMESPACE_ID::Arena* arena = nullptr) const final {
+    return CreateMaybeMessage<UpLRCLpParityApplyDelta>(arena);
   }
   using ::PROTOBUF_NAMESPACE_ID::Message::CopyFrom;
-  void CopyFrom(const CordLpParityApplyDelta& from);
+  void CopyFrom(const UpLRCLpParityApplyDelta& from);
   using ::PROTOBUF_NAMESPACE_ID::Message::MergeFrom;
-  void MergeFrom( const CordLpParityApplyDelta& from) {
-    CordLpParityApplyDelta::MergeImpl(*this, from);
+  void MergeFrom( const UpLRCLpParityApplyDelta& from) {
+    UpLRCLpParityApplyDelta::MergeImpl(*this, from);
   }
   private:
   static void MergeImpl(::PROTOBUF_NAMESPACE_ID::Message& to_msg, const ::PROTOBUF_NAMESPACE_ID::Message& from_msg);
@@ -11184,15 +11184,15 @@ class CordLpParityApplyDelta final :
   void SharedCtor(::PROTOBUF_NAMESPACE_ID::Arena* arena, bool is_message_owned);
   void SharedDtor();
   void SetCachedSize(int size) const final;
-  void InternalSwap(CordLpParityApplyDelta* other);
+  void InternalSwap(UpLRCLpParityApplyDelta* other);
 
   private:
   friend class ::PROTOBUF_NAMESPACE_ID::internal::AnyMetadata;
   static ::PROTOBUF_NAMESPACE_ID::StringPiece FullMessageName() {
-    return "proxy_proto.CordLpParityApplyDelta";
+    return "proxy_proto.UpLRCLpParityApplyDelta";
   }
   protected:
-  explicit CordLpParityApplyDelta(::PROTOBUF_NAMESPACE_ID::Arena* arena,
+  explicit UpLRCLpParityApplyDelta(::PROTOBUF_NAMESPACE_ID::Arena* arena,
                        bool is_message_owned = false);
   public:
 
@@ -11302,7 +11302,7 @@ class CordLpParityApplyDelta final :
   void _internal_set_parity_slice_size(int32_t value);
   public:
 
-  // @@protoc_insertion_point(class_scope:proxy_proto.CordLpParityApplyDelta)
+  // @@protoc_insertion_point(class_scope:proxy_proto.UpLRCLpParityApplyDelta)
  private:
   class _Internal;
 
@@ -11446,37 +11446,37 @@ class SetReply final :
   // accessors -------------------------------------------------------
 
   enum : int {
-    kCordJoinPureXferSecFieldNumber = 3,
-    kCordJoinPureXferStartUnixMsFieldNumber = 4,
-    kCordJoinPureXferEndUnixMsFieldNumber = 5,
+    kUplrcJoinPureXferSecFieldNumber = 3,
+    kUplrcJoinPureXferStartUnixMsFieldNumber = 4,
+    kUplrcJoinPureXferEndUnixMsFieldNumber = 5,
     kIfcommitFieldNumber = 1,
-    kCordJoinXferTimingPresentFieldNumber = 2,
+    kUplrcJoinXferTimingPresentFieldNumber = 2,
   };
-  // double cord_join_pure_xfer_sec = 3;
-  void clear_cord_join_pure_xfer_sec();
-  double cord_join_pure_xfer_sec() const;
-  void set_cord_join_pure_xfer_sec(double value);
+  // double uplrc_join_pure_xfer_sec = 3;
+  void clear_uplrc_join_pure_xfer_sec();
+  double uplrc_join_pure_xfer_sec() const;
+  void set_uplrc_join_pure_xfer_sec(double value);
   private:
-  double _internal_cord_join_pure_xfer_sec() const;
-  void _internal_set_cord_join_pure_xfer_sec(double value);
+  double _internal_uplrc_join_pure_xfer_sec() const;
+  void _internal_set_uplrc_join_pure_xfer_sec(double value);
   public:
 
-  // int64 cord_join_pure_xfer_start_unix_ms = 4;
-  void clear_cord_join_pure_xfer_start_unix_ms();
-  int64_t cord_join_pure_xfer_start_unix_ms() const;
-  void set_cord_join_pure_xfer_start_unix_ms(int64_t value);
+  // int64 uplrc_join_pure_xfer_start_unix_ms = 4;
+  void clear_uplrc_join_pure_xfer_start_unix_ms();
+  int64_t uplrc_join_pure_xfer_start_unix_ms() const;
+  void set_uplrc_join_pure_xfer_start_unix_ms(int64_t value);
   private:
-  int64_t _internal_cord_join_pure_xfer_start_unix_ms() const;
-  void _internal_set_cord_join_pure_xfer_start_unix_ms(int64_t value);
+  int64_t _internal_uplrc_join_pure_xfer_start_unix_ms() const;
+  void _internal_set_uplrc_join_pure_xfer_start_unix_ms(int64_t value);
   public:
 
-  // int64 cord_join_pure_xfer_end_unix_ms = 5;
-  void clear_cord_join_pure_xfer_end_unix_ms();
-  int64_t cord_join_pure_xfer_end_unix_ms() const;
-  void set_cord_join_pure_xfer_end_unix_ms(int64_t value);
+  // int64 uplrc_join_pure_xfer_end_unix_ms = 5;
+  void clear_uplrc_join_pure_xfer_end_unix_ms();
+  int64_t uplrc_join_pure_xfer_end_unix_ms() const;
+  void set_uplrc_join_pure_xfer_end_unix_ms(int64_t value);
   private:
-  int64_t _internal_cord_join_pure_xfer_end_unix_ms() const;
-  void _internal_set_cord_join_pure_xfer_end_unix_ms(int64_t value);
+  int64_t _internal_uplrc_join_pure_xfer_end_unix_ms() const;
+  void _internal_set_uplrc_join_pure_xfer_end_unix_ms(int64_t value);
   public:
 
   // bool ifcommit = 1;
@@ -11488,13 +11488,13 @@ class SetReply final :
   void _internal_set_ifcommit(bool value);
   public:
 
-  // bool cord_join_xfer_timing_present = 2;
-  void clear_cord_join_xfer_timing_present();
-  bool cord_join_xfer_timing_present() const;
-  void set_cord_join_xfer_timing_present(bool value);
+  // bool uplrc_join_xfer_timing_present = 2;
+  void clear_uplrc_join_xfer_timing_present();
+  bool uplrc_join_xfer_timing_present() const;
+  void set_uplrc_join_xfer_timing_present(bool value);
   private:
-  bool _internal_cord_join_xfer_timing_present() const;
-  void _internal_set_cord_join_xfer_timing_present(bool value);
+  bool _internal_uplrc_join_xfer_timing_present() const;
+  void _internal_set_uplrc_join_xfer_timing_present(bool value);
   public:
 
   // @@protoc_insertion_point(class_scope:proxy_proto.SetReply)
@@ -11505,11 +11505,11 @@ class SetReply final :
   typedef void InternalArenaConstructable_;
   typedef void DestructorSkippable_;
   struct Impl_ {
-    double cord_join_pure_xfer_sec_;
-    int64_t cord_join_pure_xfer_start_unix_ms_;
-    int64_t cord_join_pure_xfer_end_unix_ms_;
+    double uplrc_join_pure_xfer_sec_;
+    int64_t uplrc_join_pure_xfer_start_unix_ms_;
+    int64_t uplrc_join_pure_xfer_end_unix_ms_;
     bool ifcommit_;
-    bool cord_join_xfer_timing_present_;
+    bool uplrc_join_xfer_timing_present_;
     mutable ::PROTOBUF_NAMESPACE_ID::internal::CachedSize _cached_size_;
   };
   union { Impl_ _impl_; };
@@ -17335,64 +17335,64 @@ AppendStripeDataPlacement::mutable_forward_cluster_ids() {
 
 // -------------------------------------------------------------------
 
-// CordTransferClusterEndpoint
+// UpLRCTransferClusterEndpoint
 
 // int32 cluster_id = 1;
-inline void CordTransferClusterEndpoint::clear_cluster_id() {
+inline void UpLRCTransferClusterEndpoint::clear_cluster_id() {
   _impl_.cluster_id_ = 0;
 }
-inline int32_t CordTransferClusterEndpoint::_internal_cluster_id() const {
+inline int32_t UpLRCTransferClusterEndpoint::_internal_cluster_id() const {
   return _impl_.cluster_id_;
 }
-inline int32_t CordTransferClusterEndpoint::cluster_id() const {
-  // @@protoc_insertion_point(field_get:proxy_proto.CordTransferClusterEndpoint.cluster_id)
+inline int32_t UpLRCTransferClusterEndpoint::cluster_id() const {
+  // @@protoc_insertion_point(field_get:proxy_proto.UpLRCTransferClusterEndpoint.cluster_id)
   return _internal_cluster_id();
 }
-inline void CordTransferClusterEndpoint::_internal_set_cluster_id(int32_t value) {
+inline void UpLRCTransferClusterEndpoint::_internal_set_cluster_id(int32_t value) {
   
   _impl_.cluster_id_ = value;
 }
-inline void CordTransferClusterEndpoint::set_cluster_id(int32_t value) {
+inline void UpLRCTransferClusterEndpoint::set_cluster_id(int32_t value) {
   _internal_set_cluster_id(value);
-  // @@protoc_insertion_point(field_set:proxy_proto.CordTransferClusterEndpoint.cluster_id)
+  // @@protoc_insertion_point(field_set:proxy_proto.UpLRCTransferClusterEndpoint.cluster_id)
 }
 
 // string proxy_ip = 2;
-inline void CordTransferClusterEndpoint::clear_proxy_ip() {
+inline void UpLRCTransferClusterEndpoint::clear_proxy_ip() {
   _impl_.proxy_ip_.ClearToEmpty();
 }
-inline const std::string& CordTransferClusterEndpoint::proxy_ip() const {
-  // @@protoc_insertion_point(field_get:proxy_proto.CordTransferClusterEndpoint.proxy_ip)
+inline const std::string& UpLRCTransferClusterEndpoint::proxy_ip() const {
+  // @@protoc_insertion_point(field_get:proxy_proto.UpLRCTransferClusterEndpoint.proxy_ip)
   return _internal_proxy_ip();
 }
 template <typename ArgT0, typename... ArgT>
 inline PROTOBUF_ALWAYS_INLINE
-void CordTransferClusterEndpoint::set_proxy_ip(ArgT0&& arg0, ArgT... args) {
+void UpLRCTransferClusterEndpoint::set_proxy_ip(ArgT0&& arg0, ArgT... args) {
  
  _impl_.proxy_ip_.Set(static_cast<ArgT0 &&>(arg0), args..., GetArenaForAllocation());
-  // @@protoc_insertion_point(field_set:proxy_proto.CordTransferClusterEndpoint.proxy_ip)
+  // @@protoc_insertion_point(field_set:proxy_proto.UpLRCTransferClusterEndpoint.proxy_ip)
 }
-inline std::string* CordTransferClusterEndpoint::mutable_proxy_ip() {
+inline std::string* UpLRCTransferClusterEndpoint::mutable_proxy_ip() {
   std::string* _s = _internal_mutable_proxy_ip();
-  // @@protoc_insertion_point(field_mutable:proxy_proto.CordTransferClusterEndpoint.proxy_ip)
+  // @@protoc_insertion_point(field_mutable:proxy_proto.UpLRCTransferClusterEndpoint.proxy_ip)
   return _s;
 }
-inline const std::string& CordTransferClusterEndpoint::_internal_proxy_ip() const {
+inline const std::string& UpLRCTransferClusterEndpoint::_internal_proxy_ip() const {
   return _impl_.proxy_ip_.Get();
 }
-inline void CordTransferClusterEndpoint::_internal_set_proxy_ip(const std::string& value) {
+inline void UpLRCTransferClusterEndpoint::_internal_set_proxy_ip(const std::string& value) {
   
   _impl_.proxy_ip_.Set(value, GetArenaForAllocation());
 }
-inline std::string* CordTransferClusterEndpoint::_internal_mutable_proxy_ip() {
+inline std::string* UpLRCTransferClusterEndpoint::_internal_mutable_proxy_ip() {
   
   return _impl_.proxy_ip_.Mutable(GetArenaForAllocation());
 }
-inline std::string* CordTransferClusterEndpoint::release_proxy_ip() {
-  // @@protoc_insertion_point(field_release:proxy_proto.CordTransferClusterEndpoint.proxy_ip)
+inline std::string* UpLRCTransferClusterEndpoint::release_proxy_ip() {
+  // @@protoc_insertion_point(field_release:proxy_proto.UpLRCTransferClusterEndpoint.proxy_ip)
   return _impl_.proxy_ip_.Release();
 }
-inline void CordTransferClusterEndpoint::set_allocated_proxy_ip(std::string* proxy_ip) {
+inline void UpLRCTransferClusterEndpoint::set_allocated_proxy_ip(std::string* proxy_ip) {
   if (proxy_ip != nullptr) {
     
   } else {
@@ -17404,89 +17404,89 @@ inline void CordTransferClusterEndpoint::set_allocated_proxy_ip(std::string* pro
     _impl_.proxy_ip_.Set("", GetArenaForAllocation());
   }
 #endif // PROTOBUF_FORCE_COPY_DEFAULT_STRING
-  // @@protoc_insertion_point(field_set_allocated:proxy_proto.CordTransferClusterEndpoint.proxy_ip)
+  // @@protoc_insertion_point(field_set_allocated:proxy_proto.UpLRCTransferClusterEndpoint.proxy_ip)
 }
 
 // int32 proxy_port = 3;
-inline void CordTransferClusterEndpoint::clear_proxy_port() {
+inline void UpLRCTransferClusterEndpoint::clear_proxy_port() {
   _impl_.proxy_port_ = 0;
 }
-inline int32_t CordTransferClusterEndpoint::_internal_proxy_port() const {
+inline int32_t UpLRCTransferClusterEndpoint::_internal_proxy_port() const {
   return _impl_.proxy_port_;
 }
-inline int32_t CordTransferClusterEndpoint::proxy_port() const {
-  // @@protoc_insertion_point(field_get:proxy_proto.CordTransferClusterEndpoint.proxy_port)
+inline int32_t UpLRCTransferClusterEndpoint::proxy_port() const {
+  // @@protoc_insertion_point(field_get:proxy_proto.UpLRCTransferClusterEndpoint.proxy_port)
   return _internal_proxy_port();
 }
-inline void CordTransferClusterEndpoint::_internal_set_proxy_port(int32_t value) {
+inline void UpLRCTransferClusterEndpoint::_internal_set_proxy_port(int32_t value) {
   
   _impl_.proxy_port_ = value;
 }
-inline void CordTransferClusterEndpoint::set_proxy_port(int32_t value) {
+inline void UpLRCTransferClusterEndpoint::set_proxy_port(int32_t value) {
   _internal_set_proxy_port(value);
-  // @@protoc_insertion_point(field_set:proxy_proto.CordTransferClusterEndpoint.proxy_port)
+  // @@protoc_insertion_point(field_set:proxy_proto.UpLRCTransferClusterEndpoint.proxy_port)
 }
 
 // -------------------------------------------------------------------
 
-// CordTransferBlockPlacement
+// UpLRCTransferBlockPlacement
 
 // int32 block_id = 1;
-inline void CordTransferBlockPlacement::clear_block_id() {
+inline void UpLRCTransferBlockPlacement::clear_block_id() {
   _impl_.block_id_ = 0;
 }
-inline int32_t CordTransferBlockPlacement::_internal_block_id() const {
+inline int32_t UpLRCTransferBlockPlacement::_internal_block_id() const {
   return _impl_.block_id_;
 }
-inline int32_t CordTransferBlockPlacement::block_id() const {
-  // @@protoc_insertion_point(field_get:proxy_proto.CordTransferBlockPlacement.block_id)
+inline int32_t UpLRCTransferBlockPlacement::block_id() const {
+  // @@protoc_insertion_point(field_get:proxy_proto.UpLRCTransferBlockPlacement.block_id)
   return _internal_block_id();
 }
-inline void CordTransferBlockPlacement::_internal_set_block_id(int32_t value) {
+inline void UpLRCTransferBlockPlacement::_internal_set_block_id(int32_t value) {
   
   _impl_.block_id_ = value;
 }
-inline void CordTransferBlockPlacement::set_block_id(int32_t value) {
+inline void UpLRCTransferBlockPlacement::set_block_id(int32_t value) {
   _internal_set_block_id(value);
-  // @@protoc_insertion_point(field_set:proxy_proto.CordTransferBlockPlacement.block_id)
+  // @@protoc_insertion_point(field_set:proxy_proto.UpLRCTransferBlockPlacement.block_id)
 }
 
 // string block_key = 2;
-inline void CordTransferBlockPlacement::clear_block_key() {
+inline void UpLRCTransferBlockPlacement::clear_block_key() {
   _impl_.block_key_.ClearToEmpty();
 }
-inline const std::string& CordTransferBlockPlacement::block_key() const {
-  // @@protoc_insertion_point(field_get:proxy_proto.CordTransferBlockPlacement.block_key)
+inline const std::string& UpLRCTransferBlockPlacement::block_key() const {
+  // @@protoc_insertion_point(field_get:proxy_proto.UpLRCTransferBlockPlacement.block_key)
   return _internal_block_key();
 }
 template <typename ArgT0, typename... ArgT>
 inline PROTOBUF_ALWAYS_INLINE
-void CordTransferBlockPlacement::set_block_key(ArgT0&& arg0, ArgT... args) {
+void UpLRCTransferBlockPlacement::set_block_key(ArgT0&& arg0, ArgT... args) {
  
  _impl_.block_key_.Set(static_cast<ArgT0 &&>(arg0), args..., GetArenaForAllocation());
-  // @@protoc_insertion_point(field_set:proxy_proto.CordTransferBlockPlacement.block_key)
+  // @@protoc_insertion_point(field_set:proxy_proto.UpLRCTransferBlockPlacement.block_key)
 }
-inline std::string* CordTransferBlockPlacement::mutable_block_key() {
+inline std::string* UpLRCTransferBlockPlacement::mutable_block_key() {
   std::string* _s = _internal_mutable_block_key();
-  // @@protoc_insertion_point(field_mutable:proxy_proto.CordTransferBlockPlacement.block_key)
+  // @@protoc_insertion_point(field_mutable:proxy_proto.UpLRCTransferBlockPlacement.block_key)
   return _s;
 }
-inline const std::string& CordTransferBlockPlacement::_internal_block_key() const {
+inline const std::string& UpLRCTransferBlockPlacement::_internal_block_key() const {
   return _impl_.block_key_.Get();
 }
-inline void CordTransferBlockPlacement::_internal_set_block_key(const std::string& value) {
+inline void UpLRCTransferBlockPlacement::_internal_set_block_key(const std::string& value) {
   
   _impl_.block_key_.Set(value, GetArenaForAllocation());
 }
-inline std::string* CordTransferBlockPlacement::_internal_mutable_block_key() {
+inline std::string* UpLRCTransferBlockPlacement::_internal_mutable_block_key() {
   
   return _impl_.block_key_.Mutable(GetArenaForAllocation());
 }
-inline std::string* CordTransferBlockPlacement::release_block_key() {
-  // @@protoc_insertion_point(field_release:proxy_proto.CordTransferBlockPlacement.block_key)
+inline std::string* UpLRCTransferBlockPlacement::release_block_key() {
+  // @@protoc_insertion_point(field_release:proxy_proto.UpLRCTransferBlockPlacement.block_key)
   return _impl_.block_key_.Release();
 }
-inline void CordTransferBlockPlacement::set_allocated_block_key(std::string* block_key) {
+inline void UpLRCTransferBlockPlacement::set_allocated_block_key(std::string* block_key) {
   if (block_key != nullptr) {
     
   } else {
@@ -17498,45 +17498,45 @@ inline void CordTransferBlockPlacement::set_allocated_block_key(std::string* blo
     _impl_.block_key_.Set("", GetArenaForAllocation());
   }
 #endif // PROTOBUF_FORCE_COPY_DEFAULT_STRING
-  // @@protoc_insertion_point(field_set_allocated:proxy_proto.CordTransferBlockPlacement.block_key)
+  // @@protoc_insertion_point(field_set_allocated:proxy_proto.UpLRCTransferBlockPlacement.block_key)
 }
 
 // string datanode_ip = 3;
-inline void CordTransferBlockPlacement::clear_datanode_ip() {
+inline void UpLRCTransferBlockPlacement::clear_datanode_ip() {
   _impl_.datanode_ip_.ClearToEmpty();
 }
-inline const std::string& CordTransferBlockPlacement::datanode_ip() const {
-  // @@protoc_insertion_point(field_get:proxy_proto.CordTransferBlockPlacement.datanode_ip)
+inline const std::string& UpLRCTransferBlockPlacement::datanode_ip() const {
+  // @@protoc_insertion_point(field_get:proxy_proto.UpLRCTransferBlockPlacement.datanode_ip)
   return _internal_datanode_ip();
 }
 template <typename ArgT0, typename... ArgT>
 inline PROTOBUF_ALWAYS_INLINE
-void CordTransferBlockPlacement::set_datanode_ip(ArgT0&& arg0, ArgT... args) {
+void UpLRCTransferBlockPlacement::set_datanode_ip(ArgT0&& arg0, ArgT... args) {
  
  _impl_.datanode_ip_.Set(static_cast<ArgT0 &&>(arg0), args..., GetArenaForAllocation());
-  // @@protoc_insertion_point(field_set:proxy_proto.CordTransferBlockPlacement.datanode_ip)
+  // @@protoc_insertion_point(field_set:proxy_proto.UpLRCTransferBlockPlacement.datanode_ip)
 }
-inline std::string* CordTransferBlockPlacement::mutable_datanode_ip() {
+inline std::string* UpLRCTransferBlockPlacement::mutable_datanode_ip() {
   std::string* _s = _internal_mutable_datanode_ip();
-  // @@protoc_insertion_point(field_mutable:proxy_proto.CordTransferBlockPlacement.datanode_ip)
+  // @@protoc_insertion_point(field_mutable:proxy_proto.UpLRCTransferBlockPlacement.datanode_ip)
   return _s;
 }
-inline const std::string& CordTransferBlockPlacement::_internal_datanode_ip() const {
+inline const std::string& UpLRCTransferBlockPlacement::_internal_datanode_ip() const {
   return _impl_.datanode_ip_.Get();
 }
-inline void CordTransferBlockPlacement::_internal_set_datanode_ip(const std::string& value) {
+inline void UpLRCTransferBlockPlacement::_internal_set_datanode_ip(const std::string& value) {
   
   _impl_.datanode_ip_.Set(value, GetArenaForAllocation());
 }
-inline std::string* CordTransferBlockPlacement::_internal_mutable_datanode_ip() {
+inline std::string* UpLRCTransferBlockPlacement::_internal_mutable_datanode_ip() {
   
   return _impl_.datanode_ip_.Mutable(GetArenaForAllocation());
 }
-inline std::string* CordTransferBlockPlacement::release_datanode_ip() {
-  // @@protoc_insertion_point(field_release:proxy_proto.CordTransferBlockPlacement.datanode_ip)
+inline std::string* UpLRCTransferBlockPlacement::release_datanode_ip() {
+  // @@protoc_insertion_point(field_release:proxy_proto.UpLRCTransferBlockPlacement.datanode_ip)
   return _impl_.datanode_ip_.Release();
 }
-inline void CordTransferBlockPlacement::set_allocated_datanode_ip(std::string* datanode_ip) {
+inline void UpLRCTransferBlockPlacement::set_allocated_datanode_ip(std::string* datanode_ip) {
   if (datanode_ip != nullptr) {
     
   } else {
@@ -17548,139 +17548,139 @@ inline void CordTransferBlockPlacement::set_allocated_datanode_ip(std::string* d
     _impl_.datanode_ip_.Set("", GetArenaForAllocation());
   }
 #endif // PROTOBUF_FORCE_COPY_DEFAULT_STRING
-  // @@protoc_insertion_point(field_set_allocated:proxy_proto.CordTransferBlockPlacement.datanode_ip)
+  // @@protoc_insertion_point(field_set_allocated:proxy_proto.UpLRCTransferBlockPlacement.datanode_ip)
 }
 
 // int32 datanode_port = 4;
-inline void CordTransferBlockPlacement::clear_datanode_port() {
+inline void UpLRCTransferBlockPlacement::clear_datanode_port() {
   _impl_.datanode_port_ = 0;
 }
-inline int32_t CordTransferBlockPlacement::_internal_datanode_port() const {
+inline int32_t UpLRCTransferBlockPlacement::_internal_datanode_port() const {
   return _impl_.datanode_port_;
 }
-inline int32_t CordTransferBlockPlacement::datanode_port() const {
-  // @@protoc_insertion_point(field_get:proxy_proto.CordTransferBlockPlacement.datanode_port)
+inline int32_t UpLRCTransferBlockPlacement::datanode_port() const {
+  // @@protoc_insertion_point(field_get:proxy_proto.UpLRCTransferBlockPlacement.datanode_port)
   return _internal_datanode_port();
 }
-inline void CordTransferBlockPlacement::_internal_set_datanode_port(int32_t value) {
+inline void UpLRCTransferBlockPlacement::_internal_set_datanode_port(int32_t value) {
   
   _impl_.datanode_port_ = value;
 }
-inline void CordTransferBlockPlacement::set_datanode_port(int32_t value) {
+inline void UpLRCTransferBlockPlacement::set_datanode_port(int32_t value) {
   _internal_set_datanode_port(value);
-  // @@protoc_insertion_point(field_set:proxy_proto.CordTransferBlockPlacement.datanode_port)
+  // @@protoc_insertion_point(field_set:proxy_proto.UpLRCTransferBlockPlacement.datanode_port)
 }
 
 // -------------------------------------------------------------------
 
-// CordTransferDeltaBlobRef
+// UpLRCTransferDeltaBlobRef
 
 // int32 cluster_id = 1;
-inline void CordTransferDeltaBlobRef::clear_cluster_id() {
+inline void UpLRCTransferDeltaBlobRef::clear_cluster_id() {
   _impl_.cluster_id_ = 0;
 }
-inline int32_t CordTransferDeltaBlobRef::_internal_cluster_id() const {
+inline int32_t UpLRCTransferDeltaBlobRef::_internal_cluster_id() const {
   return _impl_.cluster_id_;
 }
-inline int32_t CordTransferDeltaBlobRef::cluster_id() const {
-  // @@protoc_insertion_point(field_get:proxy_proto.CordTransferDeltaBlobRef.cluster_id)
+inline int32_t UpLRCTransferDeltaBlobRef::cluster_id() const {
+  // @@protoc_insertion_point(field_get:proxy_proto.UpLRCTransferDeltaBlobRef.cluster_id)
   return _internal_cluster_id();
 }
-inline void CordTransferDeltaBlobRef::_internal_set_cluster_id(int32_t value) {
+inline void UpLRCTransferDeltaBlobRef::_internal_set_cluster_id(int32_t value) {
   
   _impl_.cluster_id_ = value;
 }
-inline void CordTransferDeltaBlobRef::set_cluster_id(int32_t value) {
+inline void UpLRCTransferDeltaBlobRef::set_cluster_id(int32_t value) {
   _internal_set_cluster_id(value);
-  // @@protoc_insertion_point(field_set:proxy_proto.CordTransferDeltaBlobRef.cluster_id)
+  // @@protoc_insertion_point(field_set:proxy_proto.UpLRCTransferDeltaBlobRef.cluster_id)
 }
 
-// string cord_plan_key = 2;
-inline void CordTransferDeltaBlobRef::clear_cord_plan_key() {
-  _impl_.cord_plan_key_.ClearToEmpty();
+// string uplrc_plan_key = 2;
+inline void UpLRCTransferDeltaBlobRef::clear_uplrc_plan_key() {
+  _impl_.uplrc_plan_key_.ClearToEmpty();
 }
-inline const std::string& CordTransferDeltaBlobRef::cord_plan_key() const {
-  // @@protoc_insertion_point(field_get:proxy_proto.CordTransferDeltaBlobRef.cord_plan_key)
-  return _internal_cord_plan_key();
+inline const std::string& UpLRCTransferDeltaBlobRef::uplrc_plan_key() const {
+  // @@protoc_insertion_point(field_get:proxy_proto.UpLRCTransferDeltaBlobRef.uplrc_plan_key)
+  return _internal_uplrc_plan_key();
 }
 template <typename ArgT0, typename... ArgT>
 inline PROTOBUF_ALWAYS_INLINE
-void CordTransferDeltaBlobRef::set_cord_plan_key(ArgT0&& arg0, ArgT... args) {
+void UpLRCTransferDeltaBlobRef::set_uplrc_plan_key(ArgT0&& arg0, ArgT... args) {
  
- _impl_.cord_plan_key_.Set(static_cast<ArgT0 &&>(arg0), args..., GetArenaForAllocation());
-  // @@protoc_insertion_point(field_set:proxy_proto.CordTransferDeltaBlobRef.cord_plan_key)
+ _impl_.uplrc_plan_key_.Set(static_cast<ArgT0 &&>(arg0), args..., GetArenaForAllocation());
+  // @@protoc_insertion_point(field_set:proxy_proto.UpLRCTransferDeltaBlobRef.uplrc_plan_key)
 }
-inline std::string* CordTransferDeltaBlobRef::mutable_cord_plan_key() {
-  std::string* _s = _internal_mutable_cord_plan_key();
-  // @@protoc_insertion_point(field_mutable:proxy_proto.CordTransferDeltaBlobRef.cord_plan_key)
+inline std::string* UpLRCTransferDeltaBlobRef::mutable_uplrc_plan_key() {
+  std::string* _s = _internal_mutable_uplrc_plan_key();
+  // @@protoc_insertion_point(field_mutable:proxy_proto.UpLRCTransferDeltaBlobRef.uplrc_plan_key)
   return _s;
 }
-inline const std::string& CordTransferDeltaBlobRef::_internal_cord_plan_key() const {
-  return _impl_.cord_plan_key_.Get();
+inline const std::string& UpLRCTransferDeltaBlobRef::_internal_uplrc_plan_key() const {
+  return _impl_.uplrc_plan_key_.Get();
 }
-inline void CordTransferDeltaBlobRef::_internal_set_cord_plan_key(const std::string& value) {
+inline void UpLRCTransferDeltaBlobRef::_internal_set_uplrc_plan_key(const std::string& value) {
   
-  _impl_.cord_plan_key_.Set(value, GetArenaForAllocation());
+  _impl_.uplrc_plan_key_.Set(value, GetArenaForAllocation());
 }
-inline std::string* CordTransferDeltaBlobRef::_internal_mutable_cord_plan_key() {
+inline std::string* UpLRCTransferDeltaBlobRef::_internal_mutable_uplrc_plan_key() {
   
-  return _impl_.cord_plan_key_.Mutable(GetArenaForAllocation());
+  return _impl_.uplrc_plan_key_.Mutable(GetArenaForAllocation());
 }
-inline std::string* CordTransferDeltaBlobRef::release_cord_plan_key() {
-  // @@protoc_insertion_point(field_release:proxy_proto.CordTransferDeltaBlobRef.cord_plan_key)
-  return _impl_.cord_plan_key_.Release();
+inline std::string* UpLRCTransferDeltaBlobRef::release_uplrc_plan_key() {
+  // @@protoc_insertion_point(field_release:proxy_proto.UpLRCTransferDeltaBlobRef.uplrc_plan_key)
+  return _impl_.uplrc_plan_key_.Release();
 }
-inline void CordTransferDeltaBlobRef::set_allocated_cord_plan_key(std::string* cord_plan_key) {
-  if (cord_plan_key != nullptr) {
+inline void UpLRCTransferDeltaBlobRef::set_allocated_uplrc_plan_key(std::string* uplrc_plan_key) {
+  if (uplrc_plan_key != nullptr) {
     
   } else {
     
   }
-  _impl_.cord_plan_key_.SetAllocated(cord_plan_key, GetArenaForAllocation());
+  _impl_.uplrc_plan_key_.SetAllocated(uplrc_plan_key, GetArenaForAllocation());
 #ifdef PROTOBUF_FORCE_COPY_DEFAULT_STRING
-  if (_impl_.cord_plan_key_.IsDefault()) {
-    _impl_.cord_plan_key_.Set("", GetArenaForAllocation());
+  if (_impl_.uplrc_plan_key_.IsDefault()) {
+    _impl_.uplrc_plan_key_.Set("", GetArenaForAllocation());
   }
 #endif // PROTOBUF_FORCE_COPY_DEFAULT_STRING
-  // @@protoc_insertion_point(field_set_allocated:proxy_proto.CordTransferDeltaBlobRef.cord_plan_key)
+  // @@protoc_insertion_point(field_set_allocated:proxy_proto.UpLRCTransferDeltaBlobRef.uplrc_plan_key)
 }
 
 // string delta_blob_key = 3;
-inline void CordTransferDeltaBlobRef::clear_delta_blob_key() {
+inline void UpLRCTransferDeltaBlobRef::clear_delta_blob_key() {
   _impl_.delta_blob_key_.ClearToEmpty();
 }
-inline const std::string& CordTransferDeltaBlobRef::delta_blob_key() const {
-  // @@protoc_insertion_point(field_get:proxy_proto.CordTransferDeltaBlobRef.delta_blob_key)
+inline const std::string& UpLRCTransferDeltaBlobRef::delta_blob_key() const {
+  // @@protoc_insertion_point(field_get:proxy_proto.UpLRCTransferDeltaBlobRef.delta_blob_key)
   return _internal_delta_blob_key();
 }
 template <typename ArgT0, typename... ArgT>
 inline PROTOBUF_ALWAYS_INLINE
-void CordTransferDeltaBlobRef::set_delta_blob_key(ArgT0&& arg0, ArgT... args) {
+void UpLRCTransferDeltaBlobRef::set_delta_blob_key(ArgT0&& arg0, ArgT... args) {
  
  _impl_.delta_blob_key_.Set(static_cast<ArgT0 &&>(arg0), args..., GetArenaForAllocation());
-  // @@protoc_insertion_point(field_set:proxy_proto.CordTransferDeltaBlobRef.delta_blob_key)
+  // @@protoc_insertion_point(field_set:proxy_proto.UpLRCTransferDeltaBlobRef.delta_blob_key)
 }
-inline std::string* CordTransferDeltaBlobRef::mutable_delta_blob_key() {
+inline std::string* UpLRCTransferDeltaBlobRef::mutable_delta_blob_key() {
   std::string* _s = _internal_mutable_delta_blob_key();
-  // @@protoc_insertion_point(field_mutable:proxy_proto.CordTransferDeltaBlobRef.delta_blob_key)
+  // @@protoc_insertion_point(field_mutable:proxy_proto.UpLRCTransferDeltaBlobRef.delta_blob_key)
   return _s;
 }
-inline const std::string& CordTransferDeltaBlobRef::_internal_delta_blob_key() const {
+inline const std::string& UpLRCTransferDeltaBlobRef::_internal_delta_blob_key() const {
   return _impl_.delta_blob_key_.Get();
 }
-inline void CordTransferDeltaBlobRef::_internal_set_delta_blob_key(const std::string& value) {
+inline void UpLRCTransferDeltaBlobRef::_internal_set_delta_blob_key(const std::string& value) {
   
   _impl_.delta_blob_key_.Set(value, GetArenaForAllocation());
 }
-inline std::string* CordTransferDeltaBlobRef::_internal_mutable_delta_blob_key() {
+inline std::string* UpLRCTransferDeltaBlobRef::_internal_mutable_delta_blob_key() {
   
   return _impl_.delta_blob_key_.Mutable(GetArenaForAllocation());
 }
-inline std::string* CordTransferDeltaBlobRef::release_delta_blob_key() {
-  // @@protoc_insertion_point(field_release:proxy_proto.CordTransferDeltaBlobRef.delta_blob_key)
+inline std::string* UpLRCTransferDeltaBlobRef::release_delta_blob_key() {
+  // @@protoc_insertion_point(field_release:proxy_proto.UpLRCTransferDeltaBlobRef.delta_blob_key)
   return _impl_.delta_blob_key_.Release();
 }
-inline void CordTransferDeltaBlobRef::set_allocated_delta_blob_key(std::string* delta_blob_key) {
+inline void UpLRCTransferDeltaBlobRef::set_allocated_delta_blob_key(std::string* delta_blob_key) {
   if (delta_blob_key != nullptr) {
     
   } else {
@@ -17692,45 +17692,45 @@ inline void CordTransferDeltaBlobRef::set_allocated_delta_blob_key(std::string* 
     _impl_.delta_blob_key_.Set("", GetArenaForAllocation());
   }
 #endif // PROTOBUF_FORCE_COPY_DEFAULT_STRING
-  // @@protoc_insertion_point(field_set_allocated:proxy_proto.CordTransferDeltaBlobRef.delta_blob_key)
+  // @@protoc_insertion_point(field_set_allocated:proxy_proto.UpLRCTransferDeltaBlobRef.delta_blob_key)
 }
 
 // string delta_datanode_ip = 4;
-inline void CordTransferDeltaBlobRef::clear_delta_datanode_ip() {
+inline void UpLRCTransferDeltaBlobRef::clear_delta_datanode_ip() {
   _impl_.delta_datanode_ip_.ClearToEmpty();
 }
-inline const std::string& CordTransferDeltaBlobRef::delta_datanode_ip() const {
-  // @@protoc_insertion_point(field_get:proxy_proto.CordTransferDeltaBlobRef.delta_datanode_ip)
+inline const std::string& UpLRCTransferDeltaBlobRef::delta_datanode_ip() const {
+  // @@protoc_insertion_point(field_get:proxy_proto.UpLRCTransferDeltaBlobRef.delta_datanode_ip)
   return _internal_delta_datanode_ip();
 }
 template <typename ArgT0, typename... ArgT>
 inline PROTOBUF_ALWAYS_INLINE
-void CordTransferDeltaBlobRef::set_delta_datanode_ip(ArgT0&& arg0, ArgT... args) {
+void UpLRCTransferDeltaBlobRef::set_delta_datanode_ip(ArgT0&& arg0, ArgT... args) {
  
  _impl_.delta_datanode_ip_.Set(static_cast<ArgT0 &&>(arg0), args..., GetArenaForAllocation());
-  // @@protoc_insertion_point(field_set:proxy_proto.CordTransferDeltaBlobRef.delta_datanode_ip)
+  // @@protoc_insertion_point(field_set:proxy_proto.UpLRCTransferDeltaBlobRef.delta_datanode_ip)
 }
-inline std::string* CordTransferDeltaBlobRef::mutable_delta_datanode_ip() {
+inline std::string* UpLRCTransferDeltaBlobRef::mutable_delta_datanode_ip() {
   std::string* _s = _internal_mutable_delta_datanode_ip();
-  // @@protoc_insertion_point(field_mutable:proxy_proto.CordTransferDeltaBlobRef.delta_datanode_ip)
+  // @@protoc_insertion_point(field_mutable:proxy_proto.UpLRCTransferDeltaBlobRef.delta_datanode_ip)
   return _s;
 }
-inline const std::string& CordTransferDeltaBlobRef::_internal_delta_datanode_ip() const {
+inline const std::string& UpLRCTransferDeltaBlobRef::_internal_delta_datanode_ip() const {
   return _impl_.delta_datanode_ip_.Get();
 }
-inline void CordTransferDeltaBlobRef::_internal_set_delta_datanode_ip(const std::string& value) {
+inline void UpLRCTransferDeltaBlobRef::_internal_set_delta_datanode_ip(const std::string& value) {
   
   _impl_.delta_datanode_ip_.Set(value, GetArenaForAllocation());
 }
-inline std::string* CordTransferDeltaBlobRef::_internal_mutable_delta_datanode_ip() {
+inline std::string* UpLRCTransferDeltaBlobRef::_internal_mutable_delta_datanode_ip() {
   
   return _impl_.delta_datanode_ip_.Mutable(GetArenaForAllocation());
 }
-inline std::string* CordTransferDeltaBlobRef::release_delta_datanode_ip() {
-  // @@protoc_insertion_point(field_release:proxy_proto.CordTransferDeltaBlobRef.delta_datanode_ip)
+inline std::string* UpLRCTransferDeltaBlobRef::release_delta_datanode_ip() {
+  // @@protoc_insertion_point(field_release:proxy_proto.UpLRCTransferDeltaBlobRef.delta_datanode_ip)
   return _impl_.delta_datanode_ip_.Release();
 }
-inline void CordTransferDeltaBlobRef::set_allocated_delta_datanode_ip(std::string* delta_datanode_ip) {
+inline void UpLRCTransferDeltaBlobRef::set_allocated_delta_datanode_ip(std::string* delta_datanode_ip) {
   if (delta_datanode_ip != nullptr) {
     
   } else {
@@ -17742,1099 +17742,1099 @@ inline void CordTransferDeltaBlobRef::set_allocated_delta_datanode_ip(std::strin
     _impl_.delta_datanode_ip_.Set("", GetArenaForAllocation());
   }
 #endif // PROTOBUF_FORCE_COPY_DEFAULT_STRING
-  // @@protoc_insertion_point(field_set_allocated:proxy_proto.CordTransferDeltaBlobRef.delta_datanode_ip)
+  // @@protoc_insertion_point(field_set_allocated:proxy_proto.UpLRCTransferDeltaBlobRef.delta_datanode_ip)
 }
 
 // int32 delta_datanode_port = 5;
-inline void CordTransferDeltaBlobRef::clear_delta_datanode_port() {
+inline void UpLRCTransferDeltaBlobRef::clear_delta_datanode_port() {
   _impl_.delta_datanode_port_ = 0;
 }
-inline int32_t CordTransferDeltaBlobRef::_internal_delta_datanode_port() const {
+inline int32_t UpLRCTransferDeltaBlobRef::_internal_delta_datanode_port() const {
   return _impl_.delta_datanode_port_;
 }
-inline int32_t CordTransferDeltaBlobRef::delta_datanode_port() const {
-  // @@protoc_insertion_point(field_get:proxy_proto.CordTransferDeltaBlobRef.delta_datanode_port)
+inline int32_t UpLRCTransferDeltaBlobRef::delta_datanode_port() const {
+  // @@protoc_insertion_point(field_get:proxy_proto.UpLRCTransferDeltaBlobRef.delta_datanode_port)
   return _internal_delta_datanode_port();
 }
-inline void CordTransferDeltaBlobRef::_internal_set_delta_datanode_port(int32_t value) {
+inline void UpLRCTransferDeltaBlobRef::_internal_set_delta_datanode_port(int32_t value) {
   
   _impl_.delta_datanode_port_ = value;
 }
-inline void CordTransferDeltaBlobRef::set_delta_datanode_port(int32_t value) {
+inline void UpLRCTransferDeltaBlobRef::set_delta_datanode_port(int32_t value) {
   _internal_set_delta_datanode_port(value);
-  // @@protoc_insertion_point(field_set:proxy_proto.CordTransferDeltaBlobRef.delta_datanode_port)
+  // @@protoc_insertion_point(field_set:proxy_proto.UpLRCTransferDeltaBlobRef.delta_datanode_port)
 }
 
 // -------------------------------------------------------------------
 
-// CordTransferGroupXorHint
+// UpLRCTransferGroupXorHint
 
 // int32 group_index = 1;
-inline void CordTransferGroupXorHint::clear_group_index() {
+inline void UpLRCTransferGroupXorHint::clear_group_index() {
   _impl_.group_index_ = 0;
 }
-inline int32_t CordTransferGroupXorHint::_internal_group_index() const {
+inline int32_t UpLRCTransferGroupXorHint::_internal_group_index() const {
   return _impl_.group_index_;
 }
-inline int32_t CordTransferGroupXorHint::group_index() const {
-  // @@protoc_insertion_point(field_get:proxy_proto.CordTransferGroupXorHint.group_index)
+inline int32_t UpLRCTransferGroupXorHint::group_index() const {
+  // @@protoc_insertion_point(field_get:proxy_proto.UpLRCTransferGroupXorHint.group_index)
   return _internal_group_index();
 }
-inline void CordTransferGroupXorHint::_internal_set_group_index(int32_t value) {
+inline void UpLRCTransferGroupXorHint::_internal_set_group_index(int32_t value) {
   
   _impl_.group_index_ = value;
 }
-inline void CordTransferGroupXorHint::set_group_index(int32_t value) {
+inline void UpLRCTransferGroupXorHint::set_group_index(int32_t value) {
   _internal_set_group_index(value);
-  // @@protoc_insertion_point(field_set:proxy_proto.CordTransferGroupXorHint.group_index)
+  // @@protoc_insertion_point(field_set:proxy_proto.UpLRCTransferGroupXorHint.group_index)
 }
 
 // uint64 xor_accum_byte_length = 2;
-inline void CordTransferGroupXorHint::clear_xor_accum_byte_length() {
+inline void UpLRCTransferGroupXorHint::clear_xor_accum_byte_length() {
   _impl_.xor_accum_byte_length_ = uint64_t{0u};
 }
-inline uint64_t CordTransferGroupXorHint::_internal_xor_accum_byte_length() const {
+inline uint64_t UpLRCTransferGroupXorHint::_internal_xor_accum_byte_length() const {
   return _impl_.xor_accum_byte_length_;
 }
-inline uint64_t CordTransferGroupXorHint::xor_accum_byte_length() const {
-  // @@protoc_insertion_point(field_get:proxy_proto.CordTransferGroupXorHint.xor_accum_byte_length)
+inline uint64_t UpLRCTransferGroupXorHint::xor_accum_byte_length() const {
+  // @@protoc_insertion_point(field_get:proxy_proto.UpLRCTransferGroupXorHint.xor_accum_byte_length)
   return _internal_xor_accum_byte_length();
 }
-inline void CordTransferGroupXorHint::_internal_set_xor_accum_byte_length(uint64_t value) {
+inline void UpLRCTransferGroupXorHint::_internal_set_xor_accum_byte_length(uint64_t value) {
   
   _impl_.xor_accum_byte_length_ = value;
 }
-inline void CordTransferGroupXorHint::set_xor_accum_byte_length(uint64_t value) {
+inline void UpLRCTransferGroupXorHint::set_xor_accum_byte_length(uint64_t value) {
   _internal_set_xor_accum_byte_length(value);
-  // @@protoc_insertion_point(field_set:proxy_proto.CordTransferGroupXorHint.xor_accum_byte_length)
+  // @@protoc_insertion_point(field_set:proxy_proto.UpLRCTransferGroupXorHint.xor_accum_byte_length)
 }
 
 // -------------------------------------------------------------------
 
-// CordTransferClusterDeltaLayout
+// UpLRCTransferClusterDeltaLayout
 
 // int32 cluster_id = 1;
-inline void CordTransferClusterDeltaLayout::clear_cluster_id() {
+inline void UpLRCTransferClusterDeltaLayout::clear_cluster_id() {
   _impl_.cluster_id_ = 0;
 }
-inline int32_t CordTransferClusterDeltaLayout::_internal_cluster_id() const {
+inline int32_t UpLRCTransferClusterDeltaLayout::_internal_cluster_id() const {
   return _impl_.cluster_id_;
 }
-inline int32_t CordTransferClusterDeltaLayout::cluster_id() const {
-  // @@protoc_insertion_point(field_get:proxy_proto.CordTransferClusterDeltaLayout.cluster_id)
+inline int32_t UpLRCTransferClusterDeltaLayout::cluster_id() const {
+  // @@protoc_insertion_point(field_get:proxy_proto.UpLRCTransferClusterDeltaLayout.cluster_id)
   return _internal_cluster_id();
 }
-inline void CordTransferClusterDeltaLayout::_internal_set_cluster_id(int32_t value) {
+inline void UpLRCTransferClusterDeltaLayout::_internal_set_cluster_id(int32_t value) {
   
   _impl_.cluster_id_ = value;
 }
-inline void CordTransferClusterDeltaLayout::set_cluster_id(int32_t value) {
+inline void UpLRCTransferClusterDeltaLayout::set_cluster_id(int32_t value) {
   _internal_set_cluster_id(value);
-  // @@protoc_insertion_point(field_set:proxy_proto.CordTransferClusterDeltaLayout.cluster_id)
+  // @@protoc_insertion_point(field_set:proxy_proto.UpLRCTransferClusterDeltaLayout.cluster_id)
 }
 
 // repeated int32 data_block_ids = 2;
-inline int CordTransferClusterDeltaLayout::_internal_data_block_ids_size() const {
+inline int UpLRCTransferClusterDeltaLayout::_internal_data_block_ids_size() const {
   return _impl_.data_block_ids_.size();
 }
-inline int CordTransferClusterDeltaLayout::data_block_ids_size() const {
+inline int UpLRCTransferClusterDeltaLayout::data_block_ids_size() const {
   return _internal_data_block_ids_size();
 }
-inline void CordTransferClusterDeltaLayout::clear_data_block_ids() {
+inline void UpLRCTransferClusterDeltaLayout::clear_data_block_ids() {
   _impl_.data_block_ids_.Clear();
 }
-inline int32_t CordTransferClusterDeltaLayout::_internal_data_block_ids(int index) const {
+inline int32_t UpLRCTransferClusterDeltaLayout::_internal_data_block_ids(int index) const {
   return _impl_.data_block_ids_.Get(index);
 }
-inline int32_t CordTransferClusterDeltaLayout::data_block_ids(int index) const {
-  // @@protoc_insertion_point(field_get:proxy_proto.CordTransferClusterDeltaLayout.data_block_ids)
+inline int32_t UpLRCTransferClusterDeltaLayout::data_block_ids(int index) const {
+  // @@protoc_insertion_point(field_get:proxy_proto.UpLRCTransferClusterDeltaLayout.data_block_ids)
   return _internal_data_block_ids(index);
 }
-inline void CordTransferClusterDeltaLayout::set_data_block_ids(int index, int32_t value) {
+inline void UpLRCTransferClusterDeltaLayout::set_data_block_ids(int index, int32_t value) {
   _impl_.data_block_ids_.Set(index, value);
-  // @@protoc_insertion_point(field_set:proxy_proto.CordTransferClusterDeltaLayout.data_block_ids)
+  // @@protoc_insertion_point(field_set:proxy_proto.UpLRCTransferClusterDeltaLayout.data_block_ids)
 }
-inline void CordTransferClusterDeltaLayout::_internal_add_data_block_ids(int32_t value) {
+inline void UpLRCTransferClusterDeltaLayout::_internal_add_data_block_ids(int32_t value) {
   _impl_.data_block_ids_.Add(value);
 }
-inline void CordTransferClusterDeltaLayout::add_data_block_ids(int32_t value) {
+inline void UpLRCTransferClusterDeltaLayout::add_data_block_ids(int32_t value) {
   _internal_add_data_block_ids(value);
-  // @@protoc_insertion_point(field_add:proxy_proto.CordTransferClusterDeltaLayout.data_block_ids)
+  // @@protoc_insertion_point(field_add:proxy_proto.UpLRCTransferClusterDeltaLayout.data_block_ids)
 }
 inline const ::PROTOBUF_NAMESPACE_ID::RepeatedField< int32_t >&
-CordTransferClusterDeltaLayout::_internal_data_block_ids() const {
+UpLRCTransferClusterDeltaLayout::_internal_data_block_ids() const {
   return _impl_.data_block_ids_;
 }
 inline const ::PROTOBUF_NAMESPACE_ID::RepeatedField< int32_t >&
-CordTransferClusterDeltaLayout::data_block_ids() const {
-  // @@protoc_insertion_point(field_list:proxy_proto.CordTransferClusterDeltaLayout.data_block_ids)
+UpLRCTransferClusterDeltaLayout::data_block_ids() const {
+  // @@protoc_insertion_point(field_list:proxy_proto.UpLRCTransferClusterDeltaLayout.data_block_ids)
   return _internal_data_block_ids();
 }
 inline ::PROTOBUF_NAMESPACE_ID::RepeatedField< int32_t >*
-CordTransferClusterDeltaLayout::_internal_mutable_data_block_ids() {
+UpLRCTransferClusterDeltaLayout::_internal_mutable_data_block_ids() {
   return &_impl_.data_block_ids_;
 }
 inline ::PROTOBUF_NAMESPACE_ID::RepeatedField< int32_t >*
-CordTransferClusterDeltaLayout::mutable_data_block_ids() {
-  // @@protoc_insertion_point(field_mutable_list:proxy_proto.CordTransferClusterDeltaLayout.data_block_ids)
+UpLRCTransferClusterDeltaLayout::mutable_data_block_ids() {
+  // @@protoc_insertion_point(field_mutable_list:proxy_proto.UpLRCTransferClusterDeltaLayout.data_block_ids)
   return _internal_mutable_data_block_ids();
 }
 
 // repeated uint64 delta_base_offset = 3;
-inline int CordTransferClusterDeltaLayout::_internal_delta_base_offset_size() const {
+inline int UpLRCTransferClusterDeltaLayout::_internal_delta_base_offset_size() const {
   return _impl_.delta_base_offset_.size();
 }
-inline int CordTransferClusterDeltaLayout::delta_base_offset_size() const {
+inline int UpLRCTransferClusterDeltaLayout::delta_base_offset_size() const {
   return _internal_delta_base_offset_size();
 }
-inline void CordTransferClusterDeltaLayout::clear_delta_base_offset() {
+inline void UpLRCTransferClusterDeltaLayout::clear_delta_base_offset() {
   _impl_.delta_base_offset_.Clear();
 }
-inline uint64_t CordTransferClusterDeltaLayout::_internal_delta_base_offset(int index) const {
+inline uint64_t UpLRCTransferClusterDeltaLayout::_internal_delta_base_offset(int index) const {
   return _impl_.delta_base_offset_.Get(index);
 }
-inline uint64_t CordTransferClusterDeltaLayout::delta_base_offset(int index) const {
-  // @@protoc_insertion_point(field_get:proxy_proto.CordTransferClusterDeltaLayout.delta_base_offset)
+inline uint64_t UpLRCTransferClusterDeltaLayout::delta_base_offset(int index) const {
+  // @@protoc_insertion_point(field_get:proxy_proto.UpLRCTransferClusterDeltaLayout.delta_base_offset)
   return _internal_delta_base_offset(index);
 }
-inline void CordTransferClusterDeltaLayout::set_delta_base_offset(int index, uint64_t value) {
+inline void UpLRCTransferClusterDeltaLayout::set_delta_base_offset(int index, uint64_t value) {
   _impl_.delta_base_offset_.Set(index, value);
-  // @@protoc_insertion_point(field_set:proxy_proto.CordTransferClusterDeltaLayout.delta_base_offset)
+  // @@protoc_insertion_point(field_set:proxy_proto.UpLRCTransferClusterDeltaLayout.delta_base_offset)
 }
-inline void CordTransferClusterDeltaLayout::_internal_add_delta_base_offset(uint64_t value) {
+inline void UpLRCTransferClusterDeltaLayout::_internal_add_delta_base_offset(uint64_t value) {
   _impl_.delta_base_offset_.Add(value);
 }
-inline void CordTransferClusterDeltaLayout::add_delta_base_offset(uint64_t value) {
+inline void UpLRCTransferClusterDeltaLayout::add_delta_base_offset(uint64_t value) {
   _internal_add_delta_base_offset(value);
-  // @@protoc_insertion_point(field_add:proxy_proto.CordTransferClusterDeltaLayout.delta_base_offset)
+  // @@protoc_insertion_point(field_add:proxy_proto.UpLRCTransferClusterDeltaLayout.delta_base_offset)
 }
 inline const ::PROTOBUF_NAMESPACE_ID::RepeatedField< uint64_t >&
-CordTransferClusterDeltaLayout::_internal_delta_base_offset() const {
+UpLRCTransferClusterDeltaLayout::_internal_delta_base_offset() const {
   return _impl_.delta_base_offset_;
 }
 inline const ::PROTOBUF_NAMESPACE_ID::RepeatedField< uint64_t >&
-CordTransferClusterDeltaLayout::delta_base_offset() const {
-  // @@protoc_insertion_point(field_list:proxy_proto.CordTransferClusterDeltaLayout.delta_base_offset)
+UpLRCTransferClusterDeltaLayout::delta_base_offset() const {
+  // @@protoc_insertion_point(field_list:proxy_proto.UpLRCTransferClusterDeltaLayout.delta_base_offset)
   return _internal_delta_base_offset();
 }
 inline ::PROTOBUF_NAMESPACE_ID::RepeatedField< uint64_t >*
-CordTransferClusterDeltaLayout::_internal_mutable_delta_base_offset() {
+UpLRCTransferClusterDeltaLayout::_internal_mutable_delta_base_offset() {
   return &_impl_.delta_base_offset_;
 }
 inline ::PROTOBUF_NAMESPACE_ID::RepeatedField< uint64_t >*
-CordTransferClusterDeltaLayout::mutable_delta_base_offset() {
-  // @@protoc_insertion_point(field_mutable_list:proxy_proto.CordTransferClusterDeltaLayout.delta_base_offset)
+UpLRCTransferClusterDeltaLayout::mutable_delta_base_offset() {
+  // @@protoc_insertion_point(field_mutable_list:proxy_proto.UpLRCTransferClusterDeltaLayout.delta_base_offset)
   return _internal_mutable_delta_base_offset();
 }
 
 // repeated uint64 delta_total_length = 4;
-inline int CordTransferClusterDeltaLayout::_internal_delta_total_length_size() const {
+inline int UpLRCTransferClusterDeltaLayout::_internal_delta_total_length_size() const {
   return _impl_.delta_total_length_.size();
 }
-inline int CordTransferClusterDeltaLayout::delta_total_length_size() const {
+inline int UpLRCTransferClusterDeltaLayout::delta_total_length_size() const {
   return _internal_delta_total_length_size();
 }
-inline void CordTransferClusterDeltaLayout::clear_delta_total_length() {
+inline void UpLRCTransferClusterDeltaLayout::clear_delta_total_length() {
   _impl_.delta_total_length_.Clear();
 }
-inline uint64_t CordTransferClusterDeltaLayout::_internal_delta_total_length(int index) const {
+inline uint64_t UpLRCTransferClusterDeltaLayout::_internal_delta_total_length(int index) const {
   return _impl_.delta_total_length_.Get(index);
 }
-inline uint64_t CordTransferClusterDeltaLayout::delta_total_length(int index) const {
-  // @@protoc_insertion_point(field_get:proxy_proto.CordTransferClusterDeltaLayout.delta_total_length)
+inline uint64_t UpLRCTransferClusterDeltaLayout::delta_total_length(int index) const {
+  // @@protoc_insertion_point(field_get:proxy_proto.UpLRCTransferClusterDeltaLayout.delta_total_length)
   return _internal_delta_total_length(index);
 }
-inline void CordTransferClusterDeltaLayout::set_delta_total_length(int index, uint64_t value) {
+inline void UpLRCTransferClusterDeltaLayout::set_delta_total_length(int index, uint64_t value) {
   _impl_.delta_total_length_.Set(index, value);
-  // @@protoc_insertion_point(field_set:proxy_proto.CordTransferClusterDeltaLayout.delta_total_length)
+  // @@protoc_insertion_point(field_set:proxy_proto.UpLRCTransferClusterDeltaLayout.delta_total_length)
 }
-inline void CordTransferClusterDeltaLayout::_internal_add_delta_total_length(uint64_t value) {
+inline void UpLRCTransferClusterDeltaLayout::_internal_add_delta_total_length(uint64_t value) {
   _impl_.delta_total_length_.Add(value);
 }
-inline void CordTransferClusterDeltaLayout::add_delta_total_length(uint64_t value) {
+inline void UpLRCTransferClusterDeltaLayout::add_delta_total_length(uint64_t value) {
   _internal_add_delta_total_length(value);
-  // @@protoc_insertion_point(field_add:proxy_proto.CordTransferClusterDeltaLayout.delta_total_length)
+  // @@protoc_insertion_point(field_add:proxy_proto.UpLRCTransferClusterDeltaLayout.delta_total_length)
 }
 inline const ::PROTOBUF_NAMESPACE_ID::RepeatedField< uint64_t >&
-CordTransferClusterDeltaLayout::_internal_delta_total_length() const {
+UpLRCTransferClusterDeltaLayout::_internal_delta_total_length() const {
   return _impl_.delta_total_length_;
 }
 inline const ::PROTOBUF_NAMESPACE_ID::RepeatedField< uint64_t >&
-CordTransferClusterDeltaLayout::delta_total_length() const {
-  // @@protoc_insertion_point(field_list:proxy_proto.CordTransferClusterDeltaLayout.delta_total_length)
+UpLRCTransferClusterDeltaLayout::delta_total_length() const {
+  // @@protoc_insertion_point(field_list:proxy_proto.UpLRCTransferClusterDeltaLayout.delta_total_length)
   return _internal_delta_total_length();
 }
 inline ::PROTOBUF_NAMESPACE_ID::RepeatedField< uint64_t >*
-CordTransferClusterDeltaLayout::_internal_mutable_delta_total_length() {
+UpLRCTransferClusterDeltaLayout::_internal_mutable_delta_total_length() {
   return &_impl_.delta_total_length_;
 }
 inline ::PROTOBUF_NAMESPACE_ID::RepeatedField< uint64_t >*
-CordTransferClusterDeltaLayout::mutable_delta_total_length() {
-  // @@protoc_insertion_point(field_mutable_list:proxy_proto.CordTransferClusterDeltaLayout.delta_total_length)
+UpLRCTransferClusterDeltaLayout::mutable_delta_total_length() {
+  // @@protoc_insertion_point(field_mutable_list:proxy_proto.UpLRCTransferClusterDeltaLayout.delta_total_length)
   return _internal_mutable_delta_total_length();
 }
 
 // -------------------------------------------------------------------
 
-// CordTransferStep
+// UpLRCTransferStep
 
 // int32 step_index = 1;
-inline void CordTransferStep::clear_step_index() {
+inline void UpLRCTransferStep::clear_step_index() {
   _impl_.step_index_ = 0;
 }
-inline int32_t CordTransferStep::_internal_step_index() const {
+inline int32_t UpLRCTransferStep::_internal_step_index() const {
   return _impl_.step_index_;
 }
-inline int32_t CordTransferStep::step_index() const {
-  // @@protoc_insertion_point(field_get:proxy_proto.CordTransferStep.step_index)
+inline int32_t UpLRCTransferStep::step_index() const {
+  // @@protoc_insertion_point(field_get:proxy_proto.UpLRCTransferStep.step_index)
   return _internal_step_index();
 }
-inline void CordTransferStep::_internal_set_step_index(int32_t value) {
+inline void UpLRCTransferStep::_internal_set_step_index(int32_t value) {
   
   _impl_.step_index_ = value;
 }
-inline void CordTransferStep::set_step_index(int32_t value) {
+inline void UpLRCTransferStep::set_step_index(int32_t value) {
   _internal_set_step_index(value);
-  // @@protoc_insertion_point(field_set:proxy_proto.CordTransferStep.step_index)
+  // @@protoc_insertion_point(field_set:proxy_proto.UpLRCTransferStep.step_index)
 }
 
 // int32 src_proxy_cluster_id = 2;
-inline void CordTransferStep::clear_src_proxy_cluster_id() {
+inline void UpLRCTransferStep::clear_src_proxy_cluster_id() {
   _impl_.src_proxy_cluster_id_ = 0;
 }
-inline int32_t CordTransferStep::_internal_src_proxy_cluster_id() const {
+inline int32_t UpLRCTransferStep::_internal_src_proxy_cluster_id() const {
   return _impl_.src_proxy_cluster_id_;
 }
-inline int32_t CordTransferStep::src_proxy_cluster_id() const {
-  // @@protoc_insertion_point(field_get:proxy_proto.CordTransferStep.src_proxy_cluster_id)
+inline int32_t UpLRCTransferStep::src_proxy_cluster_id() const {
+  // @@protoc_insertion_point(field_get:proxy_proto.UpLRCTransferStep.src_proxy_cluster_id)
   return _internal_src_proxy_cluster_id();
 }
-inline void CordTransferStep::_internal_set_src_proxy_cluster_id(int32_t value) {
+inline void UpLRCTransferStep::_internal_set_src_proxy_cluster_id(int32_t value) {
   
   _impl_.src_proxy_cluster_id_ = value;
 }
-inline void CordTransferStep::set_src_proxy_cluster_id(int32_t value) {
+inline void UpLRCTransferStep::set_src_proxy_cluster_id(int32_t value) {
   _internal_set_src_proxy_cluster_id(value);
-  // @@protoc_insertion_point(field_set:proxy_proto.CordTransferStep.src_proxy_cluster_id)
+  // @@protoc_insertion_point(field_set:proxy_proto.UpLRCTransferStep.src_proxy_cluster_id)
 }
 
 // int32 dst_proxy_cluster_id = 3;
-inline void CordTransferStep::clear_dst_proxy_cluster_id() {
+inline void UpLRCTransferStep::clear_dst_proxy_cluster_id() {
   _impl_.dst_proxy_cluster_id_ = 0;
 }
-inline int32_t CordTransferStep::_internal_dst_proxy_cluster_id() const {
+inline int32_t UpLRCTransferStep::_internal_dst_proxy_cluster_id() const {
   return _impl_.dst_proxy_cluster_id_;
 }
-inline int32_t CordTransferStep::dst_proxy_cluster_id() const {
-  // @@protoc_insertion_point(field_get:proxy_proto.CordTransferStep.dst_proxy_cluster_id)
+inline int32_t UpLRCTransferStep::dst_proxy_cluster_id() const {
+  // @@protoc_insertion_point(field_get:proxy_proto.UpLRCTransferStep.dst_proxy_cluster_id)
   return _internal_dst_proxy_cluster_id();
 }
-inline void CordTransferStep::_internal_set_dst_proxy_cluster_id(int32_t value) {
+inline void UpLRCTransferStep::_internal_set_dst_proxy_cluster_id(int32_t value) {
   
   _impl_.dst_proxy_cluster_id_ = value;
 }
-inline void CordTransferStep::set_dst_proxy_cluster_id(int32_t value) {
+inline void UpLRCTransferStep::set_dst_proxy_cluster_id(int32_t value) {
   _internal_set_dst_proxy_cluster_id(value);
-  // @@protoc_insertion_point(field_set:proxy_proto.CordTransferStep.dst_proxy_cluster_id)
+  // @@protoc_insertion_point(field_set:proxy_proto.UpLRCTransferStep.dst_proxy_cluster_id)
 }
 
 // int32 src_block_id = 4;
-inline void CordTransferStep::clear_src_block_id() {
+inline void UpLRCTransferStep::clear_src_block_id() {
   _impl_.src_block_id_ = 0;
 }
-inline int32_t CordTransferStep::_internal_src_block_id() const {
+inline int32_t UpLRCTransferStep::_internal_src_block_id() const {
   return _impl_.src_block_id_;
 }
-inline int32_t CordTransferStep::src_block_id() const {
-  // @@protoc_insertion_point(field_get:proxy_proto.CordTransferStep.src_block_id)
+inline int32_t UpLRCTransferStep::src_block_id() const {
+  // @@protoc_insertion_point(field_get:proxy_proto.UpLRCTransferStep.src_block_id)
   return _internal_src_block_id();
 }
-inline void CordTransferStep::_internal_set_src_block_id(int32_t value) {
+inline void UpLRCTransferStep::_internal_set_src_block_id(int32_t value) {
   
   _impl_.src_block_id_ = value;
 }
-inline void CordTransferStep::set_src_block_id(int32_t value) {
+inline void UpLRCTransferStep::set_src_block_id(int32_t value) {
   _internal_set_src_block_id(value);
-  // @@protoc_insertion_point(field_set:proxy_proto.CordTransferStep.src_block_id)
+  // @@protoc_insertion_point(field_set:proxy_proto.UpLRCTransferStep.src_block_id)
 }
 
 // int32 dst_block_id = 5;
-inline void CordTransferStep::clear_dst_block_id() {
+inline void UpLRCTransferStep::clear_dst_block_id() {
   _impl_.dst_block_id_ = 0;
 }
-inline int32_t CordTransferStep::_internal_dst_block_id() const {
+inline int32_t UpLRCTransferStep::_internal_dst_block_id() const {
   return _impl_.dst_block_id_;
 }
-inline int32_t CordTransferStep::dst_block_id() const {
-  // @@protoc_insertion_point(field_get:proxy_proto.CordTransferStep.dst_block_id)
+inline int32_t UpLRCTransferStep::dst_block_id() const {
+  // @@protoc_insertion_point(field_get:proxy_proto.UpLRCTransferStep.dst_block_id)
   return _internal_dst_block_id();
 }
-inline void CordTransferStep::_internal_set_dst_block_id(int32_t value) {
+inline void UpLRCTransferStep::_internal_set_dst_block_id(int32_t value) {
   
   _impl_.dst_block_id_ = value;
 }
-inline void CordTransferStep::set_dst_block_id(int32_t value) {
+inline void UpLRCTransferStep::set_dst_block_id(int32_t value) {
   _internal_set_dst_block_id(value);
-  // @@protoc_insertion_point(field_set:proxy_proto.CordTransferStep.dst_block_id)
+  // @@protoc_insertion_point(field_set:proxy_proto.UpLRCTransferStep.dst_block_id)
 }
 
 // uint64 payload_bytes = 6;
-inline void CordTransferStep::clear_payload_bytes() {
+inline void UpLRCTransferStep::clear_payload_bytes() {
   _impl_.payload_bytes_ = uint64_t{0u};
 }
-inline uint64_t CordTransferStep::_internal_payload_bytes() const {
+inline uint64_t UpLRCTransferStep::_internal_payload_bytes() const {
   return _impl_.payload_bytes_;
 }
-inline uint64_t CordTransferStep::payload_bytes() const {
-  // @@protoc_insertion_point(field_get:proxy_proto.CordTransferStep.payload_bytes)
+inline uint64_t UpLRCTransferStep::payload_bytes() const {
+  // @@protoc_insertion_point(field_get:proxy_proto.UpLRCTransferStep.payload_bytes)
   return _internal_payload_bytes();
 }
-inline void CordTransferStep::_internal_set_payload_bytes(uint64_t value) {
+inline void UpLRCTransferStep::_internal_set_payload_bytes(uint64_t value) {
   
   _impl_.payload_bytes_ = value;
 }
-inline void CordTransferStep::set_payload_bytes(uint64_t value) {
+inline void UpLRCTransferStep::set_payload_bytes(uint64_t value) {
   _internal_set_payload_bytes(value);
-  // @@protoc_insertion_point(field_set:proxy_proto.CordTransferStep.payload_bytes)
+  // @@protoc_insertion_point(field_set:proxy_proto.UpLRCTransferStep.payload_bytes)
 }
 
-// .proxy_proto.CordTransferLinkKind link_kind = 7;
-inline void CordTransferStep::clear_link_kind() {
+// .proxy_proto.UpLRCTransferLinkKind link_kind = 7;
+inline void UpLRCTransferStep::clear_link_kind() {
   _impl_.link_kind_ = 0;
 }
-inline ::proxy_proto::CordTransferLinkKind CordTransferStep::_internal_link_kind() const {
-  return static_cast< ::proxy_proto::CordTransferLinkKind >(_impl_.link_kind_);
+inline ::proxy_proto::UpLRCTransferLinkKind UpLRCTransferStep::_internal_link_kind() const {
+  return static_cast< ::proxy_proto::UpLRCTransferLinkKind >(_impl_.link_kind_);
 }
-inline ::proxy_proto::CordTransferLinkKind CordTransferStep::link_kind() const {
-  // @@protoc_insertion_point(field_get:proxy_proto.CordTransferStep.link_kind)
+inline ::proxy_proto::UpLRCTransferLinkKind UpLRCTransferStep::link_kind() const {
+  // @@protoc_insertion_point(field_get:proxy_proto.UpLRCTransferStep.link_kind)
   return _internal_link_kind();
 }
-inline void CordTransferStep::_internal_set_link_kind(::proxy_proto::CordTransferLinkKind value) {
+inline void UpLRCTransferStep::_internal_set_link_kind(::proxy_proto::UpLRCTransferLinkKind value) {
   
   _impl_.link_kind_ = value;
 }
-inline void CordTransferStep::set_link_kind(::proxy_proto::CordTransferLinkKind value) {
+inline void UpLRCTransferStep::set_link_kind(::proxy_proto::UpLRCTransferLinkKind value) {
   _internal_set_link_kind(value);
-  // @@protoc_insertion_point(field_set:proxy_proto.CordTransferStep.link_kind)
+  // @@protoc_insertion_point(field_set:proxy_proto.UpLRCTransferStep.link_kind)
 }
 
 // uint32 scheduled_slot = 8;
-inline void CordTransferStep::clear_scheduled_slot() {
+inline void UpLRCTransferStep::clear_scheduled_slot() {
   _impl_.scheduled_slot_ = 0u;
 }
-inline uint32_t CordTransferStep::_internal_scheduled_slot() const {
+inline uint32_t UpLRCTransferStep::_internal_scheduled_slot() const {
   return _impl_.scheduled_slot_;
 }
-inline uint32_t CordTransferStep::scheduled_slot() const {
-  // @@protoc_insertion_point(field_get:proxy_proto.CordTransferStep.scheduled_slot)
+inline uint32_t UpLRCTransferStep::scheduled_slot() const {
+  // @@protoc_insertion_point(field_get:proxy_proto.UpLRCTransferStep.scheduled_slot)
   return _internal_scheduled_slot();
 }
-inline void CordTransferStep::_internal_set_scheduled_slot(uint32_t value) {
+inline void UpLRCTransferStep::_internal_set_scheduled_slot(uint32_t value) {
   
   _impl_.scheduled_slot_ = value;
 }
-inline void CordTransferStep::set_scheduled_slot(uint32_t value) {
+inline void UpLRCTransferStep::set_scheduled_slot(uint32_t value) {
   _internal_set_scheduled_slot(value);
-  // @@protoc_insertion_point(field_set:proxy_proto.CordTransferStep.scheduled_slot)
+  // @@protoc_insertion_point(field_set:proxy_proto.UpLRCTransferStep.scheduled_slot)
 }
 
 // int32 depends_on_step_index = 9;
-inline void CordTransferStep::clear_depends_on_step_index() {
+inline void UpLRCTransferStep::clear_depends_on_step_index() {
   _impl_.depends_on_step_index_ = 0;
 }
-inline int32_t CordTransferStep::_internal_depends_on_step_index() const {
+inline int32_t UpLRCTransferStep::_internal_depends_on_step_index() const {
   return _impl_.depends_on_step_index_;
 }
-inline int32_t CordTransferStep::depends_on_step_index() const {
-  // @@protoc_insertion_point(field_get:proxy_proto.CordTransferStep.depends_on_step_index)
+inline int32_t UpLRCTransferStep::depends_on_step_index() const {
+  // @@protoc_insertion_point(field_get:proxy_proto.UpLRCTransferStep.depends_on_step_index)
   return _internal_depends_on_step_index();
 }
-inline void CordTransferStep::_internal_set_depends_on_step_index(int32_t value) {
+inline void UpLRCTransferStep::_internal_set_depends_on_step_index(int32_t value) {
   
   _impl_.depends_on_step_index_ = value;
 }
-inline void CordTransferStep::set_depends_on_step_index(int32_t value) {
+inline void UpLRCTransferStep::set_depends_on_step_index(int32_t value) {
   _internal_set_depends_on_step_index(value);
-  // @@protoc_insertion_point(field_set:proxy_proto.CordTransferStep.depends_on_step_index)
+  // @@protoc_insertion_point(field_set:proxy_proto.UpLRCTransferStep.depends_on_step_index)
 }
 
 // double estimated_transfer_sec = 10;
-inline void CordTransferStep::clear_estimated_transfer_sec() {
+inline void UpLRCTransferStep::clear_estimated_transfer_sec() {
   _impl_.estimated_transfer_sec_ = 0;
 }
-inline double CordTransferStep::_internal_estimated_transfer_sec() const {
+inline double UpLRCTransferStep::_internal_estimated_transfer_sec() const {
   return _impl_.estimated_transfer_sec_;
 }
-inline double CordTransferStep::estimated_transfer_sec() const {
-  // @@protoc_insertion_point(field_get:proxy_proto.CordTransferStep.estimated_transfer_sec)
+inline double UpLRCTransferStep::estimated_transfer_sec() const {
+  // @@protoc_insertion_point(field_get:proxy_proto.UpLRCTransferStep.estimated_transfer_sec)
   return _internal_estimated_transfer_sec();
 }
-inline void CordTransferStep::_internal_set_estimated_transfer_sec(double value) {
+inline void UpLRCTransferStep::_internal_set_estimated_transfer_sec(double value) {
   
   _impl_.estimated_transfer_sec_ = value;
 }
-inline void CordTransferStep::set_estimated_transfer_sec(double value) {
+inline void UpLRCTransferStep::set_estimated_transfer_sec(double value) {
   _internal_set_estimated_transfer_sec(value);
-  // @@protoc_insertion_point(field_set:proxy_proto.CordTransferStep.estimated_transfer_sec)
+  // @@protoc_insertion_point(field_set:proxy_proto.UpLRCTransferStep.estimated_transfer_sec)
 }
 
 // int32 group_index = 11;
-inline void CordTransferStep::clear_group_index() {
+inline void UpLRCTransferStep::clear_group_index() {
   _impl_.group_index_ = 0;
 }
-inline int32_t CordTransferStep::_internal_group_index() const {
+inline int32_t UpLRCTransferStep::_internal_group_index() const {
   return _impl_.group_index_;
 }
-inline int32_t CordTransferStep::group_index() const {
-  // @@protoc_insertion_point(field_get:proxy_proto.CordTransferStep.group_index)
+inline int32_t UpLRCTransferStep::group_index() const {
+  // @@protoc_insertion_point(field_get:proxy_proto.UpLRCTransferStep.group_index)
   return _internal_group_index();
 }
-inline void CordTransferStep::_internal_set_group_index(int32_t value) {
+inline void UpLRCTransferStep::_internal_set_group_index(int32_t value) {
   
   _impl_.group_index_ = value;
 }
-inline void CordTransferStep::set_group_index(int32_t value) {
+inline void UpLRCTransferStep::set_group_index(int32_t value) {
   _internal_set_group_index(value);
-  // @@protoc_insertion_point(field_set:proxy_proto.CordTransferStep.group_index)
+  // @@protoc_insertion_point(field_set:proxy_proto.UpLRCTransferStep.group_index)
 }
 
-// .proxy_proto.CordDeltaPayloadKind delta_payload_kind = 12;
-inline void CordTransferStep::clear_delta_payload_kind() {
+// .proxy_proto.UpLRCDeltaPayloadKind delta_payload_kind = 12;
+inline void UpLRCTransferStep::clear_delta_payload_kind() {
   _impl_.delta_payload_kind_ = 0;
 }
-inline ::proxy_proto::CordDeltaPayloadKind CordTransferStep::_internal_delta_payload_kind() const {
-  return static_cast< ::proxy_proto::CordDeltaPayloadKind >(_impl_.delta_payload_kind_);
+inline ::proxy_proto::UpLRCDeltaPayloadKind UpLRCTransferStep::_internal_delta_payload_kind() const {
+  return static_cast< ::proxy_proto::UpLRCDeltaPayloadKind >(_impl_.delta_payload_kind_);
 }
-inline ::proxy_proto::CordDeltaPayloadKind CordTransferStep::delta_payload_kind() const {
-  // @@protoc_insertion_point(field_get:proxy_proto.CordTransferStep.delta_payload_kind)
+inline ::proxy_proto::UpLRCDeltaPayloadKind UpLRCTransferStep::delta_payload_kind() const {
+  // @@protoc_insertion_point(field_get:proxy_proto.UpLRCTransferStep.delta_payload_kind)
   return _internal_delta_payload_kind();
 }
-inline void CordTransferStep::_internal_set_delta_payload_kind(::proxy_proto::CordDeltaPayloadKind value) {
+inline void UpLRCTransferStep::_internal_set_delta_payload_kind(::proxy_proto::UpLRCDeltaPayloadKind value) {
   
   _impl_.delta_payload_kind_ = value;
 }
-inline void CordTransferStep::set_delta_payload_kind(::proxy_proto::CordDeltaPayloadKind value) {
+inline void UpLRCTransferStep::set_delta_payload_kind(::proxy_proto::UpLRCDeltaPayloadKind value) {
   _internal_set_delta_payload_kind(value);
-  // @@protoc_insertion_point(field_set:proxy_proto.CordTransferStep.delta_payload_kind)
+  // @@protoc_insertion_point(field_set:proxy_proto.UpLRCTransferStep.delta_payload_kind)
 }
 
 // uint64 chunk_byte_offset = 13;
-inline void CordTransferStep::clear_chunk_byte_offset() {
+inline void UpLRCTransferStep::clear_chunk_byte_offset() {
   _impl_.chunk_byte_offset_ = uint64_t{0u};
 }
-inline uint64_t CordTransferStep::_internal_chunk_byte_offset() const {
+inline uint64_t UpLRCTransferStep::_internal_chunk_byte_offset() const {
   return _impl_.chunk_byte_offset_;
 }
-inline uint64_t CordTransferStep::chunk_byte_offset() const {
-  // @@protoc_insertion_point(field_get:proxy_proto.CordTransferStep.chunk_byte_offset)
+inline uint64_t UpLRCTransferStep::chunk_byte_offset() const {
+  // @@protoc_insertion_point(field_get:proxy_proto.UpLRCTransferStep.chunk_byte_offset)
   return _internal_chunk_byte_offset();
 }
-inline void CordTransferStep::_internal_set_chunk_byte_offset(uint64_t value) {
+inline void UpLRCTransferStep::_internal_set_chunk_byte_offset(uint64_t value) {
   
   _impl_.chunk_byte_offset_ = value;
 }
-inline void CordTransferStep::set_chunk_byte_offset(uint64_t value) {
+inline void UpLRCTransferStep::set_chunk_byte_offset(uint64_t value) {
   _internal_set_chunk_byte_offset(value);
-  // @@protoc_insertion_point(field_set:proxy_proto.CordTransferStep.chunk_byte_offset)
+  // @@protoc_insertion_point(field_set:proxy_proto.UpLRCTransferStep.chunk_byte_offset)
 }
 
 // uint64 chunk_byte_length = 14;
-inline void CordTransferStep::clear_chunk_byte_length() {
+inline void UpLRCTransferStep::clear_chunk_byte_length() {
   _impl_.chunk_byte_length_ = uint64_t{0u};
 }
-inline uint64_t CordTransferStep::_internal_chunk_byte_length() const {
+inline uint64_t UpLRCTransferStep::_internal_chunk_byte_length() const {
   return _impl_.chunk_byte_length_;
 }
-inline uint64_t CordTransferStep::chunk_byte_length() const {
-  // @@protoc_insertion_point(field_get:proxy_proto.CordTransferStep.chunk_byte_length)
+inline uint64_t UpLRCTransferStep::chunk_byte_length() const {
+  // @@protoc_insertion_point(field_get:proxy_proto.UpLRCTransferStep.chunk_byte_length)
   return _internal_chunk_byte_length();
 }
-inline void CordTransferStep::_internal_set_chunk_byte_length(uint64_t value) {
+inline void UpLRCTransferStep::_internal_set_chunk_byte_length(uint64_t value) {
   
   _impl_.chunk_byte_length_ = value;
 }
-inline void CordTransferStep::set_chunk_byte_length(uint64_t value) {
+inline void UpLRCTransferStep::set_chunk_byte_length(uint64_t value) {
   _internal_set_chunk_byte_length(value);
-  // @@protoc_insertion_point(field_set:proxy_proto.CordTransferStep.chunk_byte_length)
+  // @@protoc_insertion_point(field_set:proxy_proto.UpLRCTransferStep.chunk_byte_length)
 }
 
 // optional int32 parity_ingest_stripe_group = 15;
-inline bool CordTransferStep::_internal_has_parity_ingest_stripe_group() const {
+inline bool UpLRCTransferStep::_internal_has_parity_ingest_stripe_group() const {
   bool value = (_impl_._has_bits_[0] & 0x00000001u) != 0;
   return value;
 }
-inline bool CordTransferStep::has_parity_ingest_stripe_group() const {
+inline bool UpLRCTransferStep::has_parity_ingest_stripe_group() const {
   return _internal_has_parity_ingest_stripe_group();
 }
-inline void CordTransferStep::clear_parity_ingest_stripe_group() {
+inline void UpLRCTransferStep::clear_parity_ingest_stripe_group() {
   _impl_.parity_ingest_stripe_group_ = 0;
   _impl_._has_bits_[0] &= ~0x00000001u;
 }
-inline int32_t CordTransferStep::_internal_parity_ingest_stripe_group() const {
+inline int32_t UpLRCTransferStep::_internal_parity_ingest_stripe_group() const {
   return _impl_.parity_ingest_stripe_group_;
 }
-inline int32_t CordTransferStep::parity_ingest_stripe_group() const {
-  // @@protoc_insertion_point(field_get:proxy_proto.CordTransferStep.parity_ingest_stripe_group)
+inline int32_t UpLRCTransferStep::parity_ingest_stripe_group() const {
+  // @@protoc_insertion_point(field_get:proxy_proto.UpLRCTransferStep.parity_ingest_stripe_group)
   return _internal_parity_ingest_stripe_group();
 }
-inline void CordTransferStep::_internal_set_parity_ingest_stripe_group(int32_t value) {
+inline void UpLRCTransferStep::_internal_set_parity_ingest_stripe_group(int32_t value) {
   _impl_._has_bits_[0] |= 0x00000001u;
   _impl_.parity_ingest_stripe_group_ = value;
 }
-inline void CordTransferStep::set_parity_ingest_stripe_group(int32_t value) {
+inline void UpLRCTransferStep::set_parity_ingest_stripe_group(int32_t value) {
   _internal_set_parity_ingest_stripe_group(value);
-  // @@protoc_insertion_point(field_set:proxy_proto.CordTransferStep.parity_ingest_stripe_group)
+  // @@protoc_insertion_point(field_set:proxy_proto.UpLRCTransferStep.parity_ingest_stripe_group)
 }
 
 // optional int32 mst_origin_data_block_id = 16;
-inline bool CordTransferStep::_internal_has_mst_origin_data_block_id() const {
+inline bool UpLRCTransferStep::_internal_has_mst_origin_data_block_id() const {
   bool value = (_impl_._has_bits_[0] & 0x00000002u) != 0;
   return value;
 }
-inline bool CordTransferStep::has_mst_origin_data_block_id() const {
+inline bool UpLRCTransferStep::has_mst_origin_data_block_id() const {
   return _internal_has_mst_origin_data_block_id();
 }
-inline void CordTransferStep::clear_mst_origin_data_block_id() {
+inline void UpLRCTransferStep::clear_mst_origin_data_block_id() {
   _impl_.mst_origin_data_block_id_ = 0;
   _impl_._has_bits_[0] &= ~0x00000002u;
 }
-inline int32_t CordTransferStep::_internal_mst_origin_data_block_id() const {
+inline int32_t UpLRCTransferStep::_internal_mst_origin_data_block_id() const {
   return _impl_.mst_origin_data_block_id_;
 }
-inline int32_t CordTransferStep::mst_origin_data_block_id() const {
-  // @@protoc_insertion_point(field_get:proxy_proto.CordTransferStep.mst_origin_data_block_id)
+inline int32_t UpLRCTransferStep::mst_origin_data_block_id() const {
+  // @@protoc_insertion_point(field_get:proxy_proto.UpLRCTransferStep.mst_origin_data_block_id)
   return _internal_mst_origin_data_block_id();
 }
-inline void CordTransferStep::_internal_set_mst_origin_data_block_id(int32_t value) {
+inline void UpLRCTransferStep::_internal_set_mst_origin_data_block_id(int32_t value) {
   _impl_._has_bits_[0] |= 0x00000002u;
   _impl_.mst_origin_data_block_id_ = value;
 }
-inline void CordTransferStep::set_mst_origin_data_block_id(int32_t value) {
+inline void UpLRCTransferStep::set_mst_origin_data_block_id(int32_t value) {
   _internal_set_mst_origin_data_block_id(value);
-  // @@protoc_insertion_point(field_set:proxy_proto.CordTransferStep.mst_origin_data_block_id)
+  // @@protoc_insertion_point(field_set:proxy_proto.UpLRCTransferStep.mst_origin_data_block_id)
 }
 
 // repeated int32 parity_merge_data_block_ids = 17;
-inline int CordTransferStep::_internal_parity_merge_data_block_ids_size() const {
+inline int UpLRCTransferStep::_internal_parity_merge_data_block_ids_size() const {
   return _impl_.parity_merge_data_block_ids_.size();
 }
-inline int CordTransferStep::parity_merge_data_block_ids_size() const {
+inline int UpLRCTransferStep::parity_merge_data_block_ids_size() const {
   return _internal_parity_merge_data_block_ids_size();
 }
-inline void CordTransferStep::clear_parity_merge_data_block_ids() {
+inline void UpLRCTransferStep::clear_parity_merge_data_block_ids() {
   _impl_.parity_merge_data_block_ids_.Clear();
 }
-inline int32_t CordTransferStep::_internal_parity_merge_data_block_ids(int index) const {
+inline int32_t UpLRCTransferStep::_internal_parity_merge_data_block_ids(int index) const {
   return _impl_.parity_merge_data_block_ids_.Get(index);
 }
-inline int32_t CordTransferStep::parity_merge_data_block_ids(int index) const {
-  // @@protoc_insertion_point(field_get:proxy_proto.CordTransferStep.parity_merge_data_block_ids)
+inline int32_t UpLRCTransferStep::parity_merge_data_block_ids(int index) const {
+  // @@protoc_insertion_point(field_get:proxy_proto.UpLRCTransferStep.parity_merge_data_block_ids)
   return _internal_parity_merge_data_block_ids(index);
 }
-inline void CordTransferStep::set_parity_merge_data_block_ids(int index, int32_t value) {
+inline void UpLRCTransferStep::set_parity_merge_data_block_ids(int index, int32_t value) {
   _impl_.parity_merge_data_block_ids_.Set(index, value);
-  // @@protoc_insertion_point(field_set:proxy_proto.CordTransferStep.parity_merge_data_block_ids)
+  // @@protoc_insertion_point(field_set:proxy_proto.UpLRCTransferStep.parity_merge_data_block_ids)
 }
-inline void CordTransferStep::_internal_add_parity_merge_data_block_ids(int32_t value) {
+inline void UpLRCTransferStep::_internal_add_parity_merge_data_block_ids(int32_t value) {
   _impl_.parity_merge_data_block_ids_.Add(value);
 }
-inline void CordTransferStep::add_parity_merge_data_block_ids(int32_t value) {
+inline void UpLRCTransferStep::add_parity_merge_data_block_ids(int32_t value) {
   _internal_add_parity_merge_data_block_ids(value);
-  // @@protoc_insertion_point(field_add:proxy_proto.CordTransferStep.parity_merge_data_block_ids)
+  // @@protoc_insertion_point(field_add:proxy_proto.UpLRCTransferStep.parity_merge_data_block_ids)
 }
 inline const ::PROTOBUF_NAMESPACE_ID::RepeatedField< int32_t >&
-CordTransferStep::_internal_parity_merge_data_block_ids() const {
+UpLRCTransferStep::_internal_parity_merge_data_block_ids() const {
   return _impl_.parity_merge_data_block_ids_;
 }
 inline const ::PROTOBUF_NAMESPACE_ID::RepeatedField< int32_t >&
-CordTransferStep::parity_merge_data_block_ids() const {
-  // @@protoc_insertion_point(field_list:proxy_proto.CordTransferStep.parity_merge_data_block_ids)
+UpLRCTransferStep::parity_merge_data_block_ids() const {
+  // @@protoc_insertion_point(field_list:proxy_proto.UpLRCTransferStep.parity_merge_data_block_ids)
   return _internal_parity_merge_data_block_ids();
 }
 inline ::PROTOBUF_NAMESPACE_ID::RepeatedField< int32_t >*
-CordTransferStep::_internal_mutable_parity_merge_data_block_ids() {
+UpLRCTransferStep::_internal_mutable_parity_merge_data_block_ids() {
   return &_impl_.parity_merge_data_block_ids_;
 }
 inline ::PROTOBUF_NAMESPACE_ID::RepeatedField< int32_t >*
-CordTransferStep::mutable_parity_merge_data_block_ids() {
-  // @@protoc_insertion_point(field_mutable_list:proxy_proto.CordTransferStep.parity_merge_data_block_ids)
+UpLRCTransferStep::mutable_parity_merge_data_block_ids() {
+  // @@protoc_insertion_point(field_mutable_list:proxy_proto.UpLRCTransferStep.parity_merge_data_block_ids)
   return _internal_mutable_parity_merge_data_block_ids();
 }
 
 // -------------------------------------------------------------------
 
-// CordBlockStripeGroup
+// UpLRCBlockStripeGroup
 
 // int32 block_id = 1;
-inline void CordBlockStripeGroup::clear_block_id() {
+inline void UpLRCBlockStripeGroup::clear_block_id() {
   _impl_.block_id_ = 0;
 }
-inline int32_t CordBlockStripeGroup::_internal_block_id() const {
+inline int32_t UpLRCBlockStripeGroup::_internal_block_id() const {
   return _impl_.block_id_;
 }
-inline int32_t CordBlockStripeGroup::block_id() const {
-  // @@protoc_insertion_point(field_get:proxy_proto.CordBlockStripeGroup.block_id)
+inline int32_t UpLRCBlockStripeGroup::block_id() const {
+  // @@protoc_insertion_point(field_get:proxy_proto.UpLRCBlockStripeGroup.block_id)
   return _internal_block_id();
 }
-inline void CordBlockStripeGroup::_internal_set_block_id(int32_t value) {
+inline void UpLRCBlockStripeGroup::_internal_set_block_id(int32_t value) {
   
   _impl_.block_id_ = value;
 }
-inline void CordBlockStripeGroup::set_block_id(int32_t value) {
+inline void UpLRCBlockStripeGroup::set_block_id(int32_t value) {
   _internal_set_block_id(value);
-  // @@protoc_insertion_point(field_set:proxy_proto.CordBlockStripeGroup.block_id)
+  // @@protoc_insertion_point(field_set:proxy_proto.UpLRCBlockStripeGroup.block_id)
 }
 
 // int32 stripe_group = 2;
-inline void CordBlockStripeGroup::clear_stripe_group() {
+inline void UpLRCBlockStripeGroup::clear_stripe_group() {
   _impl_.stripe_group_ = 0;
 }
-inline int32_t CordBlockStripeGroup::_internal_stripe_group() const {
+inline int32_t UpLRCBlockStripeGroup::_internal_stripe_group() const {
   return _impl_.stripe_group_;
 }
-inline int32_t CordBlockStripeGroup::stripe_group() const {
-  // @@protoc_insertion_point(field_get:proxy_proto.CordBlockStripeGroup.stripe_group)
+inline int32_t UpLRCBlockStripeGroup::stripe_group() const {
+  // @@protoc_insertion_point(field_get:proxy_proto.UpLRCBlockStripeGroup.stripe_group)
   return _internal_stripe_group();
 }
-inline void CordBlockStripeGroup::_internal_set_stripe_group(int32_t value) {
+inline void UpLRCBlockStripeGroup::_internal_set_stripe_group(int32_t value) {
   
   _impl_.stripe_group_ = value;
 }
-inline void CordBlockStripeGroup::set_stripe_group(int32_t value) {
+inline void UpLRCBlockStripeGroup::set_stripe_group(int32_t value) {
   _internal_set_stripe_group(value);
-  // @@protoc_insertion_point(field_set:proxy_proto.CordBlockStripeGroup.stripe_group)
+  // @@protoc_insertion_point(field_set:proxy_proto.UpLRCBlockStripeGroup.stripe_group)
 }
 
 // -------------------------------------------------------------------
 
-// CordBlockHalfOpenSeg
+// UpLRCBlockHalfOpenSeg
 
 // int32 block_id = 1;
-inline void CordBlockHalfOpenSeg::clear_block_id() {
+inline void UpLRCBlockHalfOpenSeg::clear_block_id() {
   _impl_.block_id_ = 0;
 }
-inline int32_t CordBlockHalfOpenSeg::_internal_block_id() const {
+inline int32_t UpLRCBlockHalfOpenSeg::_internal_block_id() const {
   return _impl_.block_id_;
 }
-inline int32_t CordBlockHalfOpenSeg::block_id() const {
-  // @@protoc_insertion_point(field_get:proxy_proto.CordBlockHalfOpenSeg.block_id)
+inline int32_t UpLRCBlockHalfOpenSeg::block_id() const {
+  // @@protoc_insertion_point(field_get:proxy_proto.UpLRCBlockHalfOpenSeg.block_id)
   return _internal_block_id();
 }
-inline void CordBlockHalfOpenSeg::_internal_set_block_id(int32_t value) {
+inline void UpLRCBlockHalfOpenSeg::_internal_set_block_id(int32_t value) {
   
   _impl_.block_id_ = value;
 }
-inline void CordBlockHalfOpenSeg::set_block_id(int32_t value) {
+inline void UpLRCBlockHalfOpenSeg::set_block_id(int32_t value) {
   _internal_set_block_id(value);
-  // @@protoc_insertion_point(field_set:proxy_proto.CordBlockHalfOpenSeg.block_id)
+  // @@protoc_insertion_point(field_set:proxy_proto.UpLRCBlockHalfOpenSeg.block_id)
 }
 
 // int32 lo = 2;
-inline void CordBlockHalfOpenSeg::clear_lo() {
+inline void UpLRCBlockHalfOpenSeg::clear_lo() {
   _impl_.lo_ = 0;
 }
-inline int32_t CordBlockHalfOpenSeg::_internal_lo() const {
+inline int32_t UpLRCBlockHalfOpenSeg::_internal_lo() const {
   return _impl_.lo_;
 }
-inline int32_t CordBlockHalfOpenSeg::lo() const {
-  // @@protoc_insertion_point(field_get:proxy_proto.CordBlockHalfOpenSeg.lo)
+inline int32_t UpLRCBlockHalfOpenSeg::lo() const {
+  // @@protoc_insertion_point(field_get:proxy_proto.UpLRCBlockHalfOpenSeg.lo)
   return _internal_lo();
 }
-inline void CordBlockHalfOpenSeg::_internal_set_lo(int32_t value) {
+inline void UpLRCBlockHalfOpenSeg::_internal_set_lo(int32_t value) {
   
   _impl_.lo_ = value;
 }
-inline void CordBlockHalfOpenSeg::set_lo(int32_t value) {
+inline void UpLRCBlockHalfOpenSeg::set_lo(int32_t value) {
   _internal_set_lo(value);
-  // @@protoc_insertion_point(field_set:proxy_proto.CordBlockHalfOpenSeg.lo)
+  // @@protoc_insertion_point(field_set:proxy_proto.UpLRCBlockHalfOpenSeg.lo)
 }
 
 // int32 hi_excl = 3;
-inline void CordBlockHalfOpenSeg::clear_hi_excl() {
+inline void UpLRCBlockHalfOpenSeg::clear_hi_excl() {
   _impl_.hi_excl_ = 0;
 }
-inline int32_t CordBlockHalfOpenSeg::_internal_hi_excl() const {
+inline int32_t UpLRCBlockHalfOpenSeg::_internal_hi_excl() const {
   return _impl_.hi_excl_;
 }
-inline int32_t CordBlockHalfOpenSeg::hi_excl() const {
-  // @@protoc_insertion_point(field_get:proxy_proto.CordBlockHalfOpenSeg.hi_excl)
+inline int32_t UpLRCBlockHalfOpenSeg::hi_excl() const {
+  // @@protoc_insertion_point(field_get:proxy_proto.UpLRCBlockHalfOpenSeg.hi_excl)
   return _internal_hi_excl();
 }
-inline void CordBlockHalfOpenSeg::_internal_set_hi_excl(int32_t value) {
+inline void UpLRCBlockHalfOpenSeg::_internal_set_hi_excl(int32_t value) {
   
   _impl_.hi_excl_ = value;
 }
-inline void CordBlockHalfOpenSeg::set_hi_excl(int32_t value) {
+inline void UpLRCBlockHalfOpenSeg::set_hi_excl(int32_t value) {
   _internal_set_hi_excl(value);
-  // @@protoc_insertion_point(field_set:proxy_proto.CordBlockHalfOpenSeg.hi_excl)
+  // @@protoc_insertion_point(field_set:proxy_proto.UpLRCBlockHalfOpenSeg.hi_excl)
 }
 
 // -------------------------------------------------------------------
 
-// CordTransferEncodeMeta
+// UpLRCTransferEncodeMeta
 
 // int32 encode_type = 1;
-inline void CordTransferEncodeMeta::clear_encode_type() {
+inline void UpLRCTransferEncodeMeta::clear_encode_type() {
   _impl_.encode_type_ = 0;
 }
-inline int32_t CordTransferEncodeMeta::_internal_encode_type() const {
+inline int32_t UpLRCTransferEncodeMeta::_internal_encode_type() const {
   return _impl_.encode_type_;
 }
-inline int32_t CordTransferEncodeMeta::encode_type() const {
-  // @@protoc_insertion_point(field_get:proxy_proto.CordTransferEncodeMeta.encode_type)
+inline int32_t UpLRCTransferEncodeMeta::encode_type() const {
+  // @@protoc_insertion_point(field_get:proxy_proto.UpLRCTransferEncodeMeta.encode_type)
   return _internal_encode_type();
 }
-inline void CordTransferEncodeMeta::_internal_set_encode_type(int32_t value) {
+inline void UpLRCTransferEncodeMeta::_internal_set_encode_type(int32_t value) {
   
   _impl_.encode_type_ = value;
 }
-inline void CordTransferEncodeMeta::set_encode_type(int32_t value) {
+inline void UpLRCTransferEncodeMeta::set_encode_type(int32_t value) {
   _internal_set_encode_type(value);
-  // @@protoc_insertion_point(field_set:proxy_proto.CordTransferEncodeMeta.encode_type)
+  // @@protoc_insertion_point(field_set:proxy_proto.UpLRCTransferEncodeMeta.encode_type)
 }
 
 // int32 k = 2;
-inline void CordTransferEncodeMeta::clear_k() {
+inline void UpLRCTransferEncodeMeta::clear_k() {
   _impl_.k_ = 0;
 }
-inline int32_t CordTransferEncodeMeta::_internal_k() const {
+inline int32_t UpLRCTransferEncodeMeta::_internal_k() const {
   return _impl_.k_;
 }
-inline int32_t CordTransferEncodeMeta::k() const {
-  // @@protoc_insertion_point(field_get:proxy_proto.CordTransferEncodeMeta.k)
+inline int32_t UpLRCTransferEncodeMeta::k() const {
+  // @@protoc_insertion_point(field_get:proxy_proto.UpLRCTransferEncodeMeta.k)
   return _internal_k();
 }
-inline void CordTransferEncodeMeta::_internal_set_k(int32_t value) {
+inline void UpLRCTransferEncodeMeta::_internal_set_k(int32_t value) {
   
   _impl_.k_ = value;
 }
-inline void CordTransferEncodeMeta::set_k(int32_t value) {
+inline void UpLRCTransferEncodeMeta::set_k(int32_t value) {
   _internal_set_k(value);
-  // @@protoc_insertion_point(field_set:proxy_proto.CordTransferEncodeMeta.k)
+  // @@protoc_insertion_point(field_set:proxy_proto.UpLRCTransferEncodeMeta.k)
 }
 
 // int32 g_m = 3;
-inline void CordTransferEncodeMeta::clear_g_m() {
+inline void UpLRCTransferEncodeMeta::clear_g_m() {
   _impl_.g_m_ = 0;
 }
-inline int32_t CordTransferEncodeMeta::_internal_g_m() const {
+inline int32_t UpLRCTransferEncodeMeta::_internal_g_m() const {
   return _impl_.g_m_;
 }
-inline int32_t CordTransferEncodeMeta::g_m() const {
-  // @@protoc_insertion_point(field_get:proxy_proto.CordTransferEncodeMeta.g_m)
+inline int32_t UpLRCTransferEncodeMeta::g_m() const {
+  // @@protoc_insertion_point(field_get:proxy_proto.UpLRCTransferEncodeMeta.g_m)
   return _internal_g_m();
 }
-inline void CordTransferEncodeMeta::_internal_set_g_m(int32_t value) {
+inline void UpLRCTransferEncodeMeta::_internal_set_g_m(int32_t value) {
   
   _impl_.g_m_ = value;
 }
-inline void CordTransferEncodeMeta::set_g_m(int32_t value) {
+inline void UpLRCTransferEncodeMeta::set_g_m(int32_t value) {
   _internal_set_g_m(value);
-  // @@protoc_insertion_point(field_set:proxy_proto.CordTransferEncodeMeta.g_m)
+  // @@protoc_insertion_point(field_set:proxy_proto.UpLRCTransferEncodeMeta.g_m)
 }
 
 // int32 l = 4;
-inline void CordTransferEncodeMeta::clear_l() {
+inline void UpLRCTransferEncodeMeta::clear_l() {
   _impl_.l_ = 0;
 }
-inline int32_t CordTransferEncodeMeta::_internal_l() const {
+inline int32_t UpLRCTransferEncodeMeta::_internal_l() const {
   return _impl_.l_;
 }
-inline int32_t CordTransferEncodeMeta::l() const {
-  // @@protoc_insertion_point(field_get:proxy_proto.CordTransferEncodeMeta.l)
+inline int32_t UpLRCTransferEncodeMeta::l() const {
+  // @@protoc_insertion_point(field_get:proxy_proto.UpLRCTransferEncodeMeta.l)
   return _internal_l();
 }
-inline void CordTransferEncodeMeta::_internal_set_l(int32_t value) {
+inline void UpLRCTransferEncodeMeta::_internal_set_l(int32_t value) {
   
   _impl_.l_ = value;
 }
-inline void CordTransferEncodeMeta::set_l(int32_t value) {
+inline void UpLRCTransferEncodeMeta::set_l(int32_t value) {
   _internal_set_l(value);
-  // @@protoc_insertion_point(field_set:proxy_proto.CordTransferEncodeMeta.l)
+  // @@protoc_insertion_point(field_set:proxy_proto.UpLRCTransferEncodeMeta.l)
 }
 
 // int32 parity_slice_offset = 5;
-inline void CordTransferEncodeMeta::clear_parity_slice_offset() {
+inline void UpLRCTransferEncodeMeta::clear_parity_slice_offset() {
   _impl_.parity_slice_offset_ = 0;
 }
-inline int32_t CordTransferEncodeMeta::_internal_parity_slice_offset() const {
+inline int32_t UpLRCTransferEncodeMeta::_internal_parity_slice_offset() const {
   return _impl_.parity_slice_offset_;
 }
-inline int32_t CordTransferEncodeMeta::parity_slice_offset() const {
-  // @@protoc_insertion_point(field_get:proxy_proto.CordTransferEncodeMeta.parity_slice_offset)
+inline int32_t UpLRCTransferEncodeMeta::parity_slice_offset() const {
+  // @@protoc_insertion_point(field_get:proxy_proto.UpLRCTransferEncodeMeta.parity_slice_offset)
   return _internal_parity_slice_offset();
 }
-inline void CordTransferEncodeMeta::_internal_set_parity_slice_offset(int32_t value) {
+inline void UpLRCTransferEncodeMeta::_internal_set_parity_slice_offset(int32_t value) {
   
   _impl_.parity_slice_offset_ = value;
 }
-inline void CordTransferEncodeMeta::set_parity_slice_offset(int32_t value) {
+inline void UpLRCTransferEncodeMeta::set_parity_slice_offset(int32_t value) {
   _internal_set_parity_slice_offset(value);
-  // @@protoc_insertion_point(field_set:proxy_proto.CordTransferEncodeMeta.parity_slice_offset)
+  // @@protoc_insertion_point(field_set:proxy_proto.UpLRCTransferEncodeMeta.parity_slice_offset)
 }
 
 // int32 parity_slice_size = 6;
-inline void CordTransferEncodeMeta::clear_parity_slice_size() {
+inline void UpLRCTransferEncodeMeta::clear_parity_slice_size() {
   _impl_.parity_slice_size_ = 0;
 }
-inline int32_t CordTransferEncodeMeta::_internal_parity_slice_size() const {
+inline int32_t UpLRCTransferEncodeMeta::_internal_parity_slice_size() const {
   return _impl_.parity_slice_size_;
 }
-inline int32_t CordTransferEncodeMeta::parity_slice_size() const {
-  // @@protoc_insertion_point(field_get:proxy_proto.CordTransferEncodeMeta.parity_slice_size)
+inline int32_t UpLRCTransferEncodeMeta::parity_slice_size() const {
+  // @@protoc_insertion_point(field_get:proxy_proto.UpLRCTransferEncodeMeta.parity_slice_size)
   return _internal_parity_slice_size();
 }
-inline void CordTransferEncodeMeta::_internal_set_parity_slice_size(int32_t value) {
+inline void UpLRCTransferEncodeMeta::_internal_set_parity_slice_size(int32_t value) {
   
   _impl_.parity_slice_size_ = value;
 }
-inline void CordTransferEncodeMeta::set_parity_slice_size(int32_t value) {
+inline void UpLRCTransferEncodeMeta::set_parity_slice_size(int32_t value) {
   _internal_set_parity_slice_size(value);
-  // @@protoc_insertion_point(field_set:proxy_proto.CordTransferEncodeMeta.parity_slice_size)
+  // @@protoc_insertion_point(field_set:proxy_proto.UpLRCTransferEncodeMeta.parity_slice_size)
 }
 
 // -------------------------------------------------------------------
 
-// CordCollectorIngressExpect
+// UpLRCCollectorIngressExpect
 
 // int32 group_index = 1;
-inline void CordCollectorIngressExpect::clear_group_index() {
+inline void UpLRCCollectorIngressExpect::clear_group_index() {
   _impl_.group_index_ = 0;
 }
-inline int32_t CordCollectorIngressExpect::_internal_group_index() const {
+inline int32_t UpLRCCollectorIngressExpect::_internal_group_index() const {
   return _impl_.group_index_;
 }
-inline int32_t CordCollectorIngressExpect::group_index() const {
-  // @@protoc_insertion_point(field_get:proxy_proto.CordCollectorIngressExpect.group_index)
+inline int32_t UpLRCCollectorIngressExpect::group_index() const {
+  // @@protoc_insertion_point(field_get:proxy_proto.UpLRCCollectorIngressExpect.group_index)
   return _internal_group_index();
 }
-inline void CordCollectorIngressExpect::_internal_set_group_index(int32_t value) {
+inline void UpLRCCollectorIngressExpect::_internal_set_group_index(int32_t value) {
   
   _impl_.group_index_ = value;
 }
-inline void CordCollectorIngressExpect::set_group_index(int32_t value) {
+inline void UpLRCCollectorIngressExpect::set_group_index(int32_t value) {
   _internal_set_group_index(value);
-  // @@protoc_insertion_point(field_set:proxy_proto.CordCollectorIngressExpect.group_index)
+  // @@protoc_insertion_point(field_set:proxy_proto.UpLRCCollectorIngressExpect.group_index)
 }
 
 // int32 collector_block_id = 2;
-inline void CordCollectorIngressExpect::clear_collector_block_id() {
+inline void UpLRCCollectorIngressExpect::clear_collector_block_id() {
   _impl_.collector_block_id_ = 0;
 }
-inline int32_t CordCollectorIngressExpect::_internal_collector_block_id() const {
+inline int32_t UpLRCCollectorIngressExpect::_internal_collector_block_id() const {
   return _impl_.collector_block_id_;
 }
-inline int32_t CordCollectorIngressExpect::collector_block_id() const {
-  // @@protoc_insertion_point(field_get:proxy_proto.CordCollectorIngressExpect.collector_block_id)
+inline int32_t UpLRCCollectorIngressExpect::collector_block_id() const {
+  // @@protoc_insertion_point(field_get:proxy_proto.UpLRCCollectorIngressExpect.collector_block_id)
   return _internal_collector_block_id();
 }
-inline void CordCollectorIngressExpect::_internal_set_collector_block_id(int32_t value) {
+inline void UpLRCCollectorIngressExpect::_internal_set_collector_block_id(int32_t value) {
   
   _impl_.collector_block_id_ = value;
 }
-inline void CordCollectorIngressExpect::set_collector_block_id(int32_t value) {
+inline void UpLRCCollectorIngressExpect::set_collector_block_id(int32_t value) {
   _internal_set_collector_block_id(value);
-  // @@protoc_insertion_point(field_set:proxy_proto.CordCollectorIngressExpect.collector_block_id)
+  // @@protoc_insertion_point(field_set:proxy_proto.UpLRCCollectorIngressExpect.collector_block_id)
 }
 
 // repeated int32 src_data_block_ids = 3;
-inline int CordCollectorIngressExpect::_internal_src_data_block_ids_size() const {
+inline int UpLRCCollectorIngressExpect::_internal_src_data_block_ids_size() const {
   return _impl_.src_data_block_ids_.size();
 }
-inline int CordCollectorIngressExpect::src_data_block_ids_size() const {
+inline int UpLRCCollectorIngressExpect::src_data_block_ids_size() const {
   return _internal_src_data_block_ids_size();
 }
-inline void CordCollectorIngressExpect::clear_src_data_block_ids() {
+inline void UpLRCCollectorIngressExpect::clear_src_data_block_ids() {
   _impl_.src_data_block_ids_.Clear();
 }
-inline int32_t CordCollectorIngressExpect::_internal_src_data_block_ids(int index) const {
+inline int32_t UpLRCCollectorIngressExpect::_internal_src_data_block_ids(int index) const {
   return _impl_.src_data_block_ids_.Get(index);
 }
-inline int32_t CordCollectorIngressExpect::src_data_block_ids(int index) const {
-  // @@protoc_insertion_point(field_get:proxy_proto.CordCollectorIngressExpect.src_data_block_ids)
+inline int32_t UpLRCCollectorIngressExpect::src_data_block_ids(int index) const {
+  // @@protoc_insertion_point(field_get:proxy_proto.UpLRCCollectorIngressExpect.src_data_block_ids)
   return _internal_src_data_block_ids(index);
 }
-inline void CordCollectorIngressExpect::set_src_data_block_ids(int index, int32_t value) {
+inline void UpLRCCollectorIngressExpect::set_src_data_block_ids(int index, int32_t value) {
   _impl_.src_data_block_ids_.Set(index, value);
-  // @@protoc_insertion_point(field_set:proxy_proto.CordCollectorIngressExpect.src_data_block_ids)
+  // @@protoc_insertion_point(field_set:proxy_proto.UpLRCCollectorIngressExpect.src_data_block_ids)
 }
-inline void CordCollectorIngressExpect::_internal_add_src_data_block_ids(int32_t value) {
+inline void UpLRCCollectorIngressExpect::_internal_add_src_data_block_ids(int32_t value) {
   _impl_.src_data_block_ids_.Add(value);
 }
-inline void CordCollectorIngressExpect::add_src_data_block_ids(int32_t value) {
+inline void UpLRCCollectorIngressExpect::add_src_data_block_ids(int32_t value) {
   _internal_add_src_data_block_ids(value);
-  // @@protoc_insertion_point(field_add:proxy_proto.CordCollectorIngressExpect.src_data_block_ids)
+  // @@protoc_insertion_point(field_add:proxy_proto.UpLRCCollectorIngressExpect.src_data_block_ids)
 }
 inline const ::PROTOBUF_NAMESPACE_ID::RepeatedField< int32_t >&
-CordCollectorIngressExpect::_internal_src_data_block_ids() const {
+UpLRCCollectorIngressExpect::_internal_src_data_block_ids() const {
   return _impl_.src_data_block_ids_;
 }
 inline const ::PROTOBUF_NAMESPACE_ID::RepeatedField< int32_t >&
-CordCollectorIngressExpect::src_data_block_ids() const {
-  // @@protoc_insertion_point(field_list:proxy_proto.CordCollectorIngressExpect.src_data_block_ids)
+UpLRCCollectorIngressExpect::src_data_block_ids() const {
+  // @@protoc_insertion_point(field_list:proxy_proto.UpLRCCollectorIngressExpect.src_data_block_ids)
   return _internal_src_data_block_ids();
 }
 inline ::PROTOBUF_NAMESPACE_ID::RepeatedField< int32_t >*
-CordCollectorIngressExpect::_internal_mutable_src_data_block_ids() {
+UpLRCCollectorIngressExpect::_internal_mutable_src_data_block_ids() {
   return &_impl_.src_data_block_ids_;
 }
 inline ::PROTOBUF_NAMESPACE_ID::RepeatedField< int32_t >*
-CordCollectorIngressExpect::mutable_src_data_block_ids() {
-  // @@protoc_insertion_point(field_mutable_list:proxy_proto.CordCollectorIngressExpect.src_data_block_ids)
+UpLRCCollectorIngressExpect::mutable_src_data_block_ids() {
+  // @@protoc_insertion_point(field_mutable_list:proxy_proto.UpLRCCollectorIngressExpect.src_data_block_ids)
   return _internal_mutable_src_data_block_ids();
 }
 
 // repeated uint64 src_delta_total_bytes = 4;
-inline int CordCollectorIngressExpect::_internal_src_delta_total_bytes_size() const {
+inline int UpLRCCollectorIngressExpect::_internal_src_delta_total_bytes_size() const {
   return _impl_.src_delta_total_bytes_.size();
 }
-inline int CordCollectorIngressExpect::src_delta_total_bytes_size() const {
+inline int UpLRCCollectorIngressExpect::src_delta_total_bytes_size() const {
   return _internal_src_delta_total_bytes_size();
 }
-inline void CordCollectorIngressExpect::clear_src_delta_total_bytes() {
+inline void UpLRCCollectorIngressExpect::clear_src_delta_total_bytes() {
   _impl_.src_delta_total_bytes_.Clear();
 }
-inline uint64_t CordCollectorIngressExpect::_internal_src_delta_total_bytes(int index) const {
+inline uint64_t UpLRCCollectorIngressExpect::_internal_src_delta_total_bytes(int index) const {
   return _impl_.src_delta_total_bytes_.Get(index);
 }
-inline uint64_t CordCollectorIngressExpect::src_delta_total_bytes(int index) const {
-  // @@protoc_insertion_point(field_get:proxy_proto.CordCollectorIngressExpect.src_delta_total_bytes)
+inline uint64_t UpLRCCollectorIngressExpect::src_delta_total_bytes(int index) const {
+  // @@protoc_insertion_point(field_get:proxy_proto.UpLRCCollectorIngressExpect.src_delta_total_bytes)
   return _internal_src_delta_total_bytes(index);
 }
-inline void CordCollectorIngressExpect::set_src_delta_total_bytes(int index, uint64_t value) {
+inline void UpLRCCollectorIngressExpect::set_src_delta_total_bytes(int index, uint64_t value) {
   _impl_.src_delta_total_bytes_.Set(index, value);
-  // @@protoc_insertion_point(field_set:proxy_proto.CordCollectorIngressExpect.src_delta_total_bytes)
+  // @@protoc_insertion_point(field_set:proxy_proto.UpLRCCollectorIngressExpect.src_delta_total_bytes)
 }
-inline void CordCollectorIngressExpect::_internal_add_src_delta_total_bytes(uint64_t value) {
+inline void UpLRCCollectorIngressExpect::_internal_add_src_delta_total_bytes(uint64_t value) {
   _impl_.src_delta_total_bytes_.Add(value);
 }
-inline void CordCollectorIngressExpect::add_src_delta_total_bytes(uint64_t value) {
+inline void UpLRCCollectorIngressExpect::add_src_delta_total_bytes(uint64_t value) {
   _internal_add_src_delta_total_bytes(value);
-  // @@protoc_insertion_point(field_add:proxy_proto.CordCollectorIngressExpect.src_delta_total_bytes)
+  // @@protoc_insertion_point(field_add:proxy_proto.UpLRCCollectorIngressExpect.src_delta_total_bytes)
 }
 inline const ::PROTOBUF_NAMESPACE_ID::RepeatedField< uint64_t >&
-CordCollectorIngressExpect::_internal_src_delta_total_bytes() const {
+UpLRCCollectorIngressExpect::_internal_src_delta_total_bytes() const {
   return _impl_.src_delta_total_bytes_;
 }
 inline const ::PROTOBUF_NAMESPACE_ID::RepeatedField< uint64_t >&
-CordCollectorIngressExpect::src_delta_total_bytes() const {
-  // @@protoc_insertion_point(field_list:proxy_proto.CordCollectorIngressExpect.src_delta_total_bytes)
+UpLRCCollectorIngressExpect::src_delta_total_bytes() const {
+  // @@protoc_insertion_point(field_list:proxy_proto.UpLRCCollectorIngressExpect.src_delta_total_bytes)
   return _internal_src_delta_total_bytes();
 }
 inline ::PROTOBUF_NAMESPACE_ID::RepeatedField< uint64_t >*
-CordCollectorIngressExpect::_internal_mutable_src_delta_total_bytes() {
+UpLRCCollectorIngressExpect::_internal_mutable_src_delta_total_bytes() {
   return &_impl_.src_delta_total_bytes_;
 }
 inline ::PROTOBUF_NAMESPACE_ID::RepeatedField< uint64_t >*
-CordCollectorIngressExpect::mutable_src_delta_total_bytes() {
-  // @@protoc_insertion_point(field_mutable_list:proxy_proto.CordCollectorIngressExpect.src_delta_total_bytes)
+UpLRCCollectorIngressExpect::mutable_src_delta_total_bytes() {
+  // @@protoc_insertion_point(field_mutable_list:proxy_proto.UpLRCCollectorIngressExpect.src_delta_total_bytes)
   return _internal_mutable_src_delta_total_bytes();
 }
 
 // -------------------------------------------------------------------
 
-// CordDataStripDesc
+// UpLRCDataStripDesc
 
 // int32 block_id = 1;
-inline void CordDataStripDesc::clear_block_id() {
+inline void UpLRCDataStripDesc::clear_block_id() {
   _impl_.block_id_ = 0;
 }
-inline int32_t CordDataStripDesc::_internal_block_id() const {
+inline int32_t UpLRCDataStripDesc::_internal_block_id() const {
   return _impl_.block_id_;
 }
-inline int32_t CordDataStripDesc::block_id() const {
-  // @@protoc_insertion_point(field_get:proxy_proto.CordDataStripDesc.block_id)
+inline int32_t UpLRCDataStripDesc::block_id() const {
+  // @@protoc_insertion_point(field_get:proxy_proto.UpLRCDataStripDesc.block_id)
   return _internal_block_id();
 }
-inline void CordDataStripDesc::_internal_set_block_id(int32_t value) {
+inline void UpLRCDataStripDesc::_internal_set_block_id(int32_t value) {
   
   _impl_.block_id_ = value;
 }
-inline void CordDataStripDesc::set_block_id(int32_t value) {
+inline void UpLRCDataStripDesc::set_block_id(int32_t value) {
   _internal_set_block_id(value);
-  // @@protoc_insertion_point(field_set:proxy_proto.CordDataStripDesc.block_id)
+  // @@protoc_insertion_point(field_set:proxy_proto.UpLRCDataStripDesc.block_id)
 }
 
 // int32 slice_offset = 2;
-inline void CordDataStripDesc::clear_slice_offset() {
+inline void UpLRCDataStripDesc::clear_slice_offset() {
   _impl_.slice_offset_ = 0;
 }
-inline int32_t CordDataStripDesc::_internal_slice_offset() const {
+inline int32_t UpLRCDataStripDesc::_internal_slice_offset() const {
   return _impl_.slice_offset_;
 }
-inline int32_t CordDataStripDesc::slice_offset() const {
-  // @@protoc_insertion_point(field_get:proxy_proto.CordDataStripDesc.slice_offset)
+inline int32_t UpLRCDataStripDesc::slice_offset() const {
+  // @@protoc_insertion_point(field_get:proxy_proto.UpLRCDataStripDesc.slice_offset)
   return _internal_slice_offset();
 }
-inline void CordDataStripDesc::_internal_set_slice_offset(int32_t value) {
+inline void UpLRCDataStripDesc::_internal_set_slice_offset(int32_t value) {
   
   _impl_.slice_offset_ = value;
 }
-inline void CordDataStripDesc::set_slice_offset(int32_t value) {
+inline void UpLRCDataStripDesc::set_slice_offset(int32_t value) {
   _internal_set_slice_offset(value);
-  // @@protoc_insertion_point(field_set:proxy_proto.CordDataStripDesc.slice_offset)
+  // @@protoc_insertion_point(field_set:proxy_proto.UpLRCDataStripDesc.slice_offset)
 }
 
 // int32 slice_len = 3;
-inline void CordDataStripDesc::clear_slice_len() {
+inline void UpLRCDataStripDesc::clear_slice_len() {
   _impl_.slice_len_ = 0;
 }
-inline int32_t CordDataStripDesc::_internal_slice_len() const {
+inline int32_t UpLRCDataStripDesc::_internal_slice_len() const {
   return _impl_.slice_len_;
 }
-inline int32_t CordDataStripDesc::slice_len() const {
-  // @@protoc_insertion_point(field_get:proxy_proto.CordDataStripDesc.slice_len)
+inline int32_t UpLRCDataStripDesc::slice_len() const {
+  // @@protoc_insertion_point(field_get:proxy_proto.UpLRCDataStripDesc.slice_len)
   return _internal_slice_len();
 }
-inline void CordDataStripDesc::_internal_set_slice_len(int32_t value) {
+inline void UpLRCDataStripDesc::_internal_set_slice_len(int32_t value) {
   
   _impl_.slice_len_ = value;
 }
-inline void CordDataStripDesc::set_slice_len(int32_t value) {
+inline void UpLRCDataStripDesc::set_slice_len(int32_t value) {
   _internal_set_slice_len(value);
-  // @@protoc_insertion_point(field_set:proxy_proto.CordDataStripDesc.slice_len)
+  // @@protoc_insertion_point(field_set:proxy_proto.UpLRCDataStripDesc.slice_len)
 }
 
 // -------------------------------------------------------------------
 
-// CordPlanKeyMsg
+// UpLRCPlanKeyMsg
 
 // string plan_key = 1;
-inline void CordPlanKeyMsg::clear_plan_key() {
+inline void UpLRCPlanKeyMsg::clear_plan_key() {
   _impl_.plan_key_.ClearToEmpty();
 }
-inline const std::string& CordPlanKeyMsg::plan_key() const {
-  // @@protoc_insertion_point(field_get:proxy_proto.CordPlanKeyMsg.plan_key)
+inline const std::string& UpLRCPlanKeyMsg::plan_key() const {
+  // @@protoc_insertion_point(field_get:proxy_proto.UpLRCPlanKeyMsg.plan_key)
   return _internal_plan_key();
 }
 template <typename ArgT0, typename... ArgT>
 inline PROTOBUF_ALWAYS_INLINE
-void CordPlanKeyMsg::set_plan_key(ArgT0&& arg0, ArgT... args) {
+void UpLRCPlanKeyMsg::set_plan_key(ArgT0&& arg0, ArgT... args) {
  
  _impl_.plan_key_.Set(static_cast<ArgT0 &&>(arg0), args..., GetArenaForAllocation());
-  // @@protoc_insertion_point(field_set:proxy_proto.CordPlanKeyMsg.plan_key)
+  // @@protoc_insertion_point(field_set:proxy_proto.UpLRCPlanKeyMsg.plan_key)
 }
-inline std::string* CordPlanKeyMsg::mutable_plan_key() {
+inline std::string* UpLRCPlanKeyMsg::mutable_plan_key() {
   std::string* _s = _internal_mutable_plan_key();
-  // @@protoc_insertion_point(field_mutable:proxy_proto.CordPlanKeyMsg.plan_key)
+  // @@protoc_insertion_point(field_mutable:proxy_proto.UpLRCPlanKeyMsg.plan_key)
   return _s;
 }
-inline const std::string& CordPlanKeyMsg::_internal_plan_key() const {
+inline const std::string& UpLRCPlanKeyMsg::_internal_plan_key() const {
   return _impl_.plan_key_.Get();
 }
-inline void CordPlanKeyMsg::_internal_set_plan_key(const std::string& value) {
+inline void UpLRCPlanKeyMsg::_internal_set_plan_key(const std::string& value) {
   
   _impl_.plan_key_.Set(value, GetArenaForAllocation());
 }
-inline std::string* CordPlanKeyMsg::_internal_mutable_plan_key() {
+inline std::string* UpLRCPlanKeyMsg::_internal_mutable_plan_key() {
   
   return _impl_.plan_key_.Mutable(GetArenaForAllocation());
 }
-inline std::string* CordPlanKeyMsg::release_plan_key() {
-  // @@protoc_insertion_point(field_release:proxy_proto.CordPlanKeyMsg.plan_key)
+inline std::string* UpLRCPlanKeyMsg::release_plan_key() {
+  // @@protoc_insertion_point(field_release:proxy_proto.UpLRCPlanKeyMsg.plan_key)
   return _impl_.plan_key_.Release();
 }
-inline void CordPlanKeyMsg::set_allocated_plan_key(std::string* plan_key) {
+inline void UpLRCPlanKeyMsg::set_allocated_plan_key(std::string* plan_key) {
   if (plan_key != nullptr) {
     
   } else {
@@ -18846,69 +18846,69 @@ inline void CordPlanKeyMsg::set_allocated_plan_key(std::string* plan_key) {
     _impl_.plan_key_.Set("", GetArenaForAllocation());
   }
 #endif // PROTOBUF_FORCE_COPY_DEFAULT_STRING
-  // @@protoc_insertion_point(field_set_allocated:proxy_proto.CordPlanKeyMsg.plan_key)
+  // @@protoc_insertion_point(field_set_allocated:proxy_proto.UpLRCPlanKeyMsg.plan_key)
 }
 
 // -------------------------------------------------------------------
 
-// CordIngressCacheRef
+// UpLRCIngressCacheRef
 
 // int32 cluster_id = 1;
-inline void CordIngressCacheRef::clear_cluster_id() {
+inline void UpLRCIngressCacheRef::clear_cluster_id() {
   _impl_.cluster_id_ = 0;
 }
-inline int32_t CordIngressCacheRef::_internal_cluster_id() const {
+inline int32_t UpLRCIngressCacheRef::_internal_cluster_id() const {
   return _impl_.cluster_id_;
 }
-inline int32_t CordIngressCacheRef::cluster_id() const {
-  // @@protoc_insertion_point(field_get:proxy_proto.CordIngressCacheRef.cluster_id)
+inline int32_t UpLRCIngressCacheRef::cluster_id() const {
+  // @@protoc_insertion_point(field_get:proxy_proto.UpLRCIngressCacheRef.cluster_id)
   return _internal_cluster_id();
 }
-inline void CordIngressCacheRef::_internal_set_cluster_id(int32_t value) {
+inline void UpLRCIngressCacheRef::_internal_set_cluster_id(int32_t value) {
   
   _impl_.cluster_id_ = value;
 }
-inline void CordIngressCacheRef::set_cluster_id(int32_t value) {
+inline void UpLRCIngressCacheRef::set_cluster_id(int32_t value) {
   _internal_set_cluster_id(value);
-  // @@protoc_insertion_point(field_set:proxy_proto.CordIngressCacheRef.cluster_id)
+  // @@protoc_insertion_point(field_set:proxy_proto.UpLRCIngressCacheRef.cluster_id)
 }
 
 // string append_key = 2;
-inline void CordIngressCacheRef::clear_append_key() {
+inline void UpLRCIngressCacheRef::clear_append_key() {
   _impl_.append_key_.ClearToEmpty();
 }
-inline const std::string& CordIngressCacheRef::append_key() const {
-  // @@protoc_insertion_point(field_get:proxy_proto.CordIngressCacheRef.append_key)
+inline const std::string& UpLRCIngressCacheRef::append_key() const {
+  // @@protoc_insertion_point(field_get:proxy_proto.UpLRCIngressCacheRef.append_key)
   return _internal_append_key();
 }
 template <typename ArgT0, typename... ArgT>
 inline PROTOBUF_ALWAYS_INLINE
-void CordIngressCacheRef::set_append_key(ArgT0&& arg0, ArgT... args) {
+void UpLRCIngressCacheRef::set_append_key(ArgT0&& arg0, ArgT... args) {
  
  _impl_.append_key_.Set(static_cast<ArgT0 &&>(arg0), args..., GetArenaForAllocation());
-  // @@protoc_insertion_point(field_set:proxy_proto.CordIngressCacheRef.append_key)
+  // @@protoc_insertion_point(field_set:proxy_proto.UpLRCIngressCacheRef.append_key)
 }
-inline std::string* CordIngressCacheRef::mutable_append_key() {
+inline std::string* UpLRCIngressCacheRef::mutable_append_key() {
   std::string* _s = _internal_mutable_append_key();
-  // @@protoc_insertion_point(field_mutable:proxy_proto.CordIngressCacheRef.append_key)
+  // @@protoc_insertion_point(field_mutable:proxy_proto.UpLRCIngressCacheRef.append_key)
   return _s;
 }
-inline const std::string& CordIngressCacheRef::_internal_append_key() const {
+inline const std::string& UpLRCIngressCacheRef::_internal_append_key() const {
   return _impl_.append_key_.Get();
 }
-inline void CordIngressCacheRef::_internal_set_append_key(const std::string& value) {
+inline void UpLRCIngressCacheRef::_internal_set_append_key(const std::string& value) {
   
   _impl_.append_key_.Set(value, GetArenaForAllocation());
 }
-inline std::string* CordIngressCacheRef::_internal_mutable_append_key() {
+inline std::string* UpLRCIngressCacheRef::_internal_mutable_append_key() {
   
   return _impl_.append_key_.Mutable(GetArenaForAllocation());
 }
-inline std::string* CordIngressCacheRef::release_append_key() {
-  // @@protoc_insertion_point(field_release:proxy_proto.CordIngressCacheRef.append_key)
+inline std::string* UpLRCIngressCacheRef::release_append_key() {
+  // @@protoc_insertion_point(field_release:proxy_proto.UpLRCIngressCacheRef.append_key)
   return _impl_.append_key_.Release();
 }
-inline void CordIngressCacheRef::set_allocated_append_key(std::string* append_key) {
+inline void UpLRCIngressCacheRef::set_allocated_append_key(std::string* append_key) {
   if (append_key != nullptr) {
     
   } else {
@@ -18920,69 +18920,69 @@ inline void CordIngressCacheRef::set_allocated_append_key(std::string* append_ke
     _impl_.append_key_.Set("", GetArenaForAllocation());
   }
 #endif // PROTOBUF_FORCE_COPY_DEFAULT_STRING
-  // @@protoc_insertion_point(field_set_allocated:proxy_proto.CordIngressCacheRef.append_key)
+  // @@protoc_insertion_point(field_set_allocated:proxy_proto.UpLRCIngressCacheRef.append_key)
 }
 
 // -------------------------------------------------------------------
 
-// CordTransferPlan
+// UpLRCTransferPlan
 
 // int32 stripe_id = 1;
-inline void CordTransferPlan::clear_stripe_id() {
+inline void UpLRCTransferPlan::clear_stripe_id() {
   _impl_.stripe_id_ = 0;
 }
-inline int32_t CordTransferPlan::_internal_stripe_id() const {
+inline int32_t UpLRCTransferPlan::_internal_stripe_id() const {
   return _impl_.stripe_id_;
 }
-inline int32_t CordTransferPlan::stripe_id() const {
-  // @@protoc_insertion_point(field_get:proxy_proto.CordTransferPlan.stripe_id)
+inline int32_t UpLRCTransferPlan::stripe_id() const {
+  // @@protoc_insertion_point(field_get:proxy_proto.UpLRCTransferPlan.stripe_id)
   return _internal_stripe_id();
 }
-inline void CordTransferPlan::_internal_set_stripe_id(int32_t value) {
+inline void UpLRCTransferPlan::_internal_set_stripe_id(int32_t value) {
   
   _impl_.stripe_id_ = value;
 }
-inline void CordTransferPlan::set_stripe_id(int32_t value) {
+inline void UpLRCTransferPlan::set_stripe_id(int32_t value) {
   _internal_set_stripe_id(value);
-  // @@protoc_insertion_point(field_set:proxy_proto.CordTransferPlan.stripe_id)
+  // @@protoc_insertion_point(field_set:proxy_proto.UpLRCTransferPlan.stripe_id)
 }
 
 // string plan_key = 2;
-inline void CordTransferPlan::clear_plan_key() {
+inline void UpLRCTransferPlan::clear_plan_key() {
   _impl_.plan_key_.ClearToEmpty();
 }
-inline const std::string& CordTransferPlan::plan_key() const {
-  // @@protoc_insertion_point(field_get:proxy_proto.CordTransferPlan.plan_key)
+inline const std::string& UpLRCTransferPlan::plan_key() const {
+  // @@protoc_insertion_point(field_get:proxy_proto.UpLRCTransferPlan.plan_key)
   return _internal_plan_key();
 }
 template <typename ArgT0, typename... ArgT>
 inline PROTOBUF_ALWAYS_INLINE
-void CordTransferPlan::set_plan_key(ArgT0&& arg0, ArgT... args) {
+void UpLRCTransferPlan::set_plan_key(ArgT0&& arg0, ArgT... args) {
  
  _impl_.plan_key_.Set(static_cast<ArgT0 &&>(arg0), args..., GetArenaForAllocation());
-  // @@protoc_insertion_point(field_set:proxy_proto.CordTransferPlan.plan_key)
+  // @@protoc_insertion_point(field_set:proxy_proto.UpLRCTransferPlan.plan_key)
 }
-inline std::string* CordTransferPlan::mutable_plan_key() {
+inline std::string* UpLRCTransferPlan::mutable_plan_key() {
   std::string* _s = _internal_mutable_plan_key();
-  // @@protoc_insertion_point(field_mutable:proxy_proto.CordTransferPlan.plan_key)
+  // @@protoc_insertion_point(field_mutable:proxy_proto.UpLRCTransferPlan.plan_key)
   return _s;
 }
-inline const std::string& CordTransferPlan::_internal_plan_key() const {
+inline const std::string& UpLRCTransferPlan::_internal_plan_key() const {
   return _impl_.plan_key_.Get();
 }
-inline void CordTransferPlan::_internal_set_plan_key(const std::string& value) {
+inline void UpLRCTransferPlan::_internal_set_plan_key(const std::string& value) {
   
   _impl_.plan_key_.Set(value, GetArenaForAllocation());
 }
-inline std::string* CordTransferPlan::_internal_mutable_plan_key() {
+inline std::string* UpLRCTransferPlan::_internal_mutable_plan_key() {
   
   return _impl_.plan_key_.Mutable(GetArenaForAllocation());
 }
-inline std::string* CordTransferPlan::release_plan_key() {
-  // @@protoc_insertion_point(field_release:proxy_proto.CordTransferPlan.plan_key)
+inline std::string* UpLRCTransferPlan::release_plan_key() {
+  // @@protoc_insertion_point(field_release:proxy_proto.UpLRCTransferPlan.plan_key)
   return _impl_.plan_key_.Release();
 }
-inline void CordTransferPlan::set_allocated_plan_key(std::string* plan_key) {
+inline void UpLRCTransferPlan::set_allocated_plan_key(std::string* plan_key) {
   if (plan_key != nullptr) {
     
   } else {
@@ -18994,348 +18994,348 @@ inline void CordTransferPlan::set_allocated_plan_key(std::string* plan_key) {
     _impl_.plan_key_.Set("", GetArenaForAllocation());
   }
 #endif // PROTOBUF_FORCE_COPY_DEFAULT_STRING
-  // @@protoc_insertion_point(field_set_allocated:proxy_proto.CordTransferPlan.plan_key)
+  // @@protoc_insertion_point(field_set_allocated:proxy_proto.UpLRCTransferPlan.plan_key)
 }
 
 // uint32 total_rounds = 3;
-inline void CordTransferPlan::clear_total_rounds() {
+inline void UpLRCTransferPlan::clear_total_rounds() {
   _impl_.total_rounds_ = 0u;
 }
-inline uint32_t CordTransferPlan::_internal_total_rounds() const {
+inline uint32_t UpLRCTransferPlan::_internal_total_rounds() const {
   return _impl_.total_rounds_;
 }
-inline uint32_t CordTransferPlan::total_rounds() const {
-  // @@protoc_insertion_point(field_get:proxy_proto.CordTransferPlan.total_rounds)
+inline uint32_t UpLRCTransferPlan::total_rounds() const {
+  // @@protoc_insertion_point(field_get:proxy_proto.UpLRCTransferPlan.total_rounds)
   return _internal_total_rounds();
 }
-inline void CordTransferPlan::_internal_set_total_rounds(uint32_t value) {
+inline void UpLRCTransferPlan::_internal_set_total_rounds(uint32_t value) {
   
   _impl_.total_rounds_ = value;
 }
-inline void CordTransferPlan::set_total_rounds(uint32_t value) {
+inline void UpLRCTransferPlan::set_total_rounds(uint32_t value) {
   _internal_set_total_rounds(value);
-  // @@protoc_insertion_point(field_set:proxy_proto.CordTransferPlan.total_rounds)
+  // @@protoc_insertion_point(field_set:proxy_proto.UpLRCTransferPlan.total_rounds)
 }
 
-// repeated .proxy_proto.CordTransferStep steps = 4;
-inline int CordTransferPlan::_internal_steps_size() const {
+// repeated .proxy_proto.UpLRCTransferStep steps = 4;
+inline int UpLRCTransferPlan::_internal_steps_size() const {
   return _impl_.steps_.size();
 }
-inline int CordTransferPlan::steps_size() const {
+inline int UpLRCTransferPlan::steps_size() const {
   return _internal_steps_size();
 }
-inline void CordTransferPlan::clear_steps() {
+inline void UpLRCTransferPlan::clear_steps() {
   _impl_.steps_.Clear();
 }
-inline ::proxy_proto::CordTransferStep* CordTransferPlan::mutable_steps(int index) {
-  // @@protoc_insertion_point(field_mutable:proxy_proto.CordTransferPlan.steps)
+inline ::proxy_proto::UpLRCTransferStep* UpLRCTransferPlan::mutable_steps(int index) {
+  // @@protoc_insertion_point(field_mutable:proxy_proto.UpLRCTransferPlan.steps)
   return _impl_.steps_.Mutable(index);
 }
-inline ::PROTOBUF_NAMESPACE_ID::RepeatedPtrField< ::proxy_proto::CordTransferStep >*
-CordTransferPlan::mutable_steps() {
-  // @@protoc_insertion_point(field_mutable_list:proxy_proto.CordTransferPlan.steps)
+inline ::PROTOBUF_NAMESPACE_ID::RepeatedPtrField< ::proxy_proto::UpLRCTransferStep >*
+UpLRCTransferPlan::mutable_steps() {
+  // @@protoc_insertion_point(field_mutable_list:proxy_proto.UpLRCTransferPlan.steps)
   return &_impl_.steps_;
 }
-inline const ::proxy_proto::CordTransferStep& CordTransferPlan::_internal_steps(int index) const {
+inline const ::proxy_proto::UpLRCTransferStep& UpLRCTransferPlan::_internal_steps(int index) const {
   return _impl_.steps_.Get(index);
 }
-inline const ::proxy_proto::CordTransferStep& CordTransferPlan::steps(int index) const {
-  // @@protoc_insertion_point(field_get:proxy_proto.CordTransferPlan.steps)
+inline const ::proxy_proto::UpLRCTransferStep& UpLRCTransferPlan::steps(int index) const {
+  // @@protoc_insertion_point(field_get:proxy_proto.UpLRCTransferPlan.steps)
   return _internal_steps(index);
 }
-inline ::proxy_proto::CordTransferStep* CordTransferPlan::_internal_add_steps() {
+inline ::proxy_proto::UpLRCTransferStep* UpLRCTransferPlan::_internal_add_steps() {
   return _impl_.steps_.Add();
 }
-inline ::proxy_proto::CordTransferStep* CordTransferPlan::add_steps() {
-  ::proxy_proto::CordTransferStep* _add = _internal_add_steps();
-  // @@protoc_insertion_point(field_add:proxy_proto.CordTransferPlan.steps)
+inline ::proxy_proto::UpLRCTransferStep* UpLRCTransferPlan::add_steps() {
+  ::proxy_proto::UpLRCTransferStep* _add = _internal_add_steps();
+  // @@protoc_insertion_point(field_add:proxy_proto.UpLRCTransferPlan.steps)
   return _add;
 }
-inline const ::PROTOBUF_NAMESPACE_ID::RepeatedPtrField< ::proxy_proto::CordTransferStep >&
-CordTransferPlan::steps() const {
-  // @@protoc_insertion_point(field_list:proxy_proto.CordTransferPlan.steps)
+inline const ::PROTOBUF_NAMESPACE_ID::RepeatedPtrField< ::proxy_proto::UpLRCTransferStep >&
+UpLRCTransferPlan::steps() const {
+  // @@protoc_insertion_point(field_list:proxy_proto.UpLRCTransferPlan.steps)
   return _impl_.steps_;
 }
 
 // int32 slot_unit_bytes = 5;
-inline void CordTransferPlan::clear_slot_unit_bytes() {
+inline void UpLRCTransferPlan::clear_slot_unit_bytes() {
   _impl_.slot_unit_bytes_ = 0;
 }
-inline int32_t CordTransferPlan::_internal_slot_unit_bytes() const {
+inline int32_t UpLRCTransferPlan::_internal_slot_unit_bytes() const {
   return _impl_.slot_unit_bytes_;
 }
-inline int32_t CordTransferPlan::slot_unit_bytes() const {
-  // @@protoc_insertion_point(field_get:proxy_proto.CordTransferPlan.slot_unit_bytes)
+inline int32_t UpLRCTransferPlan::slot_unit_bytes() const {
+  // @@protoc_insertion_point(field_get:proxy_proto.UpLRCTransferPlan.slot_unit_bytes)
   return _internal_slot_unit_bytes();
 }
-inline void CordTransferPlan::_internal_set_slot_unit_bytes(int32_t value) {
+inline void UpLRCTransferPlan::_internal_set_slot_unit_bytes(int32_t value) {
   
   _impl_.slot_unit_bytes_ = value;
 }
-inline void CordTransferPlan::set_slot_unit_bytes(int32_t value) {
+inline void UpLRCTransferPlan::set_slot_unit_bytes(int32_t value) {
   _internal_set_slot_unit_bytes(value);
-  // @@protoc_insertion_point(field_set:proxy_proto.CordTransferPlan.slot_unit_bytes)
+  // @@protoc_insertion_point(field_set:proxy_proto.UpLRCTransferPlan.slot_unit_bytes)
 }
 
 // int32 k_datablock = 6;
-inline void CordTransferPlan::clear_k_datablock() {
+inline void UpLRCTransferPlan::clear_k_datablock() {
   _impl_.k_datablock_ = 0;
 }
-inline int32_t CordTransferPlan::_internal_k_datablock() const {
+inline int32_t UpLRCTransferPlan::_internal_k_datablock() const {
   return _impl_.k_datablock_;
 }
-inline int32_t CordTransferPlan::k_datablock() const {
-  // @@protoc_insertion_point(field_get:proxy_proto.CordTransferPlan.k_datablock)
+inline int32_t UpLRCTransferPlan::k_datablock() const {
+  // @@protoc_insertion_point(field_get:proxy_proto.UpLRCTransferPlan.k_datablock)
   return _internal_k_datablock();
 }
-inline void CordTransferPlan::_internal_set_k_datablock(int32_t value) {
+inline void UpLRCTransferPlan::_internal_set_k_datablock(int32_t value) {
   
   _impl_.k_datablock_ = value;
 }
-inline void CordTransferPlan::set_k_datablock(int32_t value) {
+inline void UpLRCTransferPlan::set_k_datablock(int32_t value) {
   _internal_set_k_datablock(value);
-  // @@protoc_insertion_point(field_set:proxy_proto.CordTransferPlan.k_datablock)
+  // @@protoc_insertion_point(field_set:proxy_proto.UpLRCTransferPlan.k_datablock)
 }
 
-// repeated .proxy_proto.CordTransferClusterEndpoint cluster_endpoints = 7;
-inline int CordTransferPlan::_internal_cluster_endpoints_size() const {
+// repeated .proxy_proto.UpLRCTransferClusterEndpoint cluster_endpoints = 7;
+inline int UpLRCTransferPlan::_internal_cluster_endpoints_size() const {
   return _impl_.cluster_endpoints_.size();
 }
-inline int CordTransferPlan::cluster_endpoints_size() const {
+inline int UpLRCTransferPlan::cluster_endpoints_size() const {
   return _internal_cluster_endpoints_size();
 }
-inline void CordTransferPlan::clear_cluster_endpoints() {
+inline void UpLRCTransferPlan::clear_cluster_endpoints() {
   _impl_.cluster_endpoints_.Clear();
 }
-inline ::proxy_proto::CordTransferClusterEndpoint* CordTransferPlan::mutable_cluster_endpoints(int index) {
-  // @@protoc_insertion_point(field_mutable:proxy_proto.CordTransferPlan.cluster_endpoints)
+inline ::proxy_proto::UpLRCTransferClusterEndpoint* UpLRCTransferPlan::mutable_cluster_endpoints(int index) {
+  // @@protoc_insertion_point(field_mutable:proxy_proto.UpLRCTransferPlan.cluster_endpoints)
   return _impl_.cluster_endpoints_.Mutable(index);
 }
-inline ::PROTOBUF_NAMESPACE_ID::RepeatedPtrField< ::proxy_proto::CordTransferClusterEndpoint >*
-CordTransferPlan::mutable_cluster_endpoints() {
-  // @@protoc_insertion_point(field_mutable_list:proxy_proto.CordTransferPlan.cluster_endpoints)
+inline ::PROTOBUF_NAMESPACE_ID::RepeatedPtrField< ::proxy_proto::UpLRCTransferClusterEndpoint >*
+UpLRCTransferPlan::mutable_cluster_endpoints() {
+  // @@protoc_insertion_point(field_mutable_list:proxy_proto.UpLRCTransferPlan.cluster_endpoints)
   return &_impl_.cluster_endpoints_;
 }
-inline const ::proxy_proto::CordTransferClusterEndpoint& CordTransferPlan::_internal_cluster_endpoints(int index) const {
+inline const ::proxy_proto::UpLRCTransferClusterEndpoint& UpLRCTransferPlan::_internal_cluster_endpoints(int index) const {
   return _impl_.cluster_endpoints_.Get(index);
 }
-inline const ::proxy_proto::CordTransferClusterEndpoint& CordTransferPlan::cluster_endpoints(int index) const {
-  // @@protoc_insertion_point(field_get:proxy_proto.CordTransferPlan.cluster_endpoints)
+inline const ::proxy_proto::UpLRCTransferClusterEndpoint& UpLRCTransferPlan::cluster_endpoints(int index) const {
+  // @@protoc_insertion_point(field_get:proxy_proto.UpLRCTransferPlan.cluster_endpoints)
   return _internal_cluster_endpoints(index);
 }
-inline ::proxy_proto::CordTransferClusterEndpoint* CordTransferPlan::_internal_add_cluster_endpoints() {
+inline ::proxy_proto::UpLRCTransferClusterEndpoint* UpLRCTransferPlan::_internal_add_cluster_endpoints() {
   return _impl_.cluster_endpoints_.Add();
 }
-inline ::proxy_proto::CordTransferClusterEndpoint* CordTransferPlan::add_cluster_endpoints() {
-  ::proxy_proto::CordTransferClusterEndpoint* _add = _internal_add_cluster_endpoints();
-  // @@protoc_insertion_point(field_add:proxy_proto.CordTransferPlan.cluster_endpoints)
+inline ::proxy_proto::UpLRCTransferClusterEndpoint* UpLRCTransferPlan::add_cluster_endpoints() {
+  ::proxy_proto::UpLRCTransferClusterEndpoint* _add = _internal_add_cluster_endpoints();
+  // @@protoc_insertion_point(field_add:proxy_proto.UpLRCTransferPlan.cluster_endpoints)
   return _add;
 }
-inline const ::PROTOBUF_NAMESPACE_ID::RepeatedPtrField< ::proxy_proto::CordTransferClusterEndpoint >&
-CordTransferPlan::cluster_endpoints() const {
-  // @@protoc_insertion_point(field_list:proxy_proto.CordTransferPlan.cluster_endpoints)
+inline const ::PROTOBUF_NAMESPACE_ID::RepeatedPtrField< ::proxy_proto::UpLRCTransferClusterEndpoint >&
+UpLRCTransferPlan::cluster_endpoints() const {
+  // @@protoc_insertion_point(field_list:proxy_proto.UpLRCTransferPlan.cluster_endpoints)
   return _impl_.cluster_endpoints_;
 }
 
-// repeated .proxy_proto.CordTransferBlockPlacement block_placements = 8;
-inline int CordTransferPlan::_internal_block_placements_size() const {
+// repeated .proxy_proto.UpLRCTransferBlockPlacement block_placements = 8;
+inline int UpLRCTransferPlan::_internal_block_placements_size() const {
   return _impl_.block_placements_.size();
 }
-inline int CordTransferPlan::block_placements_size() const {
+inline int UpLRCTransferPlan::block_placements_size() const {
   return _internal_block_placements_size();
 }
-inline void CordTransferPlan::clear_block_placements() {
+inline void UpLRCTransferPlan::clear_block_placements() {
   _impl_.block_placements_.Clear();
 }
-inline ::proxy_proto::CordTransferBlockPlacement* CordTransferPlan::mutable_block_placements(int index) {
-  // @@protoc_insertion_point(field_mutable:proxy_proto.CordTransferPlan.block_placements)
+inline ::proxy_proto::UpLRCTransferBlockPlacement* UpLRCTransferPlan::mutable_block_placements(int index) {
+  // @@protoc_insertion_point(field_mutable:proxy_proto.UpLRCTransferPlan.block_placements)
   return _impl_.block_placements_.Mutable(index);
 }
-inline ::PROTOBUF_NAMESPACE_ID::RepeatedPtrField< ::proxy_proto::CordTransferBlockPlacement >*
-CordTransferPlan::mutable_block_placements() {
-  // @@protoc_insertion_point(field_mutable_list:proxy_proto.CordTransferPlan.block_placements)
+inline ::PROTOBUF_NAMESPACE_ID::RepeatedPtrField< ::proxy_proto::UpLRCTransferBlockPlacement >*
+UpLRCTransferPlan::mutable_block_placements() {
+  // @@protoc_insertion_point(field_mutable_list:proxy_proto.UpLRCTransferPlan.block_placements)
   return &_impl_.block_placements_;
 }
-inline const ::proxy_proto::CordTransferBlockPlacement& CordTransferPlan::_internal_block_placements(int index) const {
+inline const ::proxy_proto::UpLRCTransferBlockPlacement& UpLRCTransferPlan::_internal_block_placements(int index) const {
   return _impl_.block_placements_.Get(index);
 }
-inline const ::proxy_proto::CordTransferBlockPlacement& CordTransferPlan::block_placements(int index) const {
-  // @@protoc_insertion_point(field_get:proxy_proto.CordTransferPlan.block_placements)
+inline const ::proxy_proto::UpLRCTransferBlockPlacement& UpLRCTransferPlan::block_placements(int index) const {
+  // @@protoc_insertion_point(field_get:proxy_proto.UpLRCTransferPlan.block_placements)
   return _internal_block_placements(index);
 }
-inline ::proxy_proto::CordTransferBlockPlacement* CordTransferPlan::_internal_add_block_placements() {
+inline ::proxy_proto::UpLRCTransferBlockPlacement* UpLRCTransferPlan::_internal_add_block_placements() {
   return _impl_.block_placements_.Add();
 }
-inline ::proxy_proto::CordTransferBlockPlacement* CordTransferPlan::add_block_placements() {
-  ::proxy_proto::CordTransferBlockPlacement* _add = _internal_add_block_placements();
-  // @@protoc_insertion_point(field_add:proxy_proto.CordTransferPlan.block_placements)
+inline ::proxy_proto::UpLRCTransferBlockPlacement* UpLRCTransferPlan::add_block_placements() {
+  ::proxy_proto::UpLRCTransferBlockPlacement* _add = _internal_add_block_placements();
+  // @@protoc_insertion_point(field_add:proxy_proto.UpLRCTransferPlan.block_placements)
   return _add;
 }
-inline const ::PROTOBUF_NAMESPACE_ID::RepeatedPtrField< ::proxy_proto::CordTransferBlockPlacement >&
-CordTransferPlan::block_placements() const {
-  // @@protoc_insertion_point(field_list:proxy_proto.CordTransferPlan.block_placements)
+inline const ::PROTOBUF_NAMESPACE_ID::RepeatedPtrField< ::proxy_proto::UpLRCTransferBlockPlacement >&
+UpLRCTransferPlan::block_placements() const {
+  // @@protoc_insertion_point(field_list:proxy_proto.UpLRCTransferPlan.block_placements)
   return _impl_.block_placements_;
 }
 
-// repeated .proxy_proto.CordTransferDeltaBlobRef delta_blob_refs = 9;
-inline int CordTransferPlan::_internal_delta_blob_refs_size() const {
+// repeated .proxy_proto.UpLRCTransferDeltaBlobRef delta_blob_refs = 9;
+inline int UpLRCTransferPlan::_internal_delta_blob_refs_size() const {
   return _impl_.delta_blob_refs_.size();
 }
-inline int CordTransferPlan::delta_blob_refs_size() const {
+inline int UpLRCTransferPlan::delta_blob_refs_size() const {
   return _internal_delta_blob_refs_size();
 }
-inline void CordTransferPlan::clear_delta_blob_refs() {
+inline void UpLRCTransferPlan::clear_delta_blob_refs() {
   _impl_.delta_blob_refs_.Clear();
 }
-inline ::proxy_proto::CordTransferDeltaBlobRef* CordTransferPlan::mutable_delta_blob_refs(int index) {
-  // @@protoc_insertion_point(field_mutable:proxy_proto.CordTransferPlan.delta_blob_refs)
+inline ::proxy_proto::UpLRCTransferDeltaBlobRef* UpLRCTransferPlan::mutable_delta_blob_refs(int index) {
+  // @@protoc_insertion_point(field_mutable:proxy_proto.UpLRCTransferPlan.delta_blob_refs)
   return _impl_.delta_blob_refs_.Mutable(index);
 }
-inline ::PROTOBUF_NAMESPACE_ID::RepeatedPtrField< ::proxy_proto::CordTransferDeltaBlobRef >*
-CordTransferPlan::mutable_delta_blob_refs() {
-  // @@protoc_insertion_point(field_mutable_list:proxy_proto.CordTransferPlan.delta_blob_refs)
+inline ::PROTOBUF_NAMESPACE_ID::RepeatedPtrField< ::proxy_proto::UpLRCTransferDeltaBlobRef >*
+UpLRCTransferPlan::mutable_delta_blob_refs() {
+  // @@protoc_insertion_point(field_mutable_list:proxy_proto.UpLRCTransferPlan.delta_blob_refs)
   return &_impl_.delta_blob_refs_;
 }
-inline const ::proxy_proto::CordTransferDeltaBlobRef& CordTransferPlan::_internal_delta_blob_refs(int index) const {
+inline const ::proxy_proto::UpLRCTransferDeltaBlobRef& UpLRCTransferPlan::_internal_delta_blob_refs(int index) const {
   return _impl_.delta_blob_refs_.Get(index);
 }
-inline const ::proxy_proto::CordTransferDeltaBlobRef& CordTransferPlan::delta_blob_refs(int index) const {
-  // @@protoc_insertion_point(field_get:proxy_proto.CordTransferPlan.delta_blob_refs)
+inline const ::proxy_proto::UpLRCTransferDeltaBlobRef& UpLRCTransferPlan::delta_blob_refs(int index) const {
+  // @@protoc_insertion_point(field_get:proxy_proto.UpLRCTransferPlan.delta_blob_refs)
   return _internal_delta_blob_refs(index);
 }
-inline ::proxy_proto::CordTransferDeltaBlobRef* CordTransferPlan::_internal_add_delta_blob_refs() {
+inline ::proxy_proto::UpLRCTransferDeltaBlobRef* UpLRCTransferPlan::_internal_add_delta_blob_refs() {
   return _impl_.delta_blob_refs_.Add();
 }
-inline ::proxy_proto::CordTransferDeltaBlobRef* CordTransferPlan::add_delta_blob_refs() {
-  ::proxy_proto::CordTransferDeltaBlobRef* _add = _internal_add_delta_blob_refs();
-  // @@protoc_insertion_point(field_add:proxy_proto.CordTransferPlan.delta_blob_refs)
+inline ::proxy_proto::UpLRCTransferDeltaBlobRef* UpLRCTransferPlan::add_delta_blob_refs() {
+  ::proxy_proto::UpLRCTransferDeltaBlobRef* _add = _internal_add_delta_blob_refs();
+  // @@protoc_insertion_point(field_add:proxy_proto.UpLRCTransferPlan.delta_blob_refs)
   return _add;
 }
-inline const ::PROTOBUF_NAMESPACE_ID::RepeatedPtrField< ::proxy_proto::CordTransferDeltaBlobRef >&
-CordTransferPlan::delta_blob_refs() const {
-  // @@protoc_insertion_point(field_list:proxy_proto.CordTransferPlan.delta_blob_refs)
+inline const ::PROTOBUF_NAMESPACE_ID::RepeatedPtrField< ::proxy_proto::UpLRCTransferDeltaBlobRef >&
+UpLRCTransferPlan::delta_blob_refs() const {
+  // @@protoc_insertion_point(field_list:proxy_proto.UpLRCTransferPlan.delta_blob_refs)
   return _impl_.delta_blob_refs_;
 }
 
-// repeated .proxy_proto.CordTransferGroupXorHint group_xor_hints = 10;
-inline int CordTransferPlan::_internal_group_xor_hints_size() const {
+// repeated .proxy_proto.UpLRCTransferGroupXorHint group_xor_hints = 10;
+inline int UpLRCTransferPlan::_internal_group_xor_hints_size() const {
   return _impl_.group_xor_hints_.size();
 }
-inline int CordTransferPlan::group_xor_hints_size() const {
+inline int UpLRCTransferPlan::group_xor_hints_size() const {
   return _internal_group_xor_hints_size();
 }
-inline void CordTransferPlan::clear_group_xor_hints() {
+inline void UpLRCTransferPlan::clear_group_xor_hints() {
   _impl_.group_xor_hints_.Clear();
 }
-inline ::proxy_proto::CordTransferGroupXorHint* CordTransferPlan::mutable_group_xor_hints(int index) {
-  // @@protoc_insertion_point(field_mutable:proxy_proto.CordTransferPlan.group_xor_hints)
+inline ::proxy_proto::UpLRCTransferGroupXorHint* UpLRCTransferPlan::mutable_group_xor_hints(int index) {
+  // @@protoc_insertion_point(field_mutable:proxy_proto.UpLRCTransferPlan.group_xor_hints)
   return _impl_.group_xor_hints_.Mutable(index);
 }
-inline ::PROTOBUF_NAMESPACE_ID::RepeatedPtrField< ::proxy_proto::CordTransferGroupXorHint >*
-CordTransferPlan::mutable_group_xor_hints() {
-  // @@protoc_insertion_point(field_mutable_list:proxy_proto.CordTransferPlan.group_xor_hints)
+inline ::PROTOBUF_NAMESPACE_ID::RepeatedPtrField< ::proxy_proto::UpLRCTransferGroupXorHint >*
+UpLRCTransferPlan::mutable_group_xor_hints() {
+  // @@protoc_insertion_point(field_mutable_list:proxy_proto.UpLRCTransferPlan.group_xor_hints)
   return &_impl_.group_xor_hints_;
 }
-inline const ::proxy_proto::CordTransferGroupXorHint& CordTransferPlan::_internal_group_xor_hints(int index) const {
+inline const ::proxy_proto::UpLRCTransferGroupXorHint& UpLRCTransferPlan::_internal_group_xor_hints(int index) const {
   return _impl_.group_xor_hints_.Get(index);
 }
-inline const ::proxy_proto::CordTransferGroupXorHint& CordTransferPlan::group_xor_hints(int index) const {
-  // @@protoc_insertion_point(field_get:proxy_proto.CordTransferPlan.group_xor_hints)
+inline const ::proxy_proto::UpLRCTransferGroupXorHint& UpLRCTransferPlan::group_xor_hints(int index) const {
+  // @@protoc_insertion_point(field_get:proxy_proto.UpLRCTransferPlan.group_xor_hints)
   return _internal_group_xor_hints(index);
 }
-inline ::proxy_proto::CordTransferGroupXorHint* CordTransferPlan::_internal_add_group_xor_hints() {
+inline ::proxy_proto::UpLRCTransferGroupXorHint* UpLRCTransferPlan::_internal_add_group_xor_hints() {
   return _impl_.group_xor_hints_.Add();
 }
-inline ::proxy_proto::CordTransferGroupXorHint* CordTransferPlan::add_group_xor_hints() {
-  ::proxy_proto::CordTransferGroupXorHint* _add = _internal_add_group_xor_hints();
-  // @@protoc_insertion_point(field_add:proxy_proto.CordTransferPlan.group_xor_hints)
+inline ::proxy_proto::UpLRCTransferGroupXorHint* UpLRCTransferPlan::add_group_xor_hints() {
+  ::proxy_proto::UpLRCTransferGroupXorHint* _add = _internal_add_group_xor_hints();
+  // @@protoc_insertion_point(field_add:proxy_proto.UpLRCTransferPlan.group_xor_hints)
   return _add;
 }
-inline const ::PROTOBUF_NAMESPACE_ID::RepeatedPtrField< ::proxy_proto::CordTransferGroupXorHint >&
-CordTransferPlan::group_xor_hints() const {
-  // @@protoc_insertion_point(field_list:proxy_proto.CordTransferPlan.group_xor_hints)
+inline const ::PROTOBUF_NAMESPACE_ID::RepeatedPtrField< ::proxy_proto::UpLRCTransferGroupXorHint >&
+UpLRCTransferPlan::group_xor_hints() const {
+  // @@protoc_insertion_point(field_list:proxy_proto.UpLRCTransferPlan.group_xor_hints)
   return _impl_.group_xor_hints_;
 }
 
-// repeated .proxy_proto.CordTransferClusterDeltaLayout cluster_delta_layouts = 11;
-inline int CordTransferPlan::_internal_cluster_delta_layouts_size() const {
+// repeated .proxy_proto.UpLRCTransferClusterDeltaLayout cluster_delta_layouts = 11;
+inline int UpLRCTransferPlan::_internal_cluster_delta_layouts_size() const {
   return _impl_.cluster_delta_layouts_.size();
 }
-inline int CordTransferPlan::cluster_delta_layouts_size() const {
+inline int UpLRCTransferPlan::cluster_delta_layouts_size() const {
   return _internal_cluster_delta_layouts_size();
 }
-inline void CordTransferPlan::clear_cluster_delta_layouts() {
+inline void UpLRCTransferPlan::clear_cluster_delta_layouts() {
   _impl_.cluster_delta_layouts_.Clear();
 }
-inline ::proxy_proto::CordTransferClusterDeltaLayout* CordTransferPlan::mutable_cluster_delta_layouts(int index) {
-  // @@protoc_insertion_point(field_mutable:proxy_proto.CordTransferPlan.cluster_delta_layouts)
+inline ::proxy_proto::UpLRCTransferClusterDeltaLayout* UpLRCTransferPlan::mutable_cluster_delta_layouts(int index) {
+  // @@protoc_insertion_point(field_mutable:proxy_proto.UpLRCTransferPlan.cluster_delta_layouts)
   return _impl_.cluster_delta_layouts_.Mutable(index);
 }
-inline ::PROTOBUF_NAMESPACE_ID::RepeatedPtrField< ::proxy_proto::CordTransferClusterDeltaLayout >*
-CordTransferPlan::mutable_cluster_delta_layouts() {
-  // @@protoc_insertion_point(field_mutable_list:proxy_proto.CordTransferPlan.cluster_delta_layouts)
+inline ::PROTOBUF_NAMESPACE_ID::RepeatedPtrField< ::proxy_proto::UpLRCTransferClusterDeltaLayout >*
+UpLRCTransferPlan::mutable_cluster_delta_layouts() {
+  // @@protoc_insertion_point(field_mutable_list:proxy_proto.UpLRCTransferPlan.cluster_delta_layouts)
   return &_impl_.cluster_delta_layouts_;
 }
-inline const ::proxy_proto::CordTransferClusterDeltaLayout& CordTransferPlan::_internal_cluster_delta_layouts(int index) const {
+inline const ::proxy_proto::UpLRCTransferClusterDeltaLayout& UpLRCTransferPlan::_internal_cluster_delta_layouts(int index) const {
   return _impl_.cluster_delta_layouts_.Get(index);
 }
-inline const ::proxy_proto::CordTransferClusterDeltaLayout& CordTransferPlan::cluster_delta_layouts(int index) const {
-  // @@protoc_insertion_point(field_get:proxy_proto.CordTransferPlan.cluster_delta_layouts)
+inline const ::proxy_proto::UpLRCTransferClusterDeltaLayout& UpLRCTransferPlan::cluster_delta_layouts(int index) const {
+  // @@protoc_insertion_point(field_get:proxy_proto.UpLRCTransferPlan.cluster_delta_layouts)
   return _internal_cluster_delta_layouts(index);
 }
-inline ::proxy_proto::CordTransferClusterDeltaLayout* CordTransferPlan::_internal_add_cluster_delta_layouts() {
+inline ::proxy_proto::UpLRCTransferClusterDeltaLayout* UpLRCTransferPlan::_internal_add_cluster_delta_layouts() {
   return _impl_.cluster_delta_layouts_.Add();
 }
-inline ::proxy_proto::CordTransferClusterDeltaLayout* CordTransferPlan::add_cluster_delta_layouts() {
-  ::proxy_proto::CordTransferClusterDeltaLayout* _add = _internal_add_cluster_delta_layouts();
-  // @@protoc_insertion_point(field_add:proxy_proto.CordTransferPlan.cluster_delta_layouts)
+inline ::proxy_proto::UpLRCTransferClusterDeltaLayout* UpLRCTransferPlan::add_cluster_delta_layouts() {
+  ::proxy_proto::UpLRCTransferClusterDeltaLayout* _add = _internal_add_cluster_delta_layouts();
+  // @@protoc_insertion_point(field_add:proxy_proto.UpLRCTransferPlan.cluster_delta_layouts)
   return _add;
 }
-inline const ::PROTOBUF_NAMESPACE_ID::RepeatedPtrField< ::proxy_proto::CordTransferClusterDeltaLayout >&
-CordTransferPlan::cluster_delta_layouts() const {
-  // @@protoc_insertion_point(field_list:proxy_proto.CordTransferPlan.cluster_delta_layouts)
+inline const ::PROTOBUF_NAMESPACE_ID::RepeatedPtrField< ::proxy_proto::UpLRCTransferClusterDeltaLayout >&
+UpLRCTransferPlan::cluster_delta_layouts() const {
+  // @@protoc_insertion_point(field_list:proxy_proto.UpLRCTransferPlan.cluster_delta_layouts)
   return _impl_.cluster_delta_layouts_;
 }
 
-// .proxy_proto.CordTransferEncodeMeta cord_encode_meta = 12;
-inline bool CordTransferPlan::_internal_has_cord_encode_meta() const {
-  return this != internal_default_instance() && _impl_.cord_encode_meta_ != nullptr;
+// .proxy_proto.UpLRCTransferEncodeMeta uplrc_encode_meta = 12;
+inline bool UpLRCTransferPlan::_internal_has_uplrc_encode_meta() const {
+  return this != internal_default_instance() && _impl_.uplrc_encode_meta_ != nullptr;
 }
-inline bool CordTransferPlan::has_cord_encode_meta() const {
-  return _internal_has_cord_encode_meta();
+inline bool UpLRCTransferPlan::has_uplrc_encode_meta() const {
+  return _internal_has_uplrc_encode_meta();
 }
-inline void CordTransferPlan::clear_cord_encode_meta() {
-  if (GetArenaForAllocation() == nullptr && _impl_.cord_encode_meta_ != nullptr) {
-    delete _impl_.cord_encode_meta_;
+inline void UpLRCTransferPlan::clear_uplrc_encode_meta() {
+  if (GetArenaForAllocation() == nullptr && _impl_.uplrc_encode_meta_ != nullptr) {
+    delete _impl_.uplrc_encode_meta_;
   }
-  _impl_.cord_encode_meta_ = nullptr;
+  _impl_.uplrc_encode_meta_ = nullptr;
 }
-inline const ::proxy_proto::CordTransferEncodeMeta& CordTransferPlan::_internal_cord_encode_meta() const {
-  const ::proxy_proto::CordTransferEncodeMeta* p = _impl_.cord_encode_meta_;
-  return p != nullptr ? *p : reinterpret_cast<const ::proxy_proto::CordTransferEncodeMeta&>(
-      ::proxy_proto::_CordTransferEncodeMeta_default_instance_);
+inline const ::proxy_proto::UpLRCTransferEncodeMeta& UpLRCTransferPlan::_internal_uplrc_encode_meta() const {
+  const ::proxy_proto::UpLRCTransferEncodeMeta* p = _impl_.uplrc_encode_meta_;
+  return p != nullptr ? *p : reinterpret_cast<const ::proxy_proto::UpLRCTransferEncodeMeta&>(
+      ::proxy_proto::_UpLRCTransferEncodeMeta_default_instance_);
 }
-inline const ::proxy_proto::CordTransferEncodeMeta& CordTransferPlan::cord_encode_meta() const {
-  // @@protoc_insertion_point(field_get:proxy_proto.CordTransferPlan.cord_encode_meta)
-  return _internal_cord_encode_meta();
+inline const ::proxy_proto::UpLRCTransferEncodeMeta& UpLRCTransferPlan::uplrc_encode_meta() const {
+  // @@protoc_insertion_point(field_get:proxy_proto.UpLRCTransferPlan.uplrc_encode_meta)
+  return _internal_uplrc_encode_meta();
 }
-inline void CordTransferPlan::unsafe_arena_set_allocated_cord_encode_meta(
-    ::proxy_proto::CordTransferEncodeMeta* cord_encode_meta) {
+inline void UpLRCTransferPlan::unsafe_arena_set_allocated_uplrc_encode_meta(
+    ::proxy_proto::UpLRCTransferEncodeMeta* uplrc_encode_meta) {
   if (GetArenaForAllocation() == nullptr) {
-    delete reinterpret_cast<::PROTOBUF_NAMESPACE_ID::MessageLite*>(_impl_.cord_encode_meta_);
+    delete reinterpret_cast<::PROTOBUF_NAMESPACE_ID::MessageLite*>(_impl_.uplrc_encode_meta_);
   }
-  _impl_.cord_encode_meta_ = cord_encode_meta;
-  if (cord_encode_meta) {
+  _impl_.uplrc_encode_meta_ = uplrc_encode_meta;
+  if (uplrc_encode_meta) {
     
   } else {
     
   }
-  // @@protoc_insertion_point(field_unsafe_arena_set_allocated:proxy_proto.CordTransferPlan.cord_encode_meta)
+  // @@protoc_insertion_point(field_unsafe_arena_set_allocated:proxy_proto.UpLRCTransferPlan.uplrc_encode_meta)
 }
-inline ::proxy_proto::CordTransferEncodeMeta* CordTransferPlan::release_cord_encode_meta() {
+inline ::proxy_proto::UpLRCTransferEncodeMeta* UpLRCTransferPlan::release_uplrc_encode_meta() {
   
-  ::proxy_proto::CordTransferEncodeMeta* temp = _impl_.cord_encode_meta_;
-  _impl_.cord_encode_meta_ = nullptr;
+  ::proxy_proto::UpLRCTransferEncodeMeta* temp = _impl_.uplrc_encode_meta_;
+  _impl_.uplrc_encode_meta_ = nullptr;
 #ifdef PROTOBUF_FORCE_COPY_IN_RELEASE
   auto* old =  reinterpret_cast<::PROTOBUF_NAMESPACE_ID::MessageLite*>(temp);
   temp = ::PROTOBUF_NAMESPACE_ID::internal::DuplicateIfNonNull(temp);
@@ -19347,286 +19347,286 @@ inline ::proxy_proto::CordTransferEncodeMeta* CordTransferPlan::release_cord_enc
 #endif  // !PROTOBUF_FORCE_COPY_IN_RELEASE
   return temp;
 }
-inline ::proxy_proto::CordTransferEncodeMeta* CordTransferPlan::unsafe_arena_release_cord_encode_meta() {
-  // @@protoc_insertion_point(field_release:proxy_proto.CordTransferPlan.cord_encode_meta)
+inline ::proxy_proto::UpLRCTransferEncodeMeta* UpLRCTransferPlan::unsafe_arena_release_uplrc_encode_meta() {
+  // @@protoc_insertion_point(field_release:proxy_proto.UpLRCTransferPlan.uplrc_encode_meta)
   
-  ::proxy_proto::CordTransferEncodeMeta* temp = _impl_.cord_encode_meta_;
-  _impl_.cord_encode_meta_ = nullptr;
+  ::proxy_proto::UpLRCTransferEncodeMeta* temp = _impl_.uplrc_encode_meta_;
+  _impl_.uplrc_encode_meta_ = nullptr;
   return temp;
 }
-inline ::proxy_proto::CordTransferEncodeMeta* CordTransferPlan::_internal_mutable_cord_encode_meta() {
+inline ::proxy_proto::UpLRCTransferEncodeMeta* UpLRCTransferPlan::_internal_mutable_uplrc_encode_meta() {
   
-  if (_impl_.cord_encode_meta_ == nullptr) {
-    auto* p = CreateMaybeMessage<::proxy_proto::CordTransferEncodeMeta>(GetArenaForAllocation());
-    _impl_.cord_encode_meta_ = p;
+  if (_impl_.uplrc_encode_meta_ == nullptr) {
+    auto* p = CreateMaybeMessage<::proxy_proto::UpLRCTransferEncodeMeta>(GetArenaForAllocation());
+    _impl_.uplrc_encode_meta_ = p;
   }
-  return _impl_.cord_encode_meta_;
+  return _impl_.uplrc_encode_meta_;
 }
-inline ::proxy_proto::CordTransferEncodeMeta* CordTransferPlan::mutable_cord_encode_meta() {
-  ::proxy_proto::CordTransferEncodeMeta* _msg = _internal_mutable_cord_encode_meta();
-  // @@protoc_insertion_point(field_mutable:proxy_proto.CordTransferPlan.cord_encode_meta)
+inline ::proxy_proto::UpLRCTransferEncodeMeta* UpLRCTransferPlan::mutable_uplrc_encode_meta() {
+  ::proxy_proto::UpLRCTransferEncodeMeta* _msg = _internal_mutable_uplrc_encode_meta();
+  // @@protoc_insertion_point(field_mutable:proxy_proto.UpLRCTransferPlan.uplrc_encode_meta)
   return _msg;
 }
-inline void CordTransferPlan::set_allocated_cord_encode_meta(::proxy_proto::CordTransferEncodeMeta* cord_encode_meta) {
+inline void UpLRCTransferPlan::set_allocated_uplrc_encode_meta(::proxy_proto::UpLRCTransferEncodeMeta* uplrc_encode_meta) {
   ::PROTOBUF_NAMESPACE_ID::Arena* message_arena = GetArenaForAllocation();
   if (message_arena == nullptr) {
-    delete _impl_.cord_encode_meta_;
+    delete _impl_.uplrc_encode_meta_;
   }
-  if (cord_encode_meta) {
+  if (uplrc_encode_meta) {
     ::PROTOBUF_NAMESPACE_ID::Arena* submessage_arena =
-        ::PROTOBUF_NAMESPACE_ID::Arena::InternalGetOwningArena(cord_encode_meta);
+        ::PROTOBUF_NAMESPACE_ID::Arena::InternalGetOwningArena(uplrc_encode_meta);
     if (message_arena != submessage_arena) {
-      cord_encode_meta = ::PROTOBUF_NAMESPACE_ID::internal::GetOwnedMessage(
-          message_arena, cord_encode_meta, submessage_arena);
+      uplrc_encode_meta = ::PROTOBUF_NAMESPACE_ID::internal::GetOwnedMessage(
+          message_arena, uplrc_encode_meta, submessage_arena);
     }
     
   } else {
     
   }
-  _impl_.cord_encode_meta_ = cord_encode_meta;
-  // @@protoc_insertion_point(field_set_allocated:proxy_proto.CordTransferPlan.cord_encode_meta)
+  _impl_.uplrc_encode_meta_ = uplrc_encode_meta;
+  // @@protoc_insertion_point(field_set_allocated:proxy_proto.UpLRCTransferPlan.uplrc_encode_meta)
 }
 
-// repeated .proxy_proto.CordCollectorIngressExpect cord_collector_expects = 13;
-inline int CordTransferPlan::_internal_cord_collector_expects_size() const {
-  return _impl_.cord_collector_expects_.size();
+// repeated .proxy_proto.UpLRCCollectorIngressExpect uplrc_collector_expects = 13;
+inline int UpLRCTransferPlan::_internal_uplrc_collector_expects_size() const {
+  return _impl_.uplrc_collector_expects_.size();
 }
-inline int CordTransferPlan::cord_collector_expects_size() const {
-  return _internal_cord_collector_expects_size();
+inline int UpLRCTransferPlan::uplrc_collector_expects_size() const {
+  return _internal_uplrc_collector_expects_size();
 }
-inline void CordTransferPlan::clear_cord_collector_expects() {
-  _impl_.cord_collector_expects_.Clear();
+inline void UpLRCTransferPlan::clear_uplrc_collector_expects() {
+  _impl_.uplrc_collector_expects_.Clear();
 }
-inline ::proxy_proto::CordCollectorIngressExpect* CordTransferPlan::mutable_cord_collector_expects(int index) {
-  // @@protoc_insertion_point(field_mutable:proxy_proto.CordTransferPlan.cord_collector_expects)
-  return _impl_.cord_collector_expects_.Mutable(index);
+inline ::proxy_proto::UpLRCCollectorIngressExpect* UpLRCTransferPlan::mutable_uplrc_collector_expects(int index) {
+  // @@protoc_insertion_point(field_mutable:proxy_proto.UpLRCTransferPlan.uplrc_collector_expects)
+  return _impl_.uplrc_collector_expects_.Mutable(index);
 }
-inline ::PROTOBUF_NAMESPACE_ID::RepeatedPtrField< ::proxy_proto::CordCollectorIngressExpect >*
-CordTransferPlan::mutable_cord_collector_expects() {
-  // @@protoc_insertion_point(field_mutable_list:proxy_proto.CordTransferPlan.cord_collector_expects)
-  return &_impl_.cord_collector_expects_;
+inline ::PROTOBUF_NAMESPACE_ID::RepeatedPtrField< ::proxy_proto::UpLRCCollectorIngressExpect >*
+UpLRCTransferPlan::mutable_uplrc_collector_expects() {
+  // @@protoc_insertion_point(field_mutable_list:proxy_proto.UpLRCTransferPlan.uplrc_collector_expects)
+  return &_impl_.uplrc_collector_expects_;
 }
-inline const ::proxy_proto::CordCollectorIngressExpect& CordTransferPlan::_internal_cord_collector_expects(int index) const {
-  return _impl_.cord_collector_expects_.Get(index);
+inline const ::proxy_proto::UpLRCCollectorIngressExpect& UpLRCTransferPlan::_internal_uplrc_collector_expects(int index) const {
+  return _impl_.uplrc_collector_expects_.Get(index);
 }
-inline const ::proxy_proto::CordCollectorIngressExpect& CordTransferPlan::cord_collector_expects(int index) const {
-  // @@protoc_insertion_point(field_get:proxy_proto.CordTransferPlan.cord_collector_expects)
-  return _internal_cord_collector_expects(index);
+inline const ::proxy_proto::UpLRCCollectorIngressExpect& UpLRCTransferPlan::uplrc_collector_expects(int index) const {
+  // @@protoc_insertion_point(field_get:proxy_proto.UpLRCTransferPlan.uplrc_collector_expects)
+  return _internal_uplrc_collector_expects(index);
 }
-inline ::proxy_proto::CordCollectorIngressExpect* CordTransferPlan::_internal_add_cord_collector_expects() {
-  return _impl_.cord_collector_expects_.Add();
+inline ::proxy_proto::UpLRCCollectorIngressExpect* UpLRCTransferPlan::_internal_add_uplrc_collector_expects() {
+  return _impl_.uplrc_collector_expects_.Add();
 }
-inline ::proxy_proto::CordCollectorIngressExpect* CordTransferPlan::add_cord_collector_expects() {
-  ::proxy_proto::CordCollectorIngressExpect* _add = _internal_add_cord_collector_expects();
-  // @@protoc_insertion_point(field_add:proxy_proto.CordTransferPlan.cord_collector_expects)
+inline ::proxy_proto::UpLRCCollectorIngressExpect* UpLRCTransferPlan::add_uplrc_collector_expects() {
+  ::proxy_proto::UpLRCCollectorIngressExpect* _add = _internal_add_uplrc_collector_expects();
+  // @@protoc_insertion_point(field_add:proxy_proto.UpLRCTransferPlan.uplrc_collector_expects)
   return _add;
 }
-inline const ::PROTOBUF_NAMESPACE_ID::RepeatedPtrField< ::proxy_proto::CordCollectorIngressExpect >&
-CordTransferPlan::cord_collector_expects() const {
-  // @@protoc_insertion_point(field_list:proxy_proto.CordTransferPlan.cord_collector_expects)
-  return _impl_.cord_collector_expects_;
+inline const ::PROTOBUF_NAMESPACE_ID::RepeatedPtrField< ::proxy_proto::UpLRCCollectorIngressExpect >&
+UpLRCTransferPlan::uplrc_collector_expects() const {
+  // @@protoc_insertion_point(field_list:proxy_proto.UpLRCTransferPlan.uplrc_collector_expects)
+  return _impl_.uplrc_collector_expects_;
 }
 
-// repeated .proxy_proto.CordDataStripDesc cord_data_strip_descs = 14;
-inline int CordTransferPlan::_internal_cord_data_strip_descs_size() const {
-  return _impl_.cord_data_strip_descs_.size();
+// repeated .proxy_proto.UpLRCDataStripDesc uplrc_data_strip_descs = 14;
+inline int UpLRCTransferPlan::_internal_uplrc_data_strip_descs_size() const {
+  return _impl_.uplrc_data_strip_descs_.size();
 }
-inline int CordTransferPlan::cord_data_strip_descs_size() const {
-  return _internal_cord_data_strip_descs_size();
+inline int UpLRCTransferPlan::uplrc_data_strip_descs_size() const {
+  return _internal_uplrc_data_strip_descs_size();
 }
-inline void CordTransferPlan::clear_cord_data_strip_descs() {
-  _impl_.cord_data_strip_descs_.Clear();
+inline void UpLRCTransferPlan::clear_uplrc_data_strip_descs() {
+  _impl_.uplrc_data_strip_descs_.Clear();
 }
-inline ::proxy_proto::CordDataStripDesc* CordTransferPlan::mutable_cord_data_strip_descs(int index) {
-  // @@protoc_insertion_point(field_mutable:proxy_proto.CordTransferPlan.cord_data_strip_descs)
-  return _impl_.cord_data_strip_descs_.Mutable(index);
+inline ::proxy_proto::UpLRCDataStripDesc* UpLRCTransferPlan::mutable_uplrc_data_strip_descs(int index) {
+  // @@protoc_insertion_point(field_mutable:proxy_proto.UpLRCTransferPlan.uplrc_data_strip_descs)
+  return _impl_.uplrc_data_strip_descs_.Mutable(index);
 }
-inline ::PROTOBUF_NAMESPACE_ID::RepeatedPtrField< ::proxy_proto::CordDataStripDesc >*
-CordTransferPlan::mutable_cord_data_strip_descs() {
-  // @@protoc_insertion_point(field_mutable_list:proxy_proto.CordTransferPlan.cord_data_strip_descs)
-  return &_impl_.cord_data_strip_descs_;
+inline ::PROTOBUF_NAMESPACE_ID::RepeatedPtrField< ::proxy_proto::UpLRCDataStripDesc >*
+UpLRCTransferPlan::mutable_uplrc_data_strip_descs() {
+  // @@protoc_insertion_point(field_mutable_list:proxy_proto.UpLRCTransferPlan.uplrc_data_strip_descs)
+  return &_impl_.uplrc_data_strip_descs_;
 }
-inline const ::proxy_proto::CordDataStripDesc& CordTransferPlan::_internal_cord_data_strip_descs(int index) const {
-  return _impl_.cord_data_strip_descs_.Get(index);
+inline const ::proxy_proto::UpLRCDataStripDesc& UpLRCTransferPlan::_internal_uplrc_data_strip_descs(int index) const {
+  return _impl_.uplrc_data_strip_descs_.Get(index);
 }
-inline const ::proxy_proto::CordDataStripDesc& CordTransferPlan::cord_data_strip_descs(int index) const {
-  // @@protoc_insertion_point(field_get:proxy_proto.CordTransferPlan.cord_data_strip_descs)
-  return _internal_cord_data_strip_descs(index);
+inline const ::proxy_proto::UpLRCDataStripDesc& UpLRCTransferPlan::uplrc_data_strip_descs(int index) const {
+  // @@protoc_insertion_point(field_get:proxy_proto.UpLRCTransferPlan.uplrc_data_strip_descs)
+  return _internal_uplrc_data_strip_descs(index);
 }
-inline ::proxy_proto::CordDataStripDesc* CordTransferPlan::_internal_add_cord_data_strip_descs() {
-  return _impl_.cord_data_strip_descs_.Add();
+inline ::proxy_proto::UpLRCDataStripDesc* UpLRCTransferPlan::_internal_add_uplrc_data_strip_descs() {
+  return _impl_.uplrc_data_strip_descs_.Add();
 }
-inline ::proxy_proto::CordDataStripDesc* CordTransferPlan::add_cord_data_strip_descs() {
-  ::proxy_proto::CordDataStripDesc* _add = _internal_add_cord_data_strip_descs();
-  // @@protoc_insertion_point(field_add:proxy_proto.CordTransferPlan.cord_data_strip_descs)
+inline ::proxy_proto::UpLRCDataStripDesc* UpLRCTransferPlan::add_uplrc_data_strip_descs() {
+  ::proxy_proto::UpLRCDataStripDesc* _add = _internal_add_uplrc_data_strip_descs();
+  // @@protoc_insertion_point(field_add:proxy_proto.UpLRCTransferPlan.uplrc_data_strip_descs)
   return _add;
 }
-inline const ::PROTOBUF_NAMESPACE_ID::RepeatedPtrField< ::proxy_proto::CordDataStripDesc >&
-CordTransferPlan::cord_data_strip_descs() const {
-  // @@protoc_insertion_point(field_list:proxy_proto.CordTransferPlan.cord_data_strip_descs)
-  return _impl_.cord_data_strip_descs_;
+inline const ::PROTOBUF_NAMESPACE_ID::RepeatedPtrField< ::proxy_proto::UpLRCDataStripDesc >&
+UpLRCTransferPlan::uplrc_data_strip_descs() const {
+  // @@protoc_insertion_point(field_list:proxy_proto.UpLRCTransferPlan.uplrc_data_strip_descs)
+  return _impl_.uplrc_data_strip_descs_;
 }
 
-// repeated .proxy_proto.CordBlockStripeGroup cord_block_stripe_groups = 15;
-inline int CordTransferPlan::_internal_cord_block_stripe_groups_size() const {
-  return _impl_.cord_block_stripe_groups_.size();
+// repeated .proxy_proto.UpLRCBlockStripeGroup uplrc_block_stripe_groups = 15;
+inline int UpLRCTransferPlan::_internal_uplrc_block_stripe_groups_size() const {
+  return _impl_.uplrc_block_stripe_groups_.size();
 }
-inline int CordTransferPlan::cord_block_stripe_groups_size() const {
-  return _internal_cord_block_stripe_groups_size();
+inline int UpLRCTransferPlan::uplrc_block_stripe_groups_size() const {
+  return _internal_uplrc_block_stripe_groups_size();
 }
-inline void CordTransferPlan::clear_cord_block_stripe_groups() {
-  _impl_.cord_block_stripe_groups_.Clear();
+inline void UpLRCTransferPlan::clear_uplrc_block_stripe_groups() {
+  _impl_.uplrc_block_stripe_groups_.Clear();
 }
-inline ::proxy_proto::CordBlockStripeGroup* CordTransferPlan::mutable_cord_block_stripe_groups(int index) {
-  // @@protoc_insertion_point(field_mutable:proxy_proto.CordTransferPlan.cord_block_stripe_groups)
-  return _impl_.cord_block_stripe_groups_.Mutable(index);
+inline ::proxy_proto::UpLRCBlockStripeGroup* UpLRCTransferPlan::mutable_uplrc_block_stripe_groups(int index) {
+  // @@protoc_insertion_point(field_mutable:proxy_proto.UpLRCTransferPlan.uplrc_block_stripe_groups)
+  return _impl_.uplrc_block_stripe_groups_.Mutable(index);
 }
-inline ::PROTOBUF_NAMESPACE_ID::RepeatedPtrField< ::proxy_proto::CordBlockStripeGroup >*
-CordTransferPlan::mutable_cord_block_stripe_groups() {
-  // @@protoc_insertion_point(field_mutable_list:proxy_proto.CordTransferPlan.cord_block_stripe_groups)
-  return &_impl_.cord_block_stripe_groups_;
+inline ::PROTOBUF_NAMESPACE_ID::RepeatedPtrField< ::proxy_proto::UpLRCBlockStripeGroup >*
+UpLRCTransferPlan::mutable_uplrc_block_stripe_groups() {
+  // @@protoc_insertion_point(field_mutable_list:proxy_proto.UpLRCTransferPlan.uplrc_block_stripe_groups)
+  return &_impl_.uplrc_block_stripe_groups_;
 }
-inline const ::proxy_proto::CordBlockStripeGroup& CordTransferPlan::_internal_cord_block_stripe_groups(int index) const {
-  return _impl_.cord_block_stripe_groups_.Get(index);
+inline const ::proxy_proto::UpLRCBlockStripeGroup& UpLRCTransferPlan::_internal_uplrc_block_stripe_groups(int index) const {
+  return _impl_.uplrc_block_stripe_groups_.Get(index);
 }
-inline const ::proxy_proto::CordBlockStripeGroup& CordTransferPlan::cord_block_stripe_groups(int index) const {
-  // @@protoc_insertion_point(field_get:proxy_proto.CordTransferPlan.cord_block_stripe_groups)
-  return _internal_cord_block_stripe_groups(index);
+inline const ::proxy_proto::UpLRCBlockStripeGroup& UpLRCTransferPlan::uplrc_block_stripe_groups(int index) const {
+  // @@protoc_insertion_point(field_get:proxy_proto.UpLRCTransferPlan.uplrc_block_stripe_groups)
+  return _internal_uplrc_block_stripe_groups(index);
 }
-inline ::proxy_proto::CordBlockStripeGroup* CordTransferPlan::_internal_add_cord_block_stripe_groups() {
-  return _impl_.cord_block_stripe_groups_.Add();
+inline ::proxy_proto::UpLRCBlockStripeGroup* UpLRCTransferPlan::_internal_add_uplrc_block_stripe_groups() {
+  return _impl_.uplrc_block_stripe_groups_.Add();
 }
-inline ::proxy_proto::CordBlockStripeGroup* CordTransferPlan::add_cord_block_stripe_groups() {
-  ::proxy_proto::CordBlockStripeGroup* _add = _internal_add_cord_block_stripe_groups();
-  // @@protoc_insertion_point(field_add:proxy_proto.CordTransferPlan.cord_block_stripe_groups)
+inline ::proxy_proto::UpLRCBlockStripeGroup* UpLRCTransferPlan::add_uplrc_block_stripe_groups() {
+  ::proxy_proto::UpLRCBlockStripeGroup* _add = _internal_add_uplrc_block_stripe_groups();
+  // @@protoc_insertion_point(field_add:proxy_proto.UpLRCTransferPlan.uplrc_block_stripe_groups)
   return _add;
 }
-inline const ::PROTOBUF_NAMESPACE_ID::RepeatedPtrField< ::proxy_proto::CordBlockStripeGroup >&
-CordTransferPlan::cord_block_stripe_groups() const {
-  // @@protoc_insertion_point(field_list:proxy_proto.CordTransferPlan.cord_block_stripe_groups)
-  return _impl_.cord_block_stripe_groups_;
+inline const ::PROTOBUF_NAMESPACE_ID::RepeatedPtrField< ::proxy_proto::UpLRCBlockStripeGroup >&
+UpLRCTransferPlan::uplrc_block_stripe_groups() const {
+  // @@protoc_insertion_point(field_list:proxy_proto.UpLRCTransferPlan.uplrc_block_stripe_groups)
+  return _impl_.uplrc_block_stripe_groups_;
 }
 
-// repeated .proxy_proto.CordBlockHalfOpenSeg cord_block_delta_segs = 16;
-inline int CordTransferPlan::_internal_cord_block_delta_segs_size() const {
-  return _impl_.cord_block_delta_segs_.size();
+// repeated .proxy_proto.UpLRCBlockHalfOpenSeg uplrc_block_delta_segs = 16;
+inline int UpLRCTransferPlan::_internal_uplrc_block_delta_segs_size() const {
+  return _impl_.uplrc_block_delta_segs_.size();
 }
-inline int CordTransferPlan::cord_block_delta_segs_size() const {
-  return _internal_cord_block_delta_segs_size();
+inline int UpLRCTransferPlan::uplrc_block_delta_segs_size() const {
+  return _internal_uplrc_block_delta_segs_size();
 }
-inline void CordTransferPlan::clear_cord_block_delta_segs() {
-  _impl_.cord_block_delta_segs_.Clear();
+inline void UpLRCTransferPlan::clear_uplrc_block_delta_segs() {
+  _impl_.uplrc_block_delta_segs_.Clear();
 }
-inline ::proxy_proto::CordBlockHalfOpenSeg* CordTransferPlan::mutable_cord_block_delta_segs(int index) {
-  // @@protoc_insertion_point(field_mutable:proxy_proto.CordTransferPlan.cord_block_delta_segs)
-  return _impl_.cord_block_delta_segs_.Mutable(index);
+inline ::proxy_proto::UpLRCBlockHalfOpenSeg* UpLRCTransferPlan::mutable_uplrc_block_delta_segs(int index) {
+  // @@protoc_insertion_point(field_mutable:proxy_proto.UpLRCTransferPlan.uplrc_block_delta_segs)
+  return _impl_.uplrc_block_delta_segs_.Mutable(index);
 }
-inline ::PROTOBUF_NAMESPACE_ID::RepeatedPtrField< ::proxy_proto::CordBlockHalfOpenSeg >*
-CordTransferPlan::mutable_cord_block_delta_segs() {
-  // @@protoc_insertion_point(field_mutable_list:proxy_proto.CordTransferPlan.cord_block_delta_segs)
-  return &_impl_.cord_block_delta_segs_;
+inline ::PROTOBUF_NAMESPACE_ID::RepeatedPtrField< ::proxy_proto::UpLRCBlockHalfOpenSeg >*
+UpLRCTransferPlan::mutable_uplrc_block_delta_segs() {
+  // @@protoc_insertion_point(field_mutable_list:proxy_proto.UpLRCTransferPlan.uplrc_block_delta_segs)
+  return &_impl_.uplrc_block_delta_segs_;
 }
-inline const ::proxy_proto::CordBlockHalfOpenSeg& CordTransferPlan::_internal_cord_block_delta_segs(int index) const {
-  return _impl_.cord_block_delta_segs_.Get(index);
+inline const ::proxy_proto::UpLRCBlockHalfOpenSeg& UpLRCTransferPlan::_internal_uplrc_block_delta_segs(int index) const {
+  return _impl_.uplrc_block_delta_segs_.Get(index);
 }
-inline const ::proxy_proto::CordBlockHalfOpenSeg& CordTransferPlan::cord_block_delta_segs(int index) const {
-  // @@protoc_insertion_point(field_get:proxy_proto.CordTransferPlan.cord_block_delta_segs)
-  return _internal_cord_block_delta_segs(index);
+inline const ::proxy_proto::UpLRCBlockHalfOpenSeg& UpLRCTransferPlan::uplrc_block_delta_segs(int index) const {
+  // @@protoc_insertion_point(field_get:proxy_proto.UpLRCTransferPlan.uplrc_block_delta_segs)
+  return _internal_uplrc_block_delta_segs(index);
 }
-inline ::proxy_proto::CordBlockHalfOpenSeg* CordTransferPlan::_internal_add_cord_block_delta_segs() {
-  return _impl_.cord_block_delta_segs_.Add();
+inline ::proxy_proto::UpLRCBlockHalfOpenSeg* UpLRCTransferPlan::_internal_add_uplrc_block_delta_segs() {
+  return _impl_.uplrc_block_delta_segs_.Add();
 }
-inline ::proxy_proto::CordBlockHalfOpenSeg* CordTransferPlan::add_cord_block_delta_segs() {
-  ::proxy_proto::CordBlockHalfOpenSeg* _add = _internal_add_cord_block_delta_segs();
-  // @@protoc_insertion_point(field_add:proxy_proto.CordTransferPlan.cord_block_delta_segs)
+inline ::proxy_proto::UpLRCBlockHalfOpenSeg* UpLRCTransferPlan::add_uplrc_block_delta_segs() {
+  ::proxy_proto::UpLRCBlockHalfOpenSeg* _add = _internal_add_uplrc_block_delta_segs();
+  // @@protoc_insertion_point(field_add:proxy_proto.UpLRCTransferPlan.uplrc_block_delta_segs)
   return _add;
 }
-inline const ::PROTOBUF_NAMESPACE_ID::RepeatedPtrField< ::proxy_proto::CordBlockHalfOpenSeg >&
-CordTransferPlan::cord_block_delta_segs() const {
-  // @@protoc_insertion_point(field_list:proxy_proto.CordTransferPlan.cord_block_delta_segs)
-  return _impl_.cord_block_delta_segs_;
+inline const ::PROTOBUF_NAMESPACE_ID::RepeatedPtrField< ::proxy_proto::UpLRCBlockHalfOpenSeg >&
+UpLRCTransferPlan::uplrc_block_delta_segs() const {
+  // @@protoc_insertion_point(field_list:proxy_proto.UpLRCTransferPlan.uplrc_block_delta_segs)
+  return _impl_.uplrc_block_delta_segs_;
 }
 
-// repeated .proxy_proto.CordIngressCacheRef ingress_cache_refs = 17;
-inline int CordTransferPlan::_internal_ingress_cache_refs_size() const {
+// repeated .proxy_proto.UpLRCIngressCacheRef ingress_cache_refs = 17;
+inline int UpLRCTransferPlan::_internal_ingress_cache_refs_size() const {
   return _impl_.ingress_cache_refs_.size();
 }
-inline int CordTransferPlan::ingress_cache_refs_size() const {
+inline int UpLRCTransferPlan::ingress_cache_refs_size() const {
   return _internal_ingress_cache_refs_size();
 }
-inline void CordTransferPlan::clear_ingress_cache_refs() {
+inline void UpLRCTransferPlan::clear_ingress_cache_refs() {
   _impl_.ingress_cache_refs_.Clear();
 }
-inline ::proxy_proto::CordIngressCacheRef* CordTransferPlan::mutable_ingress_cache_refs(int index) {
-  // @@protoc_insertion_point(field_mutable:proxy_proto.CordTransferPlan.ingress_cache_refs)
+inline ::proxy_proto::UpLRCIngressCacheRef* UpLRCTransferPlan::mutable_ingress_cache_refs(int index) {
+  // @@protoc_insertion_point(field_mutable:proxy_proto.UpLRCTransferPlan.ingress_cache_refs)
   return _impl_.ingress_cache_refs_.Mutable(index);
 }
-inline ::PROTOBUF_NAMESPACE_ID::RepeatedPtrField< ::proxy_proto::CordIngressCacheRef >*
-CordTransferPlan::mutable_ingress_cache_refs() {
-  // @@protoc_insertion_point(field_mutable_list:proxy_proto.CordTransferPlan.ingress_cache_refs)
+inline ::PROTOBUF_NAMESPACE_ID::RepeatedPtrField< ::proxy_proto::UpLRCIngressCacheRef >*
+UpLRCTransferPlan::mutable_ingress_cache_refs() {
+  // @@protoc_insertion_point(field_mutable_list:proxy_proto.UpLRCTransferPlan.ingress_cache_refs)
   return &_impl_.ingress_cache_refs_;
 }
-inline const ::proxy_proto::CordIngressCacheRef& CordTransferPlan::_internal_ingress_cache_refs(int index) const {
+inline const ::proxy_proto::UpLRCIngressCacheRef& UpLRCTransferPlan::_internal_ingress_cache_refs(int index) const {
   return _impl_.ingress_cache_refs_.Get(index);
 }
-inline const ::proxy_proto::CordIngressCacheRef& CordTransferPlan::ingress_cache_refs(int index) const {
-  // @@protoc_insertion_point(field_get:proxy_proto.CordTransferPlan.ingress_cache_refs)
+inline const ::proxy_proto::UpLRCIngressCacheRef& UpLRCTransferPlan::ingress_cache_refs(int index) const {
+  // @@protoc_insertion_point(field_get:proxy_proto.UpLRCTransferPlan.ingress_cache_refs)
   return _internal_ingress_cache_refs(index);
 }
-inline ::proxy_proto::CordIngressCacheRef* CordTransferPlan::_internal_add_ingress_cache_refs() {
+inline ::proxy_proto::UpLRCIngressCacheRef* UpLRCTransferPlan::_internal_add_ingress_cache_refs() {
   return _impl_.ingress_cache_refs_.Add();
 }
-inline ::proxy_proto::CordIngressCacheRef* CordTransferPlan::add_ingress_cache_refs() {
-  ::proxy_proto::CordIngressCacheRef* _add = _internal_add_ingress_cache_refs();
-  // @@protoc_insertion_point(field_add:proxy_proto.CordTransferPlan.ingress_cache_refs)
+inline ::proxy_proto::UpLRCIngressCacheRef* UpLRCTransferPlan::add_ingress_cache_refs() {
+  ::proxy_proto::UpLRCIngressCacheRef* _add = _internal_add_ingress_cache_refs();
+  // @@protoc_insertion_point(field_add:proxy_proto.UpLRCTransferPlan.ingress_cache_refs)
   return _add;
 }
-inline const ::PROTOBUF_NAMESPACE_ID::RepeatedPtrField< ::proxy_proto::CordIngressCacheRef >&
-CordTransferPlan::ingress_cache_refs() const {
-  // @@protoc_insertion_point(field_list:proxy_proto.CordTransferPlan.ingress_cache_refs)
+inline const ::PROTOBUF_NAMESPACE_ID::RepeatedPtrField< ::proxy_proto::UpLRCIngressCacheRef >&
+UpLRCTransferPlan::ingress_cache_refs() const {
+  // @@protoc_insertion_point(field_list:proxy_proto.UpLRCTransferPlan.ingress_cache_refs)
   return _impl_.ingress_cache_refs_;
 }
 
 // -------------------------------------------------------------------
 
-// CordPlanCollectorIngestReq
+// UpLRCPlanCollectorIngestReq
 
 // string plan_key = 1;
-inline void CordPlanCollectorIngestReq::clear_plan_key() {
+inline void UpLRCPlanCollectorIngestReq::clear_plan_key() {
   _impl_.plan_key_.ClearToEmpty();
 }
-inline const std::string& CordPlanCollectorIngestReq::plan_key() const {
-  // @@protoc_insertion_point(field_get:proxy_proto.CordPlanCollectorIngestReq.plan_key)
+inline const std::string& UpLRCPlanCollectorIngestReq::plan_key() const {
+  // @@protoc_insertion_point(field_get:proxy_proto.UpLRCPlanCollectorIngestReq.plan_key)
   return _internal_plan_key();
 }
 template <typename ArgT0, typename... ArgT>
 inline PROTOBUF_ALWAYS_INLINE
-void CordPlanCollectorIngestReq::set_plan_key(ArgT0&& arg0, ArgT... args) {
+void UpLRCPlanCollectorIngestReq::set_plan_key(ArgT0&& arg0, ArgT... args) {
  
  _impl_.plan_key_.Set(static_cast<ArgT0 &&>(arg0), args..., GetArenaForAllocation());
-  // @@protoc_insertion_point(field_set:proxy_proto.CordPlanCollectorIngestReq.plan_key)
+  // @@protoc_insertion_point(field_set:proxy_proto.UpLRCPlanCollectorIngestReq.plan_key)
 }
-inline std::string* CordPlanCollectorIngestReq::mutable_plan_key() {
+inline std::string* UpLRCPlanCollectorIngestReq::mutable_plan_key() {
   std::string* _s = _internal_mutable_plan_key();
-  // @@protoc_insertion_point(field_mutable:proxy_proto.CordPlanCollectorIngestReq.plan_key)
+  // @@protoc_insertion_point(field_mutable:proxy_proto.UpLRCPlanCollectorIngestReq.plan_key)
   return _s;
 }
-inline const std::string& CordPlanCollectorIngestReq::_internal_plan_key() const {
+inline const std::string& UpLRCPlanCollectorIngestReq::_internal_plan_key() const {
   return _impl_.plan_key_.Get();
 }
-inline void CordPlanCollectorIngestReq::_internal_set_plan_key(const std::string& value) {
+inline void UpLRCPlanCollectorIngestReq::_internal_set_plan_key(const std::string& value) {
   
   _impl_.plan_key_.Set(value, GetArenaForAllocation());
 }
-inline std::string* CordPlanCollectorIngestReq::_internal_mutable_plan_key() {
+inline std::string* UpLRCPlanCollectorIngestReq::_internal_mutable_plan_key() {
   
   return _impl_.plan_key_.Mutable(GetArenaForAllocation());
 }
-inline std::string* CordPlanCollectorIngestReq::release_plan_key() {
-  // @@protoc_insertion_point(field_release:proxy_proto.CordPlanCollectorIngestReq.plan_key)
+inline std::string* UpLRCPlanCollectorIngestReq::release_plan_key() {
+  // @@protoc_insertion_point(field_release:proxy_proto.UpLRCPlanCollectorIngestReq.plan_key)
   return _impl_.plan_key_.Release();
 }
-inline void CordPlanCollectorIngestReq::set_allocated_plan_key(std::string* plan_key) {
+inline void UpLRCPlanCollectorIngestReq::set_allocated_plan_key(std::string* plan_key) {
   if (plan_key != nullptr) {
     
   } else {
@@ -19638,105 +19638,105 @@ inline void CordPlanCollectorIngestReq::set_allocated_plan_key(std::string* plan
     _impl_.plan_key_.Set("", GetArenaForAllocation());
   }
 #endif // PROTOBUF_FORCE_COPY_DEFAULT_STRING
-  // @@protoc_insertion_point(field_set_allocated:proxy_proto.CordPlanCollectorIngestReq.plan_key)
+  // @@protoc_insertion_point(field_set_allocated:proxy_proto.UpLRCPlanCollectorIngestReq.plan_key)
 }
 
 // int32 group_index = 2;
-inline void CordPlanCollectorIngestReq::clear_group_index() {
+inline void UpLRCPlanCollectorIngestReq::clear_group_index() {
   _impl_.group_index_ = 0;
 }
-inline int32_t CordPlanCollectorIngestReq::_internal_group_index() const {
+inline int32_t UpLRCPlanCollectorIngestReq::_internal_group_index() const {
   return _impl_.group_index_;
 }
-inline int32_t CordPlanCollectorIngestReq::group_index() const {
-  // @@protoc_insertion_point(field_get:proxy_proto.CordPlanCollectorIngestReq.group_index)
+inline int32_t UpLRCPlanCollectorIngestReq::group_index() const {
+  // @@protoc_insertion_point(field_get:proxy_proto.UpLRCPlanCollectorIngestReq.group_index)
   return _internal_group_index();
 }
-inline void CordPlanCollectorIngestReq::_internal_set_group_index(int32_t value) {
+inline void UpLRCPlanCollectorIngestReq::_internal_set_group_index(int32_t value) {
   
   _impl_.group_index_ = value;
 }
-inline void CordPlanCollectorIngestReq::set_group_index(int32_t value) {
+inline void UpLRCPlanCollectorIngestReq::set_group_index(int32_t value) {
   _internal_set_group_index(value);
-  // @@protoc_insertion_point(field_set:proxy_proto.CordPlanCollectorIngestReq.group_index)
+  // @@protoc_insertion_point(field_set:proxy_proto.UpLRCPlanCollectorIngestReq.group_index)
 }
 
 // int32 collector_block_id = 3;
-inline void CordPlanCollectorIngestReq::clear_collector_block_id() {
+inline void UpLRCPlanCollectorIngestReq::clear_collector_block_id() {
   _impl_.collector_block_id_ = 0;
 }
-inline int32_t CordPlanCollectorIngestReq::_internal_collector_block_id() const {
+inline int32_t UpLRCPlanCollectorIngestReq::_internal_collector_block_id() const {
   return _impl_.collector_block_id_;
 }
-inline int32_t CordPlanCollectorIngestReq::collector_block_id() const {
-  // @@protoc_insertion_point(field_get:proxy_proto.CordPlanCollectorIngestReq.collector_block_id)
+inline int32_t UpLRCPlanCollectorIngestReq::collector_block_id() const {
+  // @@protoc_insertion_point(field_get:proxy_proto.UpLRCPlanCollectorIngestReq.collector_block_id)
   return _internal_collector_block_id();
 }
-inline void CordPlanCollectorIngestReq::_internal_set_collector_block_id(int32_t value) {
+inline void UpLRCPlanCollectorIngestReq::_internal_set_collector_block_id(int32_t value) {
   
   _impl_.collector_block_id_ = value;
 }
-inline void CordPlanCollectorIngestReq::set_collector_block_id(int32_t value) {
+inline void UpLRCPlanCollectorIngestReq::set_collector_block_id(int32_t value) {
   _internal_set_collector_block_id(value);
-  // @@protoc_insertion_point(field_set:proxy_proto.CordPlanCollectorIngestReq.collector_block_id)
+  // @@protoc_insertion_point(field_set:proxy_proto.UpLRCPlanCollectorIngestReq.collector_block_id)
 }
 
 // uint64 chunk_byte_offset = 4;
-inline void CordPlanCollectorIngestReq::clear_chunk_byte_offset() {
+inline void UpLRCPlanCollectorIngestReq::clear_chunk_byte_offset() {
   _impl_.chunk_byte_offset_ = uint64_t{0u};
 }
-inline uint64_t CordPlanCollectorIngestReq::_internal_chunk_byte_offset() const {
+inline uint64_t UpLRCPlanCollectorIngestReq::_internal_chunk_byte_offset() const {
   return _impl_.chunk_byte_offset_;
 }
-inline uint64_t CordPlanCollectorIngestReq::chunk_byte_offset() const {
-  // @@protoc_insertion_point(field_get:proxy_proto.CordPlanCollectorIngestReq.chunk_byte_offset)
+inline uint64_t UpLRCPlanCollectorIngestReq::chunk_byte_offset() const {
+  // @@protoc_insertion_point(field_get:proxy_proto.UpLRCPlanCollectorIngestReq.chunk_byte_offset)
   return _internal_chunk_byte_offset();
 }
-inline void CordPlanCollectorIngestReq::_internal_set_chunk_byte_offset(uint64_t value) {
+inline void UpLRCPlanCollectorIngestReq::_internal_set_chunk_byte_offset(uint64_t value) {
   
   _impl_.chunk_byte_offset_ = value;
 }
-inline void CordPlanCollectorIngestReq::set_chunk_byte_offset(uint64_t value) {
+inline void UpLRCPlanCollectorIngestReq::set_chunk_byte_offset(uint64_t value) {
   _internal_set_chunk_byte_offset(value);
-  // @@protoc_insertion_point(field_set:proxy_proto.CordPlanCollectorIngestReq.chunk_byte_offset)
+  // @@protoc_insertion_point(field_set:proxy_proto.UpLRCPlanCollectorIngestReq.chunk_byte_offset)
 }
 
 // bytes chunk_payload = 5;
-inline void CordPlanCollectorIngestReq::clear_chunk_payload() {
+inline void UpLRCPlanCollectorIngestReq::clear_chunk_payload() {
   _impl_.chunk_payload_.ClearToEmpty();
 }
-inline const std::string& CordPlanCollectorIngestReq::chunk_payload() const {
-  // @@protoc_insertion_point(field_get:proxy_proto.CordPlanCollectorIngestReq.chunk_payload)
+inline const std::string& UpLRCPlanCollectorIngestReq::chunk_payload() const {
+  // @@protoc_insertion_point(field_get:proxy_proto.UpLRCPlanCollectorIngestReq.chunk_payload)
   return _internal_chunk_payload();
 }
 template <typename ArgT0, typename... ArgT>
 inline PROTOBUF_ALWAYS_INLINE
-void CordPlanCollectorIngestReq::set_chunk_payload(ArgT0&& arg0, ArgT... args) {
+void UpLRCPlanCollectorIngestReq::set_chunk_payload(ArgT0&& arg0, ArgT... args) {
  
  _impl_.chunk_payload_.SetBytes(static_cast<ArgT0 &&>(arg0), args..., GetArenaForAllocation());
-  // @@protoc_insertion_point(field_set:proxy_proto.CordPlanCollectorIngestReq.chunk_payload)
+  // @@protoc_insertion_point(field_set:proxy_proto.UpLRCPlanCollectorIngestReq.chunk_payload)
 }
-inline std::string* CordPlanCollectorIngestReq::mutable_chunk_payload() {
+inline std::string* UpLRCPlanCollectorIngestReq::mutable_chunk_payload() {
   std::string* _s = _internal_mutable_chunk_payload();
-  // @@protoc_insertion_point(field_mutable:proxy_proto.CordPlanCollectorIngestReq.chunk_payload)
+  // @@protoc_insertion_point(field_mutable:proxy_proto.UpLRCPlanCollectorIngestReq.chunk_payload)
   return _s;
 }
-inline const std::string& CordPlanCollectorIngestReq::_internal_chunk_payload() const {
+inline const std::string& UpLRCPlanCollectorIngestReq::_internal_chunk_payload() const {
   return _impl_.chunk_payload_.Get();
 }
-inline void CordPlanCollectorIngestReq::_internal_set_chunk_payload(const std::string& value) {
+inline void UpLRCPlanCollectorIngestReq::_internal_set_chunk_payload(const std::string& value) {
   
   _impl_.chunk_payload_.Set(value, GetArenaForAllocation());
 }
-inline std::string* CordPlanCollectorIngestReq::_internal_mutable_chunk_payload() {
+inline std::string* UpLRCPlanCollectorIngestReq::_internal_mutable_chunk_payload() {
   
   return _impl_.chunk_payload_.Mutable(GetArenaForAllocation());
 }
-inline std::string* CordPlanCollectorIngestReq::release_chunk_payload() {
-  // @@protoc_insertion_point(field_release:proxy_proto.CordPlanCollectorIngestReq.chunk_payload)
+inline std::string* UpLRCPlanCollectorIngestReq::release_chunk_payload() {
+  // @@protoc_insertion_point(field_release:proxy_proto.UpLRCPlanCollectorIngestReq.chunk_payload)
   return _impl_.chunk_payload_.Release();
 }
-inline void CordPlanCollectorIngestReq::set_allocated_chunk_payload(std::string* chunk_payload) {
+inline void UpLRCPlanCollectorIngestReq::set_allocated_chunk_payload(std::string* chunk_payload) {
   if (chunk_payload != nullptr) {
     
   } else {
@@ -19748,89 +19748,89 @@ inline void CordPlanCollectorIngestReq::set_allocated_chunk_payload(std::string*
     _impl_.chunk_payload_.Set("", GetArenaForAllocation());
   }
 #endif // PROTOBUF_FORCE_COPY_DEFAULT_STRING
-  // @@protoc_insertion_point(field_set_allocated:proxy_proto.CordPlanCollectorIngestReq.chunk_payload)
+  // @@protoc_insertion_point(field_set_allocated:proxy_proto.UpLRCPlanCollectorIngestReq.chunk_payload)
 }
 
 // uint64 xor_accum_byte_length = 6;
-inline void CordPlanCollectorIngestReq::clear_xor_accum_byte_length() {
+inline void UpLRCPlanCollectorIngestReq::clear_xor_accum_byte_length() {
   _impl_.xor_accum_byte_length_ = uint64_t{0u};
 }
-inline uint64_t CordPlanCollectorIngestReq::_internal_xor_accum_byte_length() const {
+inline uint64_t UpLRCPlanCollectorIngestReq::_internal_xor_accum_byte_length() const {
   return _impl_.xor_accum_byte_length_;
 }
-inline uint64_t CordPlanCollectorIngestReq::xor_accum_byte_length() const {
-  // @@protoc_insertion_point(field_get:proxy_proto.CordPlanCollectorIngestReq.xor_accum_byte_length)
+inline uint64_t UpLRCPlanCollectorIngestReq::xor_accum_byte_length() const {
+  // @@protoc_insertion_point(field_get:proxy_proto.UpLRCPlanCollectorIngestReq.xor_accum_byte_length)
   return _internal_xor_accum_byte_length();
 }
-inline void CordPlanCollectorIngestReq::_internal_set_xor_accum_byte_length(uint64_t value) {
+inline void UpLRCPlanCollectorIngestReq::_internal_set_xor_accum_byte_length(uint64_t value) {
   
   _impl_.xor_accum_byte_length_ = value;
 }
-inline void CordPlanCollectorIngestReq::set_xor_accum_byte_length(uint64_t value) {
+inline void UpLRCPlanCollectorIngestReq::set_xor_accum_byte_length(uint64_t value) {
   _internal_set_xor_accum_byte_length(value);
-  // @@protoc_insertion_point(field_set:proxy_proto.CordPlanCollectorIngestReq.xor_accum_byte_length)
+  // @@protoc_insertion_point(field_set:proxy_proto.UpLRCPlanCollectorIngestReq.xor_accum_byte_length)
 }
 
 // int32 src_data_block_id = 7;
-inline void CordPlanCollectorIngestReq::clear_src_data_block_id() {
+inline void UpLRCPlanCollectorIngestReq::clear_src_data_block_id() {
   _impl_.src_data_block_id_ = 0;
 }
-inline int32_t CordPlanCollectorIngestReq::_internal_src_data_block_id() const {
+inline int32_t UpLRCPlanCollectorIngestReq::_internal_src_data_block_id() const {
   return _impl_.src_data_block_id_;
 }
-inline int32_t CordPlanCollectorIngestReq::src_data_block_id() const {
-  // @@protoc_insertion_point(field_get:proxy_proto.CordPlanCollectorIngestReq.src_data_block_id)
+inline int32_t UpLRCPlanCollectorIngestReq::src_data_block_id() const {
+  // @@protoc_insertion_point(field_get:proxy_proto.UpLRCPlanCollectorIngestReq.src_data_block_id)
   return _internal_src_data_block_id();
 }
-inline void CordPlanCollectorIngestReq::_internal_set_src_data_block_id(int32_t value) {
+inline void UpLRCPlanCollectorIngestReq::_internal_set_src_data_block_id(int32_t value) {
   
   _impl_.src_data_block_id_ = value;
 }
-inline void CordPlanCollectorIngestReq::set_src_data_block_id(int32_t value) {
+inline void UpLRCPlanCollectorIngestReq::set_src_data_block_id(int32_t value) {
   _internal_set_src_data_block_id(value);
-  // @@protoc_insertion_point(field_set:proxy_proto.CordPlanCollectorIngestReq.src_data_block_id)
+  // @@protoc_insertion_point(field_set:proxy_proto.UpLRCPlanCollectorIngestReq.src_data_block_id)
 }
 
 // -------------------------------------------------------------------
 
-// CordPlanApplyParityXorReq
+// UpLRCPlanApplyParityXorReq
 
 // string plan_key = 1;
-inline void CordPlanApplyParityXorReq::clear_plan_key() {
+inline void UpLRCPlanApplyParityXorReq::clear_plan_key() {
   _impl_.plan_key_.ClearToEmpty();
 }
-inline const std::string& CordPlanApplyParityXorReq::plan_key() const {
-  // @@protoc_insertion_point(field_get:proxy_proto.CordPlanApplyParityXorReq.plan_key)
+inline const std::string& UpLRCPlanApplyParityXorReq::plan_key() const {
+  // @@protoc_insertion_point(field_get:proxy_proto.UpLRCPlanApplyParityXorReq.plan_key)
   return _internal_plan_key();
 }
 template <typename ArgT0, typename... ArgT>
 inline PROTOBUF_ALWAYS_INLINE
-void CordPlanApplyParityXorReq::set_plan_key(ArgT0&& arg0, ArgT... args) {
+void UpLRCPlanApplyParityXorReq::set_plan_key(ArgT0&& arg0, ArgT... args) {
  
  _impl_.plan_key_.Set(static_cast<ArgT0 &&>(arg0), args..., GetArenaForAllocation());
-  // @@protoc_insertion_point(field_set:proxy_proto.CordPlanApplyParityXorReq.plan_key)
+  // @@protoc_insertion_point(field_set:proxy_proto.UpLRCPlanApplyParityXorReq.plan_key)
 }
-inline std::string* CordPlanApplyParityXorReq::mutable_plan_key() {
+inline std::string* UpLRCPlanApplyParityXorReq::mutable_plan_key() {
   std::string* _s = _internal_mutable_plan_key();
-  // @@protoc_insertion_point(field_mutable:proxy_proto.CordPlanApplyParityXorReq.plan_key)
+  // @@protoc_insertion_point(field_mutable:proxy_proto.UpLRCPlanApplyParityXorReq.plan_key)
   return _s;
 }
-inline const std::string& CordPlanApplyParityXorReq::_internal_plan_key() const {
+inline const std::string& UpLRCPlanApplyParityXorReq::_internal_plan_key() const {
   return _impl_.plan_key_.Get();
 }
-inline void CordPlanApplyParityXorReq::_internal_set_plan_key(const std::string& value) {
+inline void UpLRCPlanApplyParityXorReq::_internal_set_plan_key(const std::string& value) {
   
   _impl_.plan_key_.Set(value, GetArenaForAllocation());
 }
-inline std::string* CordPlanApplyParityXorReq::_internal_mutable_plan_key() {
+inline std::string* UpLRCPlanApplyParityXorReq::_internal_mutable_plan_key() {
   
   return _impl_.plan_key_.Mutable(GetArenaForAllocation());
 }
-inline std::string* CordPlanApplyParityXorReq::release_plan_key() {
-  // @@protoc_insertion_point(field_release:proxy_proto.CordPlanApplyParityXorReq.plan_key)
+inline std::string* UpLRCPlanApplyParityXorReq::release_plan_key() {
+  // @@protoc_insertion_point(field_release:proxy_proto.UpLRCPlanApplyParityXorReq.plan_key)
   return _impl_.plan_key_.Release();
 }
-inline void CordPlanApplyParityXorReq::set_allocated_plan_key(std::string* plan_key) {
+inline void UpLRCPlanApplyParityXorReq::set_allocated_plan_key(std::string* plan_key) {
   if (plan_key != nullptr) {
     
   } else {
@@ -19842,65 +19842,65 @@ inline void CordPlanApplyParityXorReq::set_allocated_plan_key(std::string* plan_
     _impl_.plan_key_.Set("", GetArenaForAllocation());
   }
 #endif // PROTOBUF_FORCE_COPY_DEFAULT_STRING
-  // @@protoc_insertion_point(field_set_allocated:proxy_proto.CordPlanApplyParityXorReq.plan_key)
+  // @@protoc_insertion_point(field_set_allocated:proxy_proto.UpLRCPlanApplyParityXorReq.plan_key)
 }
 
 // int32 dst_block_id = 2;
-inline void CordPlanApplyParityXorReq::clear_dst_block_id() {
+inline void UpLRCPlanApplyParityXorReq::clear_dst_block_id() {
   _impl_.dst_block_id_ = 0;
 }
-inline int32_t CordPlanApplyParityXorReq::_internal_dst_block_id() const {
+inline int32_t UpLRCPlanApplyParityXorReq::_internal_dst_block_id() const {
   return _impl_.dst_block_id_;
 }
-inline int32_t CordPlanApplyParityXorReq::dst_block_id() const {
-  // @@protoc_insertion_point(field_get:proxy_proto.CordPlanApplyParityXorReq.dst_block_id)
+inline int32_t UpLRCPlanApplyParityXorReq::dst_block_id() const {
+  // @@protoc_insertion_point(field_get:proxy_proto.UpLRCPlanApplyParityXorReq.dst_block_id)
   return _internal_dst_block_id();
 }
-inline void CordPlanApplyParityXorReq::_internal_set_dst_block_id(int32_t value) {
+inline void UpLRCPlanApplyParityXorReq::_internal_set_dst_block_id(int32_t value) {
   
   _impl_.dst_block_id_ = value;
 }
-inline void CordPlanApplyParityXorReq::set_dst_block_id(int32_t value) {
+inline void UpLRCPlanApplyParityXorReq::set_dst_block_id(int32_t value) {
   _internal_set_dst_block_id(value);
-  // @@protoc_insertion_point(field_set:proxy_proto.CordPlanApplyParityXorReq.dst_block_id)
+  // @@protoc_insertion_point(field_set:proxy_proto.UpLRCPlanApplyParityXorReq.dst_block_id)
 }
 
 // string block_key = 3;
-inline void CordPlanApplyParityXorReq::clear_block_key() {
+inline void UpLRCPlanApplyParityXorReq::clear_block_key() {
   _impl_.block_key_.ClearToEmpty();
 }
-inline const std::string& CordPlanApplyParityXorReq::block_key() const {
-  // @@protoc_insertion_point(field_get:proxy_proto.CordPlanApplyParityXorReq.block_key)
+inline const std::string& UpLRCPlanApplyParityXorReq::block_key() const {
+  // @@protoc_insertion_point(field_get:proxy_proto.UpLRCPlanApplyParityXorReq.block_key)
   return _internal_block_key();
 }
 template <typename ArgT0, typename... ArgT>
 inline PROTOBUF_ALWAYS_INLINE
-void CordPlanApplyParityXorReq::set_block_key(ArgT0&& arg0, ArgT... args) {
+void UpLRCPlanApplyParityXorReq::set_block_key(ArgT0&& arg0, ArgT... args) {
  
  _impl_.block_key_.Set(static_cast<ArgT0 &&>(arg0), args..., GetArenaForAllocation());
-  // @@protoc_insertion_point(field_set:proxy_proto.CordPlanApplyParityXorReq.block_key)
+  // @@protoc_insertion_point(field_set:proxy_proto.UpLRCPlanApplyParityXorReq.block_key)
 }
-inline std::string* CordPlanApplyParityXorReq::mutable_block_key() {
+inline std::string* UpLRCPlanApplyParityXorReq::mutable_block_key() {
   std::string* _s = _internal_mutable_block_key();
-  // @@protoc_insertion_point(field_mutable:proxy_proto.CordPlanApplyParityXorReq.block_key)
+  // @@protoc_insertion_point(field_mutable:proxy_proto.UpLRCPlanApplyParityXorReq.block_key)
   return _s;
 }
-inline const std::string& CordPlanApplyParityXorReq::_internal_block_key() const {
+inline const std::string& UpLRCPlanApplyParityXorReq::_internal_block_key() const {
   return _impl_.block_key_.Get();
 }
-inline void CordPlanApplyParityXorReq::_internal_set_block_key(const std::string& value) {
+inline void UpLRCPlanApplyParityXorReq::_internal_set_block_key(const std::string& value) {
   
   _impl_.block_key_.Set(value, GetArenaForAllocation());
 }
-inline std::string* CordPlanApplyParityXorReq::_internal_mutable_block_key() {
+inline std::string* UpLRCPlanApplyParityXorReq::_internal_mutable_block_key() {
   
   return _impl_.block_key_.Mutable(GetArenaForAllocation());
 }
-inline std::string* CordPlanApplyParityXorReq::release_block_key() {
-  // @@protoc_insertion_point(field_release:proxy_proto.CordPlanApplyParityXorReq.block_key)
+inline std::string* UpLRCPlanApplyParityXorReq::release_block_key() {
+  // @@protoc_insertion_point(field_release:proxy_proto.UpLRCPlanApplyParityXorReq.block_key)
   return _impl_.block_key_.Release();
 }
-inline void CordPlanApplyParityXorReq::set_allocated_block_key(std::string* block_key) {
+inline void UpLRCPlanApplyParityXorReq::set_allocated_block_key(std::string* block_key) {
   if (block_key != nullptr) {
     
   } else {
@@ -19912,45 +19912,45 @@ inline void CordPlanApplyParityXorReq::set_allocated_block_key(std::string* bloc
     _impl_.block_key_.Set("", GetArenaForAllocation());
   }
 #endif // PROTOBUF_FORCE_COPY_DEFAULT_STRING
-  // @@protoc_insertion_point(field_set_allocated:proxy_proto.CordPlanApplyParityXorReq.block_key)
+  // @@protoc_insertion_point(field_set_allocated:proxy_proto.UpLRCPlanApplyParityXorReq.block_key)
 }
 
 // string datanode_ip = 4;
-inline void CordPlanApplyParityXorReq::clear_datanode_ip() {
+inline void UpLRCPlanApplyParityXorReq::clear_datanode_ip() {
   _impl_.datanode_ip_.ClearToEmpty();
 }
-inline const std::string& CordPlanApplyParityXorReq::datanode_ip() const {
-  // @@protoc_insertion_point(field_get:proxy_proto.CordPlanApplyParityXorReq.datanode_ip)
+inline const std::string& UpLRCPlanApplyParityXorReq::datanode_ip() const {
+  // @@protoc_insertion_point(field_get:proxy_proto.UpLRCPlanApplyParityXorReq.datanode_ip)
   return _internal_datanode_ip();
 }
 template <typename ArgT0, typename... ArgT>
 inline PROTOBUF_ALWAYS_INLINE
-void CordPlanApplyParityXorReq::set_datanode_ip(ArgT0&& arg0, ArgT... args) {
+void UpLRCPlanApplyParityXorReq::set_datanode_ip(ArgT0&& arg0, ArgT... args) {
  
  _impl_.datanode_ip_.Set(static_cast<ArgT0 &&>(arg0), args..., GetArenaForAllocation());
-  // @@protoc_insertion_point(field_set:proxy_proto.CordPlanApplyParityXorReq.datanode_ip)
+  // @@protoc_insertion_point(field_set:proxy_proto.UpLRCPlanApplyParityXorReq.datanode_ip)
 }
-inline std::string* CordPlanApplyParityXorReq::mutable_datanode_ip() {
+inline std::string* UpLRCPlanApplyParityXorReq::mutable_datanode_ip() {
   std::string* _s = _internal_mutable_datanode_ip();
-  // @@protoc_insertion_point(field_mutable:proxy_proto.CordPlanApplyParityXorReq.datanode_ip)
+  // @@protoc_insertion_point(field_mutable:proxy_proto.UpLRCPlanApplyParityXorReq.datanode_ip)
   return _s;
 }
-inline const std::string& CordPlanApplyParityXorReq::_internal_datanode_ip() const {
+inline const std::string& UpLRCPlanApplyParityXorReq::_internal_datanode_ip() const {
   return _impl_.datanode_ip_.Get();
 }
-inline void CordPlanApplyParityXorReq::_internal_set_datanode_ip(const std::string& value) {
+inline void UpLRCPlanApplyParityXorReq::_internal_set_datanode_ip(const std::string& value) {
   
   _impl_.datanode_ip_.Set(value, GetArenaForAllocation());
 }
-inline std::string* CordPlanApplyParityXorReq::_internal_mutable_datanode_ip() {
+inline std::string* UpLRCPlanApplyParityXorReq::_internal_mutable_datanode_ip() {
   
   return _impl_.datanode_ip_.Mutable(GetArenaForAllocation());
 }
-inline std::string* CordPlanApplyParityXorReq::release_datanode_ip() {
-  // @@protoc_insertion_point(field_release:proxy_proto.CordPlanApplyParityXorReq.datanode_ip)
+inline std::string* UpLRCPlanApplyParityXorReq::release_datanode_ip() {
+  // @@protoc_insertion_point(field_release:proxy_proto.UpLRCPlanApplyParityXorReq.datanode_ip)
   return _impl_.datanode_ip_.Release();
 }
-inline void CordPlanApplyParityXorReq::set_allocated_datanode_ip(std::string* datanode_ip) {
+inline void UpLRCPlanApplyParityXorReq::set_allocated_datanode_ip(std::string* datanode_ip) {
   if (datanode_ip != nullptr) {
     
   } else {
@@ -19962,105 +19962,105 @@ inline void CordPlanApplyParityXorReq::set_allocated_datanode_ip(std::string* da
     _impl_.datanode_ip_.Set("", GetArenaForAllocation());
   }
 #endif // PROTOBUF_FORCE_COPY_DEFAULT_STRING
-  // @@protoc_insertion_point(field_set_allocated:proxy_proto.CordPlanApplyParityXorReq.datanode_ip)
+  // @@protoc_insertion_point(field_set_allocated:proxy_proto.UpLRCPlanApplyParityXorReq.datanode_ip)
 }
 
 // int32 datanode_port = 5;
-inline void CordPlanApplyParityXorReq::clear_datanode_port() {
+inline void UpLRCPlanApplyParityXorReq::clear_datanode_port() {
   _impl_.datanode_port_ = 0;
 }
-inline int32_t CordPlanApplyParityXorReq::_internal_datanode_port() const {
+inline int32_t UpLRCPlanApplyParityXorReq::_internal_datanode_port() const {
   return _impl_.datanode_port_;
 }
-inline int32_t CordPlanApplyParityXorReq::datanode_port() const {
-  // @@protoc_insertion_point(field_get:proxy_proto.CordPlanApplyParityXorReq.datanode_port)
+inline int32_t UpLRCPlanApplyParityXorReq::datanode_port() const {
+  // @@protoc_insertion_point(field_get:proxy_proto.UpLRCPlanApplyParityXorReq.datanode_port)
   return _internal_datanode_port();
 }
-inline void CordPlanApplyParityXorReq::_internal_set_datanode_port(int32_t value) {
+inline void UpLRCPlanApplyParityXorReq::_internal_set_datanode_port(int32_t value) {
   
   _impl_.datanode_port_ = value;
 }
-inline void CordPlanApplyParityXorReq::set_datanode_port(int32_t value) {
+inline void UpLRCPlanApplyParityXorReq::set_datanode_port(int32_t value) {
   _internal_set_datanode_port(value);
-  // @@protoc_insertion_point(field_set:proxy_proto.CordPlanApplyParityXorReq.datanode_port)
+  // @@protoc_insertion_point(field_set:proxy_proto.UpLRCPlanApplyParityXorReq.datanode_port)
 }
 
 // int32 parity_slice_offset = 6;
-inline void CordPlanApplyParityXorReq::clear_parity_slice_offset() {
+inline void UpLRCPlanApplyParityXorReq::clear_parity_slice_offset() {
   _impl_.parity_slice_offset_ = 0;
 }
-inline int32_t CordPlanApplyParityXorReq::_internal_parity_slice_offset() const {
+inline int32_t UpLRCPlanApplyParityXorReq::_internal_parity_slice_offset() const {
   return _impl_.parity_slice_offset_;
 }
-inline int32_t CordPlanApplyParityXorReq::parity_slice_offset() const {
-  // @@protoc_insertion_point(field_get:proxy_proto.CordPlanApplyParityXorReq.parity_slice_offset)
+inline int32_t UpLRCPlanApplyParityXorReq::parity_slice_offset() const {
+  // @@protoc_insertion_point(field_get:proxy_proto.UpLRCPlanApplyParityXorReq.parity_slice_offset)
   return _internal_parity_slice_offset();
 }
-inline void CordPlanApplyParityXorReq::_internal_set_parity_slice_offset(int32_t value) {
+inline void UpLRCPlanApplyParityXorReq::_internal_set_parity_slice_offset(int32_t value) {
   
   _impl_.parity_slice_offset_ = value;
 }
-inline void CordPlanApplyParityXorReq::set_parity_slice_offset(int32_t value) {
+inline void UpLRCPlanApplyParityXorReq::set_parity_slice_offset(int32_t value) {
   _internal_set_parity_slice_offset(value);
-  // @@protoc_insertion_point(field_set:proxy_proto.CordPlanApplyParityXorReq.parity_slice_offset)
+  // @@protoc_insertion_point(field_set:proxy_proto.UpLRCPlanApplyParityXorReq.parity_slice_offset)
 }
 
 // int32 parity_slice_length = 7;
-inline void CordPlanApplyParityXorReq::clear_parity_slice_length() {
+inline void UpLRCPlanApplyParityXorReq::clear_parity_slice_length() {
   _impl_.parity_slice_length_ = 0;
 }
-inline int32_t CordPlanApplyParityXorReq::_internal_parity_slice_length() const {
+inline int32_t UpLRCPlanApplyParityXorReq::_internal_parity_slice_length() const {
   return _impl_.parity_slice_length_;
 }
-inline int32_t CordPlanApplyParityXorReq::parity_slice_length() const {
-  // @@protoc_insertion_point(field_get:proxy_proto.CordPlanApplyParityXorReq.parity_slice_length)
+inline int32_t UpLRCPlanApplyParityXorReq::parity_slice_length() const {
+  // @@protoc_insertion_point(field_get:proxy_proto.UpLRCPlanApplyParityXorReq.parity_slice_length)
   return _internal_parity_slice_length();
 }
-inline void CordPlanApplyParityXorReq::_internal_set_parity_slice_length(int32_t value) {
+inline void UpLRCPlanApplyParityXorReq::_internal_set_parity_slice_length(int32_t value) {
   
   _impl_.parity_slice_length_ = value;
 }
-inline void CordPlanApplyParityXorReq::set_parity_slice_length(int32_t value) {
+inline void UpLRCPlanApplyParityXorReq::set_parity_slice_length(int32_t value) {
   _internal_set_parity_slice_length(value);
-  // @@protoc_insertion_point(field_set:proxy_proto.CordPlanApplyParityXorReq.parity_slice_length)
+  // @@protoc_insertion_point(field_set:proxy_proto.UpLRCPlanApplyParityXorReq.parity_slice_length)
 }
 
 // bytes parity_delta_payload = 8;
-inline void CordPlanApplyParityXorReq::clear_parity_delta_payload() {
+inline void UpLRCPlanApplyParityXorReq::clear_parity_delta_payload() {
   _impl_.parity_delta_payload_.ClearToEmpty();
 }
-inline const std::string& CordPlanApplyParityXorReq::parity_delta_payload() const {
-  // @@protoc_insertion_point(field_get:proxy_proto.CordPlanApplyParityXorReq.parity_delta_payload)
+inline const std::string& UpLRCPlanApplyParityXorReq::parity_delta_payload() const {
+  // @@protoc_insertion_point(field_get:proxy_proto.UpLRCPlanApplyParityXorReq.parity_delta_payload)
   return _internal_parity_delta_payload();
 }
 template <typename ArgT0, typename... ArgT>
 inline PROTOBUF_ALWAYS_INLINE
-void CordPlanApplyParityXorReq::set_parity_delta_payload(ArgT0&& arg0, ArgT... args) {
+void UpLRCPlanApplyParityXorReq::set_parity_delta_payload(ArgT0&& arg0, ArgT... args) {
  
  _impl_.parity_delta_payload_.SetBytes(static_cast<ArgT0 &&>(arg0), args..., GetArenaForAllocation());
-  // @@protoc_insertion_point(field_set:proxy_proto.CordPlanApplyParityXorReq.parity_delta_payload)
+  // @@protoc_insertion_point(field_set:proxy_proto.UpLRCPlanApplyParityXorReq.parity_delta_payload)
 }
-inline std::string* CordPlanApplyParityXorReq::mutable_parity_delta_payload() {
+inline std::string* UpLRCPlanApplyParityXorReq::mutable_parity_delta_payload() {
   std::string* _s = _internal_mutable_parity_delta_payload();
-  // @@protoc_insertion_point(field_mutable:proxy_proto.CordPlanApplyParityXorReq.parity_delta_payload)
+  // @@protoc_insertion_point(field_mutable:proxy_proto.UpLRCPlanApplyParityXorReq.parity_delta_payload)
   return _s;
 }
-inline const std::string& CordPlanApplyParityXorReq::_internal_parity_delta_payload() const {
+inline const std::string& UpLRCPlanApplyParityXorReq::_internal_parity_delta_payload() const {
   return _impl_.parity_delta_payload_.Get();
 }
-inline void CordPlanApplyParityXorReq::_internal_set_parity_delta_payload(const std::string& value) {
+inline void UpLRCPlanApplyParityXorReq::_internal_set_parity_delta_payload(const std::string& value) {
   
   _impl_.parity_delta_payload_.Set(value, GetArenaForAllocation());
 }
-inline std::string* CordPlanApplyParityXorReq::_internal_mutable_parity_delta_payload() {
+inline std::string* UpLRCPlanApplyParityXorReq::_internal_mutable_parity_delta_payload() {
   
   return _impl_.parity_delta_payload_.Mutable(GetArenaForAllocation());
 }
-inline std::string* CordPlanApplyParityXorReq::release_parity_delta_payload() {
-  // @@protoc_insertion_point(field_release:proxy_proto.CordPlanApplyParityXorReq.parity_delta_payload)
+inline std::string* UpLRCPlanApplyParityXorReq::release_parity_delta_payload() {
+  // @@protoc_insertion_point(field_release:proxy_proto.UpLRCPlanApplyParityXorReq.parity_delta_payload)
   return _impl_.parity_delta_payload_.Release();
 }
-inline void CordPlanApplyParityXorReq::set_allocated_parity_delta_payload(std::string* parity_delta_payload) {
+inline void UpLRCPlanApplyParityXorReq::set_allocated_parity_delta_payload(std::string* parity_delta_payload) {
   if (parity_delta_payload != nullptr) {
     
   } else {
@@ -20072,49 +20072,49 @@ inline void CordPlanApplyParityXorReq::set_allocated_parity_delta_payload(std::s
     _impl_.parity_delta_payload_.Set("", GetArenaForAllocation());
   }
 #endif // PROTOBUF_FORCE_COPY_DEFAULT_STRING
-  // @@protoc_insertion_point(field_set_allocated:proxy_proto.CordPlanApplyParityXorReq.parity_delta_payload)
+  // @@protoc_insertion_point(field_set_allocated:proxy_proto.UpLRCPlanApplyParityXorReq.parity_delta_payload)
 }
 
 // -------------------------------------------------------------------
 
-// CordPlanMstDataDeltaReq
+// UpLRCPlanMstDataDeltaReq
 
 // string plan_key = 1;
-inline void CordPlanMstDataDeltaReq::clear_plan_key() {
+inline void UpLRCPlanMstDataDeltaReq::clear_plan_key() {
   _impl_.plan_key_.ClearToEmpty();
 }
-inline const std::string& CordPlanMstDataDeltaReq::plan_key() const {
-  // @@protoc_insertion_point(field_get:proxy_proto.CordPlanMstDataDeltaReq.plan_key)
+inline const std::string& UpLRCPlanMstDataDeltaReq::plan_key() const {
+  // @@protoc_insertion_point(field_get:proxy_proto.UpLRCPlanMstDataDeltaReq.plan_key)
   return _internal_plan_key();
 }
 template <typename ArgT0, typename... ArgT>
 inline PROTOBUF_ALWAYS_INLINE
-void CordPlanMstDataDeltaReq::set_plan_key(ArgT0&& arg0, ArgT... args) {
+void UpLRCPlanMstDataDeltaReq::set_plan_key(ArgT0&& arg0, ArgT... args) {
  
  _impl_.plan_key_.Set(static_cast<ArgT0 &&>(arg0), args..., GetArenaForAllocation());
-  // @@protoc_insertion_point(field_set:proxy_proto.CordPlanMstDataDeltaReq.plan_key)
+  // @@protoc_insertion_point(field_set:proxy_proto.UpLRCPlanMstDataDeltaReq.plan_key)
 }
-inline std::string* CordPlanMstDataDeltaReq::mutable_plan_key() {
+inline std::string* UpLRCPlanMstDataDeltaReq::mutable_plan_key() {
   std::string* _s = _internal_mutable_plan_key();
-  // @@protoc_insertion_point(field_mutable:proxy_proto.CordPlanMstDataDeltaReq.plan_key)
+  // @@protoc_insertion_point(field_mutable:proxy_proto.UpLRCPlanMstDataDeltaReq.plan_key)
   return _s;
 }
-inline const std::string& CordPlanMstDataDeltaReq::_internal_plan_key() const {
+inline const std::string& UpLRCPlanMstDataDeltaReq::_internal_plan_key() const {
   return _impl_.plan_key_.Get();
 }
-inline void CordPlanMstDataDeltaReq::_internal_set_plan_key(const std::string& value) {
+inline void UpLRCPlanMstDataDeltaReq::_internal_set_plan_key(const std::string& value) {
   
   _impl_.plan_key_.Set(value, GetArenaForAllocation());
 }
-inline std::string* CordPlanMstDataDeltaReq::_internal_mutable_plan_key() {
+inline std::string* UpLRCPlanMstDataDeltaReq::_internal_mutable_plan_key() {
   
   return _impl_.plan_key_.Mutable(GetArenaForAllocation());
 }
-inline std::string* CordPlanMstDataDeltaReq::release_plan_key() {
-  // @@protoc_insertion_point(field_release:proxy_proto.CordPlanMstDataDeltaReq.plan_key)
+inline std::string* UpLRCPlanMstDataDeltaReq::release_plan_key() {
+  // @@protoc_insertion_point(field_release:proxy_proto.UpLRCPlanMstDataDeltaReq.plan_key)
   return _impl_.plan_key_.Release();
 }
-inline void CordPlanMstDataDeltaReq::set_allocated_plan_key(std::string* plan_key) {
+inline void UpLRCPlanMstDataDeltaReq::set_allocated_plan_key(std::string* plan_key) {
   if (plan_key != nullptr) {
     
   } else {
@@ -20126,125 +20126,125 @@ inline void CordPlanMstDataDeltaReq::set_allocated_plan_key(std::string* plan_ke
     _impl_.plan_key_.Set("", GetArenaForAllocation());
   }
 #endif // PROTOBUF_FORCE_COPY_DEFAULT_STRING
-  // @@protoc_insertion_point(field_set_allocated:proxy_proto.CordPlanMstDataDeltaReq.plan_key)
+  // @@protoc_insertion_point(field_set_allocated:proxy_proto.UpLRCPlanMstDataDeltaReq.plan_key)
 }
 
 // int32 dst_proxy_cluster_id = 2;
-inline void CordPlanMstDataDeltaReq::clear_dst_proxy_cluster_id() {
+inline void UpLRCPlanMstDataDeltaReq::clear_dst_proxy_cluster_id() {
   _impl_.dst_proxy_cluster_id_ = 0;
 }
-inline int32_t CordPlanMstDataDeltaReq::_internal_dst_proxy_cluster_id() const {
+inline int32_t UpLRCPlanMstDataDeltaReq::_internal_dst_proxy_cluster_id() const {
   return _impl_.dst_proxy_cluster_id_;
 }
-inline int32_t CordPlanMstDataDeltaReq::dst_proxy_cluster_id() const {
-  // @@protoc_insertion_point(field_get:proxy_proto.CordPlanMstDataDeltaReq.dst_proxy_cluster_id)
+inline int32_t UpLRCPlanMstDataDeltaReq::dst_proxy_cluster_id() const {
+  // @@protoc_insertion_point(field_get:proxy_proto.UpLRCPlanMstDataDeltaReq.dst_proxy_cluster_id)
   return _internal_dst_proxy_cluster_id();
 }
-inline void CordPlanMstDataDeltaReq::_internal_set_dst_proxy_cluster_id(int32_t value) {
+inline void UpLRCPlanMstDataDeltaReq::_internal_set_dst_proxy_cluster_id(int32_t value) {
   
   _impl_.dst_proxy_cluster_id_ = value;
 }
-inline void CordPlanMstDataDeltaReq::set_dst_proxy_cluster_id(int32_t value) {
+inline void UpLRCPlanMstDataDeltaReq::set_dst_proxy_cluster_id(int32_t value) {
   _internal_set_dst_proxy_cluster_id(value);
-  // @@protoc_insertion_point(field_set:proxy_proto.CordPlanMstDataDeltaReq.dst_proxy_cluster_id)
+  // @@protoc_insertion_point(field_set:proxy_proto.UpLRCPlanMstDataDeltaReq.dst_proxy_cluster_id)
 }
 
 // int32 dst_block_id = 3;
-inline void CordPlanMstDataDeltaReq::clear_dst_block_id() {
+inline void UpLRCPlanMstDataDeltaReq::clear_dst_block_id() {
   _impl_.dst_block_id_ = 0;
 }
-inline int32_t CordPlanMstDataDeltaReq::_internal_dst_block_id() const {
+inline int32_t UpLRCPlanMstDataDeltaReq::_internal_dst_block_id() const {
   return _impl_.dst_block_id_;
 }
-inline int32_t CordPlanMstDataDeltaReq::dst_block_id() const {
-  // @@protoc_insertion_point(field_get:proxy_proto.CordPlanMstDataDeltaReq.dst_block_id)
+inline int32_t UpLRCPlanMstDataDeltaReq::dst_block_id() const {
+  // @@protoc_insertion_point(field_get:proxy_proto.UpLRCPlanMstDataDeltaReq.dst_block_id)
   return _internal_dst_block_id();
 }
-inline void CordPlanMstDataDeltaReq::_internal_set_dst_block_id(int32_t value) {
+inline void UpLRCPlanMstDataDeltaReq::_internal_set_dst_block_id(int32_t value) {
   
   _impl_.dst_block_id_ = value;
 }
-inline void CordPlanMstDataDeltaReq::set_dst_block_id(int32_t value) {
+inline void UpLRCPlanMstDataDeltaReq::set_dst_block_id(int32_t value) {
   _internal_set_dst_block_id(value);
-  // @@protoc_insertion_point(field_set:proxy_proto.CordPlanMstDataDeltaReq.dst_block_id)
+  // @@protoc_insertion_point(field_set:proxy_proto.UpLRCPlanMstDataDeltaReq.dst_block_id)
 }
 
 // int32 k_datablock = 4;
-inline void CordPlanMstDataDeltaReq::clear_k_datablock() {
+inline void UpLRCPlanMstDataDeltaReq::clear_k_datablock() {
   _impl_.k_datablock_ = 0;
 }
-inline int32_t CordPlanMstDataDeltaReq::_internal_k_datablock() const {
+inline int32_t UpLRCPlanMstDataDeltaReq::_internal_k_datablock() const {
   return _impl_.k_datablock_;
 }
-inline int32_t CordPlanMstDataDeltaReq::k_datablock() const {
-  // @@protoc_insertion_point(field_get:proxy_proto.CordPlanMstDataDeltaReq.k_datablock)
+inline int32_t UpLRCPlanMstDataDeltaReq::k_datablock() const {
+  // @@protoc_insertion_point(field_get:proxy_proto.UpLRCPlanMstDataDeltaReq.k_datablock)
   return _internal_k_datablock();
 }
-inline void CordPlanMstDataDeltaReq::_internal_set_k_datablock(int32_t value) {
+inline void UpLRCPlanMstDataDeltaReq::_internal_set_k_datablock(int32_t value) {
   
   _impl_.k_datablock_ = value;
 }
-inline void CordPlanMstDataDeltaReq::set_k_datablock(int32_t value) {
+inline void UpLRCPlanMstDataDeltaReq::set_k_datablock(int32_t value) {
   _internal_set_k_datablock(value);
-  // @@protoc_insertion_point(field_set:proxy_proto.CordPlanMstDataDeltaReq.k_datablock)
+  // @@protoc_insertion_point(field_set:proxy_proto.UpLRCPlanMstDataDeltaReq.k_datablock)
 }
 
 // uint64 chunk_byte_offset = 5;
-inline void CordPlanMstDataDeltaReq::clear_chunk_byte_offset() {
+inline void UpLRCPlanMstDataDeltaReq::clear_chunk_byte_offset() {
   _impl_.chunk_byte_offset_ = uint64_t{0u};
 }
-inline uint64_t CordPlanMstDataDeltaReq::_internal_chunk_byte_offset() const {
+inline uint64_t UpLRCPlanMstDataDeltaReq::_internal_chunk_byte_offset() const {
   return _impl_.chunk_byte_offset_;
 }
-inline uint64_t CordPlanMstDataDeltaReq::chunk_byte_offset() const {
-  // @@protoc_insertion_point(field_get:proxy_proto.CordPlanMstDataDeltaReq.chunk_byte_offset)
+inline uint64_t UpLRCPlanMstDataDeltaReq::chunk_byte_offset() const {
+  // @@protoc_insertion_point(field_get:proxy_proto.UpLRCPlanMstDataDeltaReq.chunk_byte_offset)
   return _internal_chunk_byte_offset();
 }
-inline void CordPlanMstDataDeltaReq::_internal_set_chunk_byte_offset(uint64_t value) {
+inline void UpLRCPlanMstDataDeltaReq::_internal_set_chunk_byte_offset(uint64_t value) {
   
   _impl_.chunk_byte_offset_ = value;
 }
-inline void CordPlanMstDataDeltaReq::set_chunk_byte_offset(uint64_t value) {
+inline void UpLRCPlanMstDataDeltaReq::set_chunk_byte_offset(uint64_t value) {
   _internal_set_chunk_byte_offset(value);
-  // @@protoc_insertion_point(field_set:proxy_proto.CordPlanMstDataDeltaReq.chunk_byte_offset)
+  // @@protoc_insertion_point(field_set:proxy_proto.UpLRCPlanMstDataDeltaReq.chunk_byte_offset)
 }
 
 // bytes chunk_payload = 6;
-inline void CordPlanMstDataDeltaReq::clear_chunk_payload() {
+inline void UpLRCPlanMstDataDeltaReq::clear_chunk_payload() {
   _impl_.chunk_payload_.ClearToEmpty();
 }
-inline const std::string& CordPlanMstDataDeltaReq::chunk_payload() const {
-  // @@protoc_insertion_point(field_get:proxy_proto.CordPlanMstDataDeltaReq.chunk_payload)
+inline const std::string& UpLRCPlanMstDataDeltaReq::chunk_payload() const {
+  // @@protoc_insertion_point(field_get:proxy_proto.UpLRCPlanMstDataDeltaReq.chunk_payload)
   return _internal_chunk_payload();
 }
 template <typename ArgT0, typename... ArgT>
 inline PROTOBUF_ALWAYS_INLINE
-void CordPlanMstDataDeltaReq::set_chunk_payload(ArgT0&& arg0, ArgT... args) {
+void UpLRCPlanMstDataDeltaReq::set_chunk_payload(ArgT0&& arg0, ArgT... args) {
  
  _impl_.chunk_payload_.SetBytes(static_cast<ArgT0 &&>(arg0), args..., GetArenaForAllocation());
-  // @@protoc_insertion_point(field_set:proxy_proto.CordPlanMstDataDeltaReq.chunk_payload)
+  // @@protoc_insertion_point(field_set:proxy_proto.UpLRCPlanMstDataDeltaReq.chunk_payload)
 }
-inline std::string* CordPlanMstDataDeltaReq::mutable_chunk_payload() {
+inline std::string* UpLRCPlanMstDataDeltaReq::mutable_chunk_payload() {
   std::string* _s = _internal_mutable_chunk_payload();
-  // @@protoc_insertion_point(field_mutable:proxy_proto.CordPlanMstDataDeltaReq.chunk_payload)
+  // @@protoc_insertion_point(field_mutable:proxy_proto.UpLRCPlanMstDataDeltaReq.chunk_payload)
   return _s;
 }
-inline const std::string& CordPlanMstDataDeltaReq::_internal_chunk_payload() const {
+inline const std::string& UpLRCPlanMstDataDeltaReq::_internal_chunk_payload() const {
   return _impl_.chunk_payload_.Get();
 }
-inline void CordPlanMstDataDeltaReq::_internal_set_chunk_payload(const std::string& value) {
+inline void UpLRCPlanMstDataDeltaReq::_internal_set_chunk_payload(const std::string& value) {
   
   _impl_.chunk_payload_.Set(value, GetArenaForAllocation());
 }
-inline std::string* CordPlanMstDataDeltaReq::_internal_mutable_chunk_payload() {
+inline std::string* UpLRCPlanMstDataDeltaReq::_internal_mutable_chunk_payload() {
   
   return _impl_.chunk_payload_.Mutable(GetArenaForAllocation());
 }
-inline std::string* CordPlanMstDataDeltaReq::release_chunk_payload() {
-  // @@protoc_insertion_point(field_release:proxy_proto.CordPlanMstDataDeltaReq.chunk_payload)
+inline std::string* UpLRCPlanMstDataDeltaReq::release_chunk_payload() {
+  // @@protoc_insertion_point(field_release:proxy_proto.UpLRCPlanMstDataDeltaReq.chunk_payload)
   return _impl_.chunk_payload_.Release();
 }
-inline void CordPlanMstDataDeltaReq::set_allocated_chunk_payload(std::string* chunk_payload) {
+inline void UpLRCPlanMstDataDeltaReq::set_allocated_chunk_payload(std::string* chunk_payload) {
   if (chunk_payload != nullptr) {
     
   } else {
@@ -20256,65 +20256,65 @@ inline void CordPlanMstDataDeltaReq::set_allocated_chunk_payload(std::string* ch
     _impl_.chunk_payload_.Set("", GetArenaForAllocation());
   }
 #endif // PROTOBUF_FORCE_COPY_DEFAULT_STRING
-  // @@protoc_insertion_point(field_set_allocated:proxy_proto.CordPlanMstDataDeltaReq.chunk_payload)
+  // @@protoc_insertion_point(field_set_allocated:proxy_proto.UpLRCPlanMstDataDeltaReq.chunk_payload)
 }
 
 // uint64 total_expected_bytes = 7;
-inline void CordPlanMstDataDeltaReq::clear_total_expected_bytes() {
+inline void UpLRCPlanMstDataDeltaReq::clear_total_expected_bytes() {
   _impl_.total_expected_bytes_ = uint64_t{0u};
 }
-inline uint64_t CordPlanMstDataDeltaReq::_internal_total_expected_bytes() const {
+inline uint64_t UpLRCPlanMstDataDeltaReq::_internal_total_expected_bytes() const {
   return _impl_.total_expected_bytes_;
 }
-inline uint64_t CordPlanMstDataDeltaReq::total_expected_bytes() const {
-  // @@protoc_insertion_point(field_get:proxy_proto.CordPlanMstDataDeltaReq.total_expected_bytes)
+inline uint64_t UpLRCPlanMstDataDeltaReq::total_expected_bytes() const {
+  // @@protoc_insertion_point(field_get:proxy_proto.UpLRCPlanMstDataDeltaReq.total_expected_bytes)
   return _internal_total_expected_bytes();
 }
-inline void CordPlanMstDataDeltaReq::_internal_set_total_expected_bytes(uint64_t value) {
+inline void UpLRCPlanMstDataDeltaReq::_internal_set_total_expected_bytes(uint64_t value) {
   
   _impl_.total_expected_bytes_ = value;
 }
-inline void CordPlanMstDataDeltaReq::set_total_expected_bytes(uint64_t value) {
+inline void UpLRCPlanMstDataDeltaReq::set_total_expected_bytes(uint64_t value) {
   _internal_set_total_expected_bytes(value);
-  // @@protoc_insertion_point(field_set:proxy_proto.CordPlanMstDataDeltaReq.total_expected_bytes)
+  // @@protoc_insertion_point(field_set:proxy_proto.UpLRCPlanMstDataDeltaReq.total_expected_bytes)
 }
 
 // string parity_block_key = 8;
-inline void CordPlanMstDataDeltaReq::clear_parity_block_key() {
+inline void UpLRCPlanMstDataDeltaReq::clear_parity_block_key() {
   _impl_.parity_block_key_.ClearToEmpty();
 }
-inline const std::string& CordPlanMstDataDeltaReq::parity_block_key() const {
-  // @@protoc_insertion_point(field_get:proxy_proto.CordPlanMstDataDeltaReq.parity_block_key)
+inline const std::string& UpLRCPlanMstDataDeltaReq::parity_block_key() const {
+  // @@protoc_insertion_point(field_get:proxy_proto.UpLRCPlanMstDataDeltaReq.parity_block_key)
   return _internal_parity_block_key();
 }
 template <typename ArgT0, typename... ArgT>
 inline PROTOBUF_ALWAYS_INLINE
-void CordPlanMstDataDeltaReq::set_parity_block_key(ArgT0&& arg0, ArgT... args) {
+void UpLRCPlanMstDataDeltaReq::set_parity_block_key(ArgT0&& arg0, ArgT... args) {
  
  _impl_.parity_block_key_.Set(static_cast<ArgT0 &&>(arg0), args..., GetArenaForAllocation());
-  // @@protoc_insertion_point(field_set:proxy_proto.CordPlanMstDataDeltaReq.parity_block_key)
+  // @@protoc_insertion_point(field_set:proxy_proto.UpLRCPlanMstDataDeltaReq.parity_block_key)
 }
-inline std::string* CordPlanMstDataDeltaReq::mutable_parity_block_key() {
+inline std::string* UpLRCPlanMstDataDeltaReq::mutable_parity_block_key() {
   std::string* _s = _internal_mutable_parity_block_key();
-  // @@protoc_insertion_point(field_mutable:proxy_proto.CordPlanMstDataDeltaReq.parity_block_key)
+  // @@protoc_insertion_point(field_mutable:proxy_proto.UpLRCPlanMstDataDeltaReq.parity_block_key)
   return _s;
 }
-inline const std::string& CordPlanMstDataDeltaReq::_internal_parity_block_key() const {
+inline const std::string& UpLRCPlanMstDataDeltaReq::_internal_parity_block_key() const {
   return _impl_.parity_block_key_.Get();
 }
-inline void CordPlanMstDataDeltaReq::_internal_set_parity_block_key(const std::string& value) {
+inline void UpLRCPlanMstDataDeltaReq::_internal_set_parity_block_key(const std::string& value) {
   
   _impl_.parity_block_key_.Set(value, GetArenaForAllocation());
 }
-inline std::string* CordPlanMstDataDeltaReq::_internal_mutable_parity_block_key() {
+inline std::string* UpLRCPlanMstDataDeltaReq::_internal_mutable_parity_block_key() {
   
   return _impl_.parity_block_key_.Mutable(GetArenaForAllocation());
 }
-inline std::string* CordPlanMstDataDeltaReq::release_parity_block_key() {
-  // @@protoc_insertion_point(field_release:proxy_proto.CordPlanMstDataDeltaReq.parity_block_key)
+inline std::string* UpLRCPlanMstDataDeltaReq::release_parity_block_key() {
+  // @@protoc_insertion_point(field_release:proxy_proto.UpLRCPlanMstDataDeltaReq.parity_block_key)
   return _impl_.parity_block_key_.Release();
 }
-inline void CordPlanMstDataDeltaReq::set_allocated_parity_block_key(std::string* parity_block_key) {
+inline void UpLRCPlanMstDataDeltaReq::set_allocated_parity_block_key(std::string* parity_block_key) {
   if (parity_block_key != nullptr) {
     
   } else {
@@ -20326,45 +20326,45 @@ inline void CordPlanMstDataDeltaReq::set_allocated_parity_block_key(std::string*
     _impl_.parity_block_key_.Set("", GetArenaForAllocation());
   }
 #endif // PROTOBUF_FORCE_COPY_DEFAULT_STRING
-  // @@protoc_insertion_point(field_set_allocated:proxy_proto.CordPlanMstDataDeltaReq.parity_block_key)
+  // @@protoc_insertion_point(field_set_allocated:proxy_proto.UpLRCPlanMstDataDeltaReq.parity_block_key)
 }
 
 // string parity_datanode_ip = 9;
-inline void CordPlanMstDataDeltaReq::clear_parity_datanode_ip() {
+inline void UpLRCPlanMstDataDeltaReq::clear_parity_datanode_ip() {
   _impl_.parity_datanode_ip_.ClearToEmpty();
 }
-inline const std::string& CordPlanMstDataDeltaReq::parity_datanode_ip() const {
-  // @@protoc_insertion_point(field_get:proxy_proto.CordPlanMstDataDeltaReq.parity_datanode_ip)
+inline const std::string& UpLRCPlanMstDataDeltaReq::parity_datanode_ip() const {
+  // @@protoc_insertion_point(field_get:proxy_proto.UpLRCPlanMstDataDeltaReq.parity_datanode_ip)
   return _internal_parity_datanode_ip();
 }
 template <typename ArgT0, typename... ArgT>
 inline PROTOBUF_ALWAYS_INLINE
-void CordPlanMstDataDeltaReq::set_parity_datanode_ip(ArgT0&& arg0, ArgT... args) {
+void UpLRCPlanMstDataDeltaReq::set_parity_datanode_ip(ArgT0&& arg0, ArgT... args) {
  
  _impl_.parity_datanode_ip_.Set(static_cast<ArgT0 &&>(arg0), args..., GetArenaForAllocation());
-  // @@protoc_insertion_point(field_set:proxy_proto.CordPlanMstDataDeltaReq.parity_datanode_ip)
+  // @@protoc_insertion_point(field_set:proxy_proto.UpLRCPlanMstDataDeltaReq.parity_datanode_ip)
 }
-inline std::string* CordPlanMstDataDeltaReq::mutable_parity_datanode_ip() {
+inline std::string* UpLRCPlanMstDataDeltaReq::mutable_parity_datanode_ip() {
   std::string* _s = _internal_mutable_parity_datanode_ip();
-  // @@protoc_insertion_point(field_mutable:proxy_proto.CordPlanMstDataDeltaReq.parity_datanode_ip)
+  // @@protoc_insertion_point(field_mutable:proxy_proto.UpLRCPlanMstDataDeltaReq.parity_datanode_ip)
   return _s;
 }
-inline const std::string& CordPlanMstDataDeltaReq::_internal_parity_datanode_ip() const {
+inline const std::string& UpLRCPlanMstDataDeltaReq::_internal_parity_datanode_ip() const {
   return _impl_.parity_datanode_ip_.Get();
 }
-inline void CordPlanMstDataDeltaReq::_internal_set_parity_datanode_ip(const std::string& value) {
+inline void UpLRCPlanMstDataDeltaReq::_internal_set_parity_datanode_ip(const std::string& value) {
   
   _impl_.parity_datanode_ip_.Set(value, GetArenaForAllocation());
 }
-inline std::string* CordPlanMstDataDeltaReq::_internal_mutable_parity_datanode_ip() {
+inline std::string* UpLRCPlanMstDataDeltaReq::_internal_mutable_parity_datanode_ip() {
   
   return _impl_.parity_datanode_ip_.Mutable(GetArenaForAllocation());
 }
-inline std::string* CordPlanMstDataDeltaReq::release_parity_datanode_ip() {
-  // @@protoc_insertion_point(field_release:proxy_proto.CordPlanMstDataDeltaReq.parity_datanode_ip)
+inline std::string* UpLRCPlanMstDataDeltaReq::release_parity_datanode_ip() {
+  // @@protoc_insertion_point(field_release:proxy_proto.UpLRCPlanMstDataDeltaReq.parity_datanode_ip)
   return _impl_.parity_datanode_ip_.Release();
 }
-inline void CordPlanMstDataDeltaReq::set_allocated_parity_datanode_ip(std::string* parity_datanode_ip) {
+inline void UpLRCPlanMstDataDeltaReq::set_allocated_parity_datanode_ip(std::string* parity_datanode_ip) {
   if (parity_datanode_ip != nullptr) {
     
   } else {
@@ -20376,109 +20376,109 @@ inline void CordPlanMstDataDeltaReq::set_allocated_parity_datanode_ip(std::strin
     _impl_.parity_datanode_ip_.Set("", GetArenaForAllocation());
   }
 #endif // PROTOBUF_FORCE_COPY_DEFAULT_STRING
-  // @@protoc_insertion_point(field_set_allocated:proxy_proto.CordPlanMstDataDeltaReq.parity_datanode_ip)
+  // @@protoc_insertion_point(field_set_allocated:proxy_proto.UpLRCPlanMstDataDeltaReq.parity_datanode_ip)
 }
 
 // int32 parity_datanode_port = 10;
-inline void CordPlanMstDataDeltaReq::clear_parity_datanode_port() {
+inline void UpLRCPlanMstDataDeltaReq::clear_parity_datanode_port() {
   _impl_.parity_datanode_port_ = 0;
 }
-inline int32_t CordPlanMstDataDeltaReq::_internal_parity_datanode_port() const {
+inline int32_t UpLRCPlanMstDataDeltaReq::_internal_parity_datanode_port() const {
   return _impl_.parity_datanode_port_;
 }
-inline int32_t CordPlanMstDataDeltaReq::parity_datanode_port() const {
-  // @@protoc_insertion_point(field_get:proxy_proto.CordPlanMstDataDeltaReq.parity_datanode_port)
+inline int32_t UpLRCPlanMstDataDeltaReq::parity_datanode_port() const {
+  // @@protoc_insertion_point(field_get:proxy_proto.UpLRCPlanMstDataDeltaReq.parity_datanode_port)
   return _internal_parity_datanode_port();
 }
-inline void CordPlanMstDataDeltaReq::_internal_set_parity_datanode_port(int32_t value) {
+inline void UpLRCPlanMstDataDeltaReq::_internal_set_parity_datanode_port(int32_t value) {
   
   _impl_.parity_datanode_port_ = value;
 }
-inline void CordPlanMstDataDeltaReq::set_parity_datanode_port(int32_t value) {
+inline void UpLRCPlanMstDataDeltaReq::set_parity_datanode_port(int32_t value) {
   _internal_set_parity_datanode_port(value);
-  // @@protoc_insertion_point(field_set:proxy_proto.CordPlanMstDataDeltaReq.parity_datanode_port)
+  // @@protoc_insertion_point(field_set:proxy_proto.UpLRCPlanMstDataDeltaReq.parity_datanode_port)
 }
 
 // int32 src_data_block_id = 11;
-inline void CordPlanMstDataDeltaReq::clear_src_data_block_id() {
+inline void UpLRCPlanMstDataDeltaReq::clear_src_data_block_id() {
   _impl_.src_data_block_id_ = 0;
 }
-inline int32_t CordPlanMstDataDeltaReq::_internal_src_data_block_id() const {
+inline int32_t UpLRCPlanMstDataDeltaReq::_internal_src_data_block_id() const {
   return _impl_.src_data_block_id_;
 }
-inline int32_t CordPlanMstDataDeltaReq::src_data_block_id() const {
-  // @@protoc_insertion_point(field_get:proxy_proto.CordPlanMstDataDeltaReq.src_data_block_id)
+inline int32_t UpLRCPlanMstDataDeltaReq::src_data_block_id() const {
+  // @@protoc_insertion_point(field_get:proxy_proto.UpLRCPlanMstDataDeltaReq.src_data_block_id)
   return _internal_src_data_block_id();
 }
-inline void CordPlanMstDataDeltaReq::_internal_set_src_data_block_id(int32_t value) {
+inline void UpLRCPlanMstDataDeltaReq::_internal_set_src_data_block_id(int32_t value) {
   
   _impl_.src_data_block_id_ = value;
 }
-inline void CordPlanMstDataDeltaReq::set_src_data_block_id(int32_t value) {
+inline void UpLRCPlanMstDataDeltaReq::set_src_data_block_id(int32_t value) {
   _internal_set_src_data_block_id(value);
-  // @@protoc_insertion_point(field_set:proxy_proto.CordPlanMstDataDeltaReq.src_data_block_id)
+  // @@protoc_insertion_point(field_set:proxy_proto.UpLRCPlanMstDataDeltaReq.src_data_block_id)
 }
 
 // -------------------------------------------------------------------
 
-// CordIngressParityWrite
+// UpLRCIngressParityWrite
 
 // int32 block_id = 1;
-inline void CordIngressParityWrite::clear_block_id() {
+inline void UpLRCIngressParityWrite::clear_block_id() {
   _impl_.block_id_ = 0;
 }
-inline int32_t CordIngressParityWrite::_internal_block_id() const {
+inline int32_t UpLRCIngressParityWrite::_internal_block_id() const {
   return _impl_.block_id_;
 }
-inline int32_t CordIngressParityWrite::block_id() const {
-  // @@protoc_insertion_point(field_get:proxy_proto.CordIngressParityWrite.block_id)
+inline int32_t UpLRCIngressParityWrite::block_id() const {
+  // @@protoc_insertion_point(field_get:proxy_proto.UpLRCIngressParityWrite.block_id)
   return _internal_block_id();
 }
-inline void CordIngressParityWrite::_internal_set_block_id(int32_t value) {
+inline void UpLRCIngressParityWrite::_internal_set_block_id(int32_t value) {
   
   _impl_.block_id_ = value;
 }
-inline void CordIngressParityWrite::set_block_id(int32_t value) {
+inline void UpLRCIngressParityWrite::set_block_id(int32_t value) {
   _internal_set_block_id(value);
-  // @@protoc_insertion_point(field_set:proxy_proto.CordIngressParityWrite.block_id)
+  // @@protoc_insertion_point(field_set:proxy_proto.UpLRCIngressParityWrite.block_id)
 }
 
 // string block_key = 2;
-inline void CordIngressParityWrite::clear_block_key() {
+inline void UpLRCIngressParityWrite::clear_block_key() {
   _impl_.block_key_.ClearToEmpty();
 }
-inline const std::string& CordIngressParityWrite::block_key() const {
-  // @@protoc_insertion_point(field_get:proxy_proto.CordIngressParityWrite.block_key)
+inline const std::string& UpLRCIngressParityWrite::block_key() const {
+  // @@protoc_insertion_point(field_get:proxy_proto.UpLRCIngressParityWrite.block_key)
   return _internal_block_key();
 }
 template <typename ArgT0, typename... ArgT>
 inline PROTOBUF_ALWAYS_INLINE
-void CordIngressParityWrite::set_block_key(ArgT0&& arg0, ArgT... args) {
+void UpLRCIngressParityWrite::set_block_key(ArgT0&& arg0, ArgT... args) {
  
  _impl_.block_key_.Set(static_cast<ArgT0 &&>(arg0), args..., GetArenaForAllocation());
-  // @@protoc_insertion_point(field_set:proxy_proto.CordIngressParityWrite.block_key)
+  // @@protoc_insertion_point(field_set:proxy_proto.UpLRCIngressParityWrite.block_key)
 }
-inline std::string* CordIngressParityWrite::mutable_block_key() {
+inline std::string* UpLRCIngressParityWrite::mutable_block_key() {
   std::string* _s = _internal_mutable_block_key();
-  // @@protoc_insertion_point(field_mutable:proxy_proto.CordIngressParityWrite.block_key)
+  // @@protoc_insertion_point(field_mutable:proxy_proto.UpLRCIngressParityWrite.block_key)
   return _s;
 }
-inline const std::string& CordIngressParityWrite::_internal_block_key() const {
+inline const std::string& UpLRCIngressParityWrite::_internal_block_key() const {
   return _impl_.block_key_.Get();
 }
-inline void CordIngressParityWrite::_internal_set_block_key(const std::string& value) {
+inline void UpLRCIngressParityWrite::_internal_set_block_key(const std::string& value) {
   
   _impl_.block_key_.Set(value, GetArenaForAllocation());
 }
-inline std::string* CordIngressParityWrite::_internal_mutable_block_key() {
+inline std::string* UpLRCIngressParityWrite::_internal_mutable_block_key() {
   
   return _impl_.block_key_.Mutable(GetArenaForAllocation());
 }
-inline std::string* CordIngressParityWrite::release_block_key() {
-  // @@protoc_insertion_point(field_release:proxy_proto.CordIngressParityWrite.block_key)
+inline std::string* UpLRCIngressParityWrite::release_block_key() {
+  // @@protoc_insertion_point(field_release:proxy_proto.UpLRCIngressParityWrite.block_key)
   return _impl_.block_key_.Release();
 }
-inline void CordIngressParityWrite::set_allocated_block_key(std::string* block_key) {
+inline void UpLRCIngressParityWrite::set_allocated_block_key(std::string* block_key) {
   if (block_key != nullptr) {
     
   } else {
@@ -20490,45 +20490,45 @@ inline void CordIngressParityWrite::set_allocated_block_key(std::string* block_k
     _impl_.block_key_.Set("", GetArenaForAllocation());
   }
 #endif // PROTOBUF_FORCE_COPY_DEFAULT_STRING
-  // @@protoc_insertion_point(field_set_allocated:proxy_proto.CordIngressParityWrite.block_key)
+  // @@protoc_insertion_point(field_set_allocated:proxy_proto.UpLRCIngressParityWrite.block_key)
 }
 
 // string datanode_ip = 3;
-inline void CordIngressParityWrite::clear_datanode_ip() {
+inline void UpLRCIngressParityWrite::clear_datanode_ip() {
   _impl_.datanode_ip_.ClearToEmpty();
 }
-inline const std::string& CordIngressParityWrite::datanode_ip() const {
-  // @@protoc_insertion_point(field_get:proxy_proto.CordIngressParityWrite.datanode_ip)
+inline const std::string& UpLRCIngressParityWrite::datanode_ip() const {
+  // @@protoc_insertion_point(field_get:proxy_proto.UpLRCIngressParityWrite.datanode_ip)
   return _internal_datanode_ip();
 }
 template <typename ArgT0, typename... ArgT>
 inline PROTOBUF_ALWAYS_INLINE
-void CordIngressParityWrite::set_datanode_ip(ArgT0&& arg0, ArgT... args) {
+void UpLRCIngressParityWrite::set_datanode_ip(ArgT0&& arg0, ArgT... args) {
  
  _impl_.datanode_ip_.Set(static_cast<ArgT0 &&>(arg0), args..., GetArenaForAllocation());
-  // @@protoc_insertion_point(field_set:proxy_proto.CordIngressParityWrite.datanode_ip)
+  // @@protoc_insertion_point(field_set:proxy_proto.UpLRCIngressParityWrite.datanode_ip)
 }
-inline std::string* CordIngressParityWrite::mutable_datanode_ip() {
+inline std::string* UpLRCIngressParityWrite::mutable_datanode_ip() {
   std::string* _s = _internal_mutable_datanode_ip();
-  // @@protoc_insertion_point(field_mutable:proxy_proto.CordIngressParityWrite.datanode_ip)
+  // @@protoc_insertion_point(field_mutable:proxy_proto.UpLRCIngressParityWrite.datanode_ip)
   return _s;
 }
-inline const std::string& CordIngressParityWrite::_internal_datanode_ip() const {
+inline const std::string& UpLRCIngressParityWrite::_internal_datanode_ip() const {
   return _impl_.datanode_ip_.Get();
 }
-inline void CordIngressParityWrite::_internal_set_datanode_ip(const std::string& value) {
+inline void UpLRCIngressParityWrite::_internal_set_datanode_ip(const std::string& value) {
   
   _impl_.datanode_ip_.Set(value, GetArenaForAllocation());
 }
-inline std::string* CordIngressParityWrite::_internal_mutable_datanode_ip() {
+inline std::string* UpLRCIngressParityWrite::_internal_mutable_datanode_ip() {
   
   return _impl_.datanode_ip_.Mutable(GetArenaForAllocation());
 }
-inline std::string* CordIngressParityWrite::release_datanode_ip() {
-  // @@protoc_insertion_point(field_release:proxy_proto.CordIngressParityWrite.datanode_ip)
+inline std::string* UpLRCIngressParityWrite::release_datanode_ip() {
+  // @@protoc_insertion_point(field_release:proxy_proto.UpLRCIngressParityWrite.datanode_ip)
   return _impl_.datanode_ip_.Release();
 }
-inline void CordIngressParityWrite::set_allocated_datanode_ip(std::string* datanode_ip) {
+inline void UpLRCIngressParityWrite::set_allocated_datanode_ip(std::string* datanode_ip) {
   if (datanode_ip != nullptr) {
     
   } else {
@@ -20540,89 +20540,89 @@ inline void CordIngressParityWrite::set_allocated_datanode_ip(std::string* datan
     _impl_.datanode_ip_.Set("", GetArenaForAllocation());
   }
 #endif // PROTOBUF_FORCE_COPY_DEFAULT_STRING
-  // @@protoc_insertion_point(field_set_allocated:proxy_proto.CordIngressParityWrite.datanode_ip)
+  // @@protoc_insertion_point(field_set_allocated:proxy_proto.UpLRCIngressParityWrite.datanode_ip)
 }
 
 // int32 datanode_port = 4;
-inline void CordIngressParityWrite::clear_datanode_port() {
+inline void UpLRCIngressParityWrite::clear_datanode_port() {
   _impl_.datanode_port_ = 0;
 }
-inline int32_t CordIngressParityWrite::_internal_datanode_port() const {
+inline int32_t UpLRCIngressParityWrite::_internal_datanode_port() const {
   return _impl_.datanode_port_;
 }
-inline int32_t CordIngressParityWrite::datanode_port() const {
-  // @@protoc_insertion_point(field_get:proxy_proto.CordIngressParityWrite.datanode_port)
+inline int32_t UpLRCIngressParityWrite::datanode_port() const {
+  // @@protoc_insertion_point(field_get:proxy_proto.UpLRCIngressParityWrite.datanode_port)
   return _internal_datanode_port();
 }
-inline void CordIngressParityWrite::_internal_set_datanode_port(int32_t value) {
+inline void UpLRCIngressParityWrite::_internal_set_datanode_port(int32_t value) {
   
   _impl_.datanode_port_ = value;
 }
-inline void CordIngressParityWrite::set_datanode_port(int32_t value) {
+inline void UpLRCIngressParityWrite::set_datanode_port(int32_t value) {
   _internal_set_datanode_port(value);
-  // @@protoc_insertion_point(field_set:proxy_proto.CordIngressParityWrite.datanode_port)
+  // @@protoc_insertion_point(field_set:proxy_proto.UpLRCIngressParityWrite.datanode_port)
 }
 
 // int32 stripe_group = 5;
-inline void CordIngressParityWrite::clear_stripe_group() {
+inline void UpLRCIngressParityWrite::clear_stripe_group() {
   _impl_.stripe_group_ = 0;
 }
-inline int32_t CordIngressParityWrite::_internal_stripe_group() const {
+inline int32_t UpLRCIngressParityWrite::_internal_stripe_group() const {
   return _impl_.stripe_group_;
 }
-inline int32_t CordIngressParityWrite::stripe_group() const {
-  // @@protoc_insertion_point(field_get:proxy_proto.CordIngressParityWrite.stripe_group)
+inline int32_t UpLRCIngressParityWrite::stripe_group() const {
+  // @@protoc_insertion_point(field_get:proxy_proto.UpLRCIngressParityWrite.stripe_group)
   return _internal_stripe_group();
 }
-inline void CordIngressParityWrite::_internal_set_stripe_group(int32_t value) {
+inline void UpLRCIngressParityWrite::_internal_set_stripe_group(int32_t value) {
   
   _impl_.stripe_group_ = value;
 }
-inline void CordIngressParityWrite::set_stripe_group(int32_t value) {
+inline void UpLRCIngressParityWrite::set_stripe_group(int32_t value) {
   _internal_set_stripe_group(value);
-  // @@protoc_insertion_point(field_set:proxy_proto.CordIngressParityWrite.stripe_group)
+  // @@protoc_insertion_point(field_set:proxy_proto.UpLRCIngressParityWrite.stripe_group)
 }
 
 // -------------------------------------------------------------------
 
-// CordDataUpdatePlacement
+// UpLRCDataUpdatePlacement
 
 // string key = 1;
-inline void CordDataUpdatePlacement::clear_key() {
+inline void UpLRCDataUpdatePlacement::clear_key() {
   _impl_.key_.ClearToEmpty();
 }
-inline const std::string& CordDataUpdatePlacement::key() const {
-  // @@protoc_insertion_point(field_get:proxy_proto.CordDataUpdatePlacement.key)
+inline const std::string& UpLRCDataUpdatePlacement::key() const {
+  // @@protoc_insertion_point(field_get:proxy_proto.UpLRCDataUpdatePlacement.key)
   return _internal_key();
 }
 template <typename ArgT0, typename... ArgT>
 inline PROTOBUF_ALWAYS_INLINE
-void CordDataUpdatePlacement::set_key(ArgT0&& arg0, ArgT... args) {
+void UpLRCDataUpdatePlacement::set_key(ArgT0&& arg0, ArgT... args) {
  
  _impl_.key_.Set(static_cast<ArgT0 &&>(arg0), args..., GetArenaForAllocation());
-  // @@protoc_insertion_point(field_set:proxy_proto.CordDataUpdatePlacement.key)
+  // @@protoc_insertion_point(field_set:proxy_proto.UpLRCDataUpdatePlacement.key)
 }
-inline std::string* CordDataUpdatePlacement::mutable_key() {
+inline std::string* UpLRCDataUpdatePlacement::mutable_key() {
   std::string* _s = _internal_mutable_key();
-  // @@protoc_insertion_point(field_mutable:proxy_proto.CordDataUpdatePlacement.key)
+  // @@protoc_insertion_point(field_mutable:proxy_proto.UpLRCDataUpdatePlacement.key)
   return _s;
 }
-inline const std::string& CordDataUpdatePlacement::_internal_key() const {
+inline const std::string& UpLRCDataUpdatePlacement::_internal_key() const {
   return _impl_.key_.Get();
 }
-inline void CordDataUpdatePlacement::_internal_set_key(const std::string& value) {
+inline void UpLRCDataUpdatePlacement::_internal_set_key(const std::string& value) {
   
   _impl_.key_.Set(value, GetArenaForAllocation());
 }
-inline std::string* CordDataUpdatePlacement::_internal_mutable_key() {
+inline std::string* UpLRCDataUpdatePlacement::_internal_mutable_key() {
   
   return _impl_.key_.Mutable(GetArenaForAllocation());
 }
-inline std::string* CordDataUpdatePlacement::release_key() {
-  // @@protoc_insertion_point(field_release:proxy_proto.CordDataUpdatePlacement.key)
+inline std::string* UpLRCDataUpdatePlacement::release_key() {
+  // @@protoc_insertion_point(field_release:proxy_proto.UpLRCDataUpdatePlacement.key)
   return _impl_.key_.Release();
 }
-inline void CordDataUpdatePlacement::set_allocated_key(std::string* key) {
+inline void UpLRCDataUpdatePlacement::set_allocated_key(std::string* key) {
   if (key != nullptr) {
     
   } else {
@@ -20634,443 +20634,443 @@ inline void CordDataUpdatePlacement::set_allocated_key(std::string* key) {
     _impl_.key_.Set("", GetArenaForAllocation());
   }
 #endif // PROTOBUF_FORCE_COPY_DEFAULT_STRING
-  // @@protoc_insertion_point(field_set_allocated:proxy_proto.CordDataUpdatePlacement.key)
+  // @@protoc_insertion_point(field_set_allocated:proxy_proto.UpLRCDataUpdatePlacement.key)
 }
 
 // int32 cluster_id = 2;
-inline void CordDataUpdatePlacement::clear_cluster_id() {
+inline void UpLRCDataUpdatePlacement::clear_cluster_id() {
   _impl_.cluster_id_ = 0;
 }
-inline int32_t CordDataUpdatePlacement::_internal_cluster_id() const {
+inline int32_t UpLRCDataUpdatePlacement::_internal_cluster_id() const {
   return _impl_.cluster_id_;
 }
-inline int32_t CordDataUpdatePlacement::cluster_id() const {
-  // @@protoc_insertion_point(field_get:proxy_proto.CordDataUpdatePlacement.cluster_id)
+inline int32_t UpLRCDataUpdatePlacement::cluster_id() const {
+  // @@protoc_insertion_point(field_get:proxy_proto.UpLRCDataUpdatePlacement.cluster_id)
   return _internal_cluster_id();
 }
-inline void CordDataUpdatePlacement::_internal_set_cluster_id(int32_t value) {
+inline void UpLRCDataUpdatePlacement::_internal_set_cluster_id(int32_t value) {
   
   _impl_.cluster_id_ = value;
 }
-inline void CordDataUpdatePlacement::set_cluster_id(int32_t value) {
+inline void UpLRCDataUpdatePlacement::set_cluster_id(int32_t value) {
   _internal_set_cluster_id(value);
-  // @@protoc_insertion_point(field_set:proxy_proto.CordDataUpdatePlacement.cluster_id)
+  // @@protoc_insertion_point(field_set:proxy_proto.UpLRCDataUpdatePlacement.cluster_id)
 }
 
 // int32 stripe_id = 3;
-inline void CordDataUpdatePlacement::clear_stripe_id() {
+inline void UpLRCDataUpdatePlacement::clear_stripe_id() {
   _impl_.stripe_id_ = 0;
 }
-inline int32_t CordDataUpdatePlacement::_internal_stripe_id() const {
+inline int32_t UpLRCDataUpdatePlacement::_internal_stripe_id() const {
   return _impl_.stripe_id_;
 }
-inline int32_t CordDataUpdatePlacement::stripe_id() const {
-  // @@protoc_insertion_point(field_get:proxy_proto.CordDataUpdatePlacement.stripe_id)
+inline int32_t UpLRCDataUpdatePlacement::stripe_id() const {
+  // @@protoc_insertion_point(field_get:proxy_proto.UpLRCDataUpdatePlacement.stripe_id)
   return _internal_stripe_id();
 }
-inline void CordDataUpdatePlacement::_internal_set_stripe_id(int32_t value) {
+inline void UpLRCDataUpdatePlacement::_internal_set_stripe_id(int32_t value) {
   
   _impl_.stripe_id_ = value;
 }
-inline void CordDataUpdatePlacement::set_stripe_id(int32_t value) {
+inline void UpLRCDataUpdatePlacement::set_stripe_id(int32_t value) {
   _internal_set_stripe_id(value);
-  // @@protoc_insertion_point(field_set:proxy_proto.CordDataUpdatePlacement.stripe_id)
+  // @@protoc_insertion_point(field_set:proxy_proto.UpLRCDataUpdatePlacement.stripe_id)
 }
 
 // uint64 update_payload_size = 4;
-inline void CordDataUpdatePlacement::clear_update_payload_size() {
+inline void UpLRCDataUpdatePlacement::clear_update_payload_size() {
   _impl_.update_payload_size_ = uint64_t{0u};
 }
-inline uint64_t CordDataUpdatePlacement::_internal_update_payload_size() const {
+inline uint64_t UpLRCDataUpdatePlacement::_internal_update_payload_size() const {
   return _impl_.update_payload_size_;
 }
-inline uint64_t CordDataUpdatePlacement::update_payload_size() const {
-  // @@protoc_insertion_point(field_get:proxy_proto.CordDataUpdatePlacement.update_payload_size)
+inline uint64_t UpLRCDataUpdatePlacement::update_payload_size() const {
+  // @@protoc_insertion_point(field_get:proxy_proto.UpLRCDataUpdatePlacement.update_payload_size)
   return _internal_update_payload_size();
 }
-inline void CordDataUpdatePlacement::_internal_set_update_payload_size(uint64_t value) {
+inline void UpLRCDataUpdatePlacement::_internal_set_update_payload_size(uint64_t value) {
   
   _impl_.update_payload_size_ = value;
 }
-inline void CordDataUpdatePlacement::set_update_payload_size(uint64_t value) {
+inline void UpLRCDataUpdatePlacement::set_update_payload_size(uint64_t value) {
   _internal_set_update_payload_size(value);
-  // @@protoc_insertion_point(field_set:proxy_proto.CordDataUpdatePlacement.update_payload_size)
+  // @@protoc_insertion_point(field_set:proxy_proto.UpLRCDataUpdatePlacement.update_payload_size)
 }
 
 // repeated string datanodeip = 5;
-inline int CordDataUpdatePlacement::_internal_datanodeip_size() const {
+inline int UpLRCDataUpdatePlacement::_internal_datanodeip_size() const {
   return _impl_.datanodeip_.size();
 }
-inline int CordDataUpdatePlacement::datanodeip_size() const {
+inline int UpLRCDataUpdatePlacement::datanodeip_size() const {
   return _internal_datanodeip_size();
 }
-inline void CordDataUpdatePlacement::clear_datanodeip() {
+inline void UpLRCDataUpdatePlacement::clear_datanodeip() {
   _impl_.datanodeip_.Clear();
 }
-inline std::string* CordDataUpdatePlacement::add_datanodeip() {
+inline std::string* UpLRCDataUpdatePlacement::add_datanodeip() {
   std::string* _s = _internal_add_datanodeip();
-  // @@protoc_insertion_point(field_add_mutable:proxy_proto.CordDataUpdatePlacement.datanodeip)
+  // @@protoc_insertion_point(field_add_mutable:proxy_proto.UpLRCDataUpdatePlacement.datanodeip)
   return _s;
 }
-inline const std::string& CordDataUpdatePlacement::_internal_datanodeip(int index) const {
+inline const std::string& UpLRCDataUpdatePlacement::_internal_datanodeip(int index) const {
   return _impl_.datanodeip_.Get(index);
 }
-inline const std::string& CordDataUpdatePlacement::datanodeip(int index) const {
-  // @@protoc_insertion_point(field_get:proxy_proto.CordDataUpdatePlacement.datanodeip)
+inline const std::string& UpLRCDataUpdatePlacement::datanodeip(int index) const {
+  // @@protoc_insertion_point(field_get:proxy_proto.UpLRCDataUpdatePlacement.datanodeip)
   return _internal_datanodeip(index);
 }
-inline std::string* CordDataUpdatePlacement::mutable_datanodeip(int index) {
-  // @@protoc_insertion_point(field_mutable:proxy_proto.CordDataUpdatePlacement.datanodeip)
+inline std::string* UpLRCDataUpdatePlacement::mutable_datanodeip(int index) {
+  // @@protoc_insertion_point(field_mutable:proxy_proto.UpLRCDataUpdatePlacement.datanodeip)
   return _impl_.datanodeip_.Mutable(index);
 }
-inline void CordDataUpdatePlacement::set_datanodeip(int index, const std::string& value) {
+inline void UpLRCDataUpdatePlacement::set_datanodeip(int index, const std::string& value) {
   _impl_.datanodeip_.Mutable(index)->assign(value);
-  // @@protoc_insertion_point(field_set:proxy_proto.CordDataUpdatePlacement.datanodeip)
+  // @@protoc_insertion_point(field_set:proxy_proto.UpLRCDataUpdatePlacement.datanodeip)
 }
-inline void CordDataUpdatePlacement::set_datanodeip(int index, std::string&& value) {
+inline void UpLRCDataUpdatePlacement::set_datanodeip(int index, std::string&& value) {
   _impl_.datanodeip_.Mutable(index)->assign(std::move(value));
-  // @@protoc_insertion_point(field_set:proxy_proto.CordDataUpdatePlacement.datanodeip)
+  // @@protoc_insertion_point(field_set:proxy_proto.UpLRCDataUpdatePlacement.datanodeip)
 }
-inline void CordDataUpdatePlacement::set_datanodeip(int index, const char* value) {
+inline void UpLRCDataUpdatePlacement::set_datanodeip(int index, const char* value) {
   GOOGLE_DCHECK(value != nullptr);
   _impl_.datanodeip_.Mutable(index)->assign(value);
-  // @@protoc_insertion_point(field_set_char:proxy_proto.CordDataUpdatePlacement.datanodeip)
+  // @@protoc_insertion_point(field_set_char:proxy_proto.UpLRCDataUpdatePlacement.datanodeip)
 }
-inline void CordDataUpdatePlacement::set_datanodeip(int index, const char* value, size_t size) {
+inline void UpLRCDataUpdatePlacement::set_datanodeip(int index, const char* value, size_t size) {
   _impl_.datanodeip_.Mutable(index)->assign(
     reinterpret_cast<const char*>(value), size);
-  // @@protoc_insertion_point(field_set_pointer:proxy_proto.CordDataUpdatePlacement.datanodeip)
+  // @@protoc_insertion_point(field_set_pointer:proxy_proto.UpLRCDataUpdatePlacement.datanodeip)
 }
-inline std::string* CordDataUpdatePlacement::_internal_add_datanodeip() {
+inline std::string* UpLRCDataUpdatePlacement::_internal_add_datanodeip() {
   return _impl_.datanodeip_.Add();
 }
-inline void CordDataUpdatePlacement::add_datanodeip(const std::string& value) {
+inline void UpLRCDataUpdatePlacement::add_datanodeip(const std::string& value) {
   _impl_.datanodeip_.Add()->assign(value);
-  // @@protoc_insertion_point(field_add:proxy_proto.CordDataUpdatePlacement.datanodeip)
+  // @@protoc_insertion_point(field_add:proxy_proto.UpLRCDataUpdatePlacement.datanodeip)
 }
-inline void CordDataUpdatePlacement::add_datanodeip(std::string&& value) {
+inline void UpLRCDataUpdatePlacement::add_datanodeip(std::string&& value) {
   _impl_.datanodeip_.Add(std::move(value));
-  // @@protoc_insertion_point(field_add:proxy_proto.CordDataUpdatePlacement.datanodeip)
+  // @@protoc_insertion_point(field_add:proxy_proto.UpLRCDataUpdatePlacement.datanodeip)
 }
-inline void CordDataUpdatePlacement::add_datanodeip(const char* value) {
+inline void UpLRCDataUpdatePlacement::add_datanodeip(const char* value) {
   GOOGLE_DCHECK(value != nullptr);
   _impl_.datanodeip_.Add()->assign(value);
-  // @@protoc_insertion_point(field_add_char:proxy_proto.CordDataUpdatePlacement.datanodeip)
+  // @@protoc_insertion_point(field_add_char:proxy_proto.UpLRCDataUpdatePlacement.datanodeip)
 }
-inline void CordDataUpdatePlacement::add_datanodeip(const char* value, size_t size) {
+inline void UpLRCDataUpdatePlacement::add_datanodeip(const char* value, size_t size) {
   _impl_.datanodeip_.Add()->assign(reinterpret_cast<const char*>(value), size);
-  // @@protoc_insertion_point(field_add_pointer:proxy_proto.CordDataUpdatePlacement.datanodeip)
+  // @@protoc_insertion_point(field_add_pointer:proxy_proto.UpLRCDataUpdatePlacement.datanodeip)
 }
 inline const ::PROTOBUF_NAMESPACE_ID::RepeatedPtrField<std::string>&
-CordDataUpdatePlacement::datanodeip() const {
-  // @@protoc_insertion_point(field_list:proxy_proto.CordDataUpdatePlacement.datanodeip)
+UpLRCDataUpdatePlacement::datanodeip() const {
+  // @@protoc_insertion_point(field_list:proxy_proto.UpLRCDataUpdatePlacement.datanodeip)
   return _impl_.datanodeip_;
 }
 inline ::PROTOBUF_NAMESPACE_ID::RepeatedPtrField<std::string>*
-CordDataUpdatePlacement::mutable_datanodeip() {
-  // @@protoc_insertion_point(field_mutable_list:proxy_proto.CordDataUpdatePlacement.datanodeip)
+UpLRCDataUpdatePlacement::mutable_datanodeip() {
+  // @@protoc_insertion_point(field_mutable_list:proxy_proto.UpLRCDataUpdatePlacement.datanodeip)
   return &_impl_.datanodeip_;
 }
 
 // repeated int32 datanodeport = 6;
-inline int CordDataUpdatePlacement::_internal_datanodeport_size() const {
+inline int UpLRCDataUpdatePlacement::_internal_datanodeport_size() const {
   return _impl_.datanodeport_.size();
 }
-inline int CordDataUpdatePlacement::datanodeport_size() const {
+inline int UpLRCDataUpdatePlacement::datanodeport_size() const {
   return _internal_datanodeport_size();
 }
-inline void CordDataUpdatePlacement::clear_datanodeport() {
+inline void UpLRCDataUpdatePlacement::clear_datanodeport() {
   _impl_.datanodeport_.Clear();
 }
-inline int32_t CordDataUpdatePlacement::_internal_datanodeport(int index) const {
+inline int32_t UpLRCDataUpdatePlacement::_internal_datanodeport(int index) const {
   return _impl_.datanodeport_.Get(index);
 }
-inline int32_t CordDataUpdatePlacement::datanodeport(int index) const {
-  // @@protoc_insertion_point(field_get:proxy_proto.CordDataUpdatePlacement.datanodeport)
+inline int32_t UpLRCDataUpdatePlacement::datanodeport(int index) const {
+  // @@protoc_insertion_point(field_get:proxy_proto.UpLRCDataUpdatePlacement.datanodeport)
   return _internal_datanodeport(index);
 }
-inline void CordDataUpdatePlacement::set_datanodeport(int index, int32_t value) {
+inline void UpLRCDataUpdatePlacement::set_datanodeport(int index, int32_t value) {
   _impl_.datanodeport_.Set(index, value);
-  // @@protoc_insertion_point(field_set:proxy_proto.CordDataUpdatePlacement.datanodeport)
+  // @@protoc_insertion_point(field_set:proxy_proto.UpLRCDataUpdatePlacement.datanodeport)
 }
-inline void CordDataUpdatePlacement::_internal_add_datanodeport(int32_t value) {
+inline void UpLRCDataUpdatePlacement::_internal_add_datanodeport(int32_t value) {
   _impl_.datanodeport_.Add(value);
 }
-inline void CordDataUpdatePlacement::add_datanodeport(int32_t value) {
+inline void UpLRCDataUpdatePlacement::add_datanodeport(int32_t value) {
   _internal_add_datanodeport(value);
-  // @@protoc_insertion_point(field_add:proxy_proto.CordDataUpdatePlacement.datanodeport)
+  // @@protoc_insertion_point(field_add:proxy_proto.UpLRCDataUpdatePlacement.datanodeport)
 }
 inline const ::PROTOBUF_NAMESPACE_ID::RepeatedField< int32_t >&
-CordDataUpdatePlacement::_internal_datanodeport() const {
+UpLRCDataUpdatePlacement::_internal_datanodeport() const {
   return _impl_.datanodeport_;
 }
 inline const ::PROTOBUF_NAMESPACE_ID::RepeatedField< int32_t >&
-CordDataUpdatePlacement::datanodeport() const {
-  // @@protoc_insertion_point(field_list:proxy_proto.CordDataUpdatePlacement.datanodeport)
+UpLRCDataUpdatePlacement::datanodeport() const {
+  // @@protoc_insertion_point(field_list:proxy_proto.UpLRCDataUpdatePlacement.datanodeport)
   return _internal_datanodeport();
 }
 inline ::PROTOBUF_NAMESPACE_ID::RepeatedField< int32_t >*
-CordDataUpdatePlacement::_internal_mutable_datanodeport() {
+UpLRCDataUpdatePlacement::_internal_mutable_datanodeport() {
   return &_impl_.datanodeport_;
 }
 inline ::PROTOBUF_NAMESPACE_ID::RepeatedField< int32_t >*
-CordDataUpdatePlacement::mutable_datanodeport() {
-  // @@protoc_insertion_point(field_mutable_list:proxy_proto.CordDataUpdatePlacement.datanodeport)
+UpLRCDataUpdatePlacement::mutable_datanodeport() {
+  // @@protoc_insertion_point(field_mutable_list:proxy_proto.UpLRCDataUpdatePlacement.datanodeport)
   return _internal_mutable_datanodeport();
 }
 
 // repeated string blockkeys = 7;
-inline int CordDataUpdatePlacement::_internal_blockkeys_size() const {
+inline int UpLRCDataUpdatePlacement::_internal_blockkeys_size() const {
   return _impl_.blockkeys_.size();
 }
-inline int CordDataUpdatePlacement::blockkeys_size() const {
+inline int UpLRCDataUpdatePlacement::blockkeys_size() const {
   return _internal_blockkeys_size();
 }
-inline void CordDataUpdatePlacement::clear_blockkeys() {
+inline void UpLRCDataUpdatePlacement::clear_blockkeys() {
   _impl_.blockkeys_.Clear();
 }
-inline std::string* CordDataUpdatePlacement::add_blockkeys() {
+inline std::string* UpLRCDataUpdatePlacement::add_blockkeys() {
   std::string* _s = _internal_add_blockkeys();
-  // @@protoc_insertion_point(field_add_mutable:proxy_proto.CordDataUpdatePlacement.blockkeys)
+  // @@protoc_insertion_point(field_add_mutable:proxy_proto.UpLRCDataUpdatePlacement.blockkeys)
   return _s;
 }
-inline const std::string& CordDataUpdatePlacement::_internal_blockkeys(int index) const {
+inline const std::string& UpLRCDataUpdatePlacement::_internal_blockkeys(int index) const {
   return _impl_.blockkeys_.Get(index);
 }
-inline const std::string& CordDataUpdatePlacement::blockkeys(int index) const {
-  // @@protoc_insertion_point(field_get:proxy_proto.CordDataUpdatePlacement.blockkeys)
+inline const std::string& UpLRCDataUpdatePlacement::blockkeys(int index) const {
+  // @@protoc_insertion_point(field_get:proxy_proto.UpLRCDataUpdatePlacement.blockkeys)
   return _internal_blockkeys(index);
 }
-inline std::string* CordDataUpdatePlacement::mutable_blockkeys(int index) {
-  // @@protoc_insertion_point(field_mutable:proxy_proto.CordDataUpdatePlacement.blockkeys)
+inline std::string* UpLRCDataUpdatePlacement::mutable_blockkeys(int index) {
+  // @@protoc_insertion_point(field_mutable:proxy_proto.UpLRCDataUpdatePlacement.blockkeys)
   return _impl_.blockkeys_.Mutable(index);
 }
-inline void CordDataUpdatePlacement::set_blockkeys(int index, const std::string& value) {
+inline void UpLRCDataUpdatePlacement::set_blockkeys(int index, const std::string& value) {
   _impl_.blockkeys_.Mutable(index)->assign(value);
-  // @@protoc_insertion_point(field_set:proxy_proto.CordDataUpdatePlacement.blockkeys)
+  // @@protoc_insertion_point(field_set:proxy_proto.UpLRCDataUpdatePlacement.blockkeys)
 }
-inline void CordDataUpdatePlacement::set_blockkeys(int index, std::string&& value) {
+inline void UpLRCDataUpdatePlacement::set_blockkeys(int index, std::string&& value) {
   _impl_.blockkeys_.Mutable(index)->assign(std::move(value));
-  // @@protoc_insertion_point(field_set:proxy_proto.CordDataUpdatePlacement.blockkeys)
+  // @@protoc_insertion_point(field_set:proxy_proto.UpLRCDataUpdatePlacement.blockkeys)
 }
-inline void CordDataUpdatePlacement::set_blockkeys(int index, const char* value) {
+inline void UpLRCDataUpdatePlacement::set_blockkeys(int index, const char* value) {
   GOOGLE_DCHECK(value != nullptr);
   _impl_.blockkeys_.Mutable(index)->assign(value);
-  // @@protoc_insertion_point(field_set_char:proxy_proto.CordDataUpdatePlacement.blockkeys)
+  // @@protoc_insertion_point(field_set_char:proxy_proto.UpLRCDataUpdatePlacement.blockkeys)
 }
-inline void CordDataUpdatePlacement::set_blockkeys(int index, const char* value, size_t size) {
+inline void UpLRCDataUpdatePlacement::set_blockkeys(int index, const char* value, size_t size) {
   _impl_.blockkeys_.Mutable(index)->assign(
     reinterpret_cast<const char*>(value), size);
-  // @@protoc_insertion_point(field_set_pointer:proxy_proto.CordDataUpdatePlacement.blockkeys)
+  // @@protoc_insertion_point(field_set_pointer:proxy_proto.UpLRCDataUpdatePlacement.blockkeys)
 }
-inline std::string* CordDataUpdatePlacement::_internal_add_blockkeys() {
+inline std::string* UpLRCDataUpdatePlacement::_internal_add_blockkeys() {
   return _impl_.blockkeys_.Add();
 }
-inline void CordDataUpdatePlacement::add_blockkeys(const std::string& value) {
+inline void UpLRCDataUpdatePlacement::add_blockkeys(const std::string& value) {
   _impl_.blockkeys_.Add()->assign(value);
-  // @@protoc_insertion_point(field_add:proxy_proto.CordDataUpdatePlacement.blockkeys)
+  // @@protoc_insertion_point(field_add:proxy_proto.UpLRCDataUpdatePlacement.blockkeys)
 }
-inline void CordDataUpdatePlacement::add_blockkeys(std::string&& value) {
+inline void UpLRCDataUpdatePlacement::add_blockkeys(std::string&& value) {
   _impl_.blockkeys_.Add(std::move(value));
-  // @@protoc_insertion_point(field_add:proxy_proto.CordDataUpdatePlacement.blockkeys)
+  // @@protoc_insertion_point(field_add:proxy_proto.UpLRCDataUpdatePlacement.blockkeys)
 }
-inline void CordDataUpdatePlacement::add_blockkeys(const char* value) {
+inline void UpLRCDataUpdatePlacement::add_blockkeys(const char* value) {
   GOOGLE_DCHECK(value != nullptr);
   _impl_.blockkeys_.Add()->assign(value);
-  // @@protoc_insertion_point(field_add_char:proxy_proto.CordDataUpdatePlacement.blockkeys)
+  // @@protoc_insertion_point(field_add_char:proxy_proto.UpLRCDataUpdatePlacement.blockkeys)
 }
-inline void CordDataUpdatePlacement::add_blockkeys(const char* value, size_t size) {
+inline void UpLRCDataUpdatePlacement::add_blockkeys(const char* value, size_t size) {
   _impl_.blockkeys_.Add()->assign(reinterpret_cast<const char*>(value), size);
-  // @@protoc_insertion_point(field_add_pointer:proxy_proto.CordDataUpdatePlacement.blockkeys)
+  // @@protoc_insertion_point(field_add_pointer:proxy_proto.UpLRCDataUpdatePlacement.blockkeys)
 }
 inline const ::PROTOBUF_NAMESPACE_ID::RepeatedPtrField<std::string>&
-CordDataUpdatePlacement::blockkeys() const {
-  // @@protoc_insertion_point(field_list:proxy_proto.CordDataUpdatePlacement.blockkeys)
+UpLRCDataUpdatePlacement::blockkeys() const {
+  // @@protoc_insertion_point(field_list:proxy_proto.UpLRCDataUpdatePlacement.blockkeys)
   return _impl_.blockkeys_;
 }
 inline ::PROTOBUF_NAMESPACE_ID::RepeatedPtrField<std::string>*
-CordDataUpdatePlacement::mutable_blockkeys() {
-  // @@protoc_insertion_point(field_mutable_list:proxy_proto.CordDataUpdatePlacement.blockkeys)
+UpLRCDataUpdatePlacement::mutable_blockkeys() {
+  // @@protoc_insertion_point(field_mutable_list:proxy_proto.UpLRCDataUpdatePlacement.blockkeys)
   return &_impl_.blockkeys_;
 }
 
 // repeated int32 blockids = 8;
-inline int CordDataUpdatePlacement::_internal_blockids_size() const {
+inline int UpLRCDataUpdatePlacement::_internal_blockids_size() const {
   return _impl_.blockids_.size();
 }
-inline int CordDataUpdatePlacement::blockids_size() const {
+inline int UpLRCDataUpdatePlacement::blockids_size() const {
   return _internal_blockids_size();
 }
-inline void CordDataUpdatePlacement::clear_blockids() {
+inline void UpLRCDataUpdatePlacement::clear_blockids() {
   _impl_.blockids_.Clear();
 }
-inline int32_t CordDataUpdatePlacement::_internal_blockids(int index) const {
+inline int32_t UpLRCDataUpdatePlacement::_internal_blockids(int index) const {
   return _impl_.blockids_.Get(index);
 }
-inline int32_t CordDataUpdatePlacement::blockids(int index) const {
-  // @@protoc_insertion_point(field_get:proxy_proto.CordDataUpdatePlacement.blockids)
+inline int32_t UpLRCDataUpdatePlacement::blockids(int index) const {
+  // @@protoc_insertion_point(field_get:proxy_proto.UpLRCDataUpdatePlacement.blockids)
   return _internal_blockids(index);
 }
-inline void CordDataUpdatePlacement::set_blockids(int index, int32_t value) {
+inline void UpLRCDataUpdatePlacement::set_blockids(int index, int32_t value) {
   _impl_.blockids_.Set(index, value);
-  // @@protoc_insertion_point(field_set:proxy_proto.CordDataUpdatePlacement.blockids)
+  // @@protoc_insertion_point(field_set:proxy_proto.UpLRCDataUpdatePlacement.blockids)
 }
-inline void CordDataUpdatePlacement::_internal_add_blockids(int32_t value) {
+inline void UpLRCDataUpdatePlacement::_internal_add_blockids(int32_t value) {
   _impl_.blockids_.Add(value);
 }
-inline void CordDataUpdatePlacement::add_blockids(int32_t value) {
+inline void UpLRCDataUpdatePlacement::add_blockids(int32_t value) {
   _internal_add_blockids(value);
-  // @@protoc_insertion_point(field_add:proxy_proto.CordDataUpdatePlacement.blockids)
+  // @@protoc_insertion_point(field_add:proxy_proto.UpLRCDataUpdatePlacement.blockids)
 }
 inline const ::PROTOBUF_NAMESPACE_ID::RepeatedField< int32_t >&
-CordDataUpdatePlacement::_internal_blockids() const {
+UpLRCDataUpdatePlacement::_internal_blockids() const {
   return _impl_.blockids_;
 }
 inline const ::PROTOBUF_NAMESPACE_ID::RepeatedField< int32_t >&
-CordDataUpdatePlacement::blockids() const {
-  // @@protoc_insertion_point(field_list:proxy_proto.CordDataUpdatePlacement.blockids)
+UpLRCDataUpdatePlacement::blockids() const {
+  // @@protoc_insertion_point(field_list:proxy_proto.UpLRCDataUpdatePlacement.blockids)
   return _internal_blockids();
 }
 inline ::PROTOBUF_NAMESPACE_ID::RepeatedField< int32_t >*
-CordDataUpdatePlacement::_internal_mutable_blockids() {
+UpLRCDataUpdatePlacement::_internal_mutable_blockids() {
   return &_impl_.blockids_;
 }
 inline ::PROTOBUF_NAMESPACE_ID::RepeatedField< int32_t >*
-CordDataUpdatePlacement::mutable_blockids() {
-  // @@protoc_insertion_point(field_mutable_list:proxy_proto.CordDataUpdatePlacement.blockids)
+UpLRCDataUpdatePlacement::mutable_blockids() {
+  // @@protoc_insertion_point(field_mutable_list:proxy_proto.UpLRCDataUpdatePlacement.blockids)
   return _internal_mutable_blockids();
 }
 
 // repeated uint64 offsets = 9;
-inline int CordDataUpdatePlacement::_internal_offsets_size() const {
+inline int UpLRCDataUpdatePlacement::_internal_offsets_size() const {
   return _impl_.offsets_.size();
 }
-inline int CordDataUpdatePlacement::offsets_size() const {
+inline int UpLRCDataUpdatePlacement::offsets_size() const {
   return _internal_offsets_size();
 }
-inline void CordDataUpdatePlacement::clear_offsets() {
+inline void UpLRCDataUpdatePlacement::clear_offsets() {
   _impl_.offsets_.Clear();
 }
-inline uint64_t CordDataUpdatePlacement::_internal_offsets(int index) const {
+inline uint64_t UpLRCDataUpdatePlacement::_internal_offsets(int index) const {
   return _impl_.offsets_.Get(index);
 }
-inline uint64_t CordDataUpdatePlacement::offsets(int index) const {
-  // @@protoc_insertion_point(field_get:proxy_proto.CordDataUpdatePlacement.offsets)
+inline uint64_t UpLRCDataUpdatePlacement::offsets(int index) const {
+  // @@protoc_insertion_point(field_get:proxy_proto.UpLRCDataUpdatePlacement.offsets)
   return _internal_offsets(index);
 }
-inline void CordDataUpdatePlacement::set_offsets(int index, uint64_t value) {
+inline void UpLRCDataUpdatePlacement::set_offsets(int index, uint64_t value) {
   _impl_.offsets_.Set(index, value);
-  // @@protoc_insertion_point(field_set:proxy_proto.CordDataUpdatePlacement.offsets)
+  // @@protoc_insertion_point(field_set:proxy_proto.UpLRCDataUpdatePlacement.offsets)
 }
-inline void CordDataUpdatePlacement::_internal_add_offsets(uint64_t value) {
+inline void UpLRCDataUpdatePlacement::_internal_add_offsets(uint64_t value) {
   _impl_.offsets_.Add(value);
 }
-inline void CordDataUpdatePlacement::add_offsets(uint64_t value) {
+inline void UpLRCDataUpdatePlacement::add_offsets(uint64_t value) {
   _internal_add_offsets(value);
-  // @@protoc_insertion_point(field_add:proxy_proto.CordDataUpdatePlacement.offsets)
+  // @@protoc_insertion_point(field_add:proxy_proto.UpLRCDataUpdatePlacement.offsets)
 }
 inline const ::PROTOBUF_NAMESPACE_ID::RepeatedField< uint64_t >&
-CordDataUpdatePlacement::_internal_offsets() const {
+UpLRCDataUpdatePlacement::_internal_offsets() const {
   return _impl_.offsets_;
 }
 inline const ::PROTOBUF_NAMESPACE_ID::RepeatedField< uint64_t >&
-CordDataUpdatePlacement::offsets() const {
-  // @@protoc_insertion_point(field_list:proxy_proto.CordDataUpdatePlacement.offsets)
+UpLRCDataUpdatePlacement::offsets() const {
+  // @@protoc_insertion_point(field_list:proxy_proto.UpLRCDataUpdatePlacement.offsets)
   return _internal_offsets();
 }
 inline ::PROTOBUF_NAMESPACE_ID::RepeatedField< uint64_t >*
-CordDataUpdatePlacement::_internal_mutable_offsets() {
+UpLRCDataUpdatePlacement::_internal_mutable_offsets() {
   return &_impl_.offsets_;
 }
 inline ::PROTOBUF_NAMESPACE_ID::RepeatedField< uint64_t >*
-CordDataUpdatePlacement::mutable_offsets() {
-  // @@protoc_insertion_point(field_mutable_list:proxy_proto.CordDataUpdatePlacement.offsets)
+UpLRCDataUpdatePlacement::mutable_offsets() {
+  // @@protoc_insertion_point(field_mutable_list:proxy_proto.UpLRCDataUpdatePlacement.offsets)
   return _internal_mutable_offsets();
 }
 
 // repeated uint64 sizes = 10;
-inline int CordDataUpdatePlacement::_internal_sizes_size() const {
+inline int UpLRCDataUpdatePlacement::_internal_sizes_size() const {
   return _impl_.sizes_.size();
 }
-inline int CordDataUpdatePlacement::sizes_size() const {
+inline int UpLRCDataUpdatePlacement::sizes_size() const {
   return _internal_sizes_size();
 }
-inline void CordDataUpdatePlacement::clear_sizes() {
+inline void UpLRCDataUpdatePlacement::clear_sizes() {
   _impl_.sizes_.Clear();
 }
-inline uint64_t CordDataUpdatePlacement::_internal_sizes(int index) const {
+inline uint64_t UpLRCDataUpdatePlacement::_internal_sizes(int index) const {
   return _impl_.sizes_.Get(index);
 }
-inline uint64_t CordDataUpdatePlacement::sizes(int index) const {
-  // @@protoc_insertion_point(field_get:proxy_proto.CordDataUpdatePlacement.sizes)
+inline uint64_t UpLRCDataUpdatePlacement::sizes(int index) const {
+  // @@protoc_insertion_point(field_get:proxy_proto.UpLRCDataUpdatePlacement.sizes)
   return _internal_sizes(index);
 }
-inline void CordDataUpdatePlacement::set_sizes(int index, uint64_t value) {
+inline void UpLRCDataUpdatePlacement::set_sizes(int index, uint64_t value) {
   _impl_.sizes_.Set(index, value);
-  // @@protoc_insertion_point(field_set:proxy_proto.CordDataUpdatePlacement.sizes)
+  // @@protoc_insertion_point(field_set:proxy_proto.UpLRCDataUpdatePlacement.sizes)
 }
-inline void CordDataUpdatePlacement::_internal_add_sizes(uint64_t value) {
+inline void UpLRCDataUpdatePlacement::_internal_add_sizes(uint64_t value) {
   _impl_.sizes_.Add(value);
 }
-inline void CordDataUpdatePlacement::add_sizes(uint64_t value) {
+inline void UpLRCDataUpdatePlacement::add_sizes(uint64_t value) {
   _internal_add_sizes(value);
-  // @@protoc_insertion_point(field_add:proxy_proto.CordDataUpdatePlacement.sizes)
+  // @@protoc_insertion_point(field_add:proxy_proto.UpLRCDataUpdatePlacement.sizes)
 }
 inline const ::PROTOBUF_NAMESPACE_ID::RepeatedField< uint64_t >&
-CordDataUpdatePlacement::_internal_sizes() const {
+UpLRCDataUpdatePlacement::_internal_sizes() const {
   return _impl_.sizes_;
 }
 inline const ::PROTOBUF_NAMESPACE_ID::RepeatedField< uint64_t >&
-CordDataUpdatePlacement::sizes() const {
-  // @@protoc_insertion_point(field_list:proxy_proto.CordDataUpdatePlacement.sizes)
+UpLRCDataUpdatePlacement::sizes() const {
+  // @@protoc_insertion_point(field_list:proxy_proto.UpLRCDataUpdatePlacement.sizes)
   return _internal_sizes();
 }
 inline ::PROTOBUF_NAMESPACE_ID::RepeatedField< uint64_t >*
-CordDataUpdatePlacement::_internal_mutable_sizes() {
+UpLRCDataUpdatePlacement::_internal_mutable_sizes() {
   return &_impl_.sizes_;
 }
 inline ::PROTOBUF_NAMESPACE_ID::RepeatedField< uint64_t >*
-CordDataUpdatePlacement::mutable_sizes() {
-  // @@protoc_insertion_point(field_mutable_list:proxy_proto.CordDataUpdatePlacement.sizes)
+UpLRCDataUpdatePlacement::mutable_sizes() {
+  // @@protoc_insertion_point(field_mutable_list:proxy_proto.UpLRCDataUpdatePlacement.sizes)
   return _internal_mutable_sizes();
 }
 
 // string delta_blob_key = 11;
-inline void CordDataUpdatePlacement::clear_delta_blob_key() {
+inline void UpLRCDataUpdatePlacement::clear_delta_blob_key() {
   _impl_.delta_blob_key_.ClearToEmpty();
 }
-inline const std::string& CordDataUpdatePlacement::delta_blob_key() const {
-  // @@protoc_insertion_point(field_get:proxy_proto.CordDataUpdatePlacement.delta_blob_key)
+inline const std::string& UpLRCDataUpdatePlacement::delta_blob_key() const {
+  // @@protoc_insertion_point(field_get:proxy_proto.UpLRCDataUpdatePlacement.delta_blob_key)
   return _internal_delta_blob_key();
 }
 template <typename ArgT0, typename... ArgT>
 inline PROTOBUF_ALWAYS_INLINE
-void CordDataUpdatePlacement::set_delta_blob_key(ArgT0&& arg0, ArgT... args) {
+void UpLRCDataUpdatePlacement::set_delta_blob_key(ArgT0&& arg0, ArgT... args) {
  
  _impl_.delta_blob_key_.Set(static_cast<ArgT0 &&>(arg0), args..., GetArenaForAllocation());
-  // @@protoc_insertion_point(field_set:proxy_proto.CordDataUpdatePlacement.delta_blob_key)
+  // @@protoc_insertion_point(field_set:proxy_proto.UpLRCDataUpdatePlacement.delta_blob_key)
 }
-inline std::string* CordDataUpdatePlacement::mutable_delta_blob_key() {
+inline std::string* UpLRCDataUpdatePlacement::mutable_delta_blob_key() {
   std::string* _s = _internal_mutable_delta_blob_key();
-  // @@protoc_insertion_point(field_mutable:proxy_proto.CordDataUpdatePlacement.delta_blob_key)
+  // @@protoc_insertion_point(field_mutable:proxy_proto.UpLRCDataUpdatePlacement.delta_blob_key)
   return _s;
 }
-inline const std::string& CordDataUpdatePlacement::_internal_delta_blob_key() const {
+inline const std::string& UpLRCDataUpdatePlacement::_internal_delta_blob_key() const {
   return _impl_.delta_blob_key_.Get();
 }
-inline void CordDataUpdatePlacement::_internal_set_delta_blob_key(const std::string& value) {
+inline void UpLRCDataUpdatePlacement::_internal_set_delta_blob_key(const std::string& value) {
   
   _impl_.delta_blob_key_.Set(value, GetArenaForAllocation());
 }
-inline std::string* CordDataUpdatePlacement::_internal_mutable_delta_blob_key() {
+inline std::string* UpLRCDataUpdatePlacement::_internal_mutable_delta_blob_key() {
   
   return _impl_.delta_blob_key_.Mutable(GetArenaForAllocation());
 }
-inline std::string* CordDataUpdatePlacement::release_delta_blob_key() {
-  // @@protoc_insertion_point(field_release:proxy_proto.CordDataUpdatePlacement.delta_blob_key)
+inline std::string* UpLRCDataUpdatePlacement::release_delta_blob_key() {
+  // @@protoc_insertion_point(field_release:proxy_proto.UpLRCDataUpdatePlacement.delta_blob_key)
   return _impl_.delta_blob_key_.Release();
 }
-inline void CordDataUpdatePlacement::set_allocated_delta_blob_key(std::string* delta_blob_key) {
+inline void UpLRCDataUpdatePlacement::set_allocated_delta_blob_key(std::string* delta_blob_key) {
   if (delta_blob_key != nullptr) {
     
   } else {
@@ -21082,45 +21082,45 @@ inline void CordDataUpdatePlacement::set_allocated_delta_blob_key(std::string* d
     _impl_.delta_blob_key_.Set("", GetArenaForAllocation());
   }
 #endif // PROTOBUF_FORCE_COPY_DEFAULT_STRING
-  // @@protoc_insertion_point(field_set_allocated:proxy_proto.CordDataUpdatePlacement.delta_blob_key)
+  // @@protoc_insertion_point(field_set_allocated:proxy_proto.UpLRCDataUpdatePlacement.delta_blob_key)
 }
 
 // string delta_datanode_ip = 12;
-inline void CordDataUpdatePlacement::clear_delta_datanode_ip() {
+inline void UpLRCDataUpdatePlacement::clear_delta_datanode_ip() {
   _impl_.delta_datanode_ip_.ClearToEmpty();
 }
-inline const std::string& CordDataUpdatePlacement::delta_datanode_ip() const {
-  // @@protoc_insertion_point(field_get:proxy_proto.CordDataUpdatePlacement.delta_datanode_ip)
+inline const std::string& UpLRCDataUpdatePlacement::delta_datanode_ip() const {
+  // @@protoc_insertion_point(field_get:proxy_proto.UpLRCDataUpdatePlacement.delta_datanode_ip)
   return _internal_delta_datanode_ip();
 }
 template <typename ArgT0, typename... ArgT>
 inline PROTOBUF_ALWAYS_INLINE
-void CordDataUpdatePlacement::set_delta_datanode_ip(ArgT0&& arg0, ArgT... args) {
+void UpLRCDataUpdatePlacement::set_delta_datanode_ip(ArgT0&& arg0, ArgT... args) {
  
  _impl_.delta_datanode_ip_.Set(static_cast<ArgT0 &&>(arg0), args..., GetArenaForAllocation());
-  // @@protoc_insertion_point(field_set:proxy_proto.CordDataUpdatePlacement.delta_datanode_ip)
+  // @@protoc_insertion_point(field_set:proxy_proto.UpLRCDataUpdatePlacement.delta_datanode_ip)
 }
-inline std::string* CordDataUpdatePlacement::mutable_delta_datanode_ip() {
+inline std::string* UpLRCDataUpdatePlacement::mutable_delta_datanode_ip() {
   std::string* _s = _internal_mutable_delta_datanode_ip();
-  // @@protoc_insertion_point(field_mutable:proxy_proto.CordDataUpdatePlacement.delta_datanode_ip)
+  // @@protoc_insertion_point(field_mutable:proxy_proto.UpLRCDataUpdatePlacement.delta_datanode_ip)
   return _s;
 }
-inline const std::string& CordDataUpdatePlacement::_internal_delta_datanode_ip() const {
+inline const std::string& UpLRCDataUpdatePlacement::_internal_delta_datanode_ip() const {
   return _impl_.delta_datanode_ip_.Get();
 }
-inline void CordDataUpdatePlacement::_internal_set_delta_datanode_ip(const std::string& value) {
+inline void UpLRCDataUpdatePlacement::_internal_set_delta_datanode_ip(const std::string& value) {
   
   _impl_.delta_datanode_ip_.Set(value, GetArenaForAllocation());
 }
-inline std::string* CordDataUpdatePlacement::_internal_mutable_delta_datanode_ip() {
+inline std::string* UpLRCDataUpdatePlacement::_internal_mutable_delta_datanode_ip() {
   
   return _impl_.delta_datanode_ip_.Mutable(GetArenaForAllocation());
 }
-inline std::string* CordDataUpdatePlacement::release_delta_datanode_ip() {
-  // @@protoc_insertion_point(field_release:proxy_proto.CordDataUpdatePlacement.delta_datanode_ip)
+inline std::string* UpLRCDataUpdatePlacement::release_delta_datanode_ip() {
+  // @@protoc_insertion_point(field_release:proxy_proto.UpLRCDataUpdatePlacement.delta_datanode_ip)
   return _impl_.delta_datanode_ip_.Release();
 }
-inline void CordDataUpdatePlacement::set_allocated_delta_datanode_ip(std::string* delta_datanode_ip) {
+inline void UpLRCDataUpdatePlacement::set_allocated_delta_datanode_ip(std::string* delta_datanode_ip) {
   if (delta_datanode_ip != nullptr) {
     
   } else {
@@ -21132,196 +21132,196 @@ inline void CordDataUpdatePlacement::set_allocated_delta_datanode_ip(std::string
     _impl_.delta_datanode_ip_.Set("", GetArenaForAllocation());
   }
 #endif // PROTOBUF_FORCE_COPY_DEFAULT_STRING
-  // @@protoc_insertion_point(field_set_allocated:proxy_proto.CordDataUpdatePlacement.delta_datanode_ip)
+  // @@protoc_insertion_point(field_set_allocated:proxy_proto.UpLRCDataUpdatePlacement.delta_datanode_ip)
 }
 
 // int32 delta_datanode_port = 13;
-inline void CordDataUpdatePlacement::clear_delta_datanode_port() {
+inline void UpLRCDataUpdatePlacement::clear_delta_datanode_port() {
   _impl_.delta_datanode_port_ = 0;
 }
-inline int32_t CordDataUpdatePlacement::_internal_delta_datanode_port() const {
+inline int32_t UpLRCDataUpdatePlacement::_internal_delta_datanode_port() const {
   return _impl_.delta_datanode_port_;
 }
-inline int32_t CordDataUpdatePlacement::delta_datanode_port() const {
-  // @@protoc_insertion_point(field_get:proxy_proto.CordDataUpdatePlacement.delta_datanode_port)
+inline int32_t UpLRCDataUpdatePlacement::delta_datanode_port() const {
+  // @@protoc_insertion_point(field_get:proxy_proto.UpLRCDataUpdatePlacement.delta_datanode_port)
   return _internal_delta_datanode_port();
 }
-inline void CordDataUpdatePlacement::_internal_set_delta_datanode_port(int32_t value) {
+inline void UpLRCDataUpdatePlacement::_internal_set_delta_datanode_port(int32_t value) {
   
   _impl_.delta_datanode_port_ = value;
 }
-inline void CordDataUpdatePlacement::set_delta_datanode_port(int32_t value) {
+inline void UpLRCDataUpdatePlacement::set_delta_datanode_port(int32_t value) {
   _internal_set_delta_datanode_port(value);
-  // @@protoc_insertion_point(field_set:proxy_proto.CordDataUpdatePlacement.delta_datanode_port)
+  // @@protoc_insertion_point(field_set:proxy_proto.UpLRCDataUpdatePlacement.delta_datanode_port)
 }
 
-// repeated .proxy_proto.CordIngressParityWrite cord_ingress_local_parity_writes = 14;
-inline int CordDataUpdatePlacement::_internal_cord_ingress_local_parity_writes_size() const {
-  return _impl_.cord_ingress_local_parity_writes_.size();
+// repeated .proxy_proto.UpLRCIngressParityWrite uplrc_ingress_local_parity_writes = 14;
+inline int UpLRCDataUpdatePlacement::_internal_uplrc_ingress_local_parity_writes_size() const {
+  return _impl_.uplrc_ingress_local_parity_writes_.size();
 }
-inline int CordDataUpdatePlacement::cord_ingress_local_parity_writes_size() const {
-  return _internal_cord_ingress_local_parity_writes_size();
+inline int UpLRCDataUpdatePlacement::uplrc_ingress_local_parity_writes_size() const {
+  return _internal_uplrc_ingress_local_parity_writes_size();
 }
-inline void CordDataUpdatePlacement::clear_cord_ingress_local_parity_writes() {
-  _impl_.cord_ingress_local_parity_writes_.Clear();
+inline void UpLRCDataUpdatePlacement::clear_uplrc_ingress_local_parity_writes() {
+  _impl_.uplrc_ingress_local_parity_writes_.Clear();
 }
-inline ::proxy_proto::CordIngressParityWrite* CordDataUpdatePlacement::mutable_cord_ingress_local_parity_writes(int index) {
-  // @@protoc_insertion_point(field_mutable:proxy_proto.CordDataUpdatePlacement.cord_ingress_local_parity_writes)
-  return _impl_.cord_ingress_local_parity_writes_.Mutable(index);
+inline ::proxy_proto::UpLRCIngressParityWrite* UpLRCDataUpdatePlacement::mutable_uplrc_ingress_local_parity_writes(int index) {
+  // @@protoc_insertion_point(field_mutable:proxy_proto.UpLRCDataUpdatePlacement.uplrc_ingress_local_parity_writes)
+  return _impl_.uplrc_ingress_local_parity_writes_.Mutable(index);
 }
-inline ::PROTOBUF_NAMESPACE_ID::RepeatedPtrField< ::proxy_proto::CordIngressParityWrite >*
-CordDataUpdatePlacement::mutable_cord_ingress_local_parity_writes() {
-  // @@protoc_insertion_point(field_mutable_list:proxy_proto.CordDataUpdatePlacement.cord_ingress_local_parity_writes)
-  return &_impl_.cord_ingress_local_parity_writes_;
+inline ::PROTOBUF_NAMESPACE_ID::RepeatedPtrField< ::proxy_proto::UpLRCIngressParityWrite >*
+UpLRCDataUpdatePlacement::mutable_uplrc_ingress_local_parity_writes() {
+  // @@protoc_insertion_point(field_mutable_list:proxy_proto.UpLRCDataUpdatePlacement.uplrc_ingress_local_parity_writes)
+  return &_impl_.uplrc_ingress_local_parity_writes_;
 }
-inline const ::proxy_proto::CordIngressParityWrite& CordDataUpdatePlacement::_internal_cord_ingress_local_parity_writes(int index) const {
-  return _impl_.cord_ingress_local_parity_writes_.Get(index);
+inline const ::proxy_proto::UpLRCIngressParityWrite& UpLRCDataUpdatePlacement::_internal_uplrc_ingress_local_parity_writes(int index) const {
+  return _impl_.uplrc_ingress_local_parity_writes_.Get(index);
 }
-inline const ::proxy_proto::CordIngressParityWrite& CordDataUpdatePlacement::cord_ingress_local_parity_writes(int index) const {
-  // @@protoc_insertion_point(field_get:proxy_proto.CordDataUpdatePlacement.cord_ingress_local_parity_writes)
-  return _internal_cord_ingress_local_parity_writes(index);
+inline const ::proxy_proto::UpLRCIngressParityWrite& UpLRCDataUpdatePlacement::uplrc_ingress_local_parity_writes(int index) const {
+  // @@protoc_insertion_point(field_get:proxy_proto.UpLRCDataUpdatePlacement.uplrc_ingress_local_parity_writes)
+  return _internal_uplrc_ingress_local_parity_writes(index);
 }
-inline ::proxy_proto::CordIngressParityWrite* CordDataUpdatePlacement::_internal_add_cord_ingress_local_parity_writes() {
-  return _impl_.cord_ingress_local_parity_writes_.Add();
+inline ::proxy_proto::UpLRCIngressParityWrite* UpLRCDataUpdatePlacement::_internal_add_uplrc_ingress_local_parity_writes() {
+  return _impl_.uplrc_ingress_local_parity_writes_.Add();
 }
-inline ::proxy_proto::CordIngressParityWrite* CordDataUpdatePlacement::add_cord_ingress_local_parity_writes() {
-  ::proxy_proto::CordIngressParityWrite* _add = _internal_add_cord_ingress_local_parity_writes();
-  // @@protoc_insertion_point(field_add:proxy_proto.CordDataUpdatePlacement.cord_ingress_local_parity_writes)
+inline ::proxy_proto::UpLRCIngressParityWrite* UpLRCDataUpdatePlacement::add_uplrc_ingress_local_parity_writes() {
+  ::proxy_proto::UpLRCIngressParityWrite* _add = _internal_add_uplrc_ingress_local_parity_writes();
+  // @@protoc_insertion_point(field_add:proxy_proto.UpLRCDataUpdatePlacement.uplrc_ingress_local_parity_writes)
   return _add;
 }
-inline const ::PROTOBUF_NAMESPACE_ID::RepeatedPtrField< ::proxy_proto::CordIngressParityWrite >&
-CordDataUpdatePlacement::cord_ingress_local_parity_writes() const {
-  // @@protoc_insertion_point(field_list:proxy_proto.CordDataUpdatePlacement.cord_ingress_local_parity_writes)
-  return _impl_.cord_ingress_local_parity_writes_;
+inline const ::PROTOBUF_NAMESPACE_ID::RepeatedPtrField< ::proxy_proto::UpLRCIngressParityWrite >&
+UpLRCDataUpdatePlacement::uplrc_ingress_local_parity_writes() const {
+  // @@protoc_insertion_point(field_list:proxy_proto.UpLRCDataUpdatePlacement.uplrc_ingress_local_parity_writes)
+  return _impl_.uplrc_ingress_local_parity_writes_;
 }
 
-// repeated .proxy_proto.CordIngressParityWrite cord_ingress_global_parity_writes = 15;
-inline int CordDataUpdatePlacement::_internal_cord_ingress_global_parity_writes_size() const {
-  return _impl_.cord_ingress_global_parity_writes_.size();
+// repeated .proxy_proto.UpLRCIngressParityWrite uplrc_ingress_global_parity_writes = 15;
+inline int UpLRCDataUpdatePlacement::_internal_uplrc_ingress_global_parity_writes_size() const {
+  return _impl_.uplrc_ingress_global_parity_writes_.size();
 }
-inline int CordDataUpdatePlacement::cord_ingress_global_parity_writes_size() const {
-  return _internal_cord_ingress_global_parity_writes_size();
+inline int UpLRCDataUpdatePlacement::uplrc_ingress_global_parity_writes_size() const {
+  return _internal_uplrc_ingress_global_parity_writes_size();
 }
-inline void CordDataUpdatePlacement::clear_cord_ingress_global_parity_writes() {
-  _impl_.cord_ingress_global_parity_writes_.Clear();
+inline void UpLRCDataUpdatePlacement::clear_uplrc_ingress_global_parity_writes() {
+  _impl_.uplrc_ingress_global_parity_writes_.Clear();
 }
-inline ::proxy_proto::CordIngressParityWrite* CordDataUpdatePlacement::mutable_cord_ingress_global_parity_writes(int index) {
-  // @@protoc_insertion_point(field_mutable:proxy_proto.CordDataUpdatePlacement.cord_ingress_global_parity_writes)
-  return _impl_.cord_ingress_global_parity_writes_.Mutable(index);
+inline ::proxy_proto::UpLRCIngressParityWrite* UpLRCDataUpdatePlacement::mutable_uplrc_ingress_global_parity_writes(int index) {
+  // @@protoc_insertion_point(field_mutable:proxy_proto.UpLRCDataUpdatePlacement.uplrc_ingress_global_parity_writes)
+  return _impl_.uplrc_ingress_global_parity_writes_.Mutable(index);
 }
-inline ::PROTOBUF_NAMESPACE_ID::RepeatedPtrField< ::proxy_proto::CordIngressParityWrite >*
-CordDataUpdatePlacement::mutable_cord_ingress_global_parity_writes() {
-  // @@protoc_insertion_point(field_mutable_list:proxy_proto.CordDataUpdatePlacement.cord_ingress_global_parity_writes)
-  return &_impl_.cord_ingress_global_parity_writes_;
+inline ::PROTOBUF_NAMESPACE_ID::RepeatedPtrField< ::proxy_proto::UpLRCIngressParityWrite >*
+UpLRCDataUpdatePlacement::mutable_uplrc_ingress_global_parity_writes() {
+  // @@protoc_insertion_point(field_mutable_list:proxy_proto.UpLRCDataUpdatePlacement.uplrc_ingress_global_parity_writes)
+  return &_impl_.uplrc_ingress_global_parity_writes_;
 }
-inline const ::proxy_proto::CordIngressParityWrite& CordDataUpdatePlacement::_internal_cord_ingress_global_parity_writes(int index) const {
-  return _impl_.cord_ingress_global_parity_writes_.Get(index);
+inline const ::proxy_proto::UpLRCIngressParityWrite& UpLRCDataUpdatePlacement::_internal_uplrc_ingress_global_parity_writes(int index) const {
+  return _impl_.uplrc_ingress_global_parity_writes_.Get(index);
 }
-inline const ::proxy_proto::CordIngressParityWrite& CordDataUpdatePlacement::cord_ingress_global_parity_writes(int index) const {
-  // @@protoc_insertion_point(field_get:proxy_proto.CordDataUpdatePlacement.cord_ingress_global_parity_writes)
-  return _internal_cord_ingress_global_parity_writes(index);
+inline const ::proxy_proto::UpLRCIngressParityWrite& UpLRCDataUpdatePlacement::uplrc_ingress_global_parity_writes(int index) const {
+  // @@protoc_insertion_point(field_get:proxy_proto.UpLRCDataUpdatePlacement.uplrc_ingress_global_parity_writes)
+  return _internal_uplrc_ingress_global_parity_writes(index);
 }
-inline ::proxy_proto::CordIngressParityWrite* CordDataUpdatePlacement::_internal_add_cord_ingress_global_parity_writes() {
-  return _impl_.cord_ingress_global_parity_writes_.Add();
+inline ::proxy_proto::UpLRCIngressParityWrite* UpLRCDataUpdatePlacement::_internal_add_uplrc_ingress_global_parity_writes() {
+  return _impl_.uplrc_ingress_global_parity_writes_.Add();
 }
-inline ::proxy_proto::CordIngressParityWrite* CordDataUpdatePlacement::add_cord_ingress_global_parity_writes() {
-  ::proxy_proto::CordIngressParityWrite* _add = _internal_add_cord_ingress_global_parity_writes();
-  // @@protoc_insertion_point(field_add:proxy_proto.CordDataUpdatePlacement.cord_ingress_global_parity_writes)
+inline ::proxy_proto::UpLRCIngressParityWrite* UpLRCDataUpdatePlacement::add_uplrc_ingress_global_parity_writes() {
+  ::proxy_proto::UpLRCIngressParityWrite* _add = _internal_add_uplrc_ingress_global_parity_writes();
+  // @@protoc_insertion_point(field_add:proxy_proto.UpLRCDataUpdatePlacement.uplrc_ingress_global_parity_writes)
   return _add;
 }
-inline const ::PROTOBUF_NAMESPACE_ID::RepeatedPtrField< ::proxy_proto::CordIngressParityWrite >&
-CordDataUpdatePlacement::cord_ingress_global_parity_writes() const {
-  // @@protoc_insertion_point(field_list:proxy_proto.CordDataUpdatePlacement.cord_ingress_global_parity_writes)
-  return _impl_.cord_ingress_global_parity_writes_;
+inline const ::PROTOBUF_NAMESPACE_ID::RepeatedPtrField< ::proxy_proto::UpLRCIngressParityWrite >&
+UpLRCDataUpdatePlacement::uplrc_ingress_global_parity_writes() const {
+  // @@protoc_insertion_point(field_list:proxy_proto.UpLRCDataUpdatePlacement.uplrc_ingress_global_parity_writes)
+  return _impl_.uplrc_ingress_global_parity_writes_;
 }
 
-// repeated int32 cord_ingress_cache_lp_stripe_groups = 16;
-inline int CordDataUpdatePlacement::_internal_cord_ingress_cache_lp_stripe_groups_size() const {
-  return _impl_.cord_ingress_cache_lp_stripe_groups_.size();
+// repeated int32 uplrc_ingress_cache_lp_stripe_groups = 16;
+inline int UpLRCDataUpdatePlacement::_internal_uplrc_ingress_cache_lp_stripe_groups_size() const {
+  return _impl_.uplrc_ingress_cache_lp_stripe_groups_.size();
 }
-inline int CordDataUpdatePlacement::cord_ingress_cache_lp_stripe_groups_size() const {
-  return _internal_cord_ingress_cache_lp_stripe_groups_size();
+inline int UpLRCDataUpdatePlacement::uplrc_ingress_cache_lp_stripe_groups_size() const {
+  return _internal_uplrc_ingress_cache_lp_stripe_groups_size();
 }
-inline void CordDataUpdatePlacement::clear_cord_ingress_cache_lp_stripe_groups() {
-  _impl_.cord_ingress_cache_lp_stripe_groups_.Clear();
+inline void UpLRCDataUpdatePlacement::clear_uplrc_ingress_cache_lp_stripe_groups() {
+  _impl_.uplrc_ingress_cache_lp_stripe_groups_.Clear();
 }
-inline int32_t CordDataUpdatePlacement::_internal_cord_ingress_cache_lp_stripe_groups(int index) const {
-  return _impl_.cord_ingress_cache_lp_stripe_groups_.Get(index);
+inline int32_t UpLRCDataUpdatePlacement::_internal_uplrc_ingress_cache_lp_stripe_groups(int index) const {
+  return _impl_.uplrc_ingress_cache_lp_stripe_groups_.Get(index);
 }
-inline int32_t CordDataUpdatePlacement::cord_ingress_cache_lp_stripe_groups(int index) const {
-  // @@protoc_insertion_point(field_get:proxy_proto.CordDataUpdatePlacement.cord_ingress_cache_lp_stripe_groups)
-  return _internal_cord_ingress_cache_lp_stripe_groups(index);
+inline int32_t UpLRCDataUpdatePlacement::uplrc_ingress_cache_lp_stripe_groups(int index) const {
+  // @@protoc_insertion_point(field_get:proxy_proto.UpLRCDataUpdatePlacement.uplrc_ingress_cache_lp_stripe_groups)
+  return _internal_uplrc_ingress_cache_lp_stripe_groups(index);
 }
-inline void CordDataUpdatePlacement::set_cord_ingress_cache_lp_stripe_groups(int index, int32_t value) {
-  _impl_.cord_ingress_cache_lp_stripe_groups_.Set(index, value);
-  // @@protoc_insertion_point(field_set:proxy_proto.CordDataUpdatePlacement.cord_ingress_cache_lp_stripe_groups)
+inline void UpLRCDataUpdatePlacement::set_uplrc_ingress_cache_lp_stripe_groups(int index, int32_t value) {
+  _impl_.uplrc_ingress_cache_lp_stripe_groups_.Set(index, value);
+  // @@protoc_insertion_point(field_set:proxy_proto.UpLRCDataUpdatePlacement.uplrc_ingress_cache_lp_stripe_groups)
 }
-inline void CordDataUpdatePlacement::_internal_add_cord_ingress_cache_lp_stripe_groups(int32_t value) {
-  _impl_.cord_ingress_cache_lp_stripe_groups_.Add(value);
+inline void UpLRCDataUpdatePlacement::_internal_add_uplrc_ingress_cache_lp_stripe_groups(int32_t value) {
+  _impl_.uplrc_ingress_cache_lp_stripe_groups_.Add(value);
 }
-inline void CordDataUpdatePlacement::add_cord_ingress_cache_lp_stripe_groups(int32_t value) {
-  _internal_add_cord_ingress_cache_lp_stripe_groups(value);
-  // @@protoc_insertion_point(field_add:proxy_proto.CordDataUpdatePlacement.cord_ingress_cache_lp_stripe_groups)
-}
-inline const ::PROTOBUF_NAMESPACE_ID::RepeatedField< int32_t >&
-CordDataUpdatePlacement::_internal_cord_ingress_cache_lp_stripe_groups() const {
-  return _impl_.cord_ingress_cache_lp_stripe_groups_;
+inline void UpLRCDataUpdatePlacement::add_uplrc_ingress_cache_lp_stripe_groups(int32_t value) {
+  _internal_add_uplrc_ingress_cache_lp_stripe_groups(value);
+  // @@protoc_insertion_point(field_add:proxy_proto.UpLRCDataUpdatePlacement.uplrc_ingress_cache_lp_stripe_groups)
 }
 inline const ::PROTOBUF_NAMESPACE_ID::RepeatedField< int32_t >&
-CordDataUpdatePlacement::cord_ingress_cache_lp_stripe_groups() const {
-  // @@protoc_insertion_point(field_list:proxy_proto.CordDataUpdatePlacement.cord_ingress_cache_lp_stripe_groups)
-  return _internal_cord_ingress_cache_lp_stripe_groups();
+UpLRCDataUpdatePlacement::_internal_uplrc_ingress_cache_lp_stripe_groups() const {
+  return _impl_.uplrc_ingress_cache_lp_stripe_groups_;
+}
+inline const ::PROTOBUF_NAMESPACE_ID::RepeatedField< int32_t >&
+UpLRCDataUpdatePlacement::uplrc_ingress_cache_lp_stripe_groups() const {
+  // @@protoc_insertion_point(field_list:proxy_proto.UpLRCDataUpdatePlacement.uplrc_ingress_cache_lp_stripe_groups)
+  return _internal_uplrc_ingress_cache_lp_stripe_groups();
 }
 inline ::PROTOBUF_NAMESPACE_ID::RepeatedField< int32_t >*
-CordDataUpdatePlacement::_internal_mutable_cord_ingress_cache_lp_stripe_groups() {
-  return &_impl_.cord_ingress_cache_lp_stripe_groups_;
+UpLRCDataUpdatePlacement::_internal_mutable_uplrc_ingress_cache_lp_stripe_groups() {
+  return &_impl_.uplrc_ingress_cache_lp_stripe_groups_;
 }
 inline ::PROTOBUF_NAMESPACE_ID::RepeatedField< int32_t >*
-CordDataUpdatePlacement::mutable_cord_ingress_cache_lp_stripe_groups() {
-  // @@protoc_insertion_point(field_mutable_list:proxy_proto.CordDataUpdatePlacement.cord_ingress_cache_lp_stripe_groups)
-  return _internal_mutable_cord_ingress_cache_lp_stripe_groups();
+UpLRCDataUpdatePlacement::mutable_uplrc_ingress_cache_lp_stripe_groups() {
+  // @@protoc_insertion_point(field_mutable_list:proxy_proto.UpLRCDataUpdatePlacement.uplrc_ingress_cache_lp_stripe_groups)
+  return _internal_mutable_uplrc_ingress_cache_lp_stripe_groups();
 }
 
 // -------------------------------------------------------------------
 
-// CordLpDeltaFetch
+// UpLRCLpDeltaFetch
 
 // string blob_key = 1;
-inline void CordLpDeltaFetch::clear_blob_key() {
+inline void UpLRCLpDeltaFetch::clear_blob_key() {
   _impl_.blob_key_.ClearToEmpty();
 }
-inline const std::string& CordLpDeltaFetch::blob_key() const {
-  // @@protoc_insertion_point(field_get:proxy_proto.CordLpDeltaFetch.blob_key)
+inline const std::string& UpLRCLpDeltaFetch::blob_key() const {
+  // @@protoc_insertion_point(field_get:proxy_proto.UpLRCLpDeltaFetch.blob_key)
   return _internal_blob_key();
 }
 template <typename ArgT0, typename... ArgT>
 inline PROTOBUF_ALWAYS_INLINE
-void CordLpDeltaFetch::set_blob_key(ArgT0&& arg0, ArgT... args) {
+void UpLRCLpDeltaFetch::set_blob_key(ArgT0&& arg0, ArgT... args) {
  
  _impl_.blob_key_.Set(static_cast<ArgT0 &&>(arg0), args..., GetArenaForAllocation());
-  // @@protoc_insertion_point(field_set:proxy_proto.CordLpDeltaFetch.blob_key)
+  // @@protoc_insertion_point(field_set:proxy_proto.UpLRCLpDeltaFetch.blob_key)
 }
-inline std::string* CordLpDeltaFetch::mutable_blob_key() {
+inline std::string* UpLRCLpDeltaFetch::mutable_blob_key() {
   std::string* _s = _internal_mutable_blob_key();
-  // @@protoc_insertion_point(field_mutable:proxy_proto.CordLpDeltaFetch.blob_key)
+  // @@protoc_insertion_point(field_mutable:proxy_proto.UpLRCLpDeltaFetch.blob_key)
   return _s;
 }
-inline const std::string& CordLpDeltaFetch::_internal_blob_key() const {
+inline const std::string& UpLRCLpDeltaFetch::_internal_blob_key() const {
   return _impl_.blob_key_.Get();
 }
-inline void CordLpDeltaFetch::_internal_set_blob_key(const std::string& value) {
+inline void UpLRCLpDeltaFetch::_internal_set_blob_key(const std::string& value) {
   
   _impl_.blob_key_.Set(value, GetArenaForAllocation());
 }
-inline std::string* CordLpDeltaFetch::_internal_mutable_blob_key() {
+inline std::string* UpLRCLpDeltaFetch::_internal_mutable_blob_key() {
   
   return _impl_.blob_key_.Mutable(GetArenaForAllocation());
 }
-inline std::string* CordLpDeltaFetch::release_blob_key() {
-  // @@protoc_insertion_point(field_release:proxy_proto.CordLpDeltaFetch.blob_key)
+inline std::string* UpLRCLpDeltaFetch::release_blob_key() {
+  // @@protoc_insertion_point(field_release:proxy_proto.UpLRCLpDeltaFetch.blob_key)
   return _impl_.blob_key_.Release();
 }
-inline void CordLpDeltaFetch::set_allocated_blob_key(std::string* blob_key) {
+inline void UpLRCLpDeltaFetch::set_allocated_blob_key(std::string* blob_key) {
   if (blob_key != nullptr) {
     
   } else {
@@ -21333,45 +21333,45 @@ inline void CordLpDeltaFetch::set_allocated_blob_key(std::string* blob_key) {
     _impl_.blob_key_.Set("", GetArenaForAllocation());
   }
 #endif // PROTOBUF_FORCE_COPY_DEFAULT_STRING
-  // @@protoc_insertion_point(field_set_allocated:proxy_proto.CordLpDeltaFetch.blob_key)
+  // @@protoc_insertion_point(field_set_allocated:proxy_proto.UpLRCLpDeltaFetch.blob_key)
 }
 
 // string datanode_ip = 2;
-inline void CordLpDeltaFetch::clear_datanode_ip() {
+inline void UpLRCLpDeltaFetch::clear_datanode_ip() {
   _impl_.datanode_ip_.ClearToEmpty();
 }
-inline const std::string& CordLpDeltaFetch::datanode_ip() const {
-  // @@protoc_insertion_point(field_get:proxy_proto.CordLpDeltaFetch.datanode_ip)
+inline const std::string& UpLRCLpDeltaFetch::datanode_ip() const {
+  // @@protoc_insertion_point(field_get:proxy_proto.UpLRCLpDeltaFetch.datanode_ip)
   return _internal_datanode_ip();
 }
 template <typename ArgT0, typename... ArgT>
 inline PROTOBUF_ALWAYS_INLINE
-void CordLpDeltaFetch::set_datanode_ip(ArgT0&& arg0, ArgT... args) {
+void UpLRCLpDeltaFetch::set_datanode_ip(ArgT0&& arg0, ArgT... args) {
  
  _impl_.datanode_ip_.Set(static_cast<ArgT0 &&>(arg0), args..., GetArenaForAllocation());
-  // @@protoc_insertion_point(field_set:proxy_proto.CordLpDeltaFetch.datanode_ip)
+  // @@protoc_insertion_point(field_set:proxy_proto.UpLRCLpDeltaFetch.datanode_ip)
 }
-inline std::string* CordLpDeltaFetch::mutable_datanode_ip() {
+inline std::string* UpLRCLpDeltaFetch::mutable_datanode_ip() {
   std::string* _s = _internal_mutable_datanode_ip();
-  // @@protoc_insertion_point(field_mutable:proxy_proto.CordLpDeltaFetch.datanode_ip)
+  // @@protoc_insertion_point(field_mutable:proxy_proto.UpLRCLpDeltaFetch.datanode_ip)
   return _s;
 }
-inline const std::string& CordLpDeltaFetch::_internal_datanode_ip() const {
+inline const std::string& UpLRCLpDeltaFetch::_internal_datanode_ip() const {
   return _impl_.datanode_ip_.Get();
 }
-inline void CordLpDeltaFetch::_internal_set_datanode_ip(const std::string& value) {
+inline void UpLRCLpDeltaFetch::_internal_set_datanode_ip(const std::string& value) {
   
   _impl_.datanode_ip_.Set(value, GetArenaForAllocation());
 }
-inline std::string* CordLpDeltaFetch::_internal_mutable_datanode_ip() {
+inline std::string* UpLRCLpDeltaFetch::_internal_mutable_datanode_ip() {
   
   return _impl_.datanode_ip_.Mutable(GetArenaForAllocation());
 }
-inline std::string* CordLpDeltaFetch::release_datanode_ip() {
-  // @@protoc_insertion_point(field_release:proxy_proto.CordLpDeltaFetch.datanode_ip)
+inline std::string* UpLRCLpDeltaFetch::release_datanode_ip() {
+  // @@protoc_insertion_point(field_release:proxy_proto.UpLRCLpDeltaFetch.datanode_ip)
   return _impl_.datanode_ip_.Release();
 }
-inline void CordLpDeltaFetch::set_allocated_datanode_ip(std::string* datanode_ip) {
+inline void UpLRCLpDeltaFetch::set_allocated_datanode_ip(std::string* datanode_ip) {
   if (datanode_ip != nullptr) {
     
   } else {
@@ -21383,149 +21383,149 @@ inline void CordLpDeltaFetch::set_allocated_datanode_ip(std::string* datanode_ip
     _impl_.datanode_ip_.Set("", GetArenaForAllocation());
   }
 #endif // PROTOBUF_FORCE_COPY_DEFAULT_STRING
-  // @@protoc_insertion_point(field_set_allocated:proxy_proto.CordLpDeltaFetch.datanode_ip)
+  // @@protoc_insertion_point(field_set_allocated:proxy_proto.UpLRCLpDeltaFetch.datanode_ip)
 }
 
 // int32 datanode_port = 3;
-inline void CordLpDeltaFetch::clear_datanode_port() {
+inline void UpLRCLpDeltaFetch::clear_datanode_port() {
   _impl_.datanode_port_ = 0;
 }
-inline int32_t CordLpDeltaFetch::_internal_datanode_port() const {
+inline int32_t UpLRCLpDeltaFetch::_internal_datanode_port() const {
   return _impl_.datanode_port_;
 }
-inline int32_t CordLpDeltaFetch::datanode_port() const {
-  // @@protoc_insertion_point(field_get:proxy_proto.CordLpDeltaFetch.datanode_port)
+inline int32_t UpLRCLpDeltaFetch::datanode_port() const {
+  // @@protoc_insertion_point(field_get:proxy_proto.UpLRCLpDeltaFetch.datanode_port)
   return _internal_datanode_port();
 }
-inline void CordLpDeltaFetch::_internal_set_datanode_port(int32_t value) {
+inline void UpLRCLpDeltaFetch::_internal_set_datanode_port(int32_t value) {
   
   _impl_.datanode_port_ = value;
 }
-inline void CordLpDeltaFetch::set_datanode_port(int32_t value) {
+inline void UpLRCLpDeltaFetch::set_datanode_port(int32_t value) {
   _internal_set_datanode_port(value);
-  // @@protoc_insertion_point(field_set:proxy_proto.CordLpDeltaFetch.datanode_port)
+  // @@protoc_insertion_point(field_set:proxy_proto.UpLRCLpDeltaFetch.datanode_port)
 }
 
 // uint64 blob_offset = 4;
-inline void CordLpDeltaFetch::clear_blob_offset() {
+inline void UpLRCLpDeltaFetch::clear_blob_offset() {
   _impl_.blob_offset_ = uint64_t{0u};
 }
-inline uint64_t CordLpDeltaFetch::_internal_blob_offset() const {
+inline uint64_t UpLRCLpDeltaFetch::_internal_blob_offset() const {
   return _impl_.blob_offset_;
 }
-inline uint64_t CordLpDeltaFetch::blob_offset() const {
-  // @@protoc_insertion_point(field_get:proxy_proto.CordLpDeltaFetch.blob_offset)
+inline uint64_t UpLRCLpDeltaFetch::blob_offset() const {
+  // @@protoc_insertion_point(field_get:proxy_proto.UpLRCLpDeltaFetch.blob_offset)
   return _internal_blob_offset();
 }
-inline void CordLpDeltaFetch::_internal_set_blob_offset(uint64_t value) {
+inline void UpLRCLpDeltaFetch::_internal_set_blob_offset(uint64_t value) {
   
   _impl_.blob_offset_ = value;
 }
-inline void CordLpDeltaFetch::set_blob_offset(uint64_t value) {
+inline void UpLRCLpDeltaFetch::set_blob_offset(uint64_t value) {
   _internal_set_blob_offset(value);
-  // @@protoc_insertion_point(field_set:proxy_proto.CordLpDeltaFetch.blob_offset)
+  // @@protoc_insertion_point(field_set:proxy_proto.UpLRCLpDeltaFetch.blob_offset)
 }
 
 // uint64 read_len = 5;
-inline void CordLpDeltaFetch::clear_read_len() {
+inline void UpLRCLpDeltaFetch::clear_read_len() {
   _impl_.read_len_ = uint64_t{0u};
 }
-inline uint64_t CordLpDeltaFetch::_internal_read_len() const {
+inline uint64_t UpLRCLpDeltaFetch::_internal_read_len() const {
   return _impl_.read_len_;
 }
-inline uint64_t CordLpDeltaFetch::read_len() const {
-  // @@protoc_insertion_point(field_get:proxy_proto.CordLpDeltaFetch.read_len)
+inline uint64_t UpLRCLpDeltaFetch::read_len() const {
+  // @@protoc_insertion_point(field_get:proxy_proto.UpLRCLpDeltaFetch.read_len)
   return _internal_read_len();
 }
-inline void CordLpDeltaFetch::_internal_set_read_len(uint64_t value) {
+inline void UpLRCLpDeltaFetch::_internal_set_read_len(uint64_t value) {
   
   _impl_.read_len_ = value;
 }
-inline void CordLpDeltaFetch::set_read_len(uint64_t value) {
+inline void UpLRCLpDeltaFetch::set_read_len(uint64_t value) {
   _internal_set_read_len(value);
-  // @@protoc_insertion_point(field_set:proxy_proto.CordLpDeltaFetch.read_len)
+  // @@protoc_insertion_point(field_set:proxy_proto.UpLRCLpDeltaFetch.read_len)
 }
 
 // int32 acc_offset = 6;
-inline void CordLpDeltaFetch::clear_acc_offset() {
+inline void UpLRCLpDeltaFetch::clear_acc_offset() {
   _impl_.acc_offset_ = 0;
 }
-inline int32_t CordLpDeltaFetch::_internal_acc_offset() const {
+inline int32_t UpLRCLpDeltaFetch::_internal_acc_offset() const {
   return _impl_.acc_offset_;
 }
-inline int32_t CordLpDeltaFetch::acc_offset() const {
-  // @@protoc_insertion_point(field_get:proxy_proto.CordLpDeltaFetch.acc_offset)
+inline int32_t UpLRCLpDeltaFetch::acc_offset() const {
+  // @@protoc_insertion_point(field_get:proxy_proto.UpLRCLpDeltaFetch.acc_offset)
   return _internal_acc_offset();
 }
-inline void CordLpDeltaFetch::_internal_set_acc_offset(int32_t value) {
+inline void UpLRCLpDeltaFetch::_internal_set_acc_offset(int32_t value) {
   
   _impl_.acc_offset_ = value;
 }
-inline void CordLpDeltaFetch::set_acc_offset(int32_t value) {
+inline void UpLRCLpDeltaFetch::set_acc_offset(int32_t value) {
   _internal_set_acc_offset(value);
-  // @@protoc_insertion_point(field_set:proxy_proto.CordLpDeltaFetch.acc_offset)
+  // @@protoc_insertion_point(field_set:proxy_proto.UpLRCLpDeltaFetch.acc_offset)
 }
 
 // -------------------------------------------------------------------
 
-// CordLpWorkItem
+// UpLRCLpWorkItem
 
 // int32 local_block_id = 1;
-inline void CordLpWorkItem::clear_local_block_id() {
+inline void UpLRCLpWorkItem::clear_local_block_id() {
   _impl_.local_block_id_ = 0;
 }
-inline int32_t CordLpWorkItem::_internal_local_block_id() const {
+inline int32_t UpLRCLpWorkItem::_internal_local_block_id() const {
   return _impl_.local_block_id_;
 }
-inline int32_t CordLpWorkItem::local_block_id() const {
-  // @@protoc_insertion_point(field_get:proxy_proto.CordLpWorkItem.local_block_id)
+inline int32_t UpLRCLpWorkItem::local_block_id() const {
+  // @@protoc_insertion_point(field_get:proxy_proto.UpLRCLpWorkItem.local_block_id)
   return _internal_local_block_id();
 }
-inline void CordLpWorkItem::_internal_set_local_block_id(int32_t value) {
+inline void UpLRCLpWorkItem::_internal_set_local_block_id(int32_t value) {
   
   _impl_.local_block_id_ = value;
 }
-inline void CordLpWorkItem::set_local_block_id(int32_t value) {
+inline void UpLRCLpWorkItem::set_local_block_id(int32_t value) {
   _internal_set_local_block_id(value);
-  // @@protoc_insertion_point(field_set:proxy_proto.CordLpWorkItem.local_block_id)
+  // @@protoc_insertion_point(field_set:proxy_proto.UpLRCLpWorkItem.local_block_id)
 }
 
 // string local_block_key = 2;
-inline void CordLpWorkItem::clear_local_block_key() {
+inline void UpLRCLpWorkItem::clear_local_block_key() {
   _impl_.local_block_key_.ClearToEmpty();
 }
-inline const std::string& CordLpWorkItem::local_block_key() const {
-  // @@protoc_insertion_point(field_get:proxy_proto.CordLpWorkItem.local_block_key)
+inline const std::string& UpLRCLpWorkItem::local_block_key() const {
+  // @@protoc_insertion_point(field_get:proxy_proto.UpLRCLpWorkItem.local_block_key)
   return _internal_local_block_key();
 }
 template <typename ArgT0, typename... ArgT>
 inline PROTOBUF_ALWAYS_INLINE
-void CordLpWorkItem::set_local_block_key(ArgT0&& arg0, ArgT... args) {
+void UpLRCLpWorkItem::set_local_block_key(ArgT0&& arg0, ArgT... args) {
  
  _impl_.local_block_key_.Set(static_cast<ArgT0 &&>(arg0), args..., GetArenaForAllocation());
-  // @@protoc_insertion_point(field_set:proxy_proto.CordLpWorkItem.local_block_key)
+  // @@protoc_insertion_point(field_set:proxy_proto.UpLRCLpWorkItem.local_block_key)
 }
-inline std::string* CordLpWorkItem::mutable_local_block_key() {
+inline std::string* UpLRCLpWorkItem::mutable_local_block_key() {
   std::string* _s = _internal_mutable_local_block_key();
-  // @@protoc_insertion_point(field_mutable:proxy_proto.CordLpWorkItem.local_block_key)
+  // @@protoc_insertion_point(field_mutable:proxy_proto.UpLRCLpWorkItem.local_block_key)
   return _s;
 }
-inline const std::string& CordLpWorkItem::_internal_local_block_key() const {
+inline const std::string& UpLRCLpWorkItem::_internal_local_block_key() const {
   return _impl_.local_block_key_.Get();
 }
-inline void CordLpWorkItem::_internal_set_local_block_key(const std::string& value) {
+inline void UpLRCLpWorkItem::_internal_set_local_block_key(const std::string& value) {
   
   _impl_.local_block_key_.Set(value, GetArenaForAllocation());
 }
-inline std::string* CordLpWorkItem::_internal_mutable_local_block_key() {
+inline std::string* UpLRCLpWorkItem::_internal_mutable_local_block_key() {
   
   return _impl_.local_block_key_.Mutable(GetArenaForAllocation());
 }
-inline std::string* CordLpWorkItem::release_local_block_key() {
-  // @@protoc_insertion_point(field_release:proxy_proto.CordLpWorkItem.local_block_key)
+inline std::string* UpLRCLpWorkItem::release_local_block_key() {
+  // @@protoc_insertion_point(field_release:proxy_proto.UpLRCLpWorkItem.local_block_key)
   return _impl_.local_block_key_.Release();
 }
-inline void CordLpWorkItem::set_allocated_local_block_key(std::string* local_block_key) {
+inline void UpLRCLpWorkItem::set_allocated_local_block_key(std::string* local_block_key) {
   if (local_block_key != nullptr) {
     
   } else {
@@ -21537,45 +21537,45 @@ inline void CordLpWorkItem::set_allocated_local_block_key(std::string* local_blo
     _impl_.local_block_key_.Set("", GetArenaForAllocation());
   }
 #endif // PROTOBUF_FORCE_COPY_DEFAULT_STRING
-  // @@protoc_insertion_point(field_set_allocated:proxy_proto.CordLpWorkItem.local_block_key)
+  // @@protoc_insertion_point(field_set_allocated:proxy_proto.UpLRCLpWorkItem.local_block_key)
 }
 
 // string local_datanode_ip = 3;
-inline void CordLpWorkItem::clear_local_datanode_ip() {
+inline void UpLRCLpWorkItem::clear_local_datanode_ip() {
   _impl_.local_datanode_ip_.ClearToEmpty();
 }
-inline const std::string& CordLpWorkItem::local_datanode_ip() const {
-  // @@protoc_insertion_point(field_get:proxy_proto.CordLpWorkItem.local_datanode_ip)
+inline const std::string& UpLRCLpWorkItem::local_datanode_ip() const {
+  // @@protoc_insertion_point(field_get:proxy_proto.UpLRCLpWorkItem.local_datanode_ip)
   return _internal_local_datanode_ip();
 }
 template <typename ArgT0, typename... ArgT>
 inline PROTOBUF_ALWAYS_INLINE
-void CordLpWorkItem::set_local_datanode_ip(ArgT0&& arg0, ArgT... args) {
+void UpLRCLpWorkItem::set_local_datanode_ip(ArgT0&& arg0, ArgT... args) {
  
  _impl_.local_datanode_ip_.Set(static_cast<ArgT0 &&>(arg0), args..., GetArenaForAllocation());
-  // @@protoc_insertion_point(field_set:proxy_proto.CordLpWorkItem.local_datanode_ip)
+  // @@protoc_insertion_point(field_set:proxy_proto.UpLRCLpWorkItem.local_datanode_ip)
 }
-inline std::string* CordLpWorkItem::mutable_local_datanode_ip() {
+inline std::string* UpLRCLpWorkItem::mutable_local_datanode_ip() {
   std::string* _s = _internal_mutable_local_datanode_ip();
-  // @@protoc_insertion_point(field_mutable:proxy_proto.CordLpWorkItem.local_datanode_ip)
+  // @@protoc_insertion_point(field_mutable:proxy_proto.UpLRCLpWorkItem.local_datanode_ip)
   return _s;
 }
-inline const std::string& CordLpWorkItem::_internal_local_datanode_ip() const {
+inline const std::string& UpLRCLpWorkItem::_internal_local_datanode_ip() const {
   return _impl_.local_datanode_ip_.Get();
 }
-inline void CordLpWorkItem::_internal_set_local_datanode_ip(const std::string& value) {
+inline void UpLRCLpWorkItem::_internal_set_local_datanode_ip(const std::string& value) {
   
   _impl_.local_datanode_ip_.Set(value, GetArenaForAllocation());
 }
-inline std::string* CordLpWorkItem::_internal_mutable_local_datanode_ip() {
+inline std::string* UpLRCLpWorkItem::_internal_mutable_local_datanode_ip() {
   
   return _impl_.local_datanode_ip_.Mutable(GetArenaForAllocation());
 }
-inline std::string* CordLpWorkItem::release_local_datanode_ip() {
-  // @@protoc_insertion_point(field_release:proxy_proto.CordLpWorkItem.local_datanode_ip)
+inline std::string* UpLRCLpWorkItem::release_local_datanode_ip() {
+  // @@protoc_insertion_point(field_release:proxy_proto.UpLRCLpWorkItem.local_datanode_ip)
   return _impl_.local_datanode_ip_.Release();
 }
-inline void CordLpWorkItem::set_allocated_local_datanode_ip(std::string* local_datanode_ip) {
+inline void UpLRCLpWorkItem::set_allocated_local_datanode_ip(std::string* local_datanode_ip) {
   if (local_datanode_ip != nullptr) {
     
   } else {
@@ -21587,149 +21587,149 @@ inline void CordLpWorkItem::set_allocated_local_datanode_ip(std::string* local_d
     _impl_.local_datanode_ip_.Set("", GetArenaForAllocation());
   }
 #endif // PROTOBUF_FORCE_COPY_DEFAULT_STRING
-  // @@protoc_insertion_point(field_set_allocated:proxy_proto.CordLpWorkItem.local_datanode_ip)
+  // @@protoc_insertion_point(field_set_allocated:proxy_proto.UpLRCLpWorkItem.local_datanode_ip)
 }
 
 // int32 local_datanode_port = 4;
-inline void CordLpWorkItem::clear_local_datanode_port() {
+inline void UpLRCLpWorkItem::clear_local_datanode_port() {
   _impl_.local_datanode_port_ = 0;
 }
-inline int32_t CordLpWorkItem::_internal_local_datanode_port() const {
+inline int32_t UpLRCLpWorkItem::_internal_local_datanode_port() const {
   return _impl_.local_datanode_port_;
 }
-inline int32_t CordLpWorkItem::local_datanode_port() const {
-  // @@protoc_insertion_point(field_get:proxy_proto.CordLpWorkItem.local_datanode_port)
+inline int32_t UpLRCLpWorkItem::local_datanode_port() const {
+  // @@protoc_insertion_point(field_get:proxy_proto.UpLRCLpWorkItem.local_datanode_port)
   return _internal_local_datanode_port();
 }
-inline void CordLpWorkItem::_internal_set_local_datanode_port(int32_t value) {
+inline void UpLRCLpWorkItem::_internal_set_local_datanode_port(int32_t value) {
   
   _impl_.local_datanode_port_ = value;
 }
-inline void CordLpWorkItem::set_local_datanode_port(int32_t value) {
+inline void UpLRCLpWorkItem::set_local_datanode_port(int32_t value) {
   _internal_set_local_datanode_port(value);
-  // @@protoc_insertion_point(field_set:proxy_proto.CordLpWorkItem.local_datanode_port)
+  // @@protoc_insertion_point(field_set:proxy_proto.UpLRCLpWorkItem.local_datanode_port)
 }
 
 // int32 parity_slice_offset = 5;
-inline void CordLpWorkItem::clear_parity_slice_offset() {
+inline void UpLRCLpWorkItem::clear_parity_slice_offset() {
   _impl_.parity_slice_offset_ = 0;
 }
-inline int32_t CordLpWorkItem::_internal_parity_slice_offset() const {
+inline int32_t UpLRCLpWorkItem::_internal_parity_slice_offset() const {
   return _impl_.parity_slice_offset_;
 }
-inline int32_t CordLpWorkItem::parity_slice_offset() const {
-  // @@protoc_insertion_point(field_get:proxy_proto.CordLpWorkItem.parity_slice_offset)
+inline int32_t UpLRCLpWorkItem::parity_slice_offset() const {
+  // @@protoc_insertion_point(field_get:proxy_proto.UpLRCLpWorkItem.parity_slice_offset)
   return _internal_parity_slice_offset();
 }
-inline void CordLpWorkItem::_internal_set_parity_slice_offset(int32_t value) {
+inline void UpLRCLpWorkItem::_internal_set_parity_slice_offset(int32_t value) {
   
   _impl_.parity_slice_offset_ = value;
 }
-inline void CordLpWorkItem::set_parity_slice_offset(int32_t value) {
+inline void UpLRCLpWorkItem::set_parity_slice_offset(int32_t value) {
   _internal_set_parity_slice_offset(value);
-  // @@protoc_insertion_point(field_set:proxy_proto.CordLpWorkItem.parity_slice_offset)
+  // @@protoc_insertion_point(field_set:proxy_proto.UpLRCLpWorkItem.parity_slice_offset)
 }
 
 // int32 parity_slice_size = 6;
-inline void CordLpWorkItem::clear_parity_slice_size() {
+inline void UpLRCLpWorkItem::clear_parity_slice_size() {
   _impl_.parity_slice_size_ = 0;
 }
-inline int32_t CordLpWorkItem::_internal_parity_slice_size() const {
+inline int32_t UpLRCLpWorkItem::_internal_parity_slice_size() const {
   return _impl_.parity_slice_size_;
 }
-inline int32_t CordLpWorkItem::parity_slice_size() const {
-  // @@protoc_insertion_point(field_get:proxy_proto.CordLpWorkItem.parity_slice_size)
+inline int32_t UpLRCLpWorkItem::parity_slice_size() const {
+  // @@protoc_insertion_point(field_get:proxy_proto.UpLRCLpWorkItem.parity_slice_size)
   return _internal_parity_slice_size();
 }
-inline void CordLpWorkItem::_internal_set_parity_slice_size(int32_t value) {
+inline void UpLRCLpWorkItem::_internal_set_parity_slice_size(int32_t value) {
   
   _impl_.parity_slice_size_ = value;
 }
-inline void CordLpWorkItem::set_parity_slice_size(int32_t value) {
+inline void UpLRCLpWorkItem::set_parity_slice_size(int32_t value) {
   _internal_set_parity_slice_size(value);
-  // @@protoc_insertion_point(field_set:proxy_proto.CordLpWorkItem.parity_slice_size)
+  // @@protoc_insertion_point(field_set:proxy_proto.UpLRCLpWorkItem.parity_slice_size)
 }
 
-// repeated .proxy_proto.CordLpDeltaFetch fetches = 7;
-inline int CordLpWorkItem::_internal_fetches_size() const {
+// repeated .proxy_proto.UpLRCLpDeltaFetch fetches = 7;
+inline int UpLRCLpWorkItem::_internal_fetches_size() const {
   return _impl_.fetches_.size();
 }
-inline int CordLpWorkItem::fetches_size() const {
+inline int UpLRCLpWorkItem::fetches_size() const {
   return _internal_fetches_size();
 }
-inline void CordLpWorkItem::clear_fetches() {
+inline void UpLRCLpWorkItem::clear_fetches() {
   _impl_.fetches_.Clear();
 }
-inline ::proxy_proto::CordLpDeltaFetch* CordLpWorkItem::mutable_fetches(int index) {
-  // @@protoc_insertion_point(field_mutable:proxy_proto.CordLpWorkItem.fetches)
+inline ::proxy_proto::UpLRCLpDeltaFetch* UpLRCLpWorkItem::mutable_fetches(int index) {
+  // @@protoc_insertion_point(field_mutable:proxy_proto.UpLRCLpWorkItem.fetches)
   return _impl_.fetches_.Mutable(index);
 }
-inline ::PROTOBUF_NAMESPACE_ID::RepeatedPtrField< ::proxy_proto::CordLpDeltaFetch >*
-CordLpWorkItem::mutable_fetches() {
-  // @@protoc_insertion_point(field_mutable_list:proxy_proto.CordLpWorkItem.fetches)
+inline ::PROTOBUF_NAMESPACE_ID::RepeatedPtrField< ::proxy_proto::UpLRCLpDeltaFetch >*
+UpLRCLpWorkItem::mutable_fetches() {
+  // @@protoc_insertion_point(field_mutable_list:proxy_proto.UpLRCLpWorkItem.fetches)
   return &_impl_.fetches_;
 }
-inline const ::proxy_proto::CordLpDeltaFetch& CordLpWorkItem::_internal_fetches(int index) const {
+inline const ::proxy_proto::UpLRCLpDeltaFetch& UpLRCLpWorkItem::_internal_fetches(int index) const {
   return _impl_.fetches_.Get(index);
 }
-inline const ::proxy_proto::CordLpDeltaFetch& CordLpWorkItem::fetches(int index) const {
-  // @@protoc_insertion_point(field_get:proxy_proto.CordLpWorkItem.fetches)
+inline const ::proxy_proto::UpLRCLpDeltaFetch& UpLRCLpWorkItem::fetches(int index) const {
+  // @@protoc_insertion_point(field_get:proxy_proto.UpLRCLpWorkItem.fetches)
   return _internal_fetches(index);
 }
-inline ::proxy_proto::CordLpDeltaFetch* CordLpWorkItem::_internal_add_fetches() {
+inline ::proxy_proto::UpLRCLpDeltaFetch* UpLRCLpWorkItem::_internal_add_fetches() {
   return _impl_.fetches_.Add();
 }
-inline ::proxy_proto::CordLpDeltaFetch* CordLpWorkItem::add_fetches() {
-  ::proxy_proto::CordLpDeltaFetch* _add = _internal_add_fetches();
-  // @@protoc_insertion_point(field_add:proxy_proto.CordLpWorkItem.fetches)
+inline ::proxy_proto::UpLRCLpDeltaFetch* UpLRCLpWorkItem::add_fetches() {
+  ::proxy_proto::UpLRCLpDeltaFetch* _add = _internal_add_fetches();
+  // @@protoc_insertion_point(field_add:proxy_proto.UpLRCLpWorkItem.fetches)
   return _add;
 }
-inline const ::PROTOBUF_NAMESPACE_ID::RepeatedPtrField< ::proxy_proto::CordLpDeltaFetch >&
-CordLpWorkItem::fetches() const {
-  // @@protoc_insertion_point(field_list:proxy_proto.CordLpWorkItem.fetches)
+inline const ::PROTOBUF_NAMESPACE_ID::RepeatedPtrField< ::proxy_proto::UpLRCLpDeltaFetch >&
+UpLRCLpWorkItem::fetches() const {
+  // @@protoc_insertion_point(field_list:proxy_proto.UpLRCLpWorkItem.fetches)
   return _impl_.fetches_;
 }
 
 // -------------------------------------------------------------------
 
-// CordLocalParityBundle
+// UpLRCLocalParityBundle
 
 // string key = 1;
-inline void CordLocalParityBundle::clear_key() {
+inline void UpLRCLocalParityBundle::clear_key() {
   _impl_.key_.ClearToEmpty();
 }
-inline const std::string& CordLocalParityBundle::key() const {
-  // @@protoc_insertion_point(field_get:proxy_proto.CordLocalParityBundle.key)
+inline const std::string& UpLRCLocalParityBundle::key() const {
+  // @@protoc_insertion_point(field_get:proxy_proto.UpLRCLocalParityBundle.key)
   return _internal_key();
 }
 template <typename ArgT0, typename... ArgT>
 inline PROTOBUF_ALWAYS_INLINE
-void CordLocalParityBundle::set_key(ArgT0&& arg0, ArgT... args) {
+void UpLRCLocalParityBundle::set_key(ArgT0&& arg0, ArgT... args) {
  
  _impl_.key_.Set(static_cast<ArgT0 &&>(arg0), args..., GetArenaForAllocation());
-  // @@protoc_insertion_point(field_set:proxy_proto.CordLocalParityBundle.key)
+  // @@protoc_insertion_point(field_set:proxy_proto.UpLRCLocalParityBundle.key)
 }
-inline std::string* CordLocalParityBundle::mutable_key() {
+inline std::string* UpLRCLocalParityBundle::mutable_key() {
   std::string* _s = _internal_mutable_key();
-  // @@protoc_insertion_point(field_mutable:proxy_proto.CordLocalParityBundle.key)
+  // @@protoc_insertion_point(field_mutable:proxy_proto.UpLRCLocalParityBundle.key)
   return _s;
 }
-inline const std::string& CordLocalParityBundle::_internal_key() const {
+inline const std::string& UpLRCLocalParityBundle::_internal_key() const {
   return _impl_.key_.Get();
 }
-inline void CordLocalParityBundle::_internal_set_key(const std::string& value) {
+inline void UpLRCLocalParityBundle::_internal_set_key(const std::string& value) {
   
   _impl_.key_.Set(value, GetArenaForAllocation());
 }
-inline std::string* CordLocalParityBundle::_internal_mutable_key() {
+inline std::string* UpLRCLocalParityBundle::_internal_mutable_key() {
   
   return _impl_.key_.Mutable(GetArenaForAllocation());
 }
-inline std::string* CordLocalParityBundle::release_key() {
-  // @@protoc_insertion_point(field_release:proxy_proto.CordLocalParityBundle.key)
+inline std::string* UpLRCLocalParityBundle::release_key() {
+  // @@protoc_insertion_point(field_release:proxy_proto.UpLRCLocalParityBundle.key)
   return _impl_.key_.Release();
 }
-inline void CordLocalParityBundle::set_allocated_key(std::string* key) {
+inline void UpLRCLocalParityBundle::set_allocated_key(std::string* key) {
   if (key != nullptr) {
     
   } else {
@@ -21741,109 +21741,109 @@ inline void CordLocalParityBundle::set_allocated_key(std::string* key) {
     _impl_.key_.Set("", GetArenaForAllocation());
   }
 #endif // PROTOBUF_FORCE_COPY_DEFAULT_STRING
-  // @@protoc_insertion_point(field_set_allocated:proxy_proto.CordLocalParityBundle.key)
+  // @@protoc_insertion_point(field_set_allocated:proxy_proto.UpLRCLocalParityBundle.key)
 }
 
 // int32 stripe_id = 2;
-inline void CordLocalParityBundle::clear_stripe_id() {
+inline void UpLRCLocalParityBundle::clear_stripe_id() {
   _impl_.stripe_id_ = 0;
 }
-inline int32_t CordLocalParityBundle::_internal_stripe_id() const {
+inline int32_t UpLRCLocalParityBundle::_internal_stripe_id() const {
   return _impl_.stripe_id_;
 }
-inline int32_t CordLocalParityBundle::stripe_id() const {
-  // @@protoc_insertion_point(field_get:proxy_proto.CordLocalParityBundle.stripe_id)
+inline int32_t UpLRCLocalParityBundle::stripe_id() const {
+  // @@protoc_insertion_point(field_get:proxy_proto.UpLRCLocalParityBundle.stripe_id)
   return _internal_stripe_id();
 }
-inline void CordLocalParityBundle::_internal_set_stripe_id(int32_t value) {
+inline void UpLRCLocalParityBundle::_internal_set_stripe_id(int32_t value) {
   
   _impl_.stripe_id_ = value;
 }
-inline void CordLocalParityBundle::set_stripe_id(int32_t value) {
+inline void UpLRCLocalParityBundle::set_stripe_id(int32_t value) {
   _internal_set_stripe_id(value);
-  // @@protoc_insertion_point(field_set:proxy_proto.CordLocalParityBundle.stripe_id)
+  // @@protoc_insertion_point(field_set:proxy_proto.UpLRCLocalParityBundle.stripe_id)
 }
 
-// repeated .proxy_proto.CordLpWorkItem items = 3;
-inline int CordLocalParityBundle::_internal_items_size() const {
+// repeated .proxy_proto.UpLRCLpWorkItem items = 3;
+inline int UpLRCLocalParityBundle::_internal_items_size() const {
   return _impl_.items_.size();
 }
-inline int CordLocalParityBundle::items_size() const {
+inline int UpLRCLocalParityBundle::items_size() const {
   return _internal_items_size();
 }
-inline void CordLocalParityBundle::clear_items() {
+inline void UpLRCLocalParityBundle::clear_items() {
   _impl_.items_.Clear();
 }
-inline ::proxy_proto::CordLpWorkItem* CordLocalParityBundle::mutable_items(int index) {
-  // @@protoc_insertion_point(field_mutable:proxy_proto.CordLocalParityBundle.items)
+inline ::proxy_proto::UpLRCLpWorkItem* UpLRCLocalParityBundle::mutable_items(int index) {
+  // @@protoc_insertion_point(field_mutable:proxy_proto.UpLRCLocalParityBundle.items)
   return _impl_.items_.Mutable(index);
 }
-inline ::PROTOBUF_NAMESPACE_ID::RepeatedPtrField< ::proxy_proto::CordLpWorkItem >*
-CordLocalParityBundle::mutable_items() {
-  // @@protoc_insertion_point(field_mutable_list:proxy_proto.CordLocalParityBundle.items)
+inline ::PROTOBUF_NAMESPACE_ID::RepeatedPtrField< ::proxy_proto::UpLRCLpWorkItem >*
+UpLRCLocalParityBundle::mutable_items() {
+  // @@protoc_insertion_point(field_mutable_list:proxy_proto.UpLRCLocalParityBundle.items)
   return &_impl_.items_;
 }
-inline const ::proxy_proto::CordLpWorkItem& CordLocalParityBundle::_internal_items(int index) const {
+inline const ::proxy_proto::UpLRCLpWorkItem& UpLRCLocalParityBundle::_internal_items(int index) const {
   return _impl_.items_.Get(index);
 }
-inline const ::proxy_proto::CordLpWorkItem& CordLocalParityBundle::items(int index) const {
-  // @@protoc_insertion_point(field_get:proxy_proto.CordLocalParityBundle.items)
+inline const ::proxy_proto::UpLRCLpWorkItem& UpLRCLocalParityBundle::items(int index) const {
+  // @@protoc_insertion_point(field_get:proxy_proto.UpLRCLocalParityBundle.items)
   return _internal_items(index);
 }
-inline ::proxy_proto::CordLpWorkItem* CordLocalParityBundle::_internal_add_items() {
+inline ::proxy_proto::UpLRCLpWorkItem* UpLRCLocalParityBundle::_internal_add_items() {
   return _impl_.items_.Add();
 }
-inline ::proxy_proto::CordLpWorkItem* CordLocalParityBundle::add_items() {
-  ::proxy_proto::CordLpWorkItem* _add = _internal_add_items();
-  // @@protoc_insertion_point(field_add:proxy_proto.CordLocalParityBundle.items)
+inline ::proxy_proto::UpLRCLpWorkItem* UpLRCLocalParityBundle::add_items() {
+  ::proxy_proto::UpLRCLpWorkItem* _add = _internal_add_items();
+  // @@protoc_insertion_point(field_add:proxy_proto.UpLRCLocalParityBundle.items)
   return _add;
 }
-inline const ::PROTOBUF_NAMESPACE_ID::RepeatedPtrField< ::proxy_proto::CordLpWorkItem >&
-CordLocalParityBundle::items() const {
-  // @@protoc_insertion_point(field_list:proxy_proto.CordLocalParityBundle.items)
+inline const ::PROTOBUF_NAMESPACE_ID::RepeatedPtrField< ::proxy_proto::UpLRCLpWorkItem >&
+UpLRCLocalParityBundle::items() const {
+  // @@protoc_insertion_point(field_list:proxy_proto.UpLRCLocalParityBundle.items)
   return _impl_.items_;
 }
 
 // -------------------------------------------------------------------
 
-// CordLpHubSessionBegin
+// UpLRCLpHubSessionBegin
 
 // string session_key = 1;
-inline void CordLpHubSessionBegin::clear_session_key() {
+inline void UpLRCLpHubSessionBegin::clear_session_key() {
   _impl_.session_key_.ClearToEmpty();
 }
-inline const std::string& CordLpHubSessionBegin::session_key() const {
-  // @@protoc_insertion_point(field_get:proxy_proto.CordLpHubSessionBegin.session_key)
+inline const std::string& UpLRCLpHubSessionBegin::session_key() const {
+  // @@protoc_insertion_point(field_get:proxy_proto.UpLRCLpHubSessionBegin.session_key)
   return _internal_session_key();
 }
 template <typename ArgT0, typename... ArgT>
 inline PROTOBUF_ALWAYS_INLINE
-void CordLpHubSessionBegin::set_session_key(ArgT0&& arg0, ArgT... args) {
+void UpLRCLpHubSessionBegin::set_session_key(ArgT0&& arg0, ArgT... args) {
  
  _impl_.session_key_.Set(static_cast<ArgT0 &&>(arg0), args..., GetArenaForAllocation());
-  // @@protoc_insertion_point(field_set:proxy_proto.CordLpHubSessionBegin.session_key)
+  // @@protoc_insertion_point(field_set:proxy_proto.UpLRCLpHubSessionBegin.session_key)
 }
-inline std::string* CordLpHubSessionBegin::mutable_session_key() {
+inline std::string* UpLRCLpHubSessionBegin::mutable_session_key() {
   std::string* _s = _internal_mutable_session_key();
-  // @@protoc_insertion_point(field_mutable:proxy_proto.CordLpHubSessionBegin.session_key)
+  // @@protoc_insertion_point(field_mutable:proxy_proto.UpLRCLpHubSessionBegin.session_key)
   return _s;
 }
-inline const std::string& CordLpHubSessionBegin::_internal_session_key() const {
+inline const std::string& UpLRCLpHubSessionBegin::_internal_session_key() const {
   return _impl_.session_key_.Get();
 }
-inline void CordLpHubSessionBegin::_internal_set_session_key(const std::string& value) {
+inline void UpLRCLpHubSessionBegin::_internal_set_session_key(const std::string& value) {
   
   _impl_.session_key_.Set(value, GetArenaForAllocation());
 }
-inline std::string* CordLpHubSessionBegin::_internal_mutable_session_key() {
+inline std::string* UpLRCLpHubSessionBegin::_internal_mutable_session_key() {
   
   return _impl_.session_key_.Mutable(GetArenaForAllocation());
 }
-inline std::string* CordLpHubSessionBegin::release_session_key() {
-  // @@protoc_insertion_point(field_release:proxy_proto.CordLpHubSessionBegin.session_key)
+inline std::string* UpLRCLpHubSessionBegin::release_session_key() {
+  // @@protoc_insertion_point(field_release:proxy_proto.UpLRCLpHubSessionBegin.session_key)
   return _impl_.session_key_.Release();
 }
-inline void CordLpHubSessionBegin::set_allocated_session_key(std::string* session_key) {
+inline void UpLRCLpHubSessionBegin::set_allocated_session_key(std::string* session_key) {
   if (session_key != nullptr) {
     
   } else {
@@ -21855,125 +21855,125 @@ inline void CordLpHubSessionBegin::set_allocated_session_key(std::string* sessio
     _impl_.session_key_.Set("", GetArenaForAllocation());
   }
 #endif // PROTOBUF_FORCE_COPY_DEFAULT_STRING
-  // @@protoc_insertion_point(field_set_allocated:proxy_proto.CordLpHubSessionBegin.session_key)
+  // @@protoc_insertion_point(field_set_allocated:proxy_proto.UpLRCLpHubSessionBegin.session_key)
 }
 
 // int32 expected_partials = 2;
-inline void CordLpHubSessionBegin::clear_expected_partials() {
+inline void UpLRCLpHubSessionBegin::clear_expected_partials() {
   _impl_.expected_partials_ = 0;
 }
-inline int32_t CordLpHubSessionBegin::_internal_expected_partials() const {
+inline int32_t UpLRCLpHubSessionBegin::_internal_expected_partials() const {
   return _impl_.expected_partials_;
 }
-inline int32_t CordLpHubSessionBegin::expected_partials() const {
-  // @@protoc_insertion_point(field_get:proxy_proto.CordLpHubSessionBegin.expected_partials)
+inline int32_t UpLRCLpHubSessionBegin::expected_partials() const {
+  // @@protoc_insertion_point(field_get:proxy_proto.UpLRCLpHubSessionBegin.expected_partials)
   return _internal_expected_partials();
 }
-inline void CordLpHubSessionBegin::_internal_set_expected_partials(int32_t value) {
+inline void UpLRCLpHubSessionBegin::_internal_set_expected_partials(int32_t value) {
   
   _impl_.expected_partials_ = value;
 }
-inline void CordLpHubSessionBegin::set_expected_partials(int32_t value) {
+inline void UpLRCLpHubSessionBegin::set_expected_partials(int32_t value) {
   _internal_set_expected_partials(value);
-  // @@protoc_insertion_point(field_set:proxy_proto.CordLpHubSessionBegin.expected_partials)
+  // @@protoc_insertion_point(field_set:proxy_proto.UpLRCLpHubSessionBegin.expected_partials)
 }
 
 // int32 parity_slice_size = 3;
-inline void CordLpHubSessionBegin::clear_parity_slice_size() {
+inline void UpLRCLpHubSessionBegin::clear_parity_slice_size() {
   _impl_.parity_slice_size_ = 0;
 }
-inline int32_t CordLpHubSessionBegin::_internal_parity_slice_size() const {
+inline int32_t UpLRCLpHubSessionBegin::_internal_parity_slice_size() const {
   return _impl_.parity_slice_size_;
 }
-inline int32_t CordLpHubSessionBegin::parity_slice_size() const {
-  // @@protoc_insertion_point(field_get:proxy_proto.CordLpHubSessionBegin.parity_slice_size)
+inline int32_t UpLRCLpHubSessionBegin::parity_slice_size() const {
+  // @@protoc_insertion_point(field_get:proxy_proto.UpLRCLpHubSessionBegin.parity_slice_size)
   return _internal_parity_slice_size();
 }
-inline void CordLpHubSessionBegin::_internal_set_parity_slice_size(int32_t value) {
+inline void UpLRCLpHubSessionBegin::_internal_set_parity_slice_size(int32_t value) {
   
   _impl_.parity_slice_size_ = value;
 }
-inline void CordLpHubSessionBegin::set_parity_slice_size(int32_t value) {
+inline void UpLRCLpHubSessionBegin::set_parity_slice_size(int32_t value) {
   _internal_set_parity_slice_size(value);
-  // @@protoc_insertion_point(field_set:proxy_proto.CordLpHubSessionBegin.parity_slice_size)
+  // @@protoc_insertion_point(field_set:proxy_proto.UpLRCLpHubSessionBegin.parity_slice_size)
 }
 
 // int32 parity_slice_offset = 4;
-inline void CordLpHubSessionBegin::clear_parity_slice_offset() {
+inline void UpLRCLpHubSessionBegin::clear_parity_slice_offset() {
   _impl_.parity_slice_offset_ = 0;
 }
-inline int32_t CordLpHubSessionBegin::_internal_parity_slice_offset() const {
+inline int32_t UpLRCLpHubSessionBegin::_internal_parity_slice_offset() const {
   return _impl_.parity_slice_offset_;
 }
-inline int32_t CordLpHubSessionBegin::parity_slice_offset() const {
-  // @@protoc_insertion_point(field_get:proxy_proto.CordLpHubSessionBegin.parity_slice_offset)
+inline int32_t UpLRCLpHubSessionBegin::parity_slice_offset() const {
+  // @@protoc_insertion_point(field_get:proxy_proto.UpLRCLpHubSessionBegin.parity_slice_offset)
   return _internal_parity_slice_offset();
 }
-inline void CordLpHubSessionBegin::_internal_set_parity_slice_offset(int32_t value) {
+inline void UpLRCLpHubSessionBegin::_internal_set_parity_slice_offset(int32_t value) {
   
   _impl_.parity_slice_offset_ = value;
 }
-inline void CordLpHubSessionBegin::set_parity_slice_offset(int32_t value) {
+inline void UpLRCLpHubSessionBegin::set_parity_slice_offset(int32_t value) {
   _internal_set_parity_slice_offset(value);
-  // @@protoc_insertion_point(field_set:proxy_proto.CordLpHubSessionBegin.parity_slice_offset)
+  // @@protoc_insertion_point(field_set:proxy_proto.UpLRCLpHubSessionBegin.parity_slice_offset)
 }
 
 // int32 local_block_id = 5;
-inline void CordLpHubSessionBegin::clear_local_block_id() {
+inline void UpLRCLpHubSessionBegin::clear_local_block_id() {
   _impl_.local_block_id_ = 0;
 }
-inline int32_t CordLpHubSessionBegin::_internal_local_block_id() const {
+inline int32_t UpLRCLpHubSessionBegin::_internal_local_block_id() const {
   return _impl_.local_block_id_;
 }
-inline int32_t CordLpHubSessionBegin::local_block_id() const {
-  // @@protoc_insertion_point(field_get:proxy_proto.CordLpHubSessionBegin.local_block_id)
+inline int32_t UpLRCLpHubSessionBegin::local_block_id() const {
+  // @@protoc_insertion_point(field_get:proxy_proto.UpLRCLpHubSessionBegin.local_block_id)
   return _internal_local_block_id();
 }
-inline void CordLpHubSessionBegin::_internal_set_local_block_id(int32_t value) {
+inline void UpLRCLpHubSessionBegin::_internal_set_local_block_id(int32_t value) {
   
   _impl_.local_block_id_ = value;
 }
-inline void CordLpHubSessionBegin::set_local_block_id(int32_t value) {
+inline void UpLRCLpHubSessionBegin::set_local_block_id(int32_t value) {
   _internal_set_local_block_id(value);
-  // @@protoc_insertion_point(field_set:proxy_proto.CordLpHubSessionBegin.local_block_id)
+  // @@protoc_insertion_point(field_set:proxy_proto.UpLRCLpHubSessionBegin.local_block_id)
 }
 
 // string local_block_key = 6;
-inline void CordLpHubSessionBegin::clear_local_block_key() {
+inline void UpLRCLpHubSessionBegin::clear_local_block_key() {
   _impl_.local_block_key_.ClearToEmpty();
 }
-inline const std::string& CordLpHubSessionBegin::local_block_key() const {
-  // @@protoc_insertion_point(field_get:proxy_proto.CordLpHubSessionBegin.local_block_key)
+inline const std::string& UpLRCLpHubSessionBegin::local_block_key() const {
+  // @@protoc_insertion_point(field_get:proxy_proto.UpLRCLpHubSessionBegin.local_block_key)
   return _internal_local_block_key();
 }
 template <typename ArgT0, typename... ArgT>
 inline PROTOBUF_ALWAYS_INLINE
-void CordLpHubSessionBegin::set_local_block_key(ArgT0&& arg0, ArgT... args) {
+void UpLRCLpHubSessionBegin::set_local_block_key(ArgT0&& arg0, ArgT... args) {
  
  _impl_.local_block_key_.Set(static_cast<ArgT0 &&>(arg0), args..., GetArenaForAllocation());
-  // @@protoc_insertion_point(field_set:proxy_proto.CordLpHubSessionBegin.local_block_key)
+  // @@protoc_insertion_point(field_set:proxy_proto.UpLRCLpHubSessionBegin.local_block_key)
 }
-inline std::string* CordLpHubSessionBegin::mutable_local_block_key() {
+inline std::string* UpLRCLpHubSessionBegin::mutable_local_block_key() {
   std::string* _s = _internal_mutable_local_block_key();
-  // @@protoc_insertion_point(field_mutable:proxy_proto.CordLpHubSessionBegin.local_block_key)
+  // @@protoc_insertion_point(field_mutable:proxy_proto.UpLRCLpHubSessionBegin.local_block_key)
   return _s;
 }
-inline const std::string& CordLpHubSessionBegin::_internal_local_block_key() const {
+inline const std::string& UpLRCLpHubSessionBegin::_internal_local_block_key() const {
   return _impl_.local_block_key_.Get();
 }
-inline void CordLpHubSessionBegin::_internal_set_local_block_key(const std::string& value) {
+inline void UpLRCLpHubSessionBegin::_internal_set_local_block_key(const std::string& value) {
   
   _impl_.local_block_key_.Set(value, GetArenaForAllocation());
 }
-inline std::string* CordLpHubSessionBegin::_internal_mutable_local_block_key() {
+inline std::string* UpLRCLpHubSessionBegin::_internal_mutable_local_block_key() {
   
   return _impl_.local_block_key_.Mutable(GetArenaForAllocation());
 }
-inline std::string* CordLpHubSessionBegin::release_local_block_key() {
-  // @@protoc_insertion_point(field_release:proxy_proto.CordLpHubSessionBegin.local_block_key)
+inline std::string* UpLRCLpHubSessionBegin::release_local_block_key() {
+  // @@protoc_insertion_point(field_release:proxy_proto.UpLRCLpHubSessionBegin.local_block_key)
   return _impl_.local_block_key_.Release();
 }
-inline void CordLpHubSessionBegin::set_allocated_local_block_key(std::string* local_block_key) {
+inline void UpLRCLpHubSessionBegin::set_allocated_local_block_key(std::string* local_block_key) {
   if (local_block_key != nullptr) {
     
   } else {
@@ -21985,45 +21985,45 @@ inline void CordLpHubSessionBegin::set_allocated_local_block_key(std::string* lo
     _impl_.local_block_key_.Set("", GetArenaForAllocation());
   }
 #endif // PROTOBUF_FORCE_COPY_DEFAULT_STRING
-  // @@protoc_insertion_point(field_set_allocated:proxy_proto.CordLpHubSessionBegin.local_block_key)
+  // @@protoc_insertion_point(field_set_allocated:proxy_proto.UpLRCLpHubSessionBegin.local_block_key)
 }
 
 // string local_datanode_ip = 7;
-inline void CordLpHubSessionBegin::clear_local_datanode_ip() {
+inline void UpLRCLpHubSessionBegin::clear_local_datanode_ip() {
   _impl_.local_datanode_ip_.ClearToEmpty();
 }
-inline const std::string& CordLpHubSessionBegin::local_datanode_ip() const {
-  // @@protoc_insertion_point(field_get:proxy_proto.CordLpHubSessionBegin.local_datanode_ip)
+inline const std::string& UpLRCLpHubSessionBegin::local_datanode_ip() const {
+  // @@protoc_insertion_point(field_get:proxy_proto.UpLRCLpHubSessionBegin.local_datanode_ip)
   return _internal_local_datanode_ip();
 }
 template <typename ArgT0, typename... ArgT>
 inline PROTOBUF_ALWAYS_INLINE
-void CordLpHubSessionBegin::set_local_datanode_ip(ArgT0&& arg0, ArgT... args) {
+void UpLRCLpHubSessionBegin::set_local_datanode_ip(ArgT0&& arg0, ArgT... args) {
  
  _impl_.local_datanode_ip_.Set(static_cast<ArgT0 &&>(arg0), args..., GetArenaForAllocation());
-  // @@protoc_insertion_point(field_set:proxy_proto.CordLpHubSessionBegin.local_datanode_ip)
+  // @@protoc_insertion_point(field_set:proxy_proto.UpLRCLpHubSessionBegin.local_datanode_ip)
 }
-inline std::string* CordLpHubSessionBegin::mutable_local_datanode_ip() {
+inline std::string* UpLRCLpHubSessionBegin::mutable_local_datanode_ip() {
   std::string* _s = _internal_mutable_local_datanode_ip();
-  // @@protoc_insertion_point(field_mutable:proxy_proto.CordLpHubSessionBegin.local_datanode_ip)
+  // @@protoc_insertion_point(field_mutable:proxy_proto.UpLRCLpHubSessionBegin.local_datanode_ip)
   return _s;
 }
-inline const std::string& CordLpHubSessionBegin::_internal_local_datanode_ip() const {
+inline const std::string& UpLRCLpHubSessionBegin::_internal_local_datanode_ip() const {
   return _impl_.local_datanode_ip_.Get();
 }
-inline void CordLpHubSessionBegin::_internal_set_local_datanode_ip(const std::string& value) {
+inline void UpLRCLpHubSessionBegin::_internal_set_local_datanode_ip(const std::string& value) {
   
   _impl_.local_datanode_ip_.Set(value, GetArenaForAllocation());
 }
-inline std::string* CordLpHubSessionBegin::_internal_mutable_local_datanode_ip() {
+inline std::string* UpLRCLpHubSessionBegin::_internal_mutable_local_datanode_ip() {
   
   return _impl_.local_datanode_ip_.Mutable(GetArenaForAllocation());
 }
-inline std::string* CordLpHubSessionBegin::release_local_datanode_ip() {
-  // @@protoc_insertion_point(field_release:proxy_proto.CordLpHubSessionBegin.local_datanode_ip)
+inline std::string* UpLRCLpHubSessionBegin::release_local_datanode_ip() {
+  // @@protoc_insertion_point(field_release:proxy_proto.UpLRCLpHubSessionBegin.local_datanode_ip)
   return _impl_.local_datanode_ip_.Release();
 }
-inline void CordLpHubSessionBegin::set_allocated_local_datanode_ip(std::string* local_datanode_ip) {
+inline void UpLRCLpHubSessionBegin::set_allocated_local_datanode_ip(std::string* local_datanode_ip) {
   if (local_datanode_ip != nullptr) {
     
   } else {
@@ -22035,65 +22035,65 @@ inline void CordLpHubSessionBegin::set_allocated_local_datanode_ip(std::string* 
     _impl_.local_datanode_ip_.Set("", GetArenaForAllocation());
   }
 #endif // PROTOBUF_FORCE_COPY_DEFAULT_STRING
-  // @@protoc_insertion_point(field_set_allocated:proxy_proto.CordLpHubSessionBegin.local_datanode_ip)
+  // @@protoc_insertion_point(field_set_allocated:proxy_proto.UpLRCLpHubSessionBegin.local_datanode_ip)
 }
 
 // int32 local_datanode_port = 8;
-inline void CordLpHubSessionBegin::clear_local_datanode_port() {
+inline void UpLRCLpHubSessionBegin::clear_local_datanode_port() {
   _impl_.local_datanode_port_ = 0;
 }
-inline int32_t CordLpHubSessionBegin::_internal_local_datanode_port() const {
+inline int32_t UpLRCLpHubSessionBegin::_internal_local_datanode_port() const {
   return _impl_.local_datanode_port_;
 }
-inline int32_t CordLpHubSessionBegin::local_datanode_port() const {
-  // @@protoc_insertion_point(field_get:proxy_proto.CordLpHubSessionBegin.local_datanode_port)
+inline int32_t UpLRCLpHubSessionBegin::local_datanode_port() const {
+  // @@protoc_insertion_point(field_get:proxy_proto.UpLRCLpHubSessionBegin.local_datanode_port)
   return _internal_local_datanode_port();
 }
-inline void CordLpHubSessionBegin::_internal_set_local_datanode_port(int32_t value) {
+inline void UpLRCLpHubSessionBegin::_internal_set_local_datanode_port(int32_t value) {
   
   _impl_.local_datanode_port_ = value;
 }
-inline void CordLpHubSessionBegin::set_local_datanode_port(int32_t value) {
+inline void UpLRCLpHubSessionBegin::set_local_datanode_port(int32_t value) {
   _internal_set_local_datanode_port(value);
-  // @@protoc_insertion_point(field_set:proxy_proto.CordLpHubSessionBegin.local_datanode_port)
+  // @@protoc_insertion_point(field_set:proxy_proto.UpLRCLpHubSessionBegin.local_datanode_port)
 }
 
 // string dest_lp_proxy_ip = 9;
-inline void CordLpHubSessionBegin::clear_dest_lp_proxy_ip() {
+inline void UpLRCLpHubSessionBegin::clear_dest_lp_proxy_ip() {
   _impl_.dest_lp_proxy_ip_.ClearToEmpty();
 }
-inline const std::string& CordLpHubSessionBegin::dest_lp_proxy_ip() const {
-  // @@protoc_insertion_point(field_get:proxy_proto.CordLpHubSessionBegin.dest_lp_proxy_ip)
+inline const std::string& UpLRCLpHubSessionBegin::dest_lp_proxy_ip() const {
+  // @@protoc_insertion_point(field_get:proxy_proto.UpLRCLpHubSessionBegin.dest_lp_proxy_ip)
   return _internal_dest_lp_proxy_ip();
 }
 template <typename ArgT0, typename... ArgT>
 inline PROTOBUF_ALWAYS_INLINE
-void CordLpHubSessionBegin::set_dest_lp_proxy_ip(ArgT0&& arg0, ArgT... args) {
+void UpLRCLpHubSessionBegin::set_dest_lp_proxy_ip(ArgT0&& arg0, ArgT... args) {
  
  _impl_.dest_lp_proxy_ip_.Set(static_cast<ArgT0 &&>(arg0), args..., GetArenaForAllocation());
-  // @@protoc_insertion_point(field_set:proxy_proto.CordLpHubSessionBegin.dest_lp_proxy_ip)
+  // @@protoc_insertion_point(field_set:proxy_proto.UpLRCLpHubSessionBegin.dest_lp_proxy_ip)
 }
-inline std::string* CordLpHubSessionBegin::mutable_dest_lp_proxy_ip() {
+inline std::string* UpLRCLpHubSessionBegin::mutable_dest_lp_proxy_ip() {
   std::string* _s = _internal_mutable_dest_lp_proxy_ip();
-  // @@protoc_insertion_point(field_mutable:proxy_proto.CordLpHubSessionBegin.dest_lp_proxy_ip)
+  // @@protoc_insertion_point(field_mutable:proxy_proto.UpLRCLpHubSessionBegin.dest_lp_proxy_ip)
   return _s;
 }
-inline const std::string& CordLpHubSessionBegin::_internal_dest_lp_proxy_ip() const {
+inline const std::string& UpLRCLpHubSessionBegin::_internal_dest_lp_proxy_ip() const {
   return _impl_.dest_lp_proxy_ip_.Get();
 }
-inline void CordLpHubSessionBegin::_internal_set_dest_lp_proxy_ip(const std::string& value) {
+inline void UpLRCLpHubSessionBegin::_internal_set_dest_lp_proxy_ip(const std::string& value) {
   
   _impl_.dest_lp_proxy_ip_.Set(value, GetArenaForAllocation());
 }
-inline std::string* CordLpHubSessionBegin::_internal_mutable_dest_lp_proxy_ip() {
+inline std::string* UpLRCLpHubSessionBegin::_internal_mutable_dest_lp_proxy_ip() {
   
   return _impl_.dest_lp_proxy_ip_.Mutable(GetArenaForAllocation());
 }
-inline std::string* CordLpHubSessionBegin::release_dest_lp_proxy_ip() {
-  // @@protoc_insertion_point(field_release:proxy_proto.CordLpHubSessionBegin.dest_lp_proxy_ip)
+inline std::string* UpLRCLpHubSessionBegin::release_dest_lp_proxy_ip() {
+  // @@protoc_insertion_point(field_release:proxy_proto.UpLRCLpHubSessionBegin.dest_lp_proxy_ip)
   return _impl_.dest_lp_proxy_ip_.Release();
 }
-inline void CordLpHubSessionBegin::set_allocated_dest_lp_proxy_ip(std::string* dest_lp_proxy_ip) {
+inline void UpLRCLpHubSessionBegin::set_allocated_dest_lp_proxy_ip(std::string* dest_lp_proxy_ip) {
   if (dest_lp_proxy_ip != nullptr) {
     
   } else {
@@ -22105,109 +22105,109 @@ inline void CordLpHubSessionBegin::set_allocated_dest_lp_proxy_ip(std::string* d
     _impl_.dest_lp_proxy_ip_.Set("", GetArenaForAllocation());
   }
 #endif // PROTOBUF_FORCE_COPY_DEFAULT_STRING
-  // @@protoc_insertion_point(field_set_allocated:proxy_proto.CordLpHubSessionBegin.dest_lp_proxy_ip)
+  // @@protoc_insertion_point(field_set_allocated:proxy_proto.UpLRCLpHubSessionBegin.dest_lp_proxy_ip)
 }
 
 // int32 dest_lp_proxy_port = 10;
-inline void CordLpHubSessionBegin::clear_dest_lp_proxy_port() {
+inline void UpLRCLpHubSessionBegin::clear_dest_lp_proxy_port() {
   _impl_.dest_lp_proxy_port_ = 0;
 }
-inline int32_t CordLpHubSessionBegin::_internal_dest_lp_proxy_port() const {
+inline int32_t UpLRCLpHubSessionBegin::_internal_dest_lp_proxy_port() const {
   return _impl_.dest_lp_proxy_port_;
 }
-inline int32_t CordLpHubSessionBegin::dest_lp_proxy_port() const {
-  // @@protoc_insertion_point(field_get:proxy_proto.CordLpHubSessionBegin.dest_lp_proxy_port)
+inline int32_t UpLRCLpHubSessionBegin::dest_lp_proxy_port() const {
+  // @@protoc_insertion_point(field_get:proxy_proto.UpLRCLpHubSessionBegin.dest_lp_proxy_port)
   return _internal_dest_lp_proxy_port();
 }
-inline void CordLpHubSessionBegin::_internal_set_dest_lp_proxy_port(int32_t value) {
+inline void UpLRCLpHubSessionBegin::_internal_set_dest_lp_proxy_port(int32_t value) {
   
   _impl_.dest_lp_proxy_port_ = value;
 }
-inline void CordLpHubSessionBegin::set_dest_lp_proxy_port(int32_t value) {
+inline void UpLRCLpHubSessionBegin::set_dest_lp_proxy_port(int32_t value) {
   _internal_set_dest_lp_proxy_port(value);
-  // @@protoc_insertion_point(field_set:proxy_proto.CordLpHubSessionBegin.dest_lp_proxy_port)
+  // @@protoc_insertion_point(field_set:proxy_proto.UpLRCLpHubSessionBegin.dest_lp_proxy_port)
 }
 
 // int32 stripe_id = 11;
-inline void CordLpHubSessionBegin::clear_stripe_id() {
+inline void UpLRCLpHubSessionBegin::clear_stripe_id() {
   _impl_.stripe_id_ = 0;
 }
-inline int32_t CordLpHubSessionBegin::_internal_stripe_id() const {
+inline int32_t UpLRCLpHubSessionBegin::_internal_stripe_id() const {
   return _impl_.stripe_id_;
 }
-inline int32_t CordLpHubSessionBegin::stripe_id() const {
-  // @@protoc_insertion_point(field_get:proxy_proto.CordLpHubSessionBegin.stripe_id)
+inline int32_t UpLRCLpHubSessionBegin::stripe_id() const {
+  // @@protoc_insertion_point(field_get:proxy_proto.UpLRCLpHubSessionBegin.stripe_id)
   return _internal_stripe_id();
 }
-inline void CordLpHubSessionBegin::_internal_set_stripe_id(int32_t value) {
+inline void UpLRCLpHubSessionBegin::_internal_set_stripe_id(int32_t value) {
   
   _impl_.stripe_id_ = value;
 }
-inline void CordLpHubSessionBegin::set_stripe_id(int32_t value) {
+inline void UpLRCLpHubSessionBegin::set_stripe_id(int32_t value) {
   _internal_set_stripe_id(value);
-  // @@protoc_insertion_point(field_set:proxy_proto.CordLpHubSessionBegin.stripe_id)
+  // @@protoc_insertion_point(field_set:proxy_proto.UpLRCLpHubSessionBegin.stripe_id)
 }
 
 // int32 hub_global_block_id = 12;
-inline void CordLpHubSessionBegin::clear_hub_global_block_id() {
+inline void UpLRCLpHubSessionBegin::clear_hub_global_block_id() {
   _impl_.hub_global_block_id_ = 0;
 }
-inline int32_t CordLpHubSessionBegin::_internal_hub_global_block_id() const {
+inline int32_t UpLRCLpHubSessionBegin::_internal_hub_global_block_id() const {
   return _impl_.hub_global_block_id_;
 }
-inline int32_t CordLpHubSessionBegin::hub_global_block_id() const {
-  // @@protoc_insertion_point(field_get:proxy_proto.CordLpHubSessionBegin.hub_global_block_id)
+inline int32_t UpLRCLpHubSessionBegin::hub_global_block_id() const {
+  // @@protoc_insertion_point(field_get:proxy_proto.UpLRCLpHubSessionBegin.hub_global_block_id)
   return _internal_hub_global_block_id();
 }
-inline void CordLpHubSessionBegin::_internal_set_hub_global_block_id(int32_t value) {
+inline void UpLRCLpHubSessionBegin::_internal_set_hub_global_block_id(int32_t value) {
   
   _impl_.hub_global_block_id_ = value;
 }
-inline void CordLpHubSessionBegin::set_hub_global_block_id(int32_t value) {
+inline void UpLRCLpHubSessionBegin::set_hub_global_block_id(int32_t value) {
   _internal_set_hub_global_block_id(value);
-  // @@protoc_insertion_point(field_set:proxy_proto.CordLpHubSessionBegin.hub_global_block_id)
+  // @@protoc_insertion_point(field_set:proxy_proto.UpLRCLpHubSessionBegin.hub_global_block_id)
 }
 
 // -------------------------------------------------------------------
 
-// CordLpHubPartialPush
+// UpLRCLpHubPartialPush
 
 // string session_key = 1;
-inline void CordLpHubPartialPush::clear_session_key() {
+inline void UpLRCLpHubPartialPush::clear_session_key() {
   _impl_.session_key_.ClearToEmpty();
 }
-inline const std::string& CordLpHubPartialPush::session_key() const {
-  // @@protoc_insertion_point(field_get:proxy_proto.CordLpHubPartialPush.session_key)
+inline const std::string& UpLRCLpHubPartialPush::session_key() const {
+  // @@protoc_insertion_point(field_get:proxy_proto.UpLRCLpHubPartialPush.session_key)
   return _internal_session_key();
 }
 template <typename ArgT0, typename... ArgT>
 inline PROTOBUF_ALWAYS_INLINE
-void CordLpHubPartialPush::set_session_key(ArgT0&& arg0, ArgT... args) {
+void UpLRCLpHubPartialPush::set_session_key(ArgT0&& arg0, ArgT... args) {
  
  _impl_.session_key_.Set(static_cast<ArgT0 &&>(arg0), args..., GetArenaForAllocation());
-  // @@protoc_insertion_point(field_set:proxy_proto.CordLpHubPartialPush.session_key)
+  // @@protoc_insertion_point(field_set:proxy_proto.UpLRCLpHubPartialPush.session_key)
 }
-inline std::string* CordLpHubPartialPush::mutable_session_key() {
+inline std::string* UpLRCLpHubPartialPush::mutable_session_key() {
   std::string* _s = _internal_mutable_session_key();
-  // @@protoc_insertion_point(field_mutable:proxy_proto.CordLpHubPartialPush.session_key)
+  // @@protoc_insertion_point(field_mutable:proxy_proto.UpLRCLpHubPartialPush.session_key)
   return _s;
 }
-inline const std::string& CordLpHubPartialPush::_internal_session_key() const {
+inline const std::string& UpLRCLpHubPartialPush::_internal_session_key() const {
   return _impl_.session_key_.Get();
 }
-inline void CordLpHubPartialPush::_internal_set_session_key(const std::string& value) {
+inline void UpLRCLpHubPartialPush::_internal_set_session_key(const std::string& value) {
   
   _impl_.session_key_.Set(value, GetArenaForAllocation());
 }
-inline std::string* CordLpHubPartialPush::_internal_mutable_session_key() {
+inline std::string* UpLRCLpHubPartialPush::_internal_mutable_session_key() {
   
   return _impl_.session_key_.Mutable(GetArenaForAllocation());
 }
-inline std::string* CordLpHubPartialPush::release_session_key() {
-  // @@protoc_insertion_point(field_release:proxy_proto.CordLpHubPartialPush.session_key)
+inline std::string* UpLRCLpHubPartialPush::release_session_key() {
+  // @@protoc_insertion_point(field_release:proxy_proto.UpLRCLpHubPartialPush.session_key)
   return _impl_.session_key_.Release();
 }
-inline void CordLpHubPartialPush::set_allocated_session_key(std::string* session_key) {
+inline void UpLRCLpHubPartialPush::set_allocated_session_key(std::string* session_key) {
   if (session_key != nullptr) {
     
   } else {
@@ -22219,45 +22219,45 @@ inline void CordLpHubPartialPush::set_allocated_session_key(std::string* session
     _impl_.session_key_.Set("", GetArenaForAllocation());
   }
 #endif // PROTOBUF_FORCE_COPY_DEFAULT_STRING
-  // @@protoc_insertion_point(field_set_allocated:proxy_proto.CordLpHubPartialPush.session_key)
+  // @@protoc_insertion_point(field_set_allocated:proxy_proto.UpLRCLpHubPartialPush.session_key)
 }
 
 // bytes partial_payload = 2;
-inline void CordLpHubPartialPush::clear_partial_payload() {
+inline void UpLRCLpHubPartialPush::clear_partial_payload() {
   _impl_.partial_payload_.ClearToEmpty();
 }
-inline const std::string& CordLpHubPartialPush::partial_payload() const {
-  // @@protoc_insertion_point(field_get:proxy_proto.CordLpHubPartialPush.partial_payload)
+inline const std::string& UpLRCLpHubPartialPush::partial_payload() const {
+  // @@protoc_insertion_point(field_get:proxy_proto.UpLRCLpHubPartialPush.partial_payload)
   return _internal_partial_payload();
 }
 template <typename ArgT0, typename... ArgT>
 inline PROTOBUF_ALWAYS_INLINE
-void CordLpHubPartialPush::set_partial_payload(ArgT0&& arg0, ArgT... args) {
+void UpLRCLpHubPartialPush::set_partial_payload(ArgT0&& arg0, ArgT... args) {
  
  _impl_.partial_payload_.SetBytes(static_cast<ArgT0 &&>(arg0), args..., GetArenaForAllocation());
-  // @@protoc_insertion_point(field_set:proxy_proto.CordLpHubPartialPush.partial_payload)
+  // @@protoc_insertion_point(field_set:proxy_proto.UpLRCLpHubPartialPush.partial_payload)
 }
-inline std::string* CordLpHubPartialPush::mutable_partial_payload() {
+inline std::string* UpLRCLpHubPartialPush::mutable_partial_payload() {
   std::string* _s = _internal_mutable_partial_payload();
-  // @@protoc_insertion_point(field_mutable:proxy_proto.CordLpHubPartialPush.partial_payload)
+  // @@protoc_insertion_point(field_mutable:proxy_proto.UpLRCLpHubPartialPush.partial_payload)
   return _s;
 }
-inline const std::string& CordLpHubPartialPush::_internal_partial_payload() const {
+inline const std::string& UpLRCLpHubPartialPush::_internal_partial_payload() const {
   return _impl_.partial_payload_.Get();
 }
-inline void CordLpHubPartialPush::_internal_set_partial_payload(const std::string& value) {
+inline void UpLRCLpHubPartialPush::_internal_set_partial_payload(const std::string& value) {
   
   _impl_.partial_payload_.Set(value, GetArenaForAllocation());
 }
-inline std::string* CordLpHubPartialPush::_internal_mutable_partial_payload() {
+inline std::string* UpLRCLpHubPartialPush::_internal_mutable_partial_payload() {
   
   return _impl_.partial_payload_.Mutable(GetArenaForAllocation());
 }
-inline std::string* CordLpHubPartialPush::release_partial_payload() {
-  // @@protoc_insertion_point(field_release:proxy_proto.CordLpHubPartialPush.partial_payload)
+inline std::string* UpLRCLpHubPartialPush::release_partial_payload() {
+  // @@protoc_insertion_point(field_release:proxy_proto.UpLRCLpHubPartialPush.partial_payload)
   return _impl_.partial_payload_.Release();
 }
-inline void CordLpHubPartialPush::set_allocated_partial_payload(std::string* partial_payload) {
+inline void UpLRCLpHubPartialPush::set_allocated_partial_payload(std::string* partial_payload) {
   if (partial_payload != nullptr) {
     
   } else {
@@ -22269,49 +22269,49 @@ inline void CordLpHubPartialPush::set_allocated_partial_payload(std::string* par
     _impl_.partial_payload_.Set("", GetArenaForAllocation());
   }
 #endif // PROTOBUF_FORCE_COPY_DEFAULT_STRING
-  // @@protoc_insertion_point(field_set_allocated:proxy_proto.CordLpHubPartialPush.partial_payload)
+  // @@protoc_insertion_point(field_set_allocated:proxy_proto.UpLRCLpHubPartialPush.partial_payload)
 }
 
 // -------------------------------------------------------------------
 
-// CordLpComputePartialAndPush
+// UpLRCLpComputePartialAndPush
 
 // string session_key = 1;
-inline void CordLpComputePartialAndPush::clear_session_key() {
+inline void UpLRCLpComputePartialAndPush::clear_session_key() {
   _impl_.session_key_.ClearToEmpty();
 }
-inline const std::string& CordLpComputePartialAndPush::session_key() const {
-  // @@protoc_insertion_point(field_get:proxy_proto.CordLpComputePartialAndPush.session_key)
+inline const std::string& UpLRCLpComputePartialAndPush::session_key() const {
+  // @@protoc_insertion_point(field_get:proxy_proto.UpLRCLpComputePartialAndPush.session_key)
   return _internal_session_key();
 }
 template <typename ArgT0, typename... ArgT>
 inline PROTOBUF_ALWAYS_INLINE
-void CordLpComputePartialAndPush::set_session_key(ArgT0&& arg0, ArgT... args) {
+void UpLRCLpComputePartialAndPush::set_session_key(ArgT0&& arg0, ArgT... args) {
  
  _impl_.session_key_.Set(static_cast<ArgT0 &&>(arg0), args..., GetArenaForAllocation());
-  // @@protoc_insertion_point(field_set:proxy_proto.CordLpComputePartialAndPush.session_key)
+  // @@protoc_insertion_point(field_set:proxy_proto.UpLRCLpComputePartialAndPush.session_key)
 }
-inline std::string* CordLpComputePartialAndPush::mutable_session_key() {
+inline std::string* UpLRCLpComputePartialAndPush::mutable_session_key() {
   std::string* _s = _internal_mutable_session_key();
-  // @@protoc_insertion_point(field_mutable:proxy_proto.CordLpComputePartialAndPush.session_key)
+  // @@protoc_insertion_point(field_mutable:proxy_proto.UpLRCLpComputePartialAndPush.session_key)
   return _s;
 }
-inline const std::string& CordLpComputePartialAndPush::_internal_session_key() const {
+inline const std::string& UpLRCLpComputePartialAndPush::_internal_session_key() const {
   return _impl_.session_key_.Get();
 }
-inline void CordLpComputePartialAndPush::_internal_set_session_key(const std::string& value) {
+inline void UpLRCLpComputePartialAndPush::_internal_set_session_key(const std::string& value) {
   
   _impl_.session_key_.Set(value, GetArenaForAllocation());
 }
-inline std::string* CordLpComputePartialAndPush::_internal_mutable_session_key() {
+inline std::string* UpLRCLpComputePartialAndPush::_internal_mutable_session_key() {
   
   return _impl_.session_key_.Mutable(GetArenaForAllocation());
 }
-inline std::string* CordLpComputePartialAndPush::release_session_key() {
-  // @@protoc_insertion_point(field_release:proxy_proto.CordLpComputePartialAndPush.session_key)
+inline std::string* UpLRCLpComputePartialAndPush::release_session_key() {
+  // @@protoc_insertion_point(field_release:proxy_proto.UpLRCLpComputePartialAndPush.session_key)
   return _impl_.session_key_.Release();
 }
-inline void CordLpComputePartialAndPush::set_allocated_session_key(std::string* session_key) {
+inline void UpLRCLpComputePartialAndPush::set_allocated_session_key(std::string* session_key) {
   if (session_key != nullptr) {
     
   } else {
@@ -22323,45 +22323,45 @@ inline void CordLpComputePartialAndPush::set_allocated_session_key(std::string* 
     _impl_.session_key_.Set("", GetArenaForAllocation());
   }
 #endif // PROTOBUF_FORCE_COPY_DEFAULT_STRING
-  // @@protoc_insertion_point(field_set_allocated:proxy_proto.CordLpComputePartialAndPush.session_key)
+  // @@protoc_insertion_point(field_set_allocated:proxy_proto.UpLRCLpComputePartialAndPush.session_key)
 }
 
 // string hub_proxy_ip = 2;
-inline void CordLpComputePartialAndPush::clear_hub_proxy_ip() {
+inline void UpLRCLpComputePartialAndPush::clear_hub_proxy_ip() {
   _impl_.hub_proxy_ip_.ClearToEmpty();
 }
-inline const std::string& CordLpComputePartialAndPush::hub_proxy_ip() const {
-  // @@protoc_insertion_point(field_get:proxy_proto.CordLpComputePartialAndPush.hub_proxy_ip)
+inline const std::string& UpLRCLpComputePartialAndPush::hub_proxy_ip() const {
+  // @@protoc_insertion_point(field_get:proxy_proto.UpLRCLpComputePartialAndPush.hub_proxy_ip)
   return _internal_hub_proxy_ip();
 }
 template <typename ArgT0, typename... ArgT>
 inline PROTOBUF_ALWAYS_INLINE
-void CordLpComputePartialAndPush::set_hub_proxy_ip(ArgT0&& arg0, ArgT... args) {
+void UpLRCLpComputePartialAndPush::set_hub_proxy_ip(ArgT0&& arg0, ArgT... args) {
  
  _impl_.hub_proxy_ip_.Set(static_cast<ArgT0 &&>(arg0), args..., GetArenaForAllocation());
-  // @@protoc_insertion_point(field_set:proxy_proto.CordLpComputePartialAndPush.hub_proxy_ip)
+  // @@protoc_insertion_point(field_set:proxy_proto.UpLRCLpComputePartialAndPush.hub_proxy_ip)
 }
-inline std::string* CordLpComputePartialAndPush::mutable_hub_proxy_ip() {
+inline std::string* UpLRCLpComputePartialAndPush::mutable_hub_proxy_ip() {
   std::string* _s = _internal_mutable_hub_proxy_ip();
-  // @@protoc_insertion_point(field_mutable:proxy_proto.CordLpComputePartialAndPush.hub_proxy_ip)
+  // @@protoc_insertion_point(field_mutable:proxy_proto.UpLRCLpComputePartialAndPush.hub_proxy_ip)
   return _s;
 }
-inline const std::string& CordLpComputePartialAndPush::_internal_hub_proxy_ip() const {
+inline const std::string& UpLRCLpComputePartialAndPush::_internal_hub_proxy_ip() const {
   return _impl_.hub_proxy_ip_.Get();
 }
-inline void CordLpComputePartialAndPush::_internal_set_hub_proxy_ip(const std::string& value) {
+inline void UpLRCLpComputePartialAndPush::_internal_set_hub_proxy_ip(const std::string& value) {
   
   _impl_.hub_proxy_ip_.Set(value, GetArenaForAllocation());
 }
-inline std::string* CordLpComputePartialAndPush::_internal_mutable_hub_proxy_ip() {
+inline std::string* UpLRCLpComputePartialAndPush::_internal_mutable_hub_proxy_ip() {
   
   return _impl_.hub_proxy_ip_.Mutable(GetArenaForAllocation());
 }
-inline std::string* CordLpComputePartialAndPush::release_hub_proxy_ip() {
-  // @@protoc_insertion_point(field_release:proxy_proto.CordLpComputePartialAndPush.hub_proxy_ip)
+inline std::string* UpLRCLpComputePartialAndPush::release_hub_proxy_ip() {
+  // @@protoc_insertion_point(field_release:proxy_proto.UpLRCLpComputePartialAndPush.hub_proxy_ip)
   return _impl_.hub_proxy_ip_.Release();
 }
-inline void CordLpComputePartialAndPush::set_allocated_hub_proxy_ip(std::string* hub_proxy_ip) {
+inline void UpLRCLpComputePartialAndPush::set_allocated_hub_proxy_ip(std::string* hub_proxy_ip) {
   if (hub_proxy_ip != nullptr) {
     
   } else {
@@ -22373,65 +22373,65 @@ inline void CordLpComputePartialAndPush::set_allocated_hub_proxy_ip(std::string*
     _impl_.hub_proxy_ip_.Set("", GetArenaForAllocation());
   }
 #endif // PROTOBUF_FORCE_COPY_DEFAULT_STRING
-  // @@protoc_insertion_point(field_set_allocated:proxy_proto.CordLpComputePartialAndPush.hub_proxy_ip)
+  // @@protoc_insertion_point(field_set_allocated:proxy_proto.UpLRCLpComputePartialAndPush.hub_proxy_ip)
 }
 
 // int32 hub_proxy_port = 3;
-inline void CordLpComputePartialAndPush::clear_hub_proxy_port() {
+inline void UpLRCLpComputePartialAndPush::clear_hub_proxy_port() {
   _impl_.hub_proxy_port_ = 0;
 }
-inline int32_t CordLpComputePartialAndPush::_internal_hub_proxy_port() const {
+inline int32_t UpLRCLpComputePartialAndPush::_internal_hub_proxy_port() const {
   return _impl_.hub_proxy_port_;
 }
-inline int32_t CordLpComputePartialAndPush::hub_proxy_port() const {
-  // @@protoc_insertion_point(field_get:proxy_proto.CordLpComputePartialAndPush.hub_proxy_port)
+inline int32_t UpLRCLpComputePartialAndPush::hub_proxy_port() const {
+  // @@protoc_insertion_point(field_get:proxy_proto.UpLRCLpComputePartialAndPush.hub_proxy_port)
   return _internal_hub_proxy_port();
 }
-inline void CordLpComputePartialAndPush::_internal_set_hub_proxy_port(int32_t value) {
+inline void UpLRCLpComputePartialAndPush::_internal_set_hub_proxy_port(int32_t value) {
   
   _impl_.hub_proxy_port_ = value;
 }
-inline void CordLpComputePartialAndPush::set_hub_proxy_port(int32_t value) {
+inline void UpLRCLpComputePartialAndPush::set_hub_proxy_port(int32_t value) {
   _internal_set_hub_proxy_port(value);
-  // @@protoc_insertion_point(field_set:proxy_proto.CordLpComputePartialAndPush.hub_proxy_port)
+  // @@protoc_insertion_point(field_set:proxy_proto.UpLRCLpComputePartialAndPush.hub_proxy_port)
 }
 
 // string delta_blob_key = 4;
-inline void CordLpComputePartialAndPush::clear_delta_blob_key() {
+inline void UpLRCLpComputePartialAndPush::clear_delta_blob_key() {
   _impl_.delta_blob_key_.ClearToEmpty();
 }
-inline const std::string& CordLpComputePartialAndPush::delta_blob_key() const {
-  // @@protoc_insertion_point(field_get:proxy_proto.CordLpComputePartialAndPush.delta_blob_key)
+inline const std::string& UpLRCLpComputePartialAndPush::delta_blob_key() const {
+  // @@protoc_insertion_point(field_get:proxy_proto.UpLRCLpComputePartialAndPush.delta_blob_key)
   return _internal_delta_blob_key();
 }
 template <typename ArgT0, typename... ArgT>
 inline PROTOBUF_ALWAYS_INLINE
-void CordLpComputePartialAndPush::set_delta_blob_key(ArgT0&& arg0, ArgT... args) {
+void UpLRCLpComputePartialAndPush::set_delta_blob_key(ArgT0&& arg0, ArgT... args) {
  
  _impl_.delta_blob_key_.Set(static_cast<ArgT0 &&>(arg0), args..., GetArenaForAllocation());
-  // @@protoc_insertion_point(field_set:proxy_proto.CordLpComputePartialAndPush.delta_blob_key)
+  // @@protoc_insertion_point(field_set:proxy_proto.UpLRCLpComputePartialAndPush.delta_blob_key)
 }
-inline std::string* CordLpComputePartialAndPush::mutable_delta_blob_key() {
+inline std::string* UpLRCLpComputePartialAndPush::mutable_delta_blob_key() {
   std::string* _s = _internal_mutable_delta_blob_key();
-  // @@protoc_insertion_point(field_mutable:proxy_proto.CordLpComputePartialAndPush.delta_blob_key)
+  // @@protoc_insertion_point(field_mutable:proxy_proto.UpLRCLpComputePartialAndPush.delta_blob_key)
   return _s;
 }
-inline const std::string& CordLpComputePartialAndPush::_internal_delta_blob_key() const {
+inline const std::string& UpLRCLpComputePartialAndPush::_internal_delta_blob_key() const {
   return _impl_.delta_blob_key_.Get();
 }
-inline void CordLpComputePartialAndPush::_internal_set_delta_blob_key(const std::string& value) {
+inline void UpLRCLpComputePartialAndPush::_internal_set_delta_blob_key(const std::string& value) {
   
   _impl_.delta_blob_key_.Set(value, GetArenaForAllocation());
 }
-inline std::string* CordLpComputePartialAndPush::_internal_mutable_delta_blob_key() {
+inline std::string* UpLRCLpComputePartialAndPush::_internal_mutable_delta_blob_key() {
   
   return _impl_.delta_blob_key_.Mutable(GetArenaForAllocation());
 }
-inline std::string* CordLpComputePartialAndPush::release_delta_blob_key() {
-  // @@protoc_insertion_point(field_release:proxy_proto.CordLpComputePartialAndPush.delta_blob_key)
+inline std::string* UpLRCLpComputePartialAndPush::release_delta_blob_key() {
+  // @@protoc_insertion_point(field_release:proxy_proto.UpLRCLpComputePartialAndPush.delta_blob_key)
   return _impl_.delta_blob_key_.Release();
 }
-inline void CordLpComputePartialAndPush::set_allocated_delta_blob_key(std::string* delta_blob_key) {
+inline void UpLRCLpComputePartialAndPush::set_allocated_delta_blob_key(std::string* delta_blob_key) {
   if (delta_blob_key != nullptr) {
     
   } else {
@@ -22443,45 +22443,45 @@ inline void CordLpComputePartialAndPush::set_allocated_delta_blob_key(std::strin
     _impl_.delta_blob_key_.Set("", GetArenaForAllocation());
   }
 #endif // PROTOBUF_FORCE_COPY_DEFAULT_STRING
-  // @@protoc_insertion_point(field_set_allocated:proxy_proto.CordLpComputePartialAndPush.delta_blob_key)
+  // @@protoc_insertion_point(field_set_allocated:proxy_proto.UpLRCLpComputePartialAndPush.delta_blob_key)
 }
 
 // string delta_datanode_ip = 5;
-inline void CordLpComputePartialAndPush::clear_delta_datanode_ip() {
+inline void UpLRCLpComputePartialAndPush::clear_delta_datanode_ip() {
   _impl_.delta_datanode_ip_.ClearToEmpty();
 }
-inline const std::string& CordLpComputePartialAndPush::delta_datanode_ip() const {
-  // @@protoc_insertion_point(field_get:proxy_proto.CordLpComputePartialAndPush.delta_datanode_ip)
+inline const std::string& UpLRCLpComputePartialAndPush::delta_datanode_ip() const {
+  // @@protoc_insertion_point(field_get:proxy_proto.UpLRCLpComputePartialAndPush.delta_datanode_ip)
   return _internal_delta_datanode_ip();
 }
 template <typename ArgT0, typename... ArgT>
 inline PROTOBUF_ALWAYS_INLINE
-void CordLpComputePartialAndPush::set_delta_datanode_ip(ArgT0&& arg0, ArgT... args) {
+void UpLRCLpComputePartialAndPush::set_delta_datanode_ip(ArgT0&& arg0, ArgT... args) {
  
  _impl_.delta_datanode_ip_.Set(static_cast<ArgT0 &&>(arg0), args..., GetArenaForAllocation());
-  // @@protoc_insertion_point(field_set:proxy_proto.CordLpComputePartialAndPush.delta_datanode_ip)
+  // @@protoc_insertion_point(field_set:proxy_proto.UpLRCLpComputePartialAndPush.delta_datanode_ip)
 }
-inline std::string* CordLpComputePartialAndPush::mutable_delta_datanode_ip() {
+inline std::string* UpLRCLpComputePartialAndPush::mutable_delta_datanode_ip() {
   std::string* _s = _internal_mutable_delta_datanode_ip();
-  // @@protoc_insertion_point(field_mutable:proxy_proto.CordLpComputePartialAndPush.delta_datanode_ip)
+  // @@protoc_insertion_point(field_mutable:proxy_proto.UpLRCLpComputePartialAndPush.delta_datanode_ip)
   return _s;
 }
-inline const std::string& CordLpComputePartialAndPush::_internal_delta_datanode_ip() const {
+inline const std::string& UpLRCLpComputePartialAndPush::_internal_delta_datanode_ip() const {
   return _impl_.delta_datanode_ip_.Get();
 }
-inline void CordLpComputePartialAndPush::_internal_set_delta_datanode_ip(const std::string& value) {
+inline void UpLRCLpComputePartialAndPush::_internal_set_delta_datanode_ip(const std::string& value) {
   
   _impl_.delta_datanode_ip_.Set(value, GetArenaForAllocation());
 }
-inline std::string* CordLpComputePartialAndPush::_internal_mutable_delta_datanode_ip() {
+inline std::string* UpLRCLpComputePartialAndPush::_internal_mutable_delta_datanode_ip() {
   
   return _impl_.delta_datanode_ip_.Mutable(GetArenaForAllocation());
 }
-inline std::string* CordLpComputePartialAndPush::release_delta_datanode_ip() {
-  // @@protoc_insertion_point(field_release:proxy_proto.CordLpComputePartialAndPush.delta_datanode_ip)
+inline std::string* UpLRCLpComputePartialAndPush::release_delta_datanode_ip() {
+  // @@protoc_insertion_point(field_release:proxy_proto.UpLRCLpComputePartialAndPush.delta_datanode_ip)
   return _impl_.delta_datanode_ip_.Release();
 }
-inline void CordLpComputePartialAndPush::set_allocated_delta_datanode_ip(std::string* delta_datanode_ip) {
+inline void UpLRCLpComputePartialAndPush::set_allocated_delta_datanode_ip(std::string* delta_datanode_ip) {
   if (delta_datanode_ip != nullptr) {
     
   } else {
@@ -22493,169 +22493,169 @@ inline void CordLpComputePartialAndPush::set_allocated_delta_datanode_ip(std::st
     _impl_.delta_datanode_ip_.Set("", GetArenaForAllocation());
   }
 #endif // PROTOBUF_FORCE_COPY_DEFAULT_STRING
-  // @@protoc_insertion_point(field_set_allocated:proxy_proto.CordLpComputePartialAndPush.delta_datanode_ip)
+  // @@protoc_insertion_point(field_set_allocated:proxy_proto.UpLRCLpComputePartialAndPush.delta_datanode_ip)
 }
 
 // int32 delta_datanode_port = 6;
-inline void CordLpComputePartialAndPush::clear_delta_datanode_port() {
+inline void UpLRCLpComputePartialAndPush::clear_delta_datanode_port() {
   _impl_.delta_datanode_port_ = 0;
 }
-inline int32_t CordLpComputePartialAndPush::_internal_delta_datanode_port() const {
+inline int32_t UpLRCLpComputePartialAndPush::_internal_delta_datanode_port() const {
   return _impl_.delta_datanode_port_;
 }
-inline int32_t CordLpComputePartialAndPush::delta_datanode_port() const {
-  // @@protoc_insertion_point(field_get:proxy_proto.CordLpComputePartialAndPush.delta_datanode_port)
+inline int32_t UpLRCLpComputePartialAndPush::delta_datanode_port() const {
+  // @@protoc_insertion_point(field_get:proxy_proto.UpLRCLpComputePartialAndPush.delta_datanode_port)
   return _internal_delta_datanode_port();
 }
-inline void CordLpComputePartialAndPush::_internal_set_delta_datanode_port(int32_t value) {
+inline void UpLRCLpComputePartialAndPush::_internal_set_delta_datanode_port(int32_t value) {
   
   _impl_.delta_datanode_port_ = value;
 }
-inline void CordLpComputePartialAndPush::set_delta_datanode_port(int32_t value) {
+inline void UpLRCLpComputePartialAndPush::set_delta_datanode_port(int32_t value) {
   _internal_set_delta_datanode_port(value);
-  // @@protoc_insertion_point(field_set:proxy_proto.CordLpComputePartialAndPush.delta_datanode_port)
+  // @@protoc_insertion_point(field_set:proxy_proto.UpLRCLpComputePartialAndPush.delta_datanode_port)
 }
 
 // int32 parity_slice_size = 7;
-inline void CordLpComputePartialAndPush::clear_parity_slice_size() {
+inline void UpLRCLpComputePartialAndPush::clear_parity_slice_size() {
   _impl_.parity_slice_size_ = 0;
 }
-inline int32_t CordLpComputePartialAndPush::_internal_parity_slice_size() const {
+inline int32_t UpLRCLpComputePartialAndPush::_internal_parity_slice_size() const {
   return _impl_.parity_slice_size_;
 }
-inline int32_t CordLpComputePartialAndPush::parity_slice_size() const {
-  // @@protoc_insertion_point(field_get:proxy_proto.CordLpComputePartialAndPush.parity_slice_size)
+inline int32_t UpLRCLpComputePartialAndPush::parity_slice_size() const {
+  // @@protoc_insertion_point(field_get:proxy_proto.UpLRCLpComputePartialAndPush.parity_slice_size)
   return _internal_parity_slice_size();
 }
-inline void CordLpComputePartialAndPush::_internal_set_parity_slice_size(int32_t value) {
+inline void UpLRCLpComputePartialAndPush::_internal_set_parity_slice_size(int32_t value) {
   
   _impl_.parity_slice_size_ = value;
 }
-inline void CordLpComputePartialAndPush::set_parity_slice_size(int32_t value) {
+inline void UpLRCLpComputePartialAndPush::set_parity_slice_size(int32_t value) {
   _internal_set_parity_slice_size(value);
-  // @@protoc_insertion_point(field_set:proxy_proto.CordLpComputePartialAndPush.parity_slice_size)
+  // @@protoc_insertion_point(field_set:proxy_proto.UpLRCLpComputePartialAndPush.parity_slice_size)
 }
 
-// repeated .proxy_proto.CordLpDeltaFetch fetches = 8;
-inline int CordLpComputePartialAndPush::_internal_fetches_size() const {
+// repeated .proxy_proto.UpLRCLpDeltaFetch fetches = 8;
+inline int UpLRCLpComputePartialAndPush::_internal_fetches_size() const {
   return _impl_.fetches_.size();
 }
-inline int CordLpComputePartialAndPush::fetches_size() const {
+inline int UpLRCLpComputePartialAndPush::fetches_size() const {
   return _internal_fetches_size();
 }
-inline void CordLpComputePartialAndPush::clear_fetches() {
+inline void UpLRCLpComputePartialAndPush::clear_fetches() {
   _impl_.fetches_.Clear();
 }
-inline ::proxy_proto::CordLpDeltaFetch* CordLpComputePartialAndPush::mutable_fetches(int index) {
-  // @@protoc_insertion_point(field_mutable:proxy_proto.CordLpComputePartialAndPush.fetches)
+inline ::proxy_proto::UpLRCLpDeltaFetch* UpLRCLpComputePartialAndPush::mutable_fetches(int index) {
+  // @@protoc_insertion_point(field_mutable:proxy_proto.UpLRCLpComputePartialAndPush.fetches)
   return _impl_.fetches_.Mutable(index);
 }
-inline ::PROTOBUF_NAMESPACE_ID::RepeatedPtrField< ::proxy_proto::CordLpDeltaFetch >*
-CordLpComputePartialAndPush::mutable_fetches() {
-  // @@protoc_insertion_point(field_mutable_list:proxy_proto.CordLpComputePartialAndPush.fetches)
+inline ::PROTOBUF_NAMESPACE_ID::RepeatedPtrField< ::proxy_proto::UpLRCLpDeltaFetch >*
+UpLRCLpComputePartialAndPush::mutable_fetches() {
+  // @@protoc_insertion_point(field_mutable_list:proxy_proto.UpLRCLpComputePartialAndPush.fetches)
   return &_impl_.fetches_;
 }
-inline const ::proxy_proto::CordLpDeltaFetch& CordLpComputePartialAndPush::_internal_fetches(int index) const {
+inline const ::proxy_proto::UpLRCLpDeltaFetch& UpLRCLpComputePartialAndPush::_internal_fetches(int index) const {
   return _impl_.fetches_.Get(index);
 }
-inline const ::proxy_proto::CordLpDeltaFetch& CordLpComputePartialAndPush::fetches(int index) const {
-  // @@protoc_insertion_point(field_get:proxy_proto.CordLpComputePartialAndPush.fetches)
+inline const ::proxy_proto::UpLRCLpDeltaFetch& UpLRCLpComputePartialAndPush::fetches(int index) const {
+  // @@protoc_insertion_point(field_get:proxy_proto.UpLRCLpComputePartialAndPush.fetches)
   return _internal_fetches(index);
 }
-inline ::proxy_proto::CordLpDeltaFetch* CordLpComputePartialAndPush::_internal_add_fetches() {
+inline ::proxy_proto::UpLRCLpDeltaFetch* UpLRCLpComputePartialAndPush::_internal_add_fetches() {
   return _impl_.fetches_.Add();
 }
-inline ::proxy_proto::CordLpDeltaFetch* CordLpComputePartialAndPush::add_fetches() {
-  ::proxy_proto::CordLpDeltaFetch* _add = _internal_add_fetches();
-  // @@protoc_insertion_point(field_add:proxy_proto.CordLpComputePartialAndPush.fetches)
+inline ::proxy_proto::UpLRCLpDeltaFetch* UpLRCLpComputePartialAndPush::add_fetches() {
+  ::proxy_proto::UpLRCLpDeltaFetch* _add = _internal_add_fetches();
+  // @@protoc_insertion_point(field_add:proxy_proto.UpLRCLpComputePartialAndPush.fetches)
   return _add;
 }
-inline const ::PROTOBUF_NAMESPACE_ID::RepeatedPtrField< ::proxy_proto::CordLpDeltaFetch >&
-CordLpComputePartialAndPush::fetches() const {
-  // @@protoc_insertion_point(field_list:proxy_proto.CordLpComputePartialAndPush.fetches)
+inline const ::PROTOBUF_NAMESPACE_ID::RepeatedPtrField< ::proxy_proto::UpLRCLpDeltaFetch >&
+UpLRCLpComputePartialAndPush::fetches() const {
+  // @@protoc_insertion_point(field_list:proxy_proto.UpLRCLpComputePartialAndPush.fetches)
   return _impl_.fetches_;
 }
 
 // -------------------------------------------------------------------
 
-// CordLpParityApplyDelta
+// UpLRCLpParityApplyDelta
 
 // int32 stripe_id = 1;
-inline void CordLpParityApplyDelta::clear_stripe_id() {
+inline void UpLRCLpParityApplyDelta::clear_stripe_id() {
   _impl_.stripe_id_ = 0;
 }
-inline int32_t CordLpParityApplyDelta::_internal_stripe_id() const {
+inline int32_t UpLRCLpParityApplyDelta::_internal_stripe_id() const {
   return _impl_.stripe_id_;
 }
-inline int32_t CordLpParityApplyDelta::stripe_id() const {
-  // @@protoc_insertion_point(field_get:proxy_proto.CordLpParityApplyDelta.stripe_id)
+inline int32_t UpLRCLpParityApplyDelta::stripe_id() const {
+  // @@protoc_insertion_point(field_get:proxy_proto.UpLRCLpParityApplyDelta.stripe_id)
   return _internal_stripe_id();
 }
-inline void CordLpParityApplyDelta::_internal_set_stripe_id(int32_t value) {
+inline void UpLRCLpParityApplyDelta::_internal_set_stripe_id(int32_t value) {
   
   _impl_.stripe_id_ = value;
 }
-inline void CordLpParityApplyDelta::set_stripe_id(int32_t value) {
+inline void UpLRCLpParityApplyDelta::set_stripe_id(int32_t value) {
   _internal_set_stripe_id(value);
-  // @@protoc_insertion_point(field_set:proxy_proto.CordLpParityApplyDelta.stripe_id)
+  // @@protoc_insertion_point(field_set:proxy_proto.UpLRCLpParityApplyDelta.stripe_id)
 }
 
 // int32 local_block_id = 2;
-inline void CordLpParityApplyDelta::clear_local_block_id() {
+inline void UpLRCLpParityApplyDelta::clear_local_block_id() {
   _impl_.local_block_id_ = 0;
 }
-inline int32_t CordLpParityApplyDelta::_internal_local_block_id() const {
+inline int32_t UpLRCLpParityApplyDelta::_internal_local_block_id() const {
   return _impl_.local_block_id_;
 }
-inline int32_t CordLpParityApplyDelta::local_block_id() const {
-  // @@protoc_insertion_point(field_get:proxy_proto.CordLpParityApplyDelta.local_block_id)
+inline int32_t UpLRCLpParityApplyDelta::local_block_id() const {
+  // @@protoc_insertion_point(field_get:proxy_proto.UpLRCLpParityApplyDelta.local_block_id)
   return _internal_local_block_id();
 }
-inline void CordLpParityApplyDelta::_internal_set_local_block_id(int32_t value) {
+inline void UpLRCLpParityApplyDelta::_internal_set_local_block_id(int32_t value) {
   
   _impl_.local_block_id_ = value;
 }
-inline void CordLpParityApplyDelta::set_local_block_id(int32_t value) {
+inline void UpLRCLpParityApplyDelta::set_local_block_id(int32_t value) {
   _internal_set_local_block_id(value);
-  // @@protoc_insertion_point(field_set:proxy_proto.CordLpParityApplyDelta.local_block_id)
+  // @@protoc_insertion_point(field_set:proxy_proto.UpLRCLpParityApplyDelta.local_block_id)
 }
 
 // string local_block_key = 3;
-inline void CordLpParityApplyDelta::clear_local_block_key() {
+inline void UpLRCLpParityApplyDelta::clear_local_block_key() {
   _impl_.local_block_key_.ClearToEmpty();
 }
-inline const std::string& CordLpParityApplyDelta::local_block_key() const {
-  // @@protoc_insertion_point(field_get:proxy_proto.CordLpParityApplyDelta.local_block_key)
+inline const std::string& UpLRCLpParityApplyDelta::local_block_key() const {
+  // @@protoc_insertion_point(field_get:proxy_proto.UpLRCLpParityApplyDelta.local_block_key)
   return _internal_local_block_key();
 }
 template <typename ArgT0, typename... ArgT>
 inline PROTOBUF_ALWAYS_INLINE
-void CordLpParityApplyDelta::set_local_block_key(ArgT0&& arg0, ArgT... args) {
+void UpLRCLpParityApplyDelta::set_local_block_key(ArgT0&& arg0, ArgT... args) {
  
  _impl_.local_block_key_.Set(static_cast<ArgT0 &&>(arg0), args..., GetArenaForAllocation());
-  // @@protoc_insertion_point(field_set:proxy_proto.CordLpParityApplyDelta.local_block_key)
+  // @@protoc_insertion_point(field_set:proxy_proto.UpLRCLpParityApplyDelta.local_block_key)
 }
-inline std::string* CordLpParityApplyDelta::mutable_local_block_key() {
+inline std::string* UpLRCLpParityApplyDelta::mutable_local_block_key() {
   std::string* _s = _internal_mutable_local_block_key();
-  // @@protoc_insertion_point(field_mutable:proxy_proto.CordLpParityApplyDelta.local_block_key)
+  // @@protoc_insertion_point(field_mutable:proxy_proto.UpLRCLpParityApplyDelta.local_block_key)
   return _s;
 }
-inline const std::string& CordLpParityApplyDelta::_internal_local_block_key() const {
+inline const std::string& UpLRCLpParityApplyDelta::_internal_local_block_key() const {
   return _impl_.local_block_key_.Get();
 }
-inline void CordLpParityApplyDelta::_internal_set_local_block_key(const std::string& value) {
+inline void UpLRCLpParityApplyDelta::_internal_set_local_block_key(const std::string& value) {
   
   _impl_.local_block_key_.Set(value, GetArenaForAllocation());
 }
-inline std::string* CordLpParityApplyDelta::_internal_mutable_local_block_key() {
+inline std::string* UpLRCLpParityApplyDelta::_internal_mutable_local_block_key() {
   
   return _impl_.local_block_key_.Mutable(GetArenaForAllocation());
 }
-inline std::string* CordLpParityApplyDelta::release_local_block_key() {
-  // @@protoc_insertion_point(field_release:proxy_proto.CordLpParityApplyDelta.local_block_key)
+inline std::string* UpLRCLpParityApplyDelta::release_local_block_key() {
+  // @@protoc_insertion_point(field_release:proxy_proto.UpLRCLpParityApplyDelta.local_block_key)
   return _impl_.local_block_key_.Release();
 }
-inline void CordLpParityApplyDelta::set_allocated_local_block_key(std::string* local_block_key) {
+inline void UpLRCLpParityApplyDelta::set_allocated_local_block_key(std::string* local_block_key) {
   if (local_block_key != nullptr) {
     
   } else {
@@ -22667,45 +22667,45 @@ inline void CordLpParityApplyDelta::set_allocated_local_block_key(std::string* l
     _impl_.local_block_key_.Set("", GetArenaForAllocation());
   }
 #endif // PROTOBUF_FORCE_COPY_DEFAULT_STRING
-  // @@protoc_insertion_point(field_set_allocated:proxy_proto.CordLpParityApplyDelta.local_block_key)
+  // @@protoc_insertion_point(field_set_allocated:proxy_proto.UpLRCLpParityApplyDelta.local_block_key)
 }
 
 // string local_datanode_ip = 4;
-inline void CordLpParityApplyDelta::clear_local_datanode_ip() {
+inline void UpLRCLpParityApplyDelta::clear_local_datanode_ip() {
   _impl_.local_datanode_ip_.ClearToEmpty();
 }
-inline const std::string& CordLpParityApplyDelta::local_datanode_ip() const {
-  // @@protoc_insertion_point(field_get:proxy_proto.CordLpParityApplyDelta.local_datanode_ip)
+inline const std::string& UpLRCLpParityApplyDelta::local_datanode_ip() const {
+  // @@protoc_insertion_point(field_get:proxy_proto.UpLRCLpParityApplyDelta.local_datanode_ip)
   return _internal_local_datanode_ip();
 }
 template <typename ArgT0, typename... ArgT>
 inline PROTOBUF_ALWAYS_INLINE
-void CordLpParityApplyDelta::set_local_datanode_ip(ArgT0&& arg0, ArgT... args) {
+void UpLRCLpParityApplyDelta::set_local_datanode_ip(ArgT0&& arg0, ArgT... args) {
  
  _impl_.local_datanode_ip_.Set(static_cast<ArgT0 &&>(arg0), args..., GetArenaForAllocation());
-  // @@protoc_insertion_point(field_set:proxy_proto.CordLpParityApplyDelta.local_datanode_ip)
+  // @@protoc_insertion_point(field_set:proxy_proto.UpLRCLpParityApplyDelta.local_datanode_ip)
 }
-inline std::string* CordLpParityApplyDelta::mutable_local_datanode_ip() {
+inline std::string* UpLRCLpParityApplyDelta::mutable_local_datanode_ip() {
   std::string* _s = _internal_mutable_local_datanode_ip();
-  // @@protoc_insertion_point(field_mutable:proxy_proto.CordLpParityApplyDelta.local_datanode_ip)
+  // @@protoc_insertion_point(field_mutable:proxy_proto.UpLRCLpParityApplyDelta.local_datanode_ip)
   return _s;
 }
-inline const std::string& CordLpParityApplyDelta::_internal_local_datanode_ip() const {
+inline const std::string& UpLRCLpParityApplyDelta::_internal_local_datanode_ip() const {
   return _impl_.local_datanode_ip_.Get();
 }
-inline void CordLpParityApplyDelta::_internal_set_local_datanode_ip(const std::string& value) {
+inline void UpLRCLpParityApplyDelta::_internal_set_local_datanode_ip(const std::string& value) {
   
   _impl_.local_datanode_ip_.Set(value, GetArenaForAllocation());
 }
-inline std::string* CordLpParityApplyDelta::_internal_mutable_local_datanode_ip() {
+inline std::string* UpLRCLpParityApplyDelta::_internal_mutable_local_datanode_ip() {
   
   return _impl_.local_datanode_ip_.Mutable(GetArenaForAllocation());
 }
-inline std::string* CordLpParityApplyDelta::release_local_datanode_ip() {
-  // @@protoc_insertion_point(field_release:proxy_proto.CordLpParityApplyDelta.local_datanode_ip)
+inline std::string* UpLRCLpParityApplyDelta::release_local_datanode_ip() {
+  // @@protoc_insertion_point(field_release:proxy_proto.UpLRCLpParityApplyDelta.local_datanode_ip)
   return _impl_.local_datanode_ip_.Release();
 }
-inline void CordLpParityApplyDelta::set_allocated_local_datanode_ip(std::string* local_datanode_ip) {
+inline void UpLRCLpParityApplyDelta::set_allocated_local_datanode_ip(std::string* local_datanode_ip) {
   if (local_datanode_ip != nullptr) {
     
   } else {
@@ -22717,105 +22717,105 @@ inline void CordLpParityApplyDelta::set_allocated_local_datanode_ip(std::string*
     _impl_.local_datanode_ip_.Set("", GetArenaForAllocation());
   }
 #endif // PROTOBUF_FORCE_COPY_DEFAULT_STRING
-  // @@protoc_insertion_point(field_set_allocated:proxy_proto.CordLpParityApplyDelta.local_datanode_ip)
+  // @@protoc_insertion_point(field_set_allocated:proxy_proto.UpLRCLpParityApplyDelta.local_datanode_ip)
 }
 
 // int32 local_datanode_port = 5;
-inline void CordLpParityApplyDelta::clear_local_datanode_port() {
+inline void UpLRCLpParityApplyDelta::clear_local_datanode_port() {
   _impl_.local_datanode_port_ = 0;
 }
-inline int32_t CordLpParityApplyDelta::_internal_local_datanode_port() const {
+inline int32_t UpLRCLpParityApplyDelta::_internal_local_datanode_port() const {
   return _impl_.local_datanode_port_;
 }
-inline int32_t CordLpParityApplyDelta::local_datanode_port() const {
-  // @@protoc_insertion_point(field_get:proxy_proto.CordLpParityApplyDelta.local_datanode_port)
+inline int32_t UpLRCLpParityApplyDelta::local_datanode_port() const {
+  // @@protoc_insertion_point(field_get:proxy_proto.UpLRCLpParityApplyDelta.local_datanode_port)
   return _internal_local_datanode_port();
 }
-inline void CordLpParityApplyDelta::_internal_set_local_datanode_port(int32_t value) {
+inline void UpLRCLpParityApplyDelta::_internal_set_local_datanode_port(int32_t value) {
   
   _impl_.local_datanode_port_ = value;
 }
-inline void CordLpParityApplyDelta::set_local_datanode_port(int32_t value) {
+inline void UpLRCLpParityApplyDelta::set_local_datanode_port(int32_t value) {
   _internal_set_local_datanode_port(value);
-  // @@protoc_insertion_point(field_set:proxy_proto.CordLpParityApplyDelta.local_datanode_port)
+  // @@protoc_insertion_point(field_set:proxy_proto.UpLRCLpParityApplyDelta.local_datanode_port)
 }
 
 // int32 parity_slice_offset = 6;
-inline void CordLpParityApplyDelta::clear_parity_slice_offset() {
+inline void UpLRCLpParityApplyDelta::clear_parity_slice_offset() {
   _impl_.parity_slice_offset_ = 0;
 }
-inline int32_t CordLpParityApplyDelta::_internal_parity_slice_offset() const {
+inline int32_t UpLRCLpParityApplyDelta::_internal_parity_slice_offset() const {
   return _impl_.parity_slice_offset_;
 }
-inline int32_t CordLpParityApplyDelta::parity_slice_offset() const {
-  // @@protoc_insertion_point(field_get:proxy_proto.CordLpParityApplyDelta.parity_slice_offset)
+inline int32_t UpLRCLpParityApplyDelta::parity_slice_offset() const {
+  // @@protoc_insertion_point(field_get:proxy_proto.UpLRCLpParityApplyDelta.parity_slice_offset)
   return _internal_parity_slice_offset();
 }
-inline void CordLpParityApplyDelta::_internal_set_parity_slice_offset(int32_t value) {
+inline void UpLRCLpParityApplyDelta::_internal_set_parity_slice_offset(int32_t value) {
   
   _impl_.parity_slice_offset_ = value;
 }
-inline void CordLpParityApplyDelta::set_parity_slice_offset(int32_t value) {
+inline void UpLRCLpParityApplyDelta::set_parity_slice_offset(int32_t value) {
   _internal_set_parity_slice_offset(value);
-  // @@protoc_insertion_point(field_set:proxy_proto.CordLpParityApplyDelta.parity_slice_offset)
+  // @@protoc_insertion_point(field_set:proxy_proto.UpLRCLpParityApplyDelta.parity_slice_offset)
 }
 
 // int32 parity_slice_size = 7;
-inline void CordLpParityApplyDelta::clear_parity_slice_size() {
+inline void UpLRCLpParityApplyDelta::clear_parity_slice_size() {
   _impl_.parity_slice_size_ = 0;
 }
-inline int32_t CordLpParityApplyDelta::_internal_parity_slice_size() const {
+inline int32_t UpLRCLpParityApplyDelta::_internal_parity_slice_size() const {
   return _impl_.parity_slice_size_;
 }
-inline int32_t CordLpParityApplyDelta::parity_slice_size() const {
-  // @@protoc_insertion_point(field_get:proxy_proto.CordLpParityApplyDelta.parity_slice_size)
+inline int32_t UpLRCLpParityApplyDelta::parity_slice_size() const {
+  // @@protoc_insertion_point(field_get:proxy_proto.UpLRCLpParityApplyDelta.parity_slice_size)
   return _internal_parity_slice_size();
 }
-inline void CordLpParityApplyDelta::_internal_set_parity_slice_size(int32_t value) {
+inline void UpLRCLpParityApplyDelta::_internal_set_parity_slice_size(int32_t value) {
   
   _impl_.parity_slice_size_ = value;
 }
-inline void CordLpParityApplyDelta::set_parity_slice_size(int32_t value) {
+inline void UpLRCLpParityApplyDelta::set_parity_slice_size(int32_t value) {
   _internal_set_parity_slice_size(value);
-  // @@protoc_insertion_point(field_set:proxy_proto.CordLpParityApplyDelta.parity_slice_size)
+  // @@protoc_insertion_point(field_set:proxy_proto.UpLRCLpParityApplyDelta.parity_slice_size)
 }
 
 // bytes delta_payload = 8;
-inline void CordLpParityApplyDelta::clear_delta_payload() {
+inline void UpLRCLpParityApplyDelta::clear_delta_payload() {
   _impl_.delta_payload_.ClearToEmpty();
 }
-inline const std::string& CordLpParityApplyDelta::delta_payload() const {
-  // @@protoc_insertion_point(field_get:proxy_proto.CordLpParityApplyDelta.delta_payload)
+inline const std::string& UpLRCLpParityApplyDelta::delta_payload() const {
+  // @@protoc_insertion_point(field_get:proxy_proto.UpLRCLpParityApplyDelta.delta_payload)
   return _internal_delta_payload();
 }
 template <typename ArgT0, typename... ArgT>
 inline PROTOBUF_ALWAYS_INLINE
-void CordLpParityApplyDelta::set_delta_payload(ArgT0&& arg0, ArgT... args) {
+void UpLRCLpParityApplyDelta::set_delta_payload(ArgT0&& arg0, ArgT... args) {
  
  _impl_.delta_payload_.SetBytes(static_cast<ArgT0 &&>(arg0), args..., GetArenaForAllocation());
-  // @@protoc_insertion_point(field_set:proxy_proto.CordLpParityApplyDelta.delta_payload)
+  // @@protoc_insertion_point(field_set:proxy_proto.UpLRCLpParityApplyDelta.delta_payload)
 }
-inline std::string* CordLpParityApplyDelta::mutable_delta_payload() {
+inline std::string* UpLRCLpParityApplyDelta::mutable_delta_payload() {
   std::string* _s = _internal_mutable_delta_payload();
-  // @@protoc_insertion_point(field_mutable:proxy_proto.CordLpParityApplyDelta.delta_payload)
+  // @@protoc_insertion_point(field_mutable:proxy_proto.UpLRCLpParityApplyDelta.delta_payload)
   return _s;
 }
-inline const std::string& CordLpParityApplyDelta::_internal_delta_payload() const {
+inline const std::string& UpLRCLpParityApplyDelta::_internal_delta_payload() const {
   return _impl_.delta_payload_.Get();
 }
-inline void CordLpParityApplyDelta::_internal_set_delta_payload(const std::string& value) {
+inline void UpLRCLpParityApplyDelta::_internal_set_delta_payload(const std::string& value) {
   
   _impl_.delta_payload_.Set(value, GetArenaForAllocation());
 }
-inline std::string* CordLpParityApplyDelta::_internal_mutable_delta_payload() {
+inline std::string* UpLRCLpParityApplyDelta::_internal_mutable_delta_payload() {
   
   return _impl_.delta_payload_.Mutable(GetArenaForAllocation());
 }
-inline std::string* CordLpParityApplyDelta::release_delta_payload() {
-  // @@protoc_insertion_point(field_release:proxy_proto.CordLpParityApplyDelta.delta_payload)
+inline std::string* UpLRCLpParityApplyDelta::release_delta_payload() {
+  // @@protoc_insertion_point(field_release:proxy_proto.UpLRCLpParityApplyDelta.delta_payload)
   return _impl_.delta_payload_.Release();
 }
-inline void CordLpParityApplyDelta::set_allocated_delta_payload(std::string* delta_payload) {
+inline void UpLRCLpParityApplyDelta::set_allocated_delta_payload(std::string* delta_payload) {
   if (delta_payload != nullptr) {
     
   } else {
@@ -22827,7 +22827,7 @@ inline void CordLpParityApplyDelta::set_allocated_delta_payload(std::string* del
     _impl_.delta_payload_.Set("", GetArenaForAllocation());
   }
 #endif // PROTOBUF_FORCE_COPY_DEFAULT_STRING
-  // @@protoc_insertion_point(field_set_allocated:proxy_proto.CordLpParityApplyDelta.delta_payload)
+  // @@protoc_insertion_point(field_set_allocated:proxy_proto.UpLRCLpParityApplyDelta.delta_payload)
 }
 
 // -------------------------------------------------------------------
@@ -22854,84 +22854,84 @@ inline void SetReply::set_ifcommit(bool value) {
   // @@protoc_insertion_point(field_set:proxy_proto.SetReply.ifcommit)
 }
 
-// bool cord_join_xfer_timing_present = 2;
-inline void SetReply::clear_cord_join_xfer_timing_present() {
-  _impl_.cord_join_xfer_timing_present_ = false;
+// bool uplrc_join_xfer_timing_present = 2;
+inline void SetReply::clear_uplrc_join_xfer_timing_present() {
+  _impl_.uplrc_join_xfer_timing_present_ = false;
 }
-inline bool SetReply::_internal_cord_join_xfer_timing_present() const {
-  return _impl_.cord_join_xfer_timing_present_;
+inline bool SetReply::_internal_uplrc_join_xfer_timing_present() const {
+  return _impl_.uplrc_join_xfer_timing_present_;
 }
-inline bool SetReply::cord_join_xfer_timing_present() const {
-  // @@protoc_insertion_point(field_get:proxy_proto.SetReply.cord_join_xfer_timing_present)
-  return _internal_cord_join_xfer_timing_present();
+inline bool SetReply::uplrc_join_xfer_timing_present() const {
+  // @@protoc_insertion_point(field_get:proxy_proto.SetReply.uplrc_join_xfer_timing_present)
+  return _internal_uplrc_join_xfer_timing_present();
 }
-inline void SetReply::_internal_set_cord_join_xfer_timing_present(bool value) {
+inline void SetReply::_internal_set_uplrc_join_xfer_timing_present(bool value) {
   
-  _impl_.cord_join_xfer_timing_present_ = value;
+  _impl_.uplrc_join_xfer_timing_present_ = value;
 }
-inline void SetReply::set_cord_join_xfer_timing_present(bool value) {
-  _internal_set_cord_join_xfer_timing_present(value);
-  // @@protoc_insertion_point(field_set:proxy_proto.SetReply.cord_join_xfer_timing_present)
+inline void SetReply::set_uplrc_join_xfer_timing_present(bool value) {
+  _internal_set_uplrc_join_xfer_timing_present(value);
+  // @@protoc_insertion_point(field_set:proxy_proto.SetReply.uplrc_join_xfer_timing_present)
 }
 
-// double cord_join_pure_xfer_sec = 3;
-inline void SetReply::clear_cord_join_pure_xfer_sec() {
-  _impl_.cord_join_pure_xfer_sec_ = 0;
+// double uplrc_join_pure_xfer_sec = 3;
+inline void SetReply::clear_uplrc_join_pure_xfer_sec() {
+  _impl_.uplrc_join_pure_xfer_sec_ = 0;
 }
-inline double SetReply::_internal_cord_join_pure_xfer_sec() const {
-  return _impl_.cord_join_pure_xfer_sec_;
+inline double SetReply::_internal_uplrc_join_pure_xfer_sec() const {
+  return _impl_.uplrc_join_pure_xfer_sec_;
 }
-inline double SetReply::cord_join_pure_xfer_sec() const {
-  // @@protoc_insertion_point(field_get:proxy_proto.SetReply.cord_join_pure_xfer_sec)
-  return _internal_cord_join_pure_xfer_sec();
+inline double SetReply::uplrc_join_pure_xfer_sec() const {
+  // @@protoc_insertion_point(field_get:proxy_proto.SetReply.uplrc_join_pure_xfer_sec)
+  return _internal_uplrc_join_pure_xfer_sec();
 }
-inline void SetReply::_internal_set_cord_join_pure_xfer_sec(double value) {
+inline void SetReply::_internal_set_uplrc_join_pure_xfer_sec(double value) {
   
-  _impl_.cord_join_pure_xfer_sec_ = value;
+  _impl_.uplrc_join_pure_xfer_sec_ = value;
 }
-inline void SetReply::set_cord_join_pure_xfer_sec(double value) {
-  _internal_set_cord_join_pure_xfer_sec(value);
-  // @@protoc_insertion_point(field_set:proxy_proto.SetReply.cord_join_pure_xfer_sec)
+inline void SetReply::set_uplrc_join_pure_xfer_sec(double value) {
+  _internal_set_uplrc_join_pure_xfer_sec(value);
+  // @@protoc_insertion_point(field_set:proxy_proto.SetReply.uplrc_join_pure_xfer_sec)
 }
 
-// int64 cord_join_pure_xfer_start_unix_ms = 4;
-inline void SetReply::clear_cord_join_pure_xfer_start_unix_ms() {
-  _impl_.cord_join_pure_xfer_start_unix_ms_ = int64_t{0};
+// int64 uplrc_join_pure_xfer_start_unix_ms = 4;
+inline void SetReply::clear_uplrc_join_pure_xfer_start_unix_ms() {
+  _impl_.uplrc_join_pure_xfer_start_unix_ms_ = int64_t{0};
 }
-inline int64_t SetReply::_internal_cord_join_pure_xfer_start_unix_ms() const {
-  return _impl_.cord_join_pure_xfer_start_unix_ms_;
+inline int64_t SetReply::_internal_uplrc_join_pure_xfer_start_unix_ms() const {
+  return _impl_.uplrc_join_pure_xfer_start_unix_ms_;
 }
-inline int64_t SetReply::cord_join_pure_xfer_start_unix_ms() const {
-  // @@protoc_insertion_point(field_get:proxy_proto.SetReply.cord_join_pure_xfer_start_unix_ms)
-  return _internal_cord_join_pure_xfer_start_unix_ms();
+inline int64_t SetReply::uplrc_join_pure_xfer_start_unix_ms() const {
+  // @@protoc_insertion_point(field_get:proxy_proto.SetReply.uplrc_join_pure_xfer_start_unix_ms)
+  return _internal_uplrc_join_pure_xfer_start_unix_ms();
 }
-inline void SetReply::_internal_set_cord_join_pure_xfer_start_unix_ms(int64_t value) {
+inline void SetReply::_internal_set_uplrc_join_pure_xfer_start_unix_ms(int64_t value) {
   
-  _impl_.cord_join_pure_xfer_start_unix_ms_ = value;
+  _impl_.uplrc_join_pure_xfer_start_unix_ms_ = value;
 }
-inline void SetReply::set_cord_join_pure_xfer_start_unix_ms(int64_t value) {
-  _internal_set_cord_join_pure_xfer_start_unix_ms(value);
-  // @@protoc_insertion_point(field_set:proxy_proto.SetReply.cord_join_pure_xfer_start_unix_ms)
+inline void SetReply::set_uplrc_join_pure_xfer_start_unix_ms(int64_t value) {
+  _internal_set_uplrc_join_pure_xfer_start_unix_ms(value);
+  // @@protoc_insertion_point(field_set:proxy_proto.SetReply.uplrc_join_pure_xfer_start_unix_ms)
 }
 
-// int64 cord_join_pure_xfer_end_unix_ms = 5;
-inline void SetReply::clear_cord_join_pure_xfer_end_unix_ms() {
-  _impl_.cord_join_pure_xfer_end_unix_ms_ = int64_t{0};
+// int64 uplrc_join_pure_xfer_end_unix_ms = 5;
+inline void SetReply::clear_uplrc_join_pure_xfer_end_unix_ms() {
+  _impl_.uplrc_join_pure_xfer_end_unix_ms_ = int64_t{0};
 }
-inline int64_t SetReply::_internal_cord_join_pure_xfer_end_unix_ms() const {
-  return _impl_.cord_join_pure_xfer_end_unix_ms_;
+inline int64_t SetReply::_internal_uplrc_join_pure_xfer_end_unix_ms() const {
+  return _impl_.uplrc_join_pure_xfer_end_unix_ms_;
 }
-inline int64_t SetReply::cord_join_pure_xfer_end_unix_ms() const {
-  // @@protoc_insertion_point(field_get:proxy_proto.SetReply.cord_join_pure_xfer_end_unix_ms)
-  return _internal_cord_join_pure_xfer_end_unix_ms();
+inline int64_t SetReply::uplrc_join_pure_xfer_end_unix_ms() const {
+  // @@protoc_insertion_point(field_get:proxy_proto.SetReply.uplrc_join_pure_xfer_end_unix_ms)
+  return _internal_uplrc_join_pure_xfer_end_unix_ms();
 }
-inline void SetReply::_internal_set_cord_join_pure_xfer_end_unix_ms(int64_t value) {
+inline void SetReply::_internal_set_uplrc_join_pure_xfer_end_unix_ms(int64_t value) {
   
-  _impl_.cord_join_pure_xfer_end_unix_ms_ = value;
+  _impl_.uplrc_join_pure_xfer_end_unix_ms_ = value;
 }
-inline void SetReply::set_cord_join_pure_xfer_end_unix_ms(int64_t value) {
-  _internal_set_cord_join_pure_xfer_end_unix_ms(value);
-  // @@protoc_insertion_point(field_set:proxy_proto.SetReply.cord_join_pure_xfer_end_unix_ms)
+inline void SetReply::set_uplrc_join_pure_xfer_end_unix_ms(int64_t value) {
+  _internal_set_uplrc_join_pure_xfer_end_unix_ms(value);
+  // @@protoc_insertion_point(field_set:proxy_proto.SetReply.uplrc_join_pure_xfer_end_unix_ms)
 }
 
 // -------------------------------------------------------------------
@@ -23422,15 +23422,15 @@ StripeAndBlockIDs::mutable_datanodeports() {
 
 PROTOBUF_NAMESPACE_OPEN
 
-template <> struct is_proto_enum< ::proxy_proto::CordTransferLinkKind> : ::std::true_type {};
+template <> struct is_proto_enum< ::proxy_proto::UpLRCTransferLinkKind> : ::std::true_type {};
 template <>
-inline const EnumDescriptor* GetEnumDescriptor< ::proxy_proto::CordTransferLinkKind>() {
-  return ::proxy_proto::CordTransferLinkKind_descriptor();
+inline const EnumDescriptor* GetEnumDescriptor< ::proxy_proto::UpLRCTransferLinkKind>() {
+  return ::proxy_proto::UpLRCTransferLinkKind_descriptor();
 }
-template <> struct is_proto_enum< ::proxy_proto::CordDeltaPayloadKind> : ::std::true_type {};
+template <> struct is_proto_enum< ::proxy_proto::UpLRCDeltaPayloadKind> : ::std::true_type {};
 template <>
-inline const EnumDescriptor* GetEnumDescriptor< ::proxy_proto::CordDeltaPayloadKind>() {
-  return ::proxy_proto::CordDeltaPayloadKind_descriptor();
+inline const EnumDescriptor* GetEnumDescriptor< ::proxy_proto::UpLRCDeltaPayloadKind>() {
+  return ::proxy_proto::UpLRCDeltaPayloadKind_descriptor();
 }
 
 PROTOBUF_NAMESPACE_CLOSE

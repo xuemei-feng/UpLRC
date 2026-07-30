@@ -118,51 +118,51 @@ class coordinatorService final {
     std::unique_ptr< ::grpc::ClientAsyncResponseReaderInterface< ::coordinator_proto::ReplyProxyIPsPorts>> PrepareAsyncuploadAppendValue(::grpc::ClientContext* context, const ::coordinator_proto::RequestProxyIPPort& request, ::grpc::CompletionQueue* cq) {
       return std::unique_ptr< ::grpc::ClientAsyncResponseReaderInterface< ::coordinator_proto::ReplyProxyIPsPorts>>(PrepareAsyncuploadAppendValueRaw(context, request, cq));
     }
-    // xue update
-    virtual ::grpc::Status uploadXueUpdate(::grpc::ClientContext* context, const ::coordinator_proto::XueUpdateRequest& request, ::coordinator_proto::ReplyProxyIPsPorts* response) = 0;
-    std::unique_ptr< ::grpc::ClientAsyncResponseReaderInterface< ::coordinator_proto::ReplyProxyIPsPorts>> AsyncuploadXueUpdate(::grpc::ClientContext* context, const ::coordinator_proto::XueUpdateRequest& request, ::grpc::CompletionQueue* cq) {
-      return std::unique_ptr< ::grpc::ClientAsyncResponseReaderInterface< ::coordinator_proto::ReplyProxyIPsPorts>>(AsyncuploadXueUpdateRaw(context, request, cq));
+    // uplrc update
+    virtual ::grpc::Status uploadUplrcLegacyUpdate(::grpc::ClientContext* context, const ::coordinator_proto::UplrcLegacyUpdateRequest& request, ::coordinator_proto::ReplyProxyIPsPorts* response) = 0;
+    std::unique_ptr< ::grpc::ClientAsyncResponseReaderInterface< ::coordinator_proto::ReplyProxyIPsPorts>> AsyncuploadUplrcLegacyUpdate(::grpc::ClientContext* context, const ::coordinator_proto::UplrcLegacyUpdateRequest& request, ::grpc::CompletionQueue* cq) {
+      return std::unique_ptr< ::grpc::ClientAsyncResponseReaderInterface< ::coordinator_proto::ReplyProxyIPsPorts>>(AsyncuploadUplrcLegacyUpdateRaw(context, request, cq));
     }
-    std::unique_ptr< ::grpc::ClientAsyncResponseReaderInterface< ::coordinator_proto::ReplyProxyIPsPorts>> PrepareAsyncuploadXueUpdate(::grpc::ClientContext* context, const ::coordinator_proto::XueUpdateRequest& request, ::grpc::CompletionQueue* cq) {
-      return std::unique_ptr< ::grpc::ClientAsyncResponseReaderInterface< ::coordinator_proto::ReplyProxyIPsPorts>>(PrepareAsyncuploadXueUpdateRaw(context, request, cq));
+    std::unique_ptr< ::grpc::ClientAsyncResponseReaderInterface< ::coordinator_proto::ReplyProxyIPsPorts>> PrepareAsyncuploadUplrcLegacyUpdate(::grpc::ClientContext* context, const ::coordinator_proto::UplrcLegacyUpdateRequest& request, ::grpc::CompletionQueue* cq) {
+      return std::unique_ptr< ::grpc::ClientAsyncResponseReaderInterface< ::coordinator_proto::ReplyProxyIPsPorts>>(PrepareAsyncuploadUplrcLegacyUpdateRaw(context, request, cq));
     }
-    // CoRD：按块内更新区间相交性分组（算法一）
-    virtual ::grpc::Status uploadCordUpdate(::grpc::ClientContext* context, const ::coordinator_proto::CordUpdateRequest& request, ::coordinator_proto::ReplyProxyIPsPorts* response) = 0;
-    std::unique_ptr< ::grpc::ClientAsyncResponseReaderInterface< ::coordinator_proto::ReplyProxyIPsPorts>> AsyncuploadCordUpdate(::grpc::ClientContext* context, const ::coordinator_proto::CordUpdateRequest& request, ::grpc::CompletionQueue* cq) {
-      return std::unique_ptr< ::grpc::ClientAsyncResponseReaderInterface< ::coordinator_proto::ReplyProxyIPsPorts>>(AsyncuploadCordUpdateRaw(context, request, cq));
+    // UpLRC：按块内更新区间相交性分组（算法一）
+    virtual ::grpc::Status uploadUpLRCUpdate(::grpc::ClientContext* context, const ::coordinator_proto::UpLRCUpdateRequest& request, ::coordinator_proto::ReplyProxyIPsPorts* response) = 0;
+    std::unique_ptr< ::grpc::ClientAsyncResponseReaderInterface< ::coordinator_proto::ReplyProxyIPsPorts>> AsyncuploadUpLRCUpdate(::grpc::ClientContext* context, const ::coordinator_proto::UpLRCUpdateRequest& request, ::grpc::CompletionQueue* cq) {
+      return std::unique_ptr< ::grpc::ClientAsyncResponseReaderInterface< ::coordinator_proto::ReplyProxyIPsPorts>>(AsyncuploadUpLRCUpdateRaw(context, request, cq));
     }
-    std::unique_ptr< ::grpc::ClientAsyncResponseReaderInterface< ::coordinator_proto::ReplyProxyIPsPorts>> PrepareAsyncuploadCordUpdate(::grpc::ClientContext* context, const ::coordinator_proto::CordUpdateRequest& request, ::grpc::CompletionQueue* cq) {
-      return std::unique_ptr< ::grpc::ClientAsyncResponseReaderInterface< ::coordinator_proto::ReplyProxyIPsPorts>>(PrepareAsyncuploadCordUpdateRaw(context, request, cq));
+    std::unique_ptr< ::grpc::ClientAsyncResponseReaderInterface< ::coordinator_proto::ReplyProxyIPsPorts>> PrepareAsyncuploadUpLRCUpdate(::grpc::ClientContext* context, const ::coordinator_proto::UpLRCUpdateRequest& request, ::grpc::CompletionQueue* cq) {
+      return std::unique_ptr< ::grpc::ClientAsyncResponseReaderInterface< ::coordinator_proto::ReplyProxyIPsPorts>>(PrepareAsyncuploadUpLRCUpdateRaw(context, request, cq));
     }
-    // 客户端在各 cluster 完成 TCP delta 后调用，再向各 proxy 下发 CordTransferPlan（保证 delta blob 先就绪）
-    virtual ::grpc::Status cordPlanBeginTransfer(::grpc::ClientContext* context, const ::coordinator_proto::CordPlanKeyOnly& request, ::coordinator_proto::RepIfSuccess* response) = 0;
-    std::unique_ptr< ::grpc::ClientAsyncResponseReaderInterface< ::coordinator_proto::RepIfSuccess>> AsynccordPlanBeginTransfer(::grpc::ClientContext* context, const ::coordinator_proto::CordPlanKeyOnly& request, ::grpc::CompletionQueue* cq) {
-      return std::unique_ptr< ::grpc::ClientAsyncResponseReaderInterface< ::coordinator_proto::RepIfSuccess>>(AsynccordPlanBeginTransferRaw(context, request, cq));
+    // 客户端在各 cluster 完成 TCP delta 后调用，再向各 proxy 下发 UpLRCTransferPlan（保证 delta blob 先就绪）
+    virtual ::grpc::Status uplrcPlanBeginTransfer(::grpc::ClientContext* context, const ::coordinator_proto::UpLRCPlanKeyOnly& request, ::coordinator_proto::RepIfSuccess* response) = 0;
+    std::unique_ptr< ::grpc::ClientAsyncResponseReaderInterface< ::coordinator_proto::RepIfSuccess>> AsyncuplrcPlanBeginTransfer(::grpc::ClientContext* context, const ::coordinator_proto::UpLRCPlanKeyOnly& request, ::grpc::CompletionQueue* cq) {
+      return std::unique_ptr< ::grpc::ClientAsyncResponseReaderInterface< ::coordinator_proto::RepIfSuccess>>(AsyncuplrcPlanBeginTransferRaw(context, request, cq));
     }
-    std::unique_ptr< ::grpc::ClientAsyncResponseReaderInterface< ::coordinator_proto::RepIfSuccess>> PrepareAsynccordPlanBeginTransfer(::grpc::ClientContext* context, const ::coordinator_proto::CordPlanKeyOnly& request, ::grpc::CompletionQueue* cq) {
-      return std::unique_ptr< ::grpc::ClientAsyncResponseReaderInterface< ::coordinator_proto::RepIfSuccess>>(PrepareAsynccordPlanBeginTransferRaw(context, request, cq));
+    std::unique_ptr< ::grpc::ClientAsyncResponseReaderInterface< ::coordinator_proto::RepIfSuccess>> PrepareAsyncuplrcPlanBeginTransfer(::grpc::ClientContext* context, const ::coordinator_proto::UpLRCPlanKeyOnly& request, ::grpc::CompletionQueue* cq) {
+      return std::unique_ptr< ::grpc::ClientAsyncResponseReaderInterface< ::coordinator_proto::RepIfSuccess>>(PrepareAsyncuplrcPlanBeginTransferRaw(context, request, cq));
     }
     // 阻塞直至各相关 proxy 上本轮 plan 执行线程结束（真实墙钟语义）
-    virtual ::grpc::Status cordPlanWaitTransferComplete(::grpc::ClientContext* context, const ::coordinator_proto::CordPlanWaitRequest& request, ::coordinator_proto::RepIfSuccess* response) = 0;
-    std::unique_ptr< ::grpc::ClientAsyncResponseReaderInterface< ::coordinator_proto::RepIfSuccess>> AsynccordPlanWaitTransferComplete(::grpc::ClientContext* context, const ::coordinator_proto::CordPlanWaitRequest& request, ::grpc::CompletionQueue* cq) {
-      return std::unique_ptr< ::grpc::ClientAsyncResponseReaderInterface< ::coordinator_proto::RepIfSuccess>>(AsynccordPlanWaitTransferCompleteRaw(context, request, cq));
+    virtual ::grpc::Status uplrcPlanWaitTransferComplete(::grpc::ClientContext* context, const ::coordinator_proto::UpLRCPlanWaitRequest& request, ::coordinator_proto::RepIfSuccess* response) = 0;
+    std::unique_ptr< ::grpc::ClientAsyncResponseReaderInterface< ::coordinator_proto::RepIfSuccess>> AsyncuplrcPlanWaitTransferComplete(::grpc::ClientContext* context, const ::coordinator_proto::UpLRCPlanWaitRequest& request, ::grpc::CompletionQueue* cq) {
+      return std::unique_ptr< ::grpc::ClientAsyncResponseReaderInterface< ::coordinator_proto::RepIfSuccess>>(AsyncuplrcPlanWaitTransferCompleteRaw(context, request, cq));
     }
-    std::unique_ptr< ::grpc::ClientAsyncResponseReaderInterface< ::coordinator_proto::RepIfSuccess>> PrepareAsynccordPlanWaitTransferComplete(::grpc::ClientContext* context, const ::coordinator_proto::CordPlanWaitRequest& request, ::grpc::CompletionQueue* cq) {
-      return std::unique_ptr< ::grpc::ClientAsyncResponseReaderInterface< ::coordinator_proto::RepIfSuccess>>(PrepareAsynccordPlanWaitTransferCompleteRaw(context, request, cq));
+    std::unique_ptr< ::grpc::ClientAsyncResponseReaderInterface< ::coordinator_proto::RepIfSuccess>> PrepareAsyncuplrcPlanWaitTransferComplete(::grpc::ClientContext* context, const ::coordinator_proto::UpLRCPlanWaitRequest& request, ::grpc::CompletionQueue* cq) {
+      return std::unique_ptr< ::grpc::ClientAsyncResponseReaderInterface< ::coordinator_proto::RepIfSuccess>>(PrepareAsyncuplrcPlanWaitTransferCompleteRaw(context, request, cq));
     }
-    virtual ::grpc::Status uploadCordLocalParityApply(::grpc::ClientContext* context, const ::coordinator_proto::CordUpdateRequest& request, ::coordinator_proto::RepIfSuccess* response) = 0;
-    std::unique_ptr< ::grpc::ClientAsyncResponseReaderInterface< ::coordinator_proto::RepIfSuccess>> AsyncuploadCordLocalParityApply(::grpc::ClientContext* context, const ::coordinator_proto::CordUpdateRequest& request, ::grpc::CompletionQueue* cq) {
-      return std::unique_ptr< ::grpc::ClientAsyncResponseReaderInterface< ::coordinator_proto::RepIfSuccess>>(AsyncuploadCordLocalParityApplyRaw(context, request, cq));
+    virtual ::grpc::Status uploadUpLRCLocalParityApply(::grpc::ClientContext* context, const ::coordinator_proto::UpLRCUpdateRequest& request, ::coordinator_proto::RepIfSuccess* response) = 0;
+    std::unique_ptr< ::grpc::ClientAsyncResponseReaderInterface< ::coordinator_proto::RepIfSuccess>> AsyncuploadUpLRCLocalParityApply(::grpc::ClientContext* context, const ::coordinator_proto::UpLRCUpdateRequest& request, ::grpc::CompletionQueue* cq) {
+      return std::unique_ptr< ::grpc::ClientAsyncResponseReaderInterface< ::coordinator_proto::RepIfSuccess>>(AsyncuploadUpLRCLocalParityApplyRaw(context, request, cq));
     }
-    std::unique_ptr< ::grpc::ClientAsyncResponseReaderInterface< ::coordinator_proto::RepIfSuccess>> PrepareAsyncuploadCordLocalParityApply(::grpc::ClientContext* context, const ::coordinator_proto::CordUpdateRequest& request, ::grpc::CompletionQueue* cq) {
-      return std::unique_ptr< ::grpc::ClientAsyncResponseReaderInterface< ::coordinator_proto::RepIfSuccess>>(PrepareAsyncuploadCordLocalParityApplyRaw(context, request, cq));
+    std::unique_ptr< ::grpc::ClientAsyncResponseReaderInterface< ::coordinator_proto::RepIfSuccess>> PrepareAsyncuploadUpLRCLocalParityApply(::grpc::ClientContext* context, const ::coordinator_proto::UpLRCUpdateRequest& request, ::grpc::CompletionQueue* cq) {
+      return std::unique_ptr< ::grpc::ClientAsyncResponseReaderInterface< ::coordinator_proto::RepIfSuccess>>(PrepareAsyncuploadUpLRCLocalParityApplyRaw(context, request, cq));
     }
-    virtual ::grpc::Status uploadCordLocalParityViaGlobalHub(::grpc::ClientContext* context, const ::coordinator_proto::CordUpdateRequest& request, ::coordinator_proto::RepIfSuccess* response) = 0;
-    std::unique_ptr< ::grpc::ClientAsyncResponseReaderInterface< ::coordinator_proto::RepIfSuccess>> AsyncuploadCordLocalParityViaGlobalHub(::grpc::ClientContext* context, const ::coordinator_proto::CordUpdateRequest& request, ::grpc::CompletionQueue* cq) {
-      return std::unique_ptr< ::grpc::ClientAsyncResponseReaderInterface< ::coordinator_proto::RepIfSuccess>>(AsyncuploadCordLocalParityViaGlobalHubRaw(context, request, cq));
+    virtual ::grpc::Status uploadUpLRCLocalParityViaGlobalHub(::grpc::ClientContext* context, const ::coordinator_proto::UpLRCUpdateRequest& request, ::coordinator_proto::RepIfSuccess* response) = 0;
+    std::unique_ptr< ::grpc::ClientAsyncResponseReaderInterface< ::coordinator_proto::RepIfSuccess>> AsyncuploadUpLRCLocalParityViaGlobalHub(::grpc::ClientContext* context, const ::coordinator_proto::UpLRCUpdateRequest& request, ::grpc::CompletionQueue* cq) {
+      return std::unique_ptr< ::grpc::ClientAsyncResponseReaderInterface< ::coordinator_proto::RepIfSuccess>>(AsyncuploadUpLRCLocalParityViaGlobalHubRaw(context, request, cq));
     }
-    std::unique_ptr< ::grpc::ClientAsyncResponseReaderInterface< ::coordinator_proto::RepIfSuccess>> PrepareAsyncuploadCordLocalParityViaGlobalHub(::grpc::ClientContext* context, const ::coordinator_proto::CordUpdateRequest& request, ::grpc::CompletionQueue* cq) {
-      return std::unique_ptr< ::grpc::ClientAsyncResponseReaderInterface< ::coordinator_proto::RepIfSuccess>>(PrepareAsyncuploadCordLocalParityViaGlobalHubRaw(context, request, cq));
+    std::unique_ptr< ::grpc::ClientAsyncResponseReaderInterface< ::coordinator_proto::RepIfSuccess>> PrepareAsyncuploadUpLRCLocalParityViaGlobalHub(::grpc::ClientContext* context, const ::coordinator_proto::UpLRCUpdateRequest& request, ::grpc::CompletionQueue* cq) {
+      return std::unique_ptr< ::grpc::ClientAsyncResponseReaderInterface< ::coordinator_proto::RepIfSuccess>>(PrepareAsyncuploadUpLRCLocalParityViaGlobalHubRaw(context, request, cq));
     }
     // get
     virtual ::grpc::Status getValue(::grpc::ClientContext* context, const ::coordinator_proto::KeyAndClientIP& request, ::coordinator_proto::RepIfGetSuccess* response) = 0;
@@ -292,22 +292,22 @@ class coordinatorService final {
       // append
       virtual void uploadAppendValue(::grpc::ClientContext* context, const ::coordinator_proto::RequestProxyIPPort* request, ::coordinator_proto::ReplyProxyIPsPorts* response, std::function<void(::grpc::Status)>) = 0;
       virtual void uploadAppendValue(::grpc::ClientContext* context, const ::coordinator_proto::RequestProxyIPPort* request, ::coordinator_proto::ReplyProxyIPsPorts* response, ::grpc::ClientUnaryReactor* reactor) = 0;
-      // xue update
-      virtual void uploadXueUpdate(::grpc::ClientContext* context, const ::coordinator_proto::XueUpdateRequest* request, ::coordinator_proto::ReplyProxyIPsPorts* response, std::function<void(::grpc::Status)>) = 0;
-      virtual void uploadXueUpdate(::grpc::ClientContext* context, const ::coordinator_proto::XueUpdateRequest* request, ::coordinator_proto::ReplyProxyIPsPorts* response, ::grpc::ClientUnaryReactor* reactor) = 0;
-      // CoRD：按块内更新区间相交性分组（算法一）
-      virtual void uploadCordUpdate(::grpc::ClientContext* context, const ::coordinator_proto::CordUpdateRequest* request, ::coordinator_proto::ReplyProxyIPsPorts* response, std::function<void(::grpc::Status)>) = 0;
-      virtual void uploadCordUpdate(::grpc::ClientContext* context, const ::coordinator_proto::CordUpdateRequest* request, ::coordinator_proto::ReplyProxyIPsPorts* response, ::grpc::ClientUnaryReactor* reactor) = 0;
-      // 客户端在各 cluster 完成 TCP delta 后调用，再向各 proxy 下发 CordTransferPlan（保证 delta blob 先就绪）
-      virtual void cordPlanBeginTransfer(::grpc::ClientContext* context, const ::coordinator_proto::CordPlanKeyOnly* request, ::coordinator_proto::RepIfSuccess* response, std::function<void(::grpc::Status)>) = 0;
-      virtual void cordPlanBeginTransfer(::grpc::ClientContext* context, const ::coordinator_proto::CordPlanKeyOnly* request, ::coordinator_proto::RepIfSuccess* response, ::grpc::ClientUnaryReactor* reactor) = 0;
+      // uplrc update
+      virtual void uploadUplrcLegacyUpdate(::grpc::ClientContext* context, const ::coordinator_proto::UplrcLegacyUpdateRequest* request, ::coordinator_proto::ReplyProxyIPsPorts* response, std::function<void(::grpc::Status)>) = 0;
+      virtual void uploadUplrcLegacyUpdate(::grpc::ClientContext* context, const ::coordinator_proto::UplrcLegacyUpdateRequest* request, ::coordinator_proto::ReplyProxyIPsPorts* response, ::grpc::ClientUnaryReactor* reactor) = 0;
+      // UpLRC：按块内更新区间相交性分组（算法一）
+      virtual void uploadUpLRCUpdate(::grpc::ClientContext* context, const ::coordinator_proto::UpLRCUpdateRequest* request, ::coordinator_proto::ReplyProxyIPsPorts* response, std::function<void(::grpc::Status)>) = 0;
+      virtual void uploadUpLRCUpdate(::grpc::ClientContext* context, const ::coordinator_proto::UpLRCUpdateRequest* request, ::coordinator_proto::ReplyProxyIPsPorts* response, ::grpc::ClientUnaryReactor* reactor) = 0;
+      // 客户端在各 cluster 完成 TCP delta 后调用，再向各 proxy 下发 UpLRCTransferPlan（保证 delta blob 先就绪）
+      virtual void uplrcPlanBeginTransfer(::grpc::ClientContext* context, const ::coordinator_proto::UpLRCPlanKeyOnly* request, ::coordinator_proto::RepIfSuccess* response, std::function<void(::grpc::Status)>) = 0;
+      virtual void uplrcPlanBeginTransfer(::grpc::ClientContext* context, const ::coordinator_proto::UpLRCPlanKeyOnly* request, ::coordinator_proto::RepIfSuccess* response, ::grpc::ClientUnaryReactor* reactor) = 0;
       // 阻塞直至各相关 proxy 上本轮 plan 执行线程结束（真实墙钟语义）
-      virtual void cordPlanWaitTransferComplete(::grpc::ClientContext* context, const ::coordinator_proto::CordPlanWaitRequest* request, ::coordinator_proto::RepIfSuccess* response, std::function<void(::grpc::Status)>) = 0;
-      virtual void cordPlanWaitTransferComplete(::grpc::ClientContext* context, const ::coordinator_proto::CordPlanWaitRequest* request, ::coordinator_proto::RepIfSuccess* response, ::grpc::ClientUnaryReactor* reactor) = 0;
-      virtual void uploadCordLocalParityApply(::grpc::ClientContext* context, const ::coordinator_proto::CordUpdateRequest* request, ::coordinator_proto::RepIfSuccess* response, std::function<void(::grpc::Status)>) = 0;
-      virtual void uploadCordLocalParityApply(::grpc::ClientContext* context, const ::coordinator_proto::CordUpdateRequest* request, ::coordinator_proto::RepIfSuccess* response, ::grpc::ClientUnaryReactor* reactor) = 0;
-      virtual void uploadCordLocalParityViaGlobalHub(::grpc::ClientContext* context, const ::coordinator_proto::CordUpdateRequest* request, ::coordinator_proto::RepIfSuccess* response, std::function<void(::grpc::Status)>) = 0;
-      virtual void uploadCordLocalParityViaGlobalHub(::grpc::ClientContext* context, const ::coordinator_proto::CordUpdateRequest* request, ::coordinator_proto::RepIfSuccess* response, ::grpc::ClientUnaryReactor* reactor) = 0;
+      virtual void uplrcPlanWaitTransferComplete(::grpc::ClientContext* context, const ::coordinator_proto::UpLRCPlanWaitRequest* request, ::coordinator_proto::RepIfSuccess* response, std::function<void(::grpc::Status)>) = 0;
+      virtual void uplrcPlanWaitTransferComplete(::grpc::ClientContext* context, const ::coordinator_proto::UpLRCPlanWaitRequest* request, ::coordinator_proto::RepIfSuccess* response, ::grpc::ClientUnaryReactor* reactor) = 0;
+      virtual void uploadUpLRCLocalParityApply(::grpc::ClientContext* context, const ::coordinator_proto::UpLRCUpdateRequest* request, ::coordinator_proto::RepIfSuccess* response, std::function<void(::grpc::Status)>) = 0;
+      virtual void uploadUpLRCLocalParityApply(::grpc::ClientContext* context, const ::coordinator_proto::UpLRCUpdateRequest* request, ::coordinator_proto::RepIfSuccess* response, ::grpc::ClientUnaryReactor* reactor) = 0;
+      virtual void uploadUpLRCLocalParityViaGlobalHub(::grpc::ClientContext* context, const ::coordinator_proto::UpLRCUpdateRequest* request, ::coordinator_proto::RepIfSuccess* response, std::function<void(::grpc::Status)>) = 0;
+      virtual void uploadUpLRCLocalParityViaGlobalHub(::grpc::ClientContext* context, const ::coordinator_proto::UpLRCUpdateRequest* request, ::coordinator_proto::RepIfSuccess* response, ::grpc::ClientUnaryReactor* reactor) = 0;
       // get
       virtual void getValue(::grpc::ClientContext* context, const ::coordinator_proto::KeyAndClientIP* request, ::coordinator_proto::RepIfGetSuccess* response, std::function<void(::grpc::Status)>) = 0;
       virtual void getValue(::grpc::ClientContext* context, const ::coordinator_proto::KeyAndClientIP* request, ::coordinator_proto::RepIfGetSuccess* response, ::grpc::ClientUnaryReactor* reactor) = 0;
@@ -364,18 +364,18 @@ class coordinatorService final {
     virtual ::grpc::ClientAsyncResponseReaderInterface< ::coordinator_proto::ReplyProxyIPsPorts>* PrepareAsyncuploadSubsetValueRaw(::grpc::ClientContext* context, const ::coordinator_proto::RequestProxyIPPort& request, ::grpc::CompletionQueue* cq) = 0;
     virtual ::grpc::ClientAsyncResponseReaderInterface< ::coordinator_proto::ReplyProxyIPsPorts>* AsyncuploadAppendValueRaw(::grpc::ClientContext* context, const ::coordinator_proto::RequestProxyIPPort& request, ::grpc::CompletionQueue* cq) = 0;
     virtual ::grpc::ClientAsyncResponseReaderInterface< ::coordinator_proto::ReplyProxyIPsPorts>* PrepareAsyncuploadAppendValueRaw(::grpc::ClientContext* context, const ::coordinator_proto::RequestProxyIPPort& request, ::grpc::CompletionQueue* cq) = 0;
-    virtual ::grpc::ClientAsyncResponseReaderInterface< ::coordinator_proto::ReplyProxyIPsPorts>* AsyncuploadXueUpdateRaw(::grpc::ClientContext* context, const ::coordinator_proto::XueUpdateRequest& request, ::grpc::CompletionQueue* cq) = 0;
-    virtual ::grpc::ClientAsyncResponseReaderInterface< ::coordinator_proto::ReplyProxyIPsPorts>* PrepareAsyncuploadXueUpdateRaw(::grpc::ClientContext* context, const ::coordinator_proto::XueUpdateRequest& request, ::grpc::CompletionQueue* cq) = 0;
-    virtual ::grpc::ClientAsyncResponseReaderInterface< ::coordinator_proto::ReplyProxyIPsPorts>* AsyncuploadCordUpdateRaw(::grpc::ClientContext* context, const ::coordinator_proto::CordUpdateRequest& request, ::grpc::CompletionQueue* cq) = 0;
-    virtual ::grpc::ClientAsyncResponseReaderInterface< ::coordinator_proto::ReplyProxyIPsPorts>* PrepareAsyncuploadCordUpdateRaw(::grpc::ClientContext* context, const ::coordinator_proto::CordUpdateRequest& request, ::grpc::CompletionQueue* cq) = 0;
-    virtual ::grpc::ClientAsyncResponseReaderInterface< ::coordinator_proto::RepIfSuccess>* AsynccordPlanBeginTransferRaw(::grpc::ClientContext* context, const ::coordinator_proto::CordPlanKeyOnly& request, ::grpc::CompletionQueue* cq) = 0;
-    virtual ::grpc::ClientAsyncResponseReaderInterface< ::coordinator_proto::RepIfSuccess>* PrepareAsynccordPlanBeginTransferRaw(::grpc::ClientContext* context, const ::coordinator_proto::CordPlanKeyOnly& request, ::grpc::CompletionQueue* cq) = 0;
-    virtual ::grpc::ClientAsyncResponseReaderInterface< ::coordinator_proto::RepIfSuccess>* AsynccordPlanWaitTransferCompleteRaw(::grpc::ClientContext* context, const ::coordinator_proto::CordPlanWaitRequest& request, ::grpc::CompletionQueue* cq) = 0;
-    virtual ::grpc::ClientAsyncResponseReaderInterface< ::coordinator_proto::RepIfSuccess>* PrepareAsynccordPlanWaitTransferCompleteRaw(::grpc::ClientContext* context, const ::coordinator_proto::CordPlanWaitRequest& request, ::grpc::CompletionQueue* cq) = 0;
-    virtual ::grpc::ClientAsyncResponseReaderInterface< ::coordinator_proto::RepIfSuccess>* AsyncuploadCordLocalParityApplyRaw(::grpc::ClientContext* context, const ::coordinator_proto::CordUpdateRequest& request, ::grpc::CompletionQueue* cq) = 0;
-    virtual ::grpc::ClientAsyncResponseReaderInterface< ::coordinator_proto::RepIfSuccess>* PrepareAsyncuploadCordLocalParityApplyRaw(::grpc::ClientContext* context, const ::coordinator_proto::CordUpdateRequest& request, ::grpc::CompletionQueue* cq) = 0;
-    virtual ::grpc::ClientAsyncResponseReaderInterface< ::coordinator_proto::RepIfSuccess>* AsyncuploadCordLocalParityViaGlobalHubRaw(::grpc::ClientContext* context, const ::coordinator_proto::CordUpdateRequest& request, ::grpc::CompletionQueue* cq) = 0;
-    virtual ::grpc::ClientAsyncResponseReaderInterface< ::coordinator_proto::RepIfSuccess>* PrepareAsyncuploadCordLocalParityViaGlobalHubRaw(::grpc::ClientContext* context, const ::coordinator_proto::CordUpdateRequest& request, ::grpc::CompletionQueue* cq) = 0;
+    virtual ::grpc::ClientAsyncResponseReaderInterface< ::coordinator_proto::ReplyProxyIPsPorts>* AsyncuploadUplrcLegacyUpdateRaw(::grpc::ClientContext* context, const ::coordinator_proto::UplrcLegacyUpdateRequest& request, ::grpc::CompletionQueue* cq) = 0;
+    virtual ::grpc::ClientAsyncResponseReaderInterface< ::coordinator_proto::ReplyProxyIPsPorts>* PrepareAsyncuploadUplrcLegacyUpdateRaw(::grpc::ClientContext* context, const ::coordinator_proto::UplrcLegacyUpdateRequest& request, ::grpc::CompletionQueue* cq) = 0;
+    virtual ::grpc::ClientAsyncResponseReaderInterface< ::coordinator_proto::ReplyProxyIPsPorts>* AsyncuploadUpLRCUpdateRaw(::grpc::ClientContext* context, const ::coordinator_proto::UpLRCUpdateRequest& request, ::grpc::CompletionQueue* cq) = 0;
+    virtual ::grpc::ClientAsyncResponseReaderInterface< ::coordinator_proto::ReplyProxyIPsPorts>* PrepareAsyncuploadUpLRCUpdateRaw(::grpc::ClientContext* context, const ::coordinator_proto::UpLRCUpdateRequest& request, ::grpc::CompletionQueue* cq) = 0;
+    virtual ::grpc::ClientAsyncResponseReaderInterface< ::coordinator_proto::RepIfSuccess>* AsyncuplrcPlanBeginTransferRaw(::grpc::ClientContext* context, const ::coordinator_proto::UpLRCPlanKeyOnly& request, ::grpc::CompletionQueue* cq) = 0;
+    virtual ::grpc::ClientAsyncResponseReaderInterface< ::coordinator_proto::RepIfSuccess>* PrepareAsyncuplrcPlanBeginTransferRaw(::grpc::ClientContext* context, const ::coordinator_proto::UpLRCPlanKeyOnly& request, ::grpc::CompletionQueue* cq) = 0;
+    virtual ::grpc::ClientAsyncResponseReaderInterface< ::coordinator_proto::RepIfSuccess>* AsyncuplrcPlanWaitTransferCompleteRaw(::grpc::ClientContext* context, const ::coordinator_proto::UpLRCPlanWaitRequest& request, ::grpc::CompletionQueue* cq) = 0;
+    virtual ::grpc::ClientAsyncResponseReaderInterface< ::coordinator_proto::RepIfSuccess>* PrepareAsyncuplrcPlanWaitTransferCompleteRaw(::grpc::ClientContext* context, const ::coordinator_proto::UpLRCPlanWaitRequest& request, ::grpc::CompletionQueue* cq) = 0;
+    virtual ::grpc::ClientAsyncResponseReaderInterface< ::coordinator_proto::RepIfSuccess>* AsyncuploadUpLRCLocalParityApplyRaw(::grpc::ClientContext* context, const ::coordinator_proto::UpLRCUpdateRequest& request, ::grpc::CompletionQueue* cq) = 0;
+    virtual ::grpc::ClientAsyncResponseReaderInterface< ::coordinator_proto::RepIfSuccess>* PrepareAsyncuploadUpLRCLocalParityApplyRaw(::grpc::ClientContext* context, const ::coordinator_proto::UpLRCUpdateRequest& request, ::grpc::CompletionQueue* cq) = 0;
+    virtual ::grpc::ClientAsyncResponseReaderInterface< ::coordinator_proto::RepIfSuccess>* AsyncuploadUpLRCLocalParityViaGlobalHubRaw(::grpc::ClientContext* context, const ::coordinator_proto::UpLRCUpdateRequest& request, ::grpc::CompletionQueue* cq) = 0;
+    virtual ::grpc::ClientAsyncResponseReaderInterface< ::coordinator_proto::RepIfSuccess>* PrepareAsyncuploadUpLRCLocalParityViaGlobalHubRaw(::grpc::ClientContext* context, const ::coordinator_proto::UpLRCUpdateRequest& request, ::grpc::CompletionQueue* cq) = 0;
     virtual ::grpc::ClientAsyncResponseReaderInterface< ::coordinator_proto::RepIfGetSuccess>* AsyncgetValueRaw(::grpc::ClientContext* context, const ::coordinator_proto::KeyAndClientIP& request, ::grpc::CompletionQueue* cq) = 0;
     virtual ::grpc::ClientAsyncResponseReaderInterface< ::coordinator_proto::RepIfGetSuccess>* PrepareAsyncgetValueRaw(::grpc::ClientContext* context, const ::coordinator_proto::KeyAndClientIP& request, ::grpc::CompletionQueue* cq) = 0;
     virtual ::grpc::ClientAsyncResponseReaderInterface< ::coordinator_proto::ReplyProxyIPsPorts>* AsyncgetStripeRaw(::grpc::ClientContext* context, const ::coordinator_proto::KeyAndClientIP& request, ::grpc::CompletionQueue* cq) = 0;
@@ -471,47 +471,47 @@ class coordinatorService final {
     std::unique_ptr< ::grpc::ClientAsyncResponseReader< ::coordinator_proto::ReplyProxyIPsPorts>> PrepareAsyncuploadAppendValue(::grpc::ClientContext* context, const ::coordinator_proto::RequestProxyIPPort& request, ::grpc::CompletionQueue* cq) {
       return std::unique_ptr< ::grpc::ClientAsyncResponseReader< ::coordinator_proto::ReplyProxyIPsPorts>>(PrepareAsyncuploadAppendValueRaw(context, request, cq));
     }
-    ::grpc::Status uploadXueUpdate(::grpc::ClientContext* context, const ::coordinator_proto::XueUpdateRequest& request, ::coordinator_proto::ReplyProxyIPsPorts* response) override;
-    std::unique_ptr< ::grpc::ClientAsyncResponseReader< ::coordinator_proto::ReplyProxyIPsPorts>> AsyncuploadXueUpdate(::grpc::ClientContext* context, const ::coordinator_proto::XueUpdateRequest& request, ::grpc::CompletionQueue* cq) {
-      return std::unique_ptr< ::grpc::ClientAsyncResponseReader< ::coordinator_proto::ReplyProxyIPsPorts>>(AsyncuploadXueUpdateRaw(context, request, cq));
+    ::grpc::Status uploadUplrcLegacyUpdate(::grpc::ClientContext* context, const ::coordinator_proto::UplrcLegacyUpdateRequest& request, ::coordinator_proto::ReplyProxyIPsPorts* response) override;
+    std::unique_ptr< ::grpc::ClientAsyncResponseReader< ::coordinator_proto::ReplyProxyIPsPorts>> AsyncuploadUplrcLegacyUpdate(::grpc::ClientContext* context, const ::coordinator_proto::UplrcLegacyUpdateRequest& request, ::grpc::CompletionQueue* cq) {
+      return std::unique_ptr< ::grpc::ClientAsyncResponseReader< ::coordinator_proto::ReplyProxyIPsPorts>>(AsyncuploadUplrcLegacyUpdateRaw(context, request, cq));
     }
-    std::unique_ptr< ::grpc::ClientAsyncResponseReader< ::coordinator_proto::ReplyProxyIPsPorts>> PrepareAsyncuploadXueUpdate(::grpc::ClientContext* context, const ::coordinator_proto::XueUpdateRequest& request, ::grpc::CompletionQueue* cq) {
-      return std::unique_ptr< ::grpc::ClientAsyncResponseReader< ::coordinator_proto::ReplyProxyIPsPorts>>(PrepareAsyncuploadXueUpdateRaw(context, request, cq));
+    std::unique_ptr< ::grpc::ClientAsyncResponseReader< ::coordinator_proto::ReplyProxyIPsPorts>> PrepareAsyncuploadUplrcLegacyUpdate(::grpc::ClientContext* context, const ::coordinator_proto::UplrcLegacyUpdateRequest& request, ::grpc::CompletionQueue* cq) {
+      return std::unique_ptr< ::grpc::ClientAsyncResponseReader< ::coordinator_proto::ReplyProxyIPsPorts>>(PrepareAsyncuploadUplrcLegacyUpdateRaw(context, request, cq));
     }
-    ::grpc::Status uploadCordUpdate(::grpc::ClientContext* context, const ::coordinator_proto::CordUpdateRequest& request, ::coordinator_proto::ReplyProxyIPsPorts* response) override;
-    std::unique_ptr< ::grpc::ClientAsyncResponseReader< ::coordinator_proto::ReplyProxyIPsPorts>> AsyncuploadCordUpdate(::grpc::ClientContext* context, const ::coordinator_proto::CordUpdateRequest& request, ::grpc::CompletionQueue* cq) {
-      return std::unique_ptr< ::grpc::ClientAsyncResponseReader< ::coordinator_proto::ReplyProxyIPsPorts>>(AsyncuploadCordUpdateRaw(context, request, cq));
+    ::grpc::Status uploadUpLRCUpdate(::grpc::ClientContext* context, const ::coordinator_proto::UpLRCUpdateRequest& request, ::coordinator_proto::ReplyProxyIPsPorts* response) override;
+    std::unique_ptr< ::grpc::ClientAsyncResponseReader< ::coordinator_proto::ReplyProxyIPsPorts>> AsyncuploadUpLRCUpdate(::grpc::ClientContext* context, const ::coordinator_proto::UpLRCUpdateRequest& request, ::grpc::CompletionQueue* cq) {
+      return std::unique_ptr< ::grpc::ClientAsyncResponseReader< ::coordinator_proto::ReplyProxyIPsPorts>>(AsyncuploadUpLRCUpdateRaw(context, request, cq));
     }
-    std::unique_ptr< ::grpc::ClientAsyncResponseReader< ::coordinator_proto::ReplyProxyIPsPorts>> PrepareAsyncuploadCordUpdate(::grpc::ClientContext* context, const ::coordinator_proto::CordUpdateRequest& request, ::grpc::CompletionQueue* cq) {
-      return std::unique_ptr< ::grpc::ClientAsyncResponseReader< ::coordinator_proto::ReplyProxyIPsPorts>>(PrepareAsyncuploadCordUpdateRaw(context, request, cq));
+    std::unique_ptr< ::grpc::ClientAsyncResponseReader< ::coordinator_proto::ReplyProxyIPsPorts>> PrepareAsyncuploadUpLRCUpdate(::grpc::ClientContext* context, const ::coordinator_proto::UpLRCUpdateRequest& request, ::grpc::CompletionQueue* cq) {
+      return std::unique_ptr< ::grpc::ClientAsyncResponseReader< ::coordinator_proto::ReplyProxyIPsPorts>>(PrepareAsyncuploadUpLRCUpdateRaw(context, request, cq));
     }
-    ::grpc::Status cordPlanBeginTransfer(::grpc::ClientContext* context, const ::coordinator_proto::CordPlanKeyOnly& request, ::coordinator_proto::RepIfSuccess* response) override;
-    std::unique_ptr< ::grpc::ClientAsyncResponseReader< ::coordinator_proto::RepIfSuccess>> AsynccordPlanBeginTransfer(::grpc::ClientContext* context, const ::coordinator_proto::CordPlanKeyOnly& request, ::grpc::CompletionQueue* cq) {
-      return std::unique_ptr< ::grpc::ClientAsyncResponseReader< ::coordinator_proto::RepIfSuccess>>(AsynccordPlanBeginTransferRaw(context, request, cq));
+    ::grpc::Status uplrcPlanBeginTransfer(::grpc::ClientContext* context, const ::coordinator_proto::UpLRCPlanKeyOnly& request, ::coordinator_proto::RepIfSuccess* response) override;
+    std::unique_ptr< ::grpc::ClientAsyncResponseReader< ::coordinator_proto::RepIfSuccess>> AsyncuplrcPlanBeginTransfer(::grpc::ClientContext* context, const ::coordinator_proto::UpLRCPlanKeyOnly& request, ::grpc::CompletionQueue* cq) {
+      return std::unique_ptr< ::grpc::ClientAsyncResponseReader< ::coordinator_proto::RepIfSuccess>>(AsyncuplrcPlanBeginTransferRaw(context, request, cq));
     }
-    std::unique_ptr< ::grpc::ClientAsyncResponseReader< ::coordinator_proto::RepIfSuccess>> PrepareAsynccordPlanBeginTransfer(::grpc::ClientContext* context, const ::coordinator_proto::CordPlanKeyOnly& request, ::grpc::CompletionQueue* cq) {
-      return std::unique_ptr< ::grpc::ClientAsyncResponseReader< ::coordinator_proto::RepIfSuccess>>(PrepareAsynccordPlanBeginTransferRaw(context, request, cq));
+    std::unique_ptr< ::grpc::ClientAsyncResponseReader< ::coordinator_proto::RepIfSuccess>> PrepareAsyncuplrcPlanBeginTransfer(::grpc::ClientContext* context, const ::coordinator_proto::UpLRCPlanKeyOnly& request, ::grpc::CompletionQueue* cq) {
+      return std::unique_ptr< ::grpc::ClientAsyncResponseReader< ::coordinator_proto::RepIfSuccess>>(PrepareAsyncuplrcPlanBeginTransferRaw(context, request, cq));
     }
-    ::grpc::Status cordPlanWaitTransferComplete(::grpc::ClientContext* context, const ::coordinator_proto::CordPlanWaitRequest& request, ::coordinator_proto::RepIfSuccess* response) override;
-    std::unique_ptr< ::grpc::ClientAsyncResponseReader< ::coordinator_proto::RepIfSuccess>> AsynccordPlanWaitTransferComplete(::grpc::ClientContext* context, const ::coordinator_proto::CordPlanWaitRequest& request, ::grpc::CompletionQueue* cq) {
-      return std::unique_ptr< ::grpc::ClientAsyncResponseReader< ::coordinator_proto::RepIfSuccess>>(AsynccordPlanWaitTransferCompleteRaw(context, request, cq));
+    ::grpc::Status uplrcPlanWaitTransferComplete(::grpc::ClientContext* context, const ::coordinator_proto::UpLRCPlanWaitRequest& request, ::coordinator_proto::RepIfSuccess* response) override;
+    std::unique_ptr< ::grpc::ClientAsyncResponseReader< ::coordinator_proto::RepIfSuccess>> AsyncuplrcPlanWaitTransferComplete(::grpc::ClientContext* context, const ::coordinator_proto::UpLRCPlanWaitRequest& request, ::grpc::CompletionQueue* cq) {
+      return std::unique_ptr< ::grpc::ClientAsyncResponseReader< ::coordinator_proto::RepIfSuccess>>(AsyncuplrcPlanWaitTransferCompleteRaw(context, request, cq));
     }
-    std::unique_ptr< ::grpc::ClientAsyncResponseReader< ::coordinator_proto::RepIfSuccess>> PrepareAsynccordPlanWaitTransferComplete(::grpc::ClientContext* context, const ::coordinator_proto::CordPlanWaitRequest& request, ::grpc::CompletionQueue* cq) {
-      return std::unique_ptr< ::grpc::ClientAsyncResponseReader< ::coordinator_proto::RepIfSuccess>>(PrepareAsynccordPlanWaitTransferCompleteRaw(context, request, cq));
+    std::unique_ptr< ::grpc::ClientAsyncResponseReader< ::coordinator_proto::RepIfSuccess>> PrepareAsyncuplrcPlanWaitTransferComplete(::grpc::ClientContext* context, const ::coordinator_proto::UpLRCPlanWaitRequest& request, ::grpc::CompletionQueue* cq) {
+      return std::unique_ptr< ::grpc::ClientAsyncResponseReader< ::coordinator_proto::RepIfSuccess>>(PrepareAsyncuplrcPlanWaitTransferCompleteRaw(context, request, cq));
     }
-    ::grpc::Status uploadCordLocalParityApply(::grpc::ClientContext* context, const ::coordinator_proto::CordUpdateRequest& request, ::coordinator_proto::RepIfSuccess* response) override;
-    std::unique_ptr< ::grpc::ClientAsyncResponseReader< ::coordinator_proto::RepIfSuccess>> AsyncuploadCordLocalParityApply(::grpc::ClientContext* context, const ::coordinator_proto::CordUpdateRequest& request, ::grpc::CompletionQueue* cq) {
-      return std::unique_ptr< ::grpc::ClientAsyncResponseReader< ::coordinator_proto::RepIfSuccess>>(AsyncuploadCordLocalParityApplyRaw(context, request, cq));
+    ::grpc::Status uploadUpLRCLocalParityApply(::grpc::ClientContext* context, const ::coordinator_proto::UpLRCUpdateRequest& request, ::coordinator_proto::RepIfSuccess* response) override;
+    std::unique_ptr< ::grpc::ClientAsyncResponseReader< ::coordinator_proto::RepIfSuccess>> AsyncuploadUpLRCLocalParityApply(::grpc::ClientContext* context, const ::coordinator_proto::UpLRCUpdateRequest& request, ::grpc::CompletionQueue* cq) {
+      return std::unique_ptr< ::grpc::ClientAsyncResponseReader< ::coordinator_proto::RepIfSuccess>>(AsyncuploadUpLRCLocalParityApplyRaw(context, request, cq));
     }
-    std::unique_ptr< ::grpc::ClientAsyncResponseReader< ::coordinator_proto::RepIfSuccess>> PrepareAsyncuploadCordLocalParityApply(::grpc::ClientContext* context, const ::coordinator_proto::CordUpdateRequest& request, ::grpc::CompletionQueue* cq) {
-      return std::unique_ptr< ::grpc::ClientAsyncResponseReader< ::coordinator_proto::RepIfSuccess>>(PrepareAsyncuploadCordLocalParityApplyRaw(context, request, cq));
+    std::unique_ptr< ::grpc::ClientAsyncResponseReader< ::coordinator_proto::RepIfSuccess>> PrepareAsyncuploadUpLRCLocalParityApply(::grpc::ClientContext* context, const ::coordinator_proto::UpLRCUpdateRequest& request, ::grpc::CompletionQueue* cq) {
+      return std::unique_ptr< ::grpc::ClientAsyncResponseReader< ::coordinator_proto::RepIfSuccess>>(PrepareAsyncuploadUpLRCLocalParityApplyRaw(context, request, cq));
     }
-    ::grpc::Status uploadCordLocalParityViaGlobalHub(::grpc::ClientContext* context, const ::coordinator_proto::CordUpdateRequest& request, ::coordinator_proto::RepIfSuccess* response) override;
-    std::unique_ptr< ::grpc::ClientAsyncResponseReader< ::coordinator_proto::RepIfSuccess>> AsyncuploadCordLocalParityViaGlobalHub(::grpc::ClientContext* context, const ::coordinator_proto::CordUpdateRequest& request, ::grpc::CompletionQueue* cq) {
-      return std::unique_ptr< ::grpc::ClientAsyncResponseReader< ::coordinator_proto::RepIfSuccess>>(AsyncuploadCordLocalParityViaGlobalHubRaw(context, request, cq));
+    ::grpc::Status uploadUpLRCLocalParityViaGlobalHub(::grpc::ClientContext* context, const ::coordinator_proto::UpLRCUpdateRequest& request, ::coordinator_proto::RepIfSuccess* response) override;
+    std::unique_ptr< ::grpc::ClientAsyncResponseReader< ::coordinator_proto::RepIfSuccess>> AsyncuploadUpLRCLocalParityViaGlobalHub(::grpc::ClientContext* context, const ::coordinator_proto::UpLRCUpdateRequest& request, ::grpc::CompletionQueue* cq) {
+      return std::unique_ptr< ::grpc::ClientAsyncResponseReader< ::coordinator_proto::RepIfSuccess>>(AsyncuploadUpLRCLocalParityViaGlobalHubRaw(context, request, cq));
     }
-    std::unique_ptr< ::grpc::ClientAsyncResponseReader< ::coordinator_proto::RepIfSuccess>> PrepareAsyncuploadCordLocalParityViaGlobalHub(::grpc::ClientContext* context, const ::coordinator_proto::CordUpdateRequest& request, ::grpc::CompletionQueue* cq) {
-      return std::unique_ptr< ::grpc::ClientAsyncResponseReader< ::coordinator_proto::RepIfSuccess>>(PrepareAsyncuploadCordLocalParityViaGlobalHubRaw(context, request, cq));
+    std::unique_ptr< ::grpc::ClientAsyncResponseReader< ::coordinator_proto::RepIfSuccess>> PrepareAsyncuploadUpLRCLocalParityViaGlobalHub(::grpc::ClientContext* context, const ::coordinator_proto::UpLRCUpdateRequest& request, ::grpc::CompletionQueue* cq) {
+      return std::unique_ptr< ::grpc::ClientAsyncResponseReader< ::coordinator_proto::RepIfSuccess>>(PrepareAsyncuploadUpLRCLocalParityViaGlobalHubRaw(context, request, cq));
     }
     ::grpc::Status getValue(::grpc::ClientContext* context, const ::coordinator_proto::KeyAndClientIP& request, ::coordinator_proto::RepIfGetSuccess* response) override;
     std::unique_ptr< ::grpc::ClientAsyncResponseReader< ::coordinator_proto::RepIfGetSuccess>> AsyncgetValue(::grpc::ClientContext* context, const ::coordinator_proto::KeyAndClientIP& request, ::grpc::CompletionQueue* cq) {
@@ -632,18 +632,18 @@ class coordinatorService final {
       void uploadSubsetValue(::grpc::ClientContext* context, const ::coordinator_proto::RequestProxyIPPort* request, ::coordinator_proto::ReplyProxyIPsPorts* response, ::grpc::ClientUnaryReactor* reactor) override;
       void uploadAppendValue(::grpc::ClientContext* context, const ::coordinator_proto::RequestProxyIPPort* request, ::coordinator_proto::ReplyProxyIPsPorts* response, std::function<void(::grpc::Status)>) override;
       void uploadAppendValue(::grpc::ClientContext* context, const ::coordinator_proto::RequestProxyIPPort* request, ::coordinator_proto::ReplyProxyIPsPorts* response, ::grpc::ClientUnaryReactor* reactor) override;
-      void uploadXueUpdate(::grpc::ClientContext* context, const ::coordinator_proto::XueUpdateRequest* request, ::coordinator_proto::ReplyProxyIPsPorts* response, std::function<void(::grpc::Status)>) override;
-      void uploadXueUpdate(::grpc::ClientContext* context, const ::coordinator_proto::XueUpdateRequest* request, ::coordinator_proto::ReplyProxyIPsPorts* response, ::grpc::ClientUnaryReactor* reactor) override;
-      void uploadCordUpdate(::grpc::ClientContext* context, const ::coordinator_proto::CordUpdateRequest* request, ::coordinator_proto::ReplyProxyIPsPorts* response, std::function<void(::grpc::Status)>) override;
-      void uploadCordUpdate(::grpc::ClientContext* context, const ::coordinator_proto::CordUpdateRequest* request, ::coordinator_proto::ReplyProxyIPsPorts* response, ::grpc::ClientUnaryReactor* reactor) override;
-      void cordPlanBeginTransfer(::grpc::ClientContext* context, const ::coordinator_proto::CordPlanKeyOnly* request, ::coordinator_proto::RepIfSuccess* response, std::function<void(::grpc::Status)>) override;
-      void cordPlanBeginTransfer(::grpc::ClientContext* context, const ::coordinator_proto::CordPlanKeyOnly* request, ::coordinator_proto::RepIfSuccess* response, ::grpc::ClientUnaryReactor* reactor) override;
-      void cordPlanWaitTransferComplete(::grpc::ClientContext* context, const ::coordinator_proto::CordPlanWaitRequest* request, ::coordinator_proto::RepIfSuccess* response, std::function<void(::grpc::Status)>) override;
-      void cordPlanWaitTransferComplete(::grpc::ClientContext* context, const ::coordinator_proto::CordPlanWaitRequest* request, ::coordinator_proto::RepIfSuccess* response, ::grpc::ClientUnaryReactor* reactor) override;
-      void uploadCordLocalParityApply(::grpc::ClientContext* context, const ::coordinator_proto::CordUpdateRequest* request, ::coordinator_proto::RepIfSuccess* response, std::function<void(::grpc::Status)>) override;
-      void uploadCordLocalParityApply(::grpc::ClientContext* context, const ::coordinator_proto::CordUpdateRequest* request, ::coordinator_proto::RepIfSuccess* response, ::grpc::ClientUnaryReactor* reactor) override;
-      void uploadCordLocalParityViaGlobalHub(::grpc::ClientContext* context, const ::coordinator_proto::CordUpdateRequest* request, ::coordinator_proto::RepIfSuccess* response, std::function<void(::grpc::Status)>) override;
-      void uploadCordLocalParityViaGlobalHub(::grpc::ClientContext* context, const ::coordinator_proto::CordUpdateRequest* request, ::coordinator_proto::RepIfSuccess* response, ::grpc::ClientUnaryReactor* reactor) override;
+      void uploadUplrcLegacyUpdate(::grpc::ClientContext* context, const ::coordinator_proto::UplrcLegacyUpdateRequest* request, ::coordinator_proto::ReplyProxyIPsPorts* response, std::function<void(::grpc::Status)>) override;
+      void uploadUplrcLegacyUpdate(::grpc::ClientContext* context, const ::coordinator_proto::UplrcLegacyUpdateRequest* request, ::coordinator_proto::ReplyProxyIPsPorts* response, ::grpc::ClientUnaryReactor* reactor) override;
+      void uploadUpLRCUpdate(::grpc::ClientContext* context, const ::coordinator_proto::UpLRCUpdateRequest* request, ::coordinator_proto::ReplyProxyIPsPorts* response, std::function<void(::grpc::Status)>) override;
+      void uploadUpLRCUpdate(::grpc::ClientContext* context, const ::coordinator_proto::UpLRCUpdateRequest* request, ::coordinator_proto::ReplyProxyIPsPorts* response, ::grpc::ClientUnaryReactor* reactor) override;
+      void uplrcPlanBeginTransfer(::grpc::ClientContext* context, const ::coordinator_proto::UpLRCPlanKeyOnly* request, ::coordinator_proto::RepIfSuccess* response, std::function<void(::grpc::Status)>) override;
+      void uplrcPlanBeginTransfer(::grpc::ClientContext* context, const ::coordinator_proto::UpLRCPlanKeyOnly* request, ::coordinator_proto::RepIfSuccess* response, ::grpc::ClientUnaryReactor* reactor) override;
+      void uplrcPlanWaitTransferComplete(::grpc::ClientContext* context, const ::coordinator_proto::UpLRCPlanWaitRequest* request, ::coordinator_proto::RepIfSuccess* response, std::function<void(::grpc::Status)>) override;
+      void uplrcPlanWaitTransferComplete(::grpc::ClientContext* context, const ::coordinator_proto::UpLRCPlanWaitRequest* request, ::coordinator_proto::RepIfSuccess* response, ::grpc::ClientUnaryReactor* reactor) override;
+      void uploadUpLRCLocalParityApply(::grpc::ClientContext* context, const ::coordinator_proto::UpLRCUpdateRequest* request, ::coordinator_proto::RepIfSuccess* response, std::function<void(::grpc::Status)>) override;
+      void uploadUpLRCLocalParityApply(::grpc::ClientContext* context, const ::coordinator_proto::UpLRCUpdateRequest* request, ::coordinator_proto::RepIfSuccess* response, ::grpc::ClientUnaryReactor* reactor) override;
+      void uploadUpLRCLocalParityViaGlobalHub(::grpc::ClientContext* context, const ::coordinator_proto::UpLRCUpdateRequest* request, ::coordinator_proto::RepIfSuccess* response, std::function<void(::grpc::Status)>) override;
+      void uploadUpLRCLocalParityViaGlobalHub(::grpc::ClientContext* context, const ::coordinator_proto::UpLRCUpdateRequest* request, ::coordinator_proto::RepIfSuccess* response, ::grpc::ClientUnaryReactor* reactor) override;
       void getValue(::grpc::ClientContext* context, const ::coordinator_proto::KeyAndClientIP* request, ::coordinator_proto::RepIfGetSuccess* response, std::function<void(::grpc::Status)>) override;
       void getValue(::grpc::ClientContext* context, const ::coordinator_proto::KeyAndClientIP* request, ::coordinator_proto::RepIfGetSuccess* response, ::grpc::ClientUnaryReactor* reactor) override;
       void getStripe(::grpc::ClientContext* context, const ::coordinator_proto::KeyAndClientIP* request, ::coordinator_proto::ReplyProxyIPsPorts* response, std::function<void(::grpc::Status)>) override;
@@ -701,18 +701,18 @@ class coordinatorService final {
     ::grpc::ClientAsyncResponseReader< ::coordinator_proto::ReplyProxyIPsPorts>* PrepareAsyncuploadSubsetValueRaw(::grpc::ClientContext* context, const ::coordinator_proto::RequestProxyIPPort& request, ::grpc::CompletionQueue* cq) override;
     ::grpc::ClientAsyncResponseReader< ::coordinator_proto::ReplyProxyIPsPorts>* AsyncuploadAppendValueRaw(::grpc::ClientContext* context, const ::coordinator_proto::RequestProxyIPPort& request, ::grpc::CompletionQueue* cq) override;
     ::grpc::ClientAsyncResponseReader< ::coordinator_proto::ReplyProxyIPsPorts>* PrepareAsyncuploadAppendValueRaw(::grpc::ClientContext* context, const ::coordinator_proto::RequestProxyIPPort& request, ::grpc::CompletionQueue* cq) override;
-    ::grpc::ClientAsyncResponseReader< ::coordinator_proto::ReplyProxyIPsPorts>* AsyncuploadXueUpdateRaw(::grpc::ClientContext* context, const ::coordinator_proto::XueUpdateRequest& request, ::grpc::CompletionQueue* cq) override;
-    ::grpc::ClientAsyncResponseReader< ::coordinator_proto::ReplyProxyIPsPorts>* PrepareAsyncuploadXueUpdateRaw(::grpc::ClientContext* context, const ::coordinator_proto::XueUpdateRequest& request, ::grpc::CompletionQueue* cq) override;
-    ::grpc::ClientAsyncResponseReader< ::coordinator_proto::ReplyProxyIPsPorts>* AsyncuploadCordUpdateRaw(::grpc::ClientContext* context, const ::coordinator_proto::CordUpdateRequest& request, ::grpc::CompletionQueue* cq) override;
-    ::grpc::ClientAsyncResponseReader< ::coordinator_proto::ReplyProxyIPsPorts>* PrepareAsyncuploadCordUpdateRaw(::grpc::ClientContext* context, const ::coordinator_proto::CordUpdateRequest& request, ::grpc::CompletionQueue* cq) override;
-    ::grpc::ClientAsyncResponseReader< ::coordinator_proto::RepIfSuccess>* AsynccordPlanBeginTransferRaw(::grpc::ClientContext* context, const ::coordinator_proto::CordPlanKeyOnly& request, ::grpc::CompletionQueue* cq) override;
-    ::grpc::ClientAsyncResponseReader< ::coordinator_proto::RepIfSuccess>* PrepareAsynccordPlanBeginTransferRaw(::grpc::ClientContext* context, const ::coordinator_proto::CordPlanKeyOnly& request, ::grpc::CompletionQueue* cq) override;
-    ::grpc::ClientAsyncResponseReader< ::coordinator_proto::RepIfSuccess>* AsynccordPlanWaitTransferCompleteRaw(::grpc::ClientContext* context, const ::coordinator_proto::CordPlanWaitRequest& request, ::grpc::CompletionQueue* cq) override;
-    ::grpc::ClientAsyncResponseReader< ::coordinator_proto::RepIfSuccess>* PrepareAsynccordPlanWaitTransferCompleteRaw(::grpc::ClientContext* context, const ::coordinator_proto::CordPlanWaitRequest& request, ::grpc::CompletionQueue* cq) override;
-    ::grpc::ClientAsyncResponseReader< ::coordinator_proto::RepIfSuccess>* AsyncuploadCordLocalParityApplyRaw(::grpc::ClientContext* context, const ::coordinator_proto::CordUpdateRequest& request, ::grpc::CompletionQueue* cq) override;
-    ::grpc::ClientAsyncResponseReader< ::coordinator_proto::RepIfSuccess>* PrepareAsyncuploadCordLocalParityApplyRaw(::grpc::ClientContext* context, const ::coordinator_proto::CordUpdateRequest& request, ::grpc::CompletionQueue* cq) override;
-    ::grpc::ClientAsyncResponseReader< ::coordinator_proto::RepIfSuccess>* AsyncuploadCordLocalParityViaGlobalHubRaw(::grpc::ClientContext* context, const ::coordinator_proto::CordUpdateRequest& request, ::grpc::CompletionQueue* cq) override;
-    ::grpc::ClientAsyncResponseReader< ::coordinator_proto::RepIfSuccess>* PrepareAsyncuploadCordLocalParityViaGlobalHubRaw(::grpc::ClientContext* context, const ::coordinator_proto::CordUpdateRequest& request, ::grpc::CompletionQueue* cq) override;
+    ::grpc::ClientAsyncResponseReader< ::coordinator_proto::ReplyProxyIPsPorts>* AsyncuploadUplrcLegacyUpdateRaw(::grpc::ClientContext* context, const ::coordinator_proto::UplrcLegacyUpdateRequest& request, ::grpc::CompletionQueue* cq) override;
+    ::grpc::ClientAsyncResponseReader< ::coordinator_proto::ReplyProxyIPsPorts>* PrepareAsyncuploadUplrcLegacyUpdateRaw(::grpc::ClientContext* context, const ::coordinator_proto::UplrcLegacyUpdateRequest& request, ::grpc::CompletionQueue* cq) override;
+    ::grpc::ClientAsyncResponseReader< ::coordinator_proto::ReplyProxyIPsPorts>* AsyncuploadUpLRCUpdateRaw(::grpc::ClientContext* context, const ::coordinator_proto::UpLRCUpdateRequest& request, ::grpc::CompletionQueue* cq) override;
+    ::grpc::ClientAsyncResponseReader< ::coordinator_proto::ReplyProxyIPsPorts>* PrepareAsyncuploadUpLRCUpdateRaw(::grpc::ClientContext* context, const ::coordinator_proto::UpLRCUpdateRequest& request, ::grpc::CompletionQueue* cq) override;
+    ::grpc::ClientAsyncResponseReader< ::coordinator_proto::RepIfSuccess>* AsyncuplrcPlanBeginTransferRaw(::grpc::ClientContext* context, const ::coordinator_proto::UpLRCPlanKeyOnly& request, ::grpc::CompletionQueue* cq) override;
+    ::grpc::ClientAsyncResponseReader< ::coordinator_proto::RepIfSuccess>* PrepareAsyncuplrcPlanBeginTransferRaw(::grpc::ClientContext* context, const ::coordinator_proto::UpLRCPlanKeyOnly& request, ::grpc::CompletionQueue* cq) override;
+    ::grpc::ClientAsyncResponseReader< ::coordinator_proto::RepIfSuccess>* AsyncuplrcPlanWaitTransferCompleteRaw(::grpc::ClientContext* context, const ::coordinator_proto::UpLRCPlanWaitRequest& request, ::grpc::CompletionQueue* cq) override;
+    ::grpc::ClientAsyncResponseReader< ::coordinator_proto::RepIfSuccess>* PrepareAsyncuplrcPlanWaitTransferCompleteRaw(::grpc::ClientContext* context, const ::coordinator_proto::UpLRCPlanWaitRequest& request, ::grpc::CompletionQueue* cq) override;
+    ::grpc::ClientAsyncResponseReader< ::coordinator_proto::RepIfSuccess>* AsyncuploadUpLRCLocalParityApplyRaw(::grpc::ClientContext* context, const ::coordinator_proto::UpLRCUpdateRequest& request, ::grpc::CompletionQueue* cq) override;
+    ::grpc::ClientAsyncResponseReader< ::coordinator_proto::RepIfSuccess>* PrepareAsyncuploadUpLRCLocalParityApplyRaw(::grpc::ClientContext* context, const ::coordinator_proto::UpLRCUpdateRequest& request, ::grpc::CompletionQueue* cq) override;
+    ::grpc::ClientAsyncResponseReader< ::coordinator_proto::RepIfSuccess>* AsyncuploadUpLRCLocalParityViaGlobalHubRaw(::grpc::ClientContext* context, const ::coordinator_proto::UpLRCUpdateRequest& request, ::grpc::CompletionQueue* cq) override;
+    ::grpc::ClientAsyncResponseReader< ::coordinator_proto::RepIfSuccess>* PrepareAsyncuploadUpLRCLocalParityViaGlobalHubRaw(::grpc::ClientContext* context, const ::coordinator_proto::UpLRCUpdateRequest& request, ::grpc::CompletionQueue* cq) override;
     ::grpc::ClientAsyncResponseReader< ::coordinator_proto::RepIfGetSuccess>* AsyncgetValueRaw(::grpc::ClientContext* context, const ::coordinator_proto::KeyAndClientIP& request, ::grpc::CompletionQueue* cq) override;
     ::grpc::ClientAsyncResponseReader< ::coordinator_proto::RepIfGetSuccess>* PrepareAsyncgetValueRaw(::grpc::ClientContext* context, const ::coordinator_proto::KeyAndClientIP& request, ::grpc::CompletionQueue* cq) override;
     ::grpc::ClientAsyncResponseReader< ::coordinator_proto::ReplyProxyIPsPorts>* AsyncgetStripeRaw(::grpc::ClientContext* context, const ::coordinator_proto::KeyAndClientIP& request, ::grpc::CompletionQueue* cq) override;
@@ -750,12 +750,12 @@ class coordinatorService final {
     const ::grpc::internal::RpcMethod rpcmethod_uploadSetValue_;
     const ::grpc::internal::RpcMethod rpcmethod_uploadSubsetValue_;
     const ::grpc::internal::RpcMethod rpcmethod_uploadAppendValue_;
-    const ::grpc::internal::RpcMethod rpcmethod_uploadXueUpdate_;
-    const ::grpc::internal::RpcMethod rpcmethod_uploadCordUpdate_;
-    const ::grpc::internal::RpcMethod rpcmethod_cordPlanBeginTransfer_;
-    const ::grpc::internal::RpcMethod rpcmethod_cordPlanWaitTransferComplete_;
-    const ::grpc::internal::RpcMethod rpcmethod_uploadCordLocalParityApply_;
-    const ::grpc::internal::RpcMethod rpcmethod_uploadCordLocalParityViaGlobalHub_;
+    const ::grpc::internal::RpcMethod rpcmethod_uploadUplrcLegacyUpdate_;
+    const ::grpc::internal::RpcMethod rpcmethod_uploadUpLRCUpdate_;
+    const ::grpc::internal::RpcMethod rpcmethod_uplrcPlanBeginTransfer_;
+    const ::grpc::internal::RpcMethod rpcmethod_uplrcPlanWaitTransferComplete_;
+    const ::grpc::internal::RpcMethod rpcmethod_uploadUpLRCLocalParityApply_;
+    const ::grpc::internal::RpcMethod rpcmethod_uploadUpLRCLocalParityViaGlobalHub_;
     const ::grpc::internal::RpcMethod rpcmethod_getValue_;
     const ::grpc::internal::RpcMethod rpcmethod_getStripe_;
     const ::grpc::internal::RpcMethod rpcmethod_getBlocks_;
@@ -790,16 +790,16 @@ class coordinatorService final {
     virtual ::grpc::Status uploadSubsetValue(::grpc::ServerContext* context, const ::coordinator_proto::RequestProxyIPPort* request, ::coordinator_proto::ReplyProxyIPsPorts* response);
     // append
     virtual ::grpc::Status uploadAppendValue(::grpc::ServerContext* context, const ::coordinator_proto::RequestProxyIPPort* request, ::coordinator_proto::ReplyProxyIPsPorts* response);
-    // xue update
-    virtual ::grpc::Status uploadXueUpdate(::grpc::ServerContext* context, const ::coordinator_proto::XueUpdateRequest* request, ::coordinator_proto::ReplyProxyIPsPorts* response);
-    // CoRD：按块内更新区间相交性分组（算法一）
-    virtual ::grpc::Status uploadCordUpdate(::grpc::ServerContext* context, const ::coordinator_proto::CordUpdateRequest* request, ::coordinator_proto::ReplyProxyIPsPorts* response);
-    // 客户端在各 cluster 完成 TCP delta 后调用，再向各 proxy 下发 CordTransferPlan（保证 delta blob 先就绪）
-    virtual ::grpc::Status cordPlanBeginTransfer(::grpc::ServerContext* context, const ::coordinator_proto::CordPlanKeyOnly* request, ::coordinator_proto::RepIfSuccess* response);
+    // uplrc update
+    virtual ::grpc::Status uploadUplrcLegacyUpdate(::grpc::ServerContext* context, const ::coordinator_proto::UplrcLegacyUpdateRequest* request, ::coordinator_proto::ReplyProxyIPsPorts* response);
+    // UpLRC：按块内更新区间相交性分组（算法一）
+    virtual ::grpc::Status uploadUpLRCUpdate(::grpc::ServerContext* context, const ::coordinator_proto::UpLRCUpdateRequest* request, ::coordinator_proto::ReplyProxyIPsPorts* response);
+    // 客户端在各 cluster 完成 TCP delta 后调用，再向各 proxy 下发 UpLRCTransferPlan（保证 delta blob 先就绪）
+    virtual ::grpc::Status uplrcPlanBeginTransfer(::grpc::ServerContext* context, const ::coordinator_proto::UpLRCPlanKeyOnly* request, ::coordinator_proto::RepIfSuccess* response);
     // 阻塞直至各相关 proxy 上本轮 plan 执行线程结束（真实墙钟语义）
-    virtual ::grpc::Status cordPlanWaitTransferComplete(::grpc::ServerContext* context, const ::coordinator_proto::CordPlanWaitRequest* request, ::coordinator_proto::RepIfSuccess* response);
-    virtual ::grpc::Status uploadCordLocalParityApply(::grpc::ServerContext* context, const ::coordinator_proto::CordUpdateRequest* request, ::coordinator_proto::RepIfSuccess* response);
-    virtual ::grpc::Status uploadCordLocalParityViaGlobalHub(::grpc::ServerContext* context, const ::coordinator_proto::CordUpdateRequest* request, ::coordinator_proto::RepIfSuccess* response);
+    virtual ::grpc::Status uplrcPlanWaitTransferComplete(::grpc::ServerContext* context, const ::coordinator_proto::UpLRCPlanWaitRequest* request, ::coordinator_proto::RepIfSuccess* response);
+    virtual ::grpc::Status uploadUpLRCLocalParityApply(::grpc::ServerContext* context, const ::coordinator_proto::UpLRCUpdateRequest* request, ::coordinator_proto::RepIfSuccess* response);
+    virtual ::grpc::Status uploadUpLRCLocalParityViaGlobalHub(::grpc::ServerContext* context, const ::coordinator_proto::UpLRCUpdateRequest* request, ::coordinator_proto::RepIfSuccess* response);
     // get
     virtual ::grpc::Status getValue(::grpc::ServerContext* context, const ::coordinator_proto::KeyAndClientIP* request, ::coordinator_proto::RepIfGetSuccess* response);
     virtual ::grpc::Status getStripe(::grpc::ServerContext* context, const ::coordinator_proto::KeyAndClientIP* request, ::coordinator_proto::ReplyProxyIPsPorts* response);
@@ -1001,122 +1001,122 @@ class coordinatorService final {
     }
   };
   template <class BaseClass>
-  class WithAsyncMethod_uploadXueUpdate : public BaseClass {
+  class WithAsyncMethod_uploadUplrcLegacyUpdate : public BaseClass {
    private:
     void BaseClassMustBeDerivedFromService(const Service* /*service*/) {}
    public:
-    WithAsyncMethod_uploadXueUpdate() {
+    WithAsyncMethod_uploadUplrcLegacyUpdate() {
       ::grpc::Service::MarkMethodAsync(9);
     }
-    ~WithAsyncMethod_uploadXueUpdate() override {
+    ~WithAsyncMethod_uploadUplrcLegacyUpdate() override {
       BaseClassMustBeDerivedFromService(this);
     }
     // disable synchronous version of this method
-    ::grpc::Status uploadXueUpdate(::grpc::ServerContext* /*context*/, const ::coordinator_proto::XueUpdateRequest* /*request*/, ::coordinator_proto::ReplyProxyIPsPorts* /*response*/) override {
+    ::grpc::Status uploadUplrcLegacyUpdate(::grpc::ServerContext* /*context*/, const ::coordinator_proto::UplrcLegacyUpdateRequest* /*request*/, ::coordinator_proto::ReplyProxyIPsPorts* /*response*/) override {
       abort();
       return ::grpc::Status(::grpc::StatusCode::UNIMPLEMENTED, "");
     }
-    void RequestuploadXueUpdate(::grpc::ServerContext* context, ::coordinator_proto::XueUpdateRequest* request, ::grpc::ServerAsyncResponseWriter< ::coordinator_proto::ReplyProxyIPsPorts>* response, ::grpc::CompletionQueue* new_call_cq, ::grpc::ServerCompletionQueue* notification_cq, void *tag) {
+    void RequestuploadUplrcLegacyUpdate(::grpc::ServerContext* context, ::coordinator_proto::UplrcLegacyUpdateRequest* request, ::grpc::ServerAsyncResponseWriter< ::coordinator_proto::ReplyProxyIPsPorts>* response, ::grpc::CompletionQueue* new_call_cq, ::grpc::ServerCompletionQueue* notification_cq, void *tag) {
       ::grpc::Service::RequestAsyncUnary(9, context, request, response, new_call_cq, notification_cq, tag);
     }
   };
   template <class BaseClass>
-  class WithAsyncMethod_uploadCordUpdate : public BaseClass {
+  class WithAsyncMethod_uploadUpLRCUpdate : public BaseClass {
    private:
     void BaseClassMustBeDerivedFromService(const Service* /*service*/) {}
    public:
-    WithAsyncMethod_uploadCordUpdate() {
+    WithAsyncMethod_uploadUpLRCUpdate() {
       ::grpc::Service::MarkMethodAsync(10);
     }
-    ~WithAsyncMethod_uploadCordUpdate() override {
+    ~WithAsyncMethod_uploadUpLRCUpdate() override {
       BaseClassMustBeDerivedFromService(this);
     }
     // disable synchronous version of this method
-    ::grpc::Status uploadCordUpdate(::grpc::ServerContext* /*context*/, const ::coordinator_proto::CordUpdateRequest* /*request*/, ::coordinator_proto::ReplyProxyIPsPorts* /*response*/) override {
+    ::grpc::Status uploadUpLRCUpdate(::grpc::ServerContext* /*context*/, const ::coordinator_proto::UpLRCUpdateRequest* /*request*/, ::coordinator_proto::ReplyProxyIPsPorts* /*response*/) override {
       abort();
       return ::grpc::Status(::grpc::StatusCode::UNIMPLEMENTED, "");
     }
-    void RequestuploadCordUpdate(::grpc::ServerContext* context, ::coordinator_proto::CordUpdateRequest* request, ::grpc::ServerAsyncResponseWriter< ::coordinator_proto::ReplyProxyIPsPorts>* response, ::grpc::CompletionQueue* new_call_cq, ::grpc::ServerCompletionQueue* notification_cq, void *tag) {
+    void RequestuploadUpLRCUpdate(::grpc::ServerContext* context, ::coordinator_proto::UpLRCUpdateRequest* request, ::grpc::ServerAsyncResponseWriter< ::coordinator_proto::ReplyProxyIPsPorts>* response, ::grpc::CompletionQueue* new_call_cq, ::grpc::ServerCompletionQueue* notification_cq, void *tag) {
       ::grpc::Service::RequestAsyncUnary(10, context, request, response, new_call_cq, notification_cq, tag);
     }
   };
   template <class BaseClass>
-  class WithAsyncMethod_cordPlanBeginTransfer : public BaseClass {
+  class WithAsyncMethod_uplrcPlanBeginTransfer : public BaseClass {
    private:
     void BaseClassMustBeDerivedFromService(const Service* /*service*/) {}
    public:
-    WithAsyncMethod_cordPlanBeginTransfer() {
+    WithAsyncMethod_uplrcPlanBeginTransfer() {
       ::grpc::Service::MarkMethodAsync(11);
     }
-    ~WithAsyncMethod_cordPlanBeginTransfer() override {
+    ~WithAsyncMethod_uplrcPlanBeginTransfer() override {
       BaseClassMustBeDerivedFromService(this);
     }
     // disable synchronous version of this method
-    ::grpc::Status cordPlanBeginTransfer(::grpc::ServerContext* /*context*/, const ::coordinator_proto::CordPlanKeyOnly* /*request*/, ::coordinator_proto::RepIfSuccess* /*response*/) override {
+    ::grpc::Status uplrcPlanBeginTransfer(::grpc::ServerContext* /*context*/, const ::coordinator_proto::UpLRCPlanKeyOnly* /*request*/, ::coordinator_proto::RepIfSuccess* /*response*/) override {
       abort();
       return ::grpc::Status(::grpc::StatusCode::UNIMPLEMENTED, "");
     }
-    void RequestcordPlanBeginTransfer(::grpc::ServerContext* context, ::coordinator_proto::CordPlanKeyOnly* request, ::grpc::ServerAsyncResponseWriter< ::coordinator_proto::RepIfSuccess>* response, ::grpc::CompletionQueue* new_call_cq, ::grpc::ServerCompletionQueue* notification_cq, void *tag) {
+    void RequestuplrcPlanBeginTransfer(::grpc::ServerContext* context, ::coordinator_proto::UpLRCPlanKeyOnly* request, ::grpc::ServerAsyncResponseWriter< ::coordinator_proto::RepIfSuccess>* response, ::grpc::CompletionQueue* new_call_cq, ::grpc::ServerCompletionQueue* notification_cq, void *tag) {
       ::grpc::Service::RequestAsyncUnary(11, context, request, response, new_call_cq, notification_cq, tag);
     }
   };
   template <class BaseClass>
-  class WithAsyncMethod_cordPlanWaitTransferComplete : public BaseClass {
+  class WithAsyncMethod_uplrcPlanWaitTransferComplete : public BaseClass {
    private:
     void BaseClassMustBeDerivedFromService(const Service* /*service*/) {}
    public:
-    WithAsyncMethod_cordPlanWaitTransferComplete() {
+    WithAsyncMethod_uplrcPlanWaitTransferComplete() {
       ::grpc::Service::MarkMethodAsync(12);
     }
-    ~WithAsyncMethod_cordPlanWaitTransferComplete() override {
+    ~WithAsyncMethod_uplrcPlanWaitTransferComplete() override {
       BaseClassMustBeDerivedFromService(this);
     }
     // disable synchronous version of this method
-    ::grpc::Status cordPlanWaitTransferComplete(::grpc::ServerContext* /*context*/, const ::coordinator_proto::CordPlanWaitRequest* /*request*/, ::coordinator_proto::RepIfSuccess* /*response*/) override {
+    ::grpc::Status uplrcPlanWaitTransferComplete(::grpc::ServerContext* /*context*/, const ::coordinator_proto::UpLRCPlanWaitRequest* /*request*/, ::coordinator_proto::RepIfSuccess* /*response*/) override {
       abort();
       return ::grpc::Status(::grpc::StatusCode::UNIMPLEMENTED, "");
     }
-    void RequestcordPlanWaitTransferComplete(::grpc::ServerContext* context, ::coordinator_proto::CordPlanWaitRequest* request, ::grpc::ServerAsyncResponseWriter< ::coordinator_proto::RepIfSuccess>* response, ::grpc::CompletionQueue* new_call_cq, ::grpc::ServerCompletionQueue* notification_cq, void *tag) {
+    void RequestuplrcPlanWaitTransferComplete(::grpc::ServerContext* context, ::coordinator_proto::UpLRCPlanWaitRequest* request, ::grpc::ServerAsyncResponseWriter< ::coordinator_proto::RepIfSuccess>* response, ::grpc::CompletionQueue* new_call_cq, ::grpc::ServerCompletionQueue* notification_cq, void *tag) {
       ::grpc::Service::RequestAsyncUnary(12, context, request, response, new_call_cq, notification_cq, tag);
     }
   };
   template <class BaseClass>
-  class WithAsyncMethod_uploadCordLocalParityApply : public BaseClass {
+  class WithAsyncMethod_uploadUpLRCLocalParityApply : public BaseClass {
    private:
     void BaseClassMustBeDerivedFromService(const Service* /*service*/) {}
    public:
-    WithAsyncMethod_uploadCordLocalParityApply() {
+    WithAsyncMethod_uploadUpLRCLocalParityApply() {
       ::grpc::Service::MarkMethodAsync(13);
     }
-    ~WithAsyncMethod_uploadCordLocalParityApply() override {
+    ~WithAsyncMethod_uploadUpLRCLocalParityApply() override {
       BaseClassMustBeDerivedFromService(this);
     }
     // disable synchronous version of this method
-    ::grpc::Status uploadCordLocalParityApply(::grpc::ServerContext* /*context*/, const ::coordinator_proto::CordUpdateRequest* /*request*/, ::coordinator_proto::RepIfSuccess* /*response*/) override {
+    ::grpc::Status uploadUpLRCLocalParityApply(::grpc::ServerContext* /*context*/, const ::coordinator_proto::UpLRCUpdateRequest* /*request*/, ::coordinator_proto::RepIfSuccess* /*response*/) override {
       abort();
       return ::grpc::Status(::grpc::StatusCode::UNIMPLEMENTED, "");
     }
-    void RequestuploadCordLocalParityApply(::grpc::ServerContext* context, ::coordinator_proto::CordUpdateRequest* request, ::grpc::ServerAsyncResponseWriter< ::coordinator_proto::RepIfSuccess>* response, ::grpc::CompletionQueue* new_call_cq, ::grpc::ServerCompletionQueue* notification_cq, void *tag) {
+    void RequestuploadUpLRCLocalParityApply(::grpc::ServerContext* context, ::coordinator_proto::UpLRCUpdateRequest* request, ::grpc::ServerAsyncResponseWriter< ::coordinator_proto::RepIfSuccess>* response, ::grpc::CompletionQueue* new_call_cq, ::grpc::ServerCompletionQueue* notification_cq, void *tag) {
       ::grpc::Service::RequestAsyncUnary(13, context, request, response, new_call_cq, notification_cq, tag);
     }
   };
   template <class BaseClass>
-  class WithAsyncMethod_uploadCordLocalParityViaGlobalHub : public BaseClass {
+  class WithAsyncMethod_uploadUpLRCLocalParityViaGlobalHub : public BaseClass {
    private:
     void BaseClassMustBeDerivedFromService(const Service* /*service*/) {}
    public:
-    WithAsyncMethod_uploadCordLocalParityViaGlobalHub() {
+    WithAsyncMethod_uploadUpLRCLocalParityViaGlobalHub() {
       ::grpc::Service::MarkMethodAsync(14);
     }
-    ~WithAsyncMethod_uploadCordLocalParityViaGlobalHub() override {
+    ~WithAsyncMethod_uploadUpLRCLocalParityViaGlobalHub() override {
       BaseClassMustBeDerivedFromService(this);
     }
     // disable synchronous version of this method
-    ::grpc::Status uploadCordLocalParityViaGlobalHub(::grpc::ServerContext* /*context*/, const ::coordinator_proto::CordUpdateRequest* /*request*/, ::coordinator_proto::RepIfSuccess* /*response*/) override {
+    ::grpc::Status uploadUpLRCLocalParityViaGlobalHub(::grpc::ServerContext* /*context*/, const ::coordinator_proto::UpLRCUpdateRequest* /*request*/, ::coordinator_proto::RepIfSuccess* /*response*/) override {
       abort();
       return ::grpc::Status(::grpc::StatusCode::UNIMPLEMENTED, "");
     }
-    void RequestuploadCordLocalParityViaGlobalHub(::grpc::ServerContext* context, ::coordinator_proto::CordUpdateRequest* request, ::grpc::ServerAsyncResponseWriter< ::coordinator_proto::RepIfSuccess>* response, ::grpc::CompletionQueue* new_call_cq, ::grpc::ServerCompletionQueue* notification_cq, void *tag) {
+    void RequestuploadUpLRCLocalParityViaGlobalHub(::grpc::ServerContext* context, ::coordinator_proto::UpLRCUpdateRequest* request, ::grpc::ServerAsyncResponseWriter< ::coordinator_proto::RepIfSuccess>* response, ::grpc::CompletionQueue* new_call_cq, ::grpc::ServerCompletionQueue* notification_cq, void *tag) {
       ::grpc::Service::RequestAsyncUnary(14, context, request, response, new_call_cq, notification_cq, tag);
     }
   };
@@ -1400,7 +1400,7 @@ class coordinatorService final {
       ::grpc::Service::RequestAsyncUnary(28, context, request, response, new_call_cq, notification_cq, tag);
     }
   };
-  typedef WithAsyncMethod_sayHelloToCoordinator<WithAsyncMethod_checkalive<WithAsyncMethod_setParameter<WithAsyncMethod_uploadOriginKeyValue<WithAsyncMethod_reportCommitAbort<WithAsyncMethod_checkCommitAbort<WithAsyncMethod_uploadSetValue<WithAsyncMethod_uploadSubsetValue<WithAsyncMethod_uploadAppendValue<WithAsyncMethod_uploadXueUpdate<WithAsyncMethod_uploadCordUpdate<WithAsyncMethod_cordPlanBeginTransfer<WithAsyncMethod_cordPlanWaitTransferComplete<WithAsyncMethod_uploadCordLocalParityApply<WithAsyncMethod_uploadCordLocalParityViaGlobalHub<WithAsyncMethod_getValue<WithAsyncMethod_getStripe<WithAsyncMethod_getBlocks<WithAsyncMethod_getDegradedReadBlocks<WithAsyncMethod_getDegradedReadBlock<WithAsyncMethod_getDegradedReadBlockBreakdown<WithAsyncMethod_getRecovery<WithAsyncMethod_getRecoveryBreakdown<WithAsyncMethod_fullNodeRecovery<WithAsyncMethod_multiBlockRecovery<WithAsyncMethod_delByKey<WithAsyncMethod_delByStripe<WithAsyncMethod_listStripes<WithAsyncMethod_decodeTest<Service > > > > > > > > > > > > > > > > > > > > > > > > > > > > > AsyncService;
+  typedef WithAsyncMethod_sayHelloToCoordinator<WithAsyncMethod_checkalive<WithAsyncMethod_setParameter<WithAsyncMethod_uploadOriginKeyValue<WithAsyncMethod_reportCommitAbort<WithAsyncMethod_checkCommitAbort<WithAsyncMethod_uploadSetValue<WithAsyncMethod_uploadSubsetValue<WithAsyncMethod_uploadAppendValue<WithAsyncMethod_uploadUplrcLegacyUpdate<WithAsyncMethod_uploadUpLRCUpdate<WithAsyncMethod_uplrcPlanBeginTransfer<WithAsyncMethod_uplrcPlanWaitTransferComplete<WithAsyncMethod_uploadUpLRCLocalParityApply<WithAsyncMethod_uploadUpLRCLocalParityViaGlobalHub<WithAsyncMethod_getValue<WithAsyncMethod_getStripe<WithAsyncMethod_getBlocks<WithAsyncMethod_getDegradedReadBlocks<WithAsyncMethod_getDegradedReadBlock<WithAsyncMethod_getDegradedReadBlockBreakdown<WithAsyncMethod_getRecovery<WithAsyncMethod_getRecoveryBreakdown<WithAsyncMethod_fullNodeRecovery<WithAsyncMethod_multiBlockRecovery<WithAsyncMethod_delByKey<WithAsyncMethod_delByStripe<WithAsyncMethod_listStripes<WithAsyncMethod_decodeTest<Service > > > > > > > > > > > > > > > > > > > > > > > > > > > > > AsyncService;
   template <class BaseClass>
   class WithCallbackMethod_sayHelloToCoordinator : public BaseClass {
    private:
@@ -1645,166 +1645,166 @@ class coordinatorService final {
       ::grpc::CallbackServerContext* /*context*/, const ::coordinator_proto::RequestProxyIPPort* /*request*/, ::coordinator_proto::ReplyProxyIPsPorts* /*response*/)  { return nullptr; }
   };
   template <class BaseClass>
-  class WithCallbackMethod_uploadXueUpdate : public BaseClass {
+  class WithCallbackMethod_uploadUplrcLegacyUpdate : public BaseClass {
    private:
     void BaseClassMustBeDerivedFromService(const Service* /*service*/) {}
    public:
-    WithCallbackMethod_uploadXueUpdate() {
+    WithCallbackMethod_uploadUplrcLegacyUpdate() {
       ::grpc::Service::MarkMethodCallback(9,
-          new ::grpc::internal::CallbackUnaryHandler< ::coordinator_proto::XueUpdateRequest, ::coordinator_proto::ReplyProxyIPsPorts>(
+          new ::grpc::internal::CallbackUnaryHandler< ::coordinator_proto::UplrcLegacyUpdateRequest, ::coordinator_proto::ReplyProxyIPsPorts>(
             [this](
-                   ::grpc::CallbackServerContext* context, const ::coordinator_proto::XueUpdateRequest* request, ::coordinator_proto::ReplyProxyIPsPorts* response) { return this->uploadXueUpdate(context, request, response); }));}
-    void SetMessageAllocatorFor_uploadXueUpdate(
-        ::grpc::MessageAllocator< ::coordinator_proto::XueUpdateRequest, ::coordinator_proto::ReplyProxyIPsPorts>* allocator) {
+                   ::grpc::CallbackServerContext* context, const ::coordinator_proto::UplrcLegacyUpdateRequest* request, ::coordinator_proto::ReplyProxyIPsPorts* response) { return this->uploadUplrcLegacyUpdate(context, request, response); }));}
+    void SetMessageAllocatorFor_uploadUplrcLegacyUpdate(
+        ::grpc::MessageAllocator< ::coordinator_proto::UplrcLegacyUpdateRequest, ::coordinator_proto::ReplyProxyIPsPorts>* allocator) {
       ::grpc::internal::MethodHandler* const handler = ::grpc::Service::GetHandler(9);
-      static_cast<::grpc::internal::CallbackUnaryHandler< ::coordinator_proto::XueUpdateRequest, ::coordinator_proto::ReplyProxyIPsPorts>*>(handler)
+      static_cast<::grpc::internal::CallbackUnaryHandler< ::coordinator_proto::UplrcLegacyUpdateRequest, ::coordinator_proto::ReplyProxyIPsPorts>*>(handler)
               ->SetMessageAllocator(allocator);
     }
-    ~WithCallbackMethod_uploadXueUpdate() override {
+    ~WithCallbackMethod_uploadUplrcLegacyUpdate() override {
       BaseClassMustBeDerivedFromService(this);
     }
     // disable synchronous version of this method
-    ::grpc::Status uploadXueUpdate(::grpc::ServerContext* /*context*/, const ::coordinator_proto::XueUpdateRequest* /*request*/, ::coordinator_proto::ReplyProxyIPsPorts* /*response*/) override {
+    ::grpc::Status uploadUplrcLegacyUpdate(::grpc::ServerContext* /*context*/, const ::coordinator_proto::UplrcLegacyUpdateRequest* /*request*/, ::coordinator_proto::ReplyProxyIPsPorts* /*response*/) override {
       abort();
       return ::grpc::Status(::grpc::StatusCode::UNIMPLEMENTED, "");
     }
-    virtual ::grpc::ServerUnaryReactor* uploadXueUpdate(
-      ::grpc::CallbackServerContext* /*context*/, const ::coordinator_proto::XueUpdateRequest* /*request*/, ::coordinator_proto::ReplyProxyIPsPorts* /*response*/)  { return nullptr; }
+    virtual ::grpc::ServerUnaryReactor* uploadUplrcLegacyUpdate(
+      ::grpc::CallbackServerContext* /*context*/, const ::coordinator_proto::UplrcLegacyUpdateRequest* /*request*/, ::coordinator_proto::ReplyProxyIPsPorts* /*response*/)  { return nullptr; }
   };
   template <class BaseClass>
-  class WithCallbackMethod_uploadCordUpdate : public BaseClass {
+  class WithCallbackMethod_uploadUpLRCUpdate : public BaseClass {
    private:
     void BaseClassMustBeDerivedFromService(const Service* /*service*/) {}
    public:
-    WithCallbackMethod_uploadCordUpdate() {
+    WithCallbackMethod_uploadUpLRCUpdate() {
       ::grpc::Service::MarkMethodCallback(10,
-          new ::grpc::internal::CallbackUnaryHandler< ::coordinator_proto::CordUpdateRequest, ::coordinator_proto::ReplyProxyIPsPorts>(
+          new ::grpc::internal::CallbackUnaryHandler< ::coordinator_proto::UpLRCUpdateRequest, ::coordinator_proto::ReplyProxyIPsPorts>(
             [this](
-                   ::grpc::CallbackServerContext* context, const ::coordinator_proto::CordUpdateRequest* request, ::coordinator_proto::ReplyProxyIPsPorts* response) { return this->uploadCordUpdate(context, request, response); }));}
-    void SetMessageAllocatorFor_uploadCordUpdate(
-        ::grpc::MessageAllocator< ::coordinator_proto::CordUpdateRequest, ::coordinator_proto::ReplyProxyIPsPorts>* allocator) {
+                   ::grpc::CallbackServerContext* context, const ::coordinator_proto::UpLRCUpdateRequest* request, ::coordinator_proto::ReplyProxyIPsPorts* response) { return this->uploadUpLRCUpdate(context, request, response); }));}
+    void SetMessageAllocatorFor_uploadUpLRCUpdate(
+        ::grpc::MessageAllocator< ::coordinator_proto::UpLRCUpdateRequest, ::coordinator_proto::ReplyProxyIPsPorts>* allocator) {
       ::grpc::internal::MethodHandler* const handler = ::grpc::Service::GetHandler(10);
-      static_cast<::grpc::internal::CallbackUnaryHandler< ::coordinator_proto::CordUpdateRequest, ::coordinator_proto::ReplyProxyIPsPorts>*>(handler)
+      static_cast<::grpc::internal::CallbackUnaryHandler< ::coordinator_proto::UpLRCUpdateRequest, ::coordinator_proto::ReplyProxyIPsPorts>*>(handler)
               ->SetMessageAllocator(allocator);
     }
-    ~WithCallbackMethod_uploadCordUpdate() override {
+    ~WithCallbackMethod_uploadUpLRCUpdate() override {
       BaseClassMustBeDerivedFromService(this);
     }
     // disable synchronous version of this method
-    ::grpc::Status uploadCordUpdate(::grpc::ServerContext* /*context*/, const ::coordinator_proto::CordUpdateRequest* /*request*/, ::coordinator_proto::ReplyProxyIPsPorts* /*response*/) override {
+    ::grpc::Status uploadUpLRCUpdate(::grpc::ServerContext* /*context*/, const ::coordinator_proto::UpLRCUpdateRequest* /*request*/, ::coordinator_proto::ReplyProxyIPsPorts* /*response*/) override {
       abort();
       return ::grpc::Status(::grpc::StatusCode::UNIMPLEMENTED, "");
     }
-    virtual ::grpc::ServerUnaryReactor* uploadCordUpdate(
-      ::grpc::CallbackServerContext* /*context*/, const ::coordinator_proto::CordUpdateRequest* /*request*/, ::coordinator_proto::ReplyProxyIPsPorts* /*response*/)  { return nullptr; }
+    virtual ::grpc::ServerUnaryReactor* uploadUpLRCUpdate(
+      ::grpc::CallbackServerContext* /*context*/, const ::coordinator_proto::UpLRCUpdateRequest* /*request*/, ::coordinator_proto::ReplyProxyIPsPorts* /*response*/)  { return nullptr; }
   };
   template <class BaseClass>
-  class WithCallbackMethod_cordPlanBeginTransfer : public BaseClass {
+  class WithCallbackMethod_uplrcPlanBeginTransfer : public BaseClass {
    private:
     void BaseClassMustBeDerivedFromService(const Service* /*service*/) {}
    public:
-    WithCallbackMethod_cordPlanBeginTransfer() {
+    WithCallbackMethod_uplrcPlanBeginTransfer() {
       ::grpc::Service::MarkMethodCallback(11,
-          new ::grpc::internal::CallbackUnaryHandler< ::coordinator_proto::CordPlanKeyOnly, ::coordinator_proto::RepIfSuccess>(
+          new ::grpc::internal::CallbackUnaryHandler< ::coordinator_proto::UpLRCPlanKeyOnly, ::coordinator_proto::RepIfSuccess>(
             [this](
-                   ::grpc::CallbackServerContext* context, const ::coordinator_proto::CordPlanKeyOnly* request, ::coordinator_proto::RepIfSuccess* response) { return this->cordPlanBeginTransfer(context, request, response); }));}
-    void SetMessageAllocatorFor_cordPlanBeginTransfer(
-        ::grpc::MessageAllocator< ::coordinator_proto::CordPlanKeyOnly, ::coordinator_proto::RepIfSuccess>* allocator) {
+                   ::grpc::CallbackServerContext* context, const ::coordinator_proto::UpLRCPlanKeyOnly* request, ::coordinator_proto::RepIfSuccess* response) { return this->uplrcPlanBeginTransfer(context, request, response); }));}
+    void SetMessageAllocatorFor_uplrcPlanBeginTransfer(
+        ::grpc::MessageAllocator< ::coordinator_proto::UpLRCPlanKeyOnly, ::coordinator_proto::RepIfSuccess>* allocator) {
       ::grpc::internal::MethodHandler* const handler = ::grpc::Service::GetHandler(11);
-      static_cast<::grpc::internal::CallbackUnaryHandler< ::coordinator_proto::CordPlanKeyOnly, ::coordinator_proto::RepIfSuccess>*>(handler)
+      static_cast<::grpc::internal::CallbackUnaryHandler< ::coordinator_proto::UpLRCPlanKeyOnly, ::coordinator_proto::RepIfSuccess>*>(handler)
               ->SetMessageAllocator(allocator);
     }
-    ~WithCallbackMethod_cordPlanBeginTransfer() override {
+    ~WithCallbackMethod_uplrcPlanBeginTransfer() override {
       BaseClassMustBeDerivedFromService(this);
     }
     // disable synchronous version of this method
-    ::grpc::Status cordPlanBeginTransfer(::grpc::ServerContext* /*context*/, const ::coordinator_proto::CordPlanKeyOnly* /*request*/, ::coordinator_proto::RepIfSuccess* /*response*/) override {
+    ::grpc::Status uplrcPlanBeginTransfer(::grpc::ServerContext* /*context*/, const ::coordinator_proto::UpLRCPlanKeyOnly* /*request*/, ::coordinator_proto::RepIfSuccess* /*response*/) override {
       abort();
       return ::grpc::Status(::grpc::StatusCode::UNIMPLEMENTED, "");
     }
-    virtual ::grpc::ServerUnaryReactor* cordPlanBeginTransfer(
-      ::grpc::CallbackServerContext* /*context*/, const ::coordinator_proto::CordPlanKeyOnly* /*request*/, ::coordinator_proto::RepIfSuccess* /*response*/)  { return nullptr; }
+    virtual ::grpc::ServerUnaryReactor* uplrcPlanBeginTransfer(
+      ::grpc::CallbackServerContext* /*context*/, const ::coordinator_proto::UpLRCPlanKeyOnly* /*request*/, ::coordinator_proto::RepIfSuccess* /*response*/)  { return nullptr; }
   };
   template <class BaseClass>
-  class WithCallbackMethod_cordPlanWaitTransferComplete : public BaseClass {
+  class WithCallbackMethod_uplrcPlanWaitTransferComplete : public BaseClass {
    private:
     void BaseClassMustBeDerivedFromService(const Service* /*service*/) {}
    public:
-    WithCallbackMethod_cordPlanWaitTransferComplete() {
+    WithCallbackMethod_uplrcPlanWaitTransferComplete() {
       ::grpc::Service::MarkMethodCallback(12,
-          new ::grpc::internal::CallbackUnaryHandler< ::coordinator_proto::CordPlanWaitRequest, ::coordinator_proto::RepIfSuccess>(
+          new ::grpc::internal::CallbackUnaryHandler< ::coordinator_proto::UpLRCPlanWaitRequest, ::coordinator_proto::RepIfSuccess>(
             [this](
-                   ::grpc::CallbackServerContext* context, const ::coordinator_proto::CordPlanWaitRequest* request, ::coordinator_proto::RepIfSuccess* response) { return this->cordPlanWaitTransferComplete(context, request, response); }));}
-    void SetMessageAllocatorFor_cordPlanWaitTransferComplete(
-        ::grpc::MessageAllocator< ::coordinator_proto::CordPlanWaitRequest, ::coordinator_proto::RepIfSuccess>* allocator) {
+                   ::grpc::CallbackServerContext* context, const ::coordinator_proto::UpLRCPlanWaitRequest* request, ::coordinator_proto::RepIfSuccess* response) { return this->uplrcPlanWaitTransferComplete(context, request, response); }));}
+    void SetMessageAllocatorFor_uplrcPlanWaitTransferComplete(
+        ::grpc::MessageAllocator< ::coordinator_proto::UpLRCPlanWaitRequest, ::coordinator_proto::RepIfSuccess>* allocator) {
       ::grpc::internal::MethodHandler* const handler = ::grpc::Service::GetHandler(12);
-      static_cast<::grpc::internal::CallbackUnaryHandler< ::coordinator_proto::CordPlanWaitRequest, ::coordinator_proto::RepIfSuccess>*>(handler)
+      static_cast<::grpc::internal::CallbackUnaryHandler< ::coordinator_proto::UpLRCPlanWaitRequest, ::coordinator_proto::RepIfSuccess>*>(handler)
               ->SetMessageAllocator(allocator);
     }
-    ~WithCallbackMethod_cordPlanWaitTransferComplete() override {
+    ~WithCallbackMethod_uplrcPlanWaitTransferComplete() override {
       BaseClassMustBeDerivedFromService(this);
     }
     // disable synchronous version of this method
-    ::grpc::Status cordPlanWaitTransferComplete(::grpc::ServerContext* /*context*/, const ::coordinator_proto::CordPlanWaitRequest* /*request*/, ::coordinator_proto::RepIfSuccess* /*response*/) override {
+    ::grpc::Status uplrcPlanWaitTransferComplete(::grpc::ServerContext* /*context*/, const ::coordinator_proto::UpLRCPlanWaitRequest* /*request*/, ::coordinator_proto::RepIfSuccess* /*response*/) override {
       abort();
       return ::grpc::Status(::grpc::StatusCode::UNIMPLEMENTED, "");
     }
-    virtual ::grpc::ServerUnaryReactor* cordPlanWaitTransferComplete(
-      ::grpc::CallbackServerContext* /*context*/, const ::coordinator_proto::CordPlanWaitRequest* /*request*/, ::coordinator_proto::RepIfSuccess* /*response*/)  { return nullptr; }
+    virtual ::grpc::ServerUnaryReactor* uplrcPlanWaitTransferComplete(
+      ::grpc::CallbackServerContext* /*context*/, const ::coordinator_proto::UpLRCPlanWaitRequest* /*request*/, ::coordinator_proto::RepIfSuccess* /*response*/)  { return nullptr; }
   };
   template <class BaseClass>
-  class WithCallbackMethod_uploadCordLocalParityApply : public BaseClass {
+  class WithCallbackMethod_uploadUpLRCLocalParityApply : public BaseClass {
    private:
     void BaseClassMustBeDerivedFromService(const Service* /*service*/) {}
    public:
-    WithCallbackMethod_uploadCordLocalParityApply() {
+    WithCallbackMethod_uploadUpLRCLocalParityApply() {
       ::grpc::Service::MarkMethodCallback(13,
-          new ::grpc::internal::CallbackUnaryHandler< ::coordinator_proto::CordUpdateRequest, ::coordinator_proto::RepIfSuccess>(
+          new ::grpc::internal::CallbackUnaryHandler< ::coordinator_proto::UpLRCUpdateRequest, ::coordinator_proto::RepIfSuccess>(
             [this](
-                   ::grpc::CallbackServerContext* context, const ::coordinator_proto::CordUpdateRequest* request, ::coordinator_proto::RepIfSuccess* response) { return this->uploadCordLocalParityApply(context, request, response); }));}
-    void SetMessageAllocatorFor_uploadCordLocalParityApply(
-        ::grpc::MessageAllocator< ::coordinator_proto::CordUpdateRequest, ::coordinator_proto::RepIfSuccess>* allocator) {
+                   ::grpc::CallbackServerContext* context, const ::coordinator_proto::UpLRCUpdateRequest* request, ::coordinator_proto::RepIfSuccess* response) { return this->uploadUpLRCLocalParityApply(context, request, response); }));}
+    void SetMessageAllocatorFor_uploadUpLRCLocalParityApply(
+        ::grpc::MessageAllocator< ::coordinator_proto::UpLRCUpdateRequest, ::coordinator_proto::RepIfSuccess>* allocator) {
       ::grpc::internal::MethodHandler* const handler = ::grpc::Service::GetHandler(13);
-      static_cast<::grpc::internal::CallbackUnaryHandler< ::coordinator_proto::CordUpdateRequest, ::coordinator_proto::RepIfSuccess>*>(handler)
+      static_cast<::grpc::internal::CallbackUnaryHandler< ::coordinator_proto::UpLRCUpdateRequest, ::coordinator_proto::RepIfSuccess>*>(handler)
               ->SetMessageAllocator(allocator);
     }
-    ~WithCallbackMethod_uploadCordLocalParityApply() override {
+    ~WithCallbackMethod_uploadUpLRCLocalParityApply() override {
       BaseClassMustBeDerivedFromService(this);
     }
     // disable synchronous version of this method
-    ::grpc::Status uploadCordLocalParityApply(::grpc::ServerContext* /*context*/, const ::coordinator_proto::CordUpdateRequest* /*request*/, ::coordinator_proto::RepIfSuccess* /*response*/) override {
+    ::grpc::Status uploadUpLRCLocalParityApply(::grpc::ServerContext* /*context*/, const ::coordinator_proto::UpLRCUpdateRequest* /*request*/, ::coordinator_proto::RepIfSuccess* /*response*/) override {
       abort();
       return ::grpc::Status(::grpc::StatusCode::UNIMPLEMENTED, "");
     }
-    virtual ::grpc::ServerUnaryReactor* uploadCordLocalParityApply(
-      ::grpc::CallbackServerContext* /*context*/, const ::coordinator_proto::CordUpdateRequest* /*request*/, ::coordinator_proto::RepIfSuccess* /*response*/)  { return nullptr; }
+    virtual ::grpc::ServerUnaryReactor* uploadUpLRCLocalParityApply(
+      ::grpc::CallbackServerContext* /*context*/, const ::coordinator_proto::UpLRCUpdateRequest* /*request*/, ::coordinator_proto::RepIfSuccess* /*response*/)  { return nullptr; }
   };
   template <class BaseClass>
-  class WithCallbackMethod_uploadCordLocalParityViaGlobalHub : public BaseClass {
+  class WithCallbackMethod_uploadUpLRCLocalParityViaGlobalHub : public BaseClass {
    private:
     void BaseClassMustBeDerivedFromService(const Service* /*service*/) {}
    public:
-    WithCallbackMethod_uploadCordLocalParityViaGlobalHub() {
+    WithCallbackMethod_uploadUpLRCLocalParityViaGlobalHub() {
       ::grpc::Service::MarkMethodCallback(14,
-          new ::grpc::internal::CallbackUnaryHandler< ::coordinator_proto::CordUpdateRequest, ::coordinator_proto::RepIfSuccess>(
+          new ::grpc::internal::CallbackUnaryHandler< ::coordinator_proto::UpLRCUpdateRequest, ::coordinator_proto::RepIfSuccess>(
             [this](
-                   ::grpc::CallbackServerContext* context, const ::coordinator_proto::CordUpdateRequest* request, ::coordinator_proto::RepIfSuccess* response) { return this->uploadCordLocalParityViaGlobalHub(context, request, response); }));}
-    void SetMessageAllocatorFor_uploadCordLocalParityViaGlobalHub(
-        ::grpc::MessageAllocator< ::coordinator_proto::CordUpdateRequest, ::coordinator_proto::RepIfSuccess>* allocator) {
+                   ::grpc::CallbackServerContext* context, const ::coordinator_proto::UpLRCUpdateRequest* request, ::coordinator_proto::RepIfSuccess* response) { return this->uploadUpLRCLocalParityViaGlobalHub(context, request, response); }));}
+    void SetMessageAllocatorFor_uploadUpLRCLocalParityViaGlobalHub(
+        ::grpc::MessageAllocator< ::coordinator_proto::UpLRCUpdateRequest, ::coordinator_proto::RepIfSuccess>* allocator) {
       ::grpc::internal::MethodHandler* const handler = ::grpc::Service::GetHandler(14);
-      static_cast<::grpc::internal::CallbackUnaryHandler< ::coordinator_proto::CordUpdateRequest, ::coordinator_proto::RepIfSuccess>*>(handler)
+      static_cast<::grpc::internal::CallbackUnaryHandler< ::coordinator_proto::UpLRCUpdateRequest, ::coordinator_proto::RepIfSuccess>*>(handler)
               ->SetMessageAllocator(allocator);
     }
-    ~WithCallbackMethod_uploadCordLocalParityViaGlobalHub() override {
+    ~WithCallbackMethod_uploadUpLRCLocalParityViaGlobalHub() override {
       BaseClassMustBeDerivedFromService(this);
     }
     // disable synchronous version of this method
-    ::grpc::Status uploadCordLocalParityViaGlobalHub(::grpc::ServerContext* /*context*/, const ::coordinator_proto::CordUpdateRequest* /*request*/, ::coordinator_proto::RepIfSuccess* /*response*/) override {
+    ::grpc::Status uploadUpLRCLocalParityViaGlobalHub(::grpc::ServerContext* /*context*/, const ::coordinator_proto::UpLRCUpdateRequest* /*request*/, ::coordinator_proto::RepIfSuccess* /*response*/) override {
       abort();
       return ::grpc::Status(::grpc::StatusCode::UNIMPLEMENTED, "");
     }
-    virtual ::grpc::ServerUnaryReactor* uploadCordLocalParityViaGlobalHub(
-      ::grpc::CallbackServerContext* /*context*/, const ::coordinator_proto::CordUpdateRequest* /*request*/, ::coordinator_proto::RepIfSuccess* /*response*/)  { return nullptr; }
+    virtual ::grpc::ServerUnaryReactor* uploadUpLRCLocalParityViaGlobalHub(
+      ::grpc::CallbackServerContext* /*context*/, const ::coordinator_proto::UpLRCUpdateRequest* /*request*/, ::coordinator_proto::RepIfSuccess* /*response*/)  { return nullptr; }
   };
   template <class BaseClass>
   class WithCallbackMethod_getValue : public BaseClass {
@@ -2184,7 +2184,7 @@ class coordinatorService final {
     virtual ::grpc::ServerUnaryReactor* decodeTest(
       ::grpc::CallbackServerContext* /*context*/, const ::coordinator_proto::KeyAndClientIP* /*request*/, ::coordinator_proto::DegradedReadReply* /*response*/)  { return nullptr; }
   };
-  typedef WithCallbackMethod_sayHelloToCoordinator<WithCallbackMethod_checkalive<WithCallbackMethod_setParameter<WithCallbackMethod_uploadOriginKeyValue<WithCallbackMethod_reportCommitAbort<WithCallbackMethod_checkCommitAbort<WithCallbackMethod_uploadSetValue<WithCallbackMethod_uploadSubsetValue<WithCallbackMethod_uploadAppendValue<WithCallbackMethod_uploadXueUpdate<WithCallbackMethod_uploadCordUpdate<WithCallbackMethod_cordPlanBeginTransfer<WithCallbackMethod_cordPlanWaitTransferComplete<WithCallbackMethod_uploadCordLocalParityApply<WithCallbackMethod_uploadCordLocalParityViaGlobalHub<WithCallbackMethod_getValue<WithCallbackMethod_getStripe<WithCallbackMethod_getBlocks<WithCallbackMethod_getDegradedReadBlocks<WithCallbackMethod_getDegradedReadBlock<WithCallbackMethod_getDegradedReadBlockBreakdown<WithCallbackMethod_getRecovery<WithCallbackMethod_getRecoveryBreakdown<WithCallbackMethod_fullNodeRecovery<WithCallbackMethod_multiBlockRecovery<WithCallbackMethod_delByKey<WithCallbackMethod_delByStripe<WithCallbackMethod_listStripes<WithCallbackMethod_decodeTest<Service > > > > > > > > > > > > > > > > > > > > > > > > > > > > > CallbackService;
+  typedef WithCallbackMethod_sayHelloToCoordinator<WithCallbackMethod_checkalive<WithCallbackMethod_setParameter<WithCallbackMethod_uploadOriginKeyValue<WithCallbackMethod_reportCommitAbort<WithCallbackMethod_checkCommitAbort<WithCallbackMethod_uploadSetValue<WithCallbackMethod_uploadSubsetValue<WithCallbackMethod_uploadAppendValue<WithCallbackMethod_uploadUplrcLegacyUpdate<WithCallbackMethod_uploadUpLRCUpdate<WithCallbackMethod_uplrcPlanBeginTransfer<WithCallbackMethod_uplrcPlanWaitTransferComplete<WithCallbackMethod_uploadUpLRCLocalParityApply<WithCallbackMethod_uploadUpLRCLocalParityViaGlobalHub<WithCallbackMethod_getValue<WithCallbackMethod_getStripe<WithCallbackMethod_getBlocks<WithCallbackMethod_getDegradedReadBlocks<WithCallbackMethod_getDegradedReadBlock<WithCallbackMethod_getDegradedReadBlockBreakdown<WithCallbackMethod_getRecovery<WithCallbackMethod_getRecoveryBreakdown<WithCallbackMethod_fullNodeRecovery<WithCallbackMethod_multiBlockRecovery<WithCallbackMethod_delByKey<WithCallbackMethod_delByStripe<WithCallbackMethod_listStripes<WithCallbackMethod_decodeTest<Service > > > > > > > > > > > > > > > > > > > > > > > > > > > > > CallbackService;
   typedef CallbackService ExperimentalCallbackService;
   template <class BaseClass>
   class WithGenericMethod_sayHelloToCoordinator : public BaseClass {
@@ -2340,103 +2340,103 @@ class coordinatorService final {
     }
   };
   template <class BaseClass>
-  class WithGenericMethod_uploadXueUpdate : public BaseClass {
+  class WithGenericMethod_uploadUplrcLegacyUpdate : public BaseClass {
    private:
     void BaseClassMustBeDerivedFromService(const Service* /*service*/) {}
    public:
-    WithGenericMethod_uploadXueUpdate() {
+    WithGenericMethod_uploadUplrcLegacyUpdate() {
       ::grpc::Service::MarkMethodGeneric(9);
     }
-    ~WithGenericMethod_uploadXueUpdate() override {
+    ~WithGenericMethod_uploadUplrcLegacyUpdate() override {
       BaseClassMustBeDerivedFromService(this);
     }
     // disable synchronous version of this method
-    ::grpc::Status uploadXueUpdate(::grpc::ServerContext* /*context*/, const ::coordinator_proto::XueUpdateRequest* /*request*/, ::coordinator_proto::ReplyProxyIPsPorts* /*response*/) override {
+    ::grpc::Status uploadUplrcLegacyUpdate(::grpc::ServerContext* /*context*/, const ::coordinator_proto::UplrcLegacyUpdateRequest* /*request*/, ::coordinator_proto::ReplyProxyIPsPorts* /*response*/) override {
       abort();
       return ::grpc::Status(::grpc::StatusCode::UNIMPLEMENTED, "");
     }
   };
   template <class BaseClass>
-  class WithGenericMethod_uploadCordUpdate : public BaseClass {
+  class WithGenericMethod_uploadUpLRCUpdate : public BaseClass {
    private:
     void BaseClassMustBeDerivedFromService(const Service* /*service*/) {}
    public:
-    WithGenericMethod_uploadCordUpdate() {
+    WithGenericMethod_uploadUpLRCUpdate() {
       ::grpc::Service::MarkMethodGeneric(10);
     }
-    ~WithGenericMethod_uploadCordUpdate() override {
+    ~WithGenericMethod_uploadUpLRCUpdate() override {
       BaseClassMustBeDerivedFromService(this);
     }
     // disable synchronous version of this method
-    ::grpc::Status uploadCordUpdate(::grpc::ServerContext* /*context*/, const ::coordinator_proto::CordUpdateRequest* /*request*/, ::coordinator_proto::ReplyProxyIPsPorts* /*response*/) override {
+    ::grpc::Status uploadUpLRCUpdate(::grpc::ServerContext* /*context*/, const ::coordinator_proto::UpLRCUpdateRequest* /*request*/, ::coordinator_proto::ReplyProxyIPsPorts* /*response*/) override {
       abort();
       return ::grpc::Status(::grpc::StatusCode::UNIMPLEMENTED, "");
     }
   };
   template <class BaseClass>
-  class WithGenericMethod_cordPlanBeginTransfer : public BaseClass {
+  class WithGenericMethod_uplrcPlanBeginTransfer : public BaseClass {
    private:
     void BaseClassMustBeDerivedFromService(const Service* /*service*/) {}
    public:
-    WithGenericMethod_cordPlanBeginTransfer() {
+    WithGenericMethod_uplrcPlanBeginTransfer() {
       ::grpc::Service::MarkMethodGeneric(11);
     }
-    ~WithGenericMethod_cordPlanBeginTransfer() override {
+    ~WithGenericMethod_uplrcPlanBeginTransfer() override {
       BaseClassMustBeDerivedFromService(this);
     }
     // disable synchronous version of this method
-    ::grpc::Status cordPlanBeginTransfer(::grpc::ServerContext* /*context*/, const ::coordinator_proto::CordPlanKeyOnly* /*request*/, ::coordinator_proto::RepIfSuccess* /*response*/) override {
+    ::grpc::Status uplrcPlanBeginTransfer(::grpc::ServerContext* /*context*/, const ::coordinator_proto::UpLRCPlanKeyOnly* /*request*/, ::coordinator_proto::RepIfSuccess* /*response*/) override {
       abort();
       return ::grpc::Status(::grpc::StatusCode::UNIMPLEMENTED, "");
     }
   };
   template <class BaseClass>
-  class WithGenericMethod_cordPlanWaitTransferComplete : public BaseClass {
+  class WithGenericMethod_uplrcPlanWaitTransferComplete : public BaseClass {
    private:
     void BaseClassMustBeDerivedFromService(const Service* /*service*/) {}
    public:
-    WithGenericMethod_cordPlanWaitTransferComplete() {
+    WithGenericMethod_uplrcPlanWaitTransferComplete() {
       ::grpc::Service::MarkMethodGeneric(12);
     }
-    ~WithGenericMethod_cordPlanWaitTransferComplete() override {
+    ~WithGenericMethod_uplrcPlanWaitTransferComplete() override {
       BaseClassMustBeDerivedFromService(this);
     }
     // disable synchronous version of this method
-    ::grpc::Status cordPlanWaitTransferComplete(::grpc::ServerContext* /*context*/, const ::coordinator_proto::CordPlanWaitRequest* /*request*/, ::coordinator_proto::RepIfSuccess* /*response*/) override {
+    ::grpc::Status uplrcPlanWaitTransferComplete(::grpc::ServerContext* /*context*/, const ::coordinator_proto::UpLRCPlanWaitRequest* /*request*/, ::coordinator_proto::RepIfSuccess* /*response*/) override {
       abort();
       return ::grpc::Status(::grpc::StatusCode::UNIMPLEMENTED, "");
     }
   };
   template <class BaseClass>
-  class WithGenericMethod_uploadCordLocalParityApply : public BaseClass {
+  class WithGenericMethod_uploadUpLRCLocalParityApply : public BaseClass {
    private:
     void BaseClassMustBeDerivedFromService(const Service* /*service*/) {}
    public:
-    WithGenericMethod_uploadCordLocalParityApply() {
+    WithGenericMethod_uploadUpLRCLocalParityApply() {
       ::grpc::Service::MarkMethodGeneric(13);
     }
-    ~WithGenericMethod_uploadCordLocalParityApply() override {
+    ~WithGenericMethod_uploadUpLRCLocalParityApply() override {
       BaseClassMustBeDerivedFromService(this);
     }
     // disable synchronous version of this method
-    ::grpc::Status uploadCordLocalParityApply(::grpc::ServerContext* /*context*/, const ::coordinator_proto::CordUpdateRequest* /*request*/, ::coordinator_proto::RepIfSuccess* /*response*/) override {
+    ::grpc::Status uploadUpLRCLocalParityApply(::grpc::ServerContext* /*context*/, const ::coordinator_proto::UpLRCUpdateRequest* /*request*/, ::coordinator_proto::RepIfSuccess* /*response*/) override {
       abort();
       return ::grpc::Status(::grpc::StatusCode::UNIMPLEMENTED, "");
     }
   };
   template <class BaseClass>
-  class WithGenericMethod_uploadCordLocalParityViaGlobalHub : public BaseClass {
+  class WithGenericMethod_uploadUpLRCLocalParityViaGlobalHub : public BaseClass {
    private:
     void BaseClassMustBeDerivedFromService(const Service* /*service*/) {}
    public:
-    WithGenericMethod_uploadCordLocalParityViaGlobalHub() {
+    WithGenericMethod_uploadUpLRCLocalParityViaGlobalHub() {
       ::grpc::Service::MarkMethodGeneric(14);
     }
-    ~WithGenericMethod_uploadCordLocalParityViaGlobalHub() override {
+    ~WithGenericMethod_uploadUpLRCLocalParityViaGlobalHub() override {
       BaseClassMustBeDerivedFromService(this);
     }
     // disable synchronous version of this method
-    ::grpc::Status uploadCordLocalParityViaGlobalHub(::grpc::ServerContext* /*context*/, const ::coordinator_proto::CordUpdateRequest* /*request*/, ::coordinator_proto::RepIfSuccess* /*response*/) override {
+    ::grpc::Status uploadUpLRCLocalParityViaGlobalHub(::grpc::ServerContext* /*context*/, const ::coordinator_proto::UpLRCUpdateRequest* /*request*/, ::coordinator_proto::RepIfSuccess* /*response*/) override {
       abort();
       return ::grpc::Status(::grpc::StatusCode::UNIMPLEMENTED, "");
     }
@@ -2860,122 +2860,122 @@ class coordinatorService final {
     }
   };
   template <class BaseClass>
-  class WithRawMethod_uploadXueUpdate : public BaseClass {
+  class WithRawMethod_uploadUplrcLegacyUpdate : public BaseClass {
    private:
     void BaseClassMustBeDerivedFromService(const Service* /*service*/) {}
    public:
-    WithRawMethod_uploadXueUpdate() {
+    WithRawMethod_uploadUplrcLegacyUpdate() {
       ::grpc::Service::MarkMethodRaw(9);
     }
-    ~WithRawMethod_uploadXueUpdate() override {
+    ~WithRawMethod_uploadUplrcLegacyUpdate() override {
       BaseClassMustBeDerivedFromService(this);
     }
     // disable synchronous version of this method
-    ::grpc::Status uploadXueUpdate(::grpc::ServerContext* /*context*/, const ::coordinator_proto::XueUpdateRequest* /*request*/, ::coordinator_proto::ReplyProxyIPsPorts* /*response*/) override {
+    ::grpc::Status uploadUplrcLegacyUpdate(::grpc::ServerContext* /*context*/, const ::coordinator_proto::UplrcLegacyUpdateRequest* /*request*/, ::coordinator_proto::ReplyProxyIPsPorts* /*response*/) override {
       abort();
       return ::grpc::Status(::grpc::StatusCode::UNIMPLEMENTED, "");
     }
-    void RequestuploadXueUpdate(::grpc::ServerContext* context, ::grpc::ByteBuffer* request, ::grpc::ServerAsyncResponseWriter< ::grpc::ByteBuffer>* response, ::grpc::CompletionQueue* new_call_cq, ::grpc::ServerCompletionQueue* notification_cq, void *tag) {
+    void RequestuploadUplrcLegacyUpdate(::grpc::ServerContext* context, ::grpc::ByteBuffer* request, ::grpc::ServerAsyncResponseWriter< ::grpc::ByteBuffer>* response, ::grpc::CompletionQueue* new_call_cq, ::grpc::ServerCompletionQueue* notification_cq, void *tag) {
       ::grpc::Service::RequestAsyncUnary(9, context, request, response, new_call_cq, notification_cq, tag);
     }
   };
   template <class BaseClass>
-  class WithRawMethod_uploadCordUpdate : public BaseClass {
+  class WithRawMethod_uploadUpLRCUpdate : public BaseClass {
    private:
     void BaseClassMustBeDerivedFromService(const Service* /*service*/) {}
    public:
-    WithRawMethod_uploadCordUpdate() {
+    WithRawMethod_uploadUpLRCUpdate() {
       ::grpc::Service::MarkMethodRaw(10);
     }
-    ~WithRawMethod_uploadCordUpdate() override {
+    ~WithRawMethod_uploadUpLRCUpdate() override {
       BaseClassMustBeDerivedFromService(this);
     }
     // disable synchronous version of this method
-    ::grpc::Status uploadCordUpdate(::grpc::ServerContext* /*context*/, const ::coordinator_proto::CordUpdateRequest* /*request*/, ::coordinator_proto::ReplyProxyIPsPorts* /*response*/) override {
+    ::grpc::Status uploadUpLRCUpdate(::grpc::ServerContext* /*context*/, const ::coordinator_proto::UpLRCUpdateRequest* /*request*/, ::coordinator_proto::ReplyProxyIPsPorts* /*response*/) override {
       abort();
       return ::grpc::Status(::grpc::StatusCode::UNIMPLEMENTED, "");
     }
-    void RequestuploadCordUpdate(::grpc::ServerContext* context, ::grpc::ByteBuffer* request, ::grpc::ServerAsyncResponseWriter< ::grpc::ByteBuffer>* response, ::grpc::CompletionQueue* new_call_cq, ::grpc::ServerCompletionQueue* notification_cq, void *tag) {
+    void RequestuploadUpLRCUpdate(::grpc::ServerContext* context, ::grpc::ByteBuffer* request, ::grpc::ServerAsyncResponseWriter< ::grpc::ByteBuffer>* response, ::grpc::CompletionQueue* new_call_cq, ::grpc::ServerCompletionQueue* notification_cq, void *tag) {
       ::grpc::Service::RequestAsyncUnary(10, context, request, response, new_call_cq, notification_cq, tag);
     }
   };
   template <class BaseClass>
-  class WithRawMethod_cordPlanBeginTransfer : public BaseClass {
+  class WithRawMethod_uplrcPlanBeginTransfer : public BaseClass {
    private:
     void BaseClassMustBeDerivedFromService(const Service* /*service*/) {}
    public:
-    WithRawMethod_cordPlanBeginTransfer() {
+    WithRawMethod_uplrcPlanBeginTransfer() {
       ::grpc::Service::MarkMethodRaw(11);
     }
-    ~WithRawMethod_cordPlanBeginTransfer() override {
+    ~WithRawMethod_uplrcPlanBeginTransfer() override {
       BaseClassMustBeDerivedFromService(this);
     }
     // disable synchronous version of this method
-    ::grpc::Status cordPlanBeginTransfer(::grpc::ServerContext* /*context*/, const ::coordinator_proto::CordPlanKeyOnly* /*request*/, ::coordinator_proto::RepIfSuccess* /*response*/) override {
+    ::grpc::Status uplrcPlanBeginTransfer(::grpc::ServerContext* /*context*/, const ::coordinator_proto::UpLRCPlanKeyOnly* /*request*/, ::coordinator_proto::RepIfSuccess* /*response*/) override {
       abort();
       return ::grpc::Status(::grpc::StatusCode::UNIMPLEMENTED, "");
     }
-    void RequestcordPlanBeginTransfer(::grpc::ServerContext* context, ::grpc::ByteBuffer* request, ::grpc::ServerAsyncResponseWriter< ::grpc::ByteBuffer>* response, ::grpc::CompletionQueue* new_call_cq, ::grpc::ServerCompletionQueue* notification_cq, void *tag) {
+    void RequestuplrcPlanBeginTransfer(::grpc::ServerContext* context, ::grpc::ByteBuffer* request, ::grpc::ServerAsyncResponseWriter< ::grpc::ByteBuffer>* response, ::grpc::CompletionQueue* new_call_cq, ::grpc::ServerCompletionQueue* notification_cq, void *tag) {
       ::grpc::Service::RequestAsyncUnary(11, context, request, response, new_call_cq, notification_cq, tag);
     }
   };
   template <class BaseClass>
-  class WithRawMethod_cordPlanWaitTransferComplete : public BaseClass {
+  class WithRawMethod_uplrcPlanWaitTransferComplete : public BaseClass {
    private:
     void BaseClassMustBeDerivedFromService(const Service* /*service*/) {}
    public:
-    WithRawMethod_cordPlanWaitTransferComplete() {
+    WithRawMethod_uplrcPlanWaitTransferComplete() {
       ::grpc::Service::MarkMethodRaw(12);
     }
-    ~WithRawMethod_cordPlanWaitTransferComplete() override {
+    ~WithRawMethod_uplrcPlanWaitTransferComplete() override {
       BaseClassMustBeDerivedFromService(this);
     }
     // disable synchronous version of this method
-    ::grpc::Status cordPlanWaitTransferComplete(::grpc::ServerContext* /*context*/, const ::coordinator_proto::CordPlanWaitRequest* /*request*/, ::coordinator_proto::RepIfSuccess* /*response*/) override {
+    ::grpc::Status uplrcPlanWaitTransferComplete(::grpc::ServerContext* /*context*/, const ::coordinator_proto::UpLRCPlanWaitRequest* /*request*/, ::coordinator_proto::RepIfSuccess* /*response*/) override {
       abort();
       return ::grpc::Status(::grpc::StatusCode::UNIMPLEMENTED, "");
     }
-    void RequestcordPlanWaitTransferComplete(::grpc::ServerContext* context, ::grpc::ByteBuffer* request, ::grpc::ServerAsyncResponseWriter< ::grpc::ByteBuffer>* response, ::grpc::CompletionQueue* new_call_cq, ::grpc::ServerCompletionQueue* notification_cq, void *tag) {
+    void RequestuplrcPlanWaitTransferComplete(::grpc::ServerContext* context, ::grpc::ByteBuffer* request, ::grpc::ServerAsyncResponseWriter< ::grpc::ByteBuffer>* response, ::grpc::CompletionQueue* new_call_cq, ::grpc::ServerCompletionQueue* notification_cq, void *tag) {
       ::grpc::Service::RequestAsyncUnary(12, context, request, response, new_call_cq, notification_cq, tag);
     }
   };
   template <class BaseClass>
-  class WithRawMethod_uploadCordLocalParityApply : public BaseClass {
+  class WithRawMethod_uploadUpLRCLocalParityApply : public BaseClass {
    private:
     void BaseClassMustBeDerivedFromService(const Service* /*service*/) {}
    public:
-    WithRawMethod_uploadCordLocalParityApply() {
+    WithRawMethod_uploadUpLRCLocalParityApply() {
       ::grpc::Service::MarkMethodRaw(13);
     }
-    ~WithRawMethod_uploadCordLocalParityApply() override {
+    ~WithRawMethod_uploadUpLRCLocalParityApply() override {
       BaseClassMustBeDerivedFromService(this);
     }
     // disable synchronous version of this method
-    ::grpc::Status uploadCordLocalParityApply(::grpc::ServerContext* /*context*/, const ::coordinator_proto::CordUpdateRequest* /*request*/, ::coordinator_proto::RepIfSuccess* /*response*/) override {
+    ::grpc::Status uploadUpLRCLocalParityApply(::grpc::ServerContext* /*context*/, const ::coordinator_proto::UpLRCUpdateRequest* /*request*/, ::coordinator_proto::RepIfSuccess* /*response*/) override {
       abort();
       return ::grpc::Status(::grpc::StatusCode::UNIMPLEMENTED, "");
     }
-    void RequestuploadCordLocalParityApply(::grpc::ServerContext* context, ::grpc::ByteBuffer* request, ::grpc::ServerAsyncResponseWriter< ::grpc::ByteBuffer>* response, ::grpc::CompletionQueue* new_call_cq, ::grpc::ServerCompletionQueue* notification_cq, void *tag) {
+    void RequestuploadUpLRCLocalParityApply(::grpc::ServerContext* context, ::grpc::ByteBuffer* request, ::grpc::ServerAsyncResponseWriter< ::grpc::ByteBuffer>* response, ::grpc::CompletionQueue* new_call_cq, ::grpc::ServerCompletionQueue* notification_cq, void *tag) {
       ::grpc::Service::RequestAsyncUnary(13, context, request, response, new_call_cq, notification_cq, tag);
     }
   };
   template <class BaseClass>
-  class WithRawMethod_uploadCordLocalParityViaGlobalHub : public BaseClass {
+  class WithRawMethod_uploadUpLRCLocalParityViaGlobalHub : public BaseClass {
    private:
     void BaseClassMustBeDerivedFromService(const Service* /*service*/) {}
    public:
-    WithRawMethod_uploadCordLocalParityViaGlobalHub() {
+    WithRawMethod_uploadUpLRCLocalParityViaGlobalHub() {
       ::grpc::Service::MarkMethodRaw(14);
     }
-    ~WithRawMethod_uploadCordLocalParityViaGlobalHub() override {
+    ~WithRawMethod_uploadUpLRCLocalParityViaGlobalHub() override {
       BaseClassMustBeDerivedFromService(this);
     }
     // disable synchronous version of this method
-    ::grpc::Status uploadCordLocalParityViaGlobalHub(::grpc::ServerContext* /*context*/, const ::coordinator_proto::CordUpdateRequest* /*request*/, ::coordinator_proto::RepIfSuccess* /*response*/) override {
+    ::grpc::Status uploadUpLRCLocalParityViaGlobalHub(::grpc::ServerContext* /*context*/, const ::coordinator_proto::UpLRCUpdateRequest* /*request*/, ::coordinator_proto::RepIfSuccess* /*response*/) override {
       abort();
       return ::grpc::Status(::grpc::StatusCode::UNIMPLEMENTED, "");
     }
-    void RequestuploadCordLocalParityViaGlobalHub(::grpc::ServerContext* context, ::grpc::ByteBuffer* request, ::grpc::ServerAsyncResponseWriter< ::grpc::ByteBuffer>* response, ::grpc::CompletionQueue* new_call_cq, ::grpc::ServerCompletionQueue* notification_cq, void *tag) {
+    void RequestuploadUpLRCLocalParityViaGlobalHub(::grpc::ServerContext* context, ::grpc::ByteBuffer* request, ::grpc::ServerAsyncResponseWriter< ::grpc::ByteBuffer>* response, ::grpc::CompletionQueue* new_call_cq, ::grpc::ServerCompletionQueue* notification_cq, void *tag) {
       ::grpc::Service::RequestAsyncUnary(14, context, request, response, new_call_cq, notification_cq, tag);
     }
   };
@@ -3458,135 +3458,135 @@ class coordinatorService final {
       ::grpc::CallbackServerContext* /*context*/, const ::grpc::ByteBuffer* /*request*/, ::grpc::ByteBuffer* /*response*/)  { return nullptr; }
   };
   template <class BaseClass>
-  class WithRawCallbackMethod_uploadXueUpdate : public BaseClass {
+  class WithRawCallbackMethod_uploadUplrcLegacyUpdate : public BaseClass {
    private:
     void BaseClassMustBeDerivedFromService(const Service* /*service*/) {}
    public:
-    WithRawCallbackMethod_uploadXueUpdate() {
+    WithRawCallbackMethod_uploadUplrcLegacyUpdate() {
       ::grpc::Service::MarkMethodRawCallback(9,
           new ::grpc::internal::CallbackUnaryHandler< ::grpc::ByteBuffer, ::grpc::ByteBuffer>(
             [this](
-                   ::grpc::CallbackServerContext* context, const ::grpc::ByteBuffer* request, ::grpc::ByteBuffer* response) { return this->uploadXueUpdate(context, request, response); }));
+                   ::grpc::CallbackServerContext* context, const ::grpc::ByteBuffer* request, ::grpc::ByteBuffer* response) { return this->uploadUplrcLegacyUpdate(context, request, response); }));
     }
-    ~WithRawCallbackMethod_uploadXueUpdate() override {
+    ~WithRawCallbackMethod_uploadUplrcLegacyUpdate() override {
       BaseClassMustBeDerivedFromService(this);
     }
     // disable synchronous version of this method
-    ::grpc::Status uploadXueUpdate(::grpc::ServerContext* /*context*/, const ::coordinator_proto::XueUpdateRequest* /*request*/, ::coordinator_proto::ReplyProxyIPsPorts* /*response*/) override {
+    ::grpc::Status uploadUplrcLegacyUpdate(::grpc::ServerContext* /*context*/, const ::coordinator_proto::UplrcLegacyUpdateRequest* /*request*/, ::coordinator_proto::ReplyProxyIPsPorts* /*response*/) override {
       abort();
       return ::grpc::Status(::grpc::StatusCode::UNIMPLEMENTED, "");
     }
-    virtual ::grpc::ServerUnaryReactor* uploadXueUpdate(
+    virtual ::grpc::ServerUnaryReactor* uploadUplrcLegacyUpdate(
       ::grpc::CallbackServerContext* /*context*/, const ::grpc::ByteBuffer* /*request*/, ::grpc::ByteBuffer* /*response*/)  { return nullptr; }
   };
   template <class BaseClass>
-  class WithRawCallbackMethod_uploadCordUpdate : public BaseClass {
+  class WithRawCallbackMethod_uploadUpLRCUpdate : public BaseClass {
    private:
     void BaseClassMustBeDerivedFromService(const Service* /*service*/) {}
    public:
-    WithRawCallbackMethod_uploadCordUpdate() {
+    WithRawCallbackMethod_uploadUpLRCUpdate() {
       ::grpc::Service::MarkMethodRawCallback(10,
           new ::grpc::internal::CallbackUnaryHandler< ::grpc::ByteBuffer, ::grpc::ByteBuffer>(
             [this](
-                   ::grpc::CallbackServerContext* context, const ::grpc::ByteBuffer* request, ::grpc::ByteBuffer* response) { return this->uploadCordUpdate(context, request, response); }));
+                   ::grpc::CallbackServerContext* context, const ::grpc::ByteBuffer* request, ::grpc::ByteBuffer* response) { return this->uploadUpLRCUpdate(context, request, response); }));
     }
-    ~WithRawCallbackMethod_uploadCordUpdate() override {
+    ~WithRawCallbackMethod_uploadUpLRCUpdate() override {
       BaseClassMustBeDerivedFromService(this);
     }
     // disable synchronous version of this method
-    ::grpc::Status uploadCordUpdate(::grpc::ServerContext* /*context*/, const ::coordinator_proto::CordUpdateRequest* /*request*/, ::coordinator_proto::ReplyProxyIPsPorts* /*response*/) override {
+    ::grpc::Status uploadUpLRCUpdate(::grpc::ServerContext* /*context*/, const ::coordinator_proto::UpLRCUpdateRequest* /*request*/, ::coordinator_proto::ReplyProxyIPsPorts* /*response*/) override {
       abort();
       return ::grpc::Status(::grpc::StatusCode::UNIMPLEMENTED, "");
     }
-    virtual ::grpc::ServerUnaryReactor* uploadCordUpdate(
+    virtual ::grpc::ServerUnaryReactor* uploadUpLRCUpdate(
       ::grpc::CallbackServerContext* /*context*/, const ::grpc::ByteBuffer* /*request*/, ::grpc::ByteBuffer* /*response*/)  { return nullptr; }
   };
   template <class BaseClass>
-  class WithRawCallbackMethod_cordPlanBeginTransfer : public BaseClass {
+  class WithRawCallbackMethod_uplrcPlanBeginTransfer : public BaseClass {
    private:
     void BaseClassMustBeDerivedFromService(const Service* /*service*/) {}
    public:
-    WithRawCallbackMethod_cordPlanBeginTransfer() {
+    WithRawCallbackMethod_uplrcPlanBeginTransfer() {
       ::grpc::Service::MarkMethodRawCallback(11,
           new ::grpc::internal::CallbackUnaryHandler< ::grpc::ByteBuffer, ::grpc::ByteBuffer>(
             [this](
-                   ::grpc::CallbackServerContext* context, const ::grpc::ByteBuffer* request, ::grpc::ByteBuffer* response) { return this->cordPlanBeginTransfer(context, request, response); }));
+                   ::grpc::CallbackServerContext* context, const ::grpc::ByteBuffer* request, ::grpc::ByteBuffer* response) { return this->uplrcPlanBeginTransfer(context, request, response); }));
     }
-    ~WithRawCallbackMethod_cordPlanBeginTransfer() override {
+    ~WithRawCallbackMethod_uplrcPlanBeginTransfer() override {
       BaseClassMustBeDerivedFromService(this);
     }
     // disable synchronous version of this method
-    ::grpc::Status cordPlanBeginTransfer(::grpc::ServerContext* /*context*/, const ::coordinator_proto::CordPlanKeyOnly* /*request*/, ::coordinator_proto::RepIfSuccess* /*response*/) override {
+    ::grpc::Status uplrcPlanBeginTransfer(::grpc::ServerContext* /*context*/, const ::coordinator_proto::UpLRCPlanKeyOnly* /*request*/, ::coordinator_proto::RepIfSuccess* /*response*/) override {
       abort();
       return ::grpc::Status(::grpc::StatusCode::UNIMPLEMENTED, "");
     }
-    virtual ::grpc::ServerUnaryReactor* cordPlanBeginTransfer(
+    virtual ::grpc::ServerUnaryReactor* uplrcPlanBeginTransfer(
       ::grpc::CallbackServerContext* /*context*/, const ::grpc::ByteBuffer* /*request*/, ::grpc::ByteBuffer* /*response*/)  { return nullptr; }
   };
   template <class BaseClass>
-  class WithRawCallbackMethod_cordPlanWaitTransferComplete : public BaseClass {
+  class WithRawCallbackMethod_uplrcPlanWaitTransferComplete : public BaseClass {
    private:
     void BaseClassMustBeDerivedFromService(const Service* /*service*/) {}
    public:
-    WithRawCallbackMethod_cordPlanWaitTransferComplete() {
+    WithRawCallbackMethod_uplrcPlanWaitTransferComplete() {
       ::grpc::Service::MarkMethodRawCallback(12,
           new ::grpc::internal::CallbackUnaryHandler< ::grpc::ByteBuffer, ::grpc::ByteBuffer>(
             [this](
-                   ::grpc::CallbackServerContext* context, const ::grpc::ByteBuffer* request, ::grpc::ByteBuffer* response) { return this->cordPlanWaitTransferComplete(context, request, response); }));
+                   ::grpc::CallbackServerContext* context, const ::grpc::ByteBuffer* request, ::grpc::ByteBuffer* response) { return this->uplrcPlanWaitTransferComplete(context, request, response); }));
     }
-    ~WithRawCallbackMethod_cordPlanWaitTransferComplete() override {
+    ~WithRawCallbackMethod_uplrcPlanWaitTransferComplete() override {
       BaseClassMustBeDerivedFromService(this);
     }
     // disable synchronous version of this method
-    ::grpc::Status cordPlanWaitTransferComplete(::grpc::ServerContext* /*context*/, const ::coordinator_proto::CordPlanWaitRequest* /*request*/, ::coordinator_proto::RepIfSuccess* /*response*/) override {
+    ::grpc::Status uplrcPlanWaitTransferComplete(::grpc::ServerContext* /*context*/, const ::coordinator_proto::UpLRCPlanWaitRequest* /*request*/, ::coordinator_proto::RepIfSuccess* /*response*/) override {
       abort();
       return ::grpc::Status(::grpc::StatusCode::UNIMPLEMENTED, "");
     }
-    virtual ::grpc::ServerUnaryReactor* cordPlanWaitTransferComplete(
+    virtual ::grpc::ServerUnaryReactor* uplrcPlanWaitTransferComplete(
       ::grpc::CallbackServerContext* /*context*/, const ::grpc::ByteBuffer* /*request*/, ::grpc::ByteBuffer* /*response*/)  { return nullptr; }
   };
   template <class BaseClass>
-  class WithRawCallbackMethod_uploadCordLocalParityApply : public BaseClass {
+  class WithRawCallbackMethod_uploadUpLRCLocalParityApply : public BaseClass {
    private:
     void BaseClassMustBeDerivedFromService(const Service* /*service*/) {}
    public:
-    WithRawCallbackMethod_uploadCordLocalParityApply() {
+    WithRawCallbackMethod_uploadUpLRCLocalParityApply() {
       ::grpc::Service::MarkMethodRawCallback(13,
           new ::grpc::internal::CallbackUnaryHandler< ::grpc::ByteBuffer, ::grpc::ByteBuffer>(
             [this](
-                   ::grpc::CallbackServerContext* context, const ::grpc::ByteBuffer* request, ::grpc::ByteBuffer* response) { return this->uploadCordLocalParityApply(context, request, response); }));
+                   ::grpc::CallbackServerContext* context, const ::grpc::ByteBuffer* request, ::grpc::ByteBuffer* response) { return this->uploadUpLRCLocalParityApply(context, request, response); }));
     }
-    ~WithRawCallbackMethod_uploadCordLocalParityApply() override {
+    ~WithRawCallbackMethod_uploadUpLRCLocalParityApply() override {
       BaseClassMustBeDerivedFromService(this);
     }
     // disable synchronous version of this method
-    ::grpc::Status uploadCordLocalParityApply(::grpc::ServerContext* /*context*/, const ::coordinator_proto::CordUpdateRequest* /*request*/, ::coordinator_proto::RepIfSuccess* /*response*/) override {
+    ::grpc::Status uploadUpLRCLocalParityApply(::grpc::ServerContext* /*context*/, const ::coordinator_proto::UpLRCUpdateRequest* /*request*/, ::coordinator_proto::RepIfSuccess* /*response*/) override {
       abort();
       return ::grpc::Status(::grpc::StatusCode::UNIMPLEMENTED, "");
     }
-    virtual ::grpc::ServerUnaryReactor* uploadCordLocalParityApply(
+    virtual ::grpc::ServerUnaryReactor* uploadUpLRCLocalParityApply(
       ::grpc::CallbackServerContext* /*context*/, const ::grpc::ByteBuffer* /*request*/, ::grpc::ByteBuffer* /*response*/)  { return nullptr; }
   };
   template <class BaseClass>
-  class WithRawCallbackMethod_uploadCordLocalParityViaGlobalHub : public BaseClass {
+  class WithRawCallbackMethod_uploadUpLRCLocalParityViaGlobalHub : public BaseClass {
    private:
     void BaseClassMustBeDerivedFromService(const Service* /*service*/) {}
    public:
-    WithRawCallbackMethod_uploadCordLocalParityViaGlobalHub() {
+    WithRawCallbackMethod_uploadUpLRCLocalParityViaGlobalHub() {
       ::grpc::Service::MarkMethodRawCallback(14,
           new ::grpc::internal::CallbackUnaryHandler< ::grpc::ByteBuffer, ::grpc::ByteBuffer>(
             [this](
-                   ::grpc::CallbackServerContext* context, const ::grpc::ByteBuffer* request, ::grpc::ByteBuffer* response) { return this->uploadCordLocalParityViaGlobalHub(context, request, response); }));
+                   ::grpc::CallbackServerContext* context, const ::grpc::ByteBuffer* request, ::grpc::ByteBuffer* response) { return this->uploadUpLRCLocalParityViaGlobalHub(context, request, response); }));
     }
-    ~WithRawCallbackMethod_uploadCordLocalParityViaGlobalHub() override {
+    ~WithRawCallbackMethod_uploadUpLRCLocalParityViaGlobalHub() override {
       BaseClassMustBeDerivedFromService(this);
     }
     // disable synchronous version of this method
-    ::grpc::Status uploadCordLocalParityViaGlobalHub(::grpc::ServerContext* /*context*/, const ::coordinator_proto::CordUpdateRequest* /*request*/, ::coordinator_proto::RepIfSuccess* /*response*/) override {
+    ::grpc::Status uploadUpLRCLocalParityViaGlobalHub(::grpc::ServerContext* /*context*/, const ::coordinator_proto::UpLRCUpdateRequest* /*request*/, ::coordinator_proto::RepIfSuccess* /*response*/) override {
       abort();
       return ::grpc::Status(::grpc::StatusCode::UNIMPLEMENTED, "");
     }
-    virtual ::grpc::ServerUnaryReactor* uploadCordLocalParityViaGlobalHub(
+    virtual ::grpc::ServerUnaryReactor* uploadUpLRCLocalParityViaGlobalHub(
       ::grpc::CallbackServerContext* /*context*/, const ::grpc::ByteBuffer* /*request*/, ::grpc::ByteBuffer* /*response*/)  { return nullptr; }
   };
   template <class BaseClass>
@@ -4141,166 +4141,166 @@ class coordinatorService final {
     virtual ::grpc::Status StreameduploadAppendValue(::grpc::ServerContext* context, ::grpc::ServerUnaryStreamer< ::coordinator_proto::RequestProxyIPPort,::coordinator_proto::ReplyProxyIPsPorts>* server_unary_streamer) = 0;
   };
   template <class BaseClass>
-  class WithStreamedUnaryMethod_uploadXueUpdate : public BaseClass {
+  class WithStreamedUnaryMethod_uploadUplrcLegacyUpdate : public BaseClass {
    private:
     void BaseClassMustBeDerivedFromService(const Service* /*service*/) {}
    public:
-    WithStreamedUnaryMethod_uploadXueUpdate() {
+    WithStreamedUnaryMethod_uploadUplrcLegacyUpdate() {
       ::grpc::Service::MarkMethodStreamed(9,
         new ::grpc::internal::StreamedUnaryHandler<
-          ::coordinator_proto::XueUpdateRequest, ::coordinator_proto::ReplyProxyIPsPorts>(
+          ::coordinator_proto::UplrcLegacyUpdateRequest, ::coordinator_proto::ReplyProxyIPsPorts>(
             [this](::grpc::ServerContext* context,
                    ::grpc::ServerUnaryStreamer<
-                     ::coordinator_proto::XueUpdateRequest, ::coordinator_proto::ReplyProxyIPsPorts>* streamer) {
-                       return this->StreameduploadXueUpdate(context,
+                     ::coordinator_proto::UplrcLegacyUpdateRequest, ::coordinator_proto::ReplyProxyIPsPorts>* streamer) {
+                       return this->StreameduploadUplrcLegacyUpdate(context,
                          streamer);
                   }));
     }
-    ~WithStreamedUnaryMethod_uploadXueUpdate() override {
+    ~WithStreamedUnaryMethod_uploadUplrcLegacyUpdate() override {
       BaseClassMustBeDerivedFromService(this);
     }
     // disable regular version of this method
-    ::grpc::Status uploadXueUpdate(::grpc::ServerContext* /*context*/, const ::coordinator_proto::XueUpdateRequest* /*request*/, ::coordinator_proto::ReplyProxyIPsPorts* /*response*/) override {
+    ::grpc::Status uploadUplrcLegacyUpdate(::grpc::ServerContext* /*context*/, const ::coordinator_proto::UplrcLegacyUpdateRequest* /*request*/, ::coordinator_proto::ReplyProxyIPsPorts* /*response*/) override {
       abort();
       return ::grpc::Status(::grpc::StatusCode::UNIMPLEMENTED, "");
     }
     // replace default version of method with streamed unary
-    virtual ::grpc::Status StreameduploadXueUpdate(::grpc::ServerContext* context, ::grpc::ServerUnaryStreamer< ::coordinator_proto::XueUpdateRequest,::coordinator_proto::ReplyProxyIPsPorts>* server_unary_streamer) = 0;
+    virtual ::grpc::Status StreameduploadUplrcLegacyUpdate(::grpc::ServerContext* context, ::grpc::ServerUnaryStreamer< ::coordinator_proto::UplrcLegacyUpdateRequest,::coordinator_proto::ReplyProxyIPsPorts>* server_unary_streamer) = 0;
   };
   template <class BaseClass>
-  class WithStreamedUnaryMethod_uploadCordUpdate : public BaseClass {
+  class WithStreamedUnaryMethod_uploadUpLRCUpdate : public BaseClass {
    private:
     void BaseClassMustBeDerivedFromService(const Service* /*service*/) {}
    public:
-    WithStreamedUnaryMethod_uploadCordUpdate() {
+    WithStreamedUnaryMethod_uploadUpLRCUpdate() {
       ::grpc::Service::MarkMethodStreamed(10,
         new ::grpc::internal::StreamedUnaryHandler<
-          ::coordinator_proto::CordUpdateRequest, ::coordinator_proto::ReplyProxyIPsPorts>(
+          ::coordinator_proto::UpLRCUpdateRequest, ::coordinator_proto::ReplyProxyIPsPorts>(
             [this](::grpc::ServerContext* context,
                    ::grpc::ServerUnaryStreamer<
-                     ::coordinator_proto::CordUpdateRequest, ::coordinator_proto::ReplyProxyIPsPorts>* streamer) {
-                       return this->StreameduploadCordUpdate(context,
+                     ::coordinator_proto::UpLRCUpdateRequest, ::coordinator_proto::ReplyProxyIPsPorts>* streamer) {
+                       return this->StreameduploadUpLRCUpdate(context,
                          streamer);
                   }));
     }
-    ~WithStreamedUnaryMethod_uploadCordUpdate() override {
+    ~WithStreamedUnaryMethod_uploadUpLRCUpdate() override {
       BaseClassMustBeDerivedFromService(this);
     }
     // disable regular version of this method
-    ::grpc::Status uploadCordUpdate(::grpc::ServerContext* /*context*/, const ::coordinator_proto::CordUpdateRequest* /*request*/, ::coordinator_proto::ReplyProxyIPsPorts* /*response*/) override {
+    ::grpc::Status uploadUpLRCUpdate(::grpc::ServerContext* /*context*/, const ::coordinator_proto::UpLRCUpdateRequest* /*request*/, ::coordinator_proto::ReplyProxyIPsPorts* /*response*/) override {
       abort();
       return ::grpc::Status(::grpc::StatusCode::UNIMPLEMENTED, "");
     }
     // replace default version of method with streamed unary
-    virtual ::grpc::Status StreameduploadCordUpdate(::grpc::ServerContext* context, ::grpc::ServerUnaryStreamer< ::coordinator_proto::CordUpdateRequest,::coordinator_proto::ReplyProxyIPsPorts>* server_unary_streamer) = 0;
+    virtual ::grpc::Status StreameduploadUpLRCUpdate(::grpc::ServerContext* context, ::grpc::ServerUnaryStreamer< ::coordinator_proto::UpLRCUpdateRequest,::coordinator_proto::ReplyProxyIPsPorts>* server_unary_streamer) = 0;
   };
   template <class BaseClass>
-  class WithStreamedUnaryMethod_cordPlanBeginTransfer : public BaseClass {
+  class WithStreamedUnaryMethod_uplrcPlanBeginTransfer : public BaseClass {
    private:
     void BaseClassMustBeDerivedFromService(const Service* /*service*/) {}
    public:
-    WithStreamedUnaryMethod_cordPlanBeginTransfer() {
+    WithStreamedUnaryMethod_uplrcPlanBeginTransfer() {
       ::grpc::Service::MarkMethodStreamed(11,
         new ::grpc::internal::StreamedUnaryHandler<
-          ::coordinator_proto::CordPlanKeyOnly, ::coordinator_proto::RepIfSuccess>(
+          ::coordinator_proto::UpLRCPlanKeyOnly, ::coordinator_proto::RepIfSuccess>(
             [this](::grpc::ServerContext* context,
                    ::grpc::ServerUnaryStreamer<
-                     ::coordinator_proto::CordPlanKeyOnly, ::coordinator_proto::RepIfSuccess>* streamer) {
-                       return this->StreamedcordPlanBeginTransfer(context,
+                     ::coordinator_proto::UpLRCPlanKeyOnly, ::coordinator_proto::RepIfSuccess>* streamer) {
+                       return this->StreameduplrcPlanBeginTransfer(context,
                          streamer);
                   }));
     }
-    ~WithStreamedUnaryMethod_cordPlanBeginTransfer() override {
+    ~WithStreamedUnaryMethod_uplrcPlanBeginTransfer() override {
       BaseClassMustBeDerivedFromService(this);
     }
     // disable regular version of this method
-    ::grpc::Status cordPlanBeginTransfer(::grpc::ServerContext* /*context*/, const ::coordinator_proto::CordPlanKeyOnly* /*request*/, ::coordinator_proto::RepIfSuccess* /*response*/) override {
+    ::grpc::Status uplrcPlanBeginTransfer(::grpc::ServerContext* /*context*/, const ::coordinator_proto::UpLRCPlanKeyOnly* /*request*/, ::coordinator_proto::RepIfSuccess* /*response*/) override {
       abort();
       return ::grpc::Status(::grpc::StatusCode::UNIMPLEMENTED, "");
     }
     // replace default version of method with streamed unary
-    virtual ::grpc::Status StreamedcordPlanBeginTransfer(::grpc::ServerContext* context, ::grpc::ServerUnaryStreamer< ::coordinator_proto::CordPlanKeyOnly,::coordinator_proto::RepIfSuccess>* server_unary_streamer) = 0;
+    virtual ::grpc::Status StreameduplrcPlanBeginTransfer(::grpc::ServerContext* context, ::grpc::ServerUnaryStreamer< ::coordinator_proto::UpLRCPlanKeyOnly,::coordinator_proto::RepIfSuccess>* server_unary_streamer) = 0;
   };
   template <class BaseClass>
-  class WithStreamedUnaryMethod_cordPlanWaitTransferComplete : public BaseClass {
+  class WithStreamedUnaryMethod_uplrcPlanWaitTransferComplete : public BaseClass {
    private:
     void BaseClassMustBeDerivedFromService(const Service* /*service*/) {}
    public:
-    WithStreamedUnaryMethod_cordPlanWaitTransferComplete() {
+    WithStreamedUnaryMethod_uplrcPlanWaitTransferComplete() {
       ::grpc::Service::MarkMethodStreamed(12,
         new ::grpc::internal::StreamedUnaryHandler<
-          ::coordinator_proto::CordPlanWaitRequest, ::coordinator_proto::RepIfSuccess>(
+          ::coordinator_proto::UpLRCPlanWaitRequest, ::coordinator_proto::RepIfSuccess>(
             [this](::grpc::ServerContext* context,
                    ::grpc::ServerUnaryStreamer<
-                     ::coordinator_proto::CordPlanWaitRequest, ::coordinator_proto::RepIfSuccess>* streamer) {
-                       return this->StreamedcordPlanWaitTransferComplete(context,
+                     ::coordinator_proto::UpLRCPlanWaitRequest, ::coordinator_proto::RepIfSuccess>* streamer) {
+                       return this->StreameduplrcPlanWaitTransferComplete(context,
                          streamer);
                   }));
     }
-    ~WithStreamedUnaryMethod_cordPlanWaitTransferComplete() override {
+    ~WithStreamedUnaryMethod_uplrcPlanWaitTransferComplete() override {
       BaseClassMustBeDerivedFromService(this);
     }
     // disable regular version of this method
-    ::grpc::Status cordPlanWaitTransferComplete(::grpc::ServerContext* /*context*/, const ::coordinator_proto::CordPlanWaitRequest* /*request*/, ::coordinator_proto::RepIfSuccess* /*response*/) override {
+    ::grpc::Status uplrcPlanWaitTransferComplete(::grpc::ServerContext* /*context*/, const ::coordinator_proto::UpLRCPlanWaitRequest* /*request*/, ::coordinator_proto::RepIfSuccess* /*response*/) override {
       abort();
       return ::grpc::Status(::grpc::StatusCode::UNIMPLEMENTED, "");
     }
     // replace default version of method with streamed unary
-    virtual ::grpc::Status StreamedcordPlanWaitTransferComplete(::grpc::ServerContext* context, ::grpc::ServerUnaryStreamer< ::coordinator_proto::CordPlanWaitRequest,::coordinator_proto::RepIfSuccess>* server_unary_streamer) = 0;
+    virtual ::grpc::Status StreameduplrcPlanWaitTransferComplete(::grpc::ServerContext* context, ::grpc::ServerUnaryStreamer< ::coordinator_proto::UpLRCPlanWaitRequest,::coordinator_proto::RepIfSuccess>* server_unary_streamer) = 0;
   };
   template <class BaseClass>
-  class WithStreamedUnaryMethod_uploadCordLocalParityApply : public BaseClass {
+  class WithStreamedUnaryMethod_uploadUpLRCLocalParityApply : public BaseClass {
    private:
     void BaseClassMustBeDerivedFromService(const Service* /*service*/) {}
    public:
-    WithStreamedUnaryMethod_uploadCordLocalParityApply() {
+    WithStreamedUnaryMethod_uploadUpLRCLocalParityApply() {
       ::grpc::Service::MarkMethodStreamed(13,
         new ::grpc::internal::StreamedUnaryHandler<
-          ::coordinator_proto::CordUpdateRequest, ::coordinator_proto::RepIfSuccess>(
+          ::coordinator_proto::UpLRCUpdateRequest, ::coordinator_proto::RepIfSuccess>(
             [this](::grpc::ServerContext* context,
                    ::grpc::ServerUnaryStreamer<
-                     ::coordinator_proto::CordUpdateRequest, ::coordinator_proto::RepIfSuccess>* streamer) {
-                       return this->StreameduploadCordLocalParityApply(context,
+                     ::coordinator_proto::UpLRCUpdateRequest, ::coordinator_proto::RepIfSuccess>* streamer) {
+                       return this->StreameduploadUpLRCLocalParityApply(context,
                          streamer);
                   }));
     }
-    ~WithStreamedUnaryMethod_uploadCordLocalParityApply() override {
+    ~WithStreamedUnaryMethod_uploadUpLRCLocalParityApply() override {
       BaseClassMustBeDerivedFromService(this);
     }
     // disable regular version of this method
-    ::grpc::Status uploadCordLocalParityApply(::grpc::ServerContext* /*context*/, const ::coordinator_proto::CordUpdateRequest* /*request*/, ::coordinator_proto::RepIfSuccess* /*response*/) override {
+    ::grpc::Status uploadUpLRCLocalParityApply(::grpc::ServerContext* /*context*/, const ::coordinator_proto::UpLRCUpdateRequest* /*request*/, ::coordinator_proto::RepIfSuccess* /*response*/) override {
       abort();
       return ::grpc::Status(::grpc::StatusCode::UNIMPLEMENTED, "");
     }
     // replace default version of method with streamed unary
-    virtual ::grpc::Status StreameduploadCordLocalParityApply(::grpc::ServerContext* context, ::grpc::ServerUnaryStreamer< ::coordinator_proto::CordUpdateRequest,::coordinator_proto::RepIfSuccess>* server_unary_streamer) = 0;
+    virtual ::grpc::Status StreameduploadUpLRCLocalParityApply(::grpc::ServerContext* context, ::grpc::ServerUnaryStreamer< ::coordinator_proto::UpLRCUpdateRequest,::coordinator_proto::RepIfSuccess>* server_unary_streamer) = 0;
   };
   template <class BaseClass>
-  class WithStreamedUnaryMethod_uploadCordLocalParityViaGlobalHub : public BaseClass {
+  class WithStreamedUnaryMethod_uploadUpLRCLocalParityViaGlobalHub : public BaseClass {
    private:
     void BaseClassMustBeDerivedFromService(const Service* /*service*/) {}
    public:
-    WithStreamedUnaryMethod_uploadCordLocalParityViaGlobalHub() {
+    WithStreamedUnaryMethod_uploadUpLRCLocalParityViaGlobalHub() {
       ::grpc::Service::MarkMethodStreamed(14,
         new ::grpc::internal::StreamedUnaryHandler<
-          ::coordinator_proto::CordUpdateRequest, ::coordinator_proto::RepIfSuccess>(
+          ::coordinator_proto::UpLRCUpdateRequest, ::coordinator_proto::RepIfSuccess>(
             [this](::grpc::ServerContext* context,
                    ::grpc::ServerUnaryStreamer<
-                     ::coordinator_proto::CordUpdateRequest, ::coordinator_proto::RepIfSuccess>* streamer) {
-                       return this->StreameduploadCordLocalParityViaGlobalHub(context,
+                     ::coordinator_proto::UpLRCUpdateRequest, ::coordinator_proto::RepIfSuccess>* streamer) {
+                       return this->StreameduploadUpLRCLocalParityViaGlobalHub(context,
                          streamer);
                   }));
     }
-    ~WithStreamedUnaryMethod_uploadCordLocalParityViaGlobalHub() override {
+    ~WithStreamedUnaryMethod_uploadUpLRCLocalParityViaGlobalHub() override {
       BaseClassMustBeDerivedFromService(this);
     }
     // disable regular version of this method
-    ::grpc::Status uploadCordLocalParityViaGlobalHub(::grpc::ServerContext* /*context*/, const ::coordinator_proto::CordUpdateRequest* /*request*/, ::coordinator_proto::RepIfSuccess* /*response*/) override {
+    ::grpc::Status uploadUpLRCLocalParityViaGlobalHub(::grpc::ServerContext* /*context*/, const ::coordinator_proto::UpLRCUpdateRequest* /*request*/, ::coordinator_proto::RepIfSuccess* /*response*/) override {
       abort();
       return ::grpc::Status(::grpc::StatusCode::UNIMPLEMENTED, "");
     }
     // replace default version of method with streamed unary
-    virtual ::grpc::Status StreameduploadCordLocalParityViaGlobalHub(::grpc::ServerContext* context, ::grpc::ServerUnaryStreamer< ::coordinator_proto::CordUpdateRequest,::coordinator_proto::RepIfSuccess>* server_unary_streamer) = 0;
+    virtual ::grpc::Status StreameduploadUpLRCLocalParityViaGlobalHub(::grpc::ServerContext* context, ::grpc::ServerUnaryStreamer< ::coordinator_proto::UpLRCUpdateRequest,::coordinator_proto::RepIfSuccess>* server_unary_streamer) = 0;
   };
   template <class BaseClass>
   class WithStreamedUnaryMethod_getValue : public BaseClass {
@@ -4680,9 +4680,9 @@ class coordinatorService final {
     // replace default version of method with streamed unary
     virtual ::grpc::Status StreameddecodeTest(::grpc::ServerContext* context, ::grpc::ServerUnaryStreamer< ::coordinator_proto::KeyAndClientIP,::coordinator_proto::DegradedReadReply>* server_unary_streamer) = 0;
   };
-  typedef WithStreamedUnaryMethod_sayHelloToCoordinator<WithStreamedUnaryMethod_checkalive<WithStreamedUnaryMethod_setParameter<WithStreamedUnaryMethod_uploadOriginKeyValue<WithStreamedUnaryMethod_reportCommitAbort<WithStreamedUnaryMethod_checkCommitAbort<WithStreamedUnaryMethod_uploadSetValue<WithStreamedUnaryMethod_uploadSubsetValue<WithStreamedUnaryMethod_uploadAppendValue<WithStreamedUnaryMethod_uploadXueUpdate<WithStreamedUnaryMethod_uploadCordUpdate<WithStreamedUnaryMethod_cordPlanBeginTransfer<WithStreamedUnaryMethod_cordPlanWaitTransferComplete<WithStreamedUnaryMethod_uploadCordLocalParityApply<WithStreamedUnaryMethod_uploadCordLocalParityViaGlobalHub<WithStreamedUnaryMethod_getValue<WithStreamedUnaryMethod_getStripe<WithStreamedUnaryMethod_getBlocks<WithStreamedUnaryMethod_getDegradedReadBlocks<WithStreamedUnaryMethod_getDegradedReadBlock<WithStreamedUnaryMethod_getDegradedReadBlockBreakdown<WithStreamedUnaryMethod_getRecovery<WithStreamedUnaryMethod_getRecoveryBreakdown<WithStreamedUnaryMethod_fullNodeRecovery<WithStreamedUnaryMethod_multiBlockRecovery<WithStreamedUnaryMethod_delByKey<WithStreamedUnaryMethod_delByStripe<WithStreamedUnaryMethod_listStripes<WithStreamedUnaryMethod_decodeTest<Service > > > > > > > > > > > > > > > > > > > > > > > > > > > > > StreamedUnaryService;
+  typedef WithStreamedUnaryMethod_sayHelloToCoordinator<WithStreamedUnaryMethod_checkalive<WithStreamedUnaryMethod_setParameter<WithStreamedUnaryMethod_uploadOriginKeyValue<WithStreamedUnaryMethod_reportCommitAbort<WithStreamedUnaryMethod_checkCommitAbort<WithStreamedUnaryMethod_uploadSetValue<WithStreamedUnaryMethod_uploadSubsetValue<WithStreamedUnaryMethod_uploadAppendValue<WithStreamedUnaryMethod_uploadUplrcLegacyUpdate<WithStreamedUnaryMethod_uploadUpLRCUpdate<WithStreamedUnaryMethod_uplrcPlanBeginTransfer<WithStreamedUnaryMethod_uplrcPlanWaitTransferComplete<WithStreamedUnaryMethod_uploadUpLRCLocalParityApply<WithStreamedUnaryMethod_uploadUpLRCLocalParityViaGlobalHub<WithStreamedUnaryMethod_getValue<WithStreamedUnaryMethod_getStripe<WithStreamedUnaryMethod_getBlocks<WithStreamedUnaryMethod_getDegradedReadBlocks<WithStreamedUnaryMethod_getDegradedReadBlock<WithStreamedUnaryMethod_getDegradedReadBlockBreakdown<WithStreamedUnaryMethod_getRecovery<WithStreamedUnaryMethod_getRecoveryBreakdown<WithStreamedUnaryMethod_fullNodeRecovery<WithStreamedUnaryMethod_multiBlockRecovery<WithStreamedUnaryMethod_delByKey<WithStreamedUnaryMethod_delByStripe<WithStreamedUnaryMethod_listStripes<WithStreamedUnaryMethod_decodeTest<Service > > > > > > > > > > > > > > > > > > > > > > > > > > > > > StreamedUnaryService;
   typedef Service SplitStreamedService;
-  typedef WithStreamedUnaryMethod_sayHelloToCoordinator<WithStreamedUnaryMethod_checkalive<WithStreamedUnaryMethod_setParameter<WithStreamedUnaryMethod_uploadOriginKeyValue<WithStreamedUnaryMethod_reportCommitAbort<WithStreamedUnaryMethod_checkCommitAbort<WithStreamedUnaryMethod_uploadSetValue<WithStreamedUnaryMethod_uploadSubsetValue<WithStreamedUnaryMethod_uploadAppendValue<WithStreamedUnaryMethod_uploadXueUpdate<WithStreamedUnaryMethod_uploadCordUpdate<WithStreamedUnaryMethod_cordPlanBeginTransfer<WithStreamedUnaryMethod_cordPlanWaitTransferComplete<WithStreamedUnaryMethod_uploadCordLocalParityApply<WithStreamedUnaryMethod_uploadCordLocalParityViaGlobalHub<WithStreamedUnaryMethod_getValue<WithStreamedUnaryMethod_getStripe<WithStreamedUnaryMethod_getBlocks<WithStreamedUnaryMethod_getDegradedReadBlocks<WithStreamedUnaryMethod_getDegradedReadBlock<WithStreamedUnaryMethod_getDegradedReadBlockBreakdown<WithStreamedUnaryMethod_getRecovery<WithStreamedUnaryMethod_getRecoveryBreakdown<WithStreamedUnaryMethod_fullNodeRecovery<WithStreamedUnaryMethod_multiBlockRecovery<WithStreamedUnaryMethod_delByKey<WithStreamedUnaryMethod_delByStripe<WithStreamedUnaryMethod_listStripes<WithStreamedUnaryMethod_decodeTest<Service > > > > > > > > > > > > > > > > > > > > > > > > > > > > > StreamedService;
+  typedef WithStreamedUnaryMethod_sayHelloToCoordinator<WithStreamedUnaryMethod_checkalive<WithStreamedUnaryMethod_setParameter<WithStreamedUnaryMethod_uploadOriginKeyValue<WithStreamedUnaryMethod_reportCommitAbort<WithStreamedUnaryMethod_checkCommitAbort<WithStreamedUnaryMethod_uploadSetValue<WithStreamedUnaryMethod_uploadSubsetValue<WithStreamedUnaryMethod_uploadAppendValue<WithStreamedUnaryMethod_uploadUplrcLegacyUpdate<WithStreamedUnaryMethod_uploadUpLRCUpdate<WithStreamedUnaryMethod_uplrcPlanBeginTransfer<WithStreamedUnaryMethod_uplrcPlanWaitTransferComplete<WithStreamedUnaryMethod_uploadUpLRCLocalParityApply<WithStreamedUnaryMethod_uploadUpLRCLocalParityViaGlobalHub<WithStreamedUnaryMethod_getValue<WithStreamedUnaryMethod_getStripe<WithStreamedUnaryMethod_getBlocks<WithStreamedUnaryMethod_getDegradedReadBlocks<WithStreamedUnaryMethod_getDegradedReadBlock<WithStreamedUnaryMethod_getDegradedReadBlockBreakdown<WithStreamedUnaryMethod_getRecovery<WithStreamedUnaryMethod_getRecoveryBreakdown<WithStreamedUnaryMethod_fullNodeRecovery<WithStreamedUnaryMethod_multiBlockRecovery<WithStreamedUnaryMethod_delByKey<WithStreamedUnaryMethod_delByStripe<WithStreamedUnaryMethod_listStripes<WithStreamedUnaryMethod_decodeTest<Service > > > > > > > > > > > > > > > > > > > > > > > > > > > > > StreamedService;
 };
 
 }  // namespace coordinator_proto

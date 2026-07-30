@@ -6,7 +6,9 @@ USER="root"
 
 INPUT_GB=$1
 
-REMOTE_COMMAND="cd /root/xue && sh limit_${INPUT_GB}Gb.sh"
+ROOT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]:-$0}")" && pwd)"
+REMOTE_ROOT="${REMOTE_ROOT:-$ROOT_DIR}"
+REMOTE_COMMAND="cd ${REMOTE_ROOT} && sh limit_${INPUT_GB}Gb.sh"
 
 PARALLEL=5
 
