@@ -65,7 +65,9 @@ sh compile.sh
 ```
 - Limit bandwidth
 
+```
 sh limit_all_bw_matrix.sh
+```
 
 - Run
 
