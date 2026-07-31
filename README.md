@@ -39,9 +39,9 @@ The architecture follows master-worker style, like many state-of-art distributed
 
   * `AlignedSize`: The size in bytes that data should be aligned to (4096 bytes)
   * `UnitSize`: The basic unit size for data operations (8192 bytes)
-  * `BlockSize`: The size of data blocks (16384 bytes)
-  * `DatanodeNumPerCluster`: Number of datanodes in each cluster (15)
-  * `ClusterNum`: Total number of clusters in the system (12)
+  * `BlockSize`: The size of data blocks (1048576 bytes)
+  * `DatanodeNumPerCluster`: Number of datanodes in each cluster (8)
+  * `ClusterNum`: Total number of clusters in the system (6)
   * `CoordinatorIP`: IP address of the coordinator server (0.0.0.0)
   * `CoordinatorPort`: Port number for the coordinator server (55555)
   * `AppendMode`: The mode for append operations, can be:
@@ -50,10 +50,8 @@ The architecture follows master-worker style, like many state-of-art distributed
     - CACHED_MODE: Cached mode
   * `alpha`: Parameter for coding (1)
   * `CodeType`: Type of erasure coding scheme, can be:
-    - UniLRC: UniLRC
-    - AzureLRC: Azure LRC
-    - OptimalLRC: Optimal LRC
-    - UniformLRC: Uniform LRC
+    - UplrcLegacyLRC: UpLRC
+    - 
   * `k`: Number of data blocks
   * `r`: Number of global parity blocks
   * `z`: Number of local parity blocks
@@ -65,11 +63,14 @@ The architecture follows master-worker style, like many state-of-art distributed
 ```
 sh compile.sh
 ```
+- Limit bandwidth
+sh limit_all_bw_matrix.sh
 
 - Run
 
 ```
 # Run proxy and datanode
+sh start_datanode.sh
 sh start_proxy.sh
 
 # Run coordinator
@@ -81,8 +82,7 @@ sh test.sh
 
 #### Attention
 
-- In `parameterConfiguration.xml`, if `CodeType` is UniLRC, the `k`, `r` is computed based on `alpha` and `z`; if `CodeType` is AzureLRC, OptimalLRC or UniformLRC, the `k`, `r`, and `z` are directly specified.
-- start_proxy.sh and start_coordinator.sh scripts need adjustment for different environments.
+- sh start_datanode.sh, start_proxy.sh and start_coordinator.sh scripts need adjustment for different environments.
 
 
 
@@ -97,5 +97,8 @@ sh test.sh
 
 #### Tools
 
-- use `small_tools/generator_sh.py` to generate configuration file and running shell for proxy and data node.
+- use small_ tools/generator sh.py to generate configuration file and running shell for proxy and data node
+(invoked for you after bash update_all.sh ).
 
+To sync the whole repo to the cluster and regenerate per-node scripts/run_proxy_datanode.sh, run from the repo root:
+bash update_all.sh
