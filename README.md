@@ -50,7 +50,7 @@ The architecture follows master-worker style, like many state-of-art distributed
     - CACHED_MODE: Cached mode
   * `alpha`: Parameter for coding (1)
   * `CodeType`: Type of erasure coding scheme, can be:
-    - UplrcLegacyLRC: UpLRC
+    - UpLRC: UpLRC
     - 
   * `k`: Number of data blocks
   * `r`: Number of global parity blocks
